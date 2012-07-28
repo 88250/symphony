@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: B3log Symphony POM.
+    Version: 1.0.0.0, Jul 28, 2012
+    Author: Liang Ding
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>symphony</artifactId>
+    <packaging>war</packaging>
+    <version>0.2.0</version>
+    <name>B3log Symphony</name>
+    <url>https://github.com/b3log/b3log-symphony</url>
+    <description>
+        重来吧，B3 社区 2.0
+    </description>
+    <inceptionYear>2012</inceptionYear>
+
+    <!-- Properties -->
+    <properties>
+        <servlet.version>2.5</servlet.version>
+        <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
+        <org.b3log.latke-gae.version>0.5.0-SNAPSHOT</org.b3log.latke-gae.version>
+        <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
+        
+        <freemarker-gae.version>2.3.19</freemarker-gae.version>
+        <jsoup.version>1.5.2</jsoup.version>
+        <markdownpapers-core.version>1.2.7</markdownpapers-core.version>
+
+        <!-- maven plugin -->
+        <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+        <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
+        <maven-surefire-plugin.version>2.9</maven-surefire-plugin.version>
+        <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
+        <maven-checkstyle-plugin.version>2.7</maven-checkstyle-plugin.version>
+        <maven-javancss-plugin.version>2.0</maven-javancss-plugin.version>
+        <maven-javadoc-plugin.version>2.7</maven-javadoc-plugin.version>
+        <maven-cobertura-plugin.version>2.5.1</maven-cobertura-plugin.version>
+        <maven-min-plugin.version>0.5.0-SNAPSHOT</maven-min-plugin.version>
+        <!-- Unit Test -->
+        <testng.version>6.1.1</testng.version>
+        <!-- -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <organization>
+        <name>B3log</name>
+        <url>http://www.b3log.org</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>DL88250@gmail.com</id>
+            <name>Liang Ding</name>
+            <email>DL88250@gmail.com</email>
+            <url>http://88250.b3log.org</url>
+            <roles>
+                <role>Lead</role>
+                <role>Initial Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>http://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+
+        <developer>
+            <id>LLY219@gmail.com</id>
+            <name>Liyuan Li</name>
+            <email>LLY219@gmail.com</email>
+            <url>http://vanessa.b3log.org</url>
+            <roles>
+                <role>Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>http://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+        
+        <developer>
+            <id>wmainlove@gmail.com</id>
+            <name>Liceng Yao</name>
+            <email>wmainlove@gmail.com</email>
+            <url>http://love.b3log.org</url>
+            <roles>
+                <role>Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>http://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+        
+    </developers>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/b3log/b3log-symphony/issues</url>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/b3log/b3log-symphony</url>
+    </scm>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>javancss-maven-plugin</artifactId>
+                <version>${maven-javancss-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <dependencyManagement>
+        <dependencies>
+            
+            <dependency>
+                <groupId>org.b3log</groupId>
+                <artifactId>latke</artifactId>
+                <version>${org.b3log.latke.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.b3log</groupId>
+                <artifactId>latke-gae</artifactId>
+                <version>${org.b3log.latke-gae.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.b3log</groupId>
+                <artifactId>latke-repository-mysql</artifactId>
+                <version>${org.b3log.latke-repository-mysql.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${testng.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker-gae</artifactId>
+                <version>${freemarker-gae.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.tautua.markdownpapers</groupId>
+                <artifactId>markdownpapers-core</artifactId>
+                <version>${markdownpapers-core.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>${maven-license-plugin.version}</version>
+                <configuration>
+                    <basedir>${basedir}</basedir>
+                    <header>src/main/resources/etc/header.txt</header>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <aggregate>true</aggregate>
+                    <strictCheck>true</strictCheck>
+                    <includes>
+                        <include>**/src/*/java/**/*.java</include>
+                        <include>**/src/*/webapp/js/*.js</include>
+                        <include>**/src/*/resources/*.properties</include>
+                        <include>**/src/*/webapp/WEB-INF/*.xml</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/src/main/java/**/package-info.java</exclude>
+                        <exclude>**/src/*/webapp/js/lib/*.js</exclude>
+                    </excludes>
+
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <properties>
+                        <year>2012</year>
+                        <devTeam>B3log Team</devTeam>
+                    </properties>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+        </plugins>
+
+        <finalName>b3log-symphony</finalName>
+    </build>
+    
+    <pluginRepositories>
+        <pluginRepository>
+            <id>m2-release</id>
+            <name>88250 at Google Maven repository of releases</name>
+            <url>http://m2-repos.googlecode.com/svn/release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>m2-snapshot</id>
+            <name>88250 at Google Maven repository of snapshots</name>
+            <url>http://m2-repos.googlecode.com/svn/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>interval:10</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>m2-release</id>
+            <name>88250 at Google Maven repository of releases</name>
+            <url>http://m2-repos.googlecode.com/svn/release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>m2-snapshot</id>
+            <name>88250 at Google Maven repository of snapshots</name>
+            <url>http://m2-repos.googlecode.com/svn/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>interval:10</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+</project>
+
