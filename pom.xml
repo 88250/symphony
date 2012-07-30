@@ -44,6 +44,7 @@
         <testng.version>6.1.1</testng.version>
         <!-- -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 
     <organization>
@@ -120,54 +121,59 @@
         </plugins>
     </reporting>
 
-    <dependencyManagement>
-        <dependencies>
+    <dependencies>
             
-            <dependency>
-                <groupId>org.b3log</groupId>
-                <artifactId>latke</artifactId>
-                <version>${org.b3log.latke.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dependency>
 
-            <dependency>
-                <groupId>org.b3log</groupId>
-                <artifactId>latke-gae</artifactId>
-                <version>${org.b3log.latke-gae.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-gae</artifactId>
+            <version>${org.b3log.latke-gae.version}</version>
+        </dependency>
 
-            <dependency>
-                <groupId>org.b3log</groupId>
-                <artifactId>latke-repository-mysql</artifactId>
-                <version>${org.b3log.latke-repository-mysql.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-mysql</artifactId>
+            <version>${org.b3log.latke-repository-mysql.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-            <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <version>${testng.version}</version>
-                <scope>test</scope>
-            </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-            <dependency>
-                <groupId>org.jsoup</groupId>
-                <artifactId>jsoup</artifactId>
-                <version>${jsoup.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
             
-            <dependency>
-                <groupId>org.freemarker</groupId>
-                <artifactId>freemarker-gae</artifactId>
-                <version>${freemarker-gae.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker-gae</artifactId>
+            <version>${freemarker-gae.version}</version>
+        </dependency>
             
-            <dependency>
-                <groupId>org.tautua.markdownpapers</groupId>
-                <artifactId>markdownpapers-core</artifactId>
-                <version>${markdownpapers-core.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.tautua.markdownpapers</groupId>
+            <artifactId>markdownpapers-core</artifactId>
+            <version>${markdownpapers-core.version}</version>
+        </dependency>
 
-        </dependencies>
-    </dependencyManagement>
+    </dependencies>
 
     <build>
         <plugins>
