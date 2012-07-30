@@ -1,0 +1,251 @@
+/*
+ * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
+/**
+* 403, 404, 500, article-pwd, init, login and kill-browser page style.
+*
+* @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+* @version 1.0.1.1, Jun 13, 2012
+*/
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+*,html,body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #F3F1E5;
+    color: #4D505D;
+    font-family: \5fae\8f6f\96c5\9ed1;
+    font-size: small;
+    height: 100%;
+}
+
+button {
+    background: url(../images/icon.png) repeat center bottom;
+    border: 1px solid;
+    border-color: #CCC #BBBBBB #A0A0A0;
+    border-radius: 4px;
+    height: 28px;
+    margin: 0;
+    padding: 0 6px;
+    vertical-align: top;
+    float: right;
+    margin: 12px 0 0 24px;
+    outline: none;
+}
+
+input {
+    background: none repeat scroll 0 0 #FBFBFB;
+    border: 1px solid #E5E5E5;
+    box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;
+    color: #4D505D;
+    font-family: Helvetica,Arial,sans-serif,\5fae\8f6f\96c5\9ed1;
+    font-size: 20px;
+    font-weight: 200;
+    height: 28px;
+    margin-top: 10px;
+    outline: medium none;
+    padding: 3px;
+    width: 280px;
+}
+
+input:focus {
+    box-shadow: 0px 0px 5px rgba(200, 200, 200, 0.9);
+}
+
+.clear {
+    background-color: transparent;
+    border: 0px;
+    clear: both;
+    display: block;
+    font-size: 0px;
+    height: 0px;
+    line-height: 0px;
+    overflow: hidden;
+}
+
+.none {
+    display: none;
+}
+
+.icon {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width:16px;
+    height:16px;
+}
+
+.solo {
+    color: orangered;
+    font-weight: bold;
+}
+
+.logo {
+    float: left;
+    padding: 162px 12px 0;
+    width: 153px;
+}
+
+.wrapper {
+    height: auto;
+    min-height: 100%;
+    position: relative;
+}
+
+.wrap {
+    border-top: 5px solid #E6E5D9;
+    min-height: 400px;
+}
+
+.content {
+    background: url("../images/zz.jpg") repeat-x scroll center bottom white;
+    border-color: #E6E5D9;
+    border-style: solid solid none;
+    border-width: 1px;
+    margin: 0 auto;
+    position: relative;
+    width: 700px;
+    top: 60px;
+}
+
+.main {
+    border-left: 1px solid #E6E5D9;
+    float: right;
+    font-size: 15px;
+    margin: 24px 0;
+    padding: 12px 24px;
+    width: 470px;
+    height: 338px;
+}
+
+.main a {
+    text-decoration: none;
+}
+
+.main ul {
+    margin-bottom: 73px;
+}
+
+.main li {
+    margin: 6px 0 6px 16px;
+}
+
+.main p {
+    margin: 12px 0;
+}
+
+.mian tr {
+    height: 54px;
+}
+
+.footerWrapper {
+    background-color: #FFFFFF;
+    border-top: 1px solid #E6E5D9;
+    bottom: 0;
+    padding: 12px 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+.footerWrapper a {
+    text-decoration: none;
+}
+
+/* start article-pwd */
+.article-pwd > div {
+    margin-bottom: 10px;
+    max-height: 264px;
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+.article-pwd #confirm {
+    margin-top: 6px;
+}
+/* end article-pwd */
+
+/* start 403/404/500 */
+.img-404, .img-403, .img-500 {
+    box-shadow: 0 0 5px #E6E5D9;
+    margin: 20px 0 0 45px;
+    padding: 5px;
+}
+
+.a-404, .a-403, .a-500 {
+    margin: 20px 50px 0 0 ;
+    text-align: right;
+}
+
+.img-403 {
+    margin: 20px 0 0 60px;
+}
+
+.a-403 {
+    margin: 20px 75px 0 0 ;
+}
+
+.img-500 {
+    margin: 25px 0 0 25px;
+}
+
+.a-500 {
+    margin: 25px 35px 0 0 ;
+}
+/* end 403/404/500 */
+
+/* start login */
+.login table {
+    margin: 66px auto;
+}
+/* end login */
+
+/* start kill */
+.kill {
+    position: absolute;
+    right: 40px;
+    top: 230px;
+}
+/* end kill */
+
+/* start init and login */
+#init {
+    position: absolute;
+    top: 102px;
+    width: 470px;
+}
+
+#sys p {
+    height: 166px;
+}
+
+#initButton {
+    margin-right: 10px;
+}
+
+#tip  {
+    color: #21759B;
+    float: right;
+    font-weight: bold;
+    margin-top: 18px;
+}
+/* end init and login */

@@ -1,0 +1,519 @@
+/*
+ * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
+ /**
+ * base style
+ *
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.2.1, Mar 28, 2012
+*/
+html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dd, dl, ol {
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: #FFF;
+    color: #000;
+    font-family: Helvetica,Arial,sans-serif,\5fae\8f6f\96c5\9ed1;
+    font-size: small;
+}
+
+img {
+    border: medium none;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+h1 {
+    font-size: 160%;
+}
+
+h2 {
+    font-size: 140%;
+}
+
+h3 {
+    font-size: 120%;
+}
+
+h4 {
+    font-size: 110%;
+}
+
+textarea {
+    overflow: auto;
+}
+
+li {
+    margin-left: 12px;
+}
+
+button, .button {
+    background: url(../images/icon.png) repeat center bottom;
+    border: 1px solid;
+    border-color: #CCC #BBBBBB #A0A0A0;
+    border-radius: 4px;
+    height: 28px;
+    margin: 0;
+    padding: 0 6px;
+    vertical-align: top;
+}
+
+button:hover,.button:hover {
+    border-color: #BBB;
+}
+
+.padding12 {
+    padding: 12px;
+}
+
+.paddingBottom12 {
+    padding-bottom: 12px !important;
+}
+
+.paddingTop12 {
+    padding-top: 12px !important;
+}
+
+.margin12 {
+    margin: 12px;
+}
+
+.marginTop12 {
+    margin-top: 12px !important;
+}
+
+.marginBottom12 {
+    margin-bottom: 12px !important;
+}
+
+.marginLeft12 {
+    margin-left: 12px !important;;
+}
+
+.marginLeft6 {
+    margin-left: 6px !important;;
+}
+
+.marginRight12 {
+    margin-right: 12px !important;;
+}
+
+.f-bold {
+    font-weight: bold !important;
+}
+.nowrap {
+    white-space: nowrap;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clear {
+    background-color: transparent;
+    border: 0;
+    clear: both;
+    display: block;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    overflow: hidden;
+}
+
+.none {
+    display: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.no-underline {
+    text-decoration: none !important;
+}
+
+.red {
+    color: red;
+}
+
+.contentBody {
+    margin-bottom: 12px;
+    padding: 3px 12px;
+}
+
+/* start form */
+.form th {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.form input[type='text'], .form input[type='password'], .form textarea {
+    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
+    border-right: 1px solid #D9D9D9;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 12px;
+    outline: medium none;
+    width: 99%;
+    padding: 0 3px;
+}
+.form input {
+    height: 24px;
+}
+
+.form input[type='checkbox'] {
+    border: 0px;
+    vertical-align: middle;
+}
+
+.form input.normalInput {
+    width: auto;
+}
+
+.form input[type='checkbox']:focus {
+    border: 0px;
+}
+
+.form input:focus, .form textarea:focus {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+}
+
+.form textarea {
+    padding: 3px;
+    overflow: auto;
+    resize: vertical;    
+}
+/* end form */
+
+.logo {
+    padding: 0 5px;
+    text-decoration: none;
+    text-shadow: 0 0 1px #EEEEEE;
+}
+
+/* start icon */
+.putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon, 
+.homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon, 
+.postIcon,.articlesIcon,.draftsIcon,.usersIcon,.linkIcon,
+.preferenceIcon, .pageIcon, .trueIcon,.falseIcon,
+.fileIcon, .othersIcon, .goTopIcon, .goBottomIcon, .cacheIcon, .aboutIcon {
+    background-image: url("../images/icon.png");
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+}
+
+.adminIcon,.loginIcon,.logoutIcon,.homeIcon {
+    margin-top: 3px;
+}
+
+.pageIcon {
+    background-position: -144px 0px;
+}
+
+.postIcon {
+    background-position: -16px 0;
+}
+
+.linkIcon {
+    background-position: -32px 0;
+}
+
+.preferenceIcon {
+    background-position: -48px 0;
+}
+
+.articlesIcon {
+    background-position: -64px 0;
+}
+
+.trueIcon {
+    background-position: -80px 0;
+    cursor: auto;
+}
+
+.falseIcon {
+    background-position: -96px 0;
+    cursor: auto;
+}
+
+.fileIcon {
+    background-position: -112px 0;
+}
+
+.deleteIcon {
+    background-position: 0 -16px;
+}
+
+.updateIcon {
+    background-position: -16px -16px;
+}
+
+.commentIcon {
+    background-position: -32px -16px;
+}
+
+.homeIcon {
+    background-position: -64px -16px;
+}
+
+.adminIcon {
+    background-position: -80px -16px;
+}
+
+.logoutIcon {
+    background-position: -96px -16px;
+}
+
+.loginIcon {
+    background-position: -112px -16px;
+}
+
+.browserIcon {
+    background-position: -128px -16px;
+}
+
+.calendarIcon {
+    background-position: -144px -16px;
+}
+
+.putTopIcon {
+    background-position: -16px -32px;
+    float: left;
+}
+
+.notPutTopIcon {
+    background-position: -32px -32px;
+    float: left;
+}
+
+.othersIcon {
+    background-position: -48px -32px;
+}
+
+.cacheIcon {
+    background-position: -96px -32px;
+}
+
+.draftsIcon {
+    background-position: -96px -32px;
+}
+
+.usersIcon {
+    background-position: -112px -32px;
+}
+
+.goTopIcon {
+    background-position: -64px -32px;
+    position: fixed;
+    right: 20px;
+    top: 45%;
+}
+
+.goBottomIcon {
+    background-position: -80px -32px;
+    bottom: 40%;
+    position: fixed;
+    right: 20px;
+}
+
+.article-body {
+    overflow: hidden;
+    line-height: 145%;
+    word-wrap: break-word;
+}
+
+.article-body blockquote {
+    border: 1px dotted #98A47F;
+    font-style: italic;
+    margin: 12px;
+    padding: 12px;
+}
+
+.article-body h1 {
+    font-size: 2em;
+    margin: .67em 0;
+}
+
+.article-body h2 {
+    font-size: 1.5em;
+    margin: .75em 0;
+}
+
+.article-body h3 {
+    font-size: 1.17em;
+    margin: .83em 0;
+}
+
+.article-body h4, .article-body p, .article-body blockquote,
+.article-body ul, .article-body fieldset, .article-body form, .article-body ol, 
+.article-body dl, .article-body dir, .article-body menu {
+    margin: 1.12em 0;
+}
+
+.article-body h5 {
+    font-size: .83em;
+    margin: 1.5em 0;
+}
+
+.article-body h6 {
+    font-size: .75em;
+    margin: 1.67em 0;
+}
+
+.article-body blockquote {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.article-body ol, .article-body ul, .article-body dir,
+.article-body menu, .article-body dd {
+    margin-left: 40px;
+}
+/* start icon */
+
+/* start emotions */
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
+.em10, .em11, .em12, .em13, .em14 {
+    background-image: url("../images/emotions/classic/emotions-classic.png");
+    float: left;
+    height: 24px;
+    margin-right: 5px;
+    width: 24px;
+}
+
+#emotions span {
+    cursor: pointer;
+}
+
+.em01 {
+    background-position: -24px 0;
+}
+
+.em02 {
+    background-position: -48px 0;
+}
+
+.em03 {
+    background-position: -72px 0;
+}
+.em04 {
+    background-position: -96px 0;
+}
+
+.em05 {
+    background-position: 0px -24px;
+}
+
+.em06 {
+    background-position: -24px -24px;
+}
+
+.em07 {
+    background-position: -48px -24px;
+}
+
+.em08 {
+    background-position: -72px -24px;
+}
+
+.em09 {
+    background-position: -96px -24px;
+}
+
+.em10 {
+    background-position: 0 -48px;
+}
+
+.em11 {
+    background-position: -24px -48px ;
+}
+
+.em12 {
+    background-position: -48px -48px;
+}
+
+.em13 {
+    background-position: -72px -48px;
+}
+
+.em14 {
+    background-position: -96px -48px;
+}
+/* end emotions */
+
+/* start tags */
+#tags {
+    list-style: none;
+}
+
+#tags li {
+    float: left;
+    list-style: none;
+    height: 38px;
+}
+
+#tags a:hover {
+    text-shadow: 0 0 2px #555555;
+}
+
+#tags a {
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 1px 1px 3px #555555;
+    float: left;
+    margin: 3px 6px;
+    padding: 3px 12px;
+    text-decoration: none;
+}
+
+#tags .tags1 {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#tags .tags2 {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+#tags .tags3 {
+    font-size: 16px;
+    font-weight: normal;
+}
+
+#tags .tags4 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#tags .tags5 {
+    font-size: 20px;
+    font-weight: bold;
+}
+/* end tags */
+
+/* start comment */
+#captcha, #captchaReply {
+    cursor: pointer;
+}
+/* end comment */
