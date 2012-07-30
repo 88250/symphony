@@ -26,6 +26,7 @@ import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.Requests;
+import org.b3log.symphony.util.Skins;
 
 /**
  * B3log Symphony servlet listener.
@@ -58,6 +59,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Stopwatchs.start("Context Initialized");
 
         super.contextInitialized(servletContextEvent);
+        
+        Skins.loadSkin();
 
         LOGGER.info("Initialized the context");
 
