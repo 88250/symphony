@@ -5,13 +5,8 @@
 <meta name="author" content="B3log Team" />
 <meta name="generator" content="B3log" />
 <meta name="copyright" content="B3log" />
-<meta name="revised" content="B3log, ${year}" />
+<meta name="revised" content="B3log, 2012" />
 <meta http-equiv="Window-target" content="_top" />
-<link type="text/css" rel="stylesheet" href="${staticServePath}/skins/${skinDirName}/css/${skinDirName}${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-<!--[if IE 8]>
-<link type="text/css" rel="stylesheet" href="${staticServePath}/skins/${skinDirName}/css/${skinDirName}-ie8${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-<![endif]-->
-<link href="${servePath}/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
-<link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
-${htmlHead}
+<link type="text/css" rel="stylesheet" href="/css/base.css" charset="utf-8" />
+<link rel="icon" type="image/png" href="/favicon.png" />
 </#macro>

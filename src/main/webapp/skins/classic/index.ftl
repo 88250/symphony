@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${blogTitle}">
-        <meta name="keywords" content="${metaKeywords}"/>
-        <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
+        <@head title="B3log 社区">
+        <meta name="keywords" content=""/>
+        <meta name="description" content=""/>
         </@head>
     </head>
     <body>
