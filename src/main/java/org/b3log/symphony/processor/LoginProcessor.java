@@ -16,7 +16,6 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,47 +23,47 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.SymphonyServletListener;
 
 /**
- * Index processor.
+ * Login processor.
+ * 
+ * <p>
+ * For user
+ *   <ul>
+ *     <li>Registration</li>
+ *     <li>Login</li>
+ *     <li>Logout</li>
+ *   </ul>
+ * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jul 31, 2012
+ * @version 1.0.0.0, Jul 31, 2012
  * @since 0.2.0
  */
 @RequestProcessor
-public class IndexProcessor {
+public class LoginProcessor {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
 
     /**
-     * Shows index.
+     * Registers user.
      * 
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = "/", method = HTTPRequestMethod.GET)
-    public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    @RequestProcessing(value = "/register", method = HTTPRequestMethod.POST)
+    public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
-        Stopwatchs.start("Show Index");
+        final String name = request.getParameter("name");
+        final String email = request.getParameter("email");
+        final String password = request.getParameter("password");
+        final String captcha = request.getParameter("captcha");
         
-          final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
-        context.setRenderer(renderer);
-
-        renderer.setTemplateName("index.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
         
-        dataModel.put("version", SymphonyServletListener.VERSION);
-
-        Stopwatchs.end();
     }
 }

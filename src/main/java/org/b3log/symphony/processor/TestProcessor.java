@@ -30,39 +30,39 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
 
 /**
- * Index processor.
+ * Test processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jul 31, 2012
+ * @version 1.0.0.0, Jul 31, 2012
  * @since 0.2.0
  */
 @RequestProcessor
-public class IndexProcessor {
+public class TestProcessor {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TestProcessor.class.getName());
 
     /**
-     * Shows index.
+     * Tests.
      * 
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = "/", method = HTTPRequestMethod.GET)
-    public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    @RequestProcessing(value = "/dev/test", method = HTTPRequestMethod.GET)
+    public void showTest(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         Stopwatchs.start("Show Index");
-        
-          final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        
+
         dataModel.put("version", SymphonyServletListener.VERSION);
 
         Stopwatchs.end();
