@@ -7,6 +7,7 @@
 <meta name="copyright" content="B3log" />
 <meta name="revised" content="B3log, 2012" />
 <meta http-equiv="Window-target" content="_top" />
-<link type="text/css" rel="stylesheet" href="/css/base.css" charset="utf-8" />
+<link type="text/css" rel="stylesheet" href="/css/base.css" />
+<link type="text/css" rel="stylesheet" href="/css/index.css" />
 <link rel="icon" type="image/png" href="/favicon.png" />
 </#macro>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2012, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,16 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
- 
- /**
- * base style
- *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Jul 31, 2012
+*/
+
+/**
+* base style
+*
+* @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+* @version 1.0.0.1, Jul 31, 2012
 */
 html {
-    font-size: 100%;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
 }
@@ -29,6 +28,7 @@ html {
 body {
     margin: 0;
     font-family: '\5fae\8f6f\96c5\9ed1';
+    font-size: 14px;
 }
 
 ul,
@@ -154,12 +154,12 @@ textarea {
 
 .fn-clear:before,
 .fn-clear:after {
-  display: table;
-  content: "";
+    display: table;
+    content: "";
 }
 
 .fn-clear:after {
-  clear: both;
+    clear: both;
 }
 
 .fn-left {
@@ -172,4 +172,11 @@ textarea {
 
 .fn-none {
     display: none;
+}
+
+.fn-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
 }
