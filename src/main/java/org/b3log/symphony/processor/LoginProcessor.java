@@ -16,13 +16,22 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.util.QueryResults;
+import org.json.JSONObject;
 
 /**
  * Login processor.
@@ -47,6 +56,14 @@ public class LoginProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
+    /**
+     * User management service.
+     */
+    private UserMgmtService userMgmtService = UserMgmtService.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Registers user.
@@ -59,11 +76,31 @@ public class LoginProcessor {
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.POST)
     public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.defaultResult();
+        renderer.setJSONObject(ret);
+
         final String name = request.getParameter("name");
         final String email = request.getParameter("email");
         final String password = request.getParameter("password");
         final String captcha = request.getParameter("captcha");
-        
-        
+
+        final JSONObject user = new JSONObject();
+        user.put(User.USER_NAME, name);
+        user.put(User.USER_EMAIL, email);
+        user.put(User.USER_PASSWORD, password);
+
+        try {
+            userMgmtService.addUser(user);
+
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.SEVERE, msg, e);
+
+            ret.put(Keys.MSG, msg);
+        }
     }
 }

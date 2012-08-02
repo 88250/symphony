@@ -32,7 +32,7 @@ var Util = {
     error: function () {
         $("#tipMsg").text("Error: " + arguments[0] +
             " File: " + arguments[1] + "\nLine: " + arguments[2] +
-            " please report this issue on https://github.com/b3log/b3log-solo/issues/new");
+            " please report this issue on https://github.com/b3log/b3log-symphony/issues/new");
         $("#loadMsg").text("");
     },
         
