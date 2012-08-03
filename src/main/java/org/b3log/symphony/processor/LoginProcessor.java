@@ -16,6 +16,7 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,10 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.util.Stopwatchs;
+import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.util.QueryResults;
 import org.json.JSONObject;
@@ -46,7 +51,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 31, 2012
+ * @version 1.0.0.1, Aug 3, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -64,6 +69,23 @@ public class LoginProcessor {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Shows registration page.
+     * 
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws IOException io exception 
+     */
+    @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
+    public void showRegister(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+
+        renderer.setTemplateName("register.ftl");
+    }
 
     /**
      * Registers user.
