@@ -20,7 +20,7 @@
                         <img class="img-500" src="${staticServePath}/images/500.png" title="500: internal error" alt="500: internal error" />
                         <div class="a-500">
                            Please 
-                            <a href="https://github.com/b3log/b3log-solo/issues/new">report</a> it to help us.
+                            <a href="https://github.com/b3log/b3log-symphony/issues/new">report</a> it to help us.
                             Return to <a href="${servePath}">Index</a>.
                         </div>
                         <a href="http://b3log.org" target="_blank">

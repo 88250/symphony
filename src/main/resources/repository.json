@@ -114,7 +114,7 @@
         {
             "name": "userEmail",
             "type": "String",
-            "length": 64
+            "length": 256
         },
         {
             "name": "userName",
@@ -141,7 +141,9 @@
         },
         {
             "name": "userStatus",
-            "type": "String"
+            "type": "String",
+            "length": 1,
+            "description": "0: valid, 1: invalid",
         }
         ]
     },
