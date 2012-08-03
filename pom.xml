@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.0.0, Jul 28, 2012
+    Version: 1.0.0.1, Aug 3, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -23,10 +23,9 @@
     <properties>
         <servlet.version>2.5</servlet.version>
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
-        <org.b3log.latke-gae.version>0.5.0-SNAPSHOT</org.b3log.latke-gae.version>
         <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
         
-        <freemarker-gae.version>2.3.19</freemarker-gae.version>
+        <freemarker.version>2.3.19</freemarker.version>
         <jsoup.version>1.5.2</jsoup.version>
         <markdownpapers-core.version>1.2.7</markdownpapers-core.version>
 
@@ -131,12 +130,6 @@
 
         <dependency>
             <groupId>org.b3log</groupId>
-            <artifactId>latke-gae</artifactId>
-            <version>${org.b3log.latke-gae.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
             <version>${org.b3log.latke-repository-mysql.version}</version>
         </dependency>
@@ -163,8 +156,8 @@
             
         <dependency>
             <groupId>org.freemarker</groupId>
-            <artifactId>freemarker-gae</artifactId>
-            <version>${freemarker-gae.version}</version>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
         </dependency>
             
         <dependency>
