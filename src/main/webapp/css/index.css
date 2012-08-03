@@ -86,6 +86,42 @@
     position: fixed;
     width: 100%;
     z-index: 99;
+    background:#fafafa;
+    background:-moz-linear-gradient(#fafafa,#eaeaea);
+    background:-webkit-linear-gradient(#fafafa,#eaeaea);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#eaeaea')";
+    border-bottom:1px solid #cacaca;
+    box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);
+}
+
+.nav > .wrapper {
+    position: relative;
+}
+
+.nav a {
+    color: #222222;
+    font-weight: bold;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    line-height: 26px;
+}
+
+.nav a:hover {
+    color: #4183C4;
+}
+
+.nav .form {
+    position: absolute;
+    background:#fafafa;
+    background:-moz-linear-gradient(#fafafa,#eaeaea);
+    background:-webkit-linear-gradient(#fafafa,#eaeaea);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#eaeaea')";
+    box-shadow:0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);
+    border: 1px solid #cacaca;
+    border-top: 0;
+    padding: 10px;
+    right: 0;
+    top: 27px;
 }
 
 .header {
@@ -96,7 +132,43 @@
 
 /* start footer */
 .footer {
-    background-color: #666;
+    background-color: #F8F8F8;
+    border-bottom: 1px solid #E0E0E0;
+    border-top: 1px solid #E0E0E0;
+    box-shadow: 0 -1px 0 white inset;
     font-size: 10px;
 }
 /* end footer */
+
+/* start form */
+.form input {
+    background-color: #FFF;
+    border: 1px solid;
+    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
+    border-radius: 1px;
+    padding: 2px;
+}
+
+.form input:focus {
+    border-color: #4D90FE;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3) inset;
+}
+
+.form button {
+    background-color: #4D90FE;
+    background-image: -moz-linear-gradient(center top , #4D90FE, #4787ED);
+    border: 1px solid #3079ED;
+    color: #FFFFFF;  
+    padding: 2px 10px;
+}
+
+.form button:hover {
+    background-color: #357AE8;
+    background-image: -moz-linear-gradient(center top , #4D90FE, #357AE8);
+    border-color: #2F5BB7;
+}
+
+.form button:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+}
+/* end form */
