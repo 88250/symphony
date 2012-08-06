@@ -72,12 +72,7 @@ audio:not([controls]) {
     display: none;
 }
 
-a:focus {
-    outline-offset: -2px;
-}
-
-a:hover,
-a:active {
+a {
     outline: 0;
 }
 

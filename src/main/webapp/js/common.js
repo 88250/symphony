@@ -67,7 +67,14 @@ var Util = {
      */
     showLogin: function () {
         $(".nav .form").slideToggle();
-    }
+    },
+    
+    /**
+     * @description 跳转到注册页面
+     */
+   goRegister: function () {
+      window.open("/register?goto=" + encodeURIComponent(location.href)); 
+   }
 };
 
 if (!Cookie) {

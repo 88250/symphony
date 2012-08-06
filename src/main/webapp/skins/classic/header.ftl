@@ -30,13 +30,17 @@
                         &nbsp;
                     </td>
                     <td>
-                        <a href="/">注册</a> <button>登录</button>
+                        <button>登录</button>
+                        <a href="javascript:Util.goRegister()">注册</a>
+                        <a href="/">忘记密码</a>
                     </td>
                 </tr>
             </table>
         </div>
     </div>
 </div>
-<div class="wrapper header">
-    <img src="/images/logo.png" />
+<div class="header">
+    <div class="wrapper">
+        <img src="/images/logo.png" />
+    </div>
 </div>

@@ -20,9 +20,18 @@
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
 * @version 1.0.0.1, Jul 31, 2012
 */
+body {
+    background-color: #F8F8F8;
+}
+
 .wrapper {
     width: 1000px;
     margin: 0 auto;
+}
+
+.main {
+    background-color: #FFF;
+    padding-bottom: 50px;
 }
 
 /* start article list */
@@ -40,7 +49,7 @@
     width: 824px;
 }
 
-.article-list .author {
+.article-list > li > div > .fn-left {
     position: relative;
 }
 
@@ -72,7 +81,6 @@
     position: absolute;
     width: 980px;
     display: none;
-    z-index: -1;
 }
 
 .article-list > li:hover .abstract {
@@ -125,17 +133,16 @@
 }
 
 .header {
-    margin-bottom: 20px;
+    padding-bottom: 20px;
+    background-color: #FFF;
     padding-top: 50px;
 }
 /* end header */
 
 /* start footer */
 .footer {
-    background-color: #F8F8F8;
-    border-bottom: 1px solid #E0E0E0;
     border-top: 1px solid #E0E0E0;
-    box-shadow: 0 -1px 0 white inset;
+    box-shadow: 0 1px 1px white inset;
     font-size: 10px;
 }
 /* end footer */
@@ -147,6 +154,7 @@
     border-color: #C0C0C0 #D9D9D9 #D9D9D9;
     border-radius: 1px;
     padding: 2px;
+    margin: 5px 0;
 }
 
 .form input:focus {
@@ -160,6 +168,7 @@
     border: 1px solid #3079ED;
     color: #FFFFFF;  
     padding: 2px 10px;
+    margin: 5px 0;
 }
 
 .form button:hover {
@@ -172,3 +181,12 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
 }
 /* end form */
+
+/* start register */
+.register .intro {
+    border-left: 1px dashed #C0C0C0;
+    margin-left: 30px;
+    min-height: 200px;
+    padding-left: 30px;
+}
+/* end register */

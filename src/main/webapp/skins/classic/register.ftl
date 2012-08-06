@@ -9,8 +9,10 @@
     </head>
     <body>
         <#include "header.ftl">
-        <div class="wrapper">
-            <#include "list.ftl">
+        <div class="main">
+            <div class="wrapper fn-clear">
+                <#include "index_1.ftl">
+            </div>
         </div>
         <#include "footer.ftl">
     </body>
