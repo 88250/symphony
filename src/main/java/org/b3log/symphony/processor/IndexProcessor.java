@@ -56,13 +56,13 @@ public class IndexProcessor {
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         Stopwatchs.start("Show Index");
-        
-          final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        
+
         dataModel.put("version", SymphonyServletListener.VERSION);
 
         Stopwatchs.end();

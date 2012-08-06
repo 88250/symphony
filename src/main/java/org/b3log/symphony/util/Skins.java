@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.util;
 
+import freemarker.cache.NullCacheStorage;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
@@ -30,7 +31,7 @@ import static org.b3log.symphony.model.Skin.*;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 30, 2012
+ * @version 1.0.0.1, Aug 6, 2012
  * @since 0.2.0
  */
 public final class Skins {
@@ -56,6 +57,14 @@ public final class Skins {
             Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
         } catch (final IOException e) {
             throw new RuntimeException(e);
+        }
+
+        final boolean enablePageCache = Symphonys.getBoolean("enablePageCache");
+        Templates.enableCache(enablePageCache);
+        LOGGER.log(Level.INFO, "{0} template caching", (enablePageCache ? "Enabled" : "Disabled"));
+        if (!enablePageCache) {
+            Templates.MAIN_CFG.setCacheStorage(new NullCacheStorage());
+            Templates.MOBILE_CFG.setCacheStorage(new NullCacheStorage());
         }
 
         TimeZones.setTimeZone("Asia/Shanghai");

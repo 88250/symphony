@@ -23,7 +23,7 @@ import org.b3log.latke.RuntimeMode;
  * Symphony utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Feb 21, 2011
+ * @version 1.0.0.3, Aug 6, 2012
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -50,6 +50,22 @@ public final class Symphonys {
      */
     public static String get(final String key) {
         return CFG.getString(key);
+    }
+    
+    /**
+     * Gets a configuration boolean property with the specified key.
+     * 
+     * @param key the specified key
+     * @return boolean property value corresponding to the specified key, returns {@code null} if not found
+     */
+    public static Boolean getBoolean(final String key) {
+        final String stringValue = get(key);
+        
+        if (null == stringValue) {
+            return null;
+        }
+        
+        return Boolean.valueOf(stringValue);
     }
 
     /**
