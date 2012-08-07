@@ -17,8 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, May 16, 2012
+ * @version 1.0.0.2, Aug 7, 2012
  */
 
 /**
@@ -26,16 +25,6 @@
  * @static
  */
 var Util = {
-    /**
-     * @description 检测页面错误
-     */
-    error: function () {
-        $("#tipMsg").text("Error: " + arguments[0] +
-            " File: " + arguments[1] + "\nLine: " + arguments[2] +
-            " please report this issue on https://github.com/b3log/b3log-symphony/issues/new");
-        $("#loadMsg").text("");
-    },
-    
     /**
      * @description 回到顶部
      */
@@ -76,6 +65,11 @@ var Util = {
       window.open("/register?goto=" + encodeURIComponent(location.href)); 
    }
 };
+
+/**
+ * @description 全局变量
+ */
+var Label = {};
 
 if (!Cookie) {
     /**
