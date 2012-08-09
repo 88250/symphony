@@ -18,7 +18,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.1, Jul 31, 2012
+* @version 1.0.0.3, Aug 9, 2012
 */
 body {
     background-color: #F8F8F8;
@@ -53,6 +53,11 @@ body {
     position: relative;
 }
 
+.article-list .author {
+    margin-right: 10px;
+    float: left;
+}
+
 .article-list > li .abstract {
     color: rgba(0, 0, 0, 0.1);
     height: 60px;
@@ -66,6 +71,35 @@ body {
     display: block;
 }
 /* end article list */
+
+/* start article */
+.article {
+    margin: 0 10px 30px 10px;
+}
+
+.article .title {
+    width: 910px;
+    float: left;
+}
+
+.article .content {
+    margin: 20px 0;
+}
+
+.comments ul {
+    list-style: none;
+}
+
+.comments li {
+    margin: 10px;
+}
+
+.comments .content {
+    float: left;
+    margin-left: 10px;
+    width: 910px;
+}
+/* end article */
 
 /* start header */
 .nav {
@@ -200,30 +234,28 @@ body {
     height: 60px;
     line-height: 60px;
     margin: 2px;
-    width: 124px;　
+    width: 124px;
+}
+
+.hot-author .author {
+    margin: 2px;
 }
 /* end hot */
 
 /* start author */
 .author {
     position: relative;
-    float: left;
+    width: 60px;
 }
 
-.article-list .author img {
+.author img {
     height: 60px;
     margin-right: 10px;
     width: 60px;
-}
-
-.hot-author .author img {
     box-shadow: 0 0 2px #DDDDDD;
-    height: 60px;
-    margin: 2px;
-    width: 60px;
 }
 
-.article-list .author span {
+.author span {
     background-color: rgba(0, 0, 0, 0.2);
     display: block;
     line-height: 20px;
@@ -232,17 +264,6 @@ body {
     top: 40px;
     width: 60px;
     display: none;
-}
-
-.hot-author .author span {
-    background-color: rgba(0, 0, 0, 0.2);
-    display: none;
-    left: 2px;
-    line-height: 20px;
-    position: absolute;
-    text-align: center;
-    top: 42px;
-    width: 60px;
 }
 
 .author:hover span {

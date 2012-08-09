@@ -24,7 +24,7 @@
                 <div class="hot-author">
                     <div class="fn-clear" style="margin-top: 20px;">
                         <#list 1..22 as i>
-                        <div class="author">
+                        <div class="author fn-left">
                             <img src="/images/user-thumbnail.png" />
                             <span class="fn-ellipsis">
                                 <a href="/" title="VanessaLiliYuan">VanessaLiliYuan</a>

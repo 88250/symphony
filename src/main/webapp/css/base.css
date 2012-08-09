@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.1, Jul 31, 2012
+* @version 1.0.0.2, Aug 9, 2012
 */
 html {
     -webkit-text-size-adjust: 100%;
@@ -74,6 +74,12 @@ audio:not([controls]) {
 
 a {
     outline: 0;
+    text-decoration: none;
+    color: #4183C4;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 sub,

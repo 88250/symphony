@@ -17,7 +17,7 @@
  * @fileoverview register.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Aug 7, 2012
+ * @version 1.0.0.2, Aug 9, 2012
  */
 
 /**
