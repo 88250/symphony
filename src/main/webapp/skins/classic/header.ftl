@@ -2,7 +2,8 @@
     <div class="wrapper fn-clear">
         <span class="fn-left">
             <a href="/">首页</a>
-            <a href="/">热门文章</a>
+            <a href="/hot">热门</a>
+            <a href="/tags">Tags</a>
         </span>
         <span class="fn-right">
             <a href="javascript: Util.showLogin();">登录</a>

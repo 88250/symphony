@@ -5,3 +5,6 @@
 </div>
 <script type="text/javascript" src="/js/lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
+<script>
+    Util.init();
+</script>

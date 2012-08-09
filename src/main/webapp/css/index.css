@@ -53,27 +53,6 @@ body {
     position: relative;
 }
 
-.article-list .author img {
-    height: 60px;
-    margin-right: 10px;
-    width: 60px;
-}
-
-.article-list .author span {
-    background-color: rgba(0, 0, 0, 0.2);
-    display: block;
-    line-height: 20px;
-    position: absolute;
-    text-align: center;
-    top: 40px;
-    width: 60px;
-    display: none;
-}
-
-.article-list .author:hover span {
-    display: block;
-}
-
 .article-list > li .abstract {
     color: rgba(0, 0, 0, 0.1);
     height: 60px;
@@ -107,7 +86,7 @@ body {
 }
 
 .nav a {
-    color: #222222;
+    color: #777;
     font-weight: bold;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     text-decoration: none;
@@ -116,6 +95,10 @@ body {
 
 .nav a:hover {
     color: #4183C4;
+}
+
+.nav a.current {
+    color: #222;
 }
 
 .nav .form {
@@ -191,3 +174,78 @@ body {
     padding-left: 30px;
 }
 /* end register */
+
+/* start hot */
+.hot > div {
+    border: 1px solid #DDDDDD;
+    border-radius: 5px 5px 5px 5px;
+    float: left;
+    margin: 10px;
+    padding: 10px;
+    width: 404px;
+    height: 228px;
+}
+
+.hot ul {
+    list-style: none;
+}
+
+.hot > div.hot-author, .hot > div.hot-tags {
+    width: 512px;
+}
+
+.hot-author .center {
+    background-color: #DDDDDD;
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    margin: 2px;
+    width: 124px;　
+}
+/* end hot */
+
+/* start author */
+.author {
+    position: relative;
+    float: left;
+}
+
+.article-list .author img {
+    height: 60px;
+    margin-right: 10px;
+    width: 60px;
+}
+
+.hot-author .author img {
+    box-shadow: 0 0 2px #DDDDDD;
+    height: 60px;
+    margin: 2px;
+    width: 60px;
+}
+
+.article-list .author span {
+    background-color: rgba(0, 0, 0, 0.2);
+    display: block;
+    line-height: 20px;
+    position: absolute;
+    text-align: center;
+    top: 40px;
+    width: 60px;
+    display: none;
+}
+
+.hot-author .author span {
+    background-color: rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 2px;
+    line-height: 20px;
+    position: absolute;
+    text-align: center;
+    top: 42px;
+    width: 60px;
+}
+
+.author:hover span {
+    display: block;
+}
+/* end author */

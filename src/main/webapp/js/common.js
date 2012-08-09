@@ -61,9 +61,30 @@ var Util = {
     /**
      * @description 跳转到注册页面
      */
-   goRegister: function () {
-      window.open("/register?goto=" + encodeURIComponent(location.href)); 
-   }
+    goRegister: function () {
+        window.open("/register?goto=" + encodeURIComponent(location.href)); 
+    },
+   
+    /**
+    * @description 初识化页面
+    */
+    init: function () {
+        // 导航
+        this._initNav();
+       
+    },
+   
+    /**
+    * @description 设置导航状态
+    */
+    _initNav: function () {
+        var pathname = location.pathname;
+        $(".nav a").each(function () {
+            if (pathname === $(this).attr("href")) {
+                $(this).addClass("current");
+            } 
+        });
+    }
 };
 
 /**
