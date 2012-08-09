@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 2, 2012
+ * @version 1.0.0.2, Aug 9, 2012
  * @since 0.2.0
  */
 public final class UserRepository extends AbstractRepository implements Repository {
@@ -60,6 +60,27 @@ public final class UserRepository extends AbstractRepository implements Reposito
     }
 
     /**
+     * Gets a user by the specified name.
+     *
+     * @param name the specified name
+     * @return user, returns {@code null} if not found
+     * @throws RepositoryException repository exception 
+     */
+    public JSONObject getByName(final String name) throws RepositoryException {
+        final Query query = new Query().setPageCount(1);
+        query.setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, name));
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
+
+    /**
      * Gets a user by the specified email.
      *
      * @param email the specified email
@@ -68,8 +89,7 @@ public final class UserRepository extends AbstractRepository implements Reposito
      */
     public JSONObject getByEmail(final String email) throws RepositoryException {
         final Query query = new Query().setPageCount(1);
-        query.setFilter(
-                new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
+        query.setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
