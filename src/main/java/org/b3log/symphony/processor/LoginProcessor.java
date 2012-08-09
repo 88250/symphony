@@ -18,6 +18,7 @@ package org.b3log.symphony.processor;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -31,7 +32,9 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.util.Requests;
 import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.QueryResults;
 import org.json.JSONObject;
 
@@ -48,7 +51,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 3, 2012
+ * @version 1.0.0.2, Aug 9, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -62,6 +65,10 @@ public class LoginProcessor {
      * User management service.
      */
     private UserMgmtService userMgmtService = UserMgmtService.getInstance();
+    /**
+     * User query service.
+     */
+    private UserQueryService userQueryService = UserQueryService.getInstance();
     /**
      * Language service.
      */
@@ -90,21 +97,23 @@ public class LoginProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
+     * @throws ServletException servlet exception
      * @throws IOException io exception 
      */
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.POST)
     public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws ServletException, IOException {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         final JSONObject ret = QueryResults.defaultResult();
         renderer.setJSONObject(ret);
 
-        final String name = request.getParameter("name");
-        final String email = request.getParameter("email");
-        final String password = request.getParameter("password");
-        final String captcha = request.getParameter("captcha");
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final String name = requestJSONObject.optString("name");
+        final String email = requestJSONObject.optString("email");
+        final String password = requestJSONObject.optString("password");
+        final String captcha = requestJSONObject.optString("captcha");
 
         final JSONObject user = new JSONObject();
         user.put(User.USER_NAME, name);
@@ -113,13 +122,57 @@ public class LoginProcessor {
 
         try {
             userMgmtService.addUser(user);
-
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.SEVERE, msg, e);
 
             ret.put(Keys.MSG, msg);
+        }
+    }
+
+    /**
+     * Logins user.
+     * 
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws ServletException servlet exception
+     * @throws IOException io exception 
+     */
+    @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
+    public void login(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws ServletException, IOException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.defaultResult();
+        renderer.setJSONObject(ret);
+
+        ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final String nameOrEmail = requestJSONObject.optString("nameOrEmail");
+
+        try {
+            JSONObject user = userQueryService.getUserByName(nameOrEmail);
+            if (null == user) {
+                user = userQueryService.getUserByEmail(nameOrEmail);
+            }
+
+            if (null == user) {
+                return;
+            }
+
+            final String userPassword = user.optString(User.USER_PASSWORD);
+            if (!userPassword.equals(requestJSONObject.optString("password"))) {
+                return;
+            }
+
+            ret.put(Keys.MSG, "");
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));
         }
     }
 }

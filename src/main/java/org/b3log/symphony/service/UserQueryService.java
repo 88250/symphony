@@ -86,6 +86,22 @@ public final class UserQueryService {
     }
 
     /**
+     * Gets a user by the specified name.
+     *
+     * @param name the specified name
+     * @return user, returns {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getUserByName(final String name) throws ServiceException {
+        try {
+            return userRepository.getByName(name);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets user by name[" + name + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets users by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
