@@ -12,26 +12,26 @@
             <table>
                 <tr>
                     <td>
-                        <label>Email</label>
+                        <label for="nameOrEmail">Email/User Name</label>
                     </td>
                     <td>
-                        <input/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Password</label>
-                    </td>
-                    <td>
-                        <input/>
+                        <input id="nameOrEmail"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        &nbsp;
+                        <label id="password">Password</label>
                     </td>
                     <td>
-                        <button>登录</button>
+                        <input type="password" id="password" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span id="loginTip"></span>
+                    </td>
+                    <td>
+                        <button onclick="Util.login()">登录</button>
                         <a href="javascript:Util.goRegister()">注册</a>
                         <a href="/">忘记密码</a>
                     </td>

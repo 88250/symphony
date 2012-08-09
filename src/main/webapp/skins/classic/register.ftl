@@ -59,7 +59,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span id="tip"></span>
+                                    <span id="registerTip"></span>
                                 </td>
                                 <td align="right">
                                     <button onclick="Register.register()">Register</button>

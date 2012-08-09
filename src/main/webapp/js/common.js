@@ -84,6 +84,40 @@ var Util = {
                 $(this).addClass("current");
             } 
         });
+    },
+    
+    /**
+     * @description 登录
+     */
+    login: function () {
+        if ($("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g,"") === "") {
+            $("#loginTip").text("Email/User Name 不能为空");
+            $("#nameOrEmail").focus();
+        } else if ($("password").val() === "") {
+            $("#loginTip").text("密码不能为空");
+            $("password").focus();
+        } else {
+            var requestJSONObject = {
+                nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g,""),
+                password: $("#password").val()
+            };
+            
+            $.ajax({
+                url: "/login",
+                type: "POST",
+                cache: false,
+                data: JSON.stringify(requestJSONObject),
+                success: function(result, textStatus){
+                    if (result.sc) {
+                        window.location.reload();
+                    } else {
+                        $("#loginTip").text(result.msg);
+                    }
+                },
+                complete: function (jqXHR, textStatus){
+                }
+            });
+        }
     }
 };
 
