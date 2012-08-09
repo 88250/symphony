@@ -16,7 +16,6 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -32,8 +31,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.util.QueryResults;
 import org.json.JSONObject;

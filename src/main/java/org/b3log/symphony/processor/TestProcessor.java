@@ -16,7 +16,6 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,14 +25,12 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.SymphonyServletListener;
 
 /**
  * Test processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 31, 2012
+ * @version 1.0.0.1, Aug 9, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -52,19 +49,12 @@ public class TestProcessor {
      * @param response the specified response
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = "/dev/test", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/*", method = HTTPRequestMethod.GET)
     public void showTest(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
-        Stopwatchs.start("Show Index");
-
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
-        renderer.setTemplateName("index.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        dataModel.put("version", SymphonyServletListener.VERSION);
-
-        Stopwatchs.end();
+        renderer.setTemplateName(request.getRequestURI() + ".ftl");
     }
 }
