@@ -28,12 +28,13 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.util.Filler;
 
 /**
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jul 31, 2012
+ * @version 1.0.0.2, Aug 10, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -64,6 +65,8 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.put("version", SymphonyServletListener.VERSION);
+
+        Filler.fillHeader(dataModel);
 
         Stopwatchs.end();
     }
