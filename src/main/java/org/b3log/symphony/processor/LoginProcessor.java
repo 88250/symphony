@@ -110,19 +110,16 @@ public class LoginProcessor {
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-        final String name = requestJSONObject.optString("name");
+        final String name = requestJSONObject.optString(User.USER_NAME);
 
         if (invalidUserName(name)) {
             ret.put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidUserNameLabel"));
             return;
         }
-        
-        
 
-
-        final String email = requestJSONObject.optString("email");
-        final String password = requestJSONObject.optString("password");
-        final String captcha = requestJSONObject.optString("captcha");
+        final String email = requestJSONObject.optString(User.USER_EMAIL);
+        final String password = requestJSONObject.optString(User.USER_PASSWORD);
+        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
         final JSONObject user = new JSONObject();
         user.put(User.USER_NAME, name);
@@ -174,7 +171,7 @@ public class LoginProcessor {
             }
 
             final String userPassword = user.optString(User.USER_PASSWORD);
-            if (!userPassword.equals(requestJSONObject.optString("password"))) {
+            if (!userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
                 return;
             }
 

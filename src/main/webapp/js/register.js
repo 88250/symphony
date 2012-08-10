@@ -39,16 +39,16 @@ var Register = {
         var nameVal = $userName.val().replace(/(^\s*)|(\s*$)/g,""),
         emailVal = $userEmail.val().replace(/(^\s*)|(\s*$)/g,"");
         
-        if (nameVal.length === 0 || nameVal.length > 21 ) {
+        if (nameVal.length === 0 || nameVal.length > 20 ) {
             $registerTip.text("用户名长度为1~20");
             $("#userName").focus();
         } else if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(emailVal)) {
             $registerTip.text("邮件格式不正确");
             $("#userEmail").focus();
-        } else if (emailVal.length > 257) {
-            $registerTip.text("邮件长度为1~257");
+        } else if (emailVal.length > 256) {
+            $registerTip.text("邮件长度为1~256");
             $("#userEmail").focus();
-        } else if ($userPassword.val().length === 0 || $userPassword.val().length > 17) {
+        } else if ($userPassword.val().length === 0 || $userPassword.val().length > 16) {
             $registerTip.text("密码长度为1~16");
             $("#userPassword").focus();
         } else if ($confirmPassword.val() !== $userPassword.val()) {
