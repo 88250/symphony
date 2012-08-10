@@ -22,7 +22,6 @@ import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,10 +30,10 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 9, 2012
+ * @version 1.0.0.3, Aug 10, 2012
  * @since 0.2.0
  */
-public final class UserRepository extends AbstractRepository implements Repository {
+public final class UserRepository extends AbstractRepository {
 
     /**
      * Singleton.
