@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 2, 2012
+ * @version 1.0.0.1, Aug 10, 2012
  * @since 0.2.0
  */
 public final class UserMgmtService {
@@ -113,23 +113,27 @@ public final class UserMgmtService {
      *     "userName": "",
      *     "userEmail": "",
      *     "userPassword": "",
-     *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead,
-     *                       if not speciffied
-     *     "userCommentCount" int, // optional, uses {@code 0} by default
-     *     "userArticleCount" int, // optional, uses {@code 0} by default
+     *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead, if not speciffied
      * }
      * </pre>,see {@link User} for more details
      * @return generated user id
-     * @throws ServiceException service exception
+     * @throws ServiceException if user name or email duplicated, or repository exception
      */
     public String addUser(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
-            final JSONObject user = new JSONObject();
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL).trim().toLowerCase();
-            final JSONObject duplicatedUser = userRepository.getByEmail(userEmail);
-            if (null != duplicatedUser) {
+            final String userName = requestJSONObject.optString(User.USER_NAME);
+            if (null != userRepository.getByName(userName)) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
+                throw new ServiceException(langPropsService.get("duplicatedUserNameLabel"));
+            }
+
+            if (null != userRepository.getByEmail(userEmail)) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
@@ -137,16 +141,16 @@ public final class UserMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
             }
 
-            final String userName = requestJSONObject.optString(User.USER_NAME);
+            final JSONObject user = new JSONObject();
+
             user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
-            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-            user.put(User.USER_PASSWORD, userPassword);
-            final String roleName = requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE);
-            user.put(User.USER_ROLE, roleName);
-            
+            user.put(User.USER_PASSWORD, requestJSONObject.optString(User.USER_PASSWORD));
+            user.put(User.USER_ROLE, requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE));
+
             user.put(UserExt.USER_ARTICLE_COUNT, 0);
             user.put(UserExt.USER_COMMENT_COUNT, 0);
+            user.put(UserExt.USER_STATUS, "0");
 
             userRepository.add(user);
 

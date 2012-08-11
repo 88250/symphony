@@ -93,13 +93,13 @@ var Util = {
         if ($("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g,"") === "") {
             $("#loginTip").text("Email/User Name 不能为空");
             $("#nameOrEmail").focus();
-        } else if ($("password").val() === "") {
+        } else if ($("userPassword").val() === "") {
             $("#loginTip").text("密码不能为空");
-            $("password").focus();
+            $("userPassword").focus();
         } else {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g,""),
-                password: $("#password").val()
+                userPassword: $("#userPassword").val()
             };
             
             $.ajax({

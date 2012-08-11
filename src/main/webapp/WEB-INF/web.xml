@@ -18,13 +18,30 @@
 -->
 <!--
     Description: B3log Symphony web deployment descriptor.
-    Version: 1.0.0.0, Jul 30, 2012
+    Version: 1.0.0.1, Aug 10, 2012
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <listener>
         <listener-class>org.b3log.symphony.SymphonyServletListener</listener-class>
     </listener>
+    
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>org.b3log.latke.servlet.filter.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>requestEncoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>responseEncoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     
     <session-config>
         <session-timeout>
