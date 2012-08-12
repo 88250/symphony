@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Aug 9, 2012
+ * @version 1.0.0.4, Aug 11, 2012
  */
 
 /**
@@ -62,7 +62,7 @@ var Util = {
      * @description 跳转到注册页面
      */
     goRegister: function () {
-        window.open("/register?goto=" + encodeURIComponent(location.href)); 
+        window.location = "/register?goto=" + encodeURIComponent(location.href); 
     },
    
     /**
@@ -93,13 +93,13 @@ var Util = {
         if ($("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g,"") === "") {
             $("#loginTip").text("Email/User Name 不能为空");
             $("#nameOrEmail").focus();
-        } else if ($("userPassword").val() === "") {
+        } else if ($("loginPassword").val() === "") {
             $("#loginTip").text("密码不能为空");
-            $("userPassword").focus();
+            $("loginPassword").focus();
         } else {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g,""),
-                userPassword: $("#userPassword").val()
+                userPassword: $("#loginPassword").val()
             };
             
             $.ajax({

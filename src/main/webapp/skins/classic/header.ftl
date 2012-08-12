@@ -20,10 +20,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <label id="password">Password</label>
+                        <label for="loginPassword">Password</label>
                     </td>
                     <td>
-                        <input type="password" id="userPassword" />
+                        <input type="password" id="loginPassword" />
                     </td>
                 </tr>
                 <tr>

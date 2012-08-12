@@ -17,7 +17,7 @@
  * @fileoverview register.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Aug 9, 2012
+ * @version 1.0.0.3, Aug 11, 2012
  */
 
 /**
@@ -82,7 +82,7 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     if (result.sc) {
-                       window.location = location.search.split("=")[1];
+                       window.location = decodeURIComponent(location.search.split("=")[1]);
                     } else {
                         $("#registerTip").text(result.msg);
                     }
