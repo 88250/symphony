@@ -163,3 +163,5 @@ pip-log.txt
 .DS_Store
 !/src/main/resources/local.properties
 /target/
+/.classpath
+/.project
