@@ -49,7 +49,7 @@ public class TestProcessor {
      * @param response the specified response
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = "/*", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/**", method = HTTPRequestMethod.GET)
     public void showTest(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();

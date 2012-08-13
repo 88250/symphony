@@ -1,4 +1,4 @@
-<#include "macro-head.ftl">
+<#include "../macro-head.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,7 +8,7 @@
         </@head>
     </head>
     <body>
-        <#include "header.ftl">
+        <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
                 <#list 1..20 as i>
@@ -16,7 +16,7 @@
                 </#list>
             </div>
         </div>
-        <#include "footer.ftl">
+        <#include "../footer.ftl">
         <script type="text/javascript" src="/js/register.js"></script>
     </body>
 </html>
