@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.servlet.AbstractServletListener;
@@ -32,7 +33,7 @@ import org.b3log.symphony.util.Skins;
  * B3log Symphony servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 30, 2011
+ * @version 1.0.0.1, Aug 12, 2011
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -59,7 +60,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Stopwatchs.start("Context Initialized");
 
         super.contextInitialized(servletContextEvent);
-        
+
         Skins.loadSkin();
 
         LOGGER.info("Initialized the context");
@@ -93,14 +94,21 @@ public final class SymphonyServletListener extends AbstractServletListener {
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
             LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
+        } else {
+            // Gets the session of this request
+            final HttpSession session = httpServletRequest.getSession();
+            LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
+                       new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
+                                    session.isNew()});
         }
+
     }
 
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         Stopwatchs.end();
 
-        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.FINE, "Stopwatch: {0}    {1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
         Stopwatchs.release();
 
         super.requestDestroyed(servletRequestEvent);

@@ -33,6 +33,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Sessions;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.QueryResults;
@@ -172,6 +173,8 @@ public class LoginProcessor {
 
             final String userPassword = user.optString(User.USER_PASSWORD);
             if (!userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
+                Sessions.login(request, response, user);
+                
                 return;
             }
 
