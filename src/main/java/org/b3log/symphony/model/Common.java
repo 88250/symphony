@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 10, 2012
+ * @version 1.0.0.1, Aug 16, 2012
  * @since 0.2.0
  */
 public final class Common {
@@ -32,6 +32,10 @@ public final class Common {
      * Value of mini postfix.
      */
     public static final String MINI_POSTFIX_VALUE = ".min";
+    /**
+     * Static resource version.
+     */
+    public static final String STATIC_RESOURCE_VERSION = "staticResourceVersion";
 
     /**
      * Private default constructor.

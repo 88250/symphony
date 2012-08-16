@@ -38,11 +38,13 @@ public final class Filler {
     /**
      * Fills header.ftl.
      * 
-     * @param datModel the specified data model
+     * @param dataModel the specified data model
      */
-    public static void fillHeader(final Map<String, Object> datModel) {
-        fillMinified(datModel);
-        Keys.fillServer(datModel);
+    public static void fillHeader(final Map<String, Object> dataModel) {
+        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+        
+        fillMinified(dataModel);
+        Keys.fillServer(dataModel);
     }
 
     /**
@@ -50,7 +52,7 @@ public final class Filler {
      * 
      * @param dataModel the specified data model
      */
-    private static void fillMinified(final Map<String, Object> dataModel) {
+    public static void fillMinified(final Map<String, Object> dataModel) {
         switch (Latkes.getRuntimeMode()) {
             case DEVELOPMENT:
                 dataModel.put(Common.MINI_POSTFIX, "");
