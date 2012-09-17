@@ -16,6 +16,7 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,17 +31,11 @@ import org.b3log.symphony.service.UserQueryService;
 
 /**
  * User processor.
- * 
- * <p>
- * For user
- *   <ul>
- *     <li>User Home (/home/${userName}), GET</li>
- *     <li>Settings (/settings), GET/POST</li>
- *   </ul>
- * </p>
+ *
+ * <p> For user <ul> <li>User Home (/home/{userName}), GET</li> <li>Settings (/settings), GET/POST</li> </ul> </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 16, 2012
+ * @version 1.0.0.1, Sep 17, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -65,28 +60,27 @@ public class UserProcessor {
 
     /**
      * Shows user home page.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
-    @RequestProcessing(value = "/home/*", method = HTTPRequestMethod.GET)
-    public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    @RequestProcessing(value = "/home/{userName}", method = HTTPRequestMethod.GET)
+    public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String userName)
             throws IOException {
-        final String requestURI = request.getRequestURI();
-        
-        final String userName = requestURI.substring("/home/".length());
-        
+        LOGGER.log(Level.FINER, "Shows user home [userName={0}]", userName);
+
     }
 
     /**
      * Shows settings page.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/settings", method = HTTPRequestMethod.GET)
     public void showSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -95,12 +89,12 @@ public class UserProcessor {
 
     /**
      * Updates user settings.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws ServletException servlet exception
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/settings", method = HTTPRequestMethod.POST)
     public void updateSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
