@@ -32,7 +32,13 @@ import org.b3log.symphony.service.UserQueryService;
 /**
  * User processor.
  *
- * <p> For user <ul> <li>User Home (/home/{userName}), GET</li> <li>Settings (/settings), GET/POST</li> </ul> </p>
+ * <p>
+ *   For user 
+ *   <ul> 
+ *     <li>User Home (/home/{userName}), GET</li>
+ *     <li>Settings (/settings), GET/POST</li> 
+ *   </ul> 
+ * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Sep 17, 2012
