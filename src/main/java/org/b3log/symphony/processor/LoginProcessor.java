@@ -190,14 +190,14 @@ public class LoginProcessor {
             }
 
             final String userPassword = user.optString(User.USER_PASSWORD);
-            if (!userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
+            if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
                 Sessions.login(request, response, user);
+
+                ret.put(Keys.MSG, "");
+                ret.put(Keys.STATUS_CODE, true);
 
                 return;
             }
-
-            ret.put(Keys.MSG, "");
-            ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));
         }
