@@ -34,7 +34,7 @@ import org.b3log.symphony.util.Filler;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 10, 2012
+ * @version 1.0.0.3, Sep 23, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -67,6 +67,7 @@ public class IndexProcessor {
         dataModel.put("version", SymphonyServletListener.VERSION);
 
         Filler.fillHeader(dataModel);
+        Filler.fillPersonalNav(request, response, dataModel);
 
         Stopwatchs.end();
     }

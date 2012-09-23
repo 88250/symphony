@@ -19,12 +19,15 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.impl.UserRepositoryImpl;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -32,8 +35,15 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.user.GeneralUser;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
+import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.QueryResults;
@@ -74,6 +84,14 @@ public class LoginProcessor {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * User repository.
+     */
+    private UserRepository userRepository = UserRepository.getInstance();
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Shows registration page.
@@ -174,7 +192,7 @@ public class LoginProcessor {
             final String userPassword = user.optString(User.USER_PASSWORD);
             if (!userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
                 Sessions.login(request, response, user);
-                
+
                 return;
             }
 
@@ -182,6 +200,99 @@ public class LoginProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));
+        }
+    }
+
+    /**
+     * Logout.
+     *
+     * @param context the specified context
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = {"/logout"}, method = HTTPRequestMethod.GET)
+    public void logout(final HTTPRequestContext context) throws IOException {
+        final HttpServletRequest httpServletRequest = context.getRequest();
+
+        Sessions.logout(httpServletRequest, context.getResponse());
+
+        String destinationURL = httpServletRequest.getParameter(Common.GOTO);
+        if (Strings.isEmptyOrNull(destinationURL)) {
+            destinationURL = "/";
+        }
+
+        context.getResponse().sendRedirect(destinationURL);
+    }
+
+    /**
+     * Gets the current user.
+     *
+     * @param request the specified request
+     * @return the current user, {@code null} if not found
+     */
+    public static JSONObject getCurrentUser(final HttpServletRequest request) {
+        final GeneralUser currentUser = UserServiceFactory.getUserService().getCurrentUser(request);
+        if (null == currentUser) {
+            return null;
+        }
+
+        final String email = currentUser.getEmail();
+
+        try {
+            return UserRepository.getInstance().getByEmail(email);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets current user by request failed, returns null", e);
+
+            return null;
+        }
+    }
+
+    /**
+     * Tries to login with cookie.
+     *
+     * @param request the specified request
+     * @param response the specified response
+     */
+    public static void tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
+        final Cookie[] cookies = request.getCookies();
+        if (null == cookies || 0 == cookies.length) {
+            return;
+        }
+
+        try {
+            for (int i = 0; i < cookies.length; i++) {
+                final Cookie cookie = cookies[i];
+
+                if (!"b3log-latke".equals(cookie.getName())) {
+                    continue;
+                }
+
+                final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
+
+                final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
+                if (Strings.isEmptyOrNull(userEmail)) {
+                    break;
+                }
+
+                final JSONObject user = UserQueryService.getInstance().getUserByEmail(userEmail.toLowerCase().trim());
+                if (null == user) {
+                    break;
+                }
+
+                final String userPassword = user.optString(User.USER_PASSWORD);
+                final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
+                if (MD5.hash(userPassword).equals(hashPassword)) {
+                    Sessions.login(request, response, user);
+                    LOGGER.log(Level.INFO, "Logged in with cookie[email={0}]", userEmail);
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARNING, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
+
+            final Cookie cookie = new Cookie("b3log-latke", null);
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+
+            response.addCookie(cookie);
         }
     }
 

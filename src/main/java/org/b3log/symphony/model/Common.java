@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 16, 2012
+ * @version 1.0.0.2, Sep 23, 2012
  * @since 0.2.0
  */
 public final class Common {
@@ -36,6 +36,26 @@ public final class Common {
      * Static resource version.
      */
     public static final String STATIC_RESOURCE_VERSION = "staticResourceVersion";
+    /**
+     * Key of go to.
+     */
+    public static final String GOTO = "goto";
+    /**
+     * Key of is logged in.
+     */
+    public static final String IS_LOGGED_IN = "isLoggedIn";
+    /**
+     * Key of login URL.
+     */
+    public static final String LOGIN_URL = "loginURL";
+    /**
+     * Key of logout URL.
+     */
+    public static final String LOGOUT_URL = "logoutURL";
+    /**
+     * URI of index.
+     */
+    public static final String INDEX_URI = "/";
 
     /**
      * Private default constructor.

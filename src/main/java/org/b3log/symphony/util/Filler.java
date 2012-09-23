@@ -15,17 +15,26 @@
  */
 package org.b3log.symphony.util;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.processor.LoginProcessor;
+import org.json.JSONObject;
 
 /**
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 10, 2012
+ * @version 1.0.0.1, Sep 23, 2012
  * @since 0.2.0
  */
 public final class Filler {
@@ -34,6 +43,44 @@ public final class Filler {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
+    /**
+     * User service.
+     */
+    private static UserService userService = UserServiceFactory.getUserService();
+    /**
+     * Language service.
+     */
+    private static LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Fills personal navigation.
+     * 
+     * @param request the specified request
+     * @param response the specified response
+     * @param dataModel the specified data model
+     */
+    public static void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
+            final Map<String, Object> dataModel) {
+        LoginProcessor.tryLogInWithCookie(request, response);
+        final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
+
+        dataModel.put(Common.IS_LOGGED_IN, false);
+
+        if (null == currentUser) {
+            dataModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.INDEX_URI));
+            dataModel.put("loginLabel", langPropsService.get("loginLabel"));
+
+            return;
+        }
+
+        dataModel.put(Common.IS_LOGGED_IN, true);
+        dataModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
+
+        dataModel.put("logoutLabel", langPropsService.get("logoutLabel"));
+
+        final String userName = currentUser.optString(User.USER_NAME);
+        dataModel.put(User.USER_NAME, userName);
+    }
 
     /**
      * Fills header.ftl.
@@ -42,7 +89,7 @@ public final class Filler {
      */
     public static void fillHeader(final Map<String, Object> dataModel) {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-        
+
         fillMinified(dataModel);
         Keys.fillServer(dataModel);
     }
