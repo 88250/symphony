@@ -66,8 +66,7 @@ public class IndexProcessor {
 
         dataModel.put("version", SymphonyServletListener.VERSION);
 
-        Filler.fillHeader(dataModel);
-        Filler.fillPersonalNav(request, response, dataModel);
+        Filler.fillHeader(request, response, dataModel);
 
         Stopwatchs.end();
     }

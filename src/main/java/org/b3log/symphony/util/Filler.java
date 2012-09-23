@@ -52,13 +52,29 @@ public final class Filler {
     private static LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
+     * Fills header.
+     * 
+     * @param request the specified request
+     * @param response the specified response
+     * @param dataModel the specified data model
+     */
+    public static void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
+            final Map<String, Object> dataModel) {
+        fillMinified(dataModel);
+        Keys.fillServer(dataModel);
+        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+
+        fillPersonalNav(request, response, dataModel);
+    }
+
+    /**
      * Fills personal navigation.
      * 
      * @param request the specified request
      * @param response the specified response
      * @param dataModel the specified data model
      */
-    public static void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
+    private static void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
             final Map<String, Object> dataModel) {
         LoginProcessor.tryLogInWithCookie(request, response);
         final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
@@ -78,18 +94,6 @@ public final class Filler {
 
         final String userName = currentUser.optString(User.USER_NAME);
         dataModel.put(User.USER_NAME, userName);
-    }
-
-    /**
-     * Fills header.ftl.
-     * 
-     * @param dataModel the specified data model
-     */
-    public static void fillHeader(final Map<String, Object> dataModel) {
-        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-
-        fillMinified(dataModel);
-        Keys.fillServer(dataModel);
     }
 
     /**

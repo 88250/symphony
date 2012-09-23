@@ -46,6 +46,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.QueryResults;
 import org.json.JSONObject;
 
@@ -108,6 +109,8 @@ public class LoginProcessor {
         context.setRenderer(renderer);
 
         renderer.setTemplateName("register.ftl");
+        
+        Filler.fillHeader(request, response, renderer.getDataModel());
     }
 
     /**
@@ -190,14 +193,14 @@ public class LoginProcessor {
             }
 
             final String userPassword = user.optString(User.USER_PASSWORD);
-            if (!userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
+            if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
                 Sessions.login(request, response, user);
+
+                ret.put(Keys.MSG, "");
+                ret.put(Keys.STATUS_CODE, true);
 
                 return;
             }
-
-            ret.put(Keys.MSG, "");
-            ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));
         }
