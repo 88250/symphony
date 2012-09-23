@@ -147,10 +147,19 @@ body {
 .index-user {
     border-radius: 3px 3px 3px 3px;
     margin: 1px 5px 0 0;
-    height: 20px;
-    width: 20px;
+    height: 25px;
+    width: 25px;
 }
 
+.index-module {
+    background-color: #F7F7F7;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px 5px 5px 5px;
+    float: right;
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 258px;
+}
 /* end index */
 
 /* start article list */
