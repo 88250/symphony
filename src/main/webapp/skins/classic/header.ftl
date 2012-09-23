@@ -1,19 +1,26 @@
 <div class="nav">
     <div class="wrapper fn-clear">
         <div class="fn-left">
-            B3log Symphony
+            <h1><a href="">Symphony</a></h1>
         </div>
-        <div class="fn-right">
+        <div class="fn-left">
+            <input class="search"/>
+            <span class="tags">
+                <#list 1..10 as i>
+                <a href="">tag${i_index}</a>
+                </#list>
+            </span>
+        </div>
+        <div class="fn-right user-nav">
             <a href="/">首页</a>
             <a href="/hot">热门</a>
             <a href="/tags">Tags</a>
-            <a href="javascript: Util.showLogin();">登录</a>
-        </div>
-        <div class="fn-right">
-            <input/>
-            <#list 1..10 as i>
-            <a href="">tag${i_index}</a>
-            </#list>
+            <#if isLoggedIn>
+            <span>${userName}</span>
+            <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
+            <#else>
+            <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>
+            </#if>
         </div>
         <div class="form fn-none">
             <table>
