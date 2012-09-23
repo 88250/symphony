@@ -24,7 +24,7 @@
         <servlet.version>2.5</servlet.version>
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
         <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
-        
+        <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
         <freemarker.version>2.3.19</freemarker.version>
         <jsoup.version>1.5.2</jsoup.version>
         <markdownpapers-core.version>1.2.7</markdownpapers-core.version>
@@ -126,12 +126,29 @@
             <groupId>org.b3log</groupId>
             <artifactId>latke</artifactId>
             <version>${org.b3log.latke.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>c3p0</groupId>
+                    <artifactId>c3p0</artifactId>
+                </exclusion>
+                
+                <exclusion>
+                    <groupId>com.jolbox</groupId>
+                    <artifactId>bonecp</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
             <version>${org.b3log.latke-repository-mysql.version}</version>
+        </dependency>
+        
+        <dependency>         
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
         </dependency>
         
         <dependency>
@@ -246,39 +263,39 @@
 
         <finalName>b3log-symphony</finalName>
         <pluginManagement>
-        	<plugins>
-        		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-        		<plugin>
-        			<groupId>org.eclipse.m2e</groupId>
-        			<artifactId>lifecycle-mapping</artifactId>
-        			<version>1.0.0</version>
-        			<configuration>
-        				<lifecycleMappingMetadata>
-        					<pluginExecutions>
-        						<pluginExecution>
-        							<pluginExecutionFilter>
-        								<groupId>
-        									com.mycila.maven-license-plugin
-        								</groupId>
-        								<artifactId>
-        									maven-license-plugin
-        								</artifactId>
-        								<versionRange>
-        									[1.9.0,)
-        								</versionRange>
-        								<goals>
-        									<goal>format</goal>
-        								</goals>
-        							</pluginExecutionFilter>
-        							<action>
-        								<ignore></ignore>
-        							</action>
-        						</pluginExecution>
-        					</pluginExecutions>
-        				</lifecycleMappingMetadata>
-        			</configuration>
-        		</plugin>
-        	</plugins>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>
+                                            com.mycila.maven-license-plugin
+                                        </groupId>
+                                        <artifactId>
+                                            maven-license-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [1.9.0,)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>format</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
         </pluginManagement>
     </build>
     
