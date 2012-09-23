@@ -84,7 +84,7 @@ public final class ErrorProcessor {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
             
-            Filler.fillHeader(dataModel);
+            Filler.fillHeader(request, response, dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

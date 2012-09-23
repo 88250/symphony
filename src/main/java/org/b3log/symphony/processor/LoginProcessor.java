@@ -46,6 +46,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.QueryResults;
 import org.json.JSONObject;
 
@@ -108,6 +109,8 @@ public class LoginProcessor {
         context.setRenderer(renderer);
 
         renderer.setTemplateName("register.ftl");
+        
+        Filler.fillHeader(request, response, renderer.getDataModel());
     }
 
     /**
