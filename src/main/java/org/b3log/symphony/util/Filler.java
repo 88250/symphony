@@ -15,7 +15,6 @@
  */
 package org.b3log.symphony.util;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +66,6 @@ public final class Filler {
         dataModel.put(Common.IS_LOGGED_IN, false);
 
         if (null == currentUser) {
-            dataModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.INDEX_URI));
             dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
             return;

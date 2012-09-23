@@ -45,17 +45,9 @@ public final class Common {
      */
     public static final String IS_LOGGED_IN = "isLoggedIn";
     /**
-     * Key of login URL.
-     */
-    public static final String LOGIN_URL = "loginURL";
-    /**
      * Key of logout URL.
      */
     public static final String LOGOUT_URL = "logoutURL";
-    /**
-     * URI of index.
-     */
-    public static final String INDEX_URI = "/";
 
     /**
      * Private default constructor.
