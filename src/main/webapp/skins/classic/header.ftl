@@ -1,13 +1,20 @@
 <div class="nav">
     <div class="wrapper fn-clear">
-        <span class="fn-left">
+        <div class="fn-left">
+            B3log Symphony
+        </div>
+        <div class="fn-right">
             <a href="/">首页</a>
             <a href="/hot">热门</a>
             <a href="/tags">Tags</a>
-        </span>
-        <span class="fn-right">
             <a href="javascript: Util.showLogin();">登录</a>
-        </span>
+        </div>
+        <div class="fn-right">
+            <input/>
+            <#list 1..10 as i>
+            <a href="">tag${i_index}</a>
+            </#list>
+        </div>
         <div class="form fn-none">
             <table>
                 <tr>
@@ -38,10 +45,5 @@
                 </tr>
             </table>
         </div>
-    </div>
-</div>
-<div class="header">
-    <div class="wrapper">
-        <img src="/images/logo.png" />
     </div>
 </div>

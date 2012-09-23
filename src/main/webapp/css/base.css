@@ -179,3 +179,8 @@ textarea {
     white-space: nowrap;
     word-wrap: normal;
 }
+
+.fn-box {
+    border: 1px solid #CACACA;
+    padding: 3px;
+}
