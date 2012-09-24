@@ -17,15 +17,20 @@ package org.b3log.symphony.processor;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.util.Requests;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.json.JSONObject;
 
 /**
  * Article processor.
@@ -70,6 +75,18 @@ public class ArticleProcessor {
     /**
      * Adds an article locally.
      * 
+     * <p>
+     * The request json object (a post): 
+     * <pre>
+     * {
+     *   "articleTitle": "",
+     *   "articleTags": "", // Tags spliting by ','
+     *   "articleContent": "",
+     *   "articleEditorType": int
+     * }
+     * </pre>
+     * </p>
+     * 
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
@@ -77,14 +94,47 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.PUT)
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
-        final String requestURI = request.getRequestURI();
+            throws IOException, ServletException {
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
-        final String userName = requestURI.substring("/home/".length());
+        final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+        final String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
+        final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
+        final int articleEditorType = requestJSONObject.optInt(Article.ARTICLE_EDITOR_TYPE);
+        
+        // TODO: add article validate
+
+        final JSONObject article = new JSONObject();
+        article.put(Article.ARTICLE_TITLE, articleTitle);
+        article.put(Article.ARTICLE_TAGS, articleTags);
+        article.put(Article.ARTICLE_CONTENT, articleContent);
+        article.put(Article.ARTICLE_EDITOR_TYPE, articleEditorType);
+        
+        final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        
+        final String authorEmail = currentUser.optString(User.USER_EMAIL);
+        article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
+        
+        final long currentTimeMillis = System.currentTimeMillis();
+        
+        article.put(Article.ARTICLE_COMMENT_CNT, 0);
+        article.put(Article.ARTICLE_VIEW_CNT, 0);
+        article.put(Article.ARTICLE_COMMENTABLE, true);
+        article.put(Article.ARTICLE_CREATE_TIME, currentTimeMillis);
+        article.put(Article.ARTICLE_PERMALINK, "TODO permalink");
+        article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+        article.put(Article.ARTICLE_STATUS, 0);
+        article.put(Article.ARTICLE_UPDATE_TIME, 0);
+        article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
+        
 
     }
-    
-     /**
+
+    /**
      * Adds an article remotely.
      * 
      * @param context the specified context

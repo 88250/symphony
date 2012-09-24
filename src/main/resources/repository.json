@@ -83,9 +83,13 @@
             "type": "int"
         },
         {
+            "name": "tagCommentCount",
+            "type": "int"
+        },
+        {
             "name": "tagTitle",
             "type": "String",
-            "length": 255
+            "length": 50
         }
         ]
     },
@@ -169,7 +173,7 @@
         {
             "name": "articleTags",
             "type": "String",
-            "length": 2000
+            "length": 350
         },
         {
             "name": "articleAuthorEmail",
@@ -212,15 +216,12 @@
         },
         {
             "name": "articleEditorType",
-            "description": "Editor Type (TinyMCE, CodeMirror-Markdown, etc)",
-            "type": "String",
-            "length": 20,
-            "nullable": true
+            "description": "0: CodeMirror-Markdown",
+            "type": "int",
         },
         {
             "name": "articleStatus",
-            "type": "String",
-            "length": 1,
+            "type": "int",
             "description": "0: valid, 1: invalid"
         }
         ]
