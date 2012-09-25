@@ -21,11 +21,12 @@
                                 <h3>
                                     <a href="">tag</a>
                                 </h3>
+                                
                                 引用：12 
                                 评论：14
-                            </div>
-                            <div class="fn-left">
                                 <img class="index-user" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
+                                
+                                
                             </div>
                             <div class="fn-right fn-box">
                                 <#list 1..10 as i>
