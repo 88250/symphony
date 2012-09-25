@@ -18,12 +18,12 @@
                 </#list>
             </span>
         </div>
-        <div class="fn-right user-nav">
+        <div class="fn-right fn-clear user-nav">
             <a href="/">首页</a>
             <a href="/hot">热门</a>
             <a href="/tags">Tags</a>
             <#if isLoggedIn>
-            <a href="/home/article">${userName}</a>
+            <a href="/home/${userName}">${userName}</a>
             <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
             <#else>
             <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>

@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.2, Aug 9, 2012
+* @version 1.0.0.3, Sep 25, 2012
 */
 /* start reset */
 html {
@@ -264,7 +264,14 @@ button:hover {
     color: #4183C4;
 }
 
-.nav a.current {
+.nav .user-nav a {
+    float: left;
+    height: 23px;
+    padding: 16px 5px;
+}
+
+.nav .user-nav a.current {
+    border-bottom: 2px solid #D26911;
     color: #222;
 }
 
@@ -310,10 +317,6 @@ button:hover {
     position: absolute;
     left: 300px;
     top: 15px;
-}
-
-.nav .user-nav {
-    margin-top: 15px;
 }
 
 .header {

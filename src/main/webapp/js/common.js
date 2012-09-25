@@ -66,7 +66,7 @@ var Util = {
     },
    
     /**
-    * @description 初识化页面
+    * @description 初识化前台页面
     */
     init: function () {
         // 导航
@@ -75,7 +75,7 @@ var Util = {
         // 登录密码输入框回车事件
         $("#loginPassword").keyup(function (event) {
             if (event.keyCode === 13) {
-               Util.login();
+                Util.login();
             }
         });
     },
@@ -85,10 +85,14 @@ var Util = {
     */
     _initNav: function () {
         var pathname = location.pathname;
-        $(".nav a").each(function () {
+        $(".nav .user-nav > a").each(function () {
             if (pathname === $(this).attr("href")) {
                 $(this).addClass("current");
             } 
+            
+            if ($(this).text() === Label.userName) {
+                $(this).addClass("current");
+            }
         });
     },
     

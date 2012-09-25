@@ -14,7 +14,7 @@
             <div class="wrapper fn-clear">
                 <div id="tip"></div>
                 <div class="side">
-                    w
+                    <#include "side.ftl">
                 </div>
                 <div class="home-content article-post">
                     <input type="text" id="articleTitle" />
@@ -23,7 +23,7 @@
                     <div class="fn-clear">
                         <div class="fn-left">
                             <div>
-                                <input type="checkbox"/>${syncWithSymphonyClientLabel}
+                                <input type="checkbox" id="syncWithSymphonyClient"/>${syncWithSymphonyClientLabel}
                             </div>
                             <div>
                                 <a href="">guide</a>
@@ -36,7 +36,11 @@
                 </div>
             </div>
         </div>
-        <#include "../footer.ftl">
-        <script type="text/javascript" src="/js/home.js"></script>
+        <#include "footer.ftl">
+        <script>
+            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
+            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
+            Label.articleTagsErrorLabel = "${articleTagsErrorLabel}";
+        </script>
     </body>
 </html>

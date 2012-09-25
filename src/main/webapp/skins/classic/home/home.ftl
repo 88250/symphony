@@ -6,17 +6,21 @@
         <meta name="keywords" content=""/>
         <meta name="description" content=""/>
         </@head>
+        <link type="text/css" rel="stylesheet" href="/css/home.css" />
     </head>
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper">
-                <#list 1..20 as i>
-                <a href="/">tag ${i}</a>
-                </#list>
+            <div class="wrapper fn-clear">
+                <div id="tip"></div>
+                <div class="side">
+                    <#include "side.ftl">
+                </div>
+                <div class="home-content">
+                   sss
+                </div>
             </div>
         </div>
-        <#include "../footer.ftl">
-        <script type="text/javascript" src="/js/register.js"></script>
+        <#include "footer.ftl">
     </body>
 </html>
