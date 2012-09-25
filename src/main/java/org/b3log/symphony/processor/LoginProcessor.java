@@ -128,7 +128,7 @@ public class LoginProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.defaultResult();
+        final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
@@ -174,7 +174,7 @@ public class LoginProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.defaultResult();
+        final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
         ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));

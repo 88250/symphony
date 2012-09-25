@@ -24,22 +24,22 @@ import org.json.JSONObject;
  * Query result utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 2, 2012
+ * @version 1.0.0.1, Sep 25, 2012
  * @since 0.2.0
  */
 public final class QueryResults {
 
     /**
-     * Constructs a default query result.
+     * Constructs a default (false) result.
      * 
-     * @return a default query result, 
+     * @return a false result, 
      * <pre>
      * {
      *     "sc": false
      * }
      * </pre>
      */
-    public static JSONObject defaultResult() {
+    public static JSONObject falseResult() {
         return new JSONObject().put(Keys.STATUS_CODE, false);
     }
 

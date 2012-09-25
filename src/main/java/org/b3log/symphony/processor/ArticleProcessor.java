@@ -21,12 +21,14 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
@@ -36,6 +38,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.QueryResults;
 import org.json.JSONObject;
 
 /**
@@ -121,6 +124,12 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.PUT)
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
@@ -157,6 +166,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
 
 
+        ret.put(Keys.STATUS_CODE, true);
     }
 
     /**
