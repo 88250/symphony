@@ -41,10 +41,18 @@ import org.json.JSONObject;
 /**
  * Article processor.
  *
- * <p> For article <ul> <li>Adding (/article) <em>locally</em>, PUT</li> <li>Adding (/rhythm/article) <em>remotely</em>, PUT</li> </ul> </p>
+ * <p> 
+ * For article 
+ *   <ul> 
+ *     <li>Adding (/article) <em>locally</em>, PUT</li> 
+ *     <li>Adding (/rhythm/article) <em>remotely</em>, PUT</li> 
+ *   </ul> 
+ * </p>
  *
- * <p> The '<em>locally</em>' means user post an article on Symphony directly rather than receiving an article from externally (for example
- * Rhythm). </p>
+ * <p> 
+ * The '<em>locally</em>' means user post an article on Symphony directly rather than receiving an article from externally (for example
+ * Rhythm). 
+ * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 23, 2012
@@ -71,7 +79,7 @@ public class ArticleProcessor {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Shows home/article.
+     * Shows add article.
      *
      * @param context the specified context
      * @param request the specified request
@@ -79,7 +87,7 @@ public class ArticleProcessor {
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/add-article", method = HTTPRequestMethod.GET)
-    public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    public void showAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
@@ -100,7 +108,7 @@ public class ArticleProcessor {
      *   "articleTitle": "",
      *   "articleTags": "", // Tags spliting by ','
      *   "articleContent": "",
-     *   "articleEditorType": int
+     *   "syncWithSymphonyClient": boolean
      * }
      * </pre>
      * </p>
@@ -118,7 +126,6 @@ public class ArticleProcessor {
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         final String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
-        final int articleEditorType = requestJSONObject.optInt(Article.ARTICLE_EDITOR_TYPE);
 
         // TODO: add article validate
 
@@ -126,7 +133,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_CONTENT, articleContent);
-        article.put(Article.ARTICLE_EDITOR_TYPE, articleEditorType);
+        article.put(Article.ARTICLE_EDITOR_TYPE, 0);
 
         final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
         if (null == currentUser) {
