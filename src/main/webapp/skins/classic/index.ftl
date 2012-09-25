@@ -6,12 +6,13 @@
         <meta name="keywords" content=""/>
         <meta name="description" content=""/>
         </@head>
+        <link type="text/css" rel="stylesheet" href="/css/index.css" />
     </head>
     <body>
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper fn-clear">
-                <div class="index-main">
+                <div class="index-content">
                     <#list 1..10 as i>
                     <div>
                         <div class="fn-clear">
@@ -41,7 +42,7 @@
                     </div>
                     </#list>
                 </div>
-                <div class="index-side">
+                <div class="side">
                     <div class="index-module">
                         AD
                     </div>

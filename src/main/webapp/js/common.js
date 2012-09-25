@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Aug 11, 2012
+ * @version 1.0.0.5, Sep 25, 2012
  */
 
 /**
@@ -71,7 +71,13 @@ var Util = {
     init: function () {
         // 导航
         this._initNav();
-       
+        
+        // 登录密码输入框回车事件
+        $("#loginPassword").keyup(function (event) {
+            if (event.keyCode === 13) {
+               Util.login();
+            }
+        });
     },
    
     /**

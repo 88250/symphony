@@ -65,6 +65,8 @@ public final class Filler {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
 
         fillPersonalNav(request, response, dataModel);
+        
+        fillLangs(dataModel);
     }
 
     /**
@@ -112,5 +114,14 @@ public final class Filler {
             default:
                 throw new AssertionError();
         }
+    }
+
+    /**
+     * Fills the all language labels.
+     * 
+     * @param dataModel the specified data model
+     */
+    private static void fillLangs(final Map<String, Object> dataModel) {
+        dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
     }
 }

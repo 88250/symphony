@@ -23,7 +23,7 @@
             <a href="/hot">热门</a>
             <a href="/tags">Tags</a>
             <#if isLoggedIn>
-            <span>${userName}</span>
+            <a href="/home/article">${userName}</a>
             <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
             <#else>
             <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>
