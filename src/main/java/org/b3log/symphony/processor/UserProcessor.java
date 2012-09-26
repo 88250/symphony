@@ -45,6 +45,7 @@ import org.b3log.symphony.util.Filler;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.2, Sep 26, 2012
  * @since 0.2.0
  */
@@ -100,6 +101,12 @@ public class UserProcessor {
     @RequestProcessing(value = "/settings", method = HTTPRequestMethod.GET)
     public void showSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/settings.ftl");
+         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        Filler.fillHeader(request, response, dataModel);
     }
 
     /**
