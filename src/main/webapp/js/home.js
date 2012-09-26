@@ -17,7 +17,7 @@
  * @fileoverview home.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Sep 25, 2012
+ * @version 1.0.0.2, Sep 26, 2012
  */
 
 /**
@@ -109,10 +109,28 @@ var Home = {
      * @description 初识化后台页面
      */
     init: function () {
-        // 侧边栏导航
-        //this._initNav();
+    // 侧边栏导航
+    //this._initNav();
     }
 };
 
-Home.init();
+
+/**
+ * @description Settings function
+ * @static
+ */
+var Settings = {
+    toggle: function (it) {
+      var $it = $(it);
+      var $panel = $it.parents(".module").find(".module-panel");
+      
+      if (it.className === "sildeUp") {
+          $panel.slideDown();
+          it.className = "sildeDown";
+      } else {
+          $panel.slideUp();
+          it.className = "sildeUp";
+      }
+    }  
+};
 
