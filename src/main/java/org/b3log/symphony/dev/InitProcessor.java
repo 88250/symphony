@@ -33,7 +33,7 @@ import org.b3log.latke.util.Stopwatchs;
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 30, 2012
+ * @version 1.0.0.1, Sep 27, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -55,19 +55,20 @@ public class InitProcessor {
     @RequestProcessing(value = "/dev/db/table/gen", method = HTTPRequestMethod.GET)
     public void genTables(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
-        Stopwatchs.start("Gen Tables");
-
         try {
             LOGGER.log(Level.INFO, "Database [{0}], creates all tables", Latkes.getRuntimeDatabase());
+
             final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
                 LOGGER.log(Level.INFO, "Creates table result[tableName={0}, isSuccess={1}]",
                            new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
+            
+            response.sendRedirect("/");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Creates database tables failed", e);
+            throw new IOException("Creates database tables failed", e);
         }
-
-        Stopwatchs.end();
+        
     }
 }

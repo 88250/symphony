@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 10, 2012
+ * @version 1.0.0.2, Sep 27, 2012
  * @since 0.2.0
  */
 public final class UserMgmtService {
@@ -148,9 +148,16 @@ public final class UserMgmtService {
             user.put(User.USER_PASSWORD, requestJSONObject.optString(User.USER_PASSWORD));
             user.put(User.USER_ROLE, requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE));
 
+            user.put(User.USER_URL, "");
             user.put(UserExt.USER_ARTICLE_COUNT, 0);
             user.put(UserExt.USER_COMMENT_COUNT, 0);
-            user.put(UserExt.USER_STATUS, "0");
+            user.put(UserExt.USER_STATUS, 0);
+            user.put(UserExt.USER_B3_KEY, "");
+            user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, "");
+            user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, "");
+            user.put(UserExt.USER_INTRO, "");
+            user.put(UserExt.USER_QQ, "");
+            
 
             userRepository.add(user);
 

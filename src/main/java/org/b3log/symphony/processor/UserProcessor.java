@@ -24,14 +24,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.util.Sessions;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
+import org.json.JSONObject;
 
 /**
  * User processor.
@@ -79,13 +83,13 @@ public class UserProcessor {
      */
     @RequestProcessing(value = "/home/{userName}", method = HTTPRequestMethod.GET)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userName)
+                         final String userName)
             throws IOException {
         LOGGER.log(Level.FINER, "Shows user home [userName={0}]", userName);
-         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/home.ftl");
-         final Map<String, Object> dataModel = renderer.getDataModel();
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
         Filler.fillHeader(request, response, dataModel);
     }
@@ -104,7 +108,19 @@ public class UserProcessor {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/settings.ftl");
-         final Map<String, Object> dataModel = renderer.getDataModel();
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        Sessions.currentUser(request);
+        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        dataModel.put(User.USER_NAME, user.optString(User.USER_NAME));
+        dataModel.put(User.USER_URL, user.optString(User.USER_URL));
+        dataModel.put(User.USER_EMAIL, user.optString(User.USER_EMAIL));
+        dataModel.put(UserExt.USER_QQ, user.optString(UserExt.USER_QQ));
+        dataModel.put(UserExt.USER_INTRO, user.optString(UserExt.USER_INTRO));
+        dataModel.put(UserExt.USER_B3_KEY, user.optString(UserExt.USER_B3_KEY));
+        dataModel.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, user.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL));
+        dataModel.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, user.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL));
+
 
         Filler.fillHeader(request, response, dataModel);
     }

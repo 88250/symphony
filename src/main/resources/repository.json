@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.0.0.3, Sep 25, 2012",
+    "version": "1.0.0.4, Sep 27, 2012",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     
@@ -137,6 +137,36 @@
             "length": 16
         },
         {
+            "name": "userURL",
+            "type": "String",
+            "length": 100
+        },
+        {
+            "name": "userQQ",
+            "type": "String",
+            "length": 12
+        },
+        {
+            "name": "userIntro",
+            "type": "String",
+            "length": 255
+        },
+        {
+            "name": "userB3Key",
+            "type": "String",
+            "length": 20
+        },
+        {
+            "name": "userB3ClientAddArticleURL",
+            "type": "String",
+            "length": 150
+        },
+        {
+            "name": "userB3ClientAddCommentURL",
+            "type": "String",
+            "length": 150
+        },
+        {
             "name": "userRole",
             "type": "String",
             "length": 255
@@ -151,9 +181,8 @@
         },
         {
             "name": "userStatus",
-            "type": "String",
-            "length": 1,
-            "description": "0: valid, 1: invalid",
+            "type": "int",
+            "description": "0: valid, 1: invalid"
         }
         ]
     },
@@ -217,7 +246,7 @@
         {
             "name": "articleEditorType",
             "description": "0: CodeMirror-Markdown",
-            "type": "int",
+            "type": "int"
         },
         {
             "name": "articleStatus",
