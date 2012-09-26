@@ -13,9 +13,9 @@
         <div class="main">
             <div class="wrapper form">
                 <div class="module">
-                    <div class="module-header">
-                        <h2>profiles</h2>
-                        <button class="slideDown" onclick="Settings.toggle(this)">收拢</button>
+                    <div class="module-header fn-clear">
+                        <h2 class="fn-left">profiles</h2>
+                        <span class="slideDown" title="收拢" onclick="Settings.toggle(this)"></span>
                     </div>
                     <div class="module-panel">
                         <table>
@@ -69,10 +69,11 @@
                 </div>
 
                 <div class="module">
-                    <div class="module-header"> 
-                        <h2>Sync</h2>
+                    <div class="module-header fn-clear">
+                        <h2 class="fn-left">Sync</h2>
+                        <span class="slideUp" title="展开" onclick="Settings.toggle(this)"></span>
                     </div>
-                    <div class="module-panel">
+                    <div class="module-panel fn-none">
                         <table>
                             <tr>
                                 <td width="100">
@@ -108,10 +109,11 @@
                 </div>
 
                 <div class="module">
-                    <div class="module-header">
-                        <h2>pwd</h2>
+                    <div class="module-header fn-clear">
+                        <h2 class="fn-left">Password</h2>
+                        <span class="slideUp" title="展开" onclick="Settings.toggle(this)"></span>
                     </div>
-                    <div class="module-panel">
+                    <div class="module-panel fn-none">
                         <table>
                             <tr>
                                 <td width="100">

@@ -114,7 +114,10 @@
 }
 
 .module-header {
-    background: -moz-linear-gradient(#FAFAFA, #EAEAEA) repeat scroll 0 0 transparent;
+    background:#fafafa;
+    background:-moz-linear-gradient(#FAFAFA, #EAEAEA);
+    background:-webkit-linear-gradient(#FAFAFA, #EAEAEA);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#EAEAEA')";
     border-bottom: 1px solid #D8D8D8;
     color: #555;
     padding: 5px 10px;
@@ -123,5 +126,19 @@
 
 .module-panel {
     padding: 20px;
+}
+
+.module .slideDown,
+.module .slideUp {
+    background: url("../images/icons.png") repeat scroll -5px -20px transparent;
+    cursor: pointer;
+    float: right;
+    height: 28px;
+    width: 22px;
+}
+
+
+.module .slideDown {
+    background-position: -5px -54px;
 }
 /* end module */

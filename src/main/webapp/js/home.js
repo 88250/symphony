@@ -17,7 +17,7 @@
  * @fileoverview home.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Sep 26, 2012
+ * @version 1.0.0.3, Sep 27, 2012
  */
 
 /**
@@ -120,17 +120,51 @@ var Home = {
  * @static
  */
 var Settings = {
+    /**
+     * @description Setting 页面模块收起展开。
+     */
     toggle: function (it) {
-      var $it = $(it);
-      var $panel = $it.parents(".module").find(".module-panel");
+        var $it = $(it);
+        var $panel = $it.parents(".module").find(".module-panel");
       
-      if (it.className === "sildeUp") {
-          $panel.slideDown();
-          it.className = "sildeDown";
-      } else {
-          $panel.slideUp();
-          it.className = "sildeUp";
-      }
-    }  
+        if (it.className === "slideUp") {
+            $panel.slideDown();
+            it.className = "slideDown";
+            $it.attr("title", "收拢");
+        } else {
+            $panel.slideUp();
+            it.className = "slideUp";
+            $it.attr("title", "展开");    
+        }
+    },
+    
+    /**
+     * @description 更新 settings 页面数据。
+     */
+    update: function () {
+        if (!this._validate()) {
+            return;
+        }
+        
+        $.ajax({
+            url: "/show-settings",
+            type: "GET",
+            cache: false,
+            success: function(result, textStatus){
+                if (result.sc) {
+                    window.location = "/article-list";
+                } else {
+                    $tip.addClass("tip-error").text(result.msg);
+                }
+            }
+        });
+    },
+    
+    /**
+     * @description settings 页面数据校验
+     */
+    _validate: function () {
+        
+    }
 };
 
