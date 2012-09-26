@@ -1,7 +1,7 @@
 <div class="nav">
     <div class="wrapper fn-clear">
         <div class="fn-left">
-            <h1><a href="">Symphony</a></h1>
+            <h1><a href="/">Symphony</a></h1>
         </div>
         <div class="fn-left">
             <form target="_blank" method="get" action="http://www.google.com/search">
@@ -19,11 +19,10 @@
             </span>
         </div>
         <div class="fn-right fn-clear user-nav">
-            <a href="/">首页</a>
-            <a href="/hot">热门</a>
-            <a href="/tags">Tags</a>
             <#if isLoggedIn>
-            <a href="/home/${userName}">${userName}</a>
+            <a href="/home/${userName}">Home</a>
+            <a href="/add-article">Add</a>
+            <a href="/settings">${userName}</a>
             <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
             <#else>
             <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>

@@ -21,7 +21,12 @@
 * @version 1.0.0.3, Aug 9, 2012
 */
 /* start index */
-.index-content {
+.side {
+    float: left;
+    width: 260px;
+}
+
+.content {
     float: left;
     margin-right: 50px;
     width: 690px;
@@ -125,25 +130,6 @@
 .form input:focus {
     border-color: #4D90FE;
     box-shadow: 0 1px 2px rgba(0,0,0,0.3) inset;
-}
-
-.form button {
-    background-color: #4D90FE;
-    background-image: -moz-linear-gradient(center top , #4D90FE, #4787ED);
-    border: 1px solid #3079ED;
-    color: #FFFFFF;  
-    padding: 2px 10px;
-    margin: 5px 0;
-}
-
-.form button:hover {
-    background-color: #357AE8;
-    background-image: -moz-linear-gradient(center top , #4D90FE, #357AE8);
-    border-color: #2F5BB7;
-}
-
-.form button:active {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
 }
 /* end form */
 

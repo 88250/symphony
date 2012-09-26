@@ -11,14 +11,11 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear">
+            <div class="wrapper">
                 <div id="tip"></div>
-                <div class="side">
-                    <#include "side.ftl">
-                </div>
-                <div class="home-content article-post">
+                <div class="form">
                     <input type="text" id="articleTitle" />
-                    <textarea id="articleContent"></textarea>
+                    <textarea style="height: 300px" id="articleContent"></textarea>
                     <input id="articleTags" type="text" />
                     <div class="fn-clear">
                         <div class="fn-left">
@@ -30,7 +27,7 @@
                             </div>
                         </div>
                         <div class="fn-right">
-                            <button onclick="Home.postArticle()">Post</button>
+                            <button class="red" onclick="Home.postArticle()">Post</button>
                         </div>
                     </div>
                 </div>

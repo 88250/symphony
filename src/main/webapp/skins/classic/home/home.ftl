@@ -11,14 +11,8 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear">
-                <div id="tip"></div>
-                <div class="side">
-                    <#include "side.ftl">
-                </div>
-                <div class="home-content">
-                   sss
-                </div>
+            <div class="wrapper">
+                sss
             </div>
         </div>
         <#include "footer.ftl">

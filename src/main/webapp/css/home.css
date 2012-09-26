@@ -21,7 +21,7 @@
 * @version 1.0.0.1, Aug 25, 2012
 */
 /* start home framework */
-.home-content {
+/*.home-content {
     float: left;
     margin-left: 50px;
     width: 690px;
@@ -59,12 +59,16 @@
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.1) inset;
     color: #222;
     font-weight: bold;
-}
+}*/
 /* end home framework */
 
-/* start add article */
-.article-post input[type=text],
-.article-post textarea {
+/* start form */
+.form table {
+    width: 100%;
+}
+
+.form input[type=text],
+.form textarea {
     border-color: #C0C0C0 #D9D9D9 #D9D9D9;
     border-image: none;
     border-style: solid;
@@ -74,16 +78,12 @@
     width: 99%;
 }
 
-.article-post input[type=text]:focus,
-.article-post textarea:focus {
+.form input[type=text]:focus,
+.form textarea:focus {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset; 
-    border: 1px solid #4D90FE;
+    border: 1px solid #CBE3EE;
 }
-
-.article-post textarea {
-    height: 300px;
-}
-/* end add article */
+/* end form */
 
 /* start tip */
 .tip-error, 

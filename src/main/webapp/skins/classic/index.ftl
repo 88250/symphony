@@ -13,7 +13,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper fn-clear">
-                <div class="index-content">
+                <div class="content">
                     <#list 1..10 as i>
                     <div>
                         <div class="fn-clear">

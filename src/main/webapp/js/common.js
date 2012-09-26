@@ -89,10 +89,6 @@ var Util = {
             if (pathname === $(this).attr("href")) {
                 $(this).addClass("current");
             } 
-            
-            if ($(this).text() === Label.userName) {
-                $(this).addClass("current");
-            }
         });
     },
     

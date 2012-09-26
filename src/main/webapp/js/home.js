@@ -110,7 +110,7 @@ var Home = {
      */
     init: function () {
         // 侧边栏导航
-        this._initNav();
+        //this._initNav();
     }
 };
 
