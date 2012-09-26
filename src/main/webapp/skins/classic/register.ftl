@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "macro-footer.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,6 +7,7 @@
         <meta name="keywords" content=""/>
         <meta name="description" content=""/>
         </@head>
+        <link type="text/css" rel="stylesheet" href="/css/index.css" />f
     </head>
     <body>
         <#include "header.ftl">
@@ -73,10 +75,7 @@
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">
+        <@footer/>
         <script type="text/javascript" src="/js/register.js"></script>
-        <script>
-            Label.sss = "";
-        </script>
     </body>
 </html>
