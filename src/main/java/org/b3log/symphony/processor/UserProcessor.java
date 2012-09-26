@@ -29,7 +29,6 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
-import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -37,10 +36,16 @@ import org.b3log.symphony.util.Filler;
 /**
  * User processor.
  *
- * <p> For user <ul> <li>User Home (/home/{userName}), GET</li> <li>Settings (/settings), GET/POST</li> </ul> </p>
+ * <p> 
+ * For user 
+ *   <ul> 
+ *     <li>User Home (/home/{userName}), GET</li> 
+ *     <li>Settings (/settings), GET/POST</li> 
+ *   </ul> 
+ * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 17, 2012
+ * @version 1.0.0.2, Sep 26, 2012
  * @since 0.2.0
  */
 @RequestProcessor
