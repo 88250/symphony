@@ -33,7 +33,7 @@
                             <label for="nameOrEmail">Email/User Name</label>
                         </td>
                         <td>
-                            <input id="nameOrEmail"/>
+                            <input id="nameOrEmail" type="text"/>
                         </td>
                     </tr>
                     <tr>

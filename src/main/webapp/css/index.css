@@ -20,7 +20,15 @@
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
 * @version 1.0.0.3, Aug 9, 2012
 */
-/* start index */
+/* start common */
+.ft-small,
+.ft-small a {
+    color: #999;
+    font-size: 12px;
+}
+/* end common */
+
+/* start framework */
 .side {
     float: left;
     width: 260px;
@@ -31,7 +39,9 @@
     margin-right: 50px;
     width: 690px;
 }
+/* end framework */
 
+/* start module */
 .index-user {
     border-radius: 3px 3px 3px 3px;
     margin: 1px 5px 0 0;
@@ -47,8 +57,13 @@
     margin-bottom: 20px;
     padding: 10px;
     width: 258px;
+    word-wrap: break-word;
 }
-/* end index */
+
+.index-module li {
+    list-style: none;
+}
+/* end module */
 
 /* start article list */
 .article-list {
@@ -89,17 +104,14 @@
 /* end article list */
 
 /* start article */
-.article {
-    margin: 0 10px 30px 10px;
+.article-title {
+    font-weight: normal;
+    margin: 10px 0;
 }
 
-.article .title {
-    width: 910px;
-    float: left;
-}
-
-.article .content {
-    margin: 20px 0;
+.comments h2 {
+    border-bottom: 1px solid #CCCCCC;
+    margin: 20px 0 0;
 }
 
 .comments ul {
@@ -107,31 +119,27 @@
 }
 
 .comments li {
-    margin: 10px;
+    border-bottom: 1px solid #CCCCCC;
+    padding: 10px;
 }
 
-.comments .content {
-    float: left;
+.comments li:hover {
+    background-color: #EEE;
+}
+
+.comments .avatar {
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 0 2px #DDDDDD;
+    height: 48px;
+    width: 48px;
+}
+
+.comments .comment-main {
     margin-left: 10px;
-    width: 910px;
+    width: 612px;
+    word-break: break-all;
 }
 /* end article */
-
-/* start form */
-.form input {
-    background-color: #FFF;
-    border: 1px solid;
-    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
-    border-radius: 1px;
-    padding: 2px;
-    margin: 5px 0;
-}
-
-.form input:focus {
-    border-color: #4D90FE;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.3) inset;
-}
-/* end form */
 
 /* start register */
 .register .intro {
@@ -180,14 +188,6 @@
     position: relative;
     width: 60px;
 }
-
-.author img {
-    height: 60px;
-    margin-right: 10px;
-    width: 60px;
-    box-shadow: 0 0 2px #DDDDDD;
-}
-
 .author span {
     background-color: rgba(0, 0, 0, 0.2);
     display: block;

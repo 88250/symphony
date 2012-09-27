@@ -37,7 +37,7 @@
                         <ul>
                             <#list 1..5 as i>
                             <li>
-                                article
+                                <a href="/article">article</a>
                             </li>
                             </#list>
                         </ul>
