@@ -169,7 +169,7 @@
         {
             "name": "userRole",
             "type": "String",
-            "length": 255
+            "length": 20
         },
         {
             "name": "userArticleCount",
