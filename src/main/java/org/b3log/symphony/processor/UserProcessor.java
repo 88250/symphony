@@ -22,19 +22,24 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.QueryResults;
 import org.json.JSONObject;
 
 /**
@@ -44,13 +49,15 @@ import org.json.JSONObject;
  * For user 
  *   <ul> 
  *     <li>User Home (/home/{userName}), GET</li> 
- *     <li>Settings (/settings), GET/POST</li> 
+ *     <li>Settings (/settings), GET</li> 
+ *     <li>Profiles (/settings/profiles), POST</li>
+ *     <li>Sync (/settings/b3), POST</li>
+ *     <li>Password (/settings/password), POST</li>
  *   </ul> 
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Sep 26, 2012
+ * @version 1.0.0.3, Sep 27, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -79,13 +86,12 @@ public class UserProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
+     * @param userName the specified user name
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/home/{userName}", method = HTTPRequestMethod.GET)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                         final String userName)
-            throws IOException {
-        LOGGER.log(Level.FINER, "Shows user home [userName={0}]", userName);
+            final String userName) throws IOException {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/home.ftl");
@@ -110,7 +116,6 @@ public class UserProcessor {
         renderer.setTemplateName("/home/settings.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        Sessions.currentUser(request);
         final JSONObject user = LoginProcessor.getCurrentUser(request);
         dataModel.put(User.USER_NAME, user.optString(User.USER_NAME));
         dataModel.put(User.USER_URL, user.optString(User.USER_URL));
@@ -126,7 +131,7 @@ public class UserProcessor {
     }
 
     /**
-     * Updates user settings.
+     * Updates user profiles.
      *
      * @param context the specified context
      * @param request the specified request
@@ -134,8 +139,120 @@ public class UserProcessor {
      * @throws ServletException servlet exception
      * @throws IOException io exception
      */
-    @RequestProcessing(value = "/settings", method = HTTPRequestMethod.POST)
-    public void updateSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    @RequestProcessing(value = "/settings/profiles", method = HTTPRequestMethod.POST)
+    public void updateProfiles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+
+        final String userName = requestJSONObject.optString(User.USER_NAME);
+        final String userURL = requestJSONObject.optString(User.USER_URL);
+        final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
+        final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
+
+        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        user.put(User.USER_NAME, userName);
+        user.put(User.USER_URL, userURL);
+        user.put(UserExt.USER_QQ, userQQ);
+        user.put(UserExt.USER_INTRO, userIntro);
+
+        try {
+            userMgmtService.updateUser(user);
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.SEVERE, msg, e);
+
+            ret.put(Keys.MSG, msg);
+        }
+    }
+
+    /**
+     * Updates user B3log sync.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws ServletException servlet exception
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/settings/sync/b3", method = HTTPRequestMethod.POST)
+    public void updateSyncB3(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws ServletException, IOException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+
+        final String b3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
+        final String addArticleURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL);
+        final String addCommentURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
+
+        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        user.put(UserExt.USER_B3_KEY, b3Key);
+        user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
+        user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
+
+        try {
+            userMgmtService.updateUser(user);
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.SEVERE, msg, e);
+
+            ret.put(Keys.MSG, msg);
+        }
+    }
+
+    /**
+     * Updates user password.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws ServletException servlet exception
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/settings/password", method = HTTPRequestMethod.POST)
+    public void updatePassword(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws ServletException, IOException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+
+        final String password = requestJSONObject.optString(User.USER_PASSWORD);
+        final String newPassword = requestJSONObject.optString(User.USER_NEW_PASSWORD);
+
+        final JSONObject user = LoginProcessor.getCurrentUser(request);
+
+        if (!password.equals(user.optString(User.USER_PASSWORD))) {
+            ret.put(Keys.MSG, "old pwd error");
+
+            return;
+        }
+
+        user.put(User.USER_PASSWORD, newPassword);
+
+        try {
+            userMgmtService.updateUser(user);
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.SEVERE, msg, e);
+
+            ret.put(Keys.MSG, msg);
+        }
     }
 }
