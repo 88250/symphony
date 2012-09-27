@@ -32,8 +32,6 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -58,6 +56,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.0, Aug 23, 2012
  * @since 0.2.0
  */
@@ -96,6 +95,26 @@ public class ArticleProcessor {
         context.setRenderer(renderer);
 
         renderer.setTemplateName("/home/article.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        Filler.fillHeader(request, response, dataModel);
+    }
+    
+    /**
+     * Shows article.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
+    public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+
+        renderer.setTemplateName("/article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         Filler.fillHeader(request, response, dataModel);

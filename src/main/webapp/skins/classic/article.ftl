@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "macro-footer.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -80,10 +81,6 @@
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">
-        <script type="text/javascript" src="/js/register.js"></script>
-        <script>
-            Label.sss = "";
-        </script>
+        <@footer/>
     </body>
 </html>
