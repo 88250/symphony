@@ -101,7 +101,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <button class="green">Save</button>
+                                    <button class="green" onclick="Settings.update('sync/b3')">Save</button>
                                 </td>
                             </tr>
                         </table>
@@ -141,7 +141,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <button class="green">Save</button>
+                                    <button class="green" onclick="Settings.update('password')">Save</button>
                                 </td>
                             </tr>
                         </table>

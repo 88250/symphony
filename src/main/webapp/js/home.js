@@ -166,11 +166,6 @@ var Settings = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function(result, textStatus){
-                if (result.sc) {
-                    window.location = "/article-list";
-                } else {
-                    $tip.addClass("tip-error").text(result.msg);
-                }
             }
         });
     },
@@ -180,9 +175,11 @@ var Settings = {
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validateProfiles: function () {
-        var nameVal = $("#userName").val().replace(/(^\s*)|(\s*$)/g,"")
+        var nameVal = $("#userName").val().replace(/(^\s*)|(\s*$)/g,""),
+        URLVal = $("#userURL").val().replace(/(^\s*)|(\s*$)/g,""),
+        QQVal = $("#userQQ").val().replace(/(^\s*)|(\s*$)/g,""),
+        introVal = $("#userIntro").val().replace(/(^\s*)|(\s*$)/g,"");
         if (nameVal.length === 0 || nameVal.length > 20) {
-            $registerTip.text("用户名长度为1~20");
             $("#userName").focus();
         } else {
             var data = {};
@@ -201,10 +198,11 @@ var Settings = {
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validateSyncB3: function () {
-        var nameVal = $("#userName").val().replace(/(^\s*)|(\s*$)/g,"")
-        if (nameVal.length === 0 || nameVal.length > 20) {
-            $registerTip.text("用户名长度为1~20");
-            $("#userName").focus();
+        var keyVal = $("#soloKey").val().replace(/(^\s*)|(\s*$)/g,""),
+        postURLVal = $("#soloPostURL").val().replace(/(^\s*)|(\s*$)/g,""),
+        cmtURLVal = $("#soloCmtURL").val().replace(/(^\s*)|(\s*$)/g,"");
+        if (false) {
+            
         } else {
             var data = {};
             data.userB3Key = keyVal;
@@ -221,10 +219,9 @@ var Settings = {
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validatePassword: function () {
-        var nameVal = $("#userName").val().replace(/(^\s*)|(\s*$)/g,"")
-        if (nameVal.length === 0 || nameVal.length > 20) {
-            $registerTip.text("用户名长度为1~20");
-            $("#userName").focus();
+        var pwdVal = $("#pwdOld").val().replace(/(^\s*)|(\s*$)/g,""),
+        newPwdVal = $("#pwdNew").val().replace(/(^\s*)|(\s*$)/g,"");
+        if (false) {
         } else {
             var data = {};
             data.userPassword = pwdVal;

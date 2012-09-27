@@ -367,7 +367,9 @@ button.red:active {
 }
 
 .nav .form {
-    background: -moz-linear-gradient(#FAFAFA, #EAEAEA) repeat scroll 0 0 transparent;
+    background:#fafafa;
+    background:-moz-linear-gradient(#fafafa,#eaeaea);
+    background:-webkit-linear-gradient(#fafafa,#eaeaea);
     -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#eaeaea')";
     border: 1px solid #CACACA;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 10px rgba(0, 0, 0, 0.1);

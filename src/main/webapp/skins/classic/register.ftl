@@ -24,7 +24,7 @@
                                     <label for="userName">UseName</label>
                                 </td>
                                 <td>
-                                    <input placeholder="UseName" id="userName" />
+                                    <input type="text" placeholder="UseName" id="userName" />
                                 </td>
                             </tr>
                             <tr>
@@ -32,7 +32,7 @@
                                     <label for="userEmail">userEmail</label>
                                 </td>
                                 <td>
-                                    <input id="userEmail" />
+                                    <input type="text" id="userEmail" />
                                 </td>
                             </tr>
                             <tr>
@@ -56,7 +56,7 @@
                                     <label for="securityCode">验证码</label>
                                 </td>
                                 <td>
-                                    <input id="securityCode" />
+                                    <input type="text" id="securityCode" />
                                 </td>
                             </tr>
                             <tr>
@@ -77,5 +77,8 @@
         </div>
         <@footer/>
         <script type="text/javascript" src="/js/register.js"></script>
+        <script>
+            Register.init();
+        </script>
     </body>
 </html>

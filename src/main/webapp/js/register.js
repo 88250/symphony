@@ -82,7 +82,7 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     if (result.sc) {
-                       window.location = decodeURIComponent(location.search.split("=")[1]);
+                        window.location = decodeURIComponent(location.search.split("=")[1]);
                     } else {
                         $("#registerTip").text(result.msg);
                     }
@@ -91,5 +91,13 @@ var Register = {
                 }
             });
         }
+    },
+    
+    init: function () {
+        $("#securityCode").keyup(function (event) {
+            if (event.keyCode === 13) {
+                Register.register();
+            } 
+        });
     }
 };
