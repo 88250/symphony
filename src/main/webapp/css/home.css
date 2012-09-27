@@ -74,7 +74,7 @@
     border-image: none;
     border-style: solid;
     border-width: 1px;
-    margin-bottom: 20px;
+    margin: 10px 0;
     padding: 3px;
     width: 99%;
 }
@@ -82,7 +82,7 @@
 .form input[type=text]:focus,
 .form input[type=password]:focus,
 .form textarea:focus {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset; 
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
     border: 1px solid #CBE3EE;
 }
 /* end form */

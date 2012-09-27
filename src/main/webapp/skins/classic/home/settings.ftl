@@ -24,7 +24,7 @@
                                     UserName
                                 </td>
                                 <td>
-                                    <input id="userName" type="text" />
+                                    <input id="userName" type="text" value="${userName}" />
                                 </td>
                             </tr>
                             <tr>
@@ -32,7 +32,7 @@
                                     UserURL
                                 </td>
                                 <td>
-                                    <input id="userURL" type="text" />
+                                    <input id="userURL" type="text" value="${userURL}"/>
                                 </td>
                             </tr>
                             <tr>
@@ -40,7 +40,7 @@
                                     User Email
                                 </td>
                                 <td>
-                                    <input id="userEmail" type="text" /> 
+                                    <input id="userEmail" type="text" value="${userEmail}" readonly="true" /> 
                                 </td>
                             </tr>
                             <tr>
@@ -48,7 +48,7 @@
                                     QQ
                                 </td>
                                 <td>
-                                    <input id="userQQ" type="text" />
+                                    <input id="userQQ" type="text" value="${userQQ}" />
                                 </td>
                             </tr>
                             <tr>
@@ -56,12 +56,12 @@
                                     Intro
                                 </td>
                                 <td>
-                                    <textarea id="userIntro"></textarea>
+                                    <textarea id="userIntro">${userIntro}</textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <button class="green">Save</button>
+                                    <button class="green" onclick="Settings.update('profiles')">Save</button>
                                 </td>
                             </tr>
                         </table>
@@ -80,7 +80,7 @@
                                     B3log Solo Key
                                 </td>
                                 <td>
-                                    <input id="soloKey" type="text" />
+                                    <input id="soloKey" type="text" value="${userB3Key}" />
                                 </td>
                             </tr>
                             <tr>
@@ -88,7 +88,7 @@
                                     client post url
                                 </td>
                                 <td>
-                                    <input id="soloPostURL" type="text" />
+                                    <input id="soloPostURL" type="text" value="${userB3ClientAddArticleURL}" />
                                 </td>
                             </tr>
                             <tr>
@@ -96,7 +96,7 @@
                                     clent cmt url
                                 </td>
                                 <td>
-                                    <input id="soloCmtURL" type="text" /> 
+                                    <input id="soloCmtURL" type="text" value="${userB3ClientAddCommentURL}" /> 
                                 </td>
                             </tr>
                             <tr>

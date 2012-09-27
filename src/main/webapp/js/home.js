@@ -27,6 +27,7 @@
 var Home = {
     /**
      * @description 发文校验
+     * @returns {boolean} 校验是否通过
      */
     _validateArticle: function () {
         var $title = $("#articleTitle"),
@@ -42,15 +43,12 @@ var Home = {
         if (titleVal.length === 0 || titleVal.length > 255) {
             $tip.addClass("tip-error").text(Label.articleTitleErrorLabel);
             $title.focus();
-            return false;
         } else if (contentVal.length < 4 || contentVal.length > 1048576) {
             $tip.addClass("tip-error").text(Label.articleContentErrorLabel);
             $content.focus();
-            return false;
         } else if ($tags.val().replace(/(^\s*)|(\s*$)/g, "") === "" || tagsList.length > 7) {
             $tip.addClass("tip-error").text(Label.articleTagsErrorLabel);
             $tags.focus();
-            return false;
         } else if (tagsList.length < 8) {
             for (var i = 0; i < tagsList.length; i++) {
                 if (tagsList[i].replace(/(^\s*)|(\s*$)/g, "").length > 50) {
@@ -59,10 +57,11 @@ var Home = {
                     return false;
                 }
             }    
+        } else {
+            $tip.removeClass("tip-error").text("");
+            return true;
         }
-        
-        $tip.removeClass("tip-error").text("");
-        return true;
+        return false;
     },
     
     /**
@@ -141,15 +140,31 @@ var Settings = {
     /**
      * @description 更新 settings 页面数据。
      */
-    update: function () {
-        if (!this._validate()) {
+    update: function (type) {
+        var requestJSONObject = {};
+        switch (type) {
+            case "profiles":
+                requestJSONObject = this._validateProfiles();
+                break;
+            case "sync/b3":
+                requestJSONObject = this._validateSyncB3();
+                break;
+            case "password":
+                requestJSONObject = this._validatePassword();
+                break;
+            default:
+                console.log("update settings has no type");
+        }
+        
+        if (!requestJSONObject) {
             return;
         }
         
         $.ajax({
-            url: "/show-settings",
-            type: "GET",
+            url: "/settings/" + type,
+            type: "POST",
             cache: false,
+            data: JSON.stringify(requestJSONObject),
             success: function(result, textStatus){
                 if (result.sc) {
                     window.location = "/article-list";
@@ -161,10 +176,63 @@ var Settings = {
     },
     
     /**
-     * @description settings 页面数据校验
+     * @description settings 页面 profiles 数据校验
+     * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
-    _validate: function () {
+    _validateProfiles: function () {
+        var nameVal = $("#userName").val().replace(/(^\s*)|(\s*$)/g,"")
+        if (nameVal.length === 0 || nameVal.length > 20) {
+            $registerTip.text("用户名长度为1~20");
+            $("#userName").focus();
+        } else {
+            var data = {};
+            data.userName = nameVal;
+            data.userURL = URLVal;
+            data.userQQ = QQVal;
+            data.userIntro = introVal;
+            return data;
+        }
         
+        return false;
+    },
+    
+    /**
+     * @description settings 页面 solo 数据同步校验
+     * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
+     */
+    _validateSyncB3: function () {
+        var nameVal = $("#userName").val().replace(/(^\s*)|(\s*$)/g,"")
+        if (nameVal.length === 0 || nameVal.length > 20) {
+            $registerTip.text("用户名长度为1~20");
+            $("#userName").focus();
+        } else {
+            var data = {};
+            data.userB3Key = keyVal;
+            data.userB3ClientAddArticleURL = postURLVal;
+            data.userB3ClientAddCommentURL = cmtURLVal;
+            return data;
+        }
+        
+        return false;
+    },
+    
+     /**
+     * @description settings 页面密码校验
+     * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
+     */
+    _validatePassword: function () {
+        var nameVal = $("#userName").val().replace(/(^\s*)|(\s*$)/g,"")
+        if (nameVal.length === 0 || nameVal.length > 20) {
+            $registerTip.text("用户名长度为1~20");
+            $("#userName").focus();
+        } else {
+            var data = {};
+            data.userPassword = pwdVal;
+            data.userNewPassword = newPwdVal;
+            return data;
+        }
+        
+        return false;
     }
 };
 
