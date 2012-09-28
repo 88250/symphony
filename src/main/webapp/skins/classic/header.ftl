@@ -34,7 +34,7 @@
                         </td>
                         <td>
                             <input id="nameOrEmail" type="text"/>
-                            <span style="left:286px;top:10px;"></span>
+                            <span style="left:286px;top:20px;"></span>
                         </td>
                     </tr>
                     <tr>
@@ -43,7 +43,7 @@
                         </td>
                         <td>
                             <input type="password" id="loginPassword" />
-                            <span style="left:286px;top:58px;"></span>
+                            <span style="left:286px;top:68px;"></span>
                         </td>
                     </tr>
                     <tr>
