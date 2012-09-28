@@ -23,7 +23,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.impl.UserRepositoryImpl;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -36,7 +35,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 2, 2012
+ * @version 1.0.0.1, Sep 28, 2012
  * @since 0.2.0
  */
 public final class UserQueryService {
@@ -45,6 +44,10 @@ public final class UserQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserQueryService.class.getName());
+    /**
+     * Singleton.
+     */
+    private static final UserQueryService SINGLETON = new UserQueryService();
     /**
      * User service.
      */
@@ -225,33 +228,12 @@ public final class UserQueryService {
      * @return the singleton
      */
     public static UserQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
      * Private constructor.
      */
     private UserQueryService() {
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 28, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final UserQueryService SINGLETON =
-                new UserQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }
