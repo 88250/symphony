@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.3, Sep 25, 2012
+* @version 1.0.0.4, Sep 28, 2012
 */
 /* start reset */
 html {
@@ -286,9 +286,39 @@ button.red:active {
     background:-webkit-linear-gradient(#b33630, #dc5f59);
     -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#b33630', endColorstr='#dc5f59')";
 }
+
+/* start tip */
+.tip-error, 
+.tip-succ {
+    background-color: #FFEAEA;
+    border: 1px solid #E2A0A0;
+    border-left: 15px solid #990000;
+    color: #990000;
+    font-weight: bold;
+    padding: 3px 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    white-space: nowrap;
+    word-wrap: normal;
+}
+
+.tip-succ {
+    background-color: #D4F6FA;
+    border: 1px solid #78909B;
+    color: #1D2B3D;
+}
+
+.input-error {
+    border-color: #E2A0A0!important;
+}
+/* end tip */
 /* end common */
 
 /* start form */
+.form {
+    position: relative;
+}
+
 .form table {
     width: 100%;
 }

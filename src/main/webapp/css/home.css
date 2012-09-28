@@ -18,7 +18,7 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.2, Aug 26, 2012
+* @version 1.0.0.3, Sep 28, 2012
 */
 /* start home framework */
 /*.home-content {
@@ -61,25 +61,6 @@
     font-weight: bold;
 }*/
 /* end home framework */
-
-/* start tip */
-.tip-error, 
-.tip-succ {
-    background-color: #FFEAEA;
-    border: 1px solid #E2A0A0;
-    color: #990000;
-    font-weight: bold;
-    padding: 5px 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-}
-
-.tip-succ {
-    background-color: #D4F6FA;
-    border: 1px solid #78909B;
-    color: #1D2B3D;
-}
-/* end tip */
 
 /* start module */
 .module {

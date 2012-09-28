@@ -15,8 +15,11 @@
                 <div id="tip"></div>
                 <div class="form">
                     <input type="text" id="articleTitle" />
+                    <span style="right:2px;top:10px;"></span>
                     <textarea style="height: 300px" id="articleContent"></textarea>
+                    <span style="right:2px;top:338px;"></span>
                     <input id="articleTags" type="text" />
+                    <span style="right:2px;top:386px;"></span>
                     <div class="fn-clear">
                         <div class="fn-left">
                             <div>
@@ -27,7 +30,7 @@
                             </div>
                         </div>
                         <div class="fn-right">
-                            <button class="red" onclick="Home.postArticle()">Post</button>
+                            <button class="red" onclick="AddArticle.add()">Post</button>
                         </div>
                     </div>
                 </div>
@@ -39,5 +42,6 @@
             Label.articleContentErrorLabel = "${articleContentErrorLabel}";
             Label.articleTagsErrorLabel = "${articleTagsErrorLabel}";
         </script>
+        <script type="text/javascript" src="/js/add-article.js"></script>
     </body>
 </html>

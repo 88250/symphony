@@ -27,13 +27,14 @@
             <#else>
             <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>
             <div class="form fn-none">
-                <table>
+                <table cellspacing="0" cellpadding="0">
                     <tr>
                         <td>
                             <label for="nameOrEmail">Email/User Name</label>
                         </td>
                         <td>
                             <input id="nameOrEmail" type="text"/>
+                            <span style="left:286px;top:10px;"></span>
                         </td>
                     </tr>
                     <tr>
@@ -42,6 +43,7 @@
                         </td>
                         <td>
                             <input type="password" id="loginPassword" />
+                            <span style="left:286px;top:58px;"></span>
                         </td>
                     </tr>
                     <tr>

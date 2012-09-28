@@ -60,8 +60,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" align="right">
-                                    <button class="green" onclick="Settings.update('profiles')">Save</button>
+                                <td colspan="2">
+                                    <div class="fn-clear">
+                                        <span class="fn-left tip-error">we</span>
+                                        <button class="green fn-right" onclick="Settings.update('profiles')">Save</button>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -150,5 +153,6 @@
             </div>
         </div>
         <#include "footer.ftl">
+        <script type="text/javascript" src="/js/settings.js"></script>
     </body>
 </html>
