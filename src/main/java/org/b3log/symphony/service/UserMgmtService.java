@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 27, 2012
+ * @version 1.0.0.3, Sep 28, 2012
  * @since 0.2.0
  */
 public final class UserMgmtService {
@@ -51,21 +51,21 @@ public final class UserMgmtService {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Updates a user by the specified request json object.
+     * Updates a user's profiles by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
+     * @param requestJSONObject the specified request json object (user), for example,
      * <pre>
      * {
      *     "oId": "",
      *     "userName": "",
-     *     "userEmail": "",
-     *     "userPassword": "",
-     *     "userRole": ""
+     *     "userURL": "",
+     *     "userQQ": "",
+     *     "userIntro": ""
      * }
      * </pre>
      * @throws ServiceException service exception
      */
-    public void updateUser(final JSONObject requestJSONObject) throws ServiceException {
+    public void updateProfiles(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
@@ -76,21 +76,11 @@ public final class UserMgmtService {
                 throw new ServiceException(langPropsService.get("updateFailLabel"));
             }
 
-            final String userNewEmail = requestJSONObject.optString(User.USER_EMAIL).toLowerCase().trim();
-            // Check email is whether duplicated
-            final JSONObject mayBeAnother = userRepository.getByEmail(userNewEmail);
-            if (null != mayBeAnother && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
-                // Exists someone else has the save email as requested
-                throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
-            }
-
             // Update
-            final String userName = requestJSONObject.optString(User.USER_NAME);
-            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-            oldUser.put(User.USER_EMAIL, userNewEmail);
-            oldUser.put(User.USER_NAME, userName);
-            oldUser.put(User.USER_PASSWORD, userPassword);
-            // Unchanges the default role
+            oldUser.put(User.USER_NAME, requestJSONObject.optString(User.USER_NAME));
+            oldUser.put(User.USER_URL, requestJSONObject.optString(User.USER_URL));
+            oldUser.put(UserExt.USER_QQ, requestJSONObject.optString(UserExt.USER_QQ));
+            oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
 
             userRepository.update(oldUserId, oldUser);
             transaction.commit();
@@ -99,7 +89,87 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
+            LOGGER.log(Level.SEVERE, "Updates user profiles failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Updates a user's sync B3log settings by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object (user), for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "userB3Key": "",
+     *     "userB3ClientAddArticleURL": "",
+     *     "userB3ClientAddCommentURL": "",
+     * }
+     * </pre>
+     * @throws ServiceException service exception
+     */
+    public void updateSyncB3(final JSONObject requestJSONObject) throws ServiceException {
+        final Transaction transaction = userRepository.beginTransaction();
+
+        try {
+            final String oldUserId = requestJSONObject.optString(Keys.OBJECT_ID);
+            final JSONObject oldUser = userRepository.get(oldUserId);
+
+            if (null == oldUser) {
+                throw new ServiceException(langPropsService.get("updateFailLabel"));
+            }
+
+            // Update
+            oldUser.put(UserExt.USER_B3_KEY, requestJSONObject.optString(UserExt.USER_B3_KEY));
+            oldUser.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL));
+            oldUser.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL));
+
+            userRepository.update(oldUserId, oldUser);
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Updates user sync b3log settings failed", e);
+            throw new ServiceException(e);
+        }
+    }
+    
+     /**
+     * Updates a user's password by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object (user), for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "userPassword": "",
+     * }
+     * </pre>
+     * @throws ServiceException service exception
+     */
+    public void updatePassword(final JSONObject requestJSONObject) throws ServiceException {
+        final Transaction transaction = userRepository.beginTransaction();
+
+        try {
+            final String oldUserId = requestJSONObject.optString(Keys.OBJECT_ID);
+            final JSONObject oldUser = userRepository.get(oldUserId);
+
+            if (null == oldUser) {
+                throw new ServiceException(langPropsService.get("updateFailLabel"));
+            }
+
+            // Update
+            oldUser.put(User.USER_PASSWORD, requestJSONObject.optString(User.USER_PASSWORD));
+
+            userRepository.update(oldUserId, oldUser);
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Updates user sync b3log settings failed", e);
             throw new ServiceException(e);
         }
     }
@@ -157,7 +227,7 @@ public final class UserMgmtService {
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, "");
             user.put(UserExt.USER_INTRO, "");
             user.put(UserExt.USER_QQ, "");
-            
+
 
             userRepository.add(user);
 

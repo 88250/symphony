@@ -34,7 +34,6 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Sessions;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -57,7 +56,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 27, 2012
+ * @version 1.0.0.4, Sep 28, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -162,7 +161,7 @@ public class UserProcessor {
         user.put(UserExt.USER_INTRO, userIntro);
 
         try {
-            userMgmtService.updateUser(user);
+            userMgmtService.updateProfiles(user);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
@@ -202,7 +201,7 @@ public class UserProcessor {
         user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
 
         try {
-            userMgmtService.updateUser(user);
+            userMgmtService.updateSyncB3(user);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
@@ -246,7 +245,7 @@ public class UserProcessor {
         user.put(User.USER_PASSWORD, newPassword);
 
         try {
-            userMgmtService.updateUser(user);
+            userMgmtService.updatePassword(user);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
