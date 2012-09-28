@@ -42,6 +42,10 @@ public final class UserMgmtService {
      */
     private static final Logger LOGGER = Logger.getLogger(UserMgmtService.class.getName());
     /**
+     * Singleton.
+     */
+    private static final UserMgmtService SINGLETON = new UserMgmtService();
+    /**
      * User repository.
      */
     private UserRepository userRepository = UserRepository.getInstance();
@@ -135,8 +139,8 @@ public final class UserMgmtService {
             throw new ServiceException(e);
         }
     }
-    
-     /**
+
+    /**
      * Updates a user's password by the specified request json object.
      *
      * @param requestJSONObject the specified request json object (user), for example,
@@ -273,32 +277,12 @@ public final class UserMgmtService {
      * @return the singleton
      */
     public static UserMgmtService getInstance() {
-        return SingletonHolder.SINGLETON;
+        return SINGLETON;
     }
 
     /**
      * Private constructor.
      */
     private UserMgmtService() {
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 28, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final UserMgmtService SINGLETON = new UserMgmtService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
-        }
     }
 }

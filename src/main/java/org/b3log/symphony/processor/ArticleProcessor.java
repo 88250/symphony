@@ -17,6 +17,7 @@ package org.b3log.symphony.processor;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -33,6 +35,7 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -57,7 +60,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Sep 27, 2012
+ * @version 1.0.0.2, Sep 28, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -71,6 +74,10 @@ public class ArticleProcessor {
      * User management service.
      */
     private UserMgmtService userMgmtService = UserMgmtService.getInstance();
+    /**
+     * Article management service.
+     */
+    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
     /**
      * User query service.
      */
@@ -99,7 +106,7 @@ public class ArticleProcessor {
 
         Filler.fillHeader(request, response, dataModel);
     }
-    
+
     /**
      * Shows article.
      *
@@ -172,20 +179,15 @@ public class ArticleProcessor {
         final String authorEmail = currentUser.optString(User.USER_EMAIL);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
 
-        final long currentTimeMillis = System.currentTimeMillis();
+        try {
+            articleMgmtService.addArticle(article);
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.SEVERE, msg, e);
 
-        article.put(Article.ARTICLE_COMMENT_CNT, 0);
-        article.put(Article.ARTICLE_VIEW_CNT, 0);
-        article.put(Article.ARTICLE_COMMENTABLE, true);
-        article.put(Article.ARTICLE_CREATE_TIME, currentTimeMillis);
-        article.put(Article.ARTICLE_PERMALINK, "TODO permalink");
-        article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-        article.put(Article.ARTICLE_STATUS, 0);
-        article.put(Article.ARTICLE_UPDATE_TIME, 0);
-        article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
-
-
-        ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, msg);
+        }
     }
 
     /**
