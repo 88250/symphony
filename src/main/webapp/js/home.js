@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /*
  * Copyright (c) 2012, B3log Team
  *
@@ -236,4 +234,3 @@ var Settings = {
     }
 };
 
->>>>>>> 323df9f4f2a3b7e78a32f8f697c6eaa2a6882245
