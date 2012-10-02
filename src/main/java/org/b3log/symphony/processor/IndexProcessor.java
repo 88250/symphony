@@ -17,6 +17,7 @@ package org.b3log.symphony.processor;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,6 +74,12 @@ public class IndexProcessor {
         dataModel.put("version", SymphonyServletListener.VERSION);
 
         Filler.fillHeader(request, response, dataModel);
+
+        try {
+            Filler.fillRecentArticles(request, response, dataModel);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Shows index failed");
+        }
 
         Stopwatchs.end();
     }

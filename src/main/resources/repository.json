@@ -11,7 +11,7 @@
         {
             "name": "oId",
             "type": "String",
-            "length": 255
+            "length": 19
         },
         {
             "name": "commentContent",
@@ -35,7 +35,7 @@
         {
             "name": "commentOnArticleId",
             "type": "String",
-            "length": 255
+            "length": 19
         },
         {
             "name": "commentSharpURL",
@@ -55,7 +55,7 @@
         {
             "name": "commentOriginalCommentId",
             "type": "String",
-            "length": 255
+            "length": 19
         },
         {
             "name": "commentOriginalCommentName",
@@ -76,7 +76,7 @@
         {
             "name": "oId",
             "type": "String",
-            "length": 255
+            "length": 19
         },
         {
             "name": "tagReferenceCount",
@@ -104,17 +104,42 @@
         {
             "name": "oId",
             "type": "String",
-            "length": 255
+            "length": 19
         },
         {
             "name": "article_oId",
             "type": "String",
-            "length": 255
+            "length": 19
         },
         {
             "name": "tag_oId",
             "type": "String",
-            "length": 255
+            "length": 19
+        }
+        ]
+    },
+    {
+        "name": "user_tag",
+        "keys": [
+        {
+            "name": "oId",
+            "type": "String",
+            "length": 19
+        },
+        {
+            "name": "user_oId",
+            "type": "String",
+            "length": 19
+        },
+        {
+            "name": "tag_oId",
+            "type": "String",
+            "length": 19
+        },
+        {
+            "name": "type",
+            "type": "String",
+            "length": 10
         }
         ]
     },
@@ -124,7 +149,7 @@
         {
             "name": "oId",
             "type": "String",
-            "length": 255
+            "length": 19
         },
         {
             "name": "userEmail",
@@ -201,7 +226,7 @@
         {
             "name": "oId",
             "type": "String",
-            "length": 255
+            "length": 19
         },
         {
             "name": "articleTitle",
@@ -221,7 +246,7 @@
         {
             "name": "articleAuthorId",
             "type": "String",
-            "length": 255
+            "length": 19
         },
         {
             "name": "articleCommentCount",

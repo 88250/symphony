@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.util;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -27,13 +28,14 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.LoginProcessor;
+import org.b3log.symphony.service.ArticleQueryService;
 import org.json.JSONObject;
 
 /**
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 25, 2012
+ * @version 1.0.0.3, Oct 2, 2012
  * @since 0.2.0
  */
 public final class Filler {
@@ -47,9 +49,30 @@ public final class Filler {
      */
     private static UserService userService = UserServiceFactory.getUserService();
     /**
+     * Article query service.
+     */
+    private static ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    /**
      * Language service.
      */
     private static LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Fills recent articles.
+     * 
+     * @param request the specified request
+     * @param response the specified response
+     * @param dataModel the specified data model
+     * @throws Exception exception 
+     */
+    public static void fillRecentArticles(final HttpServletRequest request, final HttpServletResponse response,
+            final Map<String, Object> dataModel) throws Exception {
+        List<JSONObject> recentArticles = articleQueryService.getRecentArticles(Symphonys.getInt("recentArticlesCnt"));
+
+
+
+        dataModel.put(Common.RECENT_ARTICLES, recentArticles);
+    }
 
     /**
      * Fills header.
@@ -65,7 +88,7 @@ public final class Filler {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
 
         fillPersonalNav(request, response, dataModel);
-        
+
         fillLangs(dataModel);
     }
 

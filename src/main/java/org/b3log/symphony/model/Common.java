@@ -52,6 +52,10 @@ public final class Common {
      * Key of type.
      */
     public static final String TYPE = "type";
+    /**
+     * Key of recent articles.
+     */
+    public static final String RECENT_ARTICLES = "recentArticles";
 
     /**
      * Private default constructor.

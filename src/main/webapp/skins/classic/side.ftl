@@ -6,9 +6,9 @@
         Recent Post
     </h2>
     <ul>
-        <#list 1..10 as i>
+        <#list recentArticles as recentArticle>
         <li class="fn-ellipsis">
-            <a href="">Recent PoPostPostPostPostPostPostPostPostst</a>
+            <a href="">${recentArticle.articleTitle}</a>
         </li>
         </#list>
     </ul>
