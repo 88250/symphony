@@ -53,7 +53,7 @@ public final class ArticleQueryService {
      * Gets the recent articles.
      * 
      * @param pageSize the specified page size
-     * @return recent articles
+     * @return recent articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
     public List<JSONObject> getRecentArticles(final int pageSize) throws ServiceException {
