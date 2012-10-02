@@ -67,11 +67,7 @@ public final class Filler {
      */
     public static void fillRecentArticles(final HttpServletRequest request, final HttpServletResponse response,
             final Map<String, Object> dataModel) throws Exception {
-        List<JSONObject> recentArticles = articleQueryService.getRecentArticles(Symphonys.getInt("recentArticlesCnt"));
-
-
-
-        dataModel.put(Common.RECENT_ARTICLES, recentArticles);
+        dataModel.put(Common.RECENT_ARTICLES, articleQueryService.getRecentArticles(Symphonys.getInt("recentArticlesCnt")));
     }
 
     /**

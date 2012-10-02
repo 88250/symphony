@@ -22,19 +22,25 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 
 import org.b3log.latke.Latkes;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.symphony.model.Statistic;
+import org.b3log.symphony.repository.StatisticRepository;
+import org.b3log.symphony.service.StatisticMgmtService;
+import org.json.JSONObject;
 
 /**
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 27, 2012
+ * @version 1.0.0.2, Oct 2, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -62,14 +68,22 @@ public class InitProcessor {
             final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
                 LOGGER.log(Level.INFO, "Creates table result[tableName={0}, isSuccess={1}]",
-                           new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
+                        new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
-            
+
+            final StatisticRepository statisticRepository = StatisticRepository.getInstance();
+            final Transaction transaction = statisticRepository.beginTransaction();
+            final JSONObject statistic = new JSONObject();
+            statistic.put(Keys.OBJECT_ID, Statistic.STATISTIC);
+            statistic.put(Statistic.STATISTIC_MEMBER_COUNT, 0);
+
+            statisticRepository.add(statistic);
+            transaction.commit();
+
             response.sendRedirect("/");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Creates database tables failed", e);
             throw new IOException("Creates database tables failed", e);
         }
-        
     }
 }

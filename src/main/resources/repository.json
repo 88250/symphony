@@ -99,6 +99,20 @@
         ]
     },
     {
+        "name": "statistic",
+        "keys": [
+        {
+            "name": "oId",
+            "type": "String",
+            "length": 19
+        },
+        {
+            "name": "statisticMemberCount",
+            "type": "int"
+        }
+        ]
+    },
+    {
         "name": "tag_article",
         "keys": [
         {
@@ -150,6 +164,10 @@
             "name": "oId",
             "type": "String",
             "length": 19
+        },
+        {
+            "name": "userNo",
+            "type": "int"
         },
         {
             "name": "userEmail",

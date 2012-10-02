@@ -24,7 +24,9 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.symphony.model.Statistic;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.StatisticRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONObject;
 
@@ -49,6 +51,10 @@ public final class UserMgmtService {
      * User repository.
      */
     private UserRepository userRepository = UserRepository.getInstance();
+    /**
+     * Statistic repository.
+     */
+    private StatisticRepository statisticRepository = StatisticRepository.getInstance();
     /**
      * Language service.
      */
@@ -232,8 +238,15 @@ public final class UserMgmtService {
             user.put(UserExt.USER_INTRO, "");
             user.put(UserExt.USER_QQ, "");
 
+            final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
+            int memberCount = statistic.optInt(Statistic.STATISTIC_MEMBER_COUNT);
+            user.put(UserExt.USER_NO, ++memberCount);
 
             userRepository.add(user);
+
+            // Updates stat. (member count +1)
+            statistic.put(Statistic.STATISTIC_MEMBER_COUNT, memberCount);
+            statisticRepository.update(Statistic.STATISTIC, statistic);
 
             transaction.commit();
 
