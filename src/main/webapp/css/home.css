@@ -18,7 +18,7 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.3, Sep 28, 2012
+* @version 1.0.0.4, Oct 2, 2012
 */
 /* start home framework */
 /*.home-content {
@@ -83,18 +83,11 @@
 .module-panel {
     padding: 20px;
 }
-
-.module .slideDown,
-.module .slideUp {
-    background: url("../images/icons.png") repeat scroll -5px -20px transparent;
-    cursor: pointer;
-    float: right;
-    height: 28px;
-    width: 22px;
-}
-
-
-.module .slideDown {
-    background-position: -5px -54px;
-}
 /* end module */
+
+/* start add article */
+#tip {
+    position: inherit;
+    white-space: pre-wrap;
+}
+/* end add article */

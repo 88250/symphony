@@ -17,7 +17,7 @@
  * @fileoverview home.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Sep 28, 2012
+ * @version 1.0.0.2, Oct 2, 2012
  */
 
 /**
@@ -60,7 +60,7 @@ var AddArticle = {
                     if (result.sc) {
                         window.location = "/article-list";
                     } else {
-                        $tip.addClass("tip-error").text(result.msg);
+                        $("#tip").addClass("tip-error").text(result.msg);
                     }
                 }
             });

@@ -312,6 +312,32 @@ button.red:active {
     border-color: #E2A0A0!important;
 }
 /* end tip */
+
+/* start avatar */
+.avatar,
+.avatar-small,
+.avatar-big {
+    border-radius: 3px 3px 3px 3px;
+}
+
+.avatar {
+    box-shadow: 0 0 2px #DDDDDD;
+    height: 48px;
+    width: 48px;
+}
+
+.avatar-small {
+    margin: 1px 5px 0 0;
+    height: 25px;
+    width: 25px;
+}
+
+.avatar-big {
+    height: 62px;
+    margin-right: 5px;
+    width: 62px;
+}
+/* end avatar */
 /* end common */
 
 /* start form */

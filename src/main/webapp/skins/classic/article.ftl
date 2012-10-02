@@ -83,7 +83,7 @@
                 </div>
                 <div class="side">
                     <div class="index-module">
-                        <img src="/images/user-thumbnail.png" />
+                        <img class="avatar-big" src="/images/user-thumbnail.png" />
                         <a href="/" title="VanessaLiliYuan">VanessaLiliYuan</a>
                         <span>
                             introintrointrointrointrointrointrointrointrointrointro
