@@ -47,13 +47,12 @@ import org.json.JSONObject;
 /**
  * Article processor.
  *
- * <p> 
- * For article 
- *   <ul> 
- *     <li>Adding (/article) <em>locally</em>, PUT</li> 
- *     <li>Adding (/rhythm/article) <em>remotely</em>, PUT</li> 
- *   </ul> 
- * </p>
+ * <ul> 
+ *   <li>Shows an article (/article/{articleId}), GET</li>
+ *   <li>Shows article adding form page (/add-article), GET </li>
+ *   <li>Adds an article (/article) <em>locally</em>, PUT</li> 
+ *   <li>Adds an article (/rhythm/article) <em>remotely</em>, PUT</li> 
+ * </ul> 
  *
  * <p> 
  * The '<em>locally</em>' means user post an article on Symphony directly rather than receiving an article from externally (for example
@@ -109,15 +108,17 @@ public class ArticleProcessor {
     }
 
     /**
-     * Shows article.
+     * Shows article with the specified article id.
      *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
+     * @param articleId the specified article id
      * @throws IOException io exception
      */
-    @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
-    public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
+    public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String articleId)
             throws IOException {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
