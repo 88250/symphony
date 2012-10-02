@@ -61,8 +61,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Sep 28, 2012
+ * @version 1.0.0.3, Oct 2, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -148,6 +147,7 @@ public class ArticleProcessor {
      * @param request the specified request
      * @param response the specified response
      * @throws IOException io exception
+     * @throws ServletException servlet exception 
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.PUT)
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -161,7 +161,7 @@ public class ArticleProcessor {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
-        final String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
+        final String articleTags = formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
 
         // TODO: add article validate
@@ -207,5 +207,30 @@ public class ArticleProcessor {
 
         final String userName = requestURI.substring("/home/".length());
 
+    }
+
+    /**
+     * Formats the specified article tags.
+     * 
+     * <p>
+     * Trims every tag.
+     * </p>
+     * 
+     * @param articleTags
+     * @return 
+     */
+    private String formatArticleTags(final String articleTags) {
+        final String[] tagTitles = articleTags.split(",");
+        final StringBuilder tagsBuilder = new StringBuilder();
+        for (int i = 0; i < tagTitles.length; i++) {
+            String tagTitle = tagTitles[i].trim();
+
+            tagsBuilder.append(tagTitle).append(",");
+        }
+        if (tagsBuilder.length() > 0) {
+            tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
+        }
+
+        return tagsBuilder.toString();
     }
 }

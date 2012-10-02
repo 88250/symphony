@@ -42,7 +42,7 @@ public final class ArticleRepository extends AbstractRepository {
     }
 
     /**
-     * Gets the {@link UserRepository} singleton.
+     * Gets the {@link ArticleRepository} singleton.
      *
      * @return the singleton
      */

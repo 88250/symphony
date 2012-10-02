@@ -90,6 +90,11 @@
             "name": "tagTitle",
             "type": "String",
             "length": 50
+        },
+        {
+            "name": "tagStatus",
+            "type": "int",
+            "description": "0: valid, 1: invalid"
         }
         ]
     },

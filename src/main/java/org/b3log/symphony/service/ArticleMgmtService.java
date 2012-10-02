@@ -23,7 +23,10 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.TagArticleRepository;
+import org.b3log.symphony.repository.TagRepository;
 import org.json.JSONObject;
 
 /**
@@ -47,6 +50,14 @@ public final class ArticleMgmtService {
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepository.getInstance();
+    /**
+     * Tag repository.
+     */
+    private TagRepository tagRepository = TagRepository.getInstance();
+    /**
+     * Tag-Article repository.
+     */
+    private TagArticleRepository tagArticleRepository = TagArticleRepository.getInstance();
     /**
      * Language service.
      */
@@ -92,6 +103,8 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_UPDATE_TIME, 0);
             article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
 
+            tag(article.optString(Article.ARTICLE_TAGS).split(","), article);
+
             articleRepository.add(article);
 
             transaction.commit();
@@ -104,6 +117,52 @@ public final class ArticleMgmtService {
 
             LOGGER.log(Level.SEVERE, "Adds a user failed", e);
             throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Tags the specified article with the specified tag titles.
+     *
+     * @param tagTitles the specified tag titles
+     * @param article the specified article
+     * @throws RepositoryException repository exception
+     */
+    private void tag(final String[] tagTitles, final JSONObject article) throws RepositoryException {
+        for (int i = 0; i < tagTitles.length; i++) {
+            final String tagTitle = tagTitles[i].trim();
+            JSONObject tag = tagRepository.getByTitle(tagTitle);
+            String tagId;
+            if (null == tag) {
+                LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
+                        new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                tag = new JSONObject();
+                tag.put(Tag.TAG_TITLE, tagTitle);
+                tag.put(Tag.TAG_REFERENCE_CNT, 1);
+                tag.put(Tag.TAG_COMMENT_CNT, 0);
+                tag.put(Tag.TAG_STATUS, 0);
+
+                tagId = tagRepository.add(tag);
+                tag.put(Keys.OBJECT_ID, tagId);
+            } else {
+                tagId = tag.optString(Keys.OBJECT_ID);
+                LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
+                        new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE)});
+                final JSONObject tagTmp = new JSONObject();
+                tagTmp.put(Keys.OBJECT_ID, tagId);
+                tagTmp.put(Tag.TAG_TITLE, tagTitle);
+                tagTmp.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT));
+                tagTmp.put(Tag.TAG_STATUS, tag.optInt(Tag.TAG_STATUS));
+                tagTmp.put(Tag.TAG_REFERENCE_CNT, tag.optInt(Tag.TAG_REFERENCE_CNT) + 1);
+
+                tagRepository.update(tagId, tagTmp);
+            }
+
+            final JSONObject tagArticleRelation = new JSONObject();
+
+            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID, tagId);
+            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
+
+            tagArticleRepository.add(tagArticleRelation);
         }
     }
 
