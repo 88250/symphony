@@ -188,6 +188,12 @@ textarea {
     border: 1px solid #CACACA;
     padding: 3px;
 }
+
+.ft-small,
+.ft-small a {
+    color: #999;
+    font-size: 12px;
+}
 /* end function */
 
 /* start common */
@@ -324,6 +330,7 @@ button.red:active {
     box-shadow: 0 0 2px #DDDDDD;
     height: 48px;
     width: 48px;
+    margin-right: 10px;
 }
 
 .avatar-small {
@@ -333,9 +340,9 @@ button.red:active {
 }
 
 .avatar-big {
-    height: 62px;
-    margin-right: 5px;
-    width: 62px;
+    height: 64px;
+    width: 64px;
+    margin-right: 10px;
 }
 /* end avatar */
 /* end common */
@@ -483,3 +490,61 @@ button.red:active {
     padding: 10px 0;
 }
 /* end footer */
+
+/* start list */
+.list ul {
+    list-style: none;
+}
+
+.list li {
+    border-bottom: 1px solid #CCCCCC;
+    padding: 10px;
+}
+
+.list li:hover {
+    background-color: #EEE;
+}
+/* end list */
+
+/* start article list */
+.article-list li {
+    position: relative;
+}
+
+.article-list li > .abstract {
+    color: rgba(0, 0, 0, 0.1);
+    height: 60px;
+    overflow: hidden;
+    position: absolute;
+    width: 980px;
+    display: none;
+    top: 0;
+}
+
+.article-list li:hover .abstract {
+    display: block;
+}
+
+.article-list li > .content {
+    z-index: 1;
+    position: relative;
+}
+
+.article-list li .count {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+/* end article list */
+
+/* start comment list */
+.comment-list h2 {
+    border-bottom: 1px solid #CCCCCC;
+    margin: 20px 0 0;
+}
+
+.comment-list .comment-main {
+    width: 612px;
+    word-break: break-all;
+}
+/* end comment list */

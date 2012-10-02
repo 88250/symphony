@@ -20,14 +20,6 @@
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
 * @version 1.0.0.3, Aug 9, 2012
 */
-/* start common */
-.ft-small,
-.ft-small a {
-    color: #999;
-    font-size: 12px;
-}
-/* end common */
-
 /* start framework */
 .side {
     float: left;
@@ -58,72 +50,10 @@
 }
 /* end module */
 
-/* start article list */
-.article-list {
-    list-style: none;
-}
-
-.article-list li {
-    padding: 10px;
-    position: relative;
-}
-
-.article-list h2 {
-    margin: 0 10px 10px 0;
-    width: 824px;
-}
-
-.article-list > li > div > .fn-left {
-    position: relative;
-}
-
-.article-list .author {
-    margin-right: 10px;
-    float: left;
-}
-
-.article-list > li .abstract {
-    color: rgba(0, 0, 0, 0.1);
-    height: 60px;
-    overflow: hidden;
-    position: absolute;
-    width: 980px;
-    display: none;
-}
-
-.article-list > li:hover .abstract {
-    display: block;
-}
-/* end article list */
-
 /* start article */
 .article-title {
     font-weight: normal;
     margin: 10px 0;
-}
-
-.comments h2 {
-    border-bottom: 1px solid #CCCCCC;
-    margin: 20px 0 0;
-}
-
-.comments ul {
-    list-style: none;
-}
-
-.comments li {
-    border-bottom: 1px solid #CCCCCC;
-    padding: 10px;
-}
-
-.comments li:hover {
-    background-color: #EEE;
-}
-
-.comments .comment-main {
-    margin-left: 10px;
-    width: 612px;
-    word-break: break-all;
 }
 /* end article */
 

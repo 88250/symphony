@@ -40,7 +40,7 @@
                             我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
                         </div>
                     </div>
-                    <div class="comments">
+                    <div class="comment-list list">
                         <h2>10 comments</h2>
                         <ul>
                             <#list 1..10 as i>
@@ -55,7 +55,7 @@
                                                 <a href="/" title="VanessaLiliYuan">VanessaLiliYuan</a>
                                                 @ <a href="/">Daniel</a>
                                             </span>
-                                            <span class="fn-right">
+                                            <span class="fn-right ft-small">
                                                 2012-01-21
                                             </span>    
                                         </span>
@@ -83,11 +83,18 @@
                 </div>
                 <div class="side">
                     <div class="index-module">
-                        <img class="avatar-big" src="/images/user-thumbnail.png" />
-                        <a href="/" title="VanessaLiliYuan">VanessaLiliYuan</a>
-                        <span>
+                        <div class="fn-clear">
+                            <div class="fn-left avatar">
+                                <img src="/images/user-thumbnail.png" />
+                            </div>
+                            <div class="fn-left">
+                                <a href="/" title="VanessaLiliYuan">VanessaLiliYuan</a><br/>
+                                <a href="/" title="VanessaLiliYuan">http://vanessa.b3log.org</a>
+                            </div>
+                        </div>
+                        <div>
                             introintrointrointrointrointrointrointrointrointrointro
-                        </span>
+                        </div>
                     </div>
                     <div class="index-module">
                         <h2>
