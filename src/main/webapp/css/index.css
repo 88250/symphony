@@ -42,13 +42,6 @@
 /* end framework */
 
 /* start module */
-.index-user {
-    border-radius: 3px 3px 3px 3px;
-    margin: 1px 5px 0 0;
-    height: 25px;
-    width: 25px;
-}
-
 .index-module {
     background-color: #F7F7F7;
     border: 1px solid #DDDDDD;
@@ -125,13 +118,6 @@
 
 .comments li:hover {
     background-color: #EEE;
-}
-
-.comments .avatar {
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 0 0 2px #DDDDDD;
-    height: 48px;
-    width: 48px;
 }
 
 .comments .comment-main {

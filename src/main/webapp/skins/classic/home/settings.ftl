@@ -15,7 +15,6 @@
                 <div class="module">
                     <div class="module-header fn-clear">
                         <h2 class="fn-left">profiles</h2>
-                        <span class="slideDown" title="收拢" onclick="Settings.toggle(this)"></span>
                     </div>
                     <div class="module-panel">
                         <table>
@@ -40,7 +39,7 @@
                                     User Email
                                 </td>
                                 <td>
-                                    <input id="userEmail" type="text" value="${userEmail}" readonly="true" /> 
+                                    <input id="userEmail" type="text" value="${userEmail}" readonly="readonly" /> 
                                 </td>
                             </tr>
                             <tr>
@@ -62,7 +61,6 @@
                             <tr>
                                 <td colspan="2">
                                     <div class="fn-clear">
-                                        <span class="fn-left tip-error">we</span>
                                         <button class="green fn-right" onclick="Settings.update('profiles')">Save</button>
                                     </div>
                                 </td>
@@ -74,9 +72,8 @@
                 <div class="module">
                     <div class="module-header fn-clear">
                         <h2 class="fn-left">Sync</h2>
-                        <span class="slideUp" title="展开" onclick="Settings.toggle(this)"></span>
                     </div>
-                    <div class="module-panel fn-none">
+                    <div class="module-panel">
                         <table>
                             <tr>
                                 <td width="100">
@@ -114,9 +111,8 @@
                 <div class="module">
                     <div class="module-header fn-clear">
                         <h2 class="fn-left">Password</h2>
-                        <span class="slideUp" title="展开" onclick="Settings.toggle(this)"></span>
                     </div>
-                    <div class="module-panel fn-none">
+                    <div class="module-panel">
                         <table>
                             <tr>
                                 <td width="100">
