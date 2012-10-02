@@ -18,22 +18,25 @@ package org.b3log.symphony.service;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
+import org.b3log.symphony.repository.UserTagRepository;
 import org.json.JSONObject;
 
 /**
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 28, 2012
+ * @version 1.0.0.1, Oct 2, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -59,6 +62,10 @@ public final class ArticleMgmtService {
      */
     private TagArticleRepository tagArticleRepository = TagArticleRepository.getInstance();
     /**
+     * User-Tag repository.
+     */
+    private UserTagRepository userTagRepository = UserTagRepository.getInstance();
+    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
@@ -73,7 +80,8 @@ public final class ArticleMgmtService {
      *     "articleTags": "",
      *     "articleContent": "",
      *     "articleEditorType": "",
-     *     "articleAuthorEmail": ""
+     *     "articleAuthorEmail": "",
+     *     "articleAuthorId": ""
      * }
      * </pre>,see {@link Article} for more details
      * @return generated article id
@@ -90,6 +98,7 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
+            article.put(Article.ARTICLE_AUTHOR_ID, requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID));
 
             final long currentTimeMillis = System.currentTimeMillis();
 
@@ -132,6 +141,8 @@ public final class ArticleMgmtService {
             final String tagTitle = tagTitles[i].trim();
             JSONObject tag = tagRepository.getByTitle(tagTitle);
             String tagId;
+            String userTagType;
+            
             if (null == tag) {
                 LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
                         new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
@@ -143,6 +154,7 @@ public final class ArticleMgmtService {
 
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
+                userTagType = "creator";
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
@@ -155,14 +167,22 @@ public final class ArticleMgmtService {
                 tagTmp.put(Tag.TAG_REFERENCE_CNT, tag.optInt(Tag.TAG_REFERENCE_CNT) + 1);
 
                 tagRepository.update(tagId, tagTmp);
+
+                userTagType = "article";
             }
 
+            // Tag-Article relation
             final JSONObject tagArticleRelation = new JSONObject();
-
             tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID, tagId);
             tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
-
             tagArticleRepository.add(tagArticleRelation);
+
+            // User-Tag relation
+            final JSONObject userTagRelation = new JSONObject();
+            userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
+            userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, article.optString(Article.ARTICLE_AUTHOR_ID));
+            userTagRelation.put(Common.TYPE, userTagType);
+            userTagRepository.add(userTagRelation);
         }
     }
 

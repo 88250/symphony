@@ -34,9 +34,13 @@ import org.b3log.symphony.util.Filler;
 
 /**
  * Index processor.
+ * 
+ * <ul>
+ *   <li>Shows index (/), GET</li>
+ * </ul>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 23, 2012
+ * @version 1.0.0.4, Oct 2, 2012
  * @since 0.2.0
  */
 @RequestProcessor

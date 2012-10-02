@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 24, 2012
+ * @version 1.0.0.1, Oct 2, 2012
  * @since 0.2.0
  */
 public final class Article {
@@ -48,6 +48,10 @@ public final class Article {
      * Key of article author email.
      */
     public static final String ARTICLE_AUTHOR_EMAIL = "articleAuthorEmail";
+    /**
+     * Key of article author id.
+     */
+    public static final String ARTICLE_AUTHOR_ID = "articleAuthorId";
     /**
      * Key of article comment count.
      */
