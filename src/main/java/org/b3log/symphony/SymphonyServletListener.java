@@ -23,10 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.servlet.AbstractServletListener;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
-import org.b3log.latke.util.Requests;
 import org.b3log.symphony.util.Skins;
 
 /**
@@ -60,6 +61,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Stopwatchs.start("Context Initialized");
 
         super.contextInitialized(servletContextEvent);
+
+        Latkes.disablePageCache();
+        Latkes.disableDataCache();
 
         Skins.loadSkin();
 
@@ -98,8 +102,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
             LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
-                       new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
-                                    session.isNew()});
+                    new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
+                        session.isNew()});
         }
 
     }

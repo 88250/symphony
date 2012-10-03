@@ -21,66 +21,63 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.symphony.model.Article;
-import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.TagRepository;
 import org.json.JSONObject;
 
 /**
- * Article query service.
+ * Tag query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 2, 2012
+ * @version 1.0.0.0, Oct 3, 2012
  * @since 0.2.0
  */
-public final class ArticleQueryService {
+public final class TagQueryService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagQueryService.class.getName());
     /**
      * Singleton.
      */
-    private static final ArticleQueryService SINGLETON = new ArticleQueryService();
+    private static final TagQueryService SINGLETON = new TagQueryService();
     /**
-     * Article repository.
+     * Tag repository.
      */
-    private ArticleRepository articleRepository = ArticleRepository.getInstance();
+    private TagRepository tagRepository = TagRepository.getInstance();
 
     /**
-     * Gets the recent articles with the specified fetch size.
+     * Gets the tags the specified fetch size.
      * 
      * @param fetchSize the specified fetch size
      * @return recent articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getRecentArticles(final int fetchSize) throws ServiceException {
-        final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(fetchSize);
+    public List<JSONObject> getTags(final int fetchSize) throws ServiceException {
+        final Query query = new Query().setPageCount(1).setPageSize(fetchSize);
         
         try {
-            final JSONObject result = articleRepository.get(query);
+            final JSONObject result = tagRepository.get(query);
             return org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets recent articles failed", e);
+            LOGGER.log(Level.SEVERE, "Gets tags failed", e);
             throw new ServiceException(e);
         }
     }
 
     /**
-     * Gets the {@link ArticleQueryService} singleton.
+     * Gets the {@link TagQueryService} singleton.
      *
      * @return the singleton
      */
-    public static ArticleQueryService getInstance() {
+    public static TagQueryService getInstance() {
         return SINGLETON;
     }
 
     /**
      * Private constructor.
      */
-    private ArticleQueryService() {
+    private TagQueryService() {
     }
 }
