@@ -14,35 +14,35 @@
         <div class="main">
             <div class="wrapper fn-clear">
                 <div class="content">
-                    <#list 1..10 as i>
-                    <div>
-                        <div class="fn-clear">
-                            <div class="fn-left">
-                                <h3>
-                                    <a href="">tag</a>
-                                </h3>
-                                
-                                引用：12 
-                                评论：14
-                                <img class="avatar-small" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
-                                
-                                
-                            </div>
-                            <div class="fn-right fn-box">
-                                <#list 1..10 as i>
-                                <img class="avatar-small" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
-                                </#list>
-                            </div>
-                        </div>
+                    <div class="article-list list">
                         <ul>
-                            <#list 1..5 as i>
+                            <#list 1..10 as i>
                             <li>
-                                <a href="/article/ss">article</a>
+                                <div>
+                                    <div class="fn-clear">
+                                        <img class="avatar fn-left" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
+                                        <div class="fn-left" style="width: 550px">
+                                            <h2><a href="">titlitletissssssdddletitletitletitletitletitletitletitletitle</a></h2>
+                                            <span class="ft-small">
+                                                <a href="">ttitletitletitletitletitletitletitletitletitletitletitletitletitletitleagss</a> 
+                                                2012-02-10
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="count ft-small">
+                                        评论<a href="">123</a><br/>
+                                        访问<a href="">123</a>
+                                    </div>
+                                    <div class="commenters">
+                                        <#list 1..10 as i>
+                                        <img class="avatar-small" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
+                                        </#list>
+                                    </div>
+                                </div>
                             </li>
                             </#list>
                         </ul>
                     </div>
-                    </#list>
                 </div>
                 <div class="side">
                     <#include "side.ftl">
