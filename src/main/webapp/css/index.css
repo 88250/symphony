@@ -20,19 +20,6 @@
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
 * @version 1.0.0.3, Aug 9, 2012
 */
-/* start framework */
-.side {
-    float: left;
-    width: 260px;
-}
-
-.content {
-    float: left;
-    margin-right: 50px;
-    width: 690px;
-}
-/* end framework */
-
 /* start module */
 .index-module {
     background-color: #F7F7F7;

@@ -340,9 +340,9 @@ button.red:active {
 }
 
 .avatar-big {
-    height: 64px;
-    width: 64px;
-    margin-right: 10px;
+    height: 210px;
+    margin-left: 25px;
+    width: 210px;
 }
 /* end avatar */
 /* end common */
@@ -385,6 +385,17 @@ button.red:active {
 .main {
     background-color: #FFF;
     padding: 50px 0;
+}
+
+.side {
+    float: left;
+    width: 260px;
+}
+
+.content {
+    float: left;
+    margin-right: 50px;
+    width: 690px;
 }
 /* end framework */
 
@@ -525,7 +536,7 @@ button.red:active {
     display: block;
 }
 
-.article-list li > .content {
+.article-list li > div {
     z-index: 1;
     position: relative;
 }
