@@ -17,7 +17,7 @@
     <h2>
         Tags
     </h2>
-    <#list 1..10 as i>
-    <a href="">Recent Post</a>
+    <#list sideTags as sideTag>
+    <a href="">${sideTag.tagTitle}</a>
     </#list>
 </div>

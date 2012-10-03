@@ -15,7 +15,6 @@
  */
 package org.b3log.symphony.util;
 
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -27,15 +26,17 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.processor.LoginProcessor;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.TagQueryService;
 import org.json.JSONObject;
 
 /**
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 2, 2012
+ * @version 1.0.0.4, Oct 3, 2012
  * @since 0.2.0
  */
 public final class Filler {
@@ -53,6 +54,10 @@ public final class Filler {
      */
     private static ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
     /**
+     * Tag query service.
+     */
+    private static TagQueryService tagQueryService = TagQueryService.getInstance();
+    /**
      * Language service.
      */
     private static LangPropsService langPropsService = LangPropsService.getInstance();
@@ -60,14 +65,21 @@ public final class Filler {
     /**
      * Fills recent articles.
      * 
-     * @param request the specified request
-     * @param response the specified response
      * @param dataModel the specified data model
      * @throws Exception exception 
      */
-    public static void fillRecentArticles(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) throws Exception {
+    public static void fillRecentArticles(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.RECENT_ARTICLES, articleQueryService.getRecentArticles(Symphonys.getInt("recentArticlesCnt")));
+    }
+
+    /**
+     * Fills tags.
+     * 
+     * @param dataModel the specified data model
+     * @throws Exception exception
+     */
+    public static void fillSideTags(final Map<String, Object> dataModel) throws Exception {
+        dataModel.put(Common.SIDE_TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
     }
 
     /**

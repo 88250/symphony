@@ -19,21 +19,24 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-
 import org.b3log.latke.Latkes;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Statistic;
 import org.b3log.symphony.repository.StatisticRepository;
-import org.b3log.symphony.service.StatisticMgmtService;
+import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.service.ArticleMgmtService;
+import org.b3log.symphony.service.UserMgmtService;
 import org.json.JSONObject;
 
 /**
@@ -71,14 +74,33 @@ public class InitProcessor {
                         new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
 
+            // Init stat.
             final StatisticRepository statisticRepository = StatisticRepository.getInstance();
             final Transaction transaction = statisticRepository.beginTransaction();
             final JSONObject statistic = new JSONObject();
             statistic.put(Keys.OBJECT_ID, Statistic.STATISTIC);
             statistic.put(Statistic.STATISTIC_MEMBER_COUNT, 0);
-
             statisticRepository.add(statistic);
             transaction.commit();
+
+            // Init admin
+            final UserMgmtService userMgmtService = UserMgmtService.getInstance();
+            final JSONObject admin = new JSONObject();
+            admin.put(User.USER_EMAIL, "88250@b3log.org");
+            admin.put(User.USER_NAME, "Admin");
+            admin.put(User.USER_PASSWORD, "test");
+            admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+            userMgmtService.addUser(admin);
+
+            final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+            final JSONObject article = new JSONObject();
+            article.put(Article.ARTICLE_TITLE, "你好，世界！");
+            article.put(Article.ARTICLE_TAGS, "B3log, Java");
+            article.put(Article.ARTICLE_CONTENT, "B3log Symphony 第一帖 ;-p");
+            article.put(Article.ARTICLE_EDITOR_TYPE, 0);
+            article.put(Article.ARTICLE_AUTHOR_EMAIL, "88250@b3log.org");
+            article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
+            articleMgmtService.addArticle(article);
 
             response.sendRedirect("/");
         } catch (final Exception e) {
