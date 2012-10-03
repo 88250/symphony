@@ -334,15 +334,14 @@ button.red:active {
 }
 
 .avatar-small {
-    margin: 1px 5px 0 0;
     height: 25px;
     width: 25px;
 }
 
 .avatar-big {
-    height: 64px;
-    width: 64px;
-    margin-right: 10px;
+    height: 210px;
+    margin-left: 25px;
+    width: 210px;
 }
 /* end avatar */
 /* end common */
@@ -385,6 +384,17 @@ button.red:active {
 .main {
     background-color: #FFF;
     padding: 50px 0;
+}
+
+.side {
+    float: left;
+    width: 260px;
+}
+
+.content {
+    float: left;
+    margin-right: 50px;
+    width: 690px;
 }
 /* end framework */
 
@@ -525,15 +535,30 @@ button.red:active {
     display: block;
 }
 
-.article-list li > .content {
-    z-index: 1;
-    position: relative;
+.article-list li > div {
+    white-space: normal;
+    word-wrap: break-word;
 }
 
-.article-list li .count {
+.article-list li .count,
+.article-list li .commenters {
     position: absolute;
     right: 10px;
-    top: 15px;
+    top: 18px;
+    display: block;
+}
+
+.article-list li .commenters {
+    display: none;
+    top: 22px;
+}
+
+.article-list li:hover .count {
+    display: none;
+}
+
+.article-list li:hover .commenters {
+    display: block;
 }
 /* end article list */
 

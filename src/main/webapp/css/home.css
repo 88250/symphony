@@ -62,7 +62,7 @@
 }*/
 /* end home framework */
 
-/* start module */
+/* start settings */
 .module {
     background-color: #F8F8FF;
     border: 1px solid #CCC;
@@ -83,7 +83,7 @@
 .module-panel {
     padding: 20px;
 }
-/* end module */
+/* end settings */
 
 /* start add article */
 #tip {
@@ -91,3 +91,27 @@
     white-space: pre-wrap;
 }
 /* end add article */
+
+/* start home */
+.tab {
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.tab > li {
+    color: #666666;
+    cursor: pointer;
+    float: left;
+    list-style: none outside none;
+    padding: 8px 12px;
+}
+
+.tab > li.current {
+    background-color: #FFFFFF;
+    border: 1px solid #DDD;
+    border-bottom: 0;
+    border-radius: 3px 3px 0 0;
+    font-weight: bold;
+    line-height: 20px;
+    margin-bottom: -1px;
+}
+/* end home */
