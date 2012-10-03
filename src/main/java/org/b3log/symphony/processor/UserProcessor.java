@@ -16,14 +16,15 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -36,11 +37,14 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.QueryResults;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
@@ -73,6 +77,10 @@ public class UserProcessor {
      */
     private UserMgmtService userMgmtService = UserMgmtService.getInstance();
     /**
+     * Article management service.
+     */
+    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
@@ -88,15 +96,23 @@ public class UserProcessor {
      * @param request the specified request
      * @param response the specified response
      * @param userName the specified user name
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/home/{userName}", method = HTTPRequestMethod.GET)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userName) throws IOException {
+            final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        dataModel.put(User.USER, user);
+
+        final Date created = new Date(user.getLong(Keys.OBJECT_ID));
+        user.put(Common.CREATED, DateFormatUtils.format(created, "yyyy-MM-dd HH:mm:ss"));
+        final List<JSONObject> userArticles = articleQueryService.getUserArticles(userName, 1, Symphonys.getInt("userHomeArticlesCnt"));
+        dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
 
         Filler.fillHeader(request, response, dataModel);
     }

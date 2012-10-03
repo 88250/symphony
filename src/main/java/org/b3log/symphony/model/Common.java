@@ -60,6 +60,18 @@ public final class Common {
      * Key of side tags.
      */
     public static final String SIDE_TAGS = "sideTags";
+    /**
+     * Key of side random articles.
+     */
+    public static final String SIDE_RANDOM_ARTICLES = "sideRandomArticles";
+    /**
+     * Key of created.
+     */
+    public static final String CREATED = "created";
+    /**
+     * Key of user home articles.
+     */
+    public static final String USER_HOME_ARTICLES = "userHomeArticles";
 
     /**
      * Private default constructor.

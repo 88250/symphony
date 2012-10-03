@@ -76,7 +76,7 @@ public class IndexProcessor {
         Filler.fillHeader(request, response, dataModel);
 
         try {
-            Filler.fillRecentArticles(dataModel);
+            Filler.fillRandomArticles(dataModel);
             Filler.fillSideTags(dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Shows index failed");

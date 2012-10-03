@@ -26,7 +26,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.processor.LoginProcessor;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.TagQueryService;
@@ -63,13 +62,13 @@ public final class Filler {
     private static LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Fills recent articles.
+     * Fills random articles.
      * 
      * @param dataModel the specified data model
      * @throws Exception exception 
      */
-    public static void fillRecentArticles(final Map<String, Object> dataModel) throws Exception {
-        dataModel.put(Common.RECENT_ARTICLES, articleQueryService.getRecentArticles(Symphonys.getInt("recentArticlesCnt")));
+    public static void fillRandomArticles(final Map<String, Object> dataModel) throws Exception {
+        dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(Symphonys.getInt("recentArticlesCnt")));
     }
 
     /**

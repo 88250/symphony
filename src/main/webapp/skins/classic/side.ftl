@@ -6,9 +6,9 @@
         Recent Post
     </h2>
     <ul>
-        <#list recentArticles as recentArticle>
+        <#list randomArticles as randomArticle>
         <li class="fn-ellipsis">
-            <a href="">${recentArticle.articleTitle}</a>
+            <a href="">${randomArticle.articleTitle}</a>
         </li>
         </#list>
     </ul>

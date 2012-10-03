@@ -20,14 +20,13 @@
                     </div>
                     <div class="fn-right" style="width: 926px">
                         <div>
-                            <a href="">Vanessa</a> 
-                            <a href="">http://vanessa.b3log.org</a>
+                            <a href="">${user.userName}</a> 
+                            <a href="">${user.userURL}</a>
                             <br/>
-                            V2EX 第 4867 号会员，加入于 2011-01-07 14:41:12 PM
+                            B3log Symphony 第 ${user.userNo} 号会员，加入于 ${user.created}
                         </div>
                         <div>
-                            intro intro intro intro introintrointrointrointrointrointrointroi
-                            ntrointrointrointrointrointrointrointrointro
+                            ${user.userIntro}
                         </div>
                     </div>
                 </div>
@@ -42,17 +41,17 @@
                     </ul>
                     <div class="article-list list">
                         <ul>
-                            <#list 1..10 as i>
+                            <#list userHomeArticles as userHomeArticle>
                             <li>
                                 <div class="content">
-                                    <h2><a href="">title</a></h2>
+                                    <h2><a href="">${userHomeArticle.articleTitle}</a></h2>
                                     <span class="ft-small">
                                         <a href="">tagss</a> 
                                         2012-02-10
                                     </span>
                                     <div class="count ft-small">
-                                        评论数：<a href="">123</a>
-                                        访问数：<a href="">123</a>
+                                        评论数：<a href="">${userHomeArticle.articleCommentCount}</a>
+                                        访问数：<a href="">${userHomeArticle.articleViewCount}</a>
                                     </div>
                                 </div>
                                 <div class="abstract">abstractabstractabstractabstractabstractabstract</div>

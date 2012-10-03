@@ -50,6 +50,43 @@ public final class ArticleQueryService {
     private ArticleRepository articleRepository = ArticleRepository.getInstance();
 
     /**
+     * Gets the user articles with the specified user id, page number and page size.
+     * 
+     * @param userId the specified user id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return user articles, return an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getUserArticles(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+        final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING)
+                .setPageCount(currentPageNum).setPageSize(pageSize);
+        try {
+            final JSONObject result = articleRepository.get(query);
+            return org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets user articles failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the random articles with the specified fetch size.
+     * 
+     * @param fetchSize the specified fetch size
+     * @return recent articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getRandomArticles(final int fetchSize) throws ServiceException {
+        try {
+            return articleRepository.getRandomly(fetchSize);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets random articles failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets the recent articles with the specified fetch size.
      * 
      * @param fetchSize the specified fetch size
@@ -59,7 +96,7 @@ public final class ArticleQueryService {
     public List<JSONObject> getRecentArticles(final int fetchSize) throws ServiceException {
         final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize);
-        
+
         try {
             final JSONObject result = articleRepository.get(query);
             return org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
