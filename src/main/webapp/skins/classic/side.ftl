@@ -3,10 +3,10 @@
 </div>
 <div class="index-module">
     <h2>
-        Recent Post
+        Random Post
     </h2>
     <ul>
-        <#list randomArticles as randomArticle>
+        <#list sideRandomArticles as randomArticle>
         <li class="fn-ellipsis">
             <a href="">${randomArticle.articleTitle}</a>
         </li>
