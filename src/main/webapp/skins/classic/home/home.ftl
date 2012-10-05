@@ -33,11 +33,15 @@
                                             2012-02-10
                                         </span>
                                         <div class="count ft-small">
-                                            评论数：<a href="">${userHomeArticle.articleCommentCount}</a>
-                                            访问数：<a href="">${userHomeArticle.articleViewCount}</a>
+                                            评论：<a href="">${userHomeArticle.articleCommentCount}</a><br/>
+                                            访问：<a href="">${userHomeArticle.articleViewCount}</a>
+                                        </div>
+                                        <div class="commenters">
+                                            <#list 1..10 as i>
+                                            <img class="avatar-small" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
+                                            </#list>
                                         </div>
                                     </div>
-                                    <div class="abstract">abstractabstractabstractabstractabstractabstract</div>
                                 </li>
                                 </#list>
                             </ul>

@@ -521,20 +521,6 @@ button.red:active {
     position: relative;
 }
 
-.article-list li > .abstract {
-    color: rgba(0, 0, 0, 0.1);
-    height: 60px;
-    overflow: hidden;
-    position: absolute;
-    width: 980px;
-    display: none;
-    top: 0;
-}
-
-.article-list li:hover .abstract {
-    display: block;
-}
-
 .article-list li > div {
     white-space: normal;
     word-wrap: break-word;

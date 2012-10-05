@@ -22,7 +22,7 @@
                                     <div class="fn-clear">
                                         <img class="avatar fn-left" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
                                         <div class="fn-left" style="width: 550px">
-                                            <h2><a href="">titlitletissssssdddletitletitletitletitletitletitletitletitle</a></h2>
+                                            <h2><a href="/article/ss">titlitletissssssdddletitletitletitletitletitletitletitletitle</a></h2>
                                             <span class="ft-small">
                                                 <a href="">ttitletitletitletitletitletitletitletitletitletitletitletitletitletitleagss</a> 
                                                 2012-02-10

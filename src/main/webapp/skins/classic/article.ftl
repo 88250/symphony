@@ -43,7 +43,7 @@
                     <div class="comment-list list">
                         <h2>10 comments</h2>
                         <ul>
-                            <#list 1..10 as i>
+                            <#list 1..5 as i>
                             <li>
                                 <div class="fn-clear">
                                     <div class="fn-left avatar">
@@ -78,6 +78,10 @@
                             <a href="/">...</a>
                             <a href="/">>></a>
                         </div>
+                    </div>
+                    <div class="form">
+                        <textarea></textarea>
+                        <button>submit</button>
                     </div>
 
                 </div>
