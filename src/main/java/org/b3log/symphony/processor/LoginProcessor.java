@@ -101,16 +101,16 @@ public class LoginProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws IOException io exception 
+     * @throws Exception exception 
      */
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
     public void showRegister(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("register.ftl");
-        
+
         Filler.fillHeader(request, response, renderer.getDataModel());
     }
 

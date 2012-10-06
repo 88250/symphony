@@ -93,11 +93,11 @@ public class ArticleProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/add-article", method = HTTPRequestMethod.GET)
     public void showAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -114,12 +114,11 @@ public class ArticleProcessor {
      * @param request the specified request
      * @param response the specified response
      * @param articleId the specified article id
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String articleId)
-            throws IOException {
+            final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -180,7 +179,7 @@ public class ArticleProcessor {
         }
 
         article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
-        
+
         final String authorEmail = currentUser.optString(User.USER_EMAIL);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
 

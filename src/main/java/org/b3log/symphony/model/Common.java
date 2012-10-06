@@ -61,6 +61,10 @@ public final class Common {
      */
     public static final String SIDE_TAGS = "sideTags";
     /**
+     * Key of trend tags.
+     */
+    public static final String TREND_TAGS = "trendTags";
+    /**
      * Key of side random articles.
      */
     public static final String SIDE_RANDOM_ARTICLES = "sideRandomArticles";

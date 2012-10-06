@@ -21,7 +21,10 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.CollectionUtils;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.TagRepository;
 import org.json.JSONObject;
 
@@ -48,18 +51,38 @@ public final class TagQueryService {
     private TagRepository tagRepository = TagRepository.getInstance();
 
     /**
+     * Gets the trend (sort by reference count) tags.
+     * 
+     * @param fetchSize the specified fetch size
+     * @return trend tags, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getTrendTags(final int fetchSize) throws ServiceException {
+        final Query query = new Query().addSort(Tag.TAG_REFERENCE_CNT, SortDirection.DESCENDING).
+                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+
+        try {
+            final JSONObject result = tagRepository.get(query);
+            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets trend tags failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets the tags the specified fetch size.
      * 
      * @param fetchSize the specified fetch size
-     * @return recent articles, returns an empty list if not found
+     * @return tags, returns an empty list if not found
      * @throws ServiceException service exception
      */
     public List<JSONObject> getTags(final int fetchSize) throws ServiceException {
         final Query query = new Query().setPageCount(1).setPageSize(fetchSize);
-        
+
         try {
             final JSONObject result = tagRepository.get(query);
-            return org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets tags failed", e);
             throw new ServiceException(e);

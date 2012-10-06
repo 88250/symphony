@@ -123,11 +123,11 @@ public class UserProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/settings", method = HTTPRequestMethod.GET)
     public void showSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/settings.ftl");
@@ -153,12 +153,11 @@ public class UserProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws ServletException servlet exception
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/profiles", method = HTTPRequestMethod.POST)
     public void updateProfiles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+            throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -195,12 +194,11 @@ public class UserProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws ServletException servlet exception
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/sync/b3", method = HTTPRequestMethod.POST)
     public void updateSyncB3(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+            throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 

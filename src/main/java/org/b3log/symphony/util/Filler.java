@@ -87,13 +87,15 @@ public final class Filler {
      * @param request the specified request
      * @param response the specified response
      * @param dataModel the specified data model
+     * @throws Exception exception 
      */
     public static void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) {
+            final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         Keys.fillServer(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
 
+        fillTrendTags(dataModel);
         fillPersonalNav(request, response, dataModel);
 
         fillLangs(dataModel);
@@ -153,5 +155,15 @@ public final class Filler {
      */
     private static void fillLangs(final Map<String, Object> dataModel) {
         dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
+    }
+
+    /**
+     * Fills trend tags.
+     * 
+     * @param dataModel the specified data model
+     * @throws Exception exception
+     */
+    private static void fillTrendTags(final Map<String, Object> dataModel) throws Exception {
+        dataModel.put(Common.TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
     }
 }

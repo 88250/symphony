@@ -13,8 +13,8 @@
                 <input type="hidden" name="sitesearch" value="${servePath}" />
             </form>
             <span class="tags">
-                <#list 1..10 as i>
-                <a href="">tag${i_index}</a>
+                <#list trendTags as trendTag>
+                <a href="">${trendTag.tagTitle}</a>
                 </#list>
             </span>
         </div>
