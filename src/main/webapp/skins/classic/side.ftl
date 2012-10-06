@@ -3,7 +3,7 @@
 </div>
 <div class="index-module">
     <h2>
-        Random Post
+        ${randomArticleLaabel}
     </h2>
     <ul>
         <#list sideRandomArticles as randomArticle>
@@ -21,7 +21,7 @@
 </div>
 <div class="index-module">
     <h2>
-        Tags
+        ${tagLabel}
     </h2>
     <#list sideTags as sideTag>
     <a href="">${sideTag.tagTitle}</a>
