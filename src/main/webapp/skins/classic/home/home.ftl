@@ -86,13 +86,14 @@
                         <div>
                             online 
                             <br/>
-                            <a href="">${user.userName}</a> 
+                            <a href="/home/${user.userName?url('UTF-8')}">${user.userName}</a> 
+                            Symphony 第 ${user.userNo} 号会员
+                            <#if user.userURL!="">
                             <br/>
-                            URL: <a href="">${user.userURL}</a>
+                            <span class="ft-small">URL: </span><a href="">${user.userURL}</a>
+                            </#if>
                             <br/>
-                            B3log Symphony 第 ${user.userNo} 号会员
-                            <br/>
-                            加入于 ${user.created}
+                            <span class="ft-small">${joinTimeLabel}: </span>${user.created}
                         </div>
                         <div>
                             ${user.userIntro}
