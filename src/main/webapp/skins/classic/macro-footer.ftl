@@ -17,10 +17,11 @@
                     <span class="ft-small">&COPY; 2012 <a href="http://www.b3log.org" target="_blank">B3LOG.ORG</a></span>
                 </div>
                 <div class="fn-right">
-                    <span class="ft-small">当前在线人数：</span>23
-                    <span class="ft-small">用户数：</span>234435
-                    <span class="ft-small">文章数：</span>23452
-                    <span class="ft-small">tag 数：</span>234
+                    <span class="ft-small">当前在线人数：</span>${onlineVisitorCnt}
+                    <span class="ft-small">用户数：</span>${statistic.statisticMemberCount}
+                    <span class="ft-small">文章数：</span>${statistic.statisticArticleCount}
+                    <span class="ft-small">tag 数：</span>${statistic.statisticTagCount}
+                    <span class="ft-small">评论数：</span>${statistic.statisticCmtCount}
                 </div>
             </div>
         </div>

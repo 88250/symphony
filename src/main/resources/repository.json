@@ -109,6 +109,18 @@
         {
             "name": "statisticMemberCount",
             "type": "int"
+        },
+        {
+            "name": "statisticArticleCount",
+            "type": "int"
+        },
+        {
+            "name": "statisticTagCount",
+            "type": "int"
+        },
+        {
+            "name": "statisticCmtCount",
+            "type": "int"
         }
         ]
     },

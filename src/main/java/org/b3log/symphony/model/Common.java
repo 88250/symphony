@@ -80,6 +80,14 @@ public final class Common {
      * Key of user home articles.
      */
     public static final String USER_HOME_ARTICLES = "userHomeArticles";
+    /**
+     * Key of version.
+     */
+    public static final String VERSION = "version";
+    /**
+     * Key of online visitor count.
+     */
+    public static final String ONLINE_VISITOR_CNT = "onlineVisitorCnt";
 
     /**
      * Private default constructor.

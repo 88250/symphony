@@ -80,6 +80,9 @@ public class InitProcessor {
             final JSONObject statistic = new JSONObject();
             statistic.put(Keys.OBJECT_ID, Statistic.STATISTIC);
             statistic.put(Statistic.STATISTIC_MEMBER_COUNT, 0);
+            statistic.put(Statistic.STATISTIC_CMT_COUNT, 0);
+            statistic.put(Statistic.STATISTIC_ARTICLE_COUNT, 0);
+            statistic.put(Statistic.STATISTIC_TAG_COUNT, 0);
             statisticRepository.add(statistic);
             transaction.commit();
 

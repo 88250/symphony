@@ -15,7 +15,6 @@
  */
 package org.b3log.symphony.processor;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -234,11 +233,11 @@ public class UserProcessor {
      * @param request the specified request
      * @param response the specified response
      * @throws ServletException servlet exception
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/password", method = HTTPRequestMethod.POST)
     public void updatePassword(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws ServletException, IOException {
+            throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
