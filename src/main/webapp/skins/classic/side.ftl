@@ -7,8 +7,14 @@
     </h2>
     <ul>
         <#list sideRandomArticles as randomArticle>
-        <li class="fn-ellipsis">
+        <li>
             <a href="">${randomArticle.articleTitle}</a>
+            <div class="ft-small">
+                <span>
+                    <a href="">vanesaa</a>
+                    2011-1-1
+                </span>
+            </div>
         </li>
         </#list>
     </ul>

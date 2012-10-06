@@ -4,8 +4,25 @@
         <div class="fn-left">
             <img src="/images/logo.png" />
         </div>
-        <div class="fn-right">
-            &COPY; 2012 <a href="http://www.b3log.org" target="_blank">B3LOG.ORG</a>
+        <div class="fn-right" style="width: 800px">
+            <div>
+                <a href="">about</a>
+                <a href="">tag1</a>
+                <a href="">tag2</a>
+                <a href="">blog</a>
+            </div>
+            <div class="fn-clear">
+                <div class="fn-left">
+                    自由*平等*奔放
+                    <span class="ft-small">&COPY; 2012 <a href="http://www.b3log.org" target="_blank">B3LOG.ORG</a></span>
+                </div>
+                <div class="fn-right">
+                    <span class="ft-small">当前在线人数：</span>23
+                    <span class="ft-small">用户数：</span>234435
+                    <span class="ft-small">文章数：</span>23452
+                    <span class="ft-small">tag 数：</span>234
+                </div>
+            </div>
         </div>
     </div>
 </div>
