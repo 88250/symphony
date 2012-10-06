@@ -19,11 +19,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -37,6 +35,7 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -61,7 +60,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 2, 2012
+ * @version 1.0.0.4, Oct 6, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -131,7 +130,13 @@ public class ArticleProcessor {
         renderer.setTemplateName("/article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModel.put(Article.ARTICLE, articleQueryService.getArticleById(articleId));
+        final JSONObject article = articleQueryService.getArticleById(articleId);
+        final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
+        final JSONObject author = userQueryService.getUserByEmail(authorEmail);
+        article.put(Article.ARTICLE_AUTHOR_NAME, author.optString(User.USER_NAME));
+        article.put(Article.ARTICLE_AUTHOR_URL, author.optString(User.USER_URL));
+        article.put(Article.ARTICLE_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
+        dataModel.put(Article.ARTICLE, article);
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);

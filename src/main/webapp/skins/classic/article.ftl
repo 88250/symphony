@@ -91,12 +91,12 @@
                                 <img src="${article.articleAuthorThumbnailURL}" />
                             </div>
                             <div class="fn-left">
-                                <a href="/home/{article.userName?url('utf-8')}" title="{article.userName}">{article.userName}</a><br/>
-                                <a href="{article.userURL}">{article.userURL}</a>
+                                <a href="/home/${article.articleAuthorName?url('utf-8')}" title="${article.articleAuthorName}">${article.articleAuthorName}</a><br/>
+                                <a href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
                             </div>
                         </div>
                         <div>
-                            {article.userIntro}
+                            ${article.articleAuthorIntro}
                         </div>
                     </div>
                     <div class="index-module">
