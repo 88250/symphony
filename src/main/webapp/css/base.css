@@ -194,6 +194,10 @@ textarea {
     color: #999;
     font-size: 12px;
 }
+
+a.ft-noline:hover {
+    text-decoration: none;
+}
 /* end function */
 
 /* start common */

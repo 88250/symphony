@@ -15,10 +15,10 @@
                 <div class="content">
                     <ul class="tab fn-clear">
                         <li class="current">
-                            articles
+                            ${articleLabel}
                         </li>
                         <li>
-                            comments
+                            ${cmtLabel}
                         </li>
                     </ul>
                     <div>
@@ -29,12 +29,15 @@
                                     <div>
                                         <h2><a href="">${userHomeArticle.articleTitle}</a></h2>
                                         <span class="ft-small">
-                                            <a href="">tagss</a> 
-                                            2012-02-10
+                                            <#list userHomeArticle.articleTags?split(",") as articleTag>
+                                            <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
+                                                ${articleTag}</a><#if articleTag_has_next>, </#if>
+                                            </#list>
+                                            ${userHomeArticle.articleCreateTime}
                                         </span>
                                         <div class="count ft-small">
-                                            评论：<a href="">${userHomeArticle.articleCommentCount}</a><br/>
-                                            访问：<a href="">${userHomeArticle.articleViewCount}</a>
+                                            ${viewLabel} <a href="">${userHomeArticle.articleViewCount}</a><br/>
+                                            ${cmtLabel} <a href="">${userHomeArticle.articleCommentCount}</a>
                                         </div>
                                         <div class="commenters">
                                             <#list 1..10 as i>
