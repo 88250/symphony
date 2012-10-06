@@ -62,7 +62,15 @@ public final class ArticleQueryService {
      */
     public JSONObject getArticleById(final String articleId) throws ServiceException {
         try {
-            return articleRepository.get(articleId);
+            final JSONObject ret = articleRepository.get(articleId);
+
+            if (null == ret) {
+                return null;
+            }
+
+            organizeArticle(ret);
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets article [articleId=" + articleId + "] failed", e);
             throw new ServiceException(e);
@@ -159,7 +167,7 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Organizes the specified articles 
+     * Organizes the specified articles.
      * 
      * <ul>
      *   <li>converts create/update/latest comment time (long) to date type</li>
@@ -170,9 +178,23 @@ public final class ArticleQueryService {
      */
     private static void organizeArticles(final List<JSONObject> articles) {
         for (final JSONObject article : articles) {
-            toArticleDate(article);
-            genArticleAuthorThumbnailURL(article);
+            organizeArticle(article);
         }
+    }
+
+    /**
+     * Organizes the specified article.
+     * 
+     * <ul>
+     *   <li>converts create/update/latest comment time (long) to date type</li>
+     *   <li>generates author thumbnail URL</li>
+     * </ul>
+     * 
+     * @param article the specified article
+     */
+    private static void organizeArticle(final JSONObject article) {
+        toArticleDate(article);
+        genArticleAuthorThumbnailURL(article);
     }
 
     /**

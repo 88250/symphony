@@ -17,7 +17,7 @@
                     <div>
                         <div class="ft-small fn-clear">
                             <div class="fn-left">
-                                2012-01-21
+                                ${article.articleCreateTime?string('yyyy-MM-dd HH:mm:ss')}
                             </div>
                             <div class="fn-right">
                                 浏览<a href="/">1</a> 评论<a href="/">1</a>   
