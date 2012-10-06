@@ -25,9 +25,12 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Statistic;
 import org.b3log.symphony.processor.LoginProcessor;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.StatisticQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.json.JSONObject;
 
@@ -56,6 +59,10 @@ public final class Filler {
      * Tag query service.
      */
     private static TagQueryService tagQueryService = TagQueryService.getInstance();
+    /**
+     * Statistic query service.
+     */
+    private static StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
     /**
      * Language service.
      */
@@ -165,5 +172,19 @@ public final class Filler {
      */
     private static void fillTrendTags(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
+    }
+
+    /**
+     * Fills system info.
+     * 
+     * @param dataModel the specified data model
+     * @throws Exception exception 
+     */
+    public static void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
+        dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
+        dataModel.put(Common.ONLINE_VISITOR_CNT, StatisticQueryService.getOnlineVisitorCount());
+
+        final JSONObject statistic = statisticQueryService.getStatistic();
+        dataModel.put(Statistic.STATISTIC, statistic);
     }
 }

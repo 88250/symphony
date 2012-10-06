@@ -79,14 +79,13 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         // TODO: sys nav, sys info
-        dataModel.put("version", SymphonyServletListener.VERSION);
-        
         final List<JSONObject> latestCmtArticles = articleQueryService.getLatestCmtArticles(Symphonys.getInt("latestCmtArticlesCnt"));
         dataModel.put(Common.LATEST_CMT_ARTICLES, latestCmtArticles);
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillRandomArticles(dataModel);
         Filler.fillSideTags(dataModel);
+        Filler.fillSysInfo(dataModel);
 
         Stopwatchs.end();
     }

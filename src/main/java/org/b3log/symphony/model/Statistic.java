@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all statistic model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 2, 2012
+ * @version 1.0.0.1, Oct 6, 2012
  * @since 0.2.0
  */
 public final class Statistic {
@@ -32,6 +32,18 @@ public final class Statistic {
      * Key of member count.
      */
     public static final String STATISTIC_MEMBER_COUNT = "statisticMemberCount";
+    /**
+     * Key of article count.
+     */
+    public static final String STATISTIC_ARTICLE_COUNT = "statisticArticleCount";
+    /**
+     * Key of tag count.
+     */
+    public static final String STATISTIC_TAG_COUNT = "statisticTagCount";
+    /**
+     * Key of comment count.
+     */
+    public static final String STATISTIC_CMT_COUNT = "statisticCmtCount";
 
     /**
      * Private default constructor.

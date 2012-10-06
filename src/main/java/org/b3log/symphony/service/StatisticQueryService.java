@@ -15,8 +15,12 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Statistic;
@@ -25,9 +29,13 @@ import org.json.JSONObject;
 
 /**
  * Statistic management service.
+ * 
+ * <p>
+ *   <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is NOT cluster-safe.
+ * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 2, 2012
+ * @version 1.0.0.1, Oct 6, 2012
  * @since 0.2.0
  */
 public final class StatisticQueryService {
@@ -44,6 +52,58 @@ public final class StatisticQueryService {
      * Statistic repository.
      */
     private StatisticRepository statisticRepository = StatisticRepository.getInstance();
+    /**
+     * Online visitor cache.
+     * 
+     * <p>
+     * &lt;ip, recentTime&gt;
+     * </p>
+     */
+    private static final Map<String, Long> ONLINE_VISITORS = new HashMap<String, Long>();
+    /**
+     * Online visitor expiration in 5 minutes.
+     */
+    private static final int ONLINE_VISITOR_EXPIRATION = 300000;
+
+    /**
+     * Gets the online visitor count.
+     * 
+     * @return online visitor count
+     */
+    public static int getOnlineVisitorCount() {
+        removeExpiredOnlineVisitor();
+        
+        return ONLINE_VISITORS.size();
+    }
+
+    /**
+     * Refreshes online visitor count for the specified request.
+     * 
+     * @param request the specified request
+     */
+    public static void onlineVisitorCount(final HttpServletRequest request) {
+        ONLINE_VISITORS.put(request.getRemoteAddr(), System.currentTimeMillis());
+        LOGGER.log(Level.INFO, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+    }
+
+    /**
+     * Removes the expired online visitor.
+     */
+    private static void removeExpiredOnlineVisitor() {
+        final long currentTimeMillis = System.currentTimeMillis();
+
+        final Iterator<Map.Entry<String, Long>> iterator = ONLINE_VISITORS.entrySet().iterator();
+        while (iterator.hasNext()) {
+            final Map.Entry<String, Long> onlineVisitor = iterator.next();
+
+            if (currentTimeMillis > (onlineVisitor.getValue() + ONLINE_VISITOR_EXPIRATION)) {
+                iterator.remove();
+                LOGGER.log(Level.FINEST, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
+            }
+        }
+
+        LOGGER.log(Level.INFO, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+    }
 
     /**
      * Adds the statistic.

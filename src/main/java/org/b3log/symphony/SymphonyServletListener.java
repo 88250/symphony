@@ -28,13 +28,14 @@ import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.service.StatisticQueryService;
 import org.b3log.symphony.util.Skins;
 
 /**
  * B3log Symphony servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 12, 2011
+ * @version 1.0.0.2, Oct 6, 2011
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -104,8 +105,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
             LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
                     new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
                         session.isNew()});
+            // Online visitor count
+            StatisticQueryService.onlineVisitorCount(httpServletRequest);
         }
-
     }
 
     @Override

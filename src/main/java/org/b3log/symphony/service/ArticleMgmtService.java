@@ -25,8 +25,10 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Statistic;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.StatisticRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserTagRepository;
@@ -65,6 +67,10 @@ public final class ArticleMgmtService {
      * User-Tag repository.
      */
     private UserTagRepository userTagRepository = UserTagRepository.getInstance();
+    /**
+     * Statistic repository.
+     */
+    private StatisticRepository statisticRepository = StatisticRepository.getInstance();
     /**
      * Language service.
      */
@@ -112,9 +118,12 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.ARTICLE_STATUS, 0);
 
+            final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
+            tag(article.optString(Article.ARTICLE_TAGS).split(","), article, statistic);
 
-            tag(article.optString(Article.ARTICLE_TAGS).split(","), article);
+            statistic.put(Statistic.STATISTIC_ARTICLE_COUNT, statistic.optInt(Statistic.STATISTIC_ARTICLE_COUNT) + 1);
 
+            statisticRepository.update(Statistic.STATISTIC, statistic);
             articleRepository.add(article);
 
             transaction.commit();
@@ -135,9 +144,10 @@ public final class ArticleMgmtService {
      *
      * @param tagTitles the specified tag titles
      * @param article the specified article
+     * @param statistic the specified statistic
      * @throws RepositoryException repository exception
      */
-    private void tag(final String[] tagTitles, final JSONObject article) throws RepositoryException {
+    private void tag(final String[] tagTitles, final JSONObject article, final JSONObject statistic) throws RepositoryException {
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
             JSONObject tag = tagRepository.getByTitle(tagTitle);
@@ -156,6 +166,8 @@ public final class ArticleMgmtService {
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
                 userTagType = "creator";
+
+                statistic.put(Statistic.STATISTIC_TAG_COUNT, statistic.optInt(Statistic.STATISTIC_TAG_COUNT) + 1);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
