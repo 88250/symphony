@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.4, Sep 28, 2012
+* @version 1.0.0.5, Oct 6, 2012
 */
 /* start reset */
 html {
@@ -496,7 +496,7 @@ button.red:active {
 .footer {
     border-top: 1px solid #E0E0E0;
     box-shadow: 0 1px 1px white inset;
-    font-size: 10px;
+    line-height: 28px;
     padding: 10px 0;
 }
 /* end footer */

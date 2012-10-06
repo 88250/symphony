@@ -79,9 +79,9 @@
                             <a href="/">>></a>
                         </div>
                     </div>
-                    <div class="form">
+                    <div class="form fn-clear">
                         <textarea></textarea>
-                        <button>submit</button>
+                        <button class="green fn-right">submit</button>
                     </div>
 
                 </div>

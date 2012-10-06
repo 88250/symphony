@@ -80,14 +80,16 @@
                 <div class="side">
                     <div>
                         <img class="avatar-big" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
-                        <br/>
-                        online 
-                        <br/>
                         <div>
-                            <a href="">${user.userName}</a> 
-                            <a href="">${user.userURL}</a>
+                            online 
                             <br/>
-                            B3log Symphony 第 ${user.userNo} 号会员，加入于 ${user.created}
+                            <a href="">${user.userName}</a> 
+                            <br/>
+                            URL: <a href="">${user.userURL}</a>
+                            <br/>
+                            B3log Symphony 第 ${user.userNo} 号会员
+                            <br/>
+                            加入于 ${user.created}
                         </div>
                         <div>
                             ${user.userIntro}
