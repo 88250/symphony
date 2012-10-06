@@ -498,6 +498,7 @@ button.red:active {
 
 /* start footer */
 .footer {
+    color: #333;
     border-top: 1px solid #E0E0E0;
     box-shadow: 0 1px 1px white inset;
     line-height: 28px;
