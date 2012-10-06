@@ -16,14 +16,13 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
@@ -111,7 +110,10 @@ public class LoginProcessor {
 
         renderer.setTemplateName("register.ftl");
 
-        Filler.fillHeader(request, response, renderer.getDataModel());
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
     }
 
     /**
@@ -199,8 +201,6 @@ public class LoginProcessor {
 
                 ret.put(Keys.MSG, "");
                 ret.put(Keys.STATUS_CODE, true);
-
-                return;
             }
         } catch (final ServiceException e) {
             ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));
@@ -320,7 +320,7 @@ public class LoginProcessor {
             return true;
         }
 
-        char c = 0;
+        char c;
         for (int i = 0; i < length; i++) {
             c = name.charAt(i);
 

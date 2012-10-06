@@ -32,7 +32,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
-import org.b3log.latke.util.Locales;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.util.Filler;
 
@@ -68,11 +67,11 @@ public final class ErrorProcessor {
      * @param context the specified context
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @throws IOException io exception 
+     * @throws Exception exception 
      */
     @RequestProcessing(value = "/error/*", method = HTTPRequestMethod.GET)
     public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws Exception {
         final String requestURI = request.getRequestURI();
         final String templateName = requestURI.substring("/error/".length()) + ".ftl";
         LOGGER.log(Level.FINE, "Shows error page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
@@ -83,20 +82,8 @@ public final class ErrorProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        try {
-            final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
-            dataModel.putAll(langs);
-            
-            Filler.fillHeader(request, response, dataModel);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
-            }
-        }
+        Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
     }
 
     /**

@@ -114,6 +114,7 @@ public class UserProcessor {
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
 
         Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
     }
 
     /**
@@ -142,8 +143,8 @@ public class UserProcessor {
         dataModel.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, user.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL));
         dataModel.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, user.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL));
 
-
         Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
     }
 
     /**

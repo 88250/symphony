@@ -109,6 +109,16 @@ public final class Filler {
     }
 
     /**
+     * Fills footer.
+     * 
+     * @param dataModel the specified data model
+     * @throws Exception exception
+     */
+    public static void fillFooter(final Map<String, Object> dataModel) throws Exception {
+        fillSysInfo(dataModel);
+    }
+
+    /**
      * Fills personal navigation.
      * 
      * @param request the specified request
@@ -180,7 +190,7 @@ public final class Filler {
      * @param dataModel the specified data model
      * @throws Exception exception 
      */
-    public static void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
+    private static void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
         dataModel.put(Common.ONLINE_VISITOR_CNT, StatisticQueryService.getOnlineVisitorCount());
 

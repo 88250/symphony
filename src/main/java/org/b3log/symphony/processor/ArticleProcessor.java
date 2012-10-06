@@ -105,6 +105,7 @@ public class ArticleProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
     }
 
     /**
@@ -126,6 +127,7 @@ public class ArticleProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
     }
 
     /**

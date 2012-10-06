@@ -83,9 +83,9 @@ public class IndexProcessor {
         dataModel.put(Common.LATEST_CMT_ARTICLES, latestCmtArticles);
 
         Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
         Filler.fillRandomArticles(dataModel);
         Filler.fillSideTags(dataModel);
-        Filler.fillSysInfo(dataModel);
 
         Stopwatchs.end();
     }
