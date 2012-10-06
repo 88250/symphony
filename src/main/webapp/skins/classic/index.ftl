@@ -20,7 +20,7 @@
                             <li>
                                 <div>
                                     <div class="fn-clear">
-                                        <img class="avatar fn-left" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
+                                        <img class="avatar fn-left" src="${latestCmtArticle.articleAuthorThumbnailURL}" />
                                         <div class="fn-left" style="width: 550px">
                                             <h2><a href="${latestCmtArticle.articlePermalink}">${latestCmtArticle.articleTitle}</a></h2>
                                             <span class="ft-small">

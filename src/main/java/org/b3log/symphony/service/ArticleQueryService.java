@@ -20,11 +20,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.json.JSONObject;
@@ -66,7 +68,7 @@ public final class ArticleQueryService {
         try {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            toArticlesDate(ret);
+            organizeArticles(ret);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -85,7 +87,7 @@ public final class ArticleQueryService {
     public List<JSONObject> getRandomArticles(final int fetchSize) throws ServiceException {
         try {
             final List<JSONObject> ret = articleRepository.getRandomly(fetchSize);
-            toArticlesDate(ret);
+            organizeArticles(ret);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -108,7 +110,7 @@ public final class ArticleQueryService {
         try {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            toArticlesDate(ret);
+            organizeArticles(ret);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -131,7 +133,7 @@ public final class ArticleQueryService {
         try {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            toArticlesDate(ret);
+            organizeArticles(ret);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -141,13 +143,19 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Converts the specified articles create/update/latest comment time (long) to date type.
+     * Organizes the specified articles 
+     * 
+     * <ul>
+     *   <li>converts create/update/latest comment time (long) to date type</li>
+     *   <li>generates author thumbnail URL</li>
+     * </ul>
      * 
      * @param articles the specified articles
      */
-    private static void toArticlesDate(final List<JSONObject> articles) {
+    private static void organizeArticles(final List<JSONObject> articles) {
         for (final JSONObject article : articles) {
             toArticleDate(article);
+            genArticleAuthorThumbnailURL(article);
         }
     }
 
@@ -160,6 +168,19 @@ public final class ArticleQueryService {
         article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
         article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
         article.put(Article.ARTICLE_LATEST_CMT_TIME, new Date(article.optLong(Article.ARTICLE_LATEST_CMT_TIME)));
+    }
+
+    /**
+     * Generates the specified article author thumbnail URL.
+     * 
+     * @param article the specified article
+     */
+    private static void genArticleAuthorThumbnailURL(final JSONObject article) {
+        final String hashedEmail = MD5.hash(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
+        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
+                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+
+        article.put(Article.ARTICLE_AUTHOR_THUMBNAIL_URL, thumbnailURL);
     }
 
     /**

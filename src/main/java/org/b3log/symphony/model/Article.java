@@ -92,4 +92,10 @@ public final class Article {
      * Key of article status.
      */
     public static final String ARTICLE_STATUS = "articleStatus";
+    
+    //// Transient ////
+    /**
+     * Key of article author thumbnail URL.
+     */
+    public static final String ARTICLE_AUTHOR_THUMBNAIL_URL = "articleAuthorThumbnailURL";
 }
