@@ -28,7 +28,6 @@
                                                 <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
                                                     ${articleTag}</a><#if articleTag_has_next>, </#if>
                                                 </#list>
-                                                ${latestCmtArticle.articleCreateTime}
                                             </span>
                                         </div>
                                     </div>

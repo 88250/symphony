@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.json.JSONObject;
@@ -63,7 +65,10 @@ public final class ArticleQueryService {
                 .setPageCount(currentPageNum).setPageSize(pageSize);
         try {
             final JSONObject result = articleRepository.get(query);
-            return org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            toArticlesDate(ret);
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets user articles failed", e);
             throw new ServiceException(e);
@@ -79,7 +84,10 @@ public final class ArticleQueryService {
      */
     public List<JSONObject> getRandomArticles(final int fetchSize) throws ServiceException {
         try {
-            return articleRepository.getRandomly(fetchSize);
+            final List<JSONObject> ret = articleRepository.getRandomly(fetchSize);
+            toArticlesDate(ret);
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets random articles failed", e);
             throw new ServiceException(e);
@@ -99,7 +107,10 @@ public final class ArticleQueryService {
 
         try {
             final JSONObject result = articleRepository.get(query);
-            return org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            toArticlesDate(ret);
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets recent articles failed", e);
             throw new ServiceException(e);
@@ -119,11 +130,36 @@ public final class ArticleQueryService {
 
         try {
             final JSONObject result = articleRepository.get(query);
-            return org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            toArticlesDate(ret);
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets latest comment articles failed", e);
             throw new ServiceException(e);
         }
+    }
+
+    /**
+     * Converts the specified articles create/update/latest comment time (long) to date type.
+     * 
+     * @param articles the specified articles
+     */
+    private static void toArticlesDate(final List<JSONObject> articles) {
+        for (final JSONObject article : articles) {
+            toArticleDate(article);
+        }
+    }
+
+    /**
+     * Converts the specified article create/update/latest comment time (long) to date type.
+     * 
+     * @param article the specified article
+     */
+    private static void toArticleDate(final JSONObject article) {
+        article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
+        article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
+        article.put(Article.ARTICLE_LATEST_CMT_TIME, new Date(article.optLong(Article.ARTICLE_LATEST_CMT_TIME)));
     }
 
     /**
