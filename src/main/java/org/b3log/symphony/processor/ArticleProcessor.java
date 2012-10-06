@@ -38,6 +38,7 @@ import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.service.ArticleMgmtService;
+import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -78,6 +79,10 @@ public class ArticleProcessor {
      * Article management service.
      */
     private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+    /**
+     * Article query service.
+     */
+    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
     /**
      * User query service.
      */
@@ -125,6 +130,8 @@ public class ArticleProcessor {
 
         renderer.setTemplateName("/article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModel.put(Article.ARTICLE, articleQueryService.getArticleById(articleId));
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);

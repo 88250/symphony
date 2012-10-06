@@ -54,6 +54,22 @@ public final class ArticleQueryService {
     private ArticleRepository articleRepository = ArticleRepository.getInstance();
 
     /**
+     * Gets an article by the specified id.
+     * 
+     * @param articleId the specified id
+     * @return article, return {@code null} if not found
+     * @throws ServiceException service exception 
+     */
+    public JSONObject getArticleById(final String articleId) throws ServiceException {
+        try {
+            return articleRepository.get(articleId);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets article [articleId=" + articleId + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets the user articles with the specified user id, page number and page size.
      * 
      * @param userId the specified user id

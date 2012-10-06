@@ -23,6 +23,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.Ids;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Statistic;
@@ -97,7 +98,9 @@ public final class ArticleMgmtService {
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
+            final String ret = Ids.genTimeMillisId();
             final JSONObject article = new JSONObject();
+            article.put(Keys.OBJECT_ID, ret);
 
             article.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
@@ -114,7 +117,7 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_CREATE_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_LATEST_CMT_TIME, currentTimeMillis);
-            article.put(Article.ARTICLE_PERMALINK, "TODO permalink");
+            article.put(Article.ARTICLE_PERMALINK, "/article/" + ret);
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.ARTICLE_STATUS, 0);
 
@@ -128,7 +131,7 @@ public final class ArticleMgmtService {
 
             transaction.commit();
 
-            return article.optString(Keys.OBJECT_ID);
+            return ret;
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();

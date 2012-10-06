@@ -31,7 +31,7 @@
                         </div>
                         <h2 class="article-title">
                             <a href="" rel="bookmark">
-                                我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题
+                                ${article.articleTitle}
                             </a>
                         </h2>
                         <div>
