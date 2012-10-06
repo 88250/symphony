@@ -89,8 +89,8 @@ public class InitProcessor {
             // Init admin
             final UserMgmtService userMgmtService = UserMgmtService.getInstance();
             final JSONObject admin = new JSONObject();
-            admin.put(User.USER_EMAIL, "88250@b3log.org");
-            admin.put(User.USER_NAME, "Admin");
+            admin.put(User.USER_EMAIL, "DL88250@gmail.com");
+            admin.put(User.USER_NAME, "88250");
             admin.put(User.USER_PASSWORD, "test");
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             userMgmtService.addUser(admin);
