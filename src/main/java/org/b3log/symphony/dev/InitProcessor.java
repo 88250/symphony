@@ -101,7 +101,7 @@ public class InitProcessor {
             article.put(Article.ARTICLE_TAGS, "B3log, Java");
             article.put(Article.ARTICLE_CONTENT, "B3log Symphony 第一帖 ;-p");
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, "88250@b3log.org");
+            article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.optString(User.USER_EMAIL));
             article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
             articleMgmtService.addArticle(article);
 
