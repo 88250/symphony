@@ -15,9 +15,8 @@
  */
 package org.b3log.symphony.processor;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +30,11 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.Symphonys;
+import org.json.JSONObject;
 
 /**
  * Index processor.
@@ -51,6 +54,10 @@ public class IndexProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class.getName());
+    /**
+     * Article query service.
+     */
+    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
 
     /**
      * Shows index.
@@ -58,11 +65,11 @@ public class IndexProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws IOException io exception 
+     * @throws Exception exception 
      */
     @RequestProcessing(value = "/", method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws Exception {
         Stopwatchs.start("Show Index");
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -71,16 +78,15 @@ public class IndexProcessor {
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        // TODO: sys nav, sys info
         dataModel.put("version", SymphonyServletListener.VERSION);
+        
+        final List<JSONObject> latestCmtArticles = articleQueryService.getLatestCmtArticles(Symphonys.getInt("latestCmtArticlesCnt"));
+        dataModel.put(Common.LATEST_CMT_ARTICLES, latestCmtArticles);
 
         Filler.fillHeader(request, response, dataModel);
-
-        try {
-            Filler.fillRandomArticles(dataModel);
-            Filler.fillSideTags(dataModel);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Shows index failed");
-        }
+        Filler.fillRandomArticles(dataModel);
+        Filler.fillSideTags(dataModel);
 
         Stopwatchs.end();
     }
