@@ -16,15 +16,15 @@
                 <div class="content">
                     <div class="article-list list">
                         <ul>
-                            <#list 1..10 as i>
+                            <#list latestCmtArticles as latestCmtArticle>
                             <li>
                                 <div>
                                     <div class="fn-clear">
                                         <img class="avatar fn-left" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
                                         <div class="fn-left" style="width: 550px">
-                                            <h2><a href="/article/ss">titlitletissssssdddletitletitletitletitletitletitletitletitle</a></h2>
+                                            <h2><a href="/article/ss">${latestCmtArticle.articleTitle}</a></h2>
                                             <span class="ft-small">
-                                                <a href="">ttitletitletitletitletitletitletitletitletitletitletitletitletitletitleagss</a> 
+                                                <a href="">${latestCmtArticle.articleTags}</a> 
                                                 2012-02-10
                                             </span>
                                         </div>

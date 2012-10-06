@@ -293,6 +293,10 @@
             "type": "long"
         },
         {
+            "name": "articleLatestCmtTime",
+            "type": "long"
+        },
+        {
             "name": "articleRandomDouble",
             "type": "double"
         },

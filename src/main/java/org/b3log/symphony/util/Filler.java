@@ -68,7 +68,7 @@ public final class Filler {
      * @throws Exception exception 
      */
     public static void fillRandomArticles(final Map<String, Object> dataModel) throws Exception {
-        dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(Symphonys.getInt("recentArticlesCnt")));
+        dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(Symphonys.getInt("sideRandomArticlesCnt")));
     }
 
     /**

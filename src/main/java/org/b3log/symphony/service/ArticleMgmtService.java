@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 2, 2012
+ * @version 1.0.0.2, Oct 6, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -106,11 +106,12 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_VIEW_CNT, 0);
             article.put(Article.ARTICLE_COMMENTABLE, true);
             article.put(Article.ARTICLE_CREATE_TIME, currentTimeMillis);
+            article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
+            article.put(Article.ARTICLE_LATEST_CMT_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_PERMALINK, "TODO permalink");
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.ARTICLE_STATUS, 0);
-            article.put(Article.ARTICLE_UPDATE_TIME, 0);
-            article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
+
 
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article);
 
@@ -142,7 +143,7 @@ public final class ArticleMgmtService {
             JSONObject tag = tagRepository.getByTitle(tagTitle);
             String tagId;
             String userTagType;
-            
+
             if (null == tag) {
                 LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
                         new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});

@@ -87,7 +87,7 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Gets the recent articles with the specified fetch size.
+     * Gets the recent (sort by create time) articles with the specified fetch size.
      * 
      * @param fetchSize the specified fetch size
      * @return recent articles, returns an empty list if not found
@@ -102,6 +102,26 @@ public final class ArticleQueryService {
             return org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets recent articles failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the latest comment articles with the specified fetch size.
+     * 
+     * @param fetchSize the specified fetch size
+     * @return recent articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getLatestCmtArticles(final int fetchSize) throws ServiceException {
+        final Query query = new Query().addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
+                .setPageCount(1).setPageSize(fetchSize);
+
+        try {
+            final JSONObject result = articleRepository.get(query);
+            return org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets latest comment articles failed", e);
             throw new ServiceException(e);
         }
     }
