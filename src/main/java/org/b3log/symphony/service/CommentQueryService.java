@@ -15,17 +15,22 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.repository.CommentRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONObject;
 
 /**
@@ -49,6 +54,10 @@ public final class CommentQueryService {
      * Comment repository.
      */
     private CommentRepository commentRepository = CommentRepository.getInstance();
+    /**
+     * User repository.
+     */
+    private UserRepository userRepository = UserRepository.getInstance();
 
     /**
      * Gets the article comments with the specified article id, page number and page size.
@@ -66,12 +75,61 @@ public final class CommentQueryService {
         try {
             final JSONObject result = commentRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-
+            
+            organizeComments(ret);
+            
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets article [" + articleId + "] comments failed", e);
             throw new ServiceException(e);
         }
+    }
+
+    /**
+     * Organizes the specified comments.
+     * 
+     * <ul>
+     *   <li>converts comment create time (long) to date type</li>
+     *   <li>generates comment author thumbnail URL</li>
+     *   <li>generates comment author URL</li>
+     *   <li>generates comment author name</li>
+     * </ul>
+     * 
+     * @param comments the specified comments
+     * @throws RepositoryException repository exception 
+     */
+    private void organizeComments(final List<JSONObject> comments) throws RepositoryException {
+        for (final JSONObject comment : comments) {
+            organizeArticle(comment);
+        }
+    }
+
+    /**
+     * Organizes the specified comment.
+     * 
+     * <ul>
+     *   <li>converts comment create time (long) to date type</li>
+     *   <li>generates comment author thumbnail URL</li>
+     *   <li>generates comment author URL</li>
+     *   <li>generates comment author name</li>
+     * </ul>
+     * 
+     * @param comment the specified comment
+     * @throws RepositoryException repository exception
+     */
+    private void organizeArticle(final JSONObject comment) throws RepositoryException {
+        comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
+        
+        final String hashedEmail = MD5.hash(comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
+                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+        
+        comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
+        
+        final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+        final JSONObject author = userRepository.get(authorId);
+        comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+        comment.put(Comment.COMMENT_T_AUTHOR_URL, author.optString(User.USER_URL));
     }
 
     /**

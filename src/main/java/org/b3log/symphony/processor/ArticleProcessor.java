@@ -159,7 +159,7 @@ public class ArticleProcessor {
 
         final List<JSONObject> articleComments = commentQueryService.getArticleComments(
                 articleId, Integer.valueOf(pageNumStr), Symphonys.getInt("articleCommentsCnt"));
-        article.put(Article.ARTICLE_T_COMMENTS, articleComments);
+        article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
