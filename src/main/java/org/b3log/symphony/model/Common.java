@@ -88,7 +88,10 @@ public final class Common {
      * Key of online visitor count.
      */
     public static final String ONLINE_VISITOR_CNT = "onlineVisitorCnt";
-
+    /**
+     * Key of article id.
+     */
+    public static final String ARTICLE_ID = "articleId";    
     /**
      * Private default constructor.
      */

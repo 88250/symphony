@@ -90,7 +90,7 @@ public final class ArticleMgmtService {
      *     "articleAuthorEmail": "",
      *     "articleAuthorId": ""
      * }
-     * </pre>,see {@link Article} for more details
+     * </pre>, see {@link Article} for more details
      * @return generated article id
      * @throws ServiceException service exception
      */
@@ -126,7 +126,7 @@ public final class ArticleMgmtService {
 
             statistic.put(Statistic.STATISTIC_ARTICLE_COUNT, statistic.optInt(Statistic.STATISTIC_ARTICLE_COUNT) + 1);
 
-            statisticRepository.update(Statistic.STATISTIC, statistic);
+            statisticRepository.update(Statistic.STATISTIC, statistic); // Updates global tag/article count
             articleRepository.add(article);
 
             transaction.commit();
@@ -137,7 +137,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds a user failed", e);
+            LOGGER.log(Level.SEVERE, "Adds an article failed", e);
             throw new ServiceException(e);
         }
     }

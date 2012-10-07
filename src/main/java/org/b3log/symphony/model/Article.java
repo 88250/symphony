@@ -97,17 +97,17 @@ public final class Article {
     /**
      * Key of article author thumbnail URL.
      */
-    public static final String ARTICLE_AUTHOR_THUMBNAIL_URL = "articleAuthorThumbnailURL";
+    public static final String ARTICLE_T_AUTHOR_THUMBNAIL_URL = "articleAuthorThumbnailURL";
     /**
      * Key of article author name.
      */
-    public static final String ARTICLE_AUTHOR_NAME = "articleAuthorName";
+    public static final String ARTICLE_T_AUTHOR_NAME = "articleAuthorName";
     /**
      * Key of article author URL.
      */
-    public static final String ARTICLE_AUTHOR_URL = "articleAuthorURL";
+    public static final String ARTICLE_T_AUTHOR_URL = "articleAuthorURL";
     /**
      * Key of article author intro.
      */
-    public static final String ARTICLE_AUTHOR_INTRO = "articleAuthorIntro";
+    public static final String ARTICLE_T_AUTHOR_INTRO = "articleAuthorIntro";
 }

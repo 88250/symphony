@@ -218,7 +218,7 @@ public final class ArticleQueryService {
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
                 + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
-        article.put(Article.ARTICLE_AUTHOR_THUMBNAIL_URL, thumbnailURL);
+        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
     }
 
     /**

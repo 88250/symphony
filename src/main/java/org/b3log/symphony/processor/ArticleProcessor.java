@@ -133,9 +133,9 @@ public class ArticleProcessor {
         final JSONObject article = articleQueryService.getArticleById(articleId);
         final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
         final JSONObject author = userQueryService.getUserByEmail(authorEmail);
-        article.put(Article.ARTICLE_AUTHOR_NAME, author.optString(User.USER_NAME));
-        article.put(Article.ARTICLE_AUTHOR_URL, author.optString(User.USER_URL));
-        article.put(Article.ARTICLE_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
+        article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+        article.put(Article.ARTICLE_T_AUTHOR_URL, author.optString(User.USER_URL));
+        article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
         dataModel.put(Article.ARTICLE, article);
 
         Filler.fillHeader(request, response, dataModel);
@@ -146,7 +146,7 @@ public class ArticleProcessor {
      * Adds an article locally.
      *
      * <p>
-     * The request json object (a post): 
+     * The request json object (an article): 
      * <pre>
      * {
      *   "articleTitle": "",
