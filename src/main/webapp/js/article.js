@@ -48,9 +48,9 @@ var Comment = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     if (result.sc) {
-                        window.location = "/home/" + Label.userName;
+                        window.location.reload();
                     } else {
-                        $("#tip").addClass("tip-error").text(result.msg);
+                        $("#commentContent").next().addClass("tip-error").text(result.msg);
                     }
                 }
             });

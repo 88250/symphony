@@ -33,7 +33,7 @@
                                             <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
                                                 ${articleTag}</a><#if articleTag_has_next>, </#if>
                                             </#list>
-                                            ${userHomeArticle.articleCreateTime?string('yyyy-MM')}
+                                            ${userHomeArticle.articleCreateTime?string('yyyy-MM-dd HH:mm:ss')}
                                         </span>
                                         <div class="count ft-small">
                                             ${viewLabel} <a href="">${userHomeArticle.articleViewCount}</a><br/>

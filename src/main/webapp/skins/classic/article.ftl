@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="${article.articleTitle} - B3log ${symphonyLabel}">
+        <meta name="keywords" content="${article.articleTags}"/>
+        <meta name="description" content="${article.articleTitle}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index.css" />
     </head>
@@ -40,28 +40,26 @@
                         </div>
                     </div>
                     <div class="comment-list list">
-                        <h2>10 comments</h2>
+                        <h2>${article.articleComments?size} ${cmtLabel}</h2>
                         <ul>
-                            <#list 1..5 as i>
+                            <#list article.articleComments as comment>
                             <li>
                                 <div class="fn-clear">
                                     <div class="fn-left avatar">
-                                        <img src="/images/user-thumbnail.png" />
+                                        <img title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
                                     </div>
                                     <div class="fn-left comment-main">
                                         <span class="fn-clear">
                                             <span class="fn-left">
-                                                <a href="/" title="VanessaLiliYuan">VanessaLiliYuan</a>
+                                                <a href="/home/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                                 @ <a href="/">Daniel</a>
                                             </span>
                                             <span class="fn-right ft-small">
-                                                2012-01-21
+                                                ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm:ss')}
                                             </span>    
                                         </span>
                                         <div>
-                                            我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
-                                            我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
-                                            我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
+                                            ${comment.commentContent}
                                         </div>
                                     </div>
                                 </div>
@@ -81,7 +79,7 @@
                     <div class="form fn-clear">
                         <textarea id="commentContent"></textarea>
                         <span style="right:0;top:11px;"></span>
-                        <button class="green fn-right" onclick="Comment.add('${article.oId}')">submit</button>
+                        <button class="green fn-right" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
                     </div>
 
                 </div>
@@ -92,8 +90,11 @@
                                 <img src="${article.articleAuthorThumbnailURL}" />
                             </div>
                             <div class="fn-left">
-                                <a href="/home/${article.articleAuthorName?url('utf-8')}" title="${article.articleAuthorName}">${article.articleAuthorName}</a><br/>
+                                <a href="/home/${article.articleAuthorName?url('utf-8')}" title="${article.articleAuthorName}">${article.articleAuthorName}</a>
+                                <#if article.articleAuthorURL!="">
+                                <br/>
                                 <a href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
+                                </#if>
                             </div>
                         </div>
                         <div>
