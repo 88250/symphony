@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 /**
- * @fileoverview home.
+ * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Oct 2, 2012
+ * @version 1.0.0.1, Oct 7, 2012
  */
 
 /**
- * @description Add article function.
+ * @description Add comment function.
  * @static
  */
-var AddArticle = {
+var Comment = {
     _validateData: [{
         "id": "articleTitle",
         "type": 256,
@@ -40,7 +40,7 @@ var AddArticle = {
     }],
 
     /**
-     * @description 发布文章
+     * @description 评论
      */
     add: function () {
         if (Validate.goValidate(this._validateData)) {
@@ -58,7 +58,7 @@ var AddArticle = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     if (result.sc) {
-                        window.location = "/article-list";
+                        window.location = "/home/" + Label.userName;
                     } else {
                         $("#tip").addClass("tip-error").text(result.msg);
                     }

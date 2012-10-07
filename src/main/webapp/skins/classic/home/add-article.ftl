@@ -41,6 +41,7 @@
             Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
             Label.articleContentErrorLabel = "${articleContentErrorLabel}";
             Label.articleTagsErrorLabel = "${articleTagsErrorLabel}";
+            Label.userName = "${userName}";
         </script>
         <script type="text/javascript" src="/js/add-article.js"></script>
     </body>

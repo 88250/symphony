@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Sep 28, 2012
+ * @version 1.0.0.7, Oct 7, 2012
  */
 
 /**
@@ -90,6 +90,13 @@ var Util = {
         
         // init login validate
         Validate.initValidate(this._validateData);
+        
+        // search input
+        $(".nav input.search").focus(function () {
+            $(".nav .tags").hide();
+        }).blur(function () {
+            $(".nav .tags").show();
+        });
     },
    
     /**

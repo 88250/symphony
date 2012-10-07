@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.5, Oct 6, 2012
+* @version 1.0.0.5, Oct 7, 2012
 */
 /* start reset */
 html {
@@ -466,11 +466,11 @@ button.red:active {
     background: url("../images/icons.png") no-repeat scroll 3px 5px #FFFFFF;
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
-    left: 210px;
+    left: 170px;
     padding: 3px 5px 3px 20px;
     position: absolute;
-    top: 15px;
-    width: 50px;
+    top: 16px;
+    width: 0;
     z-index: 1;
     -moz-transition: width 0.4s ease, background 0.4s ease;
     -webkit-transition: width 0.4s ease, background 0.4s ease;
@@ -480,13 +480,17 @@ button.red:active {
 .nav input.search:focus {
     border-color: #51A7E8;
     box-shadow: 0 0 3px rgba(81, 167, 232, 0.5), 0 1px 1px rgba(0, 0, 0, 0.2) inset;
-    width: 200px;
+    width:530px;
+    left: 210px;
 }
 
 .nav .tags {
+    left: 210px;
     position: absolute;
-    left: 300px;
-    top: 15px;
+    top: 3px;
+    white-space: normal;
+    width: 550px;
+    word-wrap: break-word;
 }
 
 .header {

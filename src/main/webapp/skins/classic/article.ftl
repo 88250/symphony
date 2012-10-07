@@ -139,5 +139,6 @@
             </div>
         </div>
         <@footer/>
+        <script type="text/javascript" src="/js/article.js"></script>
     </body>
 </html>
