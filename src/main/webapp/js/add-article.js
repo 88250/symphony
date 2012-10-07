@@ -71,9 +71,5 @@ var AddArticle = {
      * @description 初识化发文页面
      */
     init: function () {
-        // init validate
-        Validate.initValidate(this._validateData);
     }
 };
-
-AddArticle.init();

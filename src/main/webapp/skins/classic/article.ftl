@@ -79,8 +79,9 @@
                         </div>
                     </div>
                     <div class="form fn-clear">
-                        <textarea></textarea>
-                        <button class="green fn-right">submit</button>
+                        <textarea id="commentContent"></textarea>
+                        <span style="right:0;top:11px;"></span>
+                        <button class="green fn-right" onclick="Comment.add('${article.oId}')">submit</button>
                     </div>
 
                 </div>
@@ -139,6 +140,9 @@
             </div>
         </div>
         <@footer/>
+        <script>
+            Label.commentErrorLabel = "${commentErrorLabel}";
+        </script>
         <script type="text/javascript" src="/js/article.js"></script>
     </body>
 </html>

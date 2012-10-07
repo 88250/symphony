@@ -88,9 +88,6 @@ var Util = {
             }
         });
         
-        // init login validate
-        Validate.initValidate(this._validateData);
-        
         // search input
         $(".nav input.search").focus(function () {
             $(".nav .tags").hide();
@@ -151,8 +148,19 @@ var Validate = {
      * @returns 验证通过返回 true，否则为 false。 
      */
     goValidate: function (data) {
-        for (var i = 0; i < data.length; i++) {
-            $("#" + data[i].id).blur();
+        for (var j = 0; j < data.length; j++) {
+            var $it = $("#" + data[j].id);
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].id === $it.attr("id")) {
+                    data[i].val = $it.val();
+                    if (Validate.validate(data[i].type, data[i].val)) {
+                        $it.next().removeClass("tip-error").text("");
+                    } else { 
+                        $it.next().addClass("tip-error").text(data[i].msg);
+                    }
+                    break;
+                }
+            }  
         }
         
         for (var j = 0; j < data.length; j++) {
@@ -213,29 +221,6 @@ var Validate = {
                 break;
         }
         return isValidate;
-    },
-    
-    /**
-     * @description 数据验证初始化。
-     * @param {array} data 验证数据
-     */
-    initValidate: function (data) {
-        for (var j = 0; j < data.length; j++) {
-            $("#" + data[j].id).blur(function () {
-                var $it = $(this);
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].id === $it.attr("id")) {
-                        data[i].val = $it.val();
-                        if (Validate.validate(data[i].type, data[i].val)) {
-                            $it.next().removeClass("tip-error").text("");
-                        } else { 
-                            $it.next().addClass("tip-error").text(data[i].msg);
-                        }
-                        break;
-                    }
-                }  
-            });
-        }
     }
 };
 
