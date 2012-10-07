@@ -15,8 +15,18 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.CollectionUtils;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.repository.CommentRepository;
+import org.json.JSONObject;
 
 /**
  * Comment management service.
@@ -39,6 +49,30 @@ public final class CommentQueryService {
      * Comment repository.
      */
     private CommentRepository commentRepository = CommentRepository.getInstance();
+
+    /**
+     * Gets the article comments with the specified article id, page number and page size.
+     * 
+     * @param articleId the specified article id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return comments, return an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getArticleComments(final String articleId, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
+                .setPageCount(currentPageNum).setPageSize(pageSize);
+        try {
+            final JSONObject result = commentRepository.get(query);
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets article [" + articleId + "] comments failed", e);
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets the {@link CommentQueryService} singleton.
