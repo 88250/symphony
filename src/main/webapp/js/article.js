@@ -61,6 +61,8 @@ var Comment = {
      * @description 初识化发文页面
      */
     init: function () {
-        // init validate
+        $("#commentContent").val("");
     }
 };
+
+Comment.init();
