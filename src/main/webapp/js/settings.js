@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- * @fileoverview home.
+ * @fileoverview settings.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.1, Sep 28, 2012

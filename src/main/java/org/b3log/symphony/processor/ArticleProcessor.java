@@ -65,7 +65,8 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 6, 2012
+ * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @version 1.0.0.5, Oct 7, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -118,7 +119,7 @@ public class ArticleProcessor {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
-        renderer.setTemplateName("/home/article.ftl");
+        renderer.setTemplateName("/home/add-article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         Filler.fillHeader(request, response, dataModel);

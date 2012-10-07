@@ -89,9 +89,5 @@ var Register = {
         $("input[type=text], input[type=password], textarea").blur(function () {
             $(this).removeClass("input-error");
         });
-        
-        // init validate
-        Validate.initValidate(this._validateData);
     }
- 
 };

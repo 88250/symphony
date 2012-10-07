@@ -14,45 +14,35 @@
  * limitations under the License.
  */
 /**
- * @fileoverview add-article.
+ * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Oct 7, 2012
+ * @version 1.0.0.1, Oct 7, 2012
  */
 
 /**
- * @description Add article function.
+ * @description Add comment function.
  * @static
  */
-var AddArticle = {
+var Comment = {
     _validateData: [{
-        "id": "articleTitle",
+        "id": "commentContent",
         "type": 256,
-        "msg": Label.articleTitleErrorLabel
-    }, {
-        "id": "articleContent",
-        "type": 1048576,
-        "msg": Label.articleContentErrorLabel
-    }, {
-        "id": "articleTags",
-        "type": "tags",
-        "msg": Label.articleTagsErrorLabel
+        "msg": Label.commentErrorLabel
     }],
 
     /**
-     * @description 发布文章
+     * @description 添加评论
      */
-    add: function () {
+    add: function (id) {
         if (Validate.goValidate(this._validateData)) {
             var requestJSONObject = {
-                articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g,""),
-                articleContent: $("#articleContent").val(),
-                articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g,""),
-                syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked")
+                articleId: id,
+                commentContent: $("#commentContent").val().replace(/(^\s*)|(\s*$)/g,"")
             };
             
             $.ajax({
-                url: "/article",
+                url: "/comment",
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -71,5 +61,6 @@ var AddArticle = {
      * @description 初识化发文页面
      */
     init: function () {
+        // init validate
     }
 };
