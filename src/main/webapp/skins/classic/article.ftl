@@ -20,24 +20,23 @@
                                 ${article.articleCreateTime?string('yyyy-MM-dd HH:mm:ss')}
                             </div>
                             <div class="fn-right">
-                                浏览<a href="/">1</a> 评论<a href="/">1</a>   
+                                &nbsp;${viewLabel} <a href="/">${article.articleViewCount}</a> 
+                                ${cmtLabel} <a href="/">${article.articleCommentCount}</a>   
                             </div>
                             <div class="fn-right">
-                                <a href="/tag-articles" >tag1</a>
-                                <a href="/" >tag1</a>
-                                <a href="/" >tag1</a>
-                                <a href="/" >tag1</a>
+                                <#list article.articleTags?split(",") as articleTag>
+                                <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
+                                    ${articleTag}</a><#if articleTag_has_next>, </#if>
+                                </#list>
                             </div>
                         </div>
                         <h2 class="article-title">
-                            <a href="" rel="bookmark">
+                            <a href="${article.articlePermalink}" rel="bookmark">
                                 ${article.articleTitle}
                             </a>
                         </h2>
                         <div>
-                            我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
-                            我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
-                            我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
+                            ${article.articleContent}
                         </div>
                     </div>
                     <div class="comment-list list">
@@ -89,20 +88,20 @@
                     <div class="index-module">
                         <div class="fn-clear">
                             <div class="fn-left avatar">
-                                <img src="/images/user-thumbnail.png" />
+                                <img src="${article.articleAuthorThumbnailURL}" />
                             </div>
                             <div class="fn-left">
-                                <a href="/" title="VanessaLiliYuan">VanessaLiliYuan</a><br/>
-                                <a href="/" title="VanessaLiliYuan">http://vanessa.b3log.org</a>
+                                <a href="/home/${article.articleAuthorName?url('utf-8')}" title="${article.articleAuthorName}">${article.articleAuthorName}</a><br/>
+                                <a href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
                             </div>
                         </div>
                         <div>
-                            introintrointrointrointrointrointrointrointrointrointro
+                            ${article.articleAuthorIntro}
                         </div>
                     </div>
                     <div class="index-module">
                         <h2>
-                            relative article
+                            ${relativeArticleLabel}
                         </h2>
                         <ul>
                             <#list 1..10 as i>
@@ -120,7 +119,7 @@
                     </div>
                     <div class="index-module">
                         <h2>
-                            随机文章
+                            ${randomArticleLabel}
                         </h2>
                         <ul>
                             <#list 1..10 as i>

@@ -3,7 +3,7 @@
 </div>
 <div class="index-module">
     <h2>
-        ${randomArticleLaabel}
+        ${randomArticleLabel}
     </h2>
     <ul>
         <#list sideRandomArticles as randomArticle>
