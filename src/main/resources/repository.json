@@ -28,7 +28,7 @@
             "length": 255
         },
         {
-            "name": "commenAuthorId",
+            "name": "commentAuthorId",
             "type": "String",
             "length": 19
         },
