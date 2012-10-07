@@ -16,6 +16,7 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,14 +35,18 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.CommentMgmtService;
+import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.QueryResults;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
@@ -83,6 +88,14 @@ public class ArticleProcessor {
      * Article query service.
      */
     private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    /**
+     * Comment management service.
+     */
+    private CommentMgmtService commentMgmtService = CommentMgmtService.getInstance();
+    /**
+     * Comment query service.
+     */
+    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
     /**
      * User query service.
      */
@@ -134,10 +147,19 @@ public class ArticleProcessor {
         final JSONObject article = articleQueryService.getArticleById(articleId);
         final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
         final JSONObject author = userQueryService.getUserByEmail(authorEmail);
-        article.put(Article.ARTICLE_AUTHOR_NAME, author.optString(User.USER_NAME));
-        article.put(Article.ARTICLE_AUTHOR_URL, author.optString(User.USER_URL));
-        article.put(Article.ARTICLE_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
+        article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+        article.put(Article.ARTICLE_T_AUTHOR_URL, author.optString(User.USER_URL));
+        article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
         dataModel.put(Article.ARTICLE, article);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final List<JSONObject> articleComments = commentQueryService.getArticleComments(
+                articleId, Integer.valueOf(pageNumStr), Symphonys.getInt("articleCommentsCnt"));
+        article.put(Article.ARTICLE_T_COMMENTS, articleComments);
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
@@ -147,7 +169,7 @@ public class ArticleProcessor {
      * Adds an article locally.
      *
      * <p>
-     * The request json object (a post): 
+     * The request json object (an article): 
      * <pre>
      * {
      *   "articleTitle": "",
