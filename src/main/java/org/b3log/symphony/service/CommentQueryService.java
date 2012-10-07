@@ -120,7 +120,7 @@ public final class CommentQueryService {
     private void organizeArticle(final JSONObject comment) throws RepositoryException {
         comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
         
-        final String hashedEmail = MD5.hash(comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+        final String hashedEmail = MD5.hash(comment.optString(Comment.COMMENT_AUTHOR_EMAIL));
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
                 + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         
