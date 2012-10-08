@@ -124,7 +124,8 @@ public final class CommentQueryService {
     public List<JSONObject> getArticleComments(final String articleId, final int currentPageNum, final int pageSize)
             throws ServiceException {
         final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
-                .setPageCount(1).setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+                .setPageCount(1).setCurrentPageNum(currentPageNum).setPageSize(pageSize)
+                .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId));
         try {
             final JSONObject result = commentRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
