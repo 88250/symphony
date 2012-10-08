@@ -159,6 +159,16 @@ public final class ArticleQueryService {
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(ret);
 
+            // Gets participants
+            for (final JSONObject article : ret) {
+                final String participantName = "";
+                final String participantThumbnailURL = "";
+
+
+                article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
+                article.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, participantThumbnailURL);
+            }
+
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets latest comment articles failed", e);

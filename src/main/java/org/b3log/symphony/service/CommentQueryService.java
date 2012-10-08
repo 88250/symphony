@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 7, 2012
+ * @version 1.0.0.1, Oct 8, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -100,7 +100,7 @@ public final class CommentQueryService {
      */
     private void organizeComments(final List<JSONObject> comments) throws RepositoryException {
         for (final JSONObject comment : comments) {
-            organizeArticle(comment);
+            organizeComment(comment);
         }
     }
 
@@ -117,7 +117,7 @@ public final class CommentQueryService {
      * @param comment the specified comment
      * @throws RepositoryException repository exception
      */
-    private void organizeArticle(final JSONObject comment) throws RepositoryException {
+    private void organizeComment(final JSONObject comment) throws RepositoryException {
         comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
         
         final String hashedEmail = MD5.hash(comment.optString(Comment.COMMENT_AUTHOR_EMAIL));
