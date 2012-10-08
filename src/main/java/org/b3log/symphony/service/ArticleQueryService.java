@@ -29,6 +29,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
@@ -52,6 +53,10 @@ public final class ArticleQueryService {
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepository.getInstance();
+    /**
+     * Comment query service.
+     */
+    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
 
     /**
      * Gets an article by the specified id.
@@ -158,12 +163,16 @@ public final class ArticleQueryService {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(ret);
-
+            
             // Gets participants
+            final Integer participantsCnt = Symphonys.getInt("latestCmtArticleParticipantsCnt");
             for (final JSONObject article : ret) {
                 final String participantName = "";
                 final String participantThumbnailURL = "";
 
+                final List<JSONObject> articleParticipants =
+                        commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
+                article.put(Article.ARTICLE_T_PARTICIPANTS, articleParticipants);
 
                 article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
                 article.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, participantThumbnailURL);

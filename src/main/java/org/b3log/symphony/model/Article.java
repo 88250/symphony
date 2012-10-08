@@ -115,6 +115,10 @@ public final class Article {
      */
     public static final String ARTICLE_T_COMMENTS = "articleComments";
     /**
+     * Key of article participants.
+     */
+    public static final String ARTICLE_T_PARTICIPANTS = "articleParticipants";
+    /**
      * Key of article participant name.
      */
     public static final String ARTICLE_T_PARTICIPANT_NAME = "articleParticipantName";

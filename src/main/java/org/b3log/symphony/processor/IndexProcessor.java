@@ -30,8 +30,10 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -58,6 +60,10 @@ public class IndexProcessor {
      * Article query service.
      */
     private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    /**
+     * Comment query service.
+     */
+    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
 
     /**
      * Shows index.
