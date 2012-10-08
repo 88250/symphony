@@ -49,5 +49,3 @@ var Home = {
         });
     } 
 };
-
-Home.tab();

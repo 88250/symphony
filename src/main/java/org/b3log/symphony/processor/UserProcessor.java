@@ -97,7 +97,7 @@ public class UserProcessor {
      * @param userName the specified user name
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/home/{userName}", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/{userName}", method = HTTPRequestMethod.GET)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -116,7 +116,36 @@ public class UserProcessor {
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
     }
+    
+    /**
+     * Shows user home comments page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userName the specified user name
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/comments/{userName}", method = HTTPRequestMethod.GET)
+    public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String userName) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/comments.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
+        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        dataModel.put(User.USER, user);
+
+        final Date created = new Date(user.getLong(Keys.OBJECT_ID));
+        user.put(Common.CREATED, DateFormatUtils.format(created, "yyyy-MM-dd HH:mm:ss"));
+        final List<JSONObject> userArticles = articleQueryService.getUserArticles(userName, 1, Symphonys.getInt("userHomeArticlesCnt"));
+        dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
+
+        Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
+    }
+    
     /**
      * Shows settings page.
      *

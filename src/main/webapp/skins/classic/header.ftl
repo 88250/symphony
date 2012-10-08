@@ -20,7 +20,7 @@
         </div>
         <div class="fn-right fn-clear user-nav">
             <#if isLoggedIn>
-            <a href="/home/${userName}">${userName}</a>
+            <a href="/${userName}">${userName}</a>
             <a href="/add-article">${addArticleLabel}</a>
             <a href="/settings">${settingsLabel}</a>
             <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>

@@ -51,7 +51,7 @@
                                     <div class="fn-left comment-main">
                                         <span class="fn-clear">
                                             <span class="fn-left">
-                                                <a href="/home/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
+                                                <a href="/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                                 @ <a href="/">Daniel</a>
                                             </span>
                                             <span class="fn-right ft-small">
@@ -90,7 +90,7 @@
                                 <img src="${article.articleAuthorThumbnailURL}" />
                             </div>
                             <div class="fn-left">
-                                <a href="/home/${article.articleAuthorName?url('utf-8')}" title="${article.articleAuthorName}">${article.articleAuthorName}</a>
+                                <a href="/${article.articleAuthorName?url('utf-8')}" title="${article.articleAuthorName}">${article.articleAuthorName}</a>
                                 <#if article.articleAuthorURL!="">
                                 <br/>
                                 <a href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>

@@ -15,10 +15,10 @@
                 <div class="content">
                     <ul class="tab fn-clear">
                         <li class="current">
-                            ${articleLabel}
+                            <a href="/${user.userName}">${articleLabel}</a>
                         </li>
                         <li>
-                            ${cmtLabel}
+                            <a href="/comments/${user.userName}">${cmtLabel}</a>
                         </li>
                     </ul>
                     <div>
@@ -49,60 +49,13 @@
                                 </#list>
                             </ul>
                         </div>
-                        <div class="comment-list list fn-none">
-                            <ul>
-                                <#list 1..10 as i>
-                                <li>
-                                    <div class="fn-clear">
-                                        <div class="fn-left avatar">
-                                            <img src="/images/user-thumbnail.png" />
-                                        </div>
-                                        <div class="fn-left comment-main" style="width:612px">
-                                            <span class="fn-clear">
-                                                <span class="fn-left">
-                                                    <a href="/" title="VanessaLiliYuan">VanessaLiliYuan</a>
-                                                    @ <a href="/">Daniel</a>
-                                                </span>
-                                                <span class="fn-right ft-small">
-                                                    2012-01-21
-                                                </span>    
-                                            </span>
-                                            <div>
-                                                我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
-                                                我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
-                                                我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                </#list>  
-                            </ul>
-                        </div>
                     </div>
                 </div>
                 <div class="side">
-                    <div>
-                        <img class="avatar-big" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
-                        <div>
-                            online 
-                            <br/>
-                            <a href="/home/${user.userName?url('UTF-8')}">${user.userName}</a> 
-                            Symphony 第 ${user.userNo} 号会员
-                            <#if user.userURL!="">
-                            <br/>
-                            <span class="ft-small">URL: </span><a href="">${user.userURL}</a>
-                            </#if>
-                            <br/>
-                            <span class="ft-small">${joinTimeLabel}: </span>${user.created}
-                        </div>
-                        <div>
-                            ${user.userIntro}
-                        </div>
-                    </div>
+                    <#include "home-side.ftl">
                 </div>
             </div>
         </div>
         <#include "footer.ftl">
-        <script type="text/javascript" src="/js/home.js"></script>
     </body>
 </html>
