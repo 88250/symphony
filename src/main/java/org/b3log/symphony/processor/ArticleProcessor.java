@@ -24,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -34,6 +35,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
@@ -66,7 +68,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.5, Oct 7, 2012
+ * @version 1.0.0.6, Oct 8, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -157,9 +159,24 @@ public class ArticleProcessor {
             pageNumStr = "1";
         }
 
-        final List<JSONObject> articleComments = commentQueryService.getArticleComments(
-                articleId, Integer.valueOf(pageNumStr), Symphonys.getInt("articleCommentsCnt"));
+        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageSize = Symphonys.getInt("articleCommentsPageSize");
+        final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
+
+        final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, pageNum, pageSize);
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
+
+        final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);
+        final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
