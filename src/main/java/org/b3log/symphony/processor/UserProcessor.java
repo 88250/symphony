@@ -111,13 +111,14 @@ public class UserProcessor {
 
         final Date created = new Date(user.getLong(Keys.OBJECT_ID));
         user.put(Common.CREATED, DateFormatUtils.format(created, "yyyy-MM-dd HH:mm:ss"));
-        final List<JSONObject> userArticles = articleQueryService.getUserArticles(userName, 1, Symphonys.getInt("userHomeArticlesCnt"));
+        final List<JSONObject> userArticles = articleQueryService.getUserArticles(
+                user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeArticlesCnt"));
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
     }
-    
+
     /**
      * Shows user home comments page.
      *
@@ -146,7 +147,7 @@ public class UserProcessor {
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
     }
-    
+
     /**
      * Shows settings page.
      *

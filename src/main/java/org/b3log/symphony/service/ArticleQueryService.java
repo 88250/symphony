@@ -21,6 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
@@ -93,7 +95,8 @@ public final class ArticleQueryService {
      */
     public List<JSONObject> getUserArticles(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING)
-                .setPageCount(currentPageNum).setPageSize(pageSize);
+                .setPageCount(currentPageNum).setPageSize(pageSize).
+                setFilter(new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, userId));
         try {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -163,7 +166,7 @@ public final class ArticleQueryService {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(ret);
-            
+
             // Gets participants
             final Integer participantsCnt = Symphonys.getInt("latestCmtArticleParticipantsCnt");
             for (final JSONObject article : ret) {
