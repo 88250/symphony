@@ -66,13 +66,15 @@
                             </li>
                             </#list>  
                         </ul>
-                        <div style="text-align: center">
-                            <a href="/"><<</a>
-                            <a href="/">1</a>
+                        <div class="pagination">
+                            <a href="/a"><<</a>
+                            <span class="current">1</span>
                             <a href="/">2</a>
                             <a href="/">3</a>
                             <a href="/">4</a>
-                            <a href="/">...</a>
+                            <span class="gap">...</span>
+                            <a href="/">300</a>
+                            <a href="/">301</a>
                             <a href="/">>></a>
                         </div>
                     </div>

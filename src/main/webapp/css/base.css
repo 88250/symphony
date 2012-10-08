@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.5, Oct 7, 2012
+* @version 1.0.0.6, Oct 8, 2012
 */
 /* start reset */
 html {
@@ -378,6 +378,56 @@ button.red:active {
     border: 1px solid #CBE3EE;
 }
 /* end form */
+
+/* start pagination */
+.pagination {
+    background:#FFFFFF;
+    background:-moz-linear-gradient(#FFFFFF, #EFEFEF);
+    background:-webkit-linear-gradient(#FFFFFF, #EFEFEF);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#EFEFEF')";
+    border: 1px solid #eaeaea;
+    border-bottom: 0;
+    display: inline-block;
+    margin: 10px 0;
+    border-radius: 3px 3px 3px 3px;
+}
+.pagination a, .pagination span {
+    border-bottom: 1px solid #DADADA;
+    border-left: 1px solid rgba(255, 255, 255, 0.7);
+    border-right: 1px solid rgba(0, 0, 0, 0.04);
+    color: #777777;
+    float: left;
+    padding: 6px 10px 5px;
+    text-decoration: none;
+    text-shadow: 0 1px 0 white;
+}
+
+.pagination a {
+    cursor: pointer;
+}
+
+.pagination a:hover {
+    color:#4183c4;
+    border-bottom-color:#CFDCE8;
+    background:#fafbfd;
+    background:-moz-linear-gradient(#fafbfd, #dce6ef);
+    background:-webkit-linear-gradient(#fafbfd, #dce6ef);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafbfd', endColorstr='#dce6ef')";
+}
+
+.pagination span.current {
+    background:#FCFCFC;
+    background:-moz-linear-gradient(#FCFCFC, #EBEBEB);
+    background:-webkit-linear-gradient(#FCFCFC, #EBEBEB);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#FCFCFC', endColorstr='#EBEBEB')";
+    border-bottom-color: #D26911;
+    color: #000000;
+}
+
+.pagination span.gap {
+    color: #BBBBBB;
+}
+/* end pagination */
 
 /* start framework */
 .wrapper {

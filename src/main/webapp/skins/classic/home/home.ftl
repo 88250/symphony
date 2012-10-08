@@ -27,7 +27,7 @@
                                 <#list userHomeArticles as userHomeArticle>
                                 <li>
                                     <div>
-                                        <h2><a href="">${userHomeArticle.articleTitle}</a></h2>
+                                        <h2><a href="${userHomeArticle.articlePermalink}">${userHomeArticle.articleTitle}</a></h2>
                                         <span class="ft-small">
                                             <#list userHomeArticle.articleTags?split(",") as articleTag>
                                             <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
