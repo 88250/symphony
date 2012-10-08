@@ -11,8 +11,8 @@
             <a href="">${randomArticle.articleTitle}</a>
             <div class="ft-small">
                 <span>
-                    <a href="">vanesaa</a>
-                    2011-1-1
+                    <a href="/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
+                    ${randomArticle.articleCreateTime?string('yyyy-MM-dd HH:mm:ss')}
                 </span>
             </div>
         </li>

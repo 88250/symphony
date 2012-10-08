@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="comment-list list fn-clear">
-                        <h2>${article.articleComments?size} ${cmtLabel}</h2>
+                        <h2>${article.articleCommentCount} ${cmtLabel}</h2>
                         <ul>
                             <#list article.articleComments as comment>
                             <li>
@@ -66,17 +66,23 @@
                             </li>
                             </#list>  
                         </ul>
+                        <#if paginationPageCount!=0 && paginationPageCount!=1>
                         <div class="pagination">
-                            <span class="gap"><<</span>
-                            <span class="current">1</span>
-                            <a href="/">2</a>
-                            <a href="/">3</a>
-                            <a href="/">4</a>
-                            <span class="gap">...</span>
-                            <a href="/">300</a>
-                            <a href="/">301</a>
-                            <a href="/">>></a>
+                            <#if paginationFirstPageNum!=1>
+                            <a href="${article.articlePermalink}"><<1</a>
+                            </#if>
+                            <#list paginationPageNums as nums>
+                            <#if nums=paginationCurrentPageNum>
+                            <span class="current">${nums}</span>
+                            <#else>
+                            <a href="${article.articlePermalink}?p=${nums}">${nums}</a>
+                            </#if>
+                            </#list>
+                            <#if paginationLastPageNum!=paginationPageCount>
+                            <a href="${article.articlePermalink}?p=${paginationPageCount}">${paginationPageCount}>></a>
+                            </#if>
                         </div>
+                        </#if>
                     </div>
                     <div class="form fn-clear">
                         <textarea id="commentContent"></textarea>

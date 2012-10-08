@@ -39,11 +39,6 @@
                                             ${viewLabel} <a href="">${userHomeArticle.articleViewCount}</a><br/>
                                             ${cmtLabel} <a href="">${userHomeArticle.articleCommentCount}</a>
                                         </div>
-                                        <div class="commenters">
-                                            <#list 1..10 as i>
-                                            <img class="avatar-small" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
-                                            </#list>
-                                        </div>
                                     </div>
                                 </li>
                                 </#list>

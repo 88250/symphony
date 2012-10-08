@@ -20,7 +20,9 @@
                             <li>
                                 <div>
                                     <div class="fn-clear">
-                                        <img class="avatar fn-left" src="${latestCmtArticle.articleAuthorThumbnailURL}" />
+                                        <a class="ft-noline" 
+                                           href="/${latestCmtArticle.articleAuthorName}" 
+                                           title="${latestCmtArticle.articleAuthorName}"><img class="avatar fn-left" src="${latestCmtArticle.articleAuthorThumbnailURL}" /></a>
                                         <div class="fn-left" style="width: 550px">
                                             <h2><a href="${latestCmtArticle.articlePermalink}">${latestCmtArticle.articleTitle}</a></h2>
                                             <span class="ft-small">
@@ -36,9 +38,9 @@
                                         ${cmtLabel} <a href="">${latestCmtArticle.articleCommentCount}</a>
                                     </div>
                                     <div class="commenters">
-                                        <#list 1..10 as i>
-                                        <a href="" class="ft-noline">
-                                            <img class="avatar-small" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
+                                        <#list latestCmtArticle.articleParticipants as comment>
+                                        <a href="/${comment.articleParticipantName}" title="${comment.articleParticipantName}" class="ft-noline">
+                                            <img class="avatar-small" src="${comment.articleParticipantThumbnailURL}" />
                                         </a>
                                         </#list>
                                     </div>
