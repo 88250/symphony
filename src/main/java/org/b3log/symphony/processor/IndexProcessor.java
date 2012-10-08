@@ -18,10 +18,8 @@ package org.b3log.symphony.processor;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -29,8 +27,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.SymphonyServletListener;
-import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
@@ -46,7 +42,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 2, 2012
+ * @version 1.0.0.5, Oct 8, 2012
  * @since 0.2.0
  */
 @RequestProcessor

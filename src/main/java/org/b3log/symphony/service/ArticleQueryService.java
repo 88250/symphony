@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -31,6 +32,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -55,6 +57,10 @@ public final class ArticleQueryService {
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepository.getInstance();
+    /**
+     * User repository.
+     */
+    private UserRepository userRepository = UserRepository.getInstance();
     /**
      * Comment query service.
      */
@@ -194,11 +200,13 @@ public final class ArticleQueryService {
      * <ul>
      *   <li>converts create/update/latest comment time (long) to date type</li>
      *   <li>generates author thumbnail URL</li>
+     *   <li>generates author name</li>
      * </ul>
      * 
      * @param articles the specified articles
+     * @throws RepositoryException repository exception 
      */
-    private static void organizeArticles(final List<JSONObject> articles) {
+    private  void organizeArticles(final List<JSONObject> articles) throws RepositoryException {
         for (final JSONObject article : articles) {
             organizeArticle(article);
         }
@@ -210,13 +218,15 @@ public final class ArticleQueryService {
      * <ul>
      *   <li>converts create/update/latest comment time (long) to date type</li>
      *   <li>generates author thumbnail URL</li>
+     *   <li>generates author name</li>
      * </ul>
      * 
      * @param article the specified article
+     * @throws RepositoryException repository exception 
      */
-    private static void organizeArticle(final JSONObject article) {
+    private  void organizeArticle(final JSONObject article) throws RepositoryException {
         toArticleDate(article);
-        genArticleAuthorThumbnailURL(article);
+        genArticleAuthor(article);
     }
 
     /**
@@ -224,23 +234,27 @@ public final class ArticleQueryService {
      * 
      * @param article the specified article
      */
-    private static void toArticleDate(final JSONObject article) {
+    private  void toArticleDate(final JSONObject article) {
         article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
         article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
         article.put(Article.ARTICLE_LATEST_CMT_TIME, new Date(article.optLong(Article.ARTICLE_LATEST_CMT_TIME)));
     }
 
     /**
-     * Generates the specified article author thumbnail URL.
+     * Generates the specified article author name and thumbnail URL.
      * 
      * @param article the specified article
+     * @throws RepositoryException repository exception 
      */
-    private static void genArticleAuthorThumbnailURL(final JSONObject article) {
-        final String hashedEmail = MD5.hash(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
-        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
+    private void genArticleAuthor(final JSONObject article) throws RepositoryException {
+        final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
+        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(authorEmail) + "?s=140&d="
                 + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
+        
+        final JSONObject author = userRepository.getByEmail(authorEmail);
+        article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
     }
 
     /**
