@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * <p> 
  * For user 
  *   <ul> 
- *     <li>User Home (/home/{userName}), GET</li> 
+ *     <li>User Home (/{userName}), GET</li> 
  *     <li>Settings (/settings), GET</li> 
  *     <li>Profiles (/settings/profiles), POST</li>
  *     <li>Sync (/settings/b3), POST</li>
