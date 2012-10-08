@@ -388,8 +388,10 @@ button.red:active {
     border: 1px solid #eaeaea;
     border-bottom: 0;
     display: inline-block;
-    margin: 10px 0;
-    border-radius: 3px 3px 3px 3px;
+    margin: 20px 0 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    float: right;
 }
 .pagination a, .pagination span {
     border-bottom: 1px solid #DADADA;
@@ -397,7 +399,7 @@ button.red:active {
     border-right: 1px solid rgba(0, 0, 0, 0.04);
     color: #777777;
     float: left;
-    padding: 6px 10px 5px;
+    padding: 5px 8px;
     text-decoration: none;
     text-shadow: 0 1px 0 white;
 }
@@ -425,7 +427,7 @@ button.red:active {
 }
 
 .pagination span.gap {
-    color: #BBBBBB;
+    color: #BBB;
 }
 /* end pagination */
 

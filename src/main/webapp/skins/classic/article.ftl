@@ -39,7 +39,7 @@
                             ${article.articleContent}
                         </div>
                     </div>
-                    <div class="comment-list list">
+                    <div class="comment-list list fn-clear">
                         <h2>${article.articleComments?size} ${cmtLabel}</h2>
                         <ul>
                             <#list article.articleComments as comment>
@@ -67,7 +67,7 @@
                             </#list>  
                         </ul>
                         <div class="pagination">
-                            <a href="/a"><<</a>
+                            <span class="gap"><<</span>
                             <span class="current">1</span>
                             <a href="/">2</a>
                             <a href="/">3</a>
