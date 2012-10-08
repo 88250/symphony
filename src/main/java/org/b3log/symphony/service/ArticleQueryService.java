@@ -172,7 +172,7 @@ public final class ArticleQueryService {
 
                 final List<JSONObject> articleParticipants =
                         commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
-                article.put(Article.ARTICLE_T_PARTICIPANTS, articleParticipants);
+                article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
 
                 article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
                 article.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, participantThumbnailURL);
