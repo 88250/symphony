@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -35,6 +35,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
@@ -113,6 +114,7 @@ public class UserProcessor {
 
         final JSONObject user = LoginProcessor.getCurrentUser(request);
         dataModel.put(User.USER, user);
+        fillUserThumbnailURL(user);
 
         final Date created = new Date(user.getLong(Keys.OBJECT_ID));
         user.put(Common.CREATED, DateFormatUtils.format(created, "yyyy-MM-dd HH:mm:ss"));
@@ -143,6 +145,7 @@ public class UserProcessor {
 
         final JSONObject user = LoginProcessor.getCurrentUser(request);
         dataModel.put(User.USER, user);
+        fillUserThumbnailURL(user);
 
         final Date created = new Date(user.getLong(Keys.OBJECT_ID));
         user.put(Common.CREATED, DateFormatUtils.format(created, "yyyy-MM-dd HH:mm:ss"));
@@ -305,5 +308,17 @@ public class UserProcessor {
 
             ret.put(Keys.MSG, msg);
         }
+    }
+
+    /**
+     * Fills the specified user thumbnail URL.
+     * 
+     * @param user the specified user
+     */
+    private void fillUserThumbnailURL(final JSONObject user) {
+        final String userEmail = user.optString(User.USER_EMAIL);
+        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(userEmail) + "?s=140&d="
+                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+        user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
     }
 }
