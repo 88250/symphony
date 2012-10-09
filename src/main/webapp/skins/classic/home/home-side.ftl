@@ -1,5 +1,5 @@
 <div>
-    <img class="avatar-big" src="https://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140" />
+    <img class="avatar-big" title="${user.userName}" src="${user.userThumbnailURL}" />
     <div>
         online 
         <br/>

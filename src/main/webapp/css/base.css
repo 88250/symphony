@@ -610,7 +610,7 @@ button.red:active {
 /* end article list */
 
 /* start comment list */
-.comment-list h2 {
+.comment-list > h2 {
     border-bottom: 1px solid #CCCCCC;
     margin: 20px 0 0;
 }

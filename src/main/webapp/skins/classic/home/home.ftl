@@ -18,7 +18,7 @@
                             <a href="/${user.userName}">${articleLabel}</a>
                         </li>
                         <li>
-                            <a href="/comments/${user.userName}">${cmtLabel}</a>
+                            <a href="/${user.userName}/comments">${cmtLabel}</a>
                         </li>
                     </ul>
                     <div>

@@ -18,7 +18,7 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.4, Oct 2, 2012
+* @version 1.0.0.5, Oct 9, 2012
 */
 /* start home framework */
 /*.home-content {
@@ -94,11 +94,10 @@
 
 /* start home */
 .tab {
-    border-bottom: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDD;
 }
 
 .tab > li {
-    color: #666666;
     cursor: pointer;
     float: left;
     list-style: none outside none;
@@ -113,5 +112,11 @@
     font-weight: bold;
     line-height: 20px;
     margin-bottom: -1px;
+}
+
+.tab > li > a {
+    color: #666666;
+    line-height: 20px;
+    text-decoration: none;
 }
 /* end home */

@@ -18,32 +18,26 @@
                             <a href="/${user.userName}">${articleLabel}</a>
                         </li>
                         <li class="current">
-                            <a href="/comments/${user.userName}">${cmtLabel}</a>
+                            <a href="/${user.userName}/comments">${cmtLabel}</a>
                         </li>
                     </ul>
                     <div>
                         <div class="comment-list list">
                             <ul>
-                                <#list 1..10 as i>
+                                <#list userHomeComments as comment>
                                 <li>
                                     <div class="fn-clear">
-                                        <div class="fn-left avatar">
-                                            <img src="/images/user-thumbnail.png" />
-                                        </div>
-                                        <div class="fn-left comment-main" style="width:612px">
+                                        <div class="fn-left comment-main" style="width:670px">
                                             <span class="fn-clear">
                                                 <span class="fn-left">
-                                                    <a href="/" title="VanessaLiliYuan">VanessaLiliYuan</a>
-                                                    @ <a href="/">Daniel</a>
+                                                    <h2><a href="${comment.commentArticlePermalink}">${comment.commentArticleTitle}</a></h2>
                                                 </span>
                                                 <span class="fn-right ft-small">
-                                                    2012-01-21
+                                                    ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm:ss')}  
                                                 </span>    
                                             </span>
                                             <div>
-                                                我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
-                                                我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
-                                                我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要我是摘要
+                                                ${comment.commentContent}  
                                             </div>
                                         </div>
                                     </div>
