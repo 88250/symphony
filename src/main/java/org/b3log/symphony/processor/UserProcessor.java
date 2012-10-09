@@ -270,7 +270,6 @@ public class UserProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws ServletException servlet exception
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/password", method = HTTPRequestMethod.POST)
