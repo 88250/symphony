@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 7, 2012
+ * @version 1.0.0.1, Oct 9, 2012
  * @since 0.2.0
  */
 public final class Comment {
@@ -77,4 +77,12 @@ public final class Comment {
      * Key of comment author URL.
      */
     public static final String COMMENT_T_AUTHOR_URL = "commentAuthorURL";
+    /**
+     * Key of comment article title.
+     */
+    public static final String COMMENT_T_ARTICLE_TITLE = "commentArticleTitle";
+    /**
+     * Key of comment article permalink.
+     */
+    public static final String COMMENT_T_ARTICLE_PERMALINK = "commentArticlePermalink";
 }

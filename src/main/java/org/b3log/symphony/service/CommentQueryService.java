@@ -33,6 +33,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONObject;
@@ -59,6 +60,10 @@ public final class CommentQueryService {
      */
     private CommentRepository commentRepository = CommentRepository.getInstance();
     /**
+     * Article repository.
+     */
+    private ArticleRepository articleRepository = ArticleRepository.getInstance();
+    /**
      * User repository.
      */
     private UserRepository userRepository = UserRepository.getInstance();
@@ -82,6 +87,9 @@ public final class CommentQueryService {
 
             for (final JSONObject comment : ret) {
                 comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
+                final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                final JSONObject article = articleRepository.get(articleId);
+                comment.put(Comment.COMMENT_T_ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
             }
 
             return ret;
