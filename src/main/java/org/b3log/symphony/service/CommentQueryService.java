@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 8, 2012
+ * @version 1.0.0.2, Oct 9, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -62,6 +62,34 @@ public final class CommentQueryService {
      * User repository.
      */
     private UserRepository userRepository = UserRepository.getInstance();
+
+    /**
+     * Gets the user comments with the specified user id, page number and page size.
+     * 
+     * @param userId the specified user id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return user comments, return an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getUserComments(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
+                .setPageCount(currentPageNum).setPageSize(pageSize).
+                setFilter(new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId));
+        try {
+            final JSONObject result = commentRepository.get(query);
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            for (final JSONObject comment : ret) {
+                comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets user comments failed", e);
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets the article participants (commenters) with the specified article article id and fetch size.
@@ -85,7 +113,7 @@ public final class CommentQueryService {
                 .addProjection(Comment.COMMENT_AUTHOR_EMAIL, String.class)
                 .setPageCount(1).setCurrentPageNum(1).setPageSize(fetchSize);
         final List<JSONObject> ret = new ArrayList<JSONObject>();
-        
+
         try {
             final JSONObject result = commentRepository.get(query);
             final List<JSONObject> commenterEmails = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -97,11 +125,11 @@ public final class CommentQueryService {
                 final String hashedEmail = MD5.hash(email);
                 final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
                         + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
-                
+
                 final JSONObject participant = new JSONObject();
                 participant.put(Article.ARTICLE_T_PARTICIPANT_NAME, commenter.optString(User.USER_NAME));
                 participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
-                
+
                 ret.add(participant);
             }
 

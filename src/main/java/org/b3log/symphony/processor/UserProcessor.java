@@ -39,6 +39,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -85,6 +86,10 @@ public class UserProcessor {
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
     /**
+     * Comment query service.
+     */
+    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
@@ -128,7 +133,7 @@ public class UserProcessor {
      * @param userName the specified user name
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/comments/{userName}", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/{userName}/comments", method = HTTPRequestMethod.GET)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -141,8 +146,9 @@ public class UserProcessor {
 
         final Date created = new Date(user.getLong(Keys.OBJECT_ID));
         user.put(Common.CREATED, DateFormatUtils.format(created, "yyyy-MM-dd HH:mm:ss"));
-        final List<JSONObject> userArticles = articleQueryService.getUserArticles(userName, 1, Symphonys.getInt("userHomeArticlesCnt"));
-        dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
+        final List<JSONObject> userComments =
+                commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeCmtsCnt"));
+        dataModel.put(Common.USER_HOME_COMMENTS, userComments);
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
