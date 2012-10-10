@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Oct 9, 2012
+ * @version 1.0.0.7, Oct 10, 2012
  * @since 0.2.0
  */
 public final class Common {
@@ -65,6 +65,10 @@ public final class Common {
      */
     public static final String TREND_TAGS = "trendTags";
     /**
+     * Key of cold tags.
+     */
+    public static final String COLD_TAGS = "coldTags";
+    /**
      * Key of side random articles.
      */
     public static final String SIDE_RANDOM_ARTICLES = "sideRandomArticles";
@@ -95,7 +99,8 @@ public final class Common {
     /**
      * Key of article id.
      */
-    public static final String ARTICLE_ID = "articleId";    
+    public static final String ARTICLE_ID = "articleId";
+
     /**
      * Private default constructor.
      */

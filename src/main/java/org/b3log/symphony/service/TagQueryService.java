@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 3, 2012
+ * @version 1.0.0.1, Oct 10, 2012
  * @since 0.2.0
  */
 public final class TagQueryService {
@@ -51,7 +51,23 @@ public final class TagQueryService {
     private TagRepository tagRepository = TagRepository.getInstance();
 
     /**
-     * Gets the trend (sort by reference count) tags.
+     * Gets a tag by the specified tag title.
+     * 
+     * @param tagTitle the specified tag title
+     * @return tag, returns {@code null} if not null
+     * @throws ServiceException service exception 
+     */
+    public JSONObject getTagByTitle(final String tagTitle) throws ServiceException {
+        try {
+            return tagRepository.getByTitle(tagTitle);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets tag [title=" + tagTitle + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the trend (sort by reference count descending) tags.
      * 
      * @param fetchSize the specified fetch size
      * @return trend tags, returns an empty list if not found
@@ -66,6 +82,26 @@ public final class TagQueryService {
             return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets trend tags failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the cold (sort by reference count ascending) tags.
+     * 
+     * @param fetchSize the specified fetch size
+     * @return trend tags, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getColdTags(final int fetchSize) throws ServiceException {
+        final Query query = new Query().addSort(Tag.TAG_REFERENCE_CNT, SortDirection.ASCENDING).
+                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+
+        try {
+            final JSONObject result = tagRepository.get(query);
+            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets cold tags failed", e);
             throw new ServiceException(e);
         }
     }

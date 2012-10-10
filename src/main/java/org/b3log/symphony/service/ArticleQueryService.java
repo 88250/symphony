@@ -16,7 +16,9 @@
 package org.b3log.symphony.service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -31,16 +33,20 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.TagArticleRepository;
+import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 2, 2012
+ * @version 1.0.0.1, Oct 10, 2012
  * @since 0.2.0
  */
 public final class ArticleQueryService {
@@ -58,6 +64,14 @@ public final class ArticleQueryService {
      */
     private ArticleRepository articleRepository = ArticleRepository.getInstance();
     /**
+     * Tag-Article repository.
+     */
+    private TagArticleRepository tagArticleRepository = TagArticleRepository.getInstance();
+    /**
+     * Tag repository.
+     */
+    private TagRepository tagRepository = TagRepository.getInstance();
+    /**
      * User repository.
      */
     private UserRepository userRepository = UserRepository.getInstance();
@@ -65,6 +79,42 @@ public final class ArticleQueryService {
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+
+    /**
+     * Gets articles by the specified tag.
+     * 
+     * @param tag the specified tag
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return articles, return an empty list if not found
+     * @throws ServiceException service exception 
+     */
+    public List<JSONObject> getArticlesByTag(final JSONObject tag, final int currentPageNum, final int pageSize) throws ServiceException {
+        try {
+            Query query = new Query().
+                    setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
+                    .setPageCount(currentPageNum).setPageSize(pageSize);
+
+            JSONObject result = tagArticleRepository.get(query);
+            final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
+
+            final Set<String> articleIds = new HashSet<String>();
+            for (int i = 0; i < tagArticleRelations.length(); i++) {
+                articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
+            }
+
+            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
+            result = articleRepository.get(query);
+
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            organizeArticles(ret);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets articles by tag [tagTitle=" + tag.optString(Tag.TAG_TITLE) + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets an article by the specified id.
@@ -206,7 +256,7 @@ public final class ArticleQueryService {
      * @param articles the specified articles
      * @throws RepositoryException repository exception 
      */
-    private  void organizeArticles(final List<JSONObject> articles) throws RepositoryException {
+    private void organizeArticles(final List<JSONObject> articles) throws RepositoryException {
         for (final JSONObject article : articles) {
             organizeArticle(article);
         }
@@ -224,7 +274,7 @@ public final class ArticleQueryService {
      * @param article the specified article
      * @throws RepositoryException repository exception 
      */
-    private  void organizeArticle(final JSONObject article) throws RepositoryException {
+    private void organizeArticle(final JSONObject article) throws RepositoryException {
         toArticleDate(article);
         genArticleAuthor(article);
     }
@@ -234,7 +284,7 @@ public final class ArticleQueryService {
      * 
      * @param article the specified article
      */
-    private  void toArticleDate(final JSONObject article) {
+    private void toArticleDate(final JSONObject article) {
         article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
         article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
         article.put(Article.ARTICLE_LATEST_CMT_TIME, new Date(article.optLong(Article.ARTICLE_LATEST_CMT_TIME)));
@@ -252,7 +302,7 @@ public final class ArticleQueryService {
                 + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
-        
+
         final JSONObject author = userRepository.getByEmail(authorEmail);
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
     }
