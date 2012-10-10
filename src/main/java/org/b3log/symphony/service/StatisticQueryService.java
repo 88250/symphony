@@ -83,7 +83,7 @@ public final class StatisticQueryService {
      */
     public static void onlineVisitorCount(final HttpServletRequest request) {
         ONLINE_VISITORS.put(request.getRemoteAddr(), System.currentTimeMillis());
-        LOGGER.log(Level.INFO, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+        LOGGER.log(Level.FINEST, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**
@@ -101,8 +101,6 @@ public final class StatisticQueryService {
                 LOGGER.log(Level.FINEST, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
             }
         }
-
-        LOGGER.log(Level.INFO, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**

@@ -15,15 +15,15 @@
  */
 package org.b3log.symphony.processor;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -35,14 +35,11 @@ import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.util.Filler;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-
 /**
  * Error processor.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 16, 2012
+ * @version 1.0.0.1, Oct 10, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -67,13 +64,14 @@ public final class ErrorProcessor {
      * @param context the specified context
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response
+     * @param statusCode the specified status code
      * @throws Exception exception 
      */
-    @RequestProcessing(value = "/error/*", method = HTTPRequestMethod.GET)
-    public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    @RequestProcessing(value = "/error/{statusCode}", method = HTTPRequestMethod.GET)
+    public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String statusCode) throws Exception {
         final String requestURI = request.getRequestURI();
-        final String templateName = requestURI.substring("/error/".length()) + ".ftl";
+        final String templateName = statusCode + ".ftl";
         LOGGER.log(Level.FINE, "Shows error page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
 
         final ErrorRenderer renderer = new ErrorRenderer();

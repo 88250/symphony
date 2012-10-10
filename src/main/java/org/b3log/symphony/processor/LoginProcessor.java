@@ -286,7 +286,7 @@ public class LoginProcessor {
                 final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
                 if (MD5.hash(userPassword).equals(hashPassword)) {
                     Sessions.login(request, response, user);
-                    LOGGER.log(Level.INFO, "Logged in with cookie[email={0}]", userEmail);
+                    LOGGER.log(Level.FINER, "Logged in with cookie[email={0}]", userEmail);
                 }
             }
         } catch (final Exception e) {
