@@ -25,16 +25,18 @@ import org.b3log.latke.util.Ids;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Statistic;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.StatisticRepository;
+import org.b3log.symphony.repository.TagRepository;
 import org.json.JSONObject;
 
 /**
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 7, 2012
+ * @version 1.0.0.1, Oct 11, 2012
  * @since 0.2.0
  */
 public final class CommentMgmtService {
@@ -59,6 +61,10 @@ public final class CommentMgmtService {
      * Statistic repository.
      */
     private StatisticRepository statisticRepository = StatisticRepository.getInstance();
+    /**
+     * Tag repository.
+     */
+    private TagRepository tagRepository = TagRepository.getInstance();
 
     /**
      * Adds a comment with the specified request json object.
@@ -105,6 +111,16 @@ public final class CommentMgmtService {
 
             articleRepository.update(articleId, article); // Updates article comment count
             statisticRepository.update(Statistic.STATISTIC, statistic); // Updates global comment count
+            // Updates tag comment count
+            final String tagsString = article.optString(Article.ARTICLE_TAGS);
+            final String[] tagStrings = tagsString.split(",");
+            for (int i = 0; i < tagStrings.length; i++) {
+                final String tagTitle = tagStrings[i].trim();
+                final JSONObject tag = tagRepository.getByTitle(tagTitle);
+                tag.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + 1);
+                tagRepository.update(tag.optString(Keys.OBJECT_ID), tag);
+            }
+            
             commentRepository.add(comment);
 
             transaction.commit();
