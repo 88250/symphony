@@ -131,6 +131,8 @@ public final class TagProcessor {
         final List<JSONObject> articles = articleQueryService.getArticlesByTag(tag, pageNum, pageSize);
         dataModel.put(Article.ARTICLES, articles);
 
+        dataModel.put(Tag.TAG, tag);
+
         final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_CNT);
         final int pageCount = (int) Math.ceil((double) tagRefCnt / (double) pageSize);
 
