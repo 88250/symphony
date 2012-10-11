@@ -34,16 +34,17 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Statistic;
 import org.b3log.symphony.repository.StatisticRepository;
-import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
+import org.b3log.symphony.service.StatisticQueryService;
 import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 2, 2012
+ * @version 1.0.0.3, Oct 11, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -95,6 +96,7 @@ public class InitProcessor {
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             userMgmtService.addUser(admin);
 
+            // Hello World!
             final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
             final JSONObject article = new JSONObject();
             article.put(Article.ARTICLE_TITLE, "你好，世界！");
@@ -105,6 +107,46 @@ public class InitProcessor {
             article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
             articleMgmtService.addArticle(article);
 
+            response.sendRedirect("/");
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Creates database tables failed", e);
+            throw new IOException("Creates database tables failed", e);
+        }
+    }
+
+    /**
+     * Generates mock articles.
+     * 
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws IOException io exception 
+     */
+    @RequestProcessing(value = "/dev/article/gen", method = HTTPRequestMethod.GET)
+    public void genArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
+        try {
+            final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+            final UserQueryService userQueryService = UserQueryService.getInstance();
+            final JSONObject admin = userQueryService.getAdmin();
+            final StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
+            final JSONObject statistic = statisticQueryService.getStatistic();
+            final int start = statistic.optInt(Statistic.STATISTIC_ARTICLE_COUNT) + 1;
+            final int end = start + 49;
+
+            for (int i = start; i <= end; i++) {
+                final JSONObject article = new JSONObject();
+                article.put(Article.ARTICLE_TITLE, "你好，世界！ (" + i + ')');
+                article.put(Article.ARTICLE_TAGS, "B3log, Java, " + i);
+                article.put(Article.ARTICLE_CONTENT, "B3log Symphony 第 (" + (i + 1) + ") 帖");
+                article.put(Article.ARTICLE_EDITOR_TYPE, 0);
+                article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.optString(User.USER_EMAIL));
+                article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
+                articleMgmtService.addArticle(article);
+
+                LOGGER.log(Level.INFO, "Generated article ({0})", i);
+            }
+            
             response.sendRedirect("/");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Creates database tables failed", e);
