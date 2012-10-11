@@ -5,6 +5,7 @@
         </div>
         <div class="fn-right" style="width: 800px">
             <div>
+                <a href="/tags">AllTag</a>
                 <a href="">about</a>
                 <a href="">tag1</a>
                 <a href="">tag2</a>

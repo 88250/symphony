@@ -1,5 +1,6 @@
 <#include "macro-head.ftl">
 <#include "macro-list.ftl">
+<#include "macro-pagination.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,6 +16,7 @@
             <div class="wrapper fn-clear">
                 <div class="content">
                     <@list listData=latestCmtArticles/>
+                    <@pagination url=""/>
                 </div>
                 <div class="side">
                     <#include "side.ftl">

@@ -33,7 +33,7 @@
                                                     <h2><a href="${comment.commentArticlePermalink}">${comment.commentArticleTitle}</a></h2>
                                                 </span>
                                                 <span class="fn-right ft-small">
-                                                    ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm:ss')}  
+                                                    ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
                                                 </span>    
                                             </span>
                                             <div>

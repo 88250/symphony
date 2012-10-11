@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.6, Oct 8, 2012
+* @version 1.0.0.7, Oct 11, 2012
 */
 /* start reset */
 html {
@@ -201,6 +201,7 @@ a.ft-noline:hover {
 /* end function */
 
 /* start common */
+/* start button */
 button {
     color: #333;
     border-radius: 3px;
@@ -296,6 +297,14 @@ button.red:active {
     background:-webkit-linear-gradient(#b33630, #dc5f59);
     -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#b33630', endColorstr='#dc5f59')";
 }
+/* end button */
+
+/* start icon */
+.date-ico {
+    background: url("/images/icons.png") no-repeat scroll 0 -21px transparent;
+    padding-left: 23px;
+}
+/* end icon */
 
 /* start tip */
 .tip-error, 

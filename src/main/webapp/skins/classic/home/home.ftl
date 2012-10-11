@@ -1,4 +1,5 @@
 <#include "../macro-head.ftl">
+<#include "../macro-pagination.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,22 +24,24 @@
                     </ul>
                     <div>
                         <div class="article-list list">
-                            <ul>
-                                <#list userHomeArticles as userHomeArticle>
+                            <ul> 
+                                <#list userHomeArticles as article>
                                 <li>
-                                    <div>
-                                        <h2><a href="${userHomeArticle.articlePermalink}">${userHomeArticle.articleTitle}</a></h2>
-                                        <span class="ft-small">
-                                            <#list userHomeArticle.articleTags?split(",") as articleTag>
-                                            <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
-                                                ${articleTag}</a><#if articleTag_has_next>, </#if>
-                                            </#list>
-                                            ${userHomeArticle.articleCreateTime?string('yyyy-MM-dd HH:mm:ss')}
-                                        </span>
-                                        <div class="count ft-small">
-                                            ${viewLabel} <a href="">${userHomeArticle.articleViewCount}</a><br/>
-                                            ${cmtLabel} <a href="">${userHomeArticle.articleCommentCount}</a>
+                                    <div class="fn-clear">
+                                        <div class="fn-left">
+                                            <h2><a href="${article.articlePermalink}">${article.articleTitle}</a></h2>
+                                            <span class="ft-small">
+                                                <#list article.articleTags?split(",") as articleTag>
+                                                <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
+                                                    ${articleTag}</a><#if articleTag_has_next>, </#if>
+                                                </#list>
+                                                <span class="date-ico">${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}</span>
+                                            </span>
                                         </div>
+                                    </div>
+                                    <div class="count ft-small">
+                                        ${viewLabel} <a href="">${article.articleViewCount}</a><br/>
+                                        ${cmtLabel} <a href="">${article.articleCommentCount}</a>
                                     </div>
                                 </li>
                                 </#list>

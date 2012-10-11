@@ -12,7 +12,7 @@
             <div class="ft-small">
                 <span>
                     <a href="/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
-                    ${randomArticle.articleCreateTime?string('yyyy-MM-dd HH:mm:ss')}
+                    <span class="date-ico"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                 </span>
             </div>
         </li>
@@ -24,6 +24,6 @@
         ${tagLabel}
     </h2>
     <#list sideTags as sideTag>
-    <a href="">${sideTag.tagTitle}</a>
+    <a href="/tags/${sideTag.tagTitle?url('utf-8')}">${sideTag.tagTitle}</a>&nbsp;
     </#list>
 </div>
