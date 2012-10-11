@@ -109,6 +109,9 @@ public final class ArticleQueryService {
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(ret);
 
+            final Integer participantsCnt = Symphonys.getInt("tagArticleParticipantsCnt");
+            genParticipants(ret, participantsCnt);
+
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets articles by tag [tagTitle=" + tag.optString(Tag.TAG_TITLE) + "] failed", e);
@@ -223,19 +226,8 @@ public final class ArticleQueryService {
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(ret);
 
-            // Gets participants
             final Integer participantsCnt = Symphonys.getInt("latestCmtArticleParticipantsCnt");
-            for (final JSONObject article : ret) {
-                final String participantName = "";
-                final String participantThumbnailURL = "";
-
-                final List<JSONObject> articleParticipants =
-                        commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
-                article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
-
-                article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
-                article.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, participantThumbnailURL);
-            }
+            genParticipants(ret, participantsCnt);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -320,5 +312,26 @@ public final class ArticleQueryService {
      * Private constructor.
      */
     private ArticleQueryService() {
+    }
+
+    /**
+     * Generates participants for the specified articles.
+     * 
+     * @param articles the specified articles
+     * @param participantsCnt the specified generate size
+     * @throws ServiceException service exception
+     */
+    private void genParticipants(final List<JSONObject> articles, final Integer participantsCnt) throws ServiceException {
+        for (final JSONObject article : articles) {
+            final String participantName = "";
+            final String participantThumbnailURL = "";
+
+            final List<JSONObject> articleParticipants =
+                    commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
+            article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
+
+            article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
+            article.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, participantThumbnailURL);
+        }
     }
 }
