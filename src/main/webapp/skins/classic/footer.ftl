@@ -1,4 +1,3 @@
-<#macro footer>
 <div class="footer">
     <div class="wrapper fn-clear">
         <div class="fn-left">
@@ -30,8 +29,6 @@
 </div>
 <script type="text/javascript" src="/js/lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
-<#nested>
 <script>
     Util.init();
 </script>
-</#macro>

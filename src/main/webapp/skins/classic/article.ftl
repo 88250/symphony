@@ -1,5 +1,4 @@
 <#include "macro-head.ftl">
-<#include "macro-footer.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -148,7 +147,7 @@
                 </div>
             </div>
         </div>
-        <@footer/>
+        <#include "footer.ftl">
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
         </script>

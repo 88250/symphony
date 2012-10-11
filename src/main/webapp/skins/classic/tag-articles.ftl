@@ -1,5 +1,4 @@
 <#include "macro-head.ftl">
-<#include "macro-footer.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,6 +15,6 @@
                 <#include "list.ftl">
             </div>
         </div>
-        <@footer/>
+        <#include "footer.ftl">
     </body>
 </html>

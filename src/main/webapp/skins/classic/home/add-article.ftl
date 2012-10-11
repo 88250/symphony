@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">
+        <#include "../footer.ftl">
         <script>
             Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
             Label.articleContentErrorLabel = "${articleContentErrorLabel}";

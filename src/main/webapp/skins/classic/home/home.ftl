@@ -51,6 +51,6 @@
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">
+        <#include "../footer.ftl">
     </body>
 </html>

@@ -148,7 +148,7 @@
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">
+        <#include "../footer.ftl">
         <script type="text/javascript" src="/js/settings.js"></script>
     </body>
 </html>
