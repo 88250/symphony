@@ -10,10 +10,15 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper">
-                <#list 1..20 as i>
-                <a href="/">tag ${i}</a>
-                </#list>
+            <div class="wrapper fn-clear">
+                <div class="content">
+                    <#list trendTags as tag>
+                    <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                    </#list>
+                    <#list coldTags as tag>
+                    <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                    </#list>
+                </div>  
             </div>
         </div>
         <#include "footer.ftl">

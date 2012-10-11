@@ -1,4 +1,6 @@
 <#include "macro-head.ftl">
+<#include "macro-list.ftl">
+<#include "macro-pagination.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,13 +8,20 @@
         <meta name="keywords" content=""/>
         <meta name="description" content=""/>
         </@head>
+        <link type="text/css" rel="stylesheet" href="/css/index.css" />
     </head>
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper">
-                <h1>Tag1<a href="">订阅</a></h1> 
-                <#include "list.ftl">
+            <div class="wrapper fn-clear">
+                <div class="content">
+                    <h1>${tag.tagTitle}(${tag.tagReferenceCount})</h1>
+                    <@list listData=articles/>
+                    <@pagination url="/tags/${tag.tagTitle?url('utf-8')}"/>
+                </div> 
+                <div class="side">
+                    <#include "side.ftl">
+                </div>
             </div>
         </div>
         <#include "footer.ftl">

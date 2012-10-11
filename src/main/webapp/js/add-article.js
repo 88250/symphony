@@ -58,7 +58,7 @@ var AddArticle = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     if (result.sc) {
-                        window.location = "/home/" + Label.userName;
+                        window.location = "/" + Label.userName;
                     } else {
                         $("#tip").addClass("tip-error").text(result.msg);
                     }

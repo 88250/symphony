@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "macro-pagination.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -65,23 +66,7 @@
                             </li>
                             </#list>  
                         </ul>
-                        <#if paginationPageCount!=0 && paginationPageCount!=1>
-                        <div class="pagination">
-                            <#if paginationFirstPageNum!=1>
-                            <a href="${article.articlePermalink}"><<1</a>
-                            </#if>
-                            <#list paginationPageNums as nums>
-                            <#if nums=paginationCurrentPageNum>
-                            <span class="current">${nums}</span>
-                            <#else>
-                            <a href="${article.articlePermalink}?p=${nums}">${nums}</a>
-                            </#if>
-                            </#list>
-                            <#if paginationLastPageNum!=paginationPageCount>
-                            <a href="${article.articlePermalink}?p=${paginationPageCount}">${paginationPageCount}>></a>
-                            </#if>
-                        </div>
-                        </#if>
+                        <@pagination url=article.articlePermalink/>
                     </div>
                     <div class="form fn-clear">
                         <textarea id="commentContent"></textarea>
