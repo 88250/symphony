@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * </ul> 
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 10, 2012
+ * @version 1.0.0.1, Oct 11, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -96,6 +96,8 @@ public final class TagProcessor {
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
+        Filler.fillRandomArticles(dataModel);
+        Filler.fillSideTags(dataModel);
     }
 
     /**
@@ -144,5 +146,7 @@ public final class TagProcessor {
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
+        Filler.fillRandomArticles(dataModel);
+        Filler.fillSideTags(dataModel);
     }
 }
