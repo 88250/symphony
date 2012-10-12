@@ -38,6 +38,7 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -334,5 +335,22 @@ public final class ArticleQueryService {
             article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
             article.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, participantThumbnailURL);
         }
+    }
+
+    /**
+     * Markdown the specified article content.
+     * 
+     * @param article the specified article content
+     */
+    public void markdown(final JSONObject article) {
+        String content = "Markdown Error";
+
+        try {
+            content = Markdowns.toHTML(article.optString(Article.ARTICLE_CONTENT));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Markdown failed", e);
+        }
+
+        article.put(Article.ARTICLE_CONTENT, content);
     }
 }

@@ -153,6 +153,8 @@ public final class ArticleProcessor {
         article.put(Article.ARTICLE_T_AUTHOR_URL, author.optString(User.USER_URL));
         article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
         dataModel.put(Article.ARTICLE, article);
+        
+        articleQueryService.markdown(article);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -239,7 +241,7 @@ public final class ArticleProcessor {
 
         final String authorEmail = currentUser.optString(User.USER_EMAIL);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
-
+        
         try {
             articleMgmtService.addArticle(article);
             ret.put(Keys.STATUS_CODE, true);

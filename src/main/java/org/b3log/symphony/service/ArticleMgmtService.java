@@ -141,8 +141,8 @@ public final class ArticleMgmtService {
 
             transaction.commit();
 
-            final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_T_SYNC_TO_CLIENT);
-            article.put(Article.ARTICLE_T_SYNC_TO_CLIENT, syncToClient);
+            article.put(Article.ARTICLE_T_SYNC_TO_CLIENT, requestJSONObject.optBoolean(Article.ARTICLE_T_SYNC_TO_CLIENT));
+            
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, article);
             try {

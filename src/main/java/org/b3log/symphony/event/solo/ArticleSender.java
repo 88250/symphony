@@ -19,7 +19,6 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -78,20 +77,21 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
             final HTTPRequest httpRequest = new HTTPRequest();
             httpRequest.setURL(new URL(clientURL));
-            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
+            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject(originalArticle, new String[]{
-                        Article.ARTICLE_AUTHOR_EMAIL,
-                        Article.ARTICLE_COMMENTABLE,
                         Article.ARTICLE_CONTENT,
-                        Article.ARTICLE_PERMALINK,
                         Article.ARTICLE_TAGS,
-                        Article.ARTICLE_TITLE
+                        Article.ARTICLE_TITLE,
+                        Keys.OBJECT_ID
                     });
+
+            article.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
+            article.put(Article.ARTICLE_EDITOR_TYPE, "CodeMirror-Markdown");
 
             requestJSONObject.put(Article.ARTICLE, article);
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-
+            
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Sends an article to client error: {0}", e.getMessage());
