@@ -63,6 +63,12 @@
 /* end home framework */
 
 /* start home side */
+.user-online {
+    position: absolute;
+    right: 25px;
+    top: 194px;
+}
+
 .user-name {
     font-size: 25px;
     margin: 5px 0;

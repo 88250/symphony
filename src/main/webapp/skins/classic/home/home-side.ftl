@@ -1,5 +1,6 @@
-<div>
+<div style="position:relative">
     <img class="avatar-big" title="${user.userName}" src="${user.userThumbnailURL}" />
+    <img class="user-online" title="online" src="/images/offline.png" />
     <div>
         <div class="user-name">
             <a href="/${user.userName}">${user.userName}</a>

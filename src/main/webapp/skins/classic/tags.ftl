@@ -17,9 +17,17 @@
                         <h2>
                             ${trendTagsLabel}
                         </h2> 
-                        <#list trendTags as tag>
-                        <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                        </#list>
+                        <ul class="tags fn-clear">
+                            <#list trendTags as tag>
+                            <li>
+                                <a class="fn-left" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                <div class="fn-left ft-small">
+                                    引用 ${tag.tagReferenceCount}<br/>
+                                    评论 ${tag.tagCommentCount} 
+                                </div>
+                            </li>
+                            </#list>
+                        </ul>
                     </div>
                     <div class="index-module">
                         <h2>
