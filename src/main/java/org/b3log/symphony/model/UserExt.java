@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 9, 2012
+ * @version 1.0.0.4, Oct 12, 2012
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -66,6 +66,10 @@ public final class UserExt {
      * Key of user thumbnail URL.
      */
     public static final String USER_T_THUMBNAIL_URL = "userThumbnailURL";
+    /**
+     * Key of user create time.
+     */
+    public static final String USER_T_CREATE_TIME = "userCreateTime";
 
     /**
      * Private constructor.

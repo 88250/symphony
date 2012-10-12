@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
@@ -63,8 +62,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Oct 8, 2012
+ * @version 1.0.0.6, Oct 12, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -116,8 +114,8 @@ public final class UserProcessor {
         dataModel.put(User.USER, user);
         fillUserThumbnailURL(user);
 
-        final Date created = new Date(user.getLong(Keys.OBJECT_ID));
-        user.put(Common.CREATED, DateFormatUtils.format(created, "yyyy-MM-dd HH:mm:ss"));
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+
         final List<JSONObject> userArticles = articleQueryService.getUserArticles(
                 user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeArticlesCnt"));
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
@@ -147,8 +145,8 @@ public final class UserProcessor {
         dataModel.put(User.USER, user);
         fillUserThumbnailURL(user);
 
-        final Date created = new Date(user.getLong(Keys.OBJECT_ID));
-        user.put(Common.CREATED, DateFormatUtils.format(created, "yyyy-MM-dd HH:mm:ss"));
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+
         final List<JSONObject> userComments =
                 commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeCmtsCnt"));
         dataModel.put(Common.USER_HOME_COMMENTS, userComments);
