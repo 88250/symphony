@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines tag model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 28, 2012
+ * @version 1.0.0.1, Oct 11, 2012
  * @since 0.2.0
  */
 public final class Tag {
@@ -48,4 +48,25 @@ public final class Tag {
      * Key of tag status.
      */
     public static final String TAG_STATUS = "tagStatus";
+    //// Transient ////
+    /**
+     * Key of tag creator thumbnail URL.
+     */
+    public static final String TAG_T_CREATOR_THUMBNAIL_URL = "tagCreatorThumbnailURL";
+    /**
+     * Key of tag creator name.
+     */
+    public static final String TAG_T_CREATOR_NAME = "tagCreatorName";
+    /**
+     * Key of tag participants.
+     */
+    public static final String TAG_T_PARTICIPANTS = "tagParticipants";
+    /**
+     * Key of tag participant name.
+     */
+    public static final String TAG_T_PARTICIPANT_NAME = "tagParticipantName";
+    /**
+     * Key of tag participant thumbnail URL.
+     */
+    public static final String TAG_T_PARTICIPANT_THUMBNAIL_URL = "tagParticipantThumbnailURL";
 }

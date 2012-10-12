@@ -15,24 +15,39 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.model.User;
+import org.b3log.latke.repository.CompositeFilter;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.Filter;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.MD5;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.TagRepository;
+import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.repository.UserTagRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Tag query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 10, 2012
+ * @version 1.0.0.2, Oct 11, 2012
  * @since 0.2.0
  */
 public final class TagQueryService {
@@ -49,6 +64,14 @@ public final class TagQueryService {
      * Tag repository.
      */
     private TagRepository tagRepository = TagRepository.getInstance();
+    /**
+     * User-Tag repository.
+     */
+    private UserTagRepository userTagRepository = UserTagRepository.getInstance();
+    /**
+     * User repository.
+     */
+    private UserRepository userRepository = UserRepository.getInstance();
 
     /**
      * Gets a tag by the specified tag title.
@@ -121,6 +144,112 @@ public final class TagQueryService {
             return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets tags failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the creator of the specified tag of the given tag id.
+     * 
+     * @param tagId the given tag id
+     * @return tag creator, for example, 
+     * <pre>
+     * {
+     *     "tagCreatorThumbnailURL": "",
+     *     "tagCreatorName": ""
+     * }
+     * </pre>, returns {@code null} if not found
+     * @throws ServiceException service exception 
+     */
+    public JSONObject getCreator(final String tagId) throws ServiceException {
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
+        filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 0));
+
+        final Query query = new Query().setCurrentPageNum(1).setPageSize(1).setPageCount(1).
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+        try {
+            JSONObject result = userTagRepository.get(query);
+            final JSONArray results = result.optJSONArray(Keys.RESULTS);
+            final JSONObject creatorTagRelation = results.optJSONObject(0);
+
+            final String creatorId = creatorTagRelation.optString(User.USER + '_' + Keys.OBJECT_ID);
+
+            final JSONObject creator = userRepository.get(creatorId);
+
+            final String creatorEmail = creator.optString(User.USER_EMAIL);
+            final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(creatorEmail) + "?s=140&d="
+                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+
+            final JSONObject ret = new JSONObject();
+            ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
+            ret.put(Tag.TAG_T_CREATOR_NAME, creator.optString(User.USER_NAME));
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets tag creator failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the participants (article ref) of the specified tag of the given tag id.
+     * 
+     * @param tagId the given tag id
+     * @param fetchSize the specified fetch size
+     * @return tag participants, for example, 
+     * <pre>
+     * [
+     *     {
+     *         "tagParticipantName": "",
+     *         "tagParticipantThumbnailURL": ""
+     *     }, ....
+     * ]
+     * </pre>, returns an empty list if not found
+     * returns an empty list if not found
+     * @throws ServiceException service exception 
+     */
+    public List<JSONObject> getParticipants(final String tagId, final int fetchSize) throws ServiceException {
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
+        filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 1));
+
+        Query query = new Query().setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1).
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        try {
+            JSONObject result = userTagRepository.get(query);
+            final JSONArray userTagRelations = result.optJSONArray(Keys.RESULTS);
+
+            final Set<String> userIds = new HashSet<String>();
+            for (int i = 0; i < userTagRelations.length(); i++) {
+                userIds.add(userTagRelations.optJSONObject(i).optString(User.USER + '_' + Keys.OBJECT_ID));
+            }
+
+            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, userIds));
+            result = userRepository.get(query);
+
+            final List<JSONObject> users = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            for (final JSONObject user : users) {
+                final JSONObject participant = new JSONObject();
+
+                participant.put(Tag.TAG_T_PARTICIPANT_NAME, user.optString(User.USER_NAME));
+
+                final String hashedEmail = MD5.hash(user.optString(User.USER_EMAIL));
+                final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
+                        + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+
+                participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
+            
+                ret.add(participant);
+            }
+            
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets tag participants failed", e);
             throw new ServiceException(e);
         }
     }

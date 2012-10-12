@@ -155,7 +155,7 @@ public final class ArticleMgmtService {
             final String tagTitle = tagTitles[i].trim();
             JSONObject tag = tagRepository.getByTitle(tagTitle);
             String tagId;
-            String userTagType;
+            int userTagType;
 
             if (null == tag) {
                 LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
@@ -168,7 +168,7 @@ public final class ArticleMgmtService {
 
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
-                userTagType = "creator";
+                userTagType = 0; // Creator
 
                 statistic.put(Statistic.STATISTIC_TAG_COUNT, statistic.optInt(Statistic.STATISTIC_TAG_COUNT) + 1);
             } else {
@@ -184,7 +184,7 @@ public final class ArticleMgmtService {
 
                 tagRepository.update(tagId, tagTmp);
 
-                userTagType = "article";
+                userTagType = 1; // Article
             }
 
             // Tag-Article relation

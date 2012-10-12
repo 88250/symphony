@@ -113,7 +113,7 @@ public final class CommentQueryService {
      *         "articleParticipantThumbnailURL": ""
      *     }, ....
      * ]
-     * </pre>return an empty list if not found
+     * </pre>, returns an empty list if not found
      * @throws ServiceException service exception 
      */
     public List<JSONObject> getArticleLatestParticipants(final String articleId, final int fetchSize) throws ServiceException {

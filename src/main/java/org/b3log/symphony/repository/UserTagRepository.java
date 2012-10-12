@@ -34,7 +34,7 @@ public final class UserTagRepository extends AbstractRepository {
      * Singleton.
      */
     private static final UserTagRepository SINGLETON = new UserTagRepository(User.USER + "_" + Tag.TAG);
-
+    
     /**
      * Gets user-tag relations by the specified user id.
      *

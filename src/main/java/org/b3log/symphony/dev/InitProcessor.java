@@ -89,12 +89,14 @@ public class InitProcessor {
 
             // Init admin
             final UserMgmtService userMgmtService = UserMgmtService.getInstance();
-            final JSONObject admin = new JSONObject();
+            JSONObject admin = new JSONObject();
             admin.put(User.USER_EMAIL, "dl88250@gmail.com");
             admin.put(User.USER_NAME, "88250");
             admin.put(User.USER_PASSWORD, "test");
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             userMgmtService.addUser(admin);
+            
+            admin = UserQueryService.getInstance().getAdmin();
 
             // Hello World!
             final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
@@ -146,7 +148,7 @@ public class InitProcessor {
 
                 LOGGER.log(Level.INFO, "Generated article ({0})", i);
             }
-            
+
             response.sendRedirect("/");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Creates database tables failed", e);

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -132,6 +133,13 @@ public final class TagProcessor {
         dataModel.put(Article.ARTICLES, articles);
 
         dataModel.put(Tag.TAG, tag);
+
+        final String tagId = tag.optString(Keys.OBJECT_ID);
+
+        final JSONObject tagCreator = tagQueryService.getCreator(tagId);
+        tag.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, tagCreator.optString(Tag.TAG_T_CREATOR_THUMBNAIL_URL));
+        tag.put(Tag.TAG_T_CREATOR_NAME, tagCreator.optString(Tag.TAG_T_CREATOR_NAME));
+        tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(tagId, Symphonys.getInt("tagParticipantsCnt")));
 
         final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_CNT);
         final int pageCount = (int) Math.ceil((double) tagRefCnt / (double) pageSize);
