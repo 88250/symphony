@@ -172,14 +172,10 @@ public final class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject user = LoginProcessor.getCurrentUser(request);
-        dataModel.put(User.USER_NAME, user.optString(User.USER_NAME));
-        dataModel.put(User.USER_URL, user.optString(User.USER_URL));
-        dataModel.put(User.USER_EMAIL, user.optString(User.USER_EMAIL));
-        dataModel.put(UserExt.USER_QQ, user.optString(UserExt.USER_QQ));
-        dataModel.put(UserExt.USER_INTRO, user.optString(UserExt.USER_INTRO));
-        dataModel.put(UserExt.USER_B3_KEY, user.optString(UserExt.USER_B3_KEY));
-        dataModel.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, user.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL));
-        dataModel.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, user.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL));
+        
+        dataModel.put(User.USER, user);
+
+        fillUserThumbnailURL(user);
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);

@@ -18,12 +18,16 @@ package org.b3log.symphony.service;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventException;
+import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Ids;
+import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Statistic;
@@ -73,6 +77,10 @@ public final class ArticleMgmtService {
      */
     private StatisticRepository statisticRepository = StatisticRepository.getInstance();
     /**
+     * Event manager.
+     */
+    private EventManager eventManager = EventManager.getInstance();
+    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
@@ -88,7 +96,8 @@ public final class ArticleMgmtService {
      *     "articleContent": "",
      *     "articleEditorType": "",
      *     "articleAuthorEmail": "",
-     *     "articleAuthorId": ""
+     *     "articleAuthorId": "",
+     *     "syncWithSymphonyClient": boolean // optional
      * }
      * </pre>, see {@link Article} for more details
      * @return generated article id
@@ -127,9 +136,20 @@ public final class ArticleMgmtService {
             statistic.put(Statistic.STATISTIC_ARTICLE_COUNT, statistic.optInt(Statistic.STATISTIC_ARTICLE_COUNT) + 1);
 
             statisticRepository.update(Statistic.STATISTIC, statistic); // Updates global tag/article count
+
             articleRepository.add(article);
 
             transaction.commit();
+
+            final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_T_SYNC_TO_CLIENT);
+            article.put(Article.ARTICLE_T_SYNC_TO_CLIENT, syncToClient);
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Article.ARTICLE, article);
+            try {
+                eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+            } catch (final EventException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
 
             return ret;
         } catch (final RepositoryException e) {

@@ -126,4 +126,8 @@ public final class Article {
      * Key of article participant thumbnail URL.
      */
     public static final String ARTICLE_T_PARTICIPANT_THUMBNAIL_URL = "articleParticipantThumbnailURL";
+    /**
+     * Key of article sync to client.
+     */
+    public static final String ARTICLE_T_SYNC_TO_CLIENT = "syncWithSymphonyClient";
 }

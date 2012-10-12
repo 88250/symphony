@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 28, 2012
+ * @version 1.0.0.2, Oct 12, 2012
  * @since 0.2.0
  */
 public final class UserQueryService {
@@ -173,34 +173,22 @@ public final class UserQueryService {
      * @return for example,
      * <pre>
      * {
-     *     "user": {
-     *         "oId": "",
-     *         "userName": "",
-     *         "userEmail": "",
-     *         "userPassword": ""
-     *     }
+     *     "oId": "",
+     *     "userName": "",
+     *     "userEmail": "",
+     *     "userPassword": "",
+     *     ....
      * }
      * </pre>, returns {@code null} if not found
      * @throws ServiceException service exception
      */
     public JSONObject getUser(final String userId) throws ServiceException {
-        final JSONObject ret = new JSONObject();
-
-        JSONObject user = null;
         try {
-            user = userRepository.get(userId);
+            return userRepository.get(userId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets a user failed", e);
             throw new ServiceException(e);
         }
-
-        if (null == user) {
-            return null;
-        }
-
-        ret.put(User.USER, user);
-
-        return ret;
     }
 
     /**

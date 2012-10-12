@@ -24,10 +24,12 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.event.EventManager;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.event.solo.ArticleSender;
 import org.b3log.symphony.service.StatisticQueryService;
 import org.b3log.symphony.util.Skins;
 
@@ -67,6 +69,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Latkes.disableDataCache();
 
         Skins.loadSkin();
+
+        // Register event listeners
+        EventManager.getInstance().registerListener(new ArticleSender());
 
         LOGGER.info("Initialized the context");
 
