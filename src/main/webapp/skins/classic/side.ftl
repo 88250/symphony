@@ -23,7 +23,15 @@
     <h2>
         ${tagLabel}
     </h2>
-    <#list sideTags as sideTag>
-    <a href="/tags/${sideTag.tagTitle?url('utf-8')}">${sideTag.tagTitle}</a>&nbsp;
-    </#list>
+    <ul class="tags fn-clear">
+        <#list sideTags as sideTag>
+        <li>
+            <a class="fn-left" href="/tags/${sideTag.tagTitle?url('utf-8')}">${sideTag.tagTitle}</a>
+            <div class="fn-left ft-small">
+                引用 ${sideTag.tagReferenceCount}<br/>
+                评论 ${sideTag.tagCommentCount} 
+            </div>
+        </li>
+        </#list>
+    </ul>
 </div>
