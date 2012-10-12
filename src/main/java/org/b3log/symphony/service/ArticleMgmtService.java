@@ -32,10 +32,12 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Statistic;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.StatisticRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
 import org.json.JSONObject;
 
@@ -68,6 +70,10 @@ public final class ArticleMgmtService {
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository = TagArticleRepository.getInstance();
+    /**
+     * User repository.
+     */
+    private UserRepository userRepository = UserRepository.getInstance();
     /**
      * User-Tag repository.
      */
@@ -111,12 +117,14 @@ public final class ArticleMgmtService {
             final JSONObject article = new JSONObject();
             article.put(Keys.OBJECT_ID, ret);
 
+            final String authorId = requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID);
+            
             article.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
             article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
-            article.put(Article.ARTICLE_AUTHOR_ID, requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID));
+            article.put(Article.ARTICLE_AUTHOR_ID, authorId);
 
             final long currentTimeMillis = System.currentTimeMillis();
 
@@ -130,12 +138,16 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.ARTICLE_STATUS, 0);
 
+            final JSONObject author = userRepository.get(authorId);
             final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
-            tag(article.optString(Article.ARTICLE_TAGS).split(","), article, statistic);
+            
+            tag(article.optString(Article.ARTICLE_TAGS).split(","), article, statistic, author);
 
             statistic.put(Statistic.STATISTIC_ARTICLE_COUNT, statistic.optInt(Statistic.STATISTIC_ARTICLE_COUNT) + 1);
-
             statisticRepository.update(Statistic.STATISTIC, statistic); // Updates global tag/article count
+            
+            author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) + 1);
+            userRepository.update(author.optString(Keys.OBJECT_ID), author); // Updates user article count (and new tag count) 
 
             articleRepository.add(article);
 
@@ -168,9 +180,11 @@ public final class ArticleMgmtService {
      * @param tagTitles the specified tag titles
      * @param article the specified article
      * @param statistic the specified statistic
+     * @param author the specified author
      * @throws RepositoryException repository exception
      */
-    private void tag(final String[] tagTitles, final JSONObject article, final JSONObject statistic) throws RepositoryException {
+    private void tag(final String[] tagTitles, final JSONObject article, final JSONObject statistic, final JSONObject author)
+            throws RepositoryException {
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
             JSONObject tag = tagRepository.getByTitle(tagTitle);
@@ -191,6 +205,7 @@ public final class ArticleMgmtService {
                 userTagType = 0; // Creator
 
                 statistic.put(Statistic.STATISTIC_TAG_COUNT, statistic.optInt(Statistic.STATISTIC_TAG_COUNT) + 1);
+                author.put(UserExt.USER_TAG_COUNT, author.optInt(UserExt.USER_TAG_COUNT) + 1);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",

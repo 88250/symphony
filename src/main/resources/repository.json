@@ -228,6 +228,10 @@
             "type": "int"
         },
         {
+            "name": "userTagCount",
+            "type": "int"
+        },
+        {
             "name": "userStatus",
             "type": "int",
             "description": "0: valid, 1: invalid"

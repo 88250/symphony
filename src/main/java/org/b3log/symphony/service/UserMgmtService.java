@@ -231,6 +231,7 @@ public final class UserMgmtService {
             user.put(User.USER_URL, "");
             user.put(UserExt.USER_ARTICLE_COUNT, 0);
             user.put(UserExt.USER_COMMENT_COUNT, 0);
+            user.put(UserExt.USER_TAG_COUNT, 0);
             user.put(UserExt.USER_STATUS, 0);
             user.put(UserExt.USER_B3_KEY, "");
             user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, "");

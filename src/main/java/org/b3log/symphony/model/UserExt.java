@@ -34,6 +34,10 @@ public final class UserExt {
      */
     public static final String USER_COMMENT_COUNT = "userCommentCount";
     /**
+     * Key of new tag count.
+     */
+    public static final String USER_TAG_COUNT = "userTagCount";
+    /**
      * Key of user status.
      */
     public static final String USER_STATUS = "userStatus";

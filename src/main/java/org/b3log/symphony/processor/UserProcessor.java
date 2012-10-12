@@ -40,6 +40,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -85,6 +86,10 @@ public final class UserProcessor {
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
     /**
+     * Tag query service.
+     */
+    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    /**
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
@@ -119,7 +124,7 @@ public final class UserProcessor {
         final List<JSONObject> userArticles = articleQueryService.getUserArticles(
                 user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeArticlesCnt"));
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
-
+        
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
     }
