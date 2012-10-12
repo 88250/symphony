@@ -91,9 +91,9 @@ public final class ArticleQueryService {
      */
     public List<JSONObject> getArticlesByTag(final JSONObject tag, final int currentPageNum, final int pageSize) throws ServiceException {
         try {
-            Query query = new Query().
+            Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
-                    .setPageCount(currentPageNum).setPageSize(pageSize);
+                    .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
 
             JSONObject result = tagArticleRepository.get(query);
             final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
@@ -213,13 +213,14 @@ public final class ArticleQueryService {
     /**
      * Gets the latest comment articles with the specified fetch size.
      * 
+     * @param currentPageNum the specified current page number
      * @param fetchSize the specified fetch size
      * @return recent articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getLatestCmtArticles(final int fetchSize) throws ServiceException {
+    public List<JSONObject> getLatestCmtArticles(final int currentPageNum, final int fetchSize) throws ServiceException {
         final Query query = new Query().addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(fetchSize);
+                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
 
         try {
             final JSONObject result = articleRepository.get(query);
