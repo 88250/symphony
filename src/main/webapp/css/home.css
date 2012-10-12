@@ -18,7 +18,7 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.5, Oct 9, 2012
+* @version 1.0.0.6, Oct 12, 2012
 */
 /* start home framework */
 /*.home-content {
@@ -61,6 +61,39 @@
     font-weight: bold;
 }*/
 /* end home framework */
+
+/* start home side */
+.user-name {
+    font-size: 25px;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.user-info {
+    line-height: 25px;
+}
+
+.user-status {
+    border-top: 1px dotted #CCCCCC;
+    list-style: none;
+    margin-top: 25px;
+    padding: 15px 0;
+}
+
+.user-status > li {
+    float: left;
+    overflow: hidden;
+    width: 86px;
+}
+
+.user-status > li > strong {
+    font-size: 20px;
+}
+
+.user-status > li > span {
+    display: block;
+}
+/* end home side */
 
 /* start settings */
 .module {

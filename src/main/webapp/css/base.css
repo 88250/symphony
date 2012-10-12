@@ -301,7 +301,7 @@ button.red:active {
 
 /* start icon */
 .date-ico {
-    background: url("/images/icons.png") no-repeat scroll 0 -21px transparent;
+    background: url("/images/icons.png") no-repeat scroll -1px -22px transparent;
     padding-left: 23px;
 }
 /* end icon */
@@ -524,7 +524,7 @@ button.red:active {
 }
 
 .nav input.search {
-    background: url("../images/icons.png") no-repeat scroll 3px 5px #FFFFFF;
+    background: url("../images/icons.png") no-repeat scroll 3px 6px #FFFFFF;
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
     left: 170px;

@@ -24,14 +24,16 @@
                             </span>
                         </div>
                         <div class="fn-left">
-                            <a class="ft-noline" title="${creatorLabel}:88250" href="/88250">
-                                <img style="margin-left:20px" class="avatar fn-left" src="http://secure.gravatar.com/avatar/59a5e8209c780307dbe9c9ba728073f5?s=140&d=http://localhost:8080/images/user-thumbnail.png">
+                            <a class="ft-noline" title="${creatorLabel}:${tag.tagCreatorName}" href="/${tag.tagCreatorName}">
+                                <img style="margin-left:20px" class="avatar fn-left" src="${tag.tagCreatorThumbnailURL}">
                             </a>
                         </div>
                         <div class="fn-right">
-                            <a class="ft-noline" title="${contributorLabel}:88250" href="/88250">
-                                <img class="avatar fn-left" src="http://secure.gravatar.com/avatar/59a5e8209c780307dbe9c9ba728073f5?s=140&d=http://localhost:8080/images/user-thumbnail.png">
+                            <#list tag.tagParticipants as commenter>
+                            <a class="ft-noline" title="${contributorLabel}:${commenter.tagParticipantName}" href="/${commenter.tagParticipantName}">
+                                <img class="avatar fn-left" src="${commenter.tagParticipantThumbnailURL}">
                             </a>
+                            </#list>
                         </div>
                     </div>
                     <@list listData=articles/>

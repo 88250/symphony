@@ -14,32 +14,32 @@
             <div class="wrapper form">
                 <div class="module">
                     <div class="module-header fn-clear">
-                        <h2 class="fn-left">profiles</h2>
+                        <h2 class="fn-left">${profilesLabel}</h2>
                     </div>
                     <div class="module-panel">
                         <table>
                             <tr>
                                 <td width="100">
-                                    UserName
+                                    ${userNameLabel}
                                 </td>
                                 <td>
-                                    <input id="userName" type="text" value="${userName}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    UserURL
-                                </td>
-                                <td>
-                                    <input id="userURL" type="text" value="${userURL}"/>
+                                    <input id="userName" type="text" value="${user.userName}" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    User Email
+                                    URL
                                 </td>
                                 <td>
-                                    <input id="userEmail" type="text" value="${userEmail}" readonly="readonly" /> 
+                                    <input id="userURL" type="text" value="${user.userURL}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${emailLabel}
+                                </td>
+                                <td>
+                                    <input id="userEmail" type="text" value="${user.userEmail}" readonly="readonly" /> 
                                 </td>
                             </tr>
                             <tr>
@@ -47,21 +47,29 @@
                                     QQ
                                 </td>
                                 <td>
-                                    <input id="userQQ" type="text" value="${userQQ}" />
+                                    <input id="userQQ" type="text" value="${user.userQQ}" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Intro
+                                    ${introLabel}
                                 </td>
                                 <td>
-                                    <textarea id="userIntro">${userIntro}</textarea>
+                                    <textarea id="userIntro">${user.userIntro}</textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img class="avatar fn-left" src="${user.userThumbnailURL}">
+                                </td>
+                                <td>
+                                    <a target="_blank" href="http://gravatar.com">${changeAvatarLabel}</a>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     <div class="fn-clear">
-                                        <button class="green fn-right" onclick="Settings.update('profiles')">Save</button>
+                                        <button class="green fn-right" onclick="Settings.update('profiles')">${saveLabel}</button>
                                     </div>
                                 </td>
                             </tr>
@@ -71,37 +79,37 @@
 
                 <div class="module">
                     <div class="module-header fn-clear">
-                        <h2 class="fn-left">Sync</h2>
+                        <h2 class="fn-left">${syncLabel}</h2>
                     </div>
                     <div class="module-panel">
                         <table>
                             <tr>
                                 <td width="100">
-                                    B3log Solo Key
+                                    B3log Key
                                 </td>
                                 <td>
-                                    <input id="soloKey" type="text" value="${userB3Key}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    client post url
-                                </td>
-                                <td>
-                                    <input id="soloPostURL" type="text" value="${userB3ClientAddArticleURL}" />
+                                    <input id="soloKey" type="text" value="${user.userB3Key}" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    clent cmt url
+                                    ${clientArticleLabel}
                                 </td>
                                 <td>
-                                    <input id="soloCmtURL" type="text" value="${userB3ClientAddCommentURL}" /> 
+                                    <input id="soloPostURL" type="text" value="${user.userB3ClientAddArticleURL}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ${clientCmtLabel}
+                                </td>
+                                <td>
+                                    <input id="soloCmtURL" type="text" value="${user.userB3ClientAddCommentURL}" /> 
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <button class="green" onclick="Settings.update('sync/b3')">Save</button>
+                                    <button class="green" onclick="Settings.update('sync/b3')">${saveLabel}</button>
                                 </td>
                             </tr>
                         </table>
@@ -110,13 +118,13 @@
 
                 <div class="module">
                     <div class="module-header fn-clear">
-                        <h2 class="fn-left">Password</h2>
+                        <h2 class="fn-left">${passwordLabel}</h2>
                     </div>
                     <div class="module-panel">
                         <table>
                             <tr>
                                 <td width="100">
-                                    old password
+                                    ${oldPasswordLabel}
                                 </td>
                                 <td>
                                     <input id="pwdOld" type="password" />
@@ -124,7 +132,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    new password
+                                    ${newPasswordLabel}
                                 </td>
                                 <td>
                                     <input id="pwdNew" type="password" />
@@ -132,7 +140,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    repeat password
+                                    ${confirmPasswordLabel}
                                 </td>
                                 <td>
                                     <input id="pwdRepeat" type="password" /> 
@@ -140,7 +148,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <button class="green" onclick="Settings.update('password')">Save</button>
+                                    <button class="green" onclick="Settings.update('password')">${saveLabel}</button>
                                 </td>
                             </tr>
                         </table>

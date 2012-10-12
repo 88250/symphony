@@ -1,18 +1,38 @@
 <div>
     <img class="avatar-big" title="${user.userName}" src="${user.userThumbnailURL}" />
     <div>
-        online 
-        <br/>
-        <a href="/${user.userName}">${user.userName}</a> 
-        Symphony 第 ${user.userNo} 号会员
+        <div class="user-name">
+            <a href="/${user.userName}">${user.userName}</a>
+        </div>
+        <div class="user-info">
+            <span class="ft-small">Symphony</span> ${user.userNo} <span class="ft-small">${noVIPLabel}</span>
+        </div>
         <#if user.userURL!="">
-        <br/>
-        <span class="ft-small">URL: </span><a href="">${user.userURL}</a>
+        <div class="user-info">
+            <span class="ft-small">URL </span><a href="">${user.userURL}</a>
+        </div>
         </#if>
-        <br/>
-        <span class="ft-small">${joinTimeLabel}: </span>${user.created}
+        <div class="user-info">
+            <span class="ft-small">${joinTimeLabel} </span>${user.userCreateTime?string('yyyy-MM-dd')}
+        </div>
+        <div>
+            <span class="ft-small">${introLabel} </span>
+            <br/>
+            ${user.userIntro}
+        </div>
     </div>
-    <div>
-        ${user.userIntro}
-    </div>
+    <ul class="user-status fn-clear">
+        <li>
+            <strong>12</strong>
+            <span class="ft-small">${tagLabel}</span>
+        </li>
+        <li>
+            <strong>12</strong>
+            <span class="ft-small">${articleLabel}</span>
+        </li>
+        <li>
+            <strong>12</strong>
+            <span class="ft-small">${cmtLabel}</span>
+        </li>
+    </ul>
 </div>
