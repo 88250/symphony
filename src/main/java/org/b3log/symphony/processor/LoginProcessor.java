@@ -50,6 +50,7 @@ import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.QueryResults;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -137,7 +138,13 @@ public final class LoginProcessor {
         final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        JSONObject requestJSONObject = null;
+        try {
+            requestJSONObject = new JSONObject((String) request.getParameterMap().keySet().iterator().next());
+        } catch (final JSONException  e1) {
+            LOGGER.log(Level.SEVERE, e1.getMessage(), e1);
+            requestJSONObject = new JSONObject();
+        }
         final String name = requestJSONObject.optString(User.USER_NAME);
         
         //move to UserRegisterValidation

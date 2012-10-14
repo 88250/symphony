@@ -20,7 +20,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
@@ -28,7 +27,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdiceException;
-import org.b3log.latke.util.Requests;
 import org.b3log.symphony.processor.LoginProcessor;
 import org.json.JSONObject;
 
