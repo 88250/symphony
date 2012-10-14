@@ -30,6 +30,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -43,6 +44,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.processor.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -126,6 +128,7 @@ public final class LoginProcessor {
      * @throws IOException io exception 
      */
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = UserRegisterValidation.class)
     public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
         final JSONRenderer renderer = new JSONRenderer();
@@ -136,11 +139,12 @@ public final class LoginProcessor {
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
         final String name = requestJSONObject.optString(User.USER_NAME);
-
-        if (invalidUserName(name)) {
-            ret.put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidUserNameLabel"));
-            return;
-        }
+        
+        //move to UserRegisterValidation
+        //        if (invalidUserName(name)) {
+        //            ret.put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidUserNameLabel"));
+        //            return;
+        //        }
 
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
@@ -213,7 +217,7 @@ public final class LoginProcessor {
      * @param context the specified context
      * @throws IOException io exception
      */
-    @RequestProcessing(value = {"/logout"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/logout" }, method = HTTPRequestMethod.GET)
     public void logout(final HTTPRequestContext context) throws IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
@@ -300,37 +304,5 @@ public final class LoginProcessor {
         }
     }
 
-    /**
-     * Checks whether the specified name is invalid.
-     * 
-     * <p>
-     * A valid user name:
-     *   <ul>
-     *     <li>length [1, 20]</li>
-     *     <li>content {a-z, A-Z, 0-9, _}</li>
-     *   </ul>
-     * </p>
-     * 
-     * @param name the specified name
-     * @return {@code true} if it is invalid, returns {@code false} otherwise
-     */
-    private boolean invalidUserName(final String name) {
-        final int length = name.length();
-        if (length < 1 || length > 20) {
-            return true;
-        }
-
-        char c;
-        for (int i = 0; i < length; i++) {
-            c = name.charAt(i);
-
-            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || '0' <= c && c <= '9' || '_' == c) {
-                continue;
-            }
-
-            return true;
-        }
-
-        return false;
-    }
+    
 }
