@@ -357,6 +357,29 @@ button.red:active {
     width: 210px;
 }
 /* end avatar */
+
+/* start status */
+.status {
+    border-top: 1px dotted #CCCCCC;
+    list-style: none;
+    margin-top: 25px;
+    padding: 15px 0;
+}
+
+.status > li {
+    float: left;
+    overflow: hidden;
+    width: 86px;
+}
+
+.status > li > strong {
+    font-size: 20px;
+}
+
+.status > li > span {
+    display: block;
+}
+/* end status */
 /* end common */
 
 /* start form */

@@ -22,7 +22,7 @@
             ${user.userIntro}
         </div>
     </div>
-    <ul class="user-status fn-clear">
+    <ul class="status fn-clear">
         <li>
             <strong>12</strong>
             <span class="ft-small">${tagLabel}</span>

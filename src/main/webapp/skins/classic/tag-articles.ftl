@@ -5,7 +5,7 @@
 <html>
     <head>
         <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
+        <meta name="keywords" content="${tag.tagTitle}"/>
         <meta name="description" content=""/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index.css" />
@@ -15,25 +15,35 @@
         <div class="main">
             <div class="wrapper fn-clear">
                 <div class="content">
-                    <div class="fn-clear" style="margin-bottom:20px">
+                    <div class="fn-clear">
+                        <img class="avatar fn-left" src="${tag.tagCreatorThumbnailURL}">
+                        <h1><a title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
+                        简洁简洁
+                    </div>
+                    <div class="fn-clear">
                         <div class="fn-left">
-                            <h1><a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
-                            <span class="ft-small">
-                                ${referenceCountLabel} ${tag.tagReferenceCount} &nbsp;
-                                ${commentCountLabel} ${tag.tagCommentCount}
-                            </span>
+                            <ul class="status fn-clear">
+                                <li>
+                                    <strong>${tag.tagReferenceCount}</strong>
+                                    <span class="ft-small">${referenceCountLabel}</span>
+                                </li>
+                                <li>
+                                    <strong>${tag.tagCommentCount}</strong>
+                                    <span class="ft-small">${cmtCountLabel}</span>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="fn-left">
-                            <a class="ft-noline" title="${creatorLabel}:${tag.tagCreatorName}" href="/${tag.tagCreatorName}">
+                        <div style="margin-top:35px">
+                            <a class="ft-noline fn-left" title="${creatorLabel}:${tag.tagCreatorName}" href="/${tag.tagCreatorName}">
                                 <img style="margin-left:20px" class="avatar fn-left" src="${tag.tagCreatorThumbnailURL}">
                             </a>
-                        </div>
-                        <div class="fn-right">
-                            <#list tag.tagParticipants as commenter>
-                            <a class="ft-noline" title="${contributorLabel}:${commenter.tagParticipantName}" href="/${commenter.tagParticipantName}">
-                                <img class="avatar fn-left" src="${commenter.tagParticipantThumbnailURL}">
-                            </a>
-                            </#list>
+                            <div class="fn-right">
+                                <#list tag.tagParticipants as commenter>
+                                <a class="ft-noline" title="${contributorLabel}:${commenter.tagParticipantName}" href="/${commenter.tagParticipantName}">
+                                    <img class="avatar fn-left" src="${commenter.tagParticipantThumbnailURL}">
+                                </a>
+                                </#list>
+                            </div>
                         </div>
                     </div>
                     <@list listData=articles/>

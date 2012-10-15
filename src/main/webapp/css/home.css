@@ -78,27 +78,6 @@
 .user-info {
     line-height: 25px;
 }
-
-.user-status {
-    border-top: 1px dotted #CCCCCC;
-    list-style: none;
-    margin-top: 25px;
-    padding: 15px 0;
-}
-
-.user-status > li {
-    float: left;
-    overflow: hidden;
-    width: 86px;
-}
-
-.user-status > li > strong {
-    font-size: 20px;
-}
-
-.user-status > li > span {
-    display: block;
-}
 /* end home side */
 
 /* start settings */

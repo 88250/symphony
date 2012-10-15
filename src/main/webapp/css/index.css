@@ -54,33 +54,42 @@
 /* end register */
 
 /* start side tags */
-.tags > li {
-    float: left;
-    margin: 0 5px;   
+.tags {
     position: relative;
 }
 
-.tags > li:hover > .ft-small {
+.tags > li {
+    float: left;
+}
+
+.tags > li:hover > div {
     display: block;
 }
 
-.tags > li > a {
-    line-height: 30px;
+.tags > li > span {
+    float: left;
+    padding: 5px 10px;
+    border: 1px solid #F7F7F7;
+    border-bottom-width: 0;
 }
 
-.tags > li > .ft-small {
-    background-color: rgba(200, 200, 200, 0.5);
+.tags > li:hover > span {
+    background-color: #FFFFFF;
+    border-color: #DDDDDD;
+    border-radius: 3px 3px 0 0;
+}
+
+.tags > li > div {
+    background-color: #FFFFFF;
     border: 1px solid #DDDDDD;
+    border-top-width: 0;
     border-radius: 3px 3px 3px 3px;
-    color: #333333;
     display: none;
-    font-size: 10px;
-    left: -6px;
-    line-height: 12px;
+    left: -3px;
     margin-left: 3px;
     padding: 3px;
     position: absolute;
-    white-space: nowrap;
-    word-wrap: normal;
+    top: 30px;
+    width: 244px;
 }
 /* end side tags */

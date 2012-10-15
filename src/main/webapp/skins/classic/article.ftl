@@ -104,7 +104,7 @@
                                 <div class="ft-small">
                                     <span>
                                         <a href="">vanesaa</a>
-                                        2011-1-1
+                                        <span class="date-ico">2011-1-1</span>
                                     </span>
                                 </div>
                             </li>
@@ -122,7 +122,7 @@
                                 <div class="ft-small">
                                     <span>
                                         <a href="">vanesaa</a>
-                                        2011-1-1
+                                        <span class="date-ico">2011-1-1</span>
                                     </span>
                                 </div>
                             </li>

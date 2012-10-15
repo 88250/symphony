@@ -26,8 +26,12 @@
     <ul class="tags fn-clear">
         <#list sideTags as sideTag>
         <li>
-            <a class="fn-left" href="/tags/${sideTag.tagTitle?url('utf-8')}">${sideTag.tagTitle}</a>
-            <div class="fn-left ft-small">
+            <span>
+                <img src="/favicon.png" />
+                <a href="/tags/${sideTag.tagTitle?url('utf-8')}">${sideTag.tagTitle}</a>
+            </span>
+            <div>
+                你好，世界！ (75)你好，世界！ (75)你好，世界！ (75)你好，世界！ (75)
                 引用 ${sideTag.tagReferenceCount}<br/>
                 评论 ${sideTag.tagCommentCount} 
             </div>
