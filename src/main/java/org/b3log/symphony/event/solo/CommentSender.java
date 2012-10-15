@@ -22,6 +22,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
@@ -29,23 +30,24 @@ import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
- * Sends article to client.
+ * Sends comment to client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 12, 2012
+ * @version 1.0.0.0, Oct 15, 2012
  * @since 0.2.0
  */
-public final class ArticleSender extends AbstractEventListener<JSONObject> {
+public final class CommentSender extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleSender.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentSender.class.getName());
     /**
      * User query service.
      */
@@ -59,7 +61,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleSender.class.getName()});
+                   new Object[]{event.getType(), data, CommentSender.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
@@ -67,46 +69,51 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
+
             final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userQueryService.getUser(authorId);
-            final String clientURL = author.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL);
+            final String clientURL = author.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
 
             if (Strings.isEmptyOrNull(clientURL)) {
                 return;
             }
 
+            final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
+            final String commenterId = originalComment.optString(Comment.COMMENT_AUTHOR_ID);
+            final JSONObject commenter = userQueryService.getUser(commenterId);
+
             final HTTPRequest httpRequest = new HTTPRequest();
             httpRequest.setURL(new URL(clientURL));
             httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
-            final JSONObject article = new JSONObject(originalArticle, new String[]{
-                        Article.ARTICLE_CONTENT,
-                        Article.ARTICLE_TAGS,
-                        Article.ARTICLE_TITLE,
+            final JSONObject comment = new JSONObject(originalComment, new String[]{
+                        Comment.COMMENT_AUTHOR_EMAIL,
+                        Comment.COMMENT_CONTENT,
+                        Comment.COMMENT_ON_ARTICLE_ID,
                         Keys.OBJECT_ID
                     });
 
-            article.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
-            article.put(Article.ARTICLE_EDITOR_TYPE, "CodeMirror-Markdown");
+            comment.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
+            comment.put(Comment.COMMENT_T_AUTHOR_URL, commenter.optString(commenter.optString(User.USER_URL)));
 
-            requestJSONObject.put(Article.ARTICLE, article);
+            requestJSONObject.put(Comment.COMMENT, comment);
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-            
+
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Sends an article to client error: {0}", e.getMessage());
+            LOGGER.log(Level.SEVERE, "Sends a comment to client error: {0}", e.getMessage());
         }
 
-        LOGGER.log(Level.FINER, "Sent an article to client");
+        LOGGER.log(Level.FINER, "Sent a comment to client");
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     * Gets the event type {@linkplain EventTypes#ADD_COMMENT_TO_ARTICLE}.
      * 
      * @return event type
      */
     @Override
     public String getEventType() {
-        return EventTypes.ADD_ARTICLE;
+        return EventTypes.ADD_COMMENT_TO_ARTICLE;
     }
 }

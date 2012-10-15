@@ -18,10 +18,14 @@ package org.b3log.symphony.service;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventException;
+import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Ids;
+import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Statistic;
@@ -65,6 +69,10 @@ public final class CommentMgmtService {
      * Tag repository.
      */
     private TagRepository tagRepository = TagRepository.getInstance();
+    /**
+     * Event manager.
+     */
+    private EventManager eventManager = EventManager.getInstance();
 
     /**
      * Adds a comment with the specified request json object.
@@ -120,10 +128,20 @@ public final class CommentMgmtService {
                 tag.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + 1);
                 tagRepository.update(tag.optString(Keys.OBJECT_ID), tag);
             }
-            
+
             commentRepository.add(comment);
 
             transaction.commit();
+
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Comment.COMMENT, comment);
+            eventData.put(Article.ARTICLE, article);
+            
+            try {
+                eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
+            } catch (final EventException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
 
             return ret;
         } catch (final RepositoryException e) {
