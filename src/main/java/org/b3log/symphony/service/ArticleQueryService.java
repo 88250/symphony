@@ -108,7 +108,7 @@ public final class ArticleQueryService {
         final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
         final int subFetchSize = fetchSize / subCnt;
 
-        List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
         try {
             for (int i = 0; i < tagIdx.size(); i++) {
                 final String tagTitle = tagTitles[tagIdx.get(i)].trim();
