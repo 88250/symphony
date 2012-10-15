@@ -85,6 +85,10 @@ public final class Article {
      */
     public static final String ARTICLE_COMMENTABLE = "articleCommentable";
     /**
+     * Key of article sync to client.
+     */
+    public static final String ARTICLE_SYNC_TO_CLIENT = "syncWithSymphonyClient";
+    /**
      * Key of article editor type.
      */
     public static final String ARTICLE_EDITOR_TYPE = "articleEditorType";
@@ -125,10 +129,6 @@ public final class Article {
      * Key of article participant thumbnail URL.
      */
     public static final String ARTICLE_T_PARTICIPANT_THUMBNAIL_URL = "articleParticipantThumbnailURL";
-    /**
-     * Key of article sync to client.
-     */
-    public static final String ARTICLE_T_SYNC_TO_CLIENT = "syncWithSymphonyClient";
 
     /**
      * Private constructor.

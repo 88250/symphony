@@ -139,7 +139,7 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String articleId) throws Exception {
+                            final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -181,6 +181,9 @@ public final class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
+        Filler.fillRelevantArticles(dataModel, article);
+        Filler.fillRandomArticles(dataModel);
+
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
     }
@@ -220,7 +223,7 @@ public final class ArticleProcessor {
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         final String articleTags = formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
-        final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_T_SYNC_TO_CLIENT);
+        final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
 
         // TODO: add article validate
 
@@ -229,7 +232,7 @@ public final class ArticleProcessor {
         article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
-        article.put(Article.ARTICLE_T_SYNC_TO_CLIENT, syncToClient);
+        article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
 
         final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
         if (null == currentUser) {

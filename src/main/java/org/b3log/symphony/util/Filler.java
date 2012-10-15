@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 3, 2012
+ * @version 1.0.0.5, Oct 15, 2012
  * @since 0.2.0
  */
 public final class Filler {
@@ -69,6 +69,18 @@ public final class Filler {
     private static LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
+     * Fills relevant articles.
+     * 
+     * @param dataModel the specified data model
+     * @param article the specified article
+     * @throws Exception exception
+     */
+    public static void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
+        dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
+                      articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+    }
+
+    /**
      * Fills random articles.
      * 
      * @param dataModel the specified data model
@@ -97,7 +109,7 @@ public final class Filler {
      * @throws Exception exception 
      */
     public static void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) throws Exception {
+                                  final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         Keys.fillServer(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
@@ -126,7 +138,7 @@ public final class Filler {
      * @param dataModel the specified data model
      */
     private static void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) {
+                                        final Map<String, Object> dataModel) {
         LoginProcessor.tryLogInWithCookie(request, response);
         final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
 

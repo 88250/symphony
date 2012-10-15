@@ -180,7 +180,7 @@ public final class TagQueryService {
 
             final String creatorEmail = creator.optString(User.USER_EMAIL);
             final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(creatorEmail) + "?s=140&d="
-                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                        + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
             final JSONObject ret = new JSONObject();
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
@@ -240,13 +240,13 @@ public final class TagQueryService {
 
                 final String hashedEmail = MD5.hash(user.optString(User.USER_EMAIL));
                 final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                        + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
-            
+
                 ret.add(participant);
             }
-            
+
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets tag participants failed", e);

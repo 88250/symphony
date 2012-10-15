@@ -30,6 +30,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.solo.ArticleSender;
+import org.b3log.symphony.event.solo.CommentSender;
 import org.b3log.symphony.service.StatisticQueryService;
 import org.b3log.symphony.util.Skins;
 
@@ -69,9 +70,11 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Latkes.disableDataCache();
 
         Skins.loadSkin();
-
+        
         // Register event listeners
-        EventManager.getInstance().registerListener(new ArticleSender());
+        final EventManager eventManager = EventManager.getInstance();
+        eventManager.registerListener(new ArticleSender());
+        eventManager.registerListener(new CommentSender());
 
         LOGGER.info("Initialized the context");
 
@@ -108,8 +111,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
             LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
-                    new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
-                        session.isNew()});
+                       new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
+                                    session.isNew()});
             // Online visitor count
             StatisticQueryService.onlineVisitorCount(httpServletRequest);
         }
