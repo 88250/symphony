@@ -124,6 +124,7 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
+            article.put(Article.ARTICLE_SYNC_TO_CLIENT, requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT));
             article.put(Article.ARTICLE_AUTHOR_ID, authorId);
 
             final long currentTimeMillis = System.currentTimeMillis();
@@ -153,7 +154,6 @@ public final class ArticleMgmtService {
 
             transaction.commit();
 
-            article.put(Article.ARTICLE_T_SYNC_TO_CLIENT, requestJSONObject.optBoolean(Article.ARTICLE_T_SYNC_TO_CLIENT));
 
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, article);

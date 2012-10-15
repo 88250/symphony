@@ -223,7 +223,7 @@ public final class ArticleProcessor {
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         final String articleTags = formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
-        final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_T_SYNC_TO_CLIENT);
+        final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
 
         // TODO: add article validate
 
@@ -232,7 +232,7 @@ public final class ArticleProcessor {
         article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
-        article.put(Article.ARTICLE_T_SYNC_TO_CLIENT, syncToClient);
+        article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
 
         final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
         if (null == currentUser) {
