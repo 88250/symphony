@@ -18,6 +18,8 @@ package org.b3log.symphony.util;
 import java.io.StringReader;
 import java.io.StringWriter;
 import org.b3log.latke.util.Strings;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.tautua.markdownpapers.Markdown;
 
 /**
@@ -26,10 +28,26 @@ import org.tautua.markdownpapers.Markdown;
  * <p>Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 12, 2012
+ * @version 1.0.0.1, Oct 15, 2012
  * @since 0.2.0
  */
 public final class Markdowns {
+
+    /**
+     * Article content cleaner whitelist.
+     */
+    public static final Whitelist ARTICLE_CONTENT_WHITELIST = Whitelist.relaxed().addAttributes(":all", "id");
+
+    /**
+     * Gets the safe HTML content of the specified content.
+     * 
+     * @param content the specified content
+     * @param baseURL the specified base URL, the relative path value of href will starts with this URL
+     * @return safe HTML content
+     */
+    public static String clean(final String content, final String baseURL) {
+        return Jsoup.clean(content, baseURL, ARTICLE_CONTENT_WHITELIST);
+    }
 
     /**
      * Converts the specified markdown text to HTML.

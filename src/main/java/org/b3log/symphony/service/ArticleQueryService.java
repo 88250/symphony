@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 10, 2012
+ * @version 1.0.0.2, Oct 15, 2012
  * @since 0.2.0
  */
 public final class ArticleQueryService {
@@ -245,6 +245,7 @@ public final class ArticleQueryService {
      *   <li>converts create/update/latest comment time (long) to date type</li>
      *   <li>generates author thumbnail URL</li>
      *   <li>generates author name</li>
+     *   <li>escapes article  title &lt; and &gt;</li>
      * </ul>
      * 
      * @param articles the specified articles
@@ -263,6 +264,7 @@ public final class ArticleQueryService {
      *   <li>converts create/update/latest comment time (long) to date type</li>
      *   <li>generates author thumbnail URL</li>
      *   <li>generates author name</li>
+     *   <li>escapes article  title &lt; and &gt;</li>
      * </ul>
      * 
      * @param article the specified article
@@ -271,6 +273,9 @@ public final class ArticleQueryService {
     private void organizeArticle(final JSONObject article) throws RepositoryException {
         toArticleDate(article);
         genArticleAuthor(article);
+
+        final String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
+        article.put(Article.ARTICLE_TITLE, title);
     }
 
     /**
@@ -338,7 +343,12 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Markdown the specified article content.
+     * Markdowns the specified article content.
+     * 
+     * <ul>
+     *   <li>Markdowns article content</li>
+     *   <li>Escapes article content &lt;script&gt; tag</li>
+     * </ul>
      * 
      * @param article the specified article content
      */
@@ -347,6 +357,8 @@ public final class ArticleQueryService {
 
         try {
             content = Markdowns.toHTML(article.optString(Article.ARTICLE_CONTENT));
+            content = content.replace("<script>", "&lt;script&gt;").replace("</script>", "&lt;/script&gt;");
+            content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Markdown failed", e);
         }

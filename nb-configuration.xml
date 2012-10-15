@@ -12,7 +12,9 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>commenters</word>
         <word>io</word>
         <word>json</word>
+        <word>Markdowns</word>
         <word>permalink</word>
         <word>servlet</word>
+        <word>whitelist</word>
     </spellchecker-wordlist>
 </project-shared-configuration>
