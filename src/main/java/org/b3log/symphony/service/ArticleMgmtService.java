@@ -198,6 +198,8 @@ public final class ArticleMgmtService {
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
                 tag.put(Tag.TAG_COMMENT_CNT, 0);
+                tag.put(Tag.TAG_DESCRIPTION, "");
+                tag.put(Tag.TAG_ICON_PATH, "");
                 tag.put(Tag.TAG_STATUS, 0);
 
                 tagId = tagRepository.add(tag);
@@ -217,6 +219,8 @@ public final class ArticleMgmtService {
                 tagTmp.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT));
                 tagTmp.put(Tag.TAG_STATUS, tag.optInt(Tag.TAG_STATUS));
                 tagTmp.put(Tag.TAG_REFERENCE_CNT, tag.optInt(Tag.TAG_REFERENCE_CNT) + 1);
+                tagTmp.put(Tag.TAG_DESCRIPTION, tag.optString(Tag.TAG_DESCRIPTION));
+                tagTmp.put(Tag.TAG_ICON_PATH, tag.optString(Tag.TAG_ICON_PATH));
 
                 tagRepository.update(tagId, tagTmp);
 
