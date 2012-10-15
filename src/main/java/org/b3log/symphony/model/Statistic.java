@@ -46,7 +46,7 @@ public final class Statistic {
     public static final String STATISTIC_CMT_COUNT = "statisticCmtCount";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Statistic() {
     }

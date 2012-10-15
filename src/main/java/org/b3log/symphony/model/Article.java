@@ -92,7 +92,6 @@ public final class Article {
      * Key of article status.
      */
     public static final String ARTICLE_STATUS = "articleStatus";
-    
     //// Transient ////
     /**
      * Key of article author thumbnail URL.
@@ -130,4 +129,10 @@ public final class Article {
      * Key of article sync to client.
      */
     public static final String ARTICLE_T_SYNC_TO_CLIENT = "syncWithSymphonyClient";
+
+    /**
+     * Private constructor.
+     */
+    private Article() {
+    }
 }

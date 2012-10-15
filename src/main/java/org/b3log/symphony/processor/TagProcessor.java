@@ -90,7 +90,7 @@ public final class TagProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final List<JSONObject> trendTags = tagQueryService.getTrendTags(Symphonys.getInt("tagsWallTrendCnt"));
-        List<JSONObject> coldTags = tagQueryService.getColdTags(Symphonys.getInt("tagsWallColdCnt"));
+        final List<JSONObject> coldTags = tagQueryService.getColdTags(Symphonys.getInt("tagsWallColdCnt"));
 
         dataModel.put(Common.TREND_TAGS, trendTags);
         dataModel.put(Common.COLD_TAGS, coldTags);

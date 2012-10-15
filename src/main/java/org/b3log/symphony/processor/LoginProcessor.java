@@ -138,20 +138,14 @@ public final class LoginProcessor {
         final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
-        JSONObject requestJSONObject = null;
+        JSONObject requestJSONObject;
         try {
             requestJSONObject = new JSONObject((String) request.getParameterMap().keySet().iterator().next());
-        } catch (final JSONException  e1) {
+        } catch (final JSONException e1) {
             LOGGER.log(Level.SEVERE, e1.getMessage(), e1);
             requestJSONObject = new JSONObject();
         }
         final String name = requestJSONObject.optString(User.USER_NAME);
-        
-        //move to UserRegisterValidation
-        //        if (invalidUserName(name)) {
-        //            ret.put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + langPropsService.get("invalidUserNameLabel"));
-        //            return;
-        //        }
 
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
@@ -224,7 +218,7 @@ public final class LoginProcessor {
      * @param context the specified context
      * @throws IOException io exception
      */
-    @RequestProcessing(value = {"/logout" }, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/logout"}, method = HTTPRequestMethod.GET)
     public void logout(final HTTPRequestContext context) throws IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
@@ -310,6 +304,4 @@ public final class LoginProcessor {
             response.addCookie(cookie);
         }
     }
-
-    
 }

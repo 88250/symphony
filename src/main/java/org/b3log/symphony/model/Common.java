@@ -98,7 +98,7 @@ public final class Common {
     public static final String ARTICLE_ID = "articleId";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Common() {
     }

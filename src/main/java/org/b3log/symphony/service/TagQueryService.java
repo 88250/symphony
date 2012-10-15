@@ -170,7 +170,7 @@ public final class TagQueryService {
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
         try {
-            JSONObject result = userTagRepository.get(query);
+            final JSONObject result = userTagRepository.get(query);
             final JSONArray results = result.optJSONArray(Keys.RESULTS);
             final JSONObject creatorTagRelation = results.optJSONObject(0);
 

@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.symphony.SymphonyServletListener;
-import static org.b3log.symphony.model.Skin.*;
+import org.b3log.symphony.model.Skin;
 
 /**
  * Skin utilities.
@@ -53,7 +53,7 @@ public final class Skins {
 
         try {
             final String webRootPath = SymphonyServletListener.getWebRoot();
-            final String skinPath = webRootPath + SKINS + "/" + skinDirName;
+            final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
             Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
         } catch (final IOException e) {
             throw new RuntimeException(e);
@@ -61,7 +61,7 @@ public final class Skins {
 
         final boolean enablePageCache = Symphonys.getBoolean("enablePageCache");
         Templates.enableCache(enablePageCache);
-        LOGGER.log(Level.INFO, "{0} template caching", (enablePageCache ? "Enabled" : "Disabled"));
+        LOGGER.log(Level.INFO, "{0} template caching", enablePageCache ? "Enabled" : "Disabled");
         if (!enablePageCache) {
             Templates.MAIN_CFG.setCacheStorage(new NullCacheStorage());
             Templates.MOBILE_CFG.setCacheStorage(new NullCacheStorage());
@@ -114,5 +114,11 @@ public final class Skins {
 
             return null;
         }
+    }
+
+    /**
+     * Private skins.
+     */
+    private Skins() {
     }
 }

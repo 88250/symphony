@@ -61,4 +61,10 @@ public final class TimeZones {
         System.setProperty("user.timezone", timeZoneId);
         Templates.MAIN_CFG.setTimeZone(timeZone);
     }
+
+    /**
+     * Private constructor.
+     */
+    private TimeZones() {
+    }
 }

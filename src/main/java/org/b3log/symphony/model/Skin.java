@@ -45,7 +45,7 @@ public final class Skin {
     public static final String SKIN_DIR_NAME = "skinDirName";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Skin() {
     }

@@ -22,7 +22,6 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.impl.UserRepositoryImpl;
 import org.b3log.symphony.AbstractTestCase;
 import org.b3log.symphony.model.UserExt;
 import org.json.JSONArray;
@@ -31,7 +30,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * {@link UserRepositoryImpl} test case.
+ * {@link UserRepository} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 2, 2012

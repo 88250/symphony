@@ -54,6 +54,10 @@ public class InitProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InitProcessor.class.getName());
+    /**
+     * Number of article to generate.
+     */
+    private static final int ARTICLE_GENERATE_NUM = 49;
 
     /**
      * Generates tables.
@@ -134,13 +138,13 @@ public class InitProcessor {
             final StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
             final JSONObject statistic = statisticQueryService.getStatistic();
             final int start = statistic.optInt(Statistic.STATISTIC_ARTICLE_COUNT) + 1;
-            final int end = start + 49;
+            final int end = start + ARTICLE_GENERATE_NUM;
 
             for (int i = start; i <= end; i++) {
                 final JSONObject article = new JSONObject();
                 article.put(Article.ARTICLE_TITLE, "你好，世界！ (" + i + ')');
                 article.put(Article.ARTICLE_TAGS, "B3log, Java, " + i);
-                article.put(Article.ARTICLE_CONTENT, "B3log Symphony 第 (" + (i + 1) + ") 帖");
+                article.put(Article.ARTICLE_CONTENT, "测试正文");
                 article.put(Article.ARTICLE_EDITOR_TYPE, 0);
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.optString(User.USER_EMAIL));
                 article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));

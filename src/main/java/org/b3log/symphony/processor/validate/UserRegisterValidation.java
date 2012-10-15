@@ -16,40 +16,53 @@
 package org.b3log.symphony.processor.validate;
 
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdiceException;
-import org.b3log.symphony.processor.LoginProcessor;
+import org.b3log.latke.util.Strings;
 import org.json.JSONObject;
 
 /**
- * UserRegisterValidation for validate {@link LoginProcessor}  register(Type POST) method.
+ * UserRegisterValidation for validate {@link org.b3log.symphony.processor.LoginProcessor} register(Type POST) method.
+ * 
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
- * @version 1.0.0.0, Oct 14, 2012 
+ * @version 1.0.0.1, Oct 15, 2012 
  */
-public class UserRegisterValidation extends BeforeRequestProcessAdvice {
+public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Max user name length.
+     */
+    private static final int MAX_USER_NAME_LENGTH = 20;
+    /**
+     * Min user name length.
+     */
+    private static final int MIN_USER_NAME_LENGTH = 1;
+    /**
+     * Max password length.
+     */
+    private static final int MAX_PWD_LENGTH = 16;
+    /**
+     * Min password length.
+     */
+    private static final int MIN_PWD_LENGTH = 1;
 
     @Override
-    public void doAdvice(HTTPRequestContext context, Map<String, Object> args) throws RequestProcessAdiceException {
+    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdiceException {
 
         final HttpServletRequest request = context.getRequest();
 
         JSONObject requestJSONObject;
         try {
-            String json =  (String) request.getParameterMap().keySet().iterator().next();
+            final String json = (String) request.getParameterMap().keySet().iterator().next();
             requestJSONObject = new JSONObject(json);
         } catch (final Exception e) {
             throw new RequestProcessAdiceException(new JSONObject().put(Keys.MSG, e.getMessage()));
@@ -59,7 +72,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
 
         checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");
-        checkField(invalidUserEmail(email), "registerFailLabel", "invalidEmailLabel");
+        checkField(!Strings.isEmail(email), "registerFailLabel", "invalidEmailLabel");
         checkField(invalidUserPassword(password), "registerFailLabel", "invalidPasswordLabel");
 
     }
@@ -80,7 +93,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
      */
     private boolean invalidUserName(final String name) {
         final int length = name.length();
-        if (length < 1 || length > 20) {
+        if (length < MIN_USER_NAME_LENGTH || length > MAX_USER_NAME_LENGTH) {
             return true;
         }
 
@@ -99,41 +112,31 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
     }
 
     /**
-     * check email,length(1,255),Standard email pattern.
-     * @param email email
-     * @return {@code true} if it is invalid, returns {@code false} otherwise
-     */
-    private boolean invalidUserEmail(final String email) {
-        if (email.length() < 1 || email.length() > 255) {
-            return true;
-        }
-        final String check = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-        final Pattern regex = Pattern.compile(check);
-        final Matcher matcher = regex.matcher(email);
-        final boolean isMatched = matcher.matches();
-        return !isMatched;
-    }
-
-    /**
      * check password(1,16).
+     * 
      * @param password the specific password
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
     private boolean invalidUserPassword(final String password) {
-
-        if (password.length() < 1 || password.length() > 16) {
+        if (password.length() < MIN_PWD_LENGTH || password.length() > MAX_PWD_LENGTH) {
             return true;
         }
         return false;
     }
 
-    private void checkField(final boolean invalidUserName, final String failLabel, final String fieldLabel)
+    /**
+     * Checks field.
+     * 
+     * @param invalid the specified invalid flag
+     * @param failLabel the specified fail label
+     * @param fieldLabel the specified field label
+     * @throws RequestProcessAdiceException request process adice exception
+     */
+    private void checkField(final boolean invalid, final String failLabel, final String fieldLabel)
             throws RequestProcessAdiceException {
-        if (invalidUserName) {
+        if (invalid) {
             throw new RequestProcessAdiceException(new JSONObject().put(Keys.MSG, langPropsService.get(failLabel)
-                    + " - "
-                    + langPropsService.get(fieldLabel)));
+                    + " - " + langPropsService.get(fieldLabel)));
         }
     }
-
 }

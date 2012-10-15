@@ -69,4 +69,10 @@ public final class Tag {
      * Key of tag participant thumbnail URL.
      */
     public static final String TAG_T_PARTICIPANT_THUMBNAIL_URL = "tagParticipantThumbnailURL";
+
+    /**
+     * Private constructor.
+     */
+    private Tag() {
+    }
 }

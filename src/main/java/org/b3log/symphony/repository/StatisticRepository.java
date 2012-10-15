@@ -16,7 +16,6 @@
 package org.b3log.symphony.repository;
 
 import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Statistic;
 
 /**

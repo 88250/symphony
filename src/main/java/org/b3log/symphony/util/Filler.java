@@ -197,4 +197,10 @@ public final class Filler {
         final JSONObject statistic = statisticQueryService.getStatistic();
         dataModel.put(Statistic.STATISTIC, statistic);
     }
+
+    /**
+     * Private constructor.
+     */
+    private Filler() {
+    }
 }

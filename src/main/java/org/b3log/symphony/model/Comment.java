@@ -85,4 +85,10 @@ public final class Comment {
      * Key of comment article permalink.
      */
     public static final String COMMENT_T_ARTICLE_PERMALINK = "commentArticlePermalink";
+
+    /**
+     * Private constructor.
+     */
+    private Comment() {
+    }
 }
