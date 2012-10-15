@@ -22,7 +22,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
-import org.b3log.latke.servlet.advice.RequestProcessAdiceException;
+import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Strings;
 import org.json.JSONObject;
 
@@ -56,7 +56,7 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
     private static final int MIN_PWD_LENGTH = 1;
 
     @Override
-    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdiceException {
+    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
 
         final HttpServletRequest request = context.getRequest();
 
@@ -65,7 +65,7 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
             final String json = (String) request.getParameterMap().keySet().iterator().next();
             requestJSONObject = new JSONObject(json);
         } catch (final Exception e) {
-            throw new RequestProcessAdiceException(new JSONObject().put(Keys.MSG, e.getMessage()));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
@@ -133,9 +133,9 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
      * @throws RequestProcessAdiceException request process adice exception
      */
     private void checkField(final boolean invalid, final String failLabel, final String fieldLabel)
-            throws RequestProcessAdiceException {
+            throws RequestProcessAdviceException {
         if (invalid) {
-            throw new RequestProcessAdiceException(new JSONObject().put(Keys.MSG, langPropsService.get(failLabel)
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get(failLabel)
                     + " - " + langPropsService.get(fieldLabel)));
         }
     }
