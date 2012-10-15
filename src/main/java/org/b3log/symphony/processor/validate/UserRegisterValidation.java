@@ -130,7 +130,7 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
      * @param invalid the specified invalid flag
      * @param failLabel the specified fail label
      * @param fieldLabel the specified field label
-     * @throws RequestProcessAdiceException request process adice exception
+     * @throws RequestProcessAdviceException request process advice exception
      */
     private void checkField(final boolean invalid, final String failLabel, final String fieldLabel)
             throws RequestProcessAdviceException {
