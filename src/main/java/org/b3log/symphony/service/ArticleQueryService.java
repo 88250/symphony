@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -80,6 +81,63 @@ public final class ArticleQueryService {
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    /**
+     * Count to fetch article tags for relevant articles.
+     */
+    private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
+
+    /**
+     * Gets the relevant articles of the specified article with the specified fetch size.
+     * 
+     * <p>
+     * The relevant articles exist the same tag with the specified article.
+     * </p>
+     * 
+     * @param article the specified article
+     * @param fetchSize the specified fetch size
+     * @return relevant articles, returns an empty list if not found
+     * @throws ServiceException service exception 
+     */
+    public List<JSONObject> getRelevantArticles(final JSONObject article, final int fetchSize) throws ServiceException {
+        final String tagsString = article.optString(Article.ARTICLE_TAGS);
+        final String[] tagTitles = tagsString.split(",");
+        final int tagTitlesLength = tagTitles.length;
+        final int subCnt = tagTitlesLength > RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT
+                           ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
+
+        final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
+        final int subFetchSize = fetchSize / subCnt;
+
+        List<JSONObject> ret = new ArrayList<JSONObject>();
+        try {
+            for (int i = 0; i < tagIdx.size(); i++) {
+                final String tagTitle = tagTitles[tagIdx.get(i)].trim();
+
+                final JSONObject tag = tagRepository.getByTitle(tagTitle);
+                final String tagId = tag.optString(Keys.OBJECT_ID);
+                JSONObject result = tagArticleRepository.getByTagId(tagId, 1, subFetchSize);
+
+                final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
+
+                final Set<String> articleIds = new HashSet<String>();
+                for (int j = 0; j < tagArticleRelations.length(); j++) {
+                    articleIds.add(tagArticleRelations.optJSONObject(j).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
+                }
+
+                final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
+                result = articleRepository.get(query);
+
+                ret.addAll(CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS)));
+            }
+
+            organizeArticles(ret);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets relevant articles failed", e);
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets articles by the specified tag.
@@ -298,7 +356,7 @@ public final class ArticleQueryService {
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
         final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(authorEmail) + "?s=140&d="
-                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
@@ -334,7 +392,7 @@ public final class ArticleQueryService {
             final String participantThumbnailURL = "";
 
             final List<JSONObject> articleParticipants =
-                    commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
+                                   commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
             article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
 
             article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);

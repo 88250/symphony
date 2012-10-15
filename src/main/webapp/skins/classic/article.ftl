@@ -98,13 +98,13 @@
                             ${relativeArticleLabel}
                         </h2>
                         <ul>
-                            <#list 1..10 as i>
+                            <#list sideRelevantArticles as relevantArticle>
                             <li>
-                                <a href="">Recent Post</a> 
+                                <a href="">${relevantArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
-                                        <a href="">vanesaa</a>
-                                        2011-1-1
+                                        <a href="/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
+                                        <span class="date-ico"> ${relevantArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                                     </span>
                                 </div>
                             </li>
@@ -116,13 +116,13 @@
                             ${randomArticleLabel}
                         </h2>
                         <ul>
-                            <#list 1..10 as i>
+                            <#list sideRandomArticles as randomArticle>
                             <li>
-                                <a href="">Recent Post</a> 
+                                <a href="">${randomArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
-                                        <a href="">vanesaa</a>
-                                        2011-1-1
+                                        <a href="/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
+                                        <span class="date-ico"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                                     </span>
                                 </div>
                             </li>

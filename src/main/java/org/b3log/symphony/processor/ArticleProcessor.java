@@ -139,7 +139,7 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String articleId) throws Exception {
+                            final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -180,6 +180,9 @@ public final class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        Filler.fillRelevantArticles(dataModel, article);
+        Filler.fillRandomArticles(dataModel);
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);

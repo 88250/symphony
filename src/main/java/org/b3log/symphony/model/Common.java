@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Oct 12, 2012
+ * @version 1.0.0.9, Oct 15, 2012
  * @since 0.2.0
  */
 public final class Common {
@@ -72,6 +72,10 @@ public final class Common {
      * Key of side random articles.
      */
     public static final String SIDE_RANDOM_ARTICLES = "sideRandomArticles";
+    /**
+     * Key of side relevant articles.
+     */
+    public static final String SIDE_RELEVANT_ARTICLES = "sideRelevantArticles";
     /**
      * Key of latest comment articles.
      */
