@@ -117,7 +117,8 @@ public final class OptionQueryService {
     public JSONObject getStatistic() throws ServiceException {
         final JSONObject ret = new JSONObject();
         
-        final Query query = new Query().setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_STATISTIC));
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_STATISTIC));
         try {
             final JSONObject result = optionRepository.get(query);
             final JSONArray options = result.optJSONArray(Keys.RESULTS);
