@@ -16,11 +16,13 @@
         <div class="user-info">
             <span class="ft-small">${joinTimeLabel} </span>${user.userCreateTime?string('yyyy-MM-dd')}
         </div>
+        <#if user.userIntro!="">
         <div>
             <span class="ft-small">${introLabel} </span>
             <br/>
             ${user.userIntro}
         </div>
+        </#if>
     </div>
     <ul class="status fn-clear">
         <li>
