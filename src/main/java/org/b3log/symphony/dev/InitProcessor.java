@@ -32,10 +32,9 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Statistic;
-import org.b3log.symphony.repository.StatisticRepository;
+import org.b3log.symphony.model.Option;
+import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
-import org.b3log.symphony.service.StatisticQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
@@ -44,7 +43,7 @@ import org.json.JSONObject;
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 11, 2012
+ * @version 1.0.0.4, Oct 16, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -80,15 +79,33 @@ public class InitProcessor {
             }
 
             // Init stat.
-            final StatisticRepository statisticRepository = StatisticRepository.getInstance();
-            final Transaction transaction = statisticRepository.beginTransaction();
-            final JSONObject statistic = new JSONObject();
-            statistic.put(Keys.OBJECT_ID, Statistic.STATISTIC);
-            statistic.put(Statistic.STATISTIC_MEMBER_COUNT, 0);
-            statistic.put(Statistic.STATISTIC_CMT_COUNT, 0);
-            statistic.put(Statistic.STATISTIC_ARTICLE_COUNT, 0);
-            statistic.put(Statistic.STATISTIC_TAG_COUNT, 0);
-            statisticRepository.add(statistic);
+            final OptionRepository optionRepository = OptionRepository.getInstance();
+            final Transaction transaction = optionRepository.beginTransaction();
+
+            JSONObject option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_MEMBER_COUNT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_CMT_COUNT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_ARTICLE_COUNT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_TAG_COUNT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+
             transaction.commit();
 
             // Init admin
@@ -99,7 +116,7 @@ public class InitProcessor {
             admin.put(User.USER_PASSWORD, "test");
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             userMgmtService.addUser(admin);
-            
+
             admin = UserQueryService.getInstance().getAdmin();
 
             // Hello World!
@@ -135,9 +152,9 @@ public class InitProcessor {
             final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
             final UserQueryService userQueryService = UserQueryService.getInstance();
             final JSONObject admin = userQueryService.getAdmin();
-            final StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
-            final JSONObject statistic = statisticQueryService.getStatistic();
-            final int start = statistic.optInt(Statistic.STATISTIC_ARTICLE_COUNT) + 1;
+            final OptionRepository optionRepository = OptionRepository.getInstance();
+            final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
+            final int start = articleCntOption.optInt(Option.OPTION_VALUE) + 1;
             final int end = start + ARTICLE_GENERATE_NUM;
 
             for (int i = start; i <= end; i++) {

@@ -31,7 +31,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.solo.ArticleSender;
 import org.b3log.symphony.event.solo.CommentSender;
-import org.b3log.symphony.service.StatisticQueryService;
+import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Skins;
 
 /**
@@ -114,7 +114,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
                        new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
                                     session.isNew()});
             // Online visitor count
-            StatisticQueryService.onlineVisitorCount(httpServletRequest);
+            OptionQueryService.onlineVisitorCount(httpServletRequest);
         }
     }
 

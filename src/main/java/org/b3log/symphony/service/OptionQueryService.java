@@ -21,37 +21,42 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import org.b3log.latke.Keys;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.symphony.model.Statistic;
-import org.b3log.symphony.repository.StatisticRepository;
+import org.b3log.symphony.model.Option;
+import org.b3log.symphony.repository.OptionRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Statistic management service.
+ * Option query service.
  * 
  * <p>
  *   <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is NOT cluster-safe.
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 6, 2012
+ * @version 1.0.0.2, Oct 16, 2012
  * @since 0.2.0
  */
-public final class StatisticQueryService {
+public final class OptionQueryService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatisticQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OptionQueryService.class.getName());
     /**
      * Singleton.
      */
-    private static final StatisticQueryService SINGLETON = new StatisticQueryService();
+    private static final OptionQueryService SINGLETON = new OptionQueryService();
     /**
-     * Statistic repository.
+     * Option repository.
      */
-    private StatisticRepository statisticRepository = StatisticRepository.getInstance();
+    private OptionRepository optionRepository = OptionRepository.getInstance();
     /**
      * Online visitor cache.
      * 
@@ -104,14 +109,25 @@ public final class StatisticQueryService {
     }
 
     /**
-     * Adds the statistic.
+     * Gets the statistic.
      * 
      * @return statistic
      * @throws ServiceException service exception
      */
     public JSONObject getStatistic() throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        
+        final Query query = new Query().setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_STATISTIC));
         try {
-            return statisticRepository.get(Statistic.STATISTIC);
+            final JSONObject result = optionRepository.get(query);
+            final JSONArray options = result.optJSONArray(Keys.RESULTS);
+            
+            for (int i = 0; i < options.length(); i++) {
+                final JSONObject option = options.optJSONObject(i);
+                ret.put(option.optString(Keys.OBJECT_ID), option.optInt(Option.OPTION_VALUE));
+            }
+            
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets statistic failed", e);
             throw new ServiceException(e);
@@ -119,17 +135,17 @@ public final class StatisticQueryService {
     }
 
     /**
-     * Gets the {@link StatisticMgmtService} singleton.
+     * Gets the {@link OptionQueryService} singleton.
      *
      * @return the singleton
      */
-    public static StatisticQueryService getInstance() {
+    public static OptionQueryService getInstance() {
         return SINGLETON;
     }
 
     /**
      * Private constructor.
      */
-    private StatisticQueryService() {
+    private OptionQueryService() {
     }
 }

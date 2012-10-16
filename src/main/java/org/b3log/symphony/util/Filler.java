@@ -27,10 +27,10 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Statistic;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.processor.LoginProcessor;
 import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.StatisticQueryService;
+import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.json.JSONObject;
 
@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 15, 2012
+ * @version 1.0.0.6, Oct 16, 2012
  * @since 0.2.0
  */
 public final class Filler {
@@ -60,9 +60,9 @@ public final class Filler {
      */
     private static TagQueryService tagQueryService = TagQueryService.getInstance();
     /**
-     * Statistic query service.
+     * Option query service.
      */
-    private static StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
+    private static OptionQueryService optionQueryService = OptionQueryService.getInstance();
     /**
      * Language service.
      */
@@ -77,7 +77,7 @@ public final class Filler {
      */
     public static void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                      articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
     }
 
     /**
@@ -109,7 +109,7 @@ public final class Filler {
      * @throws Exception exception 
      */
     public static void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-                                  final Map<String, Object> dataModel) throws Exception {
+            final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         Keys.fillServer(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
@@ -138,7 +138,7 @@ public final class Filler {
      * @param dataModel the specified data model
      */
     private static void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
-                                        final Map<String, Object> dataModel) {
+            final Map<String, Object> dataModel) {
         LoginProcessor.tryLogInWithCookie(request, response);
         final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
 
@@ -204,10 +204,10 @@ public final class Filler {
      */
     private static void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
-        dataModel.put(Common.ONLINE_VISITOR_CNT, StatisticQueryService.getOnlineVisitorCount());
+        dataModel.put(Common.ONLINE_VISITOR_CNT, OptionQueryService.getOnlineVisitorCount());
 
-        final JSONObject statistic = statisticQueryService.getStatistic();
-        dataModel.put(Statistic.STATISTIC, statistic);
+        final JSONObject statistic = optionQueryService.getStatistic();
+        dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
     }
 
     /**

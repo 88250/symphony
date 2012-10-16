@@ -93,28 +93,22 @@
         ]
     },
     {
-        "name": "statistic",
+        "name": "option",
         "keys": [
         {
             "name": "oId",
             "type": "String",
-            "length": 19
+            "length": 64
         },
         {
-            "name": "statisticMemberCount",
-            "type": "int"
+            "name": "optionValue",
+            "type": "String",
+            "length": 512
         },
         {
-            "name": "statisticArticleCount",
-            "type": "int"
-        },
-        {
-            "name": "statisticTagCount",
-            "type": "int"
-        },
-        {
-            "name": "statisticCmtCount",
-            "type": "int"
+            "name": "optionCategory",
+            "type": "String",
+            "legnth": 20
         }
         ]
     },

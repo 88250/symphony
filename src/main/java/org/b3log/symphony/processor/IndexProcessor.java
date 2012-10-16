@@ -31,10 +31,10 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Statistic;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
-import org.b3log.symphony.service.StatisticQueryService;
+import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Oct 11, 2012
+ * @version 1.0.0.7, Oct 16, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -66,9 +66,9 @@ public final class IndexProcessor {
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
     /**
-     * Statistic query service.
+     * Option query service.
      */
-    private StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
+    private OptionQueryService optionQueryService = OptionQueryService.getInstance();
 
     /**
      * Shows index.
@@ -101,8 +101,8 @@ public final class IndexProcessor {
         final List<JSONObject> latestCmtArticles = articleQueryService.getLatestCmtArticles(pageNum, pageSize);
         dataModel.put(Common.LATEST_CMT_ARTICLES, latestCmtArticles);
 
-        final JSONObject statistic = statisticQueryService.getStatistic();
-        final int articleCnt = statistic.optInt(Statistic.STATISTIC_ARTICLE_COUNT);
+        final JSONObject articleCntOption = optionQueryService.getStatistic();
+        final int articleCnt = articleCntOption.optInt(Option.ID_C_STATISTIC_ARTICLE_COUNT);
         final int pageCount = (int) Math.ceil((double) articleCnt / (double) pageSize);
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);

@@ -30,11 +30,11 @@ import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Statistic;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
-import org.b3log.symphony.repository.StatisticRepository;
+import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 6, 2012
+ * @version 1.0.0.3, Oct 16, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -79,9 +79,9 @@ public final class ArticleMgmtService {
      */
     private UserTagRepository userTagRepository = UserTagRepository.getInstance();
     /**
-     * Statistic repository.
+     * Option repository.
      */
-    private StatisticRepository statisticRepository = StatisticRepository.getInstance();
+    private OptionRepository optionRepository = OptionRepository.getInstance();
     /**
      * Event manager.
      */
@@ -140,12 +140,13 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_STATUS, 0);
 
             final JSONObject author = userRepository.get(authorId);
-            final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
 
-            tag(article.optString(Article.ARTICLE_TAGS).split(","), article, statistic, author);
+            tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
 
-            statistic.put(Statistic.STATISTIC_ARTICLE_COUNT, statistic.optInt(Statistic.STATISTIC_ARTICLE_COUNT) + 1);
-            statisticRepository.update(Statistic.STATISTIC, statistic); // Updates global tag/article count
+            final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
+            final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
+            articleCntOption.put(Option.OPTION_VALUE, articleCnt + 1);
+            optionRepository.update(Option.ID_C_STATISTIC_ARTICLE_COUNT, articleCntOption); // Updates global tag/article count
 
             author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) + 1);
             userRepository.update(author.optString(Keys.OBJECT_ID), author); // Updates user article count (and new tag count) 
@@ -179,12 +180,10 @@ public final class ArticleMgmtService {
      *
      * @param tagTitles the specified tag titles
      * @param article the specified article
-     * @param statistic the specified statistic
      * @param author the specified author
      * @throws RepositoryException repository exception
      */
-    private void tag(final String[] tagTitles, final JSONObject article, final JSONObject statistic, final JSONObject author)
-            throws RepositoryException {
+    private void tag(final String[] tagTitles, final JSONObject article, final JSONObject author) throws RepositoryException {
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
             JSONObject tag = tagRepository.getByTitle(tagTitle);
@@ -193,7 +192,7 @@ public final class ArticleMgmtService {
 
             if (null == tag) {
                 LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
-                           new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                        new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
@@ -206,13 +205,17 @@ public final class ArticleMgmtService {
                 tag.put(Keys.OBJECT_ID, tagId);
                 userTagType = 0; // Creator
 
-                statistic.put(Statistic.STATISTIC_TAG_COUNT, statistic.optInt(Statistic.STATISTIC_TAG_COUNT) + 1);
+                final JSONObject tagCntOption = optionRepository.get(Option.ID_C_STATISTIC_TAG_COUNT);
+                final int tagCnt = tagCntOption.optInt(Option.OPTION_VALUE);
+                tagCntOption.put(Option.OPTION_VALUE, tagCnt + 1);
+                optionRepository.update(Option.ID_C_STATISTIC_TAG_COUNT, tagCntOption);
+                
                 author.put(UserExt.USER_TAG_COUNT, author.optInt(UserExt.USER_TAG_COUNT) + 1);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
-                           new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
-                                        article.optString(Article.ARTICLE_TITLE)});
+                        new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
+                            article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 tagTmp.put(Tag.TAG_TITLE, tagTitle);

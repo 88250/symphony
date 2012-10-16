@@ -28,11 +28,11 @@ import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Statistic;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
-import org.b3log.symphony.repository.StatisticRepository;
+import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.json.JSONObject;
 
@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 11, 2012
+ * @version 1.0.0.2, Oct 16, 2012
  * @since 0.2.0
  */
 public final class CommentMgmtService {
@@ -62,9 +62,9 @@ public final class CommentMgmtService {
      */
     private ArticleRepository articleRepository = ArticleRepository.getInstance();
     /**
-     * Statistic repository.
+     * Option repository.
      */
-    private StatisticRepository statisticRepository = StatisticRepository.getInstance();
+    private OptionRepository optionRepository = OptionRepository.getInstance();
     /**
      * Tag repository.
      */
@@ -114,11 +114,13 @@ public final class CommentMgmtService {
             comment.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "#" + ret);
             comment.put(Comment.COMMENT_STATUS, 0);
 
-            final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
-            statistic.put(Statistic.STATISTIC_CMT_COUNT, statistic.optInt(Statistic.STATISTIC_CMT_COUNT) + 1);
+
+            final JSONObject cmtCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
+            final int cmtCnt = cmtCntOption.optInt(Option.OPTION_VALUE);
+            cmtCntOption.put(Option.OPTION_VALUE, String.valueOf(cmtCnt + 1));
 
             articleRepository.update(articleId, article); // Updates article comment count
-            statisticRepository.update(Statistic.STATISTIC, statistic); // Updates global comment count
+            optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, cmtCntOption); // Updates global comment count
             // Updates tag comment count
             final String tagsString = article.optString(Article.ARTICLE_TAGS);
             final String[] tagStrings = tagsString.split(",");
@@ -136,7 +138,7 @@ public final class CommentMgmtService {
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);
-            
+
             try {
                 eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
             } catch (final EventException e) {

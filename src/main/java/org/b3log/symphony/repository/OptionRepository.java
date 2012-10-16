@@ -16,37 +16,37 @@
 package org.b3log.symphony.repository;
 
 import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.symphony.model.Statistic;
+import org.b3log.symphony.model.Option;
 
 /**
- * Statistic repository.
+ * Option repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 2, 2012
+ * @version 1.0.1.0, Oct 16, 2012
  * @since 0.2.0
  */
-public final class StatisticRepository extends AbstractRepository {
+public final class OptionRepository extends AbstractRepository {
 
     /**
      * Singleton.
      */
-    private static final StatisticRepository SINGLETON = new StatisticRepository(Statistic.STATISTIC);
-
+    private static final OptionRepository SINGLETON = new OptionRepository(Option.OPTION);
+    
     /**
      * Private constructor.
      * 
      * @param name the specified name
      */
-    private StatisticRepository(final String name) {
+    private OptionRepository(final String name) {
         super(name);
     }
 
     /**
-     * Gets the {@link StatisticRepository} singleton.
+     * Gets the {@link OptionRepository} singleton.
      *
      * @return the singleton
      */
-    public static StatisticRepository getInstance() {
+    public static OptionRepository getInstance() {
         return SINGLETON;
     }
 }

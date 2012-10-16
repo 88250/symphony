@@ -24,9 +24,9 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.symphony.model.Statistic;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.StatisticRepository;
+import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONObject;
 
@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 28, 2012
+ * @version 1.0.0.4, Oct 16, 2012
  * @since 0.2.0
  */
 public final class UserMgmtService {
@@ -52,9 +52,9 @@ public final class UserMgmtService {
      */
     private UserRepository userRepository = UserRepository.getInstance();
     /**
-     * Statistic repository.
+     * Option repository.
      */
-    private StatisticRepository statisticRepository = StatisticRepository.getInstance();
+    private OptionRepository optionRepository = OptionRepository.getInstance();
     /**
      * Language service.
      */
@@ -239,15 +239,16 @@ public final class UserMgmtService {
             user.put(UserExt.USER_INTRO, "");
             user.put(UserExt.USER_QQ, "");
 
-            final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
-            int memberCount = statistic.optInt(Statistic.STATISTIC_MEMBER_COUNT);
-            user.put(UserExt.USER_NO, ++memberCount);
+            final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
+            int memberCount = memberCntOption.optInt(Option.OPTION_VALUE);
+            ++memberCount;
+            user.put(UserExt.USER_NO, memberCount);
 
             userRepository.add(user);
 
             // Updates stat. (member count +1)
-            statistic.put(Statistic.STATISTIC_MEMBER_COUNT, memberCount);
-            statisticRepository.update(Statistic.STATISTIC, statistic);
+            memberCntOption.put(Option.OPTION_VALUE, String.valueOf(memberCount));
+            optionRepository.update(Option.ID_C_STATISTIC_MEMBER_COUNT, memberCntOption);
 
             transaction.commit();
 
