@@ -80,6 +80,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         Stopwatchs.end();
         LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        Stopwatchs.release();
     }
 
     @Override
@@ -101,7 +102,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
-        final String requestURI = httpServletRequest.getRequestURI();
 
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
             LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
@@ -119,9 +119,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
-        LOGGER.log(Level.FINE, "Stopwatch: {0}    {1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
-        Stopwatchs.release();
-
         super.requestDestroyed(servletRequestEvent);
     }
 }

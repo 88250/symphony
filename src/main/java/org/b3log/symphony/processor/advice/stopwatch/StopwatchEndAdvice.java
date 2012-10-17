@@ -15,9 +15,12 @@
  */
 package org.b3log.symphony.processor.advice.stopwatch;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;
 import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.Strings;
 
 /**
  * Stopwatch end advice for request processors.
@@ -28,8 +31,14 @@ import org.b3log.latke.util.Stopwatchs;
  */
 public final class StopwatchEndAdvice extends AfterRequestProcessAdvice {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(StopwatchEndAdvice.class.getName());
+
     @Override
     public void doAdvice(final HTTPRequestContext context, final Object ret) {
         Stopwatchs.end();
+        LOGGER.log(Level.FINE, "Stopwatch: {0}    {1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
     }
 }
