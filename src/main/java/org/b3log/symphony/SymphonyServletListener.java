@@ -70,7 +70,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Latkes.disableDataCache();
 
         Skins.loadSkin();
-        
+
         // Register event listeners
         final EventManager eventManager = EventManager.getInstance();
         eventManager.registerListener(new ArticleSender());
@@ -120,5 +120,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         super.requestDestroyed(servletRequestEvent);
+        Stopwatchs.release();
     }
 }
