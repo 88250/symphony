@@ -109,13 +109,13 @@ public final class UserProcessor {
      */
     @RequestProcessing(value = "/{userName}", method = HTTPRequestMethod.GET)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userName) throws Exception {
+                         final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/home.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        final JSONObject user = userQueryService.getUserByName(userName);
         dataModel.put(User.USER, user);
         fillUserThumbnailURL(user);
 
@@ -124,7 +124,7 @@ public final class UserProcessor {
         final List<JSONObject> userArticles = articleQueryService.getUserArticles(
                 user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeArticlesCnt"));
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
-        
+
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
     }
@@ -140,7 +140,7 @@ public final class UserProcessor {
      */
     @RequestProcessing(value = "/{userName}/comments", method = HTTPRequestMethod.GET)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userName) throws Exception {
+                                 final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
@@ -153,7 +153,7 @@ public final class UserProcessor {
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
         final List<JSONObject> userComments =
-                commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeCmtsCnt"));
+                               commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeCmtsCnt"));
         dataModel.put(Common.USER_HOME_COMMENTS, userComments);
 
         Filler.fillHeader(request, response, dataModel);
@@ -177,7 +177,7 @@ public final class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject user = LoginProcessor.getCurrentUser(request);
-        
+
         dataModel.put(User.USER, user);
 
         fillUserThumbnailURL(user);
@@ -317,7 +317,7 @@ public final class UserProcessor {
     private void fillUserThumbnailURL(final JSONObject user) {
         final String userEmail = user.optString(User.USER_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(userEmail) + "?s=140&d="
-                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
     }
 }
