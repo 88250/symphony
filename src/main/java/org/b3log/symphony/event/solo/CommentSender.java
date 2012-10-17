@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 15, 2012
+ * @version 1.0.0.1, Oct 17, 2012
  * @since 0.2.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -61,14 +61,13 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(), data, CommentSender.class.getName()});
+                new Object[]{event.getType(), data, CommentSender.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
             if (!originalArticle.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
                 return;
             }
-
 
             final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userQueryService.getUser(authorId);
@@ -93,6 +92,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
                         Keys.OBJECT_ID
                     });
 
+            comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
             comment.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
             comment.put(Comment.COMMENT_T_AUTHOR_URL, commenter.optString(commenter.optString(User.USER_URL)));
 
