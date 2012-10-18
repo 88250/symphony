@@ -102,8 +102,8 @@ public final class CommentProcessor {
      * The request json object (a comment): 
      * <pre>
      * {
-     *   "articleId": "",
-     *   "commentContent": ""
+     *     "articleId": "",
+     *     "commentContent": ""
      * }
      * </pre>
      * </p>
@@ -158,6 +158,24 @@ public final class CommentProcessor {
 
     /**
      * Adds a comment remotely.
+     * 
+     * <p>
+     * The request json object (a comment): 
+     * <pre>
+     * {
+     *     "comment": {
+     *         "articleId": "",
+     *         "commentContent": "",
+     *         "commentAuthorName": "",
+     *         "commentAuthorEmail": ""
+     *     },
+     *     "blogTitle": "",
+     *     "blogVersion": "",
+     *     "blogHost": "",
+     *     "runtimeEnv": "" // GAE, BAE, LOCAL
+     * }
+     * </pre>
+     * </p>
      *
      * @param context the specified context
      * @param request the specified request
