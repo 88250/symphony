@@ -180,14 +180,13 @@ public final class CommentProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/solo/comment", method = HTTPRequestMethod.PUT)
     public void addCommentFromSolo(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
-        final String requestURI = request.getRequestURI();
+            throws Exception {
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
-        final String userName = requestURI.substring("/home/".length());
 
     }
 }
