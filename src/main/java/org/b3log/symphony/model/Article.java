@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 8, 2012
+ * @version 1.0.0.5, Oct 18, 2012
  * @since 0.2.0
  */
 public final class Article {
@@ -89,6 +89,10 @@ public final class Article {
      */
     public static final String ARTICLE_SYNC_TO_CLIENT = "syncWithSymphonyClient";
     /**
+     * Key of client article id.
+     */
+    public static final String ARTICLE_CLIENT_ARTICLE_ID = "clientArticleId";
+    /**
      * Key of article editor type.
      */
     public static final String ARTICLE_EDITOR_TYPE = "articleEditorType";
@@ -97,6 +101,10 @@ public final class Article {
      */
     public static final String ARTICLE_STATUS = "articleStatus";
     //// Transient ////
+    /**
+     * Key of article id.
+     */
+    public static final String ARTICLE_T_ID = "articleId";
     /**
      * Key of article author thumbnail URL.
      */

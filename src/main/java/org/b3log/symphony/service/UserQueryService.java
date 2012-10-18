@@ -27,6 +27,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Paginator;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 12, 2012
+ * @version 1.0.0.3, Oct 18, 2012
  * @since 0.2.0
  */
 public final class UserQueryService {
@@ -70,6 +71,16 @@ public final class UserQueryService {
             LOGGER.log(Level.SEVERE, "Gets admin failed", e);
             throw new ServiceException(e);
         }
+    }
+
+    /**
+     * Gets the default commenter.
+     * 
+     * @return default commenter
+     * @throws ServiceException service exception
+     */
+    public JSONObject getDefaultCommenter() throws ServiceException {
+        return getUserByName(UserExt.DEFAULT_CMTER_NAME);
     }
 
     /**

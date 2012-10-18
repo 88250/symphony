@@ -31,10 +31,14 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.ClientMgmtService;
+import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -91,6 +95,14 @@ public final class CommentProcessor {
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
     /**
+     * Client management service.
+     */
+    private ClientMgmtService clientMgmtService = ClientMgmtService.getInstance();
+    /**
+     * Client query service.
+     */
+    private ClientQueryService clientQueryService = ClientQueryService.getInstance();
+    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
@@ -125,7 +137,7 @@ public final class CommentProcessor {
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
-        final String articleId = requestJSONObject.optString(Common.ARTICLE_ID);
+        final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
         final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
 
         // TODO: add comment validate
@@ -164,15 +176,18 @@ public final class CommentProcessor {
      * <pre>
      * {
      *     "comment": {
+     *         "commentId": "",
      *         "articleId": "",
      *         "commentContent": "",
-     *         "commentAuthorName": "",
-     *         "commentAuthorEmail": ""
+     *         "commentAuthorName": "", // optional
+     *         "commentAuthorEmail": "" // optional
      *     },
-     *     "blogTitle": "",
-     *     "blogVersion": "",
-     *     "blogHost": "",
-     *     "runtimeEnv": "" // GAE, BAE, LOCAL
+     *     "clientName": "",
+     *     "clientVersion": "",
+     *     "clientHost": "",
+     *     "clientRuntimeEnv": "" // GAE, BAE, LOCAL
+     *     "clientAdminEmail": "",
+     *     "userB3Key": ""
      * }
      * </pre>
      * </p>
@@ -186,7 +201,67 @@ public final class CommentProcessor {
     public void addCommentFromSolo(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
+        final String clientAdminEmail = requestJSONObject.optString(Client.CLIENT_ADMIN_EMAIL);
+        final String clientName = requestJSONObject.optString(Client.CLIENT_NAME);
+        final String clientVersion = requestJSONObject.optString(Client.CLIENT_VERSION);
+        final String clientHost = requestJSONObject.optString(Client.CLIENT_HOST);
+        final String clientRuntimeEnv = requestJSONObject.optString(Client.CLIENT_RUNTIME_ENV);
 
+        final JSONObject originalCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
+        final String clientCommentId = originalCmt.optString(Comment.COMMENT_T_ID);
+        final String commentContent = originalCmt.optString(Comment.COMMENT_CONTENT);
+        final String commentClientArticleId = originalCmt.optString(Article.ARTICLE_T_ID);
 
+        // TODO: valiedate
+
+        final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
+        if (null == user || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
+            LOGGER.log(Level.WARNING, "B3 key not match, ignored add comment");
+
+            return;
+        }
+
+        final JSONObject article = articleQueryService.getArticleByClientArticleId(commentClientArticleId);
+        if (null == article) {
+            LOGGER.log(Level.FINER, "Article not found, do not sync comment");
+
+            return;
+        }
+
+        final JSONObject defaultCommenter = userQueryService.getDefaultCommenter();
+        final JSONObject comment = new JSONObject();
+        comment.put(Comment.COMMENT_AUTHOR_EMAIL, defaultCommenter.optString(User.USER_EMAIL));
+        comment.put(Comment.COMMENT_AUTHOR_ID, defaultCommenter.optString(Keys.OBJECT_ID));
+        comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, clientCommentId);
+        comment.put(Comment.COMMENT_CONTENT, commentContent);
+        comment.put(Comment.COMMENT_ON_ARTICLE_ID, article.optString(Keys.OBJECT_ID));
+
+        commentMgmtService.addComment(comment);
+
+        // Updates client record
+        JSONObject client = clientQueryService.getClientByAdminEmail(clientAdminEmail);
+        if (null == client) {
+            client = new JSONObject();
+            client.put(Client.CLIENT_ADMIN_EMAIL, clientAdminEmail);
+            client.put(Client.CLIENT_HOST, clientHost);
+            client.put(Client.CLIENT_NAME, clientName);
+            client.put(Client.CLIENT_RUNTIME_ENV, clientRuntimeEnv);
+            client.put(Client.CLIENT_VERSION, clientVersion);
+            client.put(Client.CLIENT_LATEST_ADD_COMMENT_TIME, System.currentTimeMillis());
+            client.put(Client.CLIENT_LATEST_ADD_ARTICLE_TIME, 0L);
+
+            clientMgmtService.addClient(client);
+        } else {
+            client.put(Client.CLIENT_ADMIN_EMAIL, clientAdminEmail);
+            client.put(Client.CLIENT_HOST, clientHost);
+            client.put(Client.CLIENT_NAME, clientName);
+            client.put(Client.CLIENT_RUNTIME_ENV, clientRuntimeEnv);
+            client.put(Client.CLIENT_VERSION, clientVersion);
+            client.put(Client.CLIENT_LATEST_ADD_COMMENT_TIME, System.currentTimeMillis());
+            client.put(Client.CLIENT_LATEST_ADD_ARTICLE_TIME, 0L);
+
+            clientMgmtService.updateClient(client);
+        }
     }
 }

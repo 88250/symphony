@@ -84,7 +84,8 @@ public final class CommentMgmtService {
      *     "commentAuthorId": "",
      *     "commentAuthorEmail": "",
      *     "commentOnArticleId": "",
-     *     "commentOriginalCommentId": "" // optional
+     *     "commentOriginalCommentId": "", // optional
+     *     "clientCommentId": "" // optional
      * }
      * </pre>, see {@link Comment} for more details
      * @return generated comment id

@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 15, 2012
+ * @version 1.0.0.3, Oct 18, 2012
  * @since 0.2.0
  */
 public final class ArticleQueryService {
@@ -103,7 +103,7 @@ public final class ArticleQueryService {
         final String[] tagTitles = tagsString.split(",");
         final int tagTitlesLength = tagTitles.length;
         final int subCnt = tagTitlesLength > RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT
-                           ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
+                ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
 
         final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
         final int subFetchSize = fetchSize / subCnt;
@@ -174,6 +174,31 @@ public final class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets articles by tag [tagTitle=" + tag.optString(Tag.TAG_TITLE) + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets an article by the specified client article id.
+     * 
+     * @param clientArticleId the specified client article id
+     * @return article, return {@code null} if not found
+     * @throws ServiceException service exception 
+     */
+    public JSONObject getArticleByClientArticleId(final String clientArticleId) throws ServiceException {
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, clientArticleId));
+        try {
+            final JSONObject result = articleRepository.get(query);
+            final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.optJSONObject(0);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets article [clientArticleId=" + clientArticleId + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -356,7 +381,7 @@ public final class ArticleQueryService {
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
         final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(authorEmail) + "?s=140&d="
-                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
@@ -392,7 +417,7 @@ public final class ArticleQueryService {
             final String participantThumbnailURL = "";
 
             final List<JSONObject> articleParticipants =
-                                   commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
+                    commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
             article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
 
             article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);

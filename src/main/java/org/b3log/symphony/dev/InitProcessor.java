@@ -17,6 +17,7 @@ package org.b3log.symphony.dev;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -43,7 +45,7 @@ import org.json.JSONObject;
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 16, 2012
+ * @version 1.0.0.5, Oct 18, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -117,9 +119,16 @@ public class InitProcessor {
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             userMgmtService.addUser(admin);
 
-            admin = UserQueryService.getInstance().getAdmin();
+            // Init default commenter (for sync comment from client)
+            final JSONObject defaultCommenter = new JSONObject();
+            defaultCommenter.put(User.USER_EMAIL, UserExt.DEFAULT_CMTER_EMAIL);
+            defaultCommenter.put(User.USER_NAME, UserExt.DEFAULT_CMTER_NAME);
+            defaultCommenter.put(User.USER_PASSWORD, String.valueOf(new Random().nextInt()));
+            defaultCommenter.put(User.USER_ROLE, UserExt.DEFAULT_CMTER_ROLE);
+            userMgmtService.addUser(defaultCommenter);
 
             // Hello World!
+            admin = UserQueryService.getInstance().getAdmin();
             final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
             final JSONObject article = new JSONObject();
             article.put(Article.ARTICLE_TITLE, "你好，世界！");
