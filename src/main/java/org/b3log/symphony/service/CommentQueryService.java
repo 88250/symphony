@@ -33,6 +33,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -131,9 +132,13 @@ public final class CommentQueryService {
                 final String email = commenterEmail.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 final JSONObject commenter = userRepository.getByEmail(email);
 
-                final String hashedEmail = MD5.hash(email);
-                final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                        + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
+                    final String hashedEmail = MD5.hash(email);
+                    thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
+                                   + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                }
+
 
                 final JSONObject participant = new JSONObject();
                 participant.put(Article.ARTICLE_T_PARTICIPANT_NAME, commenter.optString(User.USER_NAME));
@@ -211,9 +216,14 @@ public final class CommentQueryService {
     private void organizeComment(final JSONObject comment) throws RepositoryException {
         comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
 
-        final String hashedEmail = MD5.hash(comment.optString(Comment.COMMENT_AUTHOR_EMAIL));
-        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+        final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
+        String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+        if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
+            final String hashedEmail = MD5.hash(email);
+            thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
+                           + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+        }
+
 
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 

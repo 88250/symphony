@@ -103,15 +103,15 @@ public final class CommentMgmtService {
             final JSONObject comment = new JSONObject();
             comment.put(Keys.OBJECT_ID, ret);
 
-            comment.put(Comment.COMMENT_CONTENT, requestJSONObject.optString(Comment.COMMENT_CONTENT));
+            final String securedContent = requestJSONObject.optString(Comment.COMMENT_CONTENT)
+                    .replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;");
+            comment.put(Comment.COMMENT_CONTENT, securedContent);
             comment.put(Comment.COMMENT_AUTHOR_EMAIL, requestJSONObject.optString(Comment.COMMENT_AUTHOR_EMAIL));
             comment.put(Comment.COMMENT_AUTHOR_ID, requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID));
             comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
 
-            final long currentTimeMillis = System.currentTimeMillis();
-
-            comment.put(Comment.COMMENT_CREATE_TIME, currentTimeMillis);
+            comment.put(Comment.COMMENT_CREATE_TIME, System.currentTimeMillis());
             comment.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "#" + ret);
             comment.put(Comment.COMMENT_STATUS, 0);
 

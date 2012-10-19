@@ -430,7 +430,7 @@ public final class ArticleQueryService {
      * 
      * <ul>
      *   <li>Markdowns article content</li>
-     *   <li>Escapes article content &lt;script&gt; tag</li>
+     *   <li>Generates secured article content</li>
      * </ul>
      * 
      * @param article the specified article content
@@ -440,7 +440,6 @@ public final class ArticleQueryService {
 
         try {
             content = Markdowns.toHTML(article.optString(Article.ARTICLE_CONTENT));
-            content = content.replace("<script>", "&lt;script&gt;").replace("</script>", "&lt;/script&gt;");
             content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Markdown failed", e);

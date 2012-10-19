@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Oct 15, 2012
+ * @version 1.0.1.0, Oct 18, 2012
  * @since 0.2.0
  */
 public final class Common {
@@ -96,6 +96,14 @@ public final class Common {
      * Key of online visitor count.
      */
     public static final String ONLINE_VISITOR_CNT = "onlineVisitorCnt";
+    /**
+     * Key of symphony key.
+     */
+    public static final String SYMPHONY_KEY = "symphonyKey";
+    /**
+     * Key of from client.
+     */
+    public static final String FROM_CLIENT = "fromClient";
 
     /**
      * Private constructor.

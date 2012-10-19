@@ -88,13 +88,13 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final JSONObject comment = new JSONObject(originalComment, new String[]{
                         Comment.COMMENT_AUTHOR_EMAIL,
                         Comment.COMMENT_CONTENT,
-                        Comment.COMMENT_ON_ARTICLE_ID,
                         Keys.OBJECT_ID
                     });
 
             comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
             comment.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
             comment.put(Comment.COMMENT_T_AUTHOR_URL, commenter.optString(commenter.optString(User.USER_URL)));
+            comment.put(Comment.COMMENT_ON_ARTICLE_ID, originalArticle.optString(Article.ARTICLE_CLIENT_ARTICLE_ID));
 
             requestJSONObject.put(Comment.COMMENT, comment);
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));

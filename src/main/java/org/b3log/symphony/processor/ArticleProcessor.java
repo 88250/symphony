@@ -39,9 +39,13 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Client;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.ClientMgmtService;
+import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -102,6 +106,14 @@ public final class ArticleProcessor {
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+    /**
+     * Client management service.
+     */
+    private ClientMgmtService clientMgmtService = ClientMgmtService.getInstance();
+    /**
+     * Client query service.
+     */
+    private ClientQueryService clientQueryService = ClientQueryService.getInstance();
     /**
      * Language service.
      */
@@ -258,19 +270,117 @@ public final class ArticleProcessor {
 
     /**
      * Adds an article remotely.
+     * 
+     * <p>
+     * The request json object (an article), for example, 
+     * <pre>
+     * {
+     *     "article": {
+     *         "articleAuthorEmail": "DL88250@gmail.com",
+     *         "articleContent": "<p>test<\/p>",
+     *         "articleCreateDate": 1350635469922,
+     *         "articlePermalink": "/articles/2012/10/19/1350635469866.html",
+     *         "articleTags": "test",
+     *         "articleTitle": "test",
+     *         "clientArticleId": "1350635469866",
+     *         "oId": "1350635469866"
+     *     },
+     *     "clientAdminEmail": "DL88250@gmail.com",
+     *     "clientHost": "http://localhost:11099",
+     *     "clientName": "B3log Solo",
+     *     "clientRuntimeEnv": "LOCAL",
+     *     "clientVersion": "0.5.0",
+     *     "symphonyKey": "....",
+     *     "userB3Key": "Your key"
+     * }
+     * </pre>
+     * </p>
      *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/rhythm/article", method = HTTPRequestMethod.PUT)
     public void addArticleFromRhythm(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
-        final String requestURI = request.getRequestURI();
+            throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
 
-        final String userName = requestURI.substring("/home/".length());
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
 
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+
+        final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
+        final String symphonyKey = requestJSONObject.optString(Common.SYMPHONY_KEY);
+        final String clientAdminEmail = requestJSONObject.optString(Client.CLIENT_ADMIN_EMAIL);
+        final String clientName = requestJSONObject.optString(Client.CLIENT_NAME);
+        final String clientVersion = requestJSONObject.optString(Client.CLIENT_VERSION);
+        final String clientHost = requestJSONObject.optString(Client.CLIENT_HOST);
+        final String clientRuntimeEnv = requestJSONObject.optString(Client.CLIENT_RUNTIME_ENV);
+
+        // TODO: add article validate
+
+
+        final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
+        if (null == user || !Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
+            LOGGER.log(Level.WARNING, "B3 key not match, ignored add article");
+
+            return;
+        }
+
+        final JSONObject originalArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
+
+        final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
+        final String articleTags = formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
+        final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
+
+
+        final JSONObject article = new JSONObject();
+        article.put(Article.ARTICLE_TITLE, articleTitle);
+        article.put(Article.ARTICLE_TAGS, articleTags);
+        article.put(Article.ARTICLE_CONTENT, articleContent);
+        article.put(Article.ARTICLE_EDITOR_TYPE, 0);
+        article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
+        article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, originalArticle.optString(Keys.OBJECT_ID));
+
+        article.put(Article.ARTICLE_AUTHOR_ID, user.optString(Keys.OBJECT_ID));
+        article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
+
+        try {
+            articleMgmtService.addArticle(article);
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.SEVERE, msg, e);
+
+            ret.put(Keys.MSG, msg);
+        }
+
+        // Updates client record
+        JSONObject client = clientQueryService.getClientByAdminEmail(clientAdminEmail);
+        if (null == client) {
+            client = new JSONObject();
+            client.put(Client.CLIENT_ADMIN_EMAIL, clientAdminEmail);
+            client.put(Client.CLIENT_HOST, clientHost);
+            client.put(Client.CLIENT_NAME, clientName);
+            client.put(Client.CLIENT_RUNTIME_ENV, clientRuntimeEnv);
+            client.put(Client.CLIENT_VERSION, clientVersion);
+            client.put(Client.CLIENT_LATEST_ADD_COMMENT_TIME, 0L);
+            client.put(Client.CLIENT_LATEST_ADD_ARTICLE_TIME, System.currentTimeMillis());
+
+            clientMgmtService.addClient(client);
+        } else {
+            client.put(Client.CLIENT_ADMIN_EMAIL, clientAdminEmail);
+            client.put(Client.CLIENT_HOST, clientHost);
+            client.put(Client.CLIENT_NAME, clientName);
+            client.put(Client.CLIENT_RUNTIME_ENV, clientRuntimeEnv);
+            client.put(Client.CLIENT_VERSION, clientVersion);
+            client.put(Client.CLIENT_LATEST_ADD_ARTICLE_TIME, System.currentTimeMillis());
+
+            clientMgmtService.updateClient(client);
+        }
     }
 
     /**

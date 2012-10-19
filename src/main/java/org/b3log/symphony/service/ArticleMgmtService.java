@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 16, 2012
+ * @version 1.0.0.4, Oct 18, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -103,7 +103,8 @@ public final class ArticleMgmtService {
      *     "articleEditorType": "",
      *     "articleAuthorEmail": "",
      *     "articleAuthorId": "",
-     *     "syncWithSymphonyClient": boolean // optional
+     *     "syncWithSymphonyClient": boolean, // optional
+     *     "clientArticleId": "" // optional
      * }
      * </pre>, see {@link Article} for more details
      * @return generated article id
@@ -118,13 +119,15 @@ public final class ArticleMgmtService {
             article.put(Keys.OBJECT_ID, ret);
 
             final String authorId = requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID);
+            final String clientArticleId = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
+            final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
 
             article.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
             article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
-            article.put(Article.ARTICLE_SYNC_TO_CLIENT, requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT));
+            article.put(Article.ARTICLE_SYNC_TO_CLIENT, fromClient ? true : requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT));
             article.put(Article.ARTICLE_AUTHOR_ID, authorId);
 
             final long currentTimeMillis = System.currentTimeMillis();
@@ -138,6 +141,7 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_PERMALINK, "/article/" + ret);
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.ARTICLE_STATUS, 0);
+            article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
 
             final JSONObject author = userRepository.get(authorId);
 
@@ -155,8 +159,8 @@ public final class ArticleMgmtService {
 
             transaction.commit();
 
-
             final JSONObject eventData = new JSONObject();
+            eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
             try {
                 eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
@@ -192,7 +196,7 @@ public final class ArticleMgmtService {
 
             if (null == tag) {
                 LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
-                        new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                           new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
@@ -209,13 +213,13 @@ public final class ArticleMgmtService {
                 final int tagCnt = tagCntOption.optInt(Option.OPTION_VALUE);
                 tagCntOption.put(Option.OPTION_VALUE, tagCnt + 1);
                 optionRepository.update(Option.ID_C_STATISTIC_TAG_COUNT, tagCntOption);
-                
+
                 author.put(UserExt.USER_TAG_COUNT, author.optInt(UserExt.USER_TAG_COUNT) + 1);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
-                        new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
-                            article.optString(Article.ARTICLE_TITLE)});
+                           new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
+                                        article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 tagTmp.put(Tag.TAG_TITLE, tagTitle);

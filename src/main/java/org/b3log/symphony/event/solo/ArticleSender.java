@@ -29,6 +29,7 @@ import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
@@ -59,8 +60,12 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleSender.class.getName()});
+                   new Object[]{event.getType(), data, ArticleSender.class.getName()});
         try {
+            if (data.optBoolean(Common.FROM_CLIENT)) {
+                return;
+            }
+
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
             if (!originalArticle.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
@@ -91,7 +96,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
             requestJSONObject.put(Article.ARTICLE, article);
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-            
+
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Sends an article to client error: {0}", e.getMessage());
