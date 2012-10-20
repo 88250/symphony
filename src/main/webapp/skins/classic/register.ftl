@@ -15,12 +15,12 @@
                 <div class="form fn-left">
                     <table cellpadding="0" cellspacing="0">
                         <caption>
-                            <h2>Register</h2>
+                            <h2>${registerLabel}</h2>
                         </caption>
                         <tbody>
                             <tr>
                                 <td>
-                                    <label for="userName">UseName</label>
+                                    <label for="userName">${userNameLabel}</label>
                                 </td>
                                 <td>
                                     <input type="text" placeholder="UseName" id="userName" />
@@ -29,7 +29,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="userEmail">userEmail</label>
+                                    <label for="userEmail">${emailLabel}</label>
                                 </td>
                                 <td>
                                     <input type="text" id="userEmail" />
@@ -38,7 +38,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="userPassword">UserPassword</label>
+                                    <label for="userPassword">${passwordLabel}</label>
                                 </td>
                                 <td>
                                     <input id="userPassword"  type="password" />
@@ -47,7 +47,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="confirmPassword">RepeatPassword</label>
+                                    <label for="confirmPassword">${userPasswordLabel2}</label>
                                 </td>
                                 <td>
                                     <input id="confirmPassword" type="password" />
@@ -56,7 +56,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <label for="securityCode">验证码</label>
+                                    <label for="securityCode">${captchaLabel}</label>
                                 </td>
                                 <td>
                                     <input type="text" id="securityCode" />
@@ -66,14 +66,14 @@
                             <tr>
                                 <td colspan="2" align="right">
                                     <span id="registerTip"></span>
-                                    <button onclick="Register.register()">Register</button>
+                                    <button onclick="Register.register()">${registerLabel}</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="fn-left intro">
-                    intro
+                    ${introLabel}
                 </div>
             </div>
         </div>
