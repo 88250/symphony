@@ -30,16 +30,16 @@
                 <table cellspacing="0" cellpadding="0">
                     <tr>
                         <td>
-                            <label for="nameOrEmail">Email/User Name</label>
+                            <label for="nameOrEmail">${accountLabel}</label>
                         </td>
                         <td>
-                            <input id="nameOrEmail" type="text"/>
+                            <input id="nameOrEmail" type="text" placeholder="Username/Email"/>
                             <span style="left:286px;top:20px;"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label for="loginPassword">Password</label>
+                            <label for="loginPassword">${passwordLabel}</label>
                         </td>
                         <td>
                             <input type="password" id="loginPassword" />
@@ -51,9 +51,9 @@
                             <span id="loginTip"></span>
                         </td>
                         <td>
-                            <button onclick="Util.login()">登录</button>
-                            <a href="javascript:Util.goRegister()">注册</a>
-                            <a href="/">忘记密码</a>
+                            <button onclick="Util.login()">${loginLabel}</button>
+                            <a href="javascript:Util.goRegister()">${registerLabel}</a>
+                            <a href="/">${forgetPasswordLabel}</a>
                         </td>
                     </tr>
                 </table>

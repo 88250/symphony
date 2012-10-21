@@ -23,7 +23,7 @@
                                     <label for="userName">${userNameLabel}</label>
                                 </td>
                                 <td>
-                                    <input type="text" placeholder="UseName" id="userName" />
+                                    <input type="text" placeholder="Username" id="userName" />
                                     <span style="left:280px;top:38px;"></span>
                                 </td>
                             </tr>
