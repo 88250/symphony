@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
+        <@head title="B3log ${symphonyLabel}">
         <meta name="keywords" content=""/>
         <meta name="description" content=""/>
         </@head>
