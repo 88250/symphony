@@ -52,7 +52,6 @@
                                         <span class="fn-clear">
                                             <span class="fn-left">
                                                 <a href="/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
-                                                @ <a href="/">Daniel</a>
                                             </span>
                                             <span class="fn-right ft-small">
                                                 ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm:ss')}

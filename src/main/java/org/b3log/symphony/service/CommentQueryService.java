@@ -18,6 +18,7 @@ package org.b3log.symphony.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -43,7 +44,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 9, 2012
+ * @version 1.0.0.3, Oct 22, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -68,6 +69,10 @@ public final class CommentQueryService {
      * User repository.
      */
     private UserRepository userRepository = UserRepository.getInstance();
+    /**
+     * User query service.
+     */
+    private UserQueryService userQueryService = UserQueryService.getInstance();
 
     /**
      * Gets the user comments with the specified user id, page number and page size.
@@ -136,7 +141,7 @@ public final class CommentQueryService {
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
                     final String hashedEmail = MD5.hash(email);
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                                   + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 }
 
 
@@ -189,6 +194,7 @@ public final class CommentQueryService {
      *   <li>generates comment author thumbnail URL</li>
      *   <li>generates comment author URL</li>
      *   <li>generates comment author name</li>
+     *   <li>generates &#64;username home URL</li>
      * </ul>
      * 
      * @param comments the specified comments
@@ -208,6 +214,7 @@ public final class CommentQueryService {
      *   <li>generates comment author thumbnail URL</li>
      *   <li>generates comment author URL</li>
      *   <li>generates comment author name</li>
+     *   <li>generates &#64;username home URL</li>
      * </ul>
      * 
      * @param comment the specified comment
@@ -221,9 +228,8 @@ public final class CommentQueryService {
         if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
             final String hashedEmail = MD5.hash(email);
             thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                           + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         }
-
 
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
@@ -231,6 +237,19 @@ public final class CommentQueryService {
         final JSONObject author = userRepository.get(authorId);
         comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
         comment.put(Comment.COMMENT_T_AUTHOR_URL, author.optString(User.USER_URL));
+
+        String commentContent = comment.optString(Comment.COMMENT_CONTENT);
+        try {
+            final Set<String> userNames = userQueryService.getUserNames(commentContent);
+            for (final String userName : userNames) {
+                commentContent = commentContent.replace('@' + userName,
+                        "@<a href='" + Latkes.getServePath() + '/' + userName + "'>" + userName + "</a>");
+            }
+            
+            comment.put(Comment.COMMENT_CONTENT, commentContent);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, "Generates @username home URL for comment content failed", e);
+        }
     }
 
     /**

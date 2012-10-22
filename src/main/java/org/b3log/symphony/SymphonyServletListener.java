@@ -29,6 +29,7 @@ import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.event.CommentNotifier;
 import org.b3log.symphony.event.solo.ArticleSender;
 import org.b3log.symphony.event.solo.CommentSender;
 import org.b3log.symphony.service.OptionQueryService;
@@ -38,7 +39,7 @@ import org.b3log.symphony.util.Skins;
  * B3log Symphony servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 6, 2011
+ * @version 1.0.0.3, Oct 21, 2011
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -75,6 +76,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final EventManager eventManager = EventManager.getInstance();
         eventManager.registerListener(new ArticleSender());
         eventManager.registerListener(new CommentSender());
+        eventManager.registerListener(new CommentNotifier());
 
         LOGGER.info("Initialized the context");
 

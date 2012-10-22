@@ -15,9 +15,12 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
@@ -28,6 +31,7 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -97,6 +101,50 @@ public final class UserQueryService {
             LOGGER.log(Level.SEVERE, "Gets user by email[" + email + "] failed", e);
             throw new ServiceException(e);
         }
+    }
+
+    /**
+     * Gets user names from the specified text.
+     * 
+     * <p>
+     * A user name is between &#64; and a punctuation, a blank or a line break (\n).
+     * For example, the specified text is 
+     * <pre>&#64;88250 It is a nice day. &#64;Vanessa, we are on the way.</pre>
+     * There are two user names in the text, 88250 and Vanessa.
+     * </p>
+     * 
+     * @param text the specified text
+     * @return user names, returns an empty set if not found
+     * @throws ServiceException service exception 
+     */
+    public Set<String> getUserNames(final String text) throws ServiceException {
+        final Set<String> ret = new HashSet<String>();
+
+        String copy = text;
+        int idx = copy.indexOf('@');
+
+        if (-1 == idx) {
+            return ret;
+        }
+
+        for (int i = UserRegisterValidation.MAX_USER_NAME_LENGTH; i > 0; i--) {
+            final String maybeUserName = StringUtils.substring(copy, idx + 1, i + idx + 1);
+            if (!UserRegisterValidation.invalidUserName(maybeUserName)) { // A string match the user name pattern
+                if (null != getUserByName(maybeUserName)) { // Found a user
+                    ret.add(maybeUserName);
+
+                    copy = copy.replace("@" + maybeUserName, "");
+                    idx = copy.indexOf('@');
+                    if (-1 == idx) {
+                        return ret;
+                    }
+
+                    i = UserRegisterValidation.MAX_USER_NAME_LENGTH;
+                }
+            }
+        }
+
+        return ret;
     }
 
     /**

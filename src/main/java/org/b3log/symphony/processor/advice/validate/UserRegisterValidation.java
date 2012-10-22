@@ -30,7 +30,8 @@ import org.json.JSONObject;
  * UserRegisterValidation for validate {@link org.b3log.symphony.processor.LoginProcessor} register(Type POST) method.
  * 
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
- * @version 1.0.0.1, Oct 15, 2012 
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.2, Oct 22, 2012 
  */
 public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
@@ -41,11 +42,11 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
     /**
      * Max user name length.
      */
-    private static final int MAX_USER_NAME_LENGTH = 20;
+    public static final int MAX_USER_NAME_LENGTH = 20;
     /**
      * Min user name length.
      */
-    private static final int MIN_USER_NAME_LENGTH = 1;
+    public static final int MIN_USER_NAME_LENGTH = 1;
     /**
      * Max password length.
      */
@@ -91,7 +92,7 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
      * @param name the specified name
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
-    private boolean invalidUserName(final String name) {
+    public static boolean invalidUserName(final String name) {
         final int length = name.length();
         if (length < MIN_USER_NAME_LENGTH || length > MAX_USER_NAME_LENGTH) {
             return true;
