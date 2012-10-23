@@ -107,6 +107,7 @@ public final class ArticleQueryService {
 
         final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
         final int subFetchSize = fetchSize / subCnt;
+        final Set<String> fetchedArticleIds = new HashSet<String>();
 
         final List<JSONObject> ret = new ArrayList<JSONObject>();
         try {
@@ -121,7 +122,14 @@ public final class ArticleQueryService {
 
                 final Set<String> articleIds = new HashSet<String>();
                 for (int j = 0; j < tagArticleRelations.length(); j++) {
-                    articleIds.add(tagArticleRelations.optJSONObject(j).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
+                    final String articleId = tagArticleRelations.optJSONObject(j).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID);
+                    
+                    if (fetchedArticleIds.contains(articleId)) {
+                        continue;
+                    }
+                    
+                    articleIds.add(articleId);
+                    fetchedArticleIds.add(articleId);
                 }
 
                 final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
