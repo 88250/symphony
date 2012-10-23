@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 9, 2012
+ * @version 1.0.0.3, Oct 23, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -158,6 +158,10 @@ public final class LoginProcessor {
 
         try {
             userMgmtService.addUser(user);
+
+            Sessions.login(request, response, user);
+            userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
+
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
@@ -203,7 +207,6 @@ public final class LoginProcessor {
             final String userPassword = user.optString(User.USER_PASSWORD);
             if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
                 Sessions.login(request, response, user);
-                
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
 
                 ret.put(Keys.MSG, "");
@@ -293,6 +296,7 @@ public final class LoginProcessor {
                 final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
                 if (MD5.hash(userPassword).equals(hashPassword)) {
                     Sessions.login(request, response, user);
+                    UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
                     LOGGER.log(Level.FINER, "Logged in with cookie[email={0}]", userEmail);
                 }
             }
