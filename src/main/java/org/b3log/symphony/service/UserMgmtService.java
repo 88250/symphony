@@ -61,6 +61,40 @@ public final class UserMgmtService {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
+     * Updates a user's online status.
+     * 
+     * @param userId the specified user id
+     * @param onlineFlag the specified online flag
+     * @throws ServiceException service exception 
+     */
+    public void updateOnlineStatus(final String userId, final boolean onlineFlag) throws ServiceException {
+        Transaction transaction = null;
+
+        try {
+            final JSONObject user = userRepository.get(userId);
+            if (null == user) {
+                return;
+            }
+
+            transaction = userRepository.beginTransaction();
+
+            user.put(UserExt.USER_ONLINE_FLAG, onlineFlag);
+
+            userRepository.update(userId, user);
+
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Updates user online status failed", e);
+
+            if (null != transaction && transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Updates a user's profiles by the specified request json object.
      *
      * @param requestJSONObject the specified request json object (user), for example,
@@ -238,6 +272,7 @@ public final class UserMgmtService {
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, "");
             user.put(UserExt.USER_INTRO, "");
             user.put(UserExt.USER_QQ, "");
+            user.put(UserExt.USER_ONLINE_FLAG, false);
 
             final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
             int memberCount = memberCntOption.optInt(Option.OPTION_VALUE);

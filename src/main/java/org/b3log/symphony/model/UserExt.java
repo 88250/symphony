@@ -65,6 +65,10 @@ public final class UserExt {
      * Key of user B3log client add comment URL.
      */
     public static final String USER_B3_CLIENT_ADD_COMMENT_URL = "userB3ClientAddCommentURL";
+    /**
+     * Key of online flag.
+     */
+    public static final String USER_ONLINE_FLAG = "userOnlineFlag";
     //// Transient ////
     /**
      * Key of user thumbnail URL.

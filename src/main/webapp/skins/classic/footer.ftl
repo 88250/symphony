@@ -5,11 +5,10 @@
         </div>
         <div class="fn-right" style="width: 800px">
             <div>
-                <a href="/tags">AllTag</a>
-                <a href="">about</a>
-                <a href="">tag1</a>
-                <a href="">tag2</a>
-                <a href="">blog</a>
+                <a href="/about">About</a>
+                <a href="/tags/Q&A">Q&amp;A</a>
+                <a href="/tags/Java">Java</a>
+                <a href="/tags">Tags</a>
             </div>
             <div class="fn-clear">
                 <div class="fn-left">
@@ -18,6 +17,7 @@
                 </div>
                 <div class="fn-right">
                     <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt}
+                    <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineMemberCount}
                     <span class="ft-small">${memberCountLabel}</span> ${statistic.statisticMemberCount}
                     <span class="ft-small">${articleCountLabel}</span> ${statistic.statisticArticleCount}
                     <span class="ft-small">${tagCountLabel}</span> ${statistic.statisticTagCount}

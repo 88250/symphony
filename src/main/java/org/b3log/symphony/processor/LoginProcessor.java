@@ -203,6 +203,8 @@ public final class LoginProcessor {
             final String userPassword = user.optString(User.USER_PASSWORD);
             if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
                 Sessions.login(request, response, user);
+                
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
 
                 ret.put(Keys.MSG, "");
                 ret.put(Keys.STATUS_CODE, true);

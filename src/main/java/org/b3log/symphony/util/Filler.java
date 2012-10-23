@@ -77,7 +77,7 @@ public final class Filler {
      */
     public static void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                      articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
     }
 
     /**
@@ -109,7 +109,7 @@ public final class Filler {
      * @throws Exception exception 
      */
     public static void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) throws Exception {
+                                  final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         Keys.fillServer(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
@@ -138,7 +138,7 @@ public final class Filler {
      * @param dataModel the specified data model
      */
     private static void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) {
+                                        final Map<String, Object> dataModel) {
         LoginProcessor.tryLogInWithCookie(request, response);
         final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
 
@@ -204,7 +204,7 @@ public final class Filler {
      */
     private static void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
-        dataModel.put(Common.ONLINE_VISITOR_CNT, OptionQueryService.getOnlineVisitorCount());
+        dataModel.put(Common.ONLINE_VISITOR_CNT, OptionQueryService.getInstance().getOnlineVisitorCount());
 
         final JSONObject statistic = optionQueryService.getStatistic();
         dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);

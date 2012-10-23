@@ -25,6 +25,8 @@ import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.model.User;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
@@ -33,13 +35,15 @@ import org.b3log.symphony.event.CommentNotifier;
 import org.b3log.symphony.event.solo.ArticleSender;
 import org.b3log.symphony.event.solo.CommentSender;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.util.Skins;
+import org.json.JSONObject;
 
 /**
  * B3log Symphony servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 21, 2011
+ * @version 1.0.0.4, Oct 23, 2011
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -96,9 +100,20 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void sessionCreated(final HttpSessionEvent httpSessionEvent) {
     }
 
-    // Note: This method will never invoked on GAE production environment
     @Override
     public void sessionDestroyed(final HttpSessionEvent httpSessionEvent) {
+        final HttpSession session = httpSessionEvent.getSession();
+
+        final Object userObj = session.getAttribute(User.USER);
+        if (null != userObj) { // User logout
+            final JSONObject user = (JSONObject) userObj;
+
+            try {
+                UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
+            } catch (final ServiceException e) {
+                LOGGER.log(Level.SEVERE, "Changes user online from [true] to [false] failed", e);
+            }
+        }
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.repository.OptionRepository;
@@ -75,10 +76,38 @@ public final class OptionQueryService {
      * 
      * @return online visitor count
      */
-    public static int getOnlineVisitorCount() {
+    public int getOnlineVisitorCount() {
         removeExpiredOnlineVisitor();
-        
-        return ONLINE_VISITORS.size();
+
+        final int ret = ONLINE_VISITORS.size();
+
+        try {
+            final JSONObject maxOnlineMemberCntRecord = optionRepository.get(Option.ID_C_STATISTIC_MAX_ONLINE_MEMBER_COUNT);
+            final int maxOnlineVisitorCnt = maxOnlineMemberCntRecord.optInt(Option.OPTION_VALUE);
+
+            if (maxOnlineVisitorCnt < ret) {
+                // Updates the max online visitor count
+
+                final Transaction transaction = optionRepository.beginTransaction();
+
+                try {
+                    maxOnlineMemberCntRecord.put(Option.OPTION_VALUE, String.valueOf(ret));
+                    optionRepository.update(maxOnlineMemberCntRecord.optString(Keys.OBJECT_ID), maxOnlineMemberCntRecord);
+
+                    transaction.commit();
+                } catch (final RepositoryException e) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+
+                    LOGGER.log(Level.SEVERE, "Updates the max online visitor count failed", e);
+                }
+            }
+        } catch (final RepositoryException ex) {
+            LOGGER.log(Level.SEVERE, "Gets online visitor count failed", ex);
+        }
+
+        return ret;
     }
 
     /**
@@ -116,18 +145,18 @@ public final class OptionQueryService {
      */
     public JSONObject getStatistic() throws ServiceException {
         final JSONObject ret = new JSONObject();
-        
+
         final Query query = new Query().
                 setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_STATISTIC));
         try {
             final JSONObject result = optionRepository.get(query);
             final JSONArray options = result.optJSONArray(Keys.RESULTS);
-            
+
             for (int i = 0; i < options.length(); i++) {
                 final JSONObject option = options.optJSONObject(i);
                 ret.put(option.optString(Keys.OBJECT_ID), option.optInt(Option.OPTION_VALUE));
             }
-            
+
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets statistic failed", e);

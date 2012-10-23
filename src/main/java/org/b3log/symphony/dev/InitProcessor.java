@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 18, 2012
+ * @version 1.0.0.6, Oct 23, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -104,6 +104,12 @@ public class InitProcessor {
 
             option = new JSONObject();
             option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_TAG_COUNT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+            
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_MAX_ONLINE_MEMBER_COUNT);
             option.put(Option.OPTION_VALUE, "0");
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
             optionRepository.add(option);
