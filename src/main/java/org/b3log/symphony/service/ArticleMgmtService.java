@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 18, 2012
+ * @version 1.0.0.5, Oct 23, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -134,6 +134,8 @@ public final class ArticleMgmtService {
 
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
             article.put(Article.ARTICLE_VIEW_CNT, 0);
+            article.put(Article.ARTICLE_GOOD_CNT, 0);
+            article.put(Article.ARTICLE_BAD_CNT, 0);
             article.put(Article.ARTICLE_COMMENTABLE, true);
             article.put(Article.ARTICLE_CREATE_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
