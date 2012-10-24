@@ -18,7 +18,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.3, Aug 9, 2012
+* @version 1.0.0.4, Oct 24, 2012
 */
 /* start module */
 .index-module {
@@ -68,6 +68,8 @@
     padding: 5px 10px;
     border: 1px solid #F7F7F7;
     border-bottom-width: 0;
+    position: relative;
+    height: 20px;
 }
 
 .tags > li:hover > span {
@@ -75,12 +77,18 @@
     border-color: #DDDDDD;
     border-radius: 3px 3px 0 0;
     opacity: 0.8;
+    z-index: 2;
+}
+
+.tags > li > span > img {
+    border-radius: 2px 2px 2px 2px;
+    height: 16px;
+    width: 16px;
 }
 
 .tags > li > div {
     background-color: #FFFFFF;
     border: 1px solid #DDDDDD;
-    border-top-width: 0;
     border-radius: 3px 3px 3px 3px;
     display: none;
     right: 0;
@@ -93,3 +101,10 @@
     opacity: 0.8;
 }
 /* end side tags */
+
+/* start tags.html */
+.tags-cold, 
+.tags-trend {
+    width: 330px;
+}
+/* end tags.html */

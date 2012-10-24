@@ -24,16 +24,18 @@
         ${tagLabel}
     </h2>
     <ul class="tags fn-clear">
-        <#list sideTags as sideTag>
+        <#list sideTags as tag>
         <li>
             <span>
-                <img src="/favicon.png" />
-                <a href="/tags/${sideTag.tagTitle?url('utf-8')}">${sideTag.tagTitle}</a>
+                <img src="${tag.tagIconPath}" />
+                <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
             </span>
-            <div>
-                你好，世界！ (75)你好，世界！ (75)你好，世界！ (75)你好，世界！ (75)
-                引用 ${sideTag.tagReferenceCount}<br/>
-                评论 ${sideTag.tagCommentCount} 
+            <div <#if tag.tagDescription="">style="width:auto;white-space: nowrap;"</#if>>
+                <div>${tag.tagDescription}</div>
+                <span class="ft-small fn-right">
+                    引用 ${tag.tagReferenceCount}
+                    评论 ${tag.tagCommentCount} 
+                </span>
             </div>
         </li>
         </#list>

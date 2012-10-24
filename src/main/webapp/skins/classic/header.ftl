@@ -26,13 +26,14 @@
             <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
             <#else>
             <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>
+            <a href="javascript:Util.goRegister()">${registerLabel}</a>
             <div class="form fn-none">
                 <table cellspacing="0" cellpadding="0">
                     <tr>
-                        <td>
+                        <td width="40">
                             <label for="nameOrEmail">${accountLabel}</label>
                         </td>
-                        <td>
+                        <td width="165">
                             <input id="nameOrEmail" type="text" placeholder="Username/Email"/>
                             <span style="left:286px;top:20px;"></span>
                         </td>
@@ -52,7 +53,6 @@
                         </td>
                         <td>
                             <button onclick="Util.login()">${loginLabel}</button>
-                            <a href="javascript:Util.goRegister()">${registerLabel}</a>
                             <a href="/">${forgetPasswordLabel}</a>
                         </td>
                     </tr>

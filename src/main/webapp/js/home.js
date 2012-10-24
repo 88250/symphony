@@ -18,7 +18,7 @@
  * @fileoverview home.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, oct 8, 2012
+ * @version 1.0.0.5, oct 24, 2012
  */
 
 /**
@@ -26,26 +26,4 @@
  * @static
  */
 var Home = {
-    /**
-   * @description 文章 tab 和评论 tab 切换
-   */
-    tab: function () {
-        var $tabs = $(".tab"),
-        $lis = $tabs.find("li");
-        var $li1 = $($lis.get(0)),
-        $li2 = $($lis.get(1)),
-        $contents = $tabs.next().children("div");
-        $li1.click(function () {
-            $($contents.get(1)).hide();
-            $($contents.get(0)).show();
-            $li2.removeClass("current");
-            $li1.addClass("current");
-        });
-        $li2.click(function () {
-            $($contents.get(1)).show();
-            $($contents.get(0)).hide();
-            $li1.removeClass("current");
-            $li2.addClass("current");
-        });
-    } 
 };

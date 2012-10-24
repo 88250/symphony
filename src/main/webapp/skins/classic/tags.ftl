@@ -12,30 +12,42 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper fn-clear">
-                <div class="content">
-                    <div class="index-module">
+                <div class="content fn-clear">
+                    <div class="tags-trend list fn-left">
                         <h2>
                             ${trendTagsLabel}
                         </h2> 
-                        <ul class="tags fn-clear">
+                        <ul>
                             <#list trendTags as tag>
                             <li>
-                                <a class="fn-left" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                                <div class="fn-left ft-small">
-                                    引用 ${tag.tagReferenceCount}<br/>
+                                <img src="${tag.tagIconPath}" />
+                                <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                <div>${tag.tagDescription}sssssssssssss</div>
+                                <div class="ft-small">
+                                    引用 ${tag.tagReferenceCount}
                                     评论 ${tag.tagCommentCount} 
                                 </div>
                             </li>
                             </#list>
                         </ul>
                     </div>
-                    <div class="index-module">
+                    <div class="tags-cold list fn-right">
                         <h2>
                             ${coldTagsLabel}
                         </h2>
-                        <#list coldTags as tag>
-                        <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                        </#list>
+                        <ul>
+                            <#list coldTags as tag>
+                            <li>
+                                <img src="${tag.tagIconPath}" />
+                                <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                <div>${tag.tagDescription}</div>
+                                <div class="ft-small">
+                                    引用 ${tag.tagReferenceCount}
+                                    评论 ${tag.tagCommentCount} 
+                                </div>
+                            </li>
+                            </#list>
+                        </ul>
                     </div>
                 </div>  
                 <div class="side">

@@ -1,6 +1,6 @@
 <div style="position:relative">
     <img class="avatar-big" title="${user.userName}" src="${user.userThumbnailURL}" />
-    <img class="user-online" title="online" src="/images/offline.png" />
+    <img class="user-online" title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
     <div>
         <div class="user-name">
             <a href="/${user.userName}">${user.userName}</a>
@@ -16,9 +16,6 @@
         <div class="user-info">
             <span class="ft-small">${joinTimeLabel} </span>${user.userCreateTime?string('yyyy-MM-dd')}
         </div>
-        <font color="red"><b>TODO: V，用户在线标识</b></font>
-         ${user.userOnlineFlag?string}
-         
         <#if user.userIntro!="">
         <div>
             <span class="ft-small">${introLabel} </span>

@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Oct 7, 2012
+ * @version 1.0.0.8 Oct 24, 2012
  */
 
 /**
@@ -92,7 +92,7 @@ var Util = {
         $(".nav input.search").focus(function () {
             $(".nav .tags").hide();
         }).blur(function () {
-            $(".nav .tags").show();
+            $(".nav .tags").show("slow");
         });
     },
    
@@ -105,6 +105,11 @@ var Util = {
             if (pathname === $(this).attr("href")) {
                 $(this).addClass("current");
             } 
+            
+            // 注册没有使用 href，对其进行特殊处理
+            if (pathname === "/register") {
+                $(".nav .user-nav > a").last().addClass("current");
+            }
         });
     },
     

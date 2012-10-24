@@ -14,12 +14,9 @@
             <div class="wrapper fn-clear register">
                 <div class="form fn-left">
                     <table cellpadding="0" cellspacing="0">
-                        <caption>
-                            <h2>${registerLabel}</h2>
-                        </caption>
                         <tbody>
                             <tr>
-                                <td>
+                                <td width="70">
                                     <label for="userName">${userNameLabel}</label>
                                 </td>
                                 <td>

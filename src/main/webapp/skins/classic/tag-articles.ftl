@@ -16,9 +16,9 @@
             <div class="wrapper fn-clear">
                 <div class="content">
                     <div class="fn-clear">
-                        <img class="avatar fn-left" src="${tag.tagCreatorThumbnailURL}">
+                        <img style="width:60px;height:60px;" class="avatar fn-left" src="${tag.tagIconPath}">
                         <h1><a title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
-                        简洁简洁
+                        ${tag.tagDescription}
                     </div>
                     <div class="fn-clear">
                         <div class="fn-left">

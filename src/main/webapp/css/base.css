@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.7, Oct 11, 2012
+* @version 1.0.0.8, Oct 24, 2012
 */
 /* start reset */
 html {
@@ -537,7 +537,7 @@ button.red:active {
     padding: 10px;
     position: absolute;
     right: -8px;
-    top: 39px;
+    top: 57px;
     z-index: 1;
 }
 
