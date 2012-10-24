@@ -52,7 +52,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    ${introLabel}
+                                    ${userIntroLabel}
                                 </td>
                                 <td>
                                     <textarea id="userIntro">${user.userIntro}</textarea>

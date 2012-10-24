@@ -18,7 +18,7 @@
         </div>
         <#if user.userIntro!="">
         <div>
-            <span class="ft-small">${introLabel} </span>
+            <span class="ft-small">${userIntroLabel} </span>
             <br/>
             ${user.userIntro}
         </div>
