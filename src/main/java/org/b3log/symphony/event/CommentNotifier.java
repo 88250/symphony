@@ -75,13 +75,22 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
             final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
             final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
 
-            if (articleAuthorId.equals(originalComment.optString(Comment.COMMENT_AUTHOR_ID))) {
-                // The commenter is the article author, do not notify itself
-                return;
-            }
-
             final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
+            
+            if (articleAuthorId.equals(originalComment.optString(Comment.COMMENT_AUTHOR_ID))) {
+                // The commenter is the article author, do not notify itself
+                
+                if (userNames.isEmpty()) {
+                    return;
+                }
+                
+                userNames.remove(articleAuthorName);
+                if (userNames.isEmpty()) {
+                    return;
+                }
+            }
+            
             userNames.add(articleAuthorName);
 
             final Set<String> qqSet = new HashSet<String>();
