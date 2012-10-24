@@ -54,7 +54,7 @@
                                                 <a href="/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                             </span>
                                             <span class="fn-right ft-small">
-                                                ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm:ss')}
+                                                ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm:ss')} #${comment_index + 1}
                                             </span>    
                                         </span>
                                         <div>
