@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Oct 12, 2012
+ * @version 1.0.0.7, Oct 24, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -116,6 +116,12 @@ public final class UserProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject user = userQueryService.getUserByName(userName);
+        if (null == user) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            
+            return;
+        }
+        
         dataModel.put(User.USER, user);
         fillUserThumbnailURL(user);
 
