@@ -118,10 +118,10 @@ public final class UserProcessor {
         final JSONObject user = userQueryService.getUserByName(userName);
         if (null == user) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            
+
             return;
         }
-        
+
         dataModel.put(User.USER, user);
         fillUserThumbnailURL(user);
 
@@ -152,14 +152,20 @@ public final class UserProcessor {
         renderer.setTemplateName("/home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        final JSONObject user = userQueryService.getUserByName(userName);
+        if (null == user) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
         dataModel.put(User.USER, user);
         fillUserThumbnailURL(user);
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
         final List<JSONObject> userComments =
-                               commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeCmtsCnt"));
+                commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeCmtsCnt"));
         dataModel.put(Common.USER_HOME_COMMENTS, userComments);
 
         Filler.fillHeader(request, response, dataModel);
