@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Sends a comment notification to IM server.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 21, 2012
+ * @version 1.0.0.1, Oct 24, 2012
  * @since 0.2.0
  */
 public final class CommentNotifier extends AbstractEventListener<JSONObject> {
@@ -67,10 +67,6 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, CommentNotifier.class.getName()});
 
-//        if (Latkes.getServePath().contains("localhost")) {
-//            return;
-//        }
-
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
@@ -78,6 +74,11 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
             final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
+
+            if (articleAuthorId.equals(originalComment.optString(Comment.COMMENT_AUTHOR_ID))) {
+                // The commenter is the article author, do not notify itself
+                return;
+            }
 
             final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
@@ -119,7 +120,7 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
             final StringBuilder msgContent = new StringBuilder("----\n");
             msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
                     .append(originalComment.optString(Comment.COMMENT_SHARP_URL)).append("\n\n")
-                    .append(commentContent).append("\n----");
+                    .append(commentContent.replace("&gt;", ">").replace("&lt;", "<")).append("\n----");
 
             requestJSONObject.put("messageContent", msgContent.toString());
 

@@ -38,13 +38,14 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Markdowns;
 import org.json.JSONObject;
 
 /**
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 22, 2012
+ * @version 1.0.0.4, Oct 24, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -245,11 +246,17 @@ public final class CommentQueryService {
                 commentContent = commentContent.replace('@' + userName,
                         "@<a href='" + Latkes.getServePath() + '/' + userName + "'>" + userName + "</a>");
             }
-            
-            comment.put(Comment.COMMENT_CONTENT, commentContent);
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Generates @username home URL for comment content failed", e);
         }
+
+        try {
+            commentContent = Markdowns.toHTML(commentContent);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Markdowns comment content failed", e);
+        }
+
+        comment.put(Comment.COMMENT_CONTENT, commentContent);
     }
 
     /**
