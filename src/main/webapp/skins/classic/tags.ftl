@@ -20,7 +20,9 @@
                         <ul>
                             <#list trendTags as tag>
                             <li>
+                                <#if tag.tagIconPath!="">
                                 <img src="${tag.tagIconPath}" />
+                                </#if>
                                 <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                 <div>${tag.tagDescription}sssssssssssss</div>
                                 <div class="ft-small">
@@ -38,7 +40,9 @@
                         <ul>
                             <#list coldTags as tag>
                             <li>
+                                <#if tag.tagIconPath!="">
                                 <img src="${tag.tagIconPath}" />
+                                </#if>
                                 <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                 <div>${tag.tagDescription}</div>
                                 <div class="ft-small">

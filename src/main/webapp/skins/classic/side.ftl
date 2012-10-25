@@ -27,7 +27,9 @@
         <#list sideTags as tag>
         <li>
             <span>
+                <#if tag.tagIconPath!="">
                 <img src="${tag.tagIconPath}" />
+                </#if>
                 <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
             </span>
             <div <#if tag.tagDescription="">style="width:auto;white-space: nowrap;"</#if>>
