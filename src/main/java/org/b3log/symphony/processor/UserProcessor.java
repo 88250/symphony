@@ -29,6 +29,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -38,6 +39,7 @@ import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.TagQueryService;
@@ -207,6 +209,7 @@ public final class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/profiles", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = UpdateProfilesValidation.class)
     public void updateProfiles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -215,7 +218,7 @@ public final class UserProcessor {
         final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String userName = requestJSONObject.optString(User.USER_NAME);
         final String userURL = requestJSONObject.optString(User.USER_URL);
@@ -232,10 +235,7 @@ public final class UserProcessor {
             userMgmtService.updateProfiles(user);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.SEVERE, msg, e);
-
-            ret.put(Keys.MSG, msg);
+            ret.put(Keys.MSG, e.getMessage());
         }
     }
 
