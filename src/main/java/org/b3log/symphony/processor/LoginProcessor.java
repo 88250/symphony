@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 23, 2012
+ * @version 1.0.0.4, Oct 25, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -265,11 +265,12 @@ public final class LoginProcessor {
      *
      * @param request the specified request
      * @param response the specified response
+     * @return returns {@code true} if logged in, returns {@code false} otherwise
      */
-    public static void tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
+    public static boolean tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
         final Cookie[] cookies = request.getCookies();
         if (null == cookies || 0 == cookies.length) {
-            return;
+            return false;
         }
 
         try {
@@ -298,6 +299,8 @@ public final class LoginProcessor {
                     Sessions.login(request, response, user);
                     UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
                     LOGGER.log(Level.FINER, "Logged in with cookie[email={0}]", userEmail);
+                    
+                    return true;
                 }
             }
         } catch (final Exception e) {
@@ -309,5 +312,7 @@ public final class LoginProcessor {
 
             response.addCookie(cookie);
         }
+        
+        return false;
     }
 }

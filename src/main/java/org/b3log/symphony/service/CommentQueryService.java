@@ -98,8 +98,10 @@ public final class CommentQueryService {
                 final JSONObject article = articleRepository.get(articleId);
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
+                
+                processCommentContent(comment);
             }
-
+            
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets user comments failed", e);
@@ -142,7 +144,7 @@ public final class CommentQueryService {
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
                     final String hashedEmail = MD5.hash(email);
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                   + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 }
 
 
@@ -196,6 +198,7 @@ public final class CommentQueryService {
      *   <li>generates comment author URL</li>
      *   <li>generates comment author name</li>
      *   <li>generates &#64;username home URL</li>
+     *   <li>markdowns comment content</li>
      * </ul>
      * 
      * @param comments the specified comments
@@ -216,6 +219,7 @@ public final class CommentQueryService {
      *   <li>generates comment author URL</li>
      *   <li>generates comment author name</li>
      *   <li>generates &#64;username home URL</li>
+     *   <li>markdowns comment content</li>
      * </ul>
      * 
      * @param comment the specified comment
@@ -229,7 +233,7 @@ public final class CommentQueryService {
         if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
             final String hashedEmail = MD5.hash(email);
             thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                           + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         }
 
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
@@ -239,12 +243,26 @@ public final class CommentQueryService {
         comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
         comment.put(Comment.COMMENT_T_AUTHOR_URL, author.optString(User.USER_URL));
 
+        processCommentContent(comment);
+    }
+
+    /**
+     * Processes the specified comment content.
+     * 
+     * <ul>
+     *   <li>Generates &#64;username home URL</li>
+     *   <li>Markdowns</li>
+     * </ul>
+     * 
+     * @param comment the specified comment
+     */
+    private void processCommentContent(final JSONObject comment) {
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
         try {
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
             for (final String userName : userNames) {
                 commentContent = commentContent.replace('@' + userName,
-                        "@<a href='" + Latkes.getServePath() + '/' + userName + "'>" + userName + "</a>");
+                                                        "@<a href='" + Latkes.getServePath() + '/' + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Generates @username home URL for comment content failed", e);
