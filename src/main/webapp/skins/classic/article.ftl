@@ -51,7 +51,7 @@
                                     <div class="fn-left comment-main">
                                         <span class="fn-clear">
                                             <span class="fn-left">
-                                                <a href="/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
+                                                <a href="/member/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                             </span>
                                             <span class="fn-right ft-small">
                                                 ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm:ss')} #${comment_index + 1}
@@ -81,7 +81,7 @@
                                 <img src="${article.articleAuthorThumbnailURL}" />
                             </div>
                             <div class="fn-left">
-                                <a href="/${article.articleAuthorName?url('utf-8')}" title="${article.articleAuthorName}">${article.articleAuthorName}</a>
+                                <a href="/member/${article.articleAuthorName}" title="${article.articleAuthorName}">${article.articleAuthorName}</a>
                                 <#if article.articleAuthorURL!="">
                                 <br/>
                                 <a href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
@@ -102,7 +102,7 @@
                                 <a href="">${relevantArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
-                                        <a href="/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
+                                        <a href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
                                         <span class="date-ico"> ${relevantArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                                     </span>
                                 </div>
@@ -120,7 +120,7 @@
                                 <a href="">${randomArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
-                                        <a href="/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
+                                        <a href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
                                         <span class="date-ico"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                                     </span>
                                 </div>

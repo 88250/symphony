@@ -3,7 +3,7 @@
     <img class="user-online" title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
     <div>
         <div class="user-name">
-            <a href="/${user.userName}">${user.userName}</a>
+            <a href="/member/${user.userName}">${user.userName}</a>
         </div>
         <div class="user-info">
             <span class="ft-small">Symphony</span> ${user.userNo} <span class="ft-small">${noVIPLabel}</span>

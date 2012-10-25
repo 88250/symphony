@@ -16,10 +16,10 @@
                 <div class="content">
                     <ul class="tab fn-clear">
                         <li class="current">
-                            <a href="/${user.userName}">${articleLabel}</a>
+                            <a href="/member/${user.userName}">${articleLabel}</a>
                         </li>
                         <li>
-                            <a href="/${user.userName}/comments">${cmtLabel}</a>
+                            <a href="/member/${user.userName}/comments">${cmtLabel}</a>
                         </li>
                     </ul>
                     <div>
