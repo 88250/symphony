@@ -17,17 +17,17 @@
                     <div>
                         <div class="ft-small fn-clear">
                             <div class="fn-left">
-                                ${article.articleCreateTime?string('yyyy-MM-dd HH:mm:ss')}
-                            </div>
-                            <div class="fn-right">
-                                &nbsp;${viewLabel} <a href="/">${article.articleViewCount}</a> 
-                                ${cmtLabel} <a href="/">${article.articleCommentCount}</a>   
-                            </div>
-                            <div class="fn-right">
                                 <#list article.articleTags?split(",") as articleTag>
                                 <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
                                     ${articleTag}</a><#if articleTag_has_next>, </#if>
                                 </#list>
+                            </div>
+                            <div class="fn-right">
+                                &nbsp;${viewLabel} <a href="${article.articlePermalink}">${article.articleViewCount}</a> 
+                                ${cmtLabel} <a href="${article.articlePermalink}#comments">${article.articleCommentCount}</a>   
+                            </div>
+                            <div class="fn-right">
+                                ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                             </div>
                         </div>
                         <h2 class="article-title">
@@ -39,11 +39,11 @@
                             ${article.articleContent}
                         </div>
                     </div>
-                    <div class="comment-list list fn-clear">
+                    <div class="comment-list list fn-clear" id="comments">
                         <h2>${article.articleCommentCount} ${cmtLabel}</h2>
                         <ul>
                             <#list article.articleComments as comment>
-                            <li>
+                            <li id="${comment.oId}">
                                 <div class="fn-clear">
                                     <div class="fn-left avatar">
                                         <img title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
@@ -54,7 +54,7 @@
                                                 <a href="/member/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                             </span>
                                             <span class="fn-right ft-small">
-                                                ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm:ss')} #${comment_index + 1}
+                                                ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} #${comment_index + 1}
                                             </span>    
                                         </span>
                                         <div>

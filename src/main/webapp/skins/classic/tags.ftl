@@ -20,15 +20,19 @@
                         <ul>
                             <#list trendTags as tag>
                             <li>
-                                <#if tag.tagIconPath!="">
-                                <img src="${tag.tagIconPath}" />
-                                </#if>
-                                <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                                <div>${tag.tagDescription}sssssssssssss</div>
-                                <div class="ft-small">
-                                    引用 ${tag.tagReferenceCount}
-                                    评论 ${tag.tagCommentCount} 
+                                <div class="fn-clear">
+                                    <div class="fn-left">
+                                        <#if tag.tagIconPath!="">
+                                        <img width="16" height="16" src="${tag.tagIconPath}" />
+                                        </#if>
+                                        <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                    </div>
+                                    <span class="ft-small fn-right">
+                                        引用 ${tag.tagReferenceCount}
+                                        评论 ${tag.tagCommentCount} 
+                                    </span>
                                 </div>
+                                <div>${tag.tagDescription}</div>
                             </li>
                             </#list>
                         </ul>
@@ -40,15 +44,19 @@
                         <ul>
                             <#list coldTags as tag>
                             <li>
-                                <#if tag.tagIconPath!="">
-                                <img src="${tag.tagIconPath}" />
-                                </#if>
-                                <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                                <div>${tag.tagDescription}</div>
-                                <div class="ft-small">
-                                    引用 ${tag.tagReferenceCount}
-                                    评论 ${tag.tagCommentCount} 
+                                <div class="fn-clear">
+                                    <div class="fn-left">
+                                        <#if tag.tagIconPath!="">
+                                        <img width="16" height="16" src="${tag.tagIconPath}" />
+                                        </#if>
+                                        <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                    </div>
+                                    <span class="ft-small fn-right">
+                                        引用 ${tag.tagReferenceCount}
+                                        评论 ${tag.tagCommentCount} 
+                                    </span>
                                 </div>
+                                <div>${tag.tagDescription}</div>
                             </li>
                             </#list>
                         </ul>
