@@ -5,7 +5,7 @@
         <li>
             <div class="fn-clear">
                 <a class="ft-noline" 
-                   href="/${article.articleAuthorName}" 
+                   href="/member/${article.articleAuthorName}" 
                    title="${article.articleAuthorName}"><img class="avatar fn-left" src="${article.articleAuthorThumbnailURL}" /></a>
                 <div class="fn-left" style="width: 550px">
                     <h2><a href="${article.articlePermalink}">${article.articleTitle}</a></h2>
@@ -24,7 +24,7 @@
             </div>
             <div class="commenters">
                 <#list article.articleParticipants as comment>
-                <a href="/${comment.articleParticipantName}" title="${comment.articleParticipantName}" class="ft-noline">
+                <a href="/member/${comment.articleParticipantName}" title="${comment.articleParticipantName}" class="ft-noline">
                     <img class="avatar-small" src="${comment.articleParticipantThumbnailURL}" />
                 </a>
                 </#list>

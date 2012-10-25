@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 24, 2012
+ * @version 1.0.0.8, Oct 25, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -107,7 +107,7 @@ public final class UserProcessor {
      * @param userName the specified user name
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/{userName}", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                          final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -144,7 +144,7 @@ public final class UserProcessor {
      * @param userName the specified user name
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/{userName}/comments", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                  final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();

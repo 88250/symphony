@@ -25,6 +25,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.latke.util.Sessions;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
@@ -38,7 +39,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Oct 16, 2012
+ * @version 1.0.0.7, Oct 25, 2012
  * @since 0.2.0
  */
 public final class Filler {
@@ -139,17 +140,17 @@ public final class Filler {
      */
     private static void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
                                         final Map<String, Object> dataModel) {
-        LoginProcessor.tryLogInWithCookie(request, response);
-        final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
-
         dataModel.put(Common.IS_LOGGED_IN, false);
 
-        if (null == currentUser) {
+        JSONObject currentUser = Sessions.currentUser(request);
+        if (null == currentUser && !LoginProcessor.tryLogInWithCookie(request, response)) {
             dataModel.put("loginLabel", langPropsService.get("loginLabel"));
-
+            
             return;
         }
 
+        currentUser = Sessions.currentUser(request);
+        
         dataModel.put(Common.IS_LOGGED_IN, true);
         dataModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
 

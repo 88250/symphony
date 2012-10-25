@@ -13,6 +13,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>io</word>
         <word>json</word>
         <word>Markdowns</word>
+        <word>markdowns</word>
         <word>permalink</word>
         <word>servlet</word>
         <word>whitelist</word>
