@@ -43,7 +43,7 @@ var AddArticle = {
      * @description 发布文章
      */
     add: function () {
-        if (Validate.goValidate(this._validateData)) {
+        if (true) {
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g,""),
                 articleContent: $("#articleContent").val(),
@@ -58,7 +58,7 @@ var AddArticle = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     if (result.sc) {
-                        window.location = "/" + Label.userName;
+                        window.location = "/member/" + Label.userName;
                     } else {
                         $("#tip").addClass("tip-error").text(result.msg);
                     }

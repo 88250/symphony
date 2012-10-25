@@ -30,6 +30,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -42,6 +43,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.validate.ArticleAddValidation;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.ClientMgmtService;
@@ -72,7 +74,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.6, Oct 8, 2012
+ * @version 1.0.0.7, Oct 25, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -222,6 +224,7 @@ public final class ArticleProcessor {
      * @throws ServletException servlet exception 
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.PUT)
+    @Before(adviceClass = ArticleAddValidation.class)
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
         final JSONRenderer renderer = new JSONRenderer();
@@ -230,7 +233,7 @@ public final class ArticleProcessor {
         final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         final String articleTags = formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
