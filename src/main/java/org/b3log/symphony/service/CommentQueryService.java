@@ -119,7 +119,8 @@ public final class CommentQueryService {
      * [
      *     {
      *         "articleParticipantName": "",
-     *         "articleParticipantThumbnailURL": ""
+     *         "articleParticipantThumbnailURL": "",
+     *         "articleParticipantURL": ""
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found
