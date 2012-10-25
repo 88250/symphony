@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 24, 2012
+ * @version 1.0.0.5, Oct 25, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -98,10 +98,10 @@ public final class CommentQueryService {
                 final JSONObject article = articleRepository.get(articleId);
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
-                
+
                 processCommentContent(comment);
             }
-            
+
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets user comments failed", e);
@@ -119,7 +119,8 @@ public final class CommentQueryService {
      * [
      *     {
      *         "articleParticipantName": "",
-     *         "articleParticipantThumbnailURL": ""
+     *         "articleParticipantThumbnailURL": "",
+     *         "articleParticipantURL": ""
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found
@@ -144,13 +145,14 @@ public final class CommentQueryService {
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
                     final String hashedEmail = MD5.hash(email);
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                                   + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 }
 
 
                 final JSONObject participant = new JSONObject();
                 participant.put(Article.ARTICLE_T_PARTICIPANT_NAME, commenter.optString(User.USER_NAME));
                 participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
+                participant.put(Article.ARTICLE_T_PARTICIPANT_URL, commenter.optString(User.USER_URL));
 
                 ret.add(participant);
             }
@@ -233,7 +235,7 @@ public final class CommentQueryService {
         if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
             final String hashedEmail = MD5.hash(email);
             thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                           + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         }
 
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
@@ -262,7 +264,7 @@ public final class CommentQueryService {
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
             for (final String userName : userNames) {
                 commentContent = commentContent.replace('@' + userName,
-                                                        "@<a href='" + Latkes.getServePath() + '/' + userName + "'>" + userName + "</a>");
+                        "@<a href='" + Latkes.getServePath() + '/' + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Generates @username home URL for comment content failed", e);
