@@ -73,7 +73,6 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
  * @version 1.0.0.7, Oct 25, 2012
  * @since 0.2.0
  */

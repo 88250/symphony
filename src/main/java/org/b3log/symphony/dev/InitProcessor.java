@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Oct 23, 2012
+ * @version 1.0.0.7, Oct 26, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -119,8 +119,8 @@ public class InitProcessor {
             // Init admin
             final UserMgmtService userMgmtService = UserMgmtService.getInstance();
             JSONObject admin = new JSONObject();
-            admin.put(User.USER_EMAIL, "dl88250@gmail.com");
-            admin.put(User.USER_NAME, "88250");
+            admin.put(User.USER_EMAIL, UserExt.DEFAULT_ADMIN_EMAIL);
+            admin.put(User.USER_NAME, UserExt.DEFAULT_ADMIN_NAME);
             admin.put(User.USER_PASSWORD, "test");
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             userMgmtService.addUser(admin);

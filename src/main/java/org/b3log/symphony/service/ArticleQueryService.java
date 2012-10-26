@@ -16,6 +16,7 @@
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,9 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.CompositeFilter;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -35,6 +39,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
@@ -123,11 +128,11 @@ public final class ArticleQueryService {
                 final Set<String> articleIds = new HashSet<String>();
                 for (int j = 0; j < tagArticleRelations.length(); j++) {
                     final String articleId = tagArticleRelations.optJSONObject(j).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID);
-                    
+
                     if (fetchedArticleIds.contains(articleId)) {
                         continue;
                     }
-                    
+
                     articleIds.add(articleId);
                     fetchedArticleIds.add(articleId);
                 }
@@ -143,6 +148,55 @@ public final class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets relevant articles failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets news (articles tags contains "B3log Announcement").
+     * 
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return articles, return an empty list if not found
+     * @throws ServiceException service exception 
+     */
+    public List<JSONObject> getNews(final int currentPageNum, final int pageSize) throws ServiceException {
+        JSONObject tag = null;
+
+        try {
+            tag = tagRepository.getByTitle("B3log Announcement");
+            if (null == tag) {
+                return Collections.emptyList();
+            }
+
+            Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                    setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
+                    .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+
+            JSONObject result = tagArticleRepository.get(query);
+            final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
+
+            final Set<String> articleIds = new HashSet<String>();
+            for (int i = 0; i < tagArticleRelations.length(); i++) {
+                articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
+            }
+
+            final List<Filter> subFilters = new ArrayList<Filter>();
+            subFilters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
+            subFilters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, UserExt.DEFAULT_ADMIN_EMAIL));
+            query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, subFilters))
+                    .addProjection(Article.ARTICLE_TITLE, String.class).addProjection(Article.ARTICLE_PERMALINK, String.class)
+                    .addProjection(Article.ARTICLE_CREATE_TIME, Long.class);
+            result = articleRepository.get(query);
+
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            for (final JSONObject article : ret) {
+                article.put(Article.ARTICLE_PERMALINK, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets articles by tag [tagTitle=" + tag.optString(Tag.TAG_TITLE) + "] failed", e);
             throw new ServiceException(e);
         }
     }
