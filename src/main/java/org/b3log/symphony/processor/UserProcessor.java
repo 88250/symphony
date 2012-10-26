@@ -36,10 +36,11 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.MD5;
-import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
+import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.TagQueryService;
@@ -59,13 +60,13 @@ import org.json.JSONObject;
  *     <li>User Home (/member/{userName}), GET</li> 
  *     <li>Settings (/settings), GET</li> 
  *     <li>Profiles (/settings/profiles), POST</li>
- *     <li>Sync (/settings/b3), POST</li>
+ *     <li>Sync (/settings/sync/b3), POST</li>
  *     <li>Password (/settings/password), POST</li>
  *   </ul> 
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Oct 25, 2012
+ * @version 1.0.0.9, Oct 26, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -111,7 +112,7 @@ public final class UserProcessor {
      */
     @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                         final String userName) throws Exception {
+            final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/home.ftl");
@@ -148,7 +149,7 @@ public final class UserProcessor {
      */
     @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                 final String userName) throws Exception {
+            final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
@@ -248,6 +249,7 @@ public final class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/sync/b3", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = UpdateSyncB3Validation.class)
     public void updateSyncB3(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -256,7 +258,7 @@ public final class UserProcessor {
         final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String b3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
         final String addArticleURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL);
@@ -287,6 +289,7 @@ public final class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/password", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = UpdatePasswordValidation.class)
     public void updatePassword(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -295,7 +298,7 @@ public final class UserProcessor {
         final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
         final String newPassword = requestJSONObject.optString(User.USER_NEW_PASSWORD);
@@ -303,7 +306,7 @@ public final class UserProcessor {
         final JSONObject user = LoginProcessor.getCurrentUser(request);
 
         if (!password.equals(user.optString(User.USER_PASSWORD))) {
-            ret.put(Keys.MSG, "old pwd error");
+            ret.put(Keys.MSG, langPropsService.get("invalidOldPwdLabel"));
 
             return;
         }
@@ -329,7 +332,7 @@ public final class UserProcessor {
     private void fillUserThumbnailURL(final JSONObject user) {
         final String userEmail = user.optString(User.USER_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(userEmail) + "?s=140&d="
-                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
     }
 }

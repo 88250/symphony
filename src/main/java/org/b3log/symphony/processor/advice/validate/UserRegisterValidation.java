@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * 
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 22, 2012 
+ * @version 1.0.0.3, Oct 26, 2012 
  */
 public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
@@ -75,7 +75,6 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
         checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");
         checkField(!Strings.isEmail(email), "registerFailLabel", "invalidEmailLabel");
         checkField(invalidUserPassword(password), "registerFailLabel", "invalidPasswordLabel");
-
     }
 
     /**
@@ -113,16 +112,13 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
     }
 
     /**
-     * check password(1,16).
+     * Checks password, length [1, 16].
      * 
      * @param password the specific password
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
-    private boolean invalidUserPassword(final String password) {
-        if (password.length() < MIN_PWD_LENGTH || password.length() > MAX_PWD_LENGTH) {
-            return true;
-        }
-        return false;
+    public static boolean invalidUserPassword(final String password) {
+        return password.length() < MIN_PWD_LENGTH || password.length() > MAX_PWD_LENGTH;
     }
 
     /**
