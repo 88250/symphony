@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.0.1.4, Oct 23, 2012",
+    "version": "1.0.1.5, Oct 26, 2012",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     
@@ -16,7 +16,7 @@
         {
             "name": "clientCommentId",
             "type": "String",
-            "length": 64,
+            "length": 32,
             "nullable": true
         },
         {
@@ -104,7 +104,7 @@
         {
             "name": "oId",
             "type": "String",
-            "length": 64
+            "length": 19
         },
         {
             "name": "optionValue",
@@ -325,7 +325,7 @@
         {
             "name": "clientArticleId",
             "type": "String",
-            "length": 64,
+            "length": 32,
             "nullable": true
         },
         {

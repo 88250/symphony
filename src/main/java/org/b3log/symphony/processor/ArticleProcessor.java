@@ -274,6 +274,8 @@ public final class ArticleProcessor {
     /**
      * Adds an article remotely.
      * 
+     * <p>This interface will be called by Rhythm, so here is no article data validation, just only validate the B3 key.</p>
+     * 
      * <p>
      * The request json object (an article), for example, 
      * <pre>
@@ -322,9 +324,6 @@ public final class ArticleProcessor {
         final String clientVersion = requestJSONObject.optString(Client.CLIENT_VERSION);
         final String clientHost = requestJSONObject.optString(Client.CLIENT_HOST);
         final String clientRuntimeEnv = requestJSONObject.optString(Client.CLIENT_RUNTIME_ENV);
-
-        // TODO: add article validate
-
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user || !Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
