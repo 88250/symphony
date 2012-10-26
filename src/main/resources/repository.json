@@ -104,7 +104,7 @@
         {
             "name": "oId",
             "type": "String",
-            "length": 19
+            "length": 64
         },
         {
             "name": "optionValue",
