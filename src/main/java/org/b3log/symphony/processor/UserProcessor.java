@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Oct 26, 2012
+ * @version 1.0.1.0, Oct 29, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -221,13 +221,11 @@ public final class UserProcessor {
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
-        final String userName = requestJSONObject.optString(User.USER_NAME);
         final String userURL = requestJSONObject.optString(User.USER_URL);
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
 
         final JSONObject user = LoginProcessor.getCurrentUser(request);
-        user.put(User.USER_NAME, userName);
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
         user.put(UserExt.USER_INTRO, userIntro);

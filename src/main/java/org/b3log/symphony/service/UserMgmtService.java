@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 25, 2012
+ * @version 1.0.0.6, Oct 29, 2012
  * @since 0.2.0
  */
 public final class UserMgmtService {
@@ -101,7 +101,6 @@ public final class UserMgmtService {
      * <pre>
      * {
      *     "oId": "",
-     *     "userName": "",
      *     "userURL": "",
      *     "userQQ": "",
      *     "userIntro": ""
@@ -120,13 +119,7 @@ public final class UserMgmtService {
                 throw new ServiceException(langPropsService.get("updateFailLabel"));
             }
 
-            final String userName = requestJSONObject.optString(User.USER_NAME);
-            if (null != userRepository.getByName(userName)) {
-                throw new ServiceException(langPropsService.get("duplicatedUserNameLabel"));
-            }
-            
             // Update
-            oldUser.put(User.USER_NAME, userName);
             oldUser.put(User.USER_URL, requestJSONObject.optString(User.USER_URL));
             oldUser.put(UserExt.USER_QQ, requestJSONObject.optString(UserExt.USER_QQ));
             oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
