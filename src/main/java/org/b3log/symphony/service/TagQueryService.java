@@ -203,8 +203,7 @@ public final class TagQueryService {
      * [
      *     {
      *         "tagParticipantName": "",
-     *         "tagParticipantThumbnailURL": "",
-     *         "tagParticipantURL": ""
+     *         "tagParticipantThumbnailURL": ""
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found returns an empty list if not found
@@ -243,7 +242,6 @@ public final class TagQueryService {
                                             + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
-                participant.put(Tag.TAG_T_PPARTICIPANT_URL, user.optString(User.USER_URL));
 
                 ret.add(participant);
             }
