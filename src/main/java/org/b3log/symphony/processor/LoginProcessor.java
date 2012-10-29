@@ -149,7 +149,6 @@ public final class LoginProcessor {
 
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
-        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
         final JSONObject user = new JSONObject();
         user.put(User.USER_NAME, name);
@@ -299,7 +298,7 @@ public final class LoginProcessor {
                     Sessions.login(request, response, user);
                     UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
                     LOGGER.log(Level.FINER, "Logged in with cookie[email={0}]", userEmail);
-                    
+
                     return true;
                 }
             }
@@ -312,7 +311,7 @@ public final class LoginProcessor {
 
             response.addCookie(cookie);
         }
-        
+
         return false;
     }
 }
