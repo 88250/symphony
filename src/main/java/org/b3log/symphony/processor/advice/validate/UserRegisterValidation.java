@@ -17,6 +17,7 @@ package org.b3log.symphony.processor.advice.validate;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -24,6 +25,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.processor.CaptchaProcessor;
 import org.json.JSONObject;
 
 /**
@@ -31,7 +33,7 @@ import org.json.JSONObject;
  * 
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 26, 2012 
+ * @version 1.0.0.4, Oct 29, 2012 
  */
 public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
@@ -55,6 +57,10 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
      * Min password length.
      */
     private static final int MIN_PWD_LENGTH = 1;
+    /**
+     * Captcha length.
+     */
+    private static final int CAPTCHA_LENGTH = 4;
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
@@ -71,7 +77,9 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
+        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
+        checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
         checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");
         checkField(!Strings.isEmail(email), "registerFailLabel", "invalidEmailLabel");
         checkField(invalidUserPassword(password), "registerFailLabel", "invalidPasswordLabel");
@@ -122,6 +130,33 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
     }
 
     /**
+     * Checks whether the specified captcha is invalid.
+     * 
+     * @param captcha the specified captcha
+     * @param request the specified request
+     * @return {@code true} if it is invalid, returns {@code false} otherwise
+     */
+    public static boolean invalidCaptcha(final String captcha, final HttpServletRequest request) {
+        final HttpSession session = request.getSession(false);
+        if (null == session) {
+            return true;
+        }
+
+        if (Strings.isEmptyOrNull(captcha) || captcha.length() != CAPTCHA_LENGTH) {
+            return true;
+        }
+
+        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+        if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
+            return true;
+        }
+
+        session.removeAttribute(CaptchaProcessor.CAPTCHA);
+
+        return false;
+    }
+
+    /**
      * Checks field.
      * 
      * @param invalid the specified invalid flag
@@ -133,7 +168,7 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
             throws RequestProcessAdviceException {
         if (invalid) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get(failLabel)
-                    + " - " + langPropsService.get(fieldLabel)));
+                                                                                   + " - " + langPropsService.get(fieldLabel)));
         }
     }
 }
