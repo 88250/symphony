@@ -25,25 +25,24 @@
  * @static
  */
 var AddArticle = {
-    _validateData: [{
-        "id": "articleTitle",
-        "type": 256,
-        "msg": Label.articleTitleErrorLabel
-    }, {
-        "id": "articleContent",
-        "type": 1048576,
-        "msg": Label.articleContentErrorLabel
-    }, {
-        "id": "articleTags",
-        "type": "tags",
-        "msg": Label.articleTagsErrorLabel
-    }],
 
     /**
      * @description 发布文章
      */
     add: function () {
-        if (Validate.goValidate(this._validateData)) {
+        if (Validate.goValidate([{
+            "id": "articleTitle",
+            "type": 256,
+            "msg": Label.articleTitleErrorLabel
+        }, {
+            "id": "articleContent",
+            "type": 1048576,
+            "msg": Label.articleContentErrorLabel
+        }, {
+            "id": "articleTags",
+            "type": "tags",
+            "msg": Label.articleTagsErrorLabel
+        }])) {
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g,""),
                 articleContent: $("#articleContent").val(),

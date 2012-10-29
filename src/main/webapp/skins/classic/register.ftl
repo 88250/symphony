@@ -79,8 +79,7 @@
         <script>
             Register.init();
             Label.userNameErrorLabel = "${userNameErrorLabel}";
-            Label.emailErrorLabel = "${invalidEmailLabel}";
-            Label.invalidPasswordLabel = "${invalidPasswordLabel}";
+            Label.invalidEmailLabel = "${invalidEmailLabel}";
             Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
             Label.captchaErrorLabel = "${captchaErrorLabel}";
         </script>

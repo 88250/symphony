@@ -25,15 +25,6 @@
  * @static
  */
 var Util = {
-    _validateData: [{
-        "id": "nameOrEmail",
-        "type": 256,
-        "msg": Label.loginNameErrorLabel
-    }, {
-        "id": "loginPassword",
-        "type": "password",
-        "msg": Label.invalidPasswordLabel
-    }],
     /**
      * @description 回到顶部
      */
@@ -117,7 +108,15 @@ var Util = {
      * @description 登录
      */
     login: function () {
-        if (Validate.goValidate(this._validateData)) {
+        if (Validate.goValidate([{
+            "id": "nameOrEmail",
+            "type": 256,
+            "msg": Label.loginNameErrorLabel
+        }, {
+            "id": "loginPassword",
+            "type": "password",
+            "msg": Label.invalidPasswordLabel
+        }])) {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g,""),
                 userPassword: $("#loginPassword").val()
@@ -189,7 +188,7 @@ var Validate = {
  */
     validate: function (type, val) {
         var isValidate = true;
-        if (type.indexOf("|") > -1) {
+        if (typeof(type) === "string" && type.indexOf("|") > -1) {
             var passwordId = type.split("|")[1];
             type = type.split("|")[0];
         }

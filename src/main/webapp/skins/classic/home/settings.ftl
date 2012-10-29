@@ -163,7 +163,6 @@
             Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
             Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
             Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
-            Label.invalidPasswordLabel = "${invalidPasswordLabel}";
             Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
         </script>
     </body>

@@ -25,33 +25,31 @@
  * @static
  */
 var Register = {
-    _validateData: [{
-        "id": "userName",
-        "msg": Label.userNameErrorLabel,
-        "type": 20
-    }, {
-        "id": "userEmail",
-        "msg": Label.invalidEmailLabel,
-        "type": "email"
-    }, {
-        "id": "userPassword",
-        "msg": Label.invalidPasswordLabel,
-        "type": "password"
-    }, {
-        "id": "confirmPassword",
-        "msg": Label.confirmPwdErrorLabel,
-        "type": "confirmPassword|userPassword"
-    }, {
-        "id": "securityCode",
-        "msg": Label.captchaErrorLabel,
-        "type": 4
-    }],
-
     /**
      * @description 注册
      */
     register: function () {
-        if (Validate.goValidate(this._validateData)) {
+        if (Validate.goValidate([{
+            "id": "userName",
+            "msg": Label.userNameErrorLabel,
+            "type": 20
+        }, {
+            "id": "userEmail",
+            "msg": Label.invalidEmailLabel,
+            "type": "email"
+        }, {
+            "id": "userPassword",
+            "msg": Label.invalidPasswordLabel,
+            "type": "password"
+        }, {
+            "id": "confirmPassword",
+            "msg": Label.confirmPwdErrorLabel,
+            "type": "confirmPassword|userPassword"
+        }, {
+            "id": "securityCode",
+            "msg": Label.captchaErrorLabel,
+            "type": 4
+        }])) {
             var requestJSONObject = {
                 userName: $("#userName").val().replace(/(^\s*)|(\s*$)/g,""),
                 userEmail: $("#userEmail").val().replace(/(^\s*)|(\s*$)/g,""),
