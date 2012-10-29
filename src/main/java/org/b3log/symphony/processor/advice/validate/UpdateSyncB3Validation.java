@@ -60,25 +60,19 @@ public final class UpdateSyncB3Validation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        try {
-            final String b3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
-            if (!Strings.isEmptyOrNull(b3Key) && b3Key.length() > MAX_USER_B3_KEY_LENGTH) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserB3KeyLabel")));
-            }
+        final String b3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
+        if (!Strings.isEmptyOrNull(b3Key) && b3Key.length() > MAX_USER_B3_KEY_LENGTH) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserB3KeyLabel")));
+        }
 
-            final String clientAddArticleURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL);
-            if (!Strings.isEmptyOrNull(clientAddArticleURL) && clientAddArticleURL.length() > MAX_USER_B3_CLIENT_URL) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
-                        langPropsService.get("invalidUserB3ClientURLLabel")));
-            }
+        final String clientAddArticleURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL);
+        if (!Strings.isEmptyOrNull(clientAddArticleURL) && clientAddArticleURL.length() > MAX_USER_B3_CLIENT_URL) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserB3ClientURLLabel")));
+        }
 
-            final String clientAddCommentURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
-            if (!Strings.isEmptyOrNull(clientAddCommentURL) && clientAddCommentURL.length() > MAX_USER_B3_CLIENT_URL) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
-                        langPropsService.get("invalidUserB3ClientURLLabel")));
-            }
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
+        final String clientAddCommentURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
+        if (!Strings.isEmptyOrNull(clientAddCommentURL) && clientAddCommentURL.length() > MAX_USER_B3_CLIENT_URL) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserB3ClientURLLabel")));
         }
     }
 }

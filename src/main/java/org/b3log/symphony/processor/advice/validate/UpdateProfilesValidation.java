@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Validates for user profiles update.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 25, 2012 
+ * @version 1.0.0.1, Oct 29, 2012 
  */
 public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
 
@@ -67,29 +67,25 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        try {
-            final String userName = requestJSONObject.optString(User.USER_NAME);
-            if (UserRegisterValidation.invalidUserName(userName)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserNameLabel")));
-            }
+        final String userName = requestJSONObject.optString(User.USER_NAME);
+        if (UserRegisterValidation.invalidUserName(userName)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserNameLabel")));
+        }
 
-            final String userURL = requestJSONObject.optString(User.USER_URL);
-            if (!Strings.isEmptyOrNull(userURL) && invalidUserURL(userURL)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserURLLabel")));
-            }
+        final String userURL = requestJSONObject.optString(User.USER_URL);
+        if (!Strings.isEmptyOrNull(userURL) && invalidUserURL(userURL)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserURLLabel")));
+        }
 
 
-            final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
-            if (!Strings.isEmptyOrNull(userQQ) && (!Strings.isNumeric(userQQ) || userQQ.length() > MAX_USER_QQ_LENGTH)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserURLLabel")));
-            }
+        final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
+        if (!Strings.isEmptyOrNull(userQQ) && (!Strings.isNumeric(userQQ) || userQQ.length() > MAX_USER_QQ_LENGTH)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserURLLabel")));
+        }
 
-            final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
-            if (!Strings.isEmptyOrNull(userIntro) && userIntro.length() > MAX_USER_INTRO_LENGTH) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserIntroLabel")));
-            }
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
+        final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
+        if (!Strings.isEmptyOrNull(userIntro) && userIntro.length() > MAX_USER_INTRO_LENGTH) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserIntroLabel")));
         }
     }
 

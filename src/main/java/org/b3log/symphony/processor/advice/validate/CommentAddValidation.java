@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -33,7 +34,7 @@ import org.json.JSONObject;
  * Validates for comment adding locally.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 26, 2012 
+ * @version 1.0.0.1, Oct 29, 2012 
  */
 public final class CommentAddValidation extends BeforeRequestProcessAdvice {
 
@@ -62,18 +63,18 @@ public final class CommentAddValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        try {
-            final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
-            if (Strings.isEmptyOrNull(commentContent) || commentContent.length() > MAX_COMMENT_CONTENT_LENGTH) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentErrorLabel")));
-            }
+        final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
+        if (Strings.isEmptyOrNull(commentContent) || commentContent.length() > MAX_COMMENT_CONTENT_LENGTH) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentErrorLabel")));
+        }
 
+        try {
             final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
             if (Strings.isEmptyOrNull(articleId) || null == articleQueryService.getArticleById(articleId)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
             }
-        } catch (final Exception e) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
+        } catch (final ServiceException e) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Unknown Error"));
         }
     }
 }
