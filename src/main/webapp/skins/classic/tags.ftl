@@ -19,7 +19,7 @@
                         </h2> 
                         <ul>
                             <#list trendTags as tag>
-                            <li>
+                            <li <#if tag_index%2==1>class="even"</#if>>
                                 <div class="fn-clear">
                                     <div class="fn-left">
                                         <#if tag.tagIconPath!="">
@@ -43,7 +43,7 @@
                         </h2>
                         <ul>
                             <#list coldTags as tag>
-                            <li>
+                            <li <#if tag_index%2==1>class="even"</#if>>
                                 <div class="fn-clear">
                                     <div class="fn-left">
                                         <#if tag.tagIconPath!="">

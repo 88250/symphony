@@ -134,6 +134,7 @@
         <#include "footer.ftl">
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
+            Label.articleOId = "${article.oId}";
         </script>
         <script type="text/javascript" src="/js/article.js"></script>
     </body>

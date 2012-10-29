@@ -107,4 +107,47 @@
 .tags-trend {
     width: 330px;
 }
+
+.tags-cold > ul > li {
+    border-bottom: 1px solid #CFE0D0;
+    border-top: 1px solid #F5FCF6;
+}
+
+.tags-trend > ul > li {
+    border-bottom: 1px solid #ffcece;
+    border-top: 1px solid #F5FCF6;
+}
+
+.tags-cold > ul > li.even {
+    background: #F1FEF4;
+    background: -moz-linear-gradient(#F1FEF4, #E5F8E6);
+    background: -webkit-linear-gradient(#F1FEF4, #E5F8E6);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#F1FEF4', endColorstr='#E5F8E6')";
+}
+
+.tags-trend > ul > li.even {
+    background: #ffe8ff;
+    background: -moz-linear-gradient(#fef3f3, #fce7e7);
+    background: -webkit-linear-gradient(#ffe8ff, #ffe8e8);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe8ff', endColorstr='#ffe8e8')";
+}
+
+.tags-cold .ft-small {
+    color: #a2be9e;
+} 
+
+.tags-trend .ft-small {
+    color: #e4b6b6;
+} 
+
+.tags-cold div.fn-left > a,
+.tags-cold h2 {
+    color: #85A980;
+}
+
+.tags-trend div.fn-left > a,
+.tags-trend h2 {
+    color: #cf7e7e;
+}
+
 /* end tags.html */

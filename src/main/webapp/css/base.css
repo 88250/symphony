@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.8, Oct 24, 2012
+* @version 1.0.0.9, Oct 29, 2012
 */
 /* start reset */
 html {
@@ -210,8 +210,8 @@ button {
     text-shadow: 1px 1px 0 #FFFFFF;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     background: #8add6d;
-    background:   -moz-linear-gradient(#FFFFFF, #E1E1E1);
-    background:-webkit-linear-gradient(#FFFFFF, #E1E1E1);
+    background: -moz-linear-gradient(#FFFFFF, #E1E1E1);
+    background: -webkit-linear-gradient(#FFFFFF, #E1E1E1);
     -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E1E1E1')";
     border: 1px solid #FFF;
     border-bottom-color: #E1E1E1;
@@ -325,10 +325,6 @@ button.red:active {
     background-color: #D4F6FA;
     border: 1px solid #78909B;
     color: #1D2B3D;
-}
-
-.input-error {
-    border-color: #E2A0A0!important;
 }
 /* end tip */
 
@@ -550,7 +546,7 @@ button.red:active {
     background: url("../images/icons.png") no-repeat scroll 3px 6px #FFFFFF;
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
-    left: 170px;
+    left: 190px;
     padding: 3px 5px 3px 20px;
     position: absolute;
     top: 16px;
@@ -564,16 +560,15 @@ button.red:active {
 .nav input.search:focus {
     border-color: #51A7E8;
     box-shadow: 0 0 3px rgba(81, 167, 232, 0.5), 0 1px 1px rgba(0, 0, 0, 0.2) inset;
-    width: 500px;
-    left: 210px;
+    width: 510px;
 }
 
 .nav .tags {
-    left: 210px;
+    left: 235px;
     position: absolute;
     top: 3px;
     white-space: normal;
-    width: 550px;
+    width: 510px;
     word-wrap: break-word;
 }
 
@@ -605,7 +600,7 @@ button.red:active {
 }
 
 .list li:hover {
-    background-color: #EEE;
+    background-color: #F7F7F7;
 }
 /* end list */
 

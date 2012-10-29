@@ -24,7 +24,7 @@
             </div>
             <div class="commenters">
                 <#list article.articleParticipants as comment>
-                <a href="/member/${comment.articleParticipantName}" title="${comment.articleParticipantName}" class="ft-noline">
+                <a href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}" class="ft-noline">
                     <img class="avatar-small" src="${comment.articleParticipantThumbnailURL}" />
                 </a>
                 </#list>

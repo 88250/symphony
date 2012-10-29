@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Oct 7, 2012
+ * @version 1.0.0.2, Oct 29, 2012
  */
 
 /**
@@ -61,7 +61,11 @@ var Comment = {
      * @description 初识化发文页面
      */
     init: function () {
-        $("#commentContent").val("");
+        $("#commentContent").val("").keyup(function (event) {
+            if (event.keyCode === 13 && event.ctrlKey) {
+                Comment.add(Label.articleOId);
+            }
+        });
     }
 };
 
