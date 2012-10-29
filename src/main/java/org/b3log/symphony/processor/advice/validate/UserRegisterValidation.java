@@ -57,6 +57,10 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
      * Min password length.
      */
     private static final int MIN_PWD_LENGTH = 1;
+    /**
+     * Captcha length.
+     */
+    private static final int CAPTCHA_LENGTH = 4;
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
@@ -134,18 +138,22 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
      */
     public static boolean invalidCaptcha(final String captcha, final HttpServletRequest request) {
         final HttpSession session = request.getSession(false);
-        if (null != session) {
-            final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-            if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
-                return true;
-            }
-
-            session.removeAttribute(CaptchaProcessor.CAPTCHA);
-
-            return false;
+        if (null == session) {
+            return true;
         }
 
-        return true;
+        if (Strings.isEmptyOrNull(captcha) || captcha.length() != CAPTCHA_LENGTH) {
+            return true;
+        }
+
+        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+        if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
+            return true;
+        }
+
+        session.removeAttribute(CaptchaProcessor.CAPTCHA);
+
+        return false;
     }
 
     /**
