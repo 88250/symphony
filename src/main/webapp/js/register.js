@@ -31,11 +31,11 @@ var Register = {
         "type": 20
     }, {
         "id": "userEmail",
-        "msg": Label.emailErrorLabel,
+        "msg": Label.invalidEmailLabel,
         "type": "email"
     }, {
         "id": "userPassword",
-        "msg": Label.passwordErrorLabel,
+        "msg": Label.invalidPasswordLabel,
         "type": "password"
     }, {
         "id": "confirmPassword",

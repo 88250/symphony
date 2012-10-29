@@ -32,7 +32,7 @@ var Util = {
     }, {
         "id": "loginPassword",
         "type": "password",
-        "msg": Label.passwordErrorLabel
+        "msg": Label.invalidPasswordLabel
     }],
     /**
      * @description 回到顶部

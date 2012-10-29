@@ -32,6 +32,6 @@
 <script type="text/javascript" src="/js/common.js"></script>
 <script>
     Util.init();
-    Label.passwordErrorLabel = "${passwordErrorLabel}";
+    Label.invalidPasswordLabel = "${invalidPasswordLabel}";
     Label.loginNameErrorLabel = "${loginNameErrorLabel}";
 </script>

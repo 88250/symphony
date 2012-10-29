@@ -82,15 +82,15 @@ var Settings = {
         if (Validate.goValidate([{
             "id": "userURL",
             "type": "url",
-            "msg": "ss"
+            "msg": Label.invalidUserURLLabel
         }, {
             "id": "userQQ",
             "type": "12",
-            "msg": "ss"
+            "msg": Label.invalidUserQQLabel
         }, {
             "id": "userIntro",
             "type": "255",
-            "msg": "ss"
+            "msg": Label.invalidUserIntroLabel
         }])) {
             var data = {};
             data.userURL = URLVal;
@@ -113,15 +113,15 @@ var Settings = {
         if (Validate.goValidate([{
             "id": "soloKey",
             "type": "20",
-            "msg": "ss"
+            "msg": Label.invalidUserB3KeyLabel
         }, {
             "id": "soloPostURL",
             "type": "150",
-            "msg": "ss"
+            "msg": Label.invalidUserB3ClientURLLabel
         }, {
             "id": "soloCmtURL",
             "type": "150",
-            "msg": "ss"
+            "msg": Label.invalidUserB3ClientURLLabel
         }])) {
             var data = {};
             data.userB3Key = keyVal;
@@ -142,15 +142,15 @@ var Settings = {
         if (Validate.goValidate([{
             "id": "pwdOld",
             "type": "password",
-            "msg": "ss"
+            "msg": Label.invalidPasswordLabel
         }, {
             "id": "pwdNew",
             "type": "password",
-            "msg": "ss"
+            "msg": Label.invalidPasswordLabel
         }, {
             "id": "pwdRepeat",
             "type": "confirmPassword|pwdNew",
-            "msg": "ss"
+            "msg": Label.confirmPwdErrorLabel
         }])) {
             if (newPwdVal !== $("#pwdRepeat").val()) {
                 return false;
