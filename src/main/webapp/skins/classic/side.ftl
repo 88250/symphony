@@ -8,7 +8,7 @@
     <ul>
         <#list sideRandomArticles as randomArticle>
         <li>
-            <a href="">${randomArticle.articleTitle}</a>
+            <a href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
             <div class="ft-small">
                 <span>
                     <a href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>

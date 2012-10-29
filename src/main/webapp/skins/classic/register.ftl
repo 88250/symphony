@@ -20,8 +20,8 @@
                                     <label for="userName">${userNameLabel}</label>
                                 </td>
                                 <td>
-                                    <input type="text" placeholder="Username" id="userName" />
-                                    <span style="left:280px;top:38px;"></span>
+                                    <input type="text" id="userName" />
+                                    <span style="left:240px;top:10px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -30,7 +30,7 @@
                                 </td>
                                 <td>
                                     <input type="text" id="userEmail" />
-                                    <span style="left:280px;top:86px;"></span>
+                                    <span style="left:240px;top:58px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -39,7 +39,7 @@
                                 </td>
                                 <td>
                                     <input id="userPassword"  type="password" />
-                                    <span style="left:280px;top:134px;"></span>
+                                    <span style="left:240px;top:106px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -48,7 +48,7 @@
                                 </td>
                                 <td>
                                     <input id="confirmPassword" type="password" />
-                                    <span style="left:280px;top:182px;"></span>
+                                    <span style="left:240px;top:154px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -57,7 +57,7 @@
                                 </td>
                                 <td>
                                     <input type="text" id="securityCode" />
-                                    <span style="left:280px;top:230px;"></span>
+                                    <span style="top:202px;left:240px;"></span>
                                 </td>
                             </tr>
                             <tr>

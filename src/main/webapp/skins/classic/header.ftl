@@ -33,10 +33,11 @@
                         <td width="40">
                             <label for="nameOrEmail">${accountLabel}</label>
                         </td>
-                        <td width="165">
-                            <input id="nameOrEmail" type="text" placeholder="Username/Email"/>
-                            <span style="left:286px;top:20px;"></span>
+                        <td>
+                            <input id="nameOrEmail" type="text"/>
+                            <span style="left:220px;top:20px;"></span>
                         </td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr>
                         <td>
@@ -44,16 +45,14 @@
                         </td>
                         <td>
                             <input type="password" id="loginPassword" />
-                            <span style="left:286px;top:68px;"></span>
+                            <span style="left:220px;top:68px;"></span>
                         </td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr>
-                        <td>
+                        <td colspan="3" align="right">
                             <span id="loginTip"></span>
-                        </td>
-                        <td>
                             <button onclick="Util.login()">${loginLabel}</button>
-                            <a href="/">${forgetPasswordLabel}</a>
                         </td>
                     </tr>
                 </table>

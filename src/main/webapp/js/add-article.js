@@ -43,7 +43,7 @@ var AddArticle = {
      * @description 发布文章
      */
     add: function () {
-        if (true) {
+        if (/*Validate.goValidate(this._validateData)*/true) {
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g,""),
                 articleContent: $("#articleContent").val(),
@@ -60,7 +60,11 @@ var AddArticle = {
                     if (result.sc) {
                         window.location = "/member/" + Label.userName;
                     } else {
-                        $("#tip").addClass("tip-error").text(result.msg);
+                        $("#addArticleTip").addClass("tip-error").text(result.msg).css({
+                            "border-left": "1px solid #E2A0A0",
+                            "top": "-35px",
+                            "width": "985px"
+                        });
                     }
                 }
             });
@@ -68,8 +72,8 @@ var AddArticle = {
     },
     
     /**
-     * @description 初识化发文页面
-     */
+ * @description 初识化发文页面
+ */
     init: function () {
     }
 };

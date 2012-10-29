@@ -326,6 +326,17 @@ button.red:active {
     border: 1px solid #78909B;
     color: #1D2B3D;
 }
+
+#registerTip,
+#loginTip,
+#addArticleTip {
+    left: 0;
+    text-align: left;
+    top: 240px;
+    white-space: normal;
+    width: 150px;
+    word-wrap: break-word;
+}
 /* end tip */
 
 /* start avatar */
@@ -532,7 +543,7 @@ button.red:active {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
     position: absolute;
-    right: -8px;
+    right: 0;
     top: 57px;
     z-index: 1;
 }

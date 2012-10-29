@@ -17,7 +17,7 @@
  * @fileoverview register.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Sep 28, 2012
+ * @version 1.0.0.6, Sep 29, 2012
  */
 
 /**
@@ -68,7 +68,7 @@ var Register = {
                     if (result.sc) {
                         window.location = decodeURIComponent(location.search.split("=")[1]);
                     } else {
-                        $("#registerTip").text(result.msg);
+                        $("#registerTip").text(result.msg).addClass("tip-error").css("border-left", "1px solid #E2A0A0");
                     }
                 },
                 complete: function (jqXHR, textStatus){

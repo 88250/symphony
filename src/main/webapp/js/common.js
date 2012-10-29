@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8 Oct 24, 2012
+ * @version 1.0.0.9 Oct 29, 2012
  */
 
 /**
@@ -75,8 +75,8 @@ var Util = {
     },
    
     /**
-    * @description 初识化前台页面
-    */
+     * @description 初识化前台页面
+     */
     init: function () {
         // 导航
         this._initNav();
@@ -97,8 +97,8 @@ var Util = {
     },
    
     /**
-    * @description 设置导航状态
-    */
+     * @description 设置导航状态
+     */
     _initNav: function () {
         var pathname = location.pathname;
         $(".nav .user-nav > a").each(function () {
@@ -132,7 +132,12 @@ var Util = {
                     if (result.sc) {
                         window.location.reload();
                     } else {
-                        $("#loginTip").text(result.msg);
+                        $("#loginTip").text(result.msg).addClass("tip-error").css({
+                            "border-left": "1px solid #E2A0A0",
+                            "left": "10px",
+                            "top": "107px",
+                            "width": "125px"
+                        });
                     }
                 },
                 complete: function (jqXHR, textStatus){
@@ -143,15 +148,15 @@ var Util = {
 };
 
 /**
- * @description 数据验证
- * @static
- */
+* @description 数据验证
+* @static
+*/
 var Validate = {
     /**
-     * @description 提交时对数据进行统一验证。
-     * @param {array} data 验证数据
-     * @returns 验证通过返回 true，否则为 false。 
-     */
+ * @description 提交时对数据进行统一验证。
+ * @param {array} data 验证数据
+ * @returns 验证通过返回 true，否则为 false。 
+ */
     goValidate: function (data) {
         for (var j = 0; j < data.length; j++) {
             var $it = $("#" + data[j].id);
@@ -177,11 +182,11 @@ var Validate = {
     },
     
     /**
-     * @description 数据验证。
-     * @param {string} type 验证类型
-     * @param {string} val 待验证数据 
-     * @returns 验证通过返回 true，否则为 false。 
-     */
+ * @description 数据验证。
+ * @param {string} type 验证类型
+ * @param {string} val 待验证数据 
+ * @returns 验证通过返回 true，否则为 false。 
+ */
     validate: function (type, val) {
         var isValidate = true;
         switch (type) {
@@ -230,21 +235,21 @@ var Validate = {
 };
 
 /**
- * @description 全局变量
- */
+* @description 全局变量
+*/
 var Label = {};
 
 if (!Cookie) {
     /**
-     * @description Cookie 相关操作
-     * @static
-     */
+ * @description Cookie 相关操作
+ * @static
+ */
     var Cookie = {
         /**
-         * @description 读取 cookie
-         * @param {String} name cookie key
-         * @returns {String} 对应 key 的值，如 key 不存在则返回 ""
-         */
+     * @description 读取 cookie
+     * @param {String} name cookie key
+     * @returns {String} 对应 key 的值，如 key 不存在则返回 ""
+     */
         readCookie: function (name) {
             var nameEQ = name + "=";
             var ca = document.cookie.split(';');
@@ -257,19 +262,19 @@ if (!Cookie) {
         },
         
         /**
-         * @description 清除 Cookie
-         * @param {String} name 清除 key 为 name 的该条 Cookie
-         */
+     * @description 清除 Cookie
+     * @param {String} name 清除 key 为 name 的该条 Cookie
+     */
         eraseCookie: function (name) {
             this.createCookie(name,"",-1);
         },
 
         /**
-         * @description 创建 Cookie
-         * @param {String} name 每条 Cookie 唯一的 key
-         * @param {String} value 每条 Cookie 对应的值
-         * @param {Int} days Cookie 保存时间
-         */
+     * @description 创建 Cookie
+     * @param {String} name 每条 Cookie 唯一的 key
+     * @param {String} value 每条 Cookie 对应的值
+     * @param {Int} days Cookie 保存时间
+     */
         createCookie: function (name, value, days) {
             var expires = "";
             if (days) {

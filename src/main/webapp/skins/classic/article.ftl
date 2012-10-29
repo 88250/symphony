@@ -99,7 +99,7 @@
                         <ul>
                             <#list sideRelevantArticles as relevantArticle>
                             <li>
-                                <a href="">${relevantArticle.articleTitle}</a>
+                                <a href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
                                         <a href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
@@ -117,7 +117,7 @@
                         <ul>
                             <#list sideRandomArticles as randomArticle>
                             <li>
-                                <a href="">${randomArticle.articleTitle}</a>
+                                <a href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
                                         <a href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>

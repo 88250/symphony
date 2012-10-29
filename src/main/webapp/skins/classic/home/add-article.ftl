@@ -12,7 +12,6 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div id="tip"></div>
                 <div class="form">
                     <input type="text" id="articleTitle" />
                     <span style="right:2px;top:10px;"></span>
@@ -22,17 +21,15 @@
                     <span style="right:2px;top:386px;"></span>
                     <div class="fn-clear">
                         <div class="fn-left">
-                            <div>
-                                <input type="checkbox" id="syncWithSymphonyClient"/>${syncWithSymphonyClientLabel}
-                            </div>
-                            <div>
-                                <a href="">guide</a>
-                            </div>
+                            <input type="checkbox" id="syncWithSymphonyClient"/> 
+                            ${syncWithSymphonyClientLabel}
+                            <a href="">guide</a>
                         </div>
                         <div class="fn-right">
                             <button class="red" onclick="AddArticle.add()">Post</button>
                         </div>
                     </div>
+                    <div id="addArticleTip"></div>
                 </div>
             </div>
         </div>
