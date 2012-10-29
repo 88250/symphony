@@ -329,7 +329,10 @@ button.red:active {
 
 #registerTip,
 #loginTip,
-#addArticleTip {
+#addArticleTip,
+#profilesTip,
+#syncb3Tip,
+#passwordTip {
     left: 0;
     text-align: left;
     top: 240px;

@@ -14,32 +14,21 @@
             <div class="wrapper form">
                 <div class="module">
                     <div class="module-header fn-clear">
-                        <h2 class="fn-left">${profilesLabel}</h2>
+                        <h2 class="fn-left">
+                            <a href="/member/${user.userName}">${user.userName}</a>
+                            ${profilesLabel}
+                        </h2>&nbsp;
+                        <span style="line-height:28px">(${user.userEmail})</span>
                     </div>
-                    <div class="module-panel">
+                    <div class="module-panel form">
                         <table>
                             <tr>
                                 <td width="100">
-                                    ${userNameLabel}
-                                </td>
-                                <td>
-                                    <input id="userName" type="text" value="${user.userName}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
                                     URL
                                 </td>
                                 <td>
                                     <input id="userURL" type="text" value="${user.userURL}"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    ${emailLabel}
-                                </td>
-                                <td>
-                                    <input id="userEmail" type="text" value="${user.userEmail}" readonly="readonly" /> 
+                                    <span style="right:24px;top:33px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -48,6 +37,7 @@
                                 </td>
                                 <td>
                                     <input id="userQQ" type="text" value="${user.userQQ}" />
+                                    <span style="right:24px;top:85px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -56,6 +46,7 @@
                                 </td>
                                 <td>
                                     <textarea id="userIntro">${user.userIntro}</textarea>
+                                    <span style="right:24px;top:137px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -68,9 +59,8 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <div class="fn-clear">
-                                        <button class="green fn-right" onclick="Settings.update('profiles')">${saveLabel}</button>
-                                    </div>
+                                    <span id="profilesTip" style="left:20px;top:268px;"></span>
+                                    <button class="green fn-right" onclick="Settings.update('profiles')">${saveLabel}</button>
                                 </td>
                             </tr>
                         </table>
@@ -81,14 +71,15 @@
                     <div class="module-header fn-clear">
                         <h2 class="fn-left">${syncLabel}</h2>
                     </div>
-                    <div class="module-panel">
+                    <div class="module-panel form">
                         <table>
                             <tr>
                                 <td width="100">
                                     B3log Key
                                 </td>
                                 <td>
-                                    <input id="soloKey" type="text" value="${user.userB3Key}" />
+                                    <input id="soloKey" type="text" value="${user.userB3Key}" /> 
+                                    <span style="right:24px;top:33px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -97,6 +88,7 @@
                                 </td>
                                 <td>
                                     <input id="soloPostURL" type="text" value="${user.userB3ClientAddArticleURL}" />
+                                    <span style="right:24px;top:85px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -105,10 +97,12 @@
                                 </td>
                                 <td>
                                     <input id="soloCmtURL" type="text" value="${user.userB3ClientAddCommentURL}" /> 
+                                    <span style="right:24px;top:137px;"></span>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
+                                    <span id="syncb3Tip" style="left:20px;top:180px;"></span>
                                     <button class="green" onclick="Settings.update('sync/b3')">${saveLabel}</button>
                                 </td>
                             </tr>
@@ -120,7 +114,7 @@
                     <div class="module-header fn-clear">
                         <h2 class="fn-left">${passwordLabel}</h2>
                     </div>
-                    <div class="module-panel">
+                    <div class="module-panel form">
                         <table>
                             <tr>
                                 <td width="100">
@@ -128,6 +122,7 @@
                                 </td>
                                 <td>
                                     <input id="pwdOld" type="password" />
+                                    <span style="right:24px;top:33px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -136,6 +131,7 @@
                                 </td>
                                 <td>
                                     <input id="pwdNew" type="password" />
+                                    <span style="right:24px;top:85px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -144,10 +140,12 @@
                                 </td>
                                 <td>
                                     <input id="pwdRepeat" type="password" /> 
+                                    <span style="right:24px;top:137px;"></span>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
+                                    <span id="passwordTip" style="left:20px;top:180px;"></span>
                                     <button class="green" onclick="Settings.update('password')">${saveLabel}</button>
                                 </td>
                             </tr>
@@ -158,5 +156,8 @@
         </div>
         <#include "../footer.ftl">
         <script type="text/javascript" src="/js/settings.js"></script>
+        <script>
+            Label.updateSuccLabel = "${updateSuccLabel}";
+        </script>
     </body>
 </html>

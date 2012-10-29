@@ -78,6 +78,11 @@
         <script type="text/javascript" src="/js/register.js"></script>
         <script>
             Register.init();
+            Label.userNameErrorLabel = "${userNameErrorLabel}";
+            Label.emailErrorLabel = "${emailErrorLabel}";
+            Label.passwordErrorLabel = "${passwordErrorLabel}";
+            Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
+            Label.captchaErrorLabel = "${captchaErrorLabel}";
         </script>
     </body>
 </html>

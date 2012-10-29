@@ -17,31 +17,13 @@
  * @fileoverview settings.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Sep 28, 2012
+ * @version 1.0.0.2, Oct 29, 2012
  */
 /**
  * @description Settings function
  * @static
  */
 var Settings = {
-    /**
-     * @description Setting 页面模块收起展开。
-     */
-    toggle: function (it) {
-        var $it = $(it);
-        var $panel = $it.parents(".module").find(".module-panel");
-      
-        if (it.className === "slideUp") {
-            $panel.slideDown();
-            it.className = "slideDown";
-            $it.attr("title", "收拢");
-        } else {
-            $panel.slideUp();
-            it.className = "slideUp";
-            $it.attr("title", "展开");    
-        }
-    },
-    
     /**
      * @description 更新 settings 页面数据。
      */
@@ -70,7 +52,21 @@ var Settings = {
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
+            beforeSend: function () {
+                $("#" + type.replace(/\//g, "") + "Tip").removeClass("tip-succ").removeClass("tip-error").text("");
+            },
             success: function(result, textStatus){
+                if (result.sc) {
+                    $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-succ").text(Label.updateSuccLabel).css({
+                        "border-left": "1px solid #78909B",
+                        "width": "860px"
+                    });
+                } else {
+                    $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-error").text(result.msg).css({
+                        "border-left": "1px solid #E2A0A0",
+                        "width": "855px"
+                    });
+                }
             }
         });
     },
@@ -80,21 +76,28 @@ var Settings = {
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validateProfiles: function () {
-        var nameVal = $("#userName").val().replace(/(^\s*)|(\s*$)/g,""),
-        URLVal = $("#userURL").val().replace(/(^\s*)|(\s*$)/g,""),
+        var URLVal = $("#userURL").val().replace(/(^\s*)|(\s*$)/g,""),
         QQVal = $("#userQQ").val().replace(/(^\s*)|(\s*$)/g,""),
         introVal = $("#userIntro").val().replace(/(^\s*)|(\s*$)/g,"");
-        if (nameVal.length === 0 || nameVal.length > 20) {
-            $("#userName").focus();
-        } else {
+        if (Validate.goValidate([{
+            "id": "userURL",
+            "type": "url",
+            "msg": "ss"
+        }, {
+            "id": "userQQ",
+            "type": "12",
+            "msg": "ss"
+        }, {
+            "id": "userIntro",
+            "type": "255",
+            "msg": "ss"
+        }])) {
             var data = {};
-            data.userName = nameVal;
             data.userURL = URLVal;
             data.userQQ = QQVal;
             data.userIntro = introVal;
             return data;
-        }
-        
+        } 
         return false;
     },
     
@@ -106,34 +109,57 @@ var Settings = {
         var keyVal = $("#soloKey").val().replace(/(^\s*)|(\s*$)/g,""),
         postURLVal = $("#soloPostURL").val().replace(/(^\s*)|(\s*$)/g,""),
         cmtURLVal = $("#soloCmtURL").val().replace(/(^\s*)|(\s*$)/g,"");
-        if (false) {
-            
-        } else {
+        
+        if (Validate.goValidate([{
+            "id": "soloKey",
+            "type": "20",
+            "msg": "ss"
+        }, {
+            "id": "soloPostURL",
+            "type": "150",
+            "msg": "ss"
+        }, {
+            "id": "soloCmtURL",
+            "type": "150",
+            "msg": "ss"
+        }])) {
             var data = {};
             data.userB3Key = keyVal;
             data.userB3ClientAddArticleURL = postURLVal;
             data.userB3ClientAddCommentURL = cmtURLVal;
             return data;
         }
-        
         return false;
     },
     
     /**
-     * @description settings 页面密码校验
-     * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
-     */
+ * @description settings 页面密码校验
+ * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
+ */
     _validatePassword: function () {
-        var pwdVal = $("#pwdOld").val().replace(/(^\s*)|(\s*$)/g,""),
-        newPwdVal = $("#pwdNew").val().replace(/(^\s*)|(\s*$)/g,"");
-        if (false) {
-        } else {
+        var pwdVal = $("#pwdOld").val(),
+        newPwdVal = $("#pwdNew").val();
+        if (Validate.goValidate([{
+            "id": "pwdOld",
+            "type": "password",
+            "msg": "ss"
+        }, {
+            "id": "pwdNew",
+            "type": "password",
+            "msg": "ss"
+        }, {
+            "id": "pwdRepeat",
+            "type": "confirmPassword|pwdNew",
+            "msg": "ss"
+        }])) {
+            if (newPwdVal !== $("#pwdRepeat").val()) {
+                return false;
+            }
             var data = {};
             data.userPassword = pwdVal;
             data.userNewPassword = newPwdVal;
             return data;
         }
-        
         return false;
     }
 };

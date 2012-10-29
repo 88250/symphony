@@ -27,23 +27,23 @@
 var Register = {
     _validateData: [{
         "id": "userName",
-        "msg": "用户名长度为1~20",
+        "msg": Label.userNameErrorLabel,
         "type": 20
     }, {
         "id": "userEmail",
-        "msg": "邮件格式不正确",
+        "msg": Label.emailErrorLabel,
         "type": "email"
     }, {
         "id": "userPassword",
-        "msg": "密码长度为1~16",
+        "msg": Label.passwordErrorLabel,
         "type": "password"
     }, {
         "id": "confirmPassword",
-        "msg": "密码输入不一致",
-        "type": "confirmPassword"
+        "msg": Label.confirmPwdErrorLabel,
+        "type": "confirmPassword|userPassword"
     }, {
         "id": "securityCode",
-        "msg": "验证码不能为空",
+        "msg": Label.captchaErrorLabel,
         "type": 4
     }],
 

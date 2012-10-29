@@ -17,7 +17,7 @@
  * @fileoverview add-article.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Oct 7, 2012
+ * @version 1.0.0.4, Oct 29, 2012
  */
 
 /**
@@ -43,7 +43,7 @@ var AddArticle = {
      * @description 发布文章
      */
     add: function () {
-        if (/*Validate.goValidate(this._validateData)*/true) {
+        if (Validate.goValidate(this._validateData)) {
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g,""),
                 articleContent: $("#articleContent").val(),

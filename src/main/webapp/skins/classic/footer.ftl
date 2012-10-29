@@ -32,4 +32,6 @@
 <script type="text/javascript" src="/js/common.js"></script>
 <script>
     Util.init();
+    Label.passwordErrorLabel = "${passwordErrorLabel}";
+    Label.loginNameErrorLabel = "${loginNameErrorLabel}";
 </script>
