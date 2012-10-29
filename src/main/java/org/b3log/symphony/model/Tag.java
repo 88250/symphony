@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines tag model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 15, 2012
+ * @version 1.0.0.3, Oct 29, 2012
  * @since 0.2.0
  */
 public final class Tag {
@@ -69,6 +69,10 @@ public final class Tag {
      * Key of tag participant thumbnail URL.
      */
     public static final String TAG_T_PARTICIPANT_THUMBNAIL_URL = "tagParticipantThumbnailURL";
+    /**
+     * Key of tag participant URL.
+     */
+    public static final String TAG_T_PPARTICIPANT_URL = "tagParticipantURL";
     /**
      * Key of tag icon path.
      */

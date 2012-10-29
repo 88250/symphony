@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 11, 2012
+ * @version 1.0.0.3, Oct 29, 2012
  * @since 0.2.0
  */
 public final class TagQueryService {
@@ -203,11 +203,11 @@ public final class TagQueryService {
      * [
      *     {
      *         "tagParticipantName": "",
-     *         "tagParticipantThumbnailURL": ""
+     *         "tagParticipantThumbnailURL": "",
+     *         "tagParticipantURL": ""
      *     }, ....
      * ]
-     * </pre>, returns an empty list if not found
-     * returns an empty list if not found
+     * </pre>, returns an empty list if not found returns an empty list if not found
      * @throws ServiceException service exception 
      */
     public List<JSONObject> getParticipants(final String tagId, final int fetchSize) throws ServiceException {
@@ -243,6 +243,7 @@ public final class TagQueryService {
                                             + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
+                participant.put(Tag.TAG_T_PPARTICIPANT_URL, user.optString(User.USER_URL));
 
                 ret.add(participant);
             }
