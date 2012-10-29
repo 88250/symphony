@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 25, 2012
+ * @version 1.0.0.6, Oct 29, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -120,7 +120,7 @@ public final class CommentQueryService {
      *     {
      *         "articleParticipantName": "",
      *         "articleParticipantThumbnailURL": "",
-     *         "articleParticipantURL": ""
+     *         "commentId": ""
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found
@@ -129,16 +129,16 @@ public final class CommentQueryService {
     public List<JSONObject> getArticleLatestParticipants(final String articleId, final int fetchSize) throws ServiceException {
         final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
                 .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId))
-                .addProjection(Comment.COMMENT_AUTHOR_EMAIL, String.class)
+                .addProjection(Comment.COMMENT_AUTHOR_EMAIL, String.class).addProjection(Keys.OBJECT_ID, String.class)
                 .setPageCount(1).setCurrentPageNum(1).setPageSize(fetchSize);
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
         try {
             final JSONObject result = commentRepository.get(query);
-            final List<JSONObject> commenterEmails = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> comments = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
-            for (final JSONObject commenterEmail : commenterEmails) {
-                final String email = commenterEmail.optString(Comment.COMMENT_AUTHOR_EMAIL);
+            for (final JSONObject comment : comments) {
+                final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 final JSONObject commenter = userRepository.getByEmail(email);
 
                 String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
@@ -153,6 +153,7 @@ public final class CommentQueryService {
                 participant.put(Article.ARTICLE_T_PARTICIPANT_NAME, commenter.optString(User.USER_NAME));
                 participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
                 participant.put(Article.ARTICLE_T_PARTICIPANT_URL, commenter.optString(User.USER_URL));
+                participant.put(Comment.COMMENT_T_ID, comment.optString(Keys.OBJECT_ID));
 
                 ret.add(participant);
             }
