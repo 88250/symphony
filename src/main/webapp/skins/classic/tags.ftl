@@ -43,7 +43,7 @@
                         </h2>
                         <ul>
                             <#list coldTags as tag>
-                            <li>
+                            <li <#if tag_index==0>class="first"</#if><#if !tag_has_next> class="last"</#if>>
                                 <div class="fn-clear">
                                     <div class="fn-left">
                                         <#if tag.tagIconPath!="">
