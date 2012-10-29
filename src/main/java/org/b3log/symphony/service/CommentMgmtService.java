@@ -21,7 +21,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
@@ -29,14 +28,12 @@ import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
-import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
-import org.b3log.symphony.repository.UserTagRepository;
 import org.json.JSONObject;
 
 /**
@@ -72,10 +69,6 @@ public final class CommentMgmtService {
      * Tag repository.
      */
     private TagRepository tagRepository = TagRepository.getInstance();
-    /**
-     * User-Tag repository.
-     */
-    private UserTagRepository userTagRepository = UserTagRepository.getInstance();
     /**
      * Event manager.
      */
@@ -122,7 +115,6 @@ public final class CommentMgmtService {
             comment.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "#" + ret);
             comment.put(Comment.COMMENT_STATUS, 0);
 
-
             final JSONObject cmtCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
             final int cmtCnt = cmtCntOption.optInt(Option.OPTION_VALUE);
             cmtCntOption.put(Option.OPTION_VALUE, String.valueOf(cmtCnt + 1));
@@ -137,13 +129,6 @@ public final class CommentMgmtService {
                 final JSONObject tag = tagRepository.getByTitle(tagTitle);
                 tag.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + 1);
                 tagRepository.update(tag.optString(Keys.OBJECT_ID), tag);
-
-                // User-Tag relation
-                final JSONObject userTagRelation = new JSONObject();
-                userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
-                userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID));
-                userTagRelation.put(Common.TYPE, 1); // article
-                userTagRepository.add(userTagRelation);
             }
 
             commentRepository.add(comment);
