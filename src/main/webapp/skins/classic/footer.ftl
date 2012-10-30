@@ -15,7 +15,7 @@
                     ${visionLabel}
                     <span class="ft-small">&COPY; 2012 <a href="http://www.b3log.org" target="_blank">B3LOG.ORG</a></span>
                 </div>
-                <div class="fn-right">
+                <div class="fn-right info">
                     <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt}
                     <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineMemberCount}
                     <span class="ft-small">${memberCountLabel}</span> ${statistic.statisticMemberCount}

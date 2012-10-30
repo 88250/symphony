@@ -18,7 +18,7 @@
                             <a href="/member/${user.userName}">${user.userName}</a>
                             ${profilesLabel}
                         </h2>&nbsp;
-                        <span style="line-height:28px">(${user.userEmail})</span>
+                        <span style="line-height:24px">(${user.userEmail})</span>
                     </div>
                     <div class="module-panel form">
                         <table>
@@ -68,8 +68,8 @@
                 </div>
 
                 <div class="module">
-                    <div class="module-header fn-clear">
-                        <h2 class="fn-left">${syncLabel}</h2>
+                    <div class="module-header">
+                        <h2>${syncLabel}</h2>
                     </div>
                     <div class="module-panel form">
                         <table>
@@ -111,8 +111,8 @@
                 </div>
 
                 <div class="module">
-                    <div class="module-header fn-clear">
-                        <h2 class="fn-left">${passwordLabel}</h2>
+                    <div class="module-header">
+                        <h2>${passwordLabel}</h2>
                     </div>
                     <div class="module-panel form">
                         <table>
