@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.9, Oct 29, 2012
+* @version 1.0.1.0, Oct 30, 2012
 */
 /* start reset */
 html {
@@ -49,6 +49,11 @@ dl,
 dd,
 p {
     margin: 0;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: normal;
 }
 
 article,
@@ -267,20 +272,17 @@ button.green:active {
 }
 
 button.red {
-    color:#990000;
-    border:1px solid #fafafa;
-    border-bottom-color:#BCBCBC;
-    background:#fafafa;
-    background:-moz-linear-gradient(#fafafa, #eaeaea);
-    background:-webkit-linear-gradient(#fafafa, #eaeaea);
-    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#eaeaea')";
-    box-shadow:0 1px 4px rgba(0, 0, 0, 0.2);
-    text-shadow: 0 1px 0 #FFFFFF;
+    border: 1px solid #e99c98;
+    border-bottom-color: #d3362f;
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+    background: #e99c98;
+    background:-moz-linear-gradient(#e99c98, #d3362f);
+    background:-webkit-linear-gradient(#e99c98, #d3362f);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#e99c98', endColorstr='#d3362f')";
 }
 
 button.red:hover {
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
-    color: #fff;
     border-color: #DC5F59;
     border-bottom-color: #B33630;
     background: #DC5F59;
@@ -600,6 +602,11 @@ button.red:active {
     box-shadow: 0 1px 1px white inset;
     line-height: 28px;
     padding: 10px 0;
+}
+
+.footer .info {
+    color: #4C8B36;
+    font-size: 12px;
 }
 /* end footer */
 
