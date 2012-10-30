@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Validates for user profiles update.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 29, 2012 
+ * @version 1.0.0.2, Oct 30, 2012 
  */
 public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
 
@@ -65,11 +65,6 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
             request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
-        }
-
-        final String userName = requestJSONObject.optString(User.USER_NAME);
-        if (UserRegisterValidation.invalidUserName(userName)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserNameLabel")));
         }
 
         final String userURL = requestJSONObject.optString(User.USER_URL);
