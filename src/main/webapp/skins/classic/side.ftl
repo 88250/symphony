@@ -1,5 +1,5 @@
 <div class="index-module">
-    AD
+    ${ADLabel}
 </div>
 <div class="index-module">
     <h2>
