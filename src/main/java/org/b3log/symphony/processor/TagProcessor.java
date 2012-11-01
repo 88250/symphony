@@ -129,6 +129,12 @@ public final class TagProcessor {
         final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
 
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
+        if (null == tag) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
         final List<JSONObject> articles = articleQueryService.getArticlesByTag(tag, pageNum, pageSize);
         dataModel.put(Article.ARTICLES, articles);
 
