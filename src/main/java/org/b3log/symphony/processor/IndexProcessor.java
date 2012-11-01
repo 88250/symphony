@@ -47,10 +47,11 @@ import org.json.JSONObject;
  * 
  * <ul>
  *   <li>Shows index (/), GET</li>
+ *   <li>Shows abount (/about), GET</li>
  * </ul>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 16, 2012
+ * @version 1.0.0.8, Nov 1, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -117,6 +118,28 @@ public final class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
+        Filler.fillRandomArticles(dataModel);
+        Filler.fillSideTags(dataModel);
+    }
+
+    /**
+     * Shows about.
+     * 
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = "/about", method = HTTPRequestMethod.GET)
+    public void showAbout(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("about.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
