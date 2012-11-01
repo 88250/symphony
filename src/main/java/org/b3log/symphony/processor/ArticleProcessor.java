@@ -73,7 +73,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 25, 2012
+ * @version 1.0.0.8, Nov 1, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -193,6 +193,8 @@ public final class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        
+        articleMgmtService.incArticleViewCount(articleId);
 
         Filler.fillRelevantArticles(dataModel, article);
         Filler.fillRandomArticles(dataModel);

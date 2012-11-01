@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 29, 2012
+ * @version 1.0.0.8, Nov 1, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -90,6 +90,37 @@ public final class ArticleMgmtService {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Increments the view count of the specified article by the given article id.
+     * 
+     * @param articleId the given article id
+     * @throws ServiceException service exception 
+     */
+    public void incArticleViewCount(final String articleId) throws ServiceException {
+        final Transaction transaction = articleRepository.beginTransaction();
+
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
+            }
+
+            final int viewCnt = article.optInt(Article.ARTICLE_VIEW_CNT);
+            article.put(Article.ARTICLE_VIEW_CNT, viewCnt + 1);
+
+            articleRepository.update(articleId, article);
+
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Incs an article view count failed", e);
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Adds an article with the specified request json object.
