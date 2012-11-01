@@ -5,8 +5,13 @@
         <div class="user-name">
             <a href="/member/${user.userName}">${user.userName}</a>
         </div>
+        <#if user.userIntro!="">
+        <div>
+            ${user.userIntro}
+        </div>
+        </#if>
         <div class="user-info">
-            <span class="ft-small">Symphony</span> ${user.userNo} <span class="ft-small">${noVIPLabel}</span>
+            <span class="ft-small">Symphony ${user.userNo} ${noVIPLabel}</span>
         </div>
         <#if user.userURL!="">
         <div class="user-info">
@@ -14,15 +19,8 @@
         </div>
         </#if>
         <div class="user-info">
-            <span class="ft-small">${joinTimeLabel} </span>${user.userCreateTime?string('yyyy-MM-dd')}
+            <span class="ft-small">${joinTimeLabel} ${user.userCreateTime?string('yyyy-MM-dd HH:mm:ss')}</span>
         </div>
-        <#if user.userIntro!="">
-        <div>
-            <span class="ft-small">${userIntroLabel} </span>
-            <br/>
-            ${user.userIntro}
-        </div>
-        </#if>
     </div>
     <ul class="status fn-clear">
         <li>

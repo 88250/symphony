@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Oct 29, 2012
+ * @version 1.0.1.1, Nov 1, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -228,7 +228,7 @@ public final class UserProcessor {
         final JSONObject user = LoginProcessor.getCurrentUser(request);
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
-        user.put(UserExt.USER_INTRO, userIntro);
+        user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
 
         try {
             userMgmtService.updateProfiles(user);
