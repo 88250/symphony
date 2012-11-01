@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 16, 2012
+ * @version 1.0.0.3, Nov 1, 2012
  * @since 0.2.0
  */
 public final class OptionQueryService {
@@ -116,7 +116,15 @@ public final class OptionQueryService {
      * @param request the specified request
      */
     public static void onlineVisitorCount(final HttpServletRequest request) {
-        ONLINE_VISITORS.put(request.getRemoteAddr(), System.currentTimeMillis());
+        String remoteAddr = request.getHeader("X-forwarded-for");
+        
+        if (remoteAddr == null) {
+            remoteAddr = request.getRemoteAddr();
+        } else {
+            remoteAddr = remoteAddr.split(",")[0];
+        }
+        
+        ONLINE_VISITORS.put(remoteAddr, System.currentTimeMillis());
         LOGGER.log(Level.FINEST, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
