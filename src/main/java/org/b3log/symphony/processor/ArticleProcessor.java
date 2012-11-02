@@ -152,7 +152,7 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                            final String articleId) throws Exception {
+            final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -193,7 +193,7 @@ public final class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-        
+
         articleMgmtService.incArticleViewCount(articleId);
 
         Filler.fillRelevantArticles(dataModel, article);
@@ -317,6 +317,8 @@ public final class ArticleProcessor {
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        
+        LOGGER.log(Level.WARNING, requestJSONObject.toString(4));
 
         final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
         final String symphonyKey = requestJSONObject.optString(Common.SYMPHONY_KEY);
@@ -327,7 +329,13 @@ public final class ArticleProcessor {
         final String clientRuntimeEnv = requestJSONObject.optString(Client.CLIENT_RUNTIME_ENV);
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
-        if (null == user || !Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
+        if (null == user) {
+            LOGGER.log(Level.WARNING, "The user[email={0}] not found in community", clientAdminEmail);
+
+            return;
+        }
+
+        if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
             LOGGER.log(Level.WARNING, "B3 key not match, ignored add article");
 
             return;
