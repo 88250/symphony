@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Oct 29, 2012
+ * @version 1.0.0.3, Nov 2, 2012
  */
 
 /**
@@ -65,8 +65,8 @@ var Comment = {
             if (event.keyCode === 13 && event.ctrlKey) {
                 Comment.add(Label.articleOId);
             }
-            this.rows = this.value.split("\n").length;
             
+            this.rows = this.value.split("\n").length;
             while (this.scrollHeight > $(this).height()) {
                 this.rows += 1;
             }
