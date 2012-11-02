@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 29, 2012
+ * @version 1.0.0.4, Nov 2, 2012
  * @since 0.2.0
  */
 public final class CommentMgmtService {
@@ -98,6 +98,7 @@ public final class CommentMgmtService {
             final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
             final JSONObject article = articleRepository.get(articleId);
             article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) + 1);
+            article.put(Article.ARTICLE_LATEST_CMT_TIME, System.currentTimeMillis());
 
             final String ret = Ids.genTimeMillisId();
             final JSONObject comment = new JSONObject();
