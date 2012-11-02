@@ -120,6 +120,7 @@ textarea {
     font-size: 100%;
     vertical-align: middle;
     font-family: '\5fae\8f6f\96c5\9ed1';
+    outline: none;
 }
 
 button,

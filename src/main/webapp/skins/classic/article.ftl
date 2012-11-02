@@ -49,14 +49,14 @@
                                         <img title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
                                     </div>
                                     <div class="fn-left comment-main">
-                                        <span class="fn-clear">
+                                        <div class="fn-clear">
                                             <span class="fn-left">
                                                 <a href="/member/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                             </span>
                                             <span class="fn-right ft-small">
                                                 ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} #${comment_index + 1}
                                             </span>    
-                                        </span>
+                                        </div>
                                         <div class="content-reset">
                                             ${comment.commentContent}
                                         </div>
