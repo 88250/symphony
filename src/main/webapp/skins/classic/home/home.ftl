@@ -28,7 +28,7 @@
                                 <#list userHomeArticles as article>
                                 <li>
                                     <div class="fn-clear">
-                                        <div class="fn-left">
+                                        <div class="fn-left" style="width:625px">
                                             <h2><a href="${article.articlePermalink}">${article.articleTitle}</a></h2>
                                             <span class="ft-small">
                                                 <#list article.articleTags?split(",") as articleTag>

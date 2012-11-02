@@ -67,7 +67,7 @@ var Comment = {
             }
             
             this.rows = this.value.split("\n").length;
-            while (this.scrollHeight > $(this).height()) {
+            while (this.scrollHeight - 6 > $(this).height()) {
                 this.rows += 1;
             }
             this.rows += 1;
