@@ -5,7 +5,7 @@
     <h2>
         ${randomArticleLabel}
     </h2>
-    <ul>
+    <ul class="index-module-list">
         <#list sideRandomArticles as randomArticle>
         <li>
             <a href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>

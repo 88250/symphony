@@ -36,7 +36,7 @@
                                                     ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
                                                 </span>    
                                             </span>
-                                            <div>
+                                            <div class="content-reset">
                                                 ${comment.commentContent}  
                                             </div>
                                         </div>

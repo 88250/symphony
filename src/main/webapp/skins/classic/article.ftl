@@ -35,7 +35,7 @@
                                 ${article.articleTitle}
                             </a>
                         </h2>
-                        <div>
+                        <div class="content-reset">
                             ${article.articleContent}
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                                                 ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} #${comment_index + 1}
                                             </span>    
                                         </span>
-                                        <div>
+                                        <div class="content-reset">
                                             ${comment.commentContent}
                                         </div>
                                     </div>
@@ -68,9 +68,15 @@
                         <@pagination url=article.articlePermalink/>
                     </div>
                     <div class="form fn-clear">
+                        <#if isLoggedIn>
                         <textarea id="commentContent"></textarea>
                         <span style="right:0;top:11px;"></span>
                         <button class="green fn-right" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
+                        <#else>
+                        <div class="comment-login">
+                            <a href="javascript:window.scrollTo(0,0);Util.showLogin();">${pleaseLoginLabel}</a>
+                        </div>
+                        </#if>
                     </div>
 
                 </div>
@@ -96,7 +102,7 @@
                         <h2>
                             ${relativeArticleLabel}
                         </h2>
-                        <ul>
+                        <ul class="index-module-list">
                             <#list sideRelevantArticles as relevantArticle>
                             <li>
                                 <a href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
@@ -114,7 +120,7 @@
                         <h2>
                             ${randomArticleLabel}
                         </h2>
-                        <ul>
+                        <ul class="index-module-list">
                             <#list sideRandomArticles as randomArticle>
                             <li>
                                 <a href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>

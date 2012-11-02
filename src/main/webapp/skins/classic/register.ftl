@@ -56,7 +56,8 @@
                                     <label for="securityCode">${captchaLabel}</label>
                                 </td>
                                 <td>
-                                    <input type="text" id="securityCode" />
+                                    <input style="width:100px;" type="text" id="securityCode" />
+                                    <img style="cursor:pointer" src="/captcha" onclick="this.src='/captcha?'+(new Date()).getTime()" />
                                     <span style="top:202px;left:240px;"></span>
                                 </td>
                             </tr>

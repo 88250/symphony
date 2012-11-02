@@ -52,7 +52,7 @@ p {
 }
 
 h2 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: normal;
 }
 
@@ -406,10 +406,9 @@ button.red:active {
 .form input[type=text],
 .form input[type=password],
 .form textarea {
-    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
-    border-image: none;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid #D9D9D9;
+    border-top-color: #C0C0C0; 
+    border-left-color: #C0C0C0; 
     margin: 10px 0;
     padding: 3px;
     width: 99%;
@@ -520,7 +519,6 @@ button.red:active {
     font-weight: bold;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     text-decoration: none;
-    line-height: 26px;
     margin-left: 5px;
 }
 
@@ -530,13 +528,13 @@ button.red:active {
 
 .nav .user-nav > a {
     float: left;
-    height: 23px;
-    padding: 16px 5px;
+    padding: 15px 5px;
 }
 
 .nav .user-nav > a.current {
     border-bottom: 2px solid #D26911;
     color: #222;
+    padding-bottom: 13px;
 }
 
 .nav .form {
@@ -549,13 +547,8 @@ button.red:active {
     padding: 10px;
     position: absolute;
     right: 0;
-    top: 57px;
+    top: 49px;
     z-index: 1;
-}
-
-
-.nav h1 {
-    margin: 10px 0;
 }
 
 .nav input.search {
@@ -565,7 +558,7 @@ button.red:active {
     left: 190px;
     padding: 3px 5px 3px 20px;
     position: absolute;
-    top: 16px;
+    top: 12px;
     width: 0;
     z-index: 1;
     -moz-transition: width 0.4s ease, background 0.4s ease;
@@ -582,7 +575,7 @@ button.red:active {
 .nav .tags {
     left: 235px;
     position: absolute;
-    top: 3px;
+    top: 5px;
     white-space: normal;
     width: 510px;
     word-wrap: break-word;
@@ -611,16 +604,16 @@ button.red:active {
 /* end footer */
 
 /* start list */
-.list ul {
+.list > ul {
     list-style: none;
 }
 
-.list li {
+.list > ul > li {
     border-bottom: 1px solid #CCCCCC;
     padding: 10px;
 }
 
-.list li:hover {
+.list > ul > li:hover {
     background-color: #F7F7F7;
 }
 /* end list */
@@ -666,5 +659,14 @@ button.red:active {
 .comment-list .comment-main {
     width: 612px;
     word-break: break-all;
+}
+
+.content-reset {
+    word-wrap: break-word;
+}
+
+.content-reset ul,
+.content-reset ol {
+    margin-left: 20px;
 }
 /* end comment list */

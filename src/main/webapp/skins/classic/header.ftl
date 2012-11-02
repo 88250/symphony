@@ -1,7 +1,7 @@
 <div class="nav">
     <div class="wrapper fn-clear">
         <div class="fn-left">
-            <h1><a href="/">Symphony</a></h1>
+            <h1 style="margin-top:4px"><a href="/">Symphony</a></h1>
         </div>
         <div class="fn-left">
             <form target="_blank" method="get" action="http://www.google.com/search">
