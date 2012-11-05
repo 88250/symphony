@@ -24,15 +24,15 @@
     </div>
     <ul class="status fn-clear">
         <li>
-            <strong>12</strong>
+            <strong>${user.userTagCount}</strong>
             <span class="ft-small">${tagLabel}</span>
         </li>
         <li>
-            <strong>12</strong>
+            <strong>${user.userArticleCount}</strong>
             <span class="ft-small">${articleLabel}</span>
         </li>
         <li>
-            <strong>12</strong>
+            <strong>${user.userCommentCount}</strong>
             <span class="ft-small">${cmtLabel}</span>
         </li>
     </ul>

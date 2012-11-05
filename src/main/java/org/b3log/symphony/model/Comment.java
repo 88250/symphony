@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 18, 2012
+ * @version 1.0.0.3, Nov 5, 2012
  * @since 0.2.0
  */
 public final class Comment {
@@ -69,6 +69,10 @@ public final class Comment {
      */
     public static final String COMMENT_STATUS = "commentStatus";
     //// Transient ////
+    /**
+     * Key of commenter.
+     */
+    public static final String COMMENT_T_COMMENTER = "commenter";
     /**
      * Key of comment id.
      */

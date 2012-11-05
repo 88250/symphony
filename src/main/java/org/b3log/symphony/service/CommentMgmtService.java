@@ -30,10 +30,12 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONObject;
 
 /**
@@ -70,6 +72,10 @@ public final class CommentMgmtService {
      */
     private TagRepository tagRepository = TagRepository.getInstance();
     /**
+     * User repository.
+     */
+    private UserRepository userRepository = UserRepository.getInstance();
+    /**
      * Event manager.
      */
     private EventManager eventManager = EventManager.getInstance();
@@ -85,7 +91,10 @@ public final class CommentMgmtService {
      *     "commentAuthorEmail": "",
      *     "commentOnArticleId": "",
      *     "commentOriginalCommentId": "", // optional
-     *     "clientCommentId": "" // optional
+     *     "clientCommentId": "" // optional,
+     *     "commenter": {
+     *         // User model
+     *     }
      * }
      * </pre>, see {@link Comment} for more details
      * @return generated comment id
@@ -131,7 +140,13 @@ public final class CommentMgmtService {
                 tag.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + 1);
                 tagRepository.update(tag.optString(Keys.OBJECT_ID), tag);
             }
-
+            
+            // Updates user comment count
+            final JSONObject commenter = requestJSONObject.optJSONObject(Comment.COMMENT_T_COMMENTER);
+            commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) + 1);
+            userRepository.update(commenter.optString(Keys.OBJECT_ID), commenter);
+            
+            // Adds the comment
             commentRepository.add(comment);
 
             transaction.commit();

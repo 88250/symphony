@@ -158,7 +158,9 @@ public final class CommentProcessor {
 
         final String authorEmail = currentUser.optString(User.USER_EMAIL);
         comment.put(Comment.COMMENT_AUTHOR_EMAIL, authorEmail);
-
+        
+        comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
+ 
         try {
             commentMgmtService.addComment(comment);
             ret.put(Keys.STATUS_CODE, true);
