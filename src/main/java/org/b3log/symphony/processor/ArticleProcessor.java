@@ -18,6 +18,7 @@ package org.b3log.symphony.processor;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -73,7 +74,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Nov 1, 2012
+ * @version 1.0.0.9, Nov 5, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -160,12 +161,30 @@ public final class ArticleProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject article = articleQueryService.getArticleById(articleId);
+        if (null == article) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            
+            return;
+        }
+        
         final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
         final JSONObject author = userQueryService.getUserByEmail(authorEmail);
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
         article.put(Article.ARTICLE_T_AUTHOR_URL, author.optString(User.USER_URL));
         article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
         dataModel.put(Article.ARTICLE, article);
+
+        String articleContent = article.optString(Article.ARTICLE_CONTENT);
+        try {
+            final Set<String> userNames = userQueryService.getUserNames(articleContent);
+            for (final String userName : userNames) {
+                articleContent = articleContent.replace('@' + userName,
+                                                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
+            }
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, "Generates @username home URL for comment content failed", e);
+        }
+        article.put(Article.ARTICLE_CONTENT, articleContent);
 
         articleQueryService.markdown(article);
 
@@ -317,7 +336,7 @@ public final class ArticleProcessor {
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-        
+
         final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
         final String symphonyKey = requestJSONObject.optString(Common.SYMPHONY_KEY);
         final String clientAdminEmail = requestJSONObject.optString(Client.CLIENT_ADMIN_EMAIL);
