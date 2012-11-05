@@ -87,6 +87,10 @@ public final class ArticleQueryService {
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
     /**
+     * User query service.
+     */
+    private UserQueryService userQueryService = UserQueryService.getInstance();
+    /**
      * Count to fetch article tags for relevant articles.
      */
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
@@ -108,7 +112,7 @@ public final class ArticleQueryService {
         final String[] tagTitles = tagsString.split(",");
         final int tagTitlesLength = tagTitles.length;
         final int subCnt = tagTitlesLength > RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT
-                ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
+                           ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
 
         final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
         final int subFetchSize = fetchSize / subCnt;
@@ -443,7 +447,7 @@ public final class ArticleQueryService {
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
         final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(authorEmail) + "?s=140&d="
-                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
@@ -488,6 +492,37 @@ public final class ArticleQueryService {
     }
 
     /**
+     * Processes the specified article content.
+     * 
+     * <ul>
+     *   <li>Generates &#64;username home URL</li>
+     *   <li>Markdowns</li>
+     *   <li>Generates secured article content</li>
+     * </ul>
+     * 
+     * @param article the specified article
+     * @throws ServiceException service exception 
+     */
+    public void processArticleContent(final JSONObject article) throws ServiceException {
+        String articleContent = article.optString(Article.ARTICLE_CONTENT);
+        try {
+            final Set<String> userNames = userQueryService.getUserNames(articleContent);
+            for (final String userName : userNames) {
+                articleContent = articleContent.replace('@' + userName,
+                                                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
+            }
+        } catch (final ServiceException e) {
+            final String errMsg = "Generates @username home URL for comment content failed";
+            LOGGER.log(Level.SEVERE, errMsg, e);
+            throw new ServiceException(errMsg);
+        }
+
+        article.put(Article.ARTICLE_CONTENT, articleContent);
+
+        markdown(article);
+    }
+
+    /**
      * Markdowns the specified article content.
      * 
      * <ul>
@@ -497,7 +532,7 @@ public final class ArticleQueryService {
      * 
      * @param article the specified article content
      */
-    public void markdown(final JSONObject article) {
+    private void markdown(final JSONObject article) {
         String content = "Markdown Error";
 
         try {
