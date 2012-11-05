@@ -79,7 +79,7 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
         final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
-        // checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
+        checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
         checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");
         checkField(!Strings.isEmail(email), "registerFailLabel", "invalidEmailLabel");
         checkField(invalidUserPassword(password), "registerFailLabel", "invalidPasswordLabel");

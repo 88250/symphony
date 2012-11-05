@@ -16,7 +16,7 @@
 package org.b3log.symphony.processor;
 
 import java.io.BufferedInputStream;
-import java.net.URL;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,7 +53,7 @@ import org.b3log.symphony.SymphonyServletListener;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 2, 2012
+ * @version 1.0.0.1, Nov 5, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -155,8 +155,9 @@ public final class CaptchaProcessor {
     private static void loadCaptchas() {
         LOGGER.info("Loading captchas....");
         try {
-            final URL captchaURL = SymphonyServletListener.class.getClassLoader().getResource("captcha.zip");
-            final ZipFile zipFile = new ZipFile(captchaURL.getFile());
+            final String path = SymphonyServletListener.getWebRoot() + "WEB-INF" + File.separator + "classes" + File.separator
+                                + "captcha.zip";
+            final ZipFile zipFile = new ZipFile(new File(path));
             final Set<String> imageNames = new HashSet<String>();
             for (int row = 0; row < MAX_CAPTCHA_ROW; row++) {
                 for (int column = 0; column < MAX_CAPTCHA_COLUM; column++) {

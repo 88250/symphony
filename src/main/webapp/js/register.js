@@ -67,6 +67,8 @@ var Register = {
                         window.location = decodeURIComponent(location.search.split("=")[1]);
                     } else {
                         $("#registerTip").text(result.msg).addClass("tip-error").css("border-left", "1px solid #E2A0A0");
+                        $("#captcha").attr("src", "/captcha?code=" + Math.random());
+                        $("#securityCode").val("");
                     }
                 },
                 complete: function (jqXHR, textStatus){
