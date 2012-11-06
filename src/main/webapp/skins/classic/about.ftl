@@ -12,7 +12,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper fn-clear">
-                <div class="content">
+                <div class="content content-reset">
                     <p><font color="red">TDB: 排版</font></p>
                     <p class="c0 title">B3log 构思</p>
                     <p class="c0 subtitle"><a name="h.p0r5jozboikk"></a>一个正在逐渐清晰、实践的创意</p>

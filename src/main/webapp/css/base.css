@@ -670,4 +670,13 @@ button.red:active {
 .content-reset ol {
     margin-left: 20px;
 }
+
+.content-reset h1, 
+.content-reset h2, 
+.content-reset h3, 
+.content-reset h4, 
+.content-reset h5, 
+.content-reset h6 {
+    margin: 3px 0;
+}
 /* end comment list */
