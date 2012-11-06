@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Sends a comment notification to IM server.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 24, 2012
+ * @version 1.0.0.2, Nov 6, 2012
  * @since 0.2.0
  */
 public final class CommentNotifier extends AbstractEventListener<JSONObject> {
@@ -77,21 +77,14 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
-            
+            userNames.add(articleAuthorName); // Adds the article author first
+
             if (articleAuthorId.equals(originalComment.optString(Comment.COMMENT_AUTHOR_ID))) {
-                // The commenter is the article author, do not notify itself
-                
-                if (userNames.isEmpty()) {
-                    return;
-                }
-                
-                userNames.remove(articleAuthorName);
+                userNames.remove(articleAuthorName); // The commenter is the article author, do not notify itself
                 if (userNames.isEmpty()) {
                     return;
                 }
             }
-            
-            userNames.add(articleAuthorName);
 
             final Set<String> qqSet = new HashSet<String>();
             for (final String userName : userNames) {
