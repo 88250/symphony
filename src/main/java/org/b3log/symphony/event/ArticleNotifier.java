@@ -32,7 +32,6 @@ import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Symphonys;
@@ -40,18 +39,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Sends a comment notification to IM server.
+ * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Nov 6, 2012
  * @since 0.2.0
  */
-public final class CommentNotifier extends AbstractEventListener<JSONObject> {
+public final class ArticleNotifier extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentNotifier.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleNotifier.class.getName());
     /**
      * User query service.
      */
@@ -65,25 +64,21 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, CommentNotifier.class.getName()});
+                new Object[]{event.getType(), data, ArticleNotifier.class.getName()});
 
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
-            final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
 
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
             final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
 
-            final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
-            final Set<String> userNames = userQueryService.getUserNames(commentContent);
-            userNames.add(articleAuthorName); // Adds the article author first
+            final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
+            final Set<String> userNames = userQueryService.getUserNames(articleContent);
+            userNames.remove(articleAuthorName); // Do not notify the author itself
 
-            if (articleAuthorId.equals(originalComment.optString(Comment.COMMENT_AUTHOR_ID))) {
-                userNames.remove(articleAuthorName); // The commenter is the article author, do not notify itself
-                if (userNames.isEmpty()) {
-                    return;
-                }
+            if (userNames.isEmpty()) {
+                return;
             }
 
             final Set<String> qqSet = new HashSet<String>();
@@ -121,8 +116,7 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             final StringBuilder msgContent = new StringBuilder("----\n");
             msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
-                    .append(originalComment.optString(Comment.COMMENT_SHARP_URL)).append("\n\n")
-                    .append(commentContent.replace("&gt;", ">").replace("&lt;", "<")).append("\n----");
+                    .append(originalArticle.optString(Article.ARTICLE_PERMALINK)).append("\n\n");
 
             requestJSONObject.put("messageContent", msgContent.toString());
 
@@ -130,17 +124,17 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Sends the comment notification failed", e);
+            LOGGER.log(Level.SEVERE, "Sends the article notification failed", e);
         }
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_COMMENT_TO_ARTICLE}.
+     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
      * 
      * @return event type
      */
     @Override
     public String getEventType() {
-        return EventTypes.ADD_COMMENT_TO_ARTICLE;
+        return EventTypes.ADD_ARTICLE;
     }
 }
