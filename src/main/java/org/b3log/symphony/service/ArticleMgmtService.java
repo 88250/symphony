@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Nov 1, 2012
+ * @version 1.0.0.9, Nov 6, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -202,7 +202,7 @@ public final class ArticleMgmtService {
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
             try {
-                eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
