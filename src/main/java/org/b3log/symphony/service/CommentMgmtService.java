@@ -21,8 +21,10 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
@@ -36,13 +38,14 @@ import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 2, 2012
+ * @version 1.0.0.5, Nov 7, 2012
  * @since 0.2.0
  */
 public final class CommentMgmtService {
@@ -79,6 +82,10 @@ public final class CommentMgmtService {
      * Event manager.
      */
     private EventManager eventManager = EventManager.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Adds a comment with the specified request json object.
@@ -140,12 +147,24 @@ public final class CommentMgmtService {
                 tag.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + 1);
                 tagRepository.update(tag.optString(Keys.OBJECT_ID), tag);
             }
-            
-            // Updates user comment count
+
+            // Updates user comment count, latest comment time
             final JSONObject commenter = requestJSONObject.optJSONObject(Comment.COMMENT_T_COMMENTER);
+
+            final long currentTimeMillis = System.currentTimeMillis();
+            if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepArticleTime")) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
+                LOGGER.log(Level.WARNING, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
+                throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
+            }
+
             commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) + 1);
+            commenter.put(UserExt.USER_LATEST_CMT_TIME, currentTimeMillis);
             userRepository.update(commenter.optString(Keys.OBJECT_ID), commenter);
-            
+
             // Adds the comment
             commentRepository.add(comment);
 

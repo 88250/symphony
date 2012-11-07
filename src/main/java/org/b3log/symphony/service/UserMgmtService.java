@@ -271,6 +271,8 @@ public final class UserMgmtService {
             user.put(UserExt.USER_INTRO, "");
             user.put(UserExt.USER_QQ, "");
             user.put(UserExt.USER_ONLINE_FLAG, false);
+            user.put(UserExt.USER_LATEST_ARTICLE_TIME, 0L);
+            user.put(UserExt.USER_LATEST_CMT_TIME, 0L);
 
             final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
             int memberCount = memberCntOption.optInt(Option.OPTION_VALUE);

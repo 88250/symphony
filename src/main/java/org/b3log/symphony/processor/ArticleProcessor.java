@@ -261,8 +261,8 @@ public final class ArticleProcessor {
             articleMgmtService.addArticle(article);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.SEVERE, msg, e);
+            final String msg = e.getMessage();
+            LOGGER.log(Level.SEVERE, "Adds article[title=" + articleTitle + "] failed", e);
 
             ret.put(Keys.MSG, msg);
         }
@@ -412,6 +412,4 @@ public final class ArticleProcessor {
 
         return tagsBuilder.toString();
     }
-
-  
 }

@@ -39,13 +39,14 @@ import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Nov 6, 2012
+ * @version 1.0.1.0, Nov 7, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -183,6 +184,14 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
 
             final JSONObject author = userRepository.get(authorId);
+            if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+                
+                LOGGER.log(Level.WARNING, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
+                throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
+            }
 
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
 
@@ -192,7 +201,9 @@ public final class ArticleMgmtService {
             optionRepository.update(Option.ID_C_STATISTIC_ARTICLE_COUNT, articleCntOption); // Updates global tag/article count
 
             author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) + 1);
-            userRepository.update(author.optString(Keys.OBJECT_ID), author); // Updates user article count (and new tag count) 
+            author.put(UserExt.USER_LATEST_ARTICLE_TIME, currentTimeMillis);
+            // Updates user article count (and new tag count), latest article time
+            userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
             articleRepository.add(article);
 

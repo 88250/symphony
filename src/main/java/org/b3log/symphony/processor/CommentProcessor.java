@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 7, 2012
+ * @version 1.0.0.1, Nov 7, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -158,15 +158,15 @@ public final class CommentProcessor {
 
         final String authorEmail = currentUser.optString(User.USER_EMAIL);
         comment.put(Comment.COMMENT_AUTHOR_EMAIL, authorEmail);
-        
+
         comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
- 
+
         try {
             commentMgmtService.addComment(comment);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.SEVERE, msg, e);
+            final String msg = e.getMessage();
+            LOGGER.log(Level.SEVERE, "Adds comment failed", e);
 
             ret.put(Keys.MSG, msg);
         }
