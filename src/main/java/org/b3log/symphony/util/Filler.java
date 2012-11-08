@@ -31,6 +31,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.processor.LoginProcessor;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.json.JSONObject;
@@ -57,6 +58,10 @@ public final class Filler {
      */
     private static ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
     /**
+     * Comment query service.
+     */
+    private static CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    /**
      * Tag query service.
      */
     private static TagQueryService tagQueryService = TagQueryService.getInstance();
@@ -78,7 +83,17 @@ public final class Filler {
      */
     public static void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                      articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+    }
+
+    /**
+     * Fills the latest comments.
+     * 
+     * @param dataModel the specified data model
+     * @throws Exception exception
+     */
+    public static void fillLatestCmts(final Map<String, Object> dataModel) throws Exception {
+        dataModel.put(Common.SIDE_LATEST_CMTS, commentQueryService.getLatestComments(Symphonys.getInt("sizeLatestCmtsCnt")));
     }
 
     /**
@@ -110,7 +125,7 @@ public final class Filler {
      * @throws Exception exception 
      */
     public static void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-                                  final Map<String, Object> dataModel) throws Exception {
+            final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         Keys.fillServer(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
@@ -139,18 +154,18 @@ public final class Filler {
      * @param dataModel the specified data model
      */
     private static void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
-                                        final Map<String, Object> dataModel) {
+            final Map<String, Object> dataModel) {
         dataModel.put(Common.IS_LOGGED_IN, false);
 
         JSONObject currentUser = Sessions.currentUser(request);
         if (null == currentUser && !LoginProcessor.tryLogInWithCookie(request, response)) {
             dataModel.put("loginLabel", langPropsService.get("loginLabel"));
-            
+
             return;
         }
 
         currentUser = Sessions.currentUser(request);
-        
+
         dataModel.put(Common.IS_LOGGED_IN, true);
         dataModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
 

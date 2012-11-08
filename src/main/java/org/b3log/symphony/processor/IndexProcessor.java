@@ -122,6 +122,7 @@ public final class IndexProcessor {
         Filler.fillFooter(dataModel);
         Filler.fillRandomArticles(dataModel);
         Filler.fillSideTags(dataModel);
+        Filler.fillLatestCmts(dataModel);
     }
 
     /**
@@ -144,5 +145,6 @@ public final class IndexProcessor {
         Filler.fillFooter(dataModel);
         Filler.fillRandomArticles(dataModel);
         Filler.fillSideTags(dataModel);
+        Filler.fillLatestCmts(dataModel);
     }
 }

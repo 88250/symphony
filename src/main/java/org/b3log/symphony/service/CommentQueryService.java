@@ -76,6 +76,37 @@ public final class CommentQueryService {
     private UserQueryService userQueryService = UserQueryService.getInstance();
 
     /**
+     * Gets the latest comments with the specified fetch size.
+     * 
+     * @param fetchSize the specified fetch size
+     * @return the latest comments, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getLatestComments(final int fetchSize) throws ServiceException {
+        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
+                .setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+        try {
+            final JSONObject result = commentRepository.get(query);
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            for (final JSONObject comment : ret) {
+                comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
+                final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                final JSONObject article = articleRepository.get(articleId);
+                comment.put(Comment.COMMENT_T_ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
+                comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
+
+                processCommentContent(comment);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets user comments failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets the user comments with the specified user id, page number and page size.
      * 
      * @param userId the specified user id
@@ -86,7 +117,7 @@ public final class CommentQueryService {
      */
     public List<JSONObject> getUserComments(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
-                .setPageCount(currentPageNum).setPageSize(pageSize).
+                .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                 setFilter(new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId));
         try {
             final JSONObject result = commentRepository.get(query);

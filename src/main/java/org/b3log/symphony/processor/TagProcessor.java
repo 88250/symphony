@@ -99,6 +99,7 @@ public final class TagProcessor {
         Filler.fillFooter(dataModel);
         Filler.fillRandomArticles(dataModel);
         Filler.fillSideTags(dataModel);
+        Filler.fillLatestCmts(dataModel);
     }
 
     /**
@@ -164,5 +165,6 @@ public final class TagProcessor {
         Filler.fillFooter(dataModel);
         Filler.fillRandomArticles(dataModel);
         Filler.fillSideTags(dataModel);
+        Filler.fillLatestCmts(dataModel);
     }
 }
