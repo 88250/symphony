@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 7, 2012
+ * @version 1.0.0.7, Nov 8, 2012
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -77,6 +77,10 @@ public final class UserExt {
      * Key of latest comment time.
      */
     public static final String USER_LATEST_CMT_TIME = "userLatestCmtTime";
+    /**
+     * Key of latest login time.
+     */
+    public static final String USER_LATEST_LOGIN_TIME = "userLatestLoginTime";
     //// Transient ////
     /**
      * Key of user thumbnail URL.

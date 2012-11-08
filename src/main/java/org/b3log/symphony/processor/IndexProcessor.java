@@ -101,7 +101,6 @@ public final class IndexProcessor {
         final int pageSize = Symphonys.getInt("latestCmtArticlesCnt");
         final int windowSize = Symphonys.getInt("latestCmtArticlesWindowSize");
 
-        // TODO: sys nav, sys info
         final List<JSONObject> latestCmtArticles = articleQueryService.getLatestCmtArticles(pageNum, pageSize);
         dataModel.put(Common.LATEST_CMT_ARTICLES, latestCmtArticles);
 

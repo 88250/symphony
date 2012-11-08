@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Oct 29, 2012
+ * @version 1.0.0.7, Nov 8, 2012
  * @since 0.2.0
  */
 public final class UserMgmtService {
@@ -61,7 +61,7 @@ public final class UserMgmtService {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Updates a user's online status.
+     * Updates a user's online status and saves the login time.
      * 
      * @param userId the specified user id
      * @param onlineFlag the specified online flag
@@ -79,6 +79,7 @@ public final class UserMgmtService {
             transaction = userRepository.beginTransaction();
 
             user.put(UserExt.USER_ONLINE_FLAG, onlineFlag);
+            user.put(UserExt.USER_LATEST_LOGIN_TIME, System.currentTimeMillis());
 
             userRepository.update(userId, user);
 
@@ -273,6 +274,7 @@ public final class UserMgmtService {
             user.put(UserExt.USER_ONLINE_FLAG, false);
             user.put(UserExt.USER_LATEST_ARTICLE_TIME, 0L);
             user.put(UserExt.USER_LATEST_CMT_TIME, 0L);
+            user.put(UserExt.USER_LATEST_LOGIN_TIME, 0L);
 
             final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
             int memberCount = memberCntOption.optInt(Option.OPTION_VALUE);

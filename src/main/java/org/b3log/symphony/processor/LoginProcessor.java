@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 25, 2012
+ * @version 1.0.0.5, Nov 8, 2012
  * @since 0.2.0
  */
 @RequestProcessor

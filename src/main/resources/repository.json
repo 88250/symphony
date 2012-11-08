@@ -257,6 +257,10 @@
         {
             "name": "userLatestCmtTime",
             "type": "long"
+        },
+        {
+            "name": "userLatestLoginTime",
+            "type": "long"
         }
         ]
     },
