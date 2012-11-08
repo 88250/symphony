@@ -137,9 +137,9 @@ public class InitProcessor {
             admin = UserQueryService.getInstance().getAdmin();
             final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
             final JSONObject article = new JSONObject();
-            article.put(Article.ARTICLE_TITLE, "你好，世界！");
-            article.put(Article.ARTICLE_TAGS, "B3log, Java");
-            article.put(Article.ARTICLE_CONTENT, "B3log Symphony 第一帖 ;-p");
+            article.put(Article.ARTICLE_TITLE, "B3log 社区上线！");
+            article.put(Article.ARTICLE_TAGS, "B3log, Java, B3log Announcement");
+            article.put(Article.ARTICLE_CONTENT, "看 [About](/about) 了解一下这里吧 ;-p");
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
             article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.optString(User.USER_EMAIL));
             article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
