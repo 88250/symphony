@@ -1,18 +1,33 @@
+<#if ADLabel!="">
 <div class="index-module">
     ${ADLabel}
 </div>
+</#if>
+<#if sideLatestCmts?size!=0>
 <div class="index-module">
     <h2>
         ${recentCommentLabel}
     </h2>
-    <ul class="index-module-list">
+    <ul class="index-module-list recent-comment">
         <#list sideLatestCmts as cmt>
-        <li>
-            ${cmt}
+        <li class="fn-clear<#if !cmt_has_next> last</#if>">
+            <#if cmt_index%2=1>
+            <a class="fn-left" href="/member/${cmt.commenter.userName}" 
+               title="${cmt.commenter.userName}"><img class="avatar-small" src="${cmt.commenter.userThumbnailURL}" /></a>
+            <a class="comment-content" style="float: left; margin-left: 5px; width: 228px;" 
+               title="${cmt.commentArticleTitle}" href="${cmt.commentSharpURL}">${cmt.commentContent}</a>
+            <#else>
+            <a class="comment-content"
+               title="${cmt.commentArticleTitle}" href="${cmt.commentSharpURL}">${cmt.commentContent}</a>
+            <a class="fn-left href="/member/${cmt.commenter.userName}" 
+               title="${cmt.commenter.userName}"><img class="avatar-small" src="${cmt.commenter.userThumbnailURL}" /></a>
+            </#if>
         </li>
         </#list>
     </ul>
 </div>
+</#if>
+<#if sideRandomArticles?size!=0>
 <div class="index-module">
     <h2>
         ${randomArticleLabel}
@@ -31,6 +46,8 @@
         </#list>
     </ul>
 </div>
+</#if>
+<#if sideTags?size!=0>
 <div class="index-module">
     <h2>
         ${tagLabel}
@@ -55,3 +72,4 @@
         </#list>
     </ul>
 </div>
+</#if>

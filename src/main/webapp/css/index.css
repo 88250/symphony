@@ -18,7 +18,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.7, Nov 8, 2012
+* @version 1.0.0.8, Nov 9, 2012
 */
 /* start module */
 .index-module {
@@ -33,10 +33,11 @@
 }
 
 .index-module > h2 {
-    border-bottom: 1px solid #999;
-    color: #777;
+    border-bottom: 1px solid #ccc;
+    color: #aaa;
     margin-bottom: 3px;
     padding-bottom: 3px;
+    font-size: 14px;
 }
 
 .index-module .index-module-list > li {
@@ -45,6 +46,27 @@
 
 .index-module li {
     list-style: none;
+}
+
+.index-module .recent-comment li {
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 6px;
+}
+
+.index-module .recent-comment li.last {
+    border-bottom-width: 0;
+    padding-bottom: 0;
+}
+
+.index-module .avatar-small {
+    margin-top: 4px;
+}
+
+.index-module .comment-content {
+    float: left; 
+    margin-left: 5px;
+    width: 228px;
+    color: #999;
 }
 /* end module */
 
@@ -66,6 +88,7 @@
     margin: 10px 0;
     padding: 3px;
     width: 99%;
+    background-color: #FAFAFA;
 }
 
 .comment-login > a {
@@ -112,7 +135,7 @@
     background-color: #FFFFFF;
     border-color: #DDDDDD;
     border-radius: 3px 3px 0 0;
-    opacity: 0.8;
+    opacity: 0.9;
     z-index: 2;
 }
 
@@ -134,7 +157,7 @@
     top: 26px;
     width: 244px;
     z-index: 1;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .tags > li > div > .ft-small {
