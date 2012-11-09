@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Nov 9, 2012
+ * @version 1.0.0.8, Nov 9, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -108,8 +108,6 @@ public final class CommentQueryService {
                 commenter.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
 
                 comment.put(Comment.COMMENT_T_COMMENTER, commenter);
-
-                genCommentContentUserName(comment);
             }
 
             return ret;

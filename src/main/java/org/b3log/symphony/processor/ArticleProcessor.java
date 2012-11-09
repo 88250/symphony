@@ -39,6 +39,7 @@ import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
@@ -313,6 +314,8 @@ public final class ArticleProcessor {
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        
+        LOGGER.info(requestJSONObject.toString(SymphonyServletListener.JSON_PRINT_INDENT_FACTOR));
 
         final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
         final String symphonyKey = requestJSONObject.optString(Common.SYMPHONY_KEY);
