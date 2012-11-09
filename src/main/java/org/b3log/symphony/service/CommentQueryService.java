@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Oct 29, 2012
+ * @version 1.0.0.7, Nov 9, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -90,11 +90,15 @@ public final class CommentQueryService {
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             for (final JSONObject comment : ret) {
-                comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
+                comment.put(Comment.COMMENT_CREATE_TIME, comment.optLong(Comment.COMMENT_CREATE_TIME));
                 final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
+                
+                final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+                final JSONObject commenter = userRepository.get(commenterId);
+                comment.put(Comment.COMMENT_T_COMMENTER, commenter);
 
                 processCommentContent(comment);
             }
