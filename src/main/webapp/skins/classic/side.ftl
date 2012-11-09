@@ -13,8 +13,13 @@
         <li class="fn-clear<#if !cmt_has_next> last</#if>">
             <a class="fn-left" href="/member/${cmt.commenter.userName}" 
                title="${cmt.commenter.userName}"><img class="avatar-small" src="${cmt.commenter.userThumbnailURL}" /></a>
+               
+            <#assign length = cmt.commentContent?length>
+            <#if length gt 32>
+                <#assign length = 32>
+            </#if>
             <a class="comment-content"
-               title="${cmt.commentArticleTitle}" href="${cmt.commentSharpURL}">${cmt.commentContent?substring(0, 32)}</a>
+               title="${cmt.commentArticleTitle}" href="${cmt.commentSharpURL}">${cmt.commentContent?substring(0, length)}</a>
         </li>
         </#list>
     </ul>
