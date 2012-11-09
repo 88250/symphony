@@ -109,9 +109,7 @@ public final class CommentQueryService {
 
                 comment.put(Comment.COMMENT_T_COMMENTER, commenter);
 
-
-
-                processCommentContent(comment);
+                genCommentContentUserName(comment);
             }
 
             return ret;
@@ -305,6 +303,24 @@ public final class CommentQueryService {
      * @param comment the specified comment
      */
     private void processCommentContent(final JSONObject comment) {
+        genCommentContentUserName(comment);
+
+        String commentContent = comment.optString(Comment.COMMENT_CONTENT);
+        try {
+            commentContent = Markdowns.toHTML(commentContent);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Markdowns comment content failed", e);
+        }
+
+        comment.put(Comment.COMMENT_CONTENT, commentContent);
+    }
+
+    /**
+     * Generates &#64;username home URL for the specified comment content.
+     * 
+     * @param comment the specified comment
+     */
+    private void genCommentContentUserName(final JSONObject comment) {
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
         try {
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
@@ -314,12 +330,6 @@ public final class CommentQueryService {
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Generates @username home URL for comment content failed", e);
-        }
-
-        try {
-            commentContent = Markdowns.toHTML(commentContent);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Markdowns comment content failed", e);
         }
 
         comment.put(Comment.COMMENT_CONTENT, commentContent);
