@@ -14,7 +14,7 @@
             <a class="fn-left" href="/member/${cmt.commenter.userName}" 
                title="${cmt.commenter.userName}"><img class="avatar-small" src="${cmt.commenter.userThumbnailURL}" /></a>
             <a class="comment-content"
-               title="${cmt.commentArticleTitle}" href="${cmt.commentSharpURL}">${cmt.commentContent}</a>
+               title="${cmt.commentArticleTitle}" href="${cmt.commentSharpURL}">${cmt.commentContent?substring(0, 32)}</a>
         </li>
         </#list>
     </ul>
