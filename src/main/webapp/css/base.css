@@ -642,6 +642,12 @@ button.red:active {
     top: 22px;
 }
 
+.article-list li .commenters > a {
+    float: left;
+    margin-left: 4px;
+    width: 25px;
+}
+
 .article-list li:hover .count {
     display: none;
 }

@@ -36,12 +36,12 @@
                             </ul>
                         </div>
                         <div style="margin-top:35px">
-                            <a class="ft-noline fn-left" title="${creatorLabel}:${tag.tagCreatorName}" href="/member/${tag.tagCreatorName}">
+                            <a style="float: left; width: 48px;" class="ft-noline fn-left" title="${creatorLabel}:${tag.tagCreatorName}" href="/member/${tag.tagCreatorName}">
                                 <img style="margin-left:20px" class="avatar fn-left" src="${tag.tagCreatorThumbnailURL}">
                             </a>
                             <div class="fn-right">
                                 <#list tag.tagParticipants as commenter>
-                                <a class="ft-noline" title="${contributorLabel}:${commenter.tagParticipantName}" href="/member/${commenter.tagParticipantName}">
+                                <a style="float: left; width: 58px;" class="ft-noline" title="${contributorLabel}:${commenter.tagParticipantName}" href="/member/${commenter.tagParticipantName}">
                                     <img class="avatar fn-left" src="${commenter.tagParticipantThumbnailURL}">
                                 </a>
                                 </#list>
