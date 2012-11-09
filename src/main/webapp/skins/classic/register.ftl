@@ -12,14 +12,14 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper fn-clear register">
-                <div class="form fn-left">
+                <div class="form fn-left" style="width: 234px;">
                     <table cellpadding="0" cellspacing="0">
                         <tbody>
                             <tr>
                                 <td width="70">
                                     <label for="userName">${userNameLabel}</label>
                                 </td>
-                                <td>
+                                <td width="165">
                                     <input type="text" id="userName" />
                                     <span style="left:240px;top:10px;"></span>
                                 </td>
@@ -56,7 +56,7 @@
                                     <label for="securityCode">${captchaLabel}</label>
                                 </td>
                                 <td>
-                                    <input style="width:100px;" type="text" id="securityCode" />
+                                    <input style="width:98px;" type="text" id="securityCode" />
                                     <img id="captcha" style="cursor:pointer" src="/captcha" onclick="this.src='/captcha?'+(new Date()).getTime()" />
                                     <span style="top:202px;left:240px;"></span>
                                 </td>
