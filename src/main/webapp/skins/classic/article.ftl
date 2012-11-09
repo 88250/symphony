@@ -69,7 +69,7 @@
                     </div>
                     <div class="form fn-clear">
                         <#if isLoggedIn>
-                        <textarea id="commentContent"></textarea>
+                        <textarea id="commentContent" rows="3"></textarea>
                         <span style="right:0;top:11px;"></span>
                         <button class="green fn-right" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
                         <#else>

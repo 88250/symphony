@@ -3,6 +3,18 @@
 </div>
 <div class="index-module">
     <h2>
+        ${recentCommentLabel}
+    </h2>
+    <ul class="index-module-list">
+        <#list sideLatestCmts as cmt>
+        <li>
+            ${cmt}
+        </li>
+        </#list>
+    </ul>
+</div>
+<div class="index-module">
+    <h2>
         ${randomArticleLabel}
     </h2>
     <ul class="index-module-list">

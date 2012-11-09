@@ -28,14 +28,14 @@
                                 <li>
                                     <div class="fn-clear">
                                         <div class="fn-left comment-main" style="width:670px">
-                                            <span class="fn-clear">
+                                            <div class="fn-clear">
                                                 <span class="fn-left">
                                                     <h2><a href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a></h2>
                                                 </span>
                                                 <span class="fn-right ft-small">
                                                     ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
                                                 </span>    
-                                            </span>
+                                            </div>
                                             <div class="content-reset">
                                                 ${comment.commentContent}  
                                             </div>

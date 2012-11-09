@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * </ul> 
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 26, 2012
+ * @version 1.0.0.1, Nov 8, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -68,6 +68,8 @@ public final class NewsProcessor {
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer().setJSONP(true);
         context.setRenderer(renderer);
+        
+        renderer.setCallback(request.getParameter("callback"));
 
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);

@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Nov 2, 2012
+ * @version 1.0.0.4, Nov 8, 2012
  */
 
 /**
@@ -46,12 +46,19 @@ var Comment = {
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
+                beforeSend: function () {
+                    $(".form button.green").attr("disabled", "disabled").css("opacity", "0.3");
+                },
                 success: function(result, textStatus){
+                    $(".form button.green").removeAttr("disabled").css("opacity", "1");
                     if (result.sc) {
                         window.location.reload();
                     } else {
                         $("#commentContent").next().addClass("tip-error").text(result.msg);
                     }
+                },
+                complete: function () {
+                    $(".form button.green").removeAttr("disabled").css("opacity", "1");
                 }
             });
         }
@@ -71,6 +78,10 @@ var Comment = {
                 this.rows += 1;
             }
             this.rows += 1;
+            
+            if (this.rows < 3) {
+                this.rows = 3;
+            }
         });
     }
 };

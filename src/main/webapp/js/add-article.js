@@ -17,7 +17,7 @@
  * @fileoverview add-article.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Oct 29, 2012
+ * @version 1.0.0.5, Nov 8, 2012
  */
 
 /**
@@ -55,7 +55,11 @@ var AddArticle = {
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
+                beforeSend: function () {
+                    $(".form button.red").attr("disabled", "disabled").css("opacity", "0.3");
+                },
                 success: function(result, textStatus){
+                    $(".form button.red").removeAttr("disabled").css("opacity", "1");
                     if (result.sc) {
                         window.location = "/member/" + Label.userName;
                     } else {
@@ -65,6 +69,9 @@ var AddArticle = {
                             "width": "985px"
                         });
                     }
+                },
+                complete: function () {
+                    $(".form button.red").removeAttr("disabled").css("opacity", "1"); 
                 }
             });
         }
