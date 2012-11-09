@@ -10,7 +10,7 @@
                 <input type="hidden" name="oe" value="UTF-8" />
                 <input type="hidden" name="ie" value="UTF-8" />
                 <input type="hidden" name="newwindow" value="0" />
-                <input type="hidden" name="sitesearch" value="${servePath}" />
+                <input type="hidden" name="sitesearch" value="symphony.b3log.org" />
             </form>
             <span class="tags">
                 <#list trendTags as trendTag>
