@@ -95,10 +95,21 @@ public final class CommentQueryService {
                 final JSONObject article = articleRepository.get(articleId);
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
-                
+
                 final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
                 final JSONObject commenter = userRepository.get(commenterId);
+                final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
+                String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
+                    final String hashedEmail = MD5.hash(commenterEmail);
+                    thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
+                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                }
+                commenter.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
+
                 comment.put(Comment.COMMENT_T_COMMENTER, commenter);
+
+
 
                 processCommentContent(comment);
             }
@@ -182,7 +193,6 @@ public final class CommentQueryService {
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
                             + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 }
-
 
                 final JSONObject participant = new JSONObject();
                 participant.put(Article.ARTICLE_T_PARTICIPANT_NAME, commenter.optString(User.USER_NAME));
