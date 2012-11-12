@@ -34,6 +34,7 @@ import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
@@ -94,6 +95,10 @@ public final class ArticleQueryService {
      * Count to fetch article tags for relevant articles.
      */
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Gets the relevant articles of the specified article with the specified fetch size.
@@ -112,7 +117,7 @@ public final class ArticleQueryService {
         final String[] tagTitles = tagsString.split(",");
         final int tagTitlesLength = tagTitles.length;
         final int subCnt = tagTitlesLength > RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT
-                           ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
+                ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
 
         final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
         final int subFetchSize = fetchSize / subCnt;
@@ -377,6 +382,14 @@ public final class ArticleQueryService {
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(ret);
 
+            for (final JSONObject article : ret) {
+                final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                final JSONObject author = userRepository.get(authorId);
+                if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
+                    article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+                }
+            }
+
             final Integer participantsCnt = Symphonys.getInt("latestCmtArticleParticipantsCnt");
             genParticipants(ret, participantsCnt);
 
@@ -447,7 +460,7 @@ public final class ArticleQueryService {
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
         final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(authorEmail) + "?s=140&d="
-                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
@@ -498,18 +511,35 @@ public final class ArticleQueryService {
      *   <li>Generates &#64;username home URL</li>
      *   <li>Markdowns</li>
      *   <li>Generates secured article content</li>
+     *   <li>Blocks the article if need</li>
      * </ul>
      * 
-     * @param article the specified article
+     * @param article the specified article, for example,
+     * <pre>
+     * {
+     *     "articleTitle": "",
+     *     ...., 
+     *     "author": {}
+     * }
+     * </pre>
      * @throws ServiceException service exception 
      */
     public void processArticleContent(final JSONObject article) throws ServiceException {
+        final JSONObject author = article.optJSONObject(Article.ARTICLE_T_AUTHOR);
+        if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
+                || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+            article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+            article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
+
+            return;
+        }
+
         String articleContent = article.optString(Article.ARTICLE_CONTENT);
         try {
             final Set<String> userNames = userQueryService.getUserNames(articleContent);
             for (final String userName : userNames) {
                 articleContent = articleContent.replace('@' + userName,
-                                                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
+                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
             final String errMsg = "Generates @username home URL for comment content failed";

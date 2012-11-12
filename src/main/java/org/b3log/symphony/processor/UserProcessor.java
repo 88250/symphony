@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Nov 1, 2012
+ * @version 1.0.1.2, Nov 12, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -113,17 +113,27 @@ public final class UserProcessor {
     @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userName) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("/home/home.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
         final JSONObject user = userQueryService.getUserByName(userName);
         if (null == user) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
+
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
+
+        if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
+            renderer.setTemplateName("/home/block.ftl");
+
+            return;
+        }
+
+        renderer.setTemplateName("/home/home.ftl");
 
         dataModel.put(User.USER, user);
         fillUserThumbnailURL(user);
@@ -134,8 +144,7 @@ public final class UserProcessor {
                 user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeArticlesCnt"));
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
 
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
+
     }
 
     /**

@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Nov 8, 2012
+ * @version 1.0.0.8, Nov 12, 2012
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -112,6 +112,15 @@ public final class UserExt {
      * Default administrator name.
      */
     public static final String DEFAULT_ADMIN_NAME = "88250";
+    // Status constants
+    /**
+     * User status - valid.
+     */
+    public static final int USER_STATUS_C_VALID = 0;
+    /**
+     * User status - invalid.
+     */
+    public static final int USER_STATUS_C_INVALID = 1;
 
     /**
      * Private constructor.

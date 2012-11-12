@@ -29,6 +29,7 @@ import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
@@ -45,7 +46,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Nov 9, 2012
+ * @version 1.0.0.9, Nov 12, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -74,6 +75,10 @@ public final class CommentQueryService {
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Gets the latest comments with the specified fetch size.
@@ -98,6 +103,12 @@ public final class CommentQueryService {
 
                 final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
                 final JSONObject commenter = userRepository.get(commenterId);
+
+                if (UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)
+                        || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
+                    comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
+                }
+
                 final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
@@ -140,6 +151,9 @@ public final class CommentQueryService {
                 final JSONObject article = articleRepository.get(articleId);
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
+
+                final JSONObject commenter = userRepository.get(userId);
+                comment.put(Comment.COMMENT_T_COMMENTER, commenter);
 
                 processCommentContent(comment);
             }
@@ -243,6 +257,7 @@ public final class CommentQueryService {
      *   <li>generates comment author name</li>
      *   <li>generates &#64;username home URL</li>
      *   <li>markdowns comment content</li>
+     *   <li>blockl comment if need</li>
      * </ul>
      * 
      * @param comments the specified comments
@@ -264,6 +279,7 @@ public final class CommentQueryService {
      *   <li>generates comment author name</li>
      *   <li>generates &#64;username home URL</li>
      *   <li>markdowns comment content</li>
+     *   <li>blockl comment if need</li>
      * </ul>
      * 
      * @param comment the specified comment
@@ -284,6 +300,7 @@ public final class CommentQueryService {
 
         final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
         final JSONObject author = userRepository.get(authorId);
+        comment.put(Comment.COMMENT_T_COMMENTER, author);
         comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
         comment.put(Comment.COMMENT_T_AUTHOR_URL, author.optString(User.USER_URL));
 
@@ -296,11 +313,28 @@ public final class CommentQueryService {
      * <ul>
      *   <li>Generates &#64;username home URL</li>
      *   <li>Markdowns</li>
+     *   <li>Blocks comment if need</li>
      * </ul>
      * 
-     * @param comment the specified comment
+     * @param comment the specified comment, for example, 
+     * <pre>
+     * {
+     *     "commentContent": "",
+     *     ...., 
+     *     "commenter": {}
+     * }
+     * </pre>
      */
     private void processCommentContent(final JSONObject comment) {
+        final JSONObject commenter = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
+
+        if (Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)
+                || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
+            comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
+
+            return;
+        }
+
         genCommentContentUserName(comment);
 
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);

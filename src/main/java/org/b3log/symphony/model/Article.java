@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 25, 2012
+ * @version 1.0.0.8, Nov 12, 2012
  * @since 0.2.0
  */
 public final class Article {
@@ -114,6 +114,10 @@ public final class Article {
      */
     public static final String ARTICLE_T_ID = "articleId";
     /**
+     * Key of article author.
+     */
+    public static final String ARTICLE_T_AUTHOR = "articleAuthor";
+    /**
      * Key of article author thumbnail URL.
      */
     public static final String ARTICLE_T_AUTHOR_THUMBNAIL_URL = "articleAuthorThumbnailURL";
@@ -149,6 +153,15 @@ public final class Article {
      * Key of article participant URL.
      */
     public static final String ARTICLE_T_PARTICIPANT_URL = "articleParticipantURL";
+    // Status constants
+    /**
+     * Article status - valid.
+     */
+    public static final int ARTICLE_STATUS_C_VALID = 0;
+    /**
+     * Article status - invalid.
+     */
+    public static final int ARTICLE_STATUS_C_INVALID = 1;
 
     /**
      * Private constructor.

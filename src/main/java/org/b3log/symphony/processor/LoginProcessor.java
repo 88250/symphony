@@ -44,6 +44,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.UserMgmtService;
@@ -203,6 +204,13 @@ public final class LoginProcessor {
                 return;
             }
 
+            if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
+                UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
+                ret.put(Keys.MSG, langPropsService.get("userBlockLabel"));
+
+                return;
+            }
+
             final String userPassword = user.optString(User.USER_PASSWORD);
             if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
                 Sessions.login(request, response, user);
@@ -290,6 +298,14 @@ public final class LoginProcessor {
                 final JSONObject user = UserQueryService.getInstance().getUserByEmail(userEmail.toLowerCase().trim());
                 if (null == user) {
                     break;
+                }
+
+                if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
+                    Sessions.logout(request, response);
+
+                    UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
+
+                    return false;
                 }
 
                 final String userPassword = user.optString(User.USER_PASSWORD);

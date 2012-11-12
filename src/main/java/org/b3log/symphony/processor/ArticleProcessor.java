@@ -164,6 +164,8 @@ public final class ArticleProcessor {
         article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
         dataModel.put(Article.ARTICLE, article);
 
+        article.put(Article.ARTICLE_T_AUTHOR, author);
+
         articleQueryService.processArticleContent(article);
 
         String pageNumStr = request.getParameter("p");
@@ -314,7 +316,7 @@ public final class ArticleProcessor {
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-        
+
         LOGGER.info(requestJSONObject.toString(SymphonyServletListener.JSON_PRINT_INDENT_FACTOR));
 
         final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);

@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 5, 2012
+ * @version 1.0.0.4, Nov 12, 2012
  * @since 0.2.0
  */
 public final class Comment {
@@ -97,6 +97,15 @@ public final class Comment {
      * Key of comment article permalink.
      */
     public static final String COMMENT_T_ARTICLE_PERMALINK = "commentArticlePermalink";
+    // Status constants
+    /**
+     * Comment status - valid.
+     */
+    public static final int COMMENT_STATUS_C_VALID = 0;
+    /**
+     * Comment status - invalid.
+     */
+    public static final int COMMENT_STATUS_C_INVALID = 1;
 
     /**
      * Private constructor.
