@@ -23,8 +23,8 @@
                                 </#list>
                             </div>
                             <div class="fn-right">
-                                &nbsp;${viewLabel} <a href="${article.articlePermalink}">${article.articleViewCount}</a> 
-                                ${cmtLabel} <a href="${article.articlePermalink}#comments">${article.articleCommentCount}</a>   
+                                &nbsp;${viewLabel} <a rel="nofollow" href="${article.articlePermalink}">${article.articleViewCount}</a> 
+                                ${cmtLabel} <a rel="nofollow" href="${article.articlePermalink}#comments">${article.articleCommentCount}</a>   
                             </div>
                             <div class="fn-right">
                                 ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
@@ -51,7 +51,7 @@
                                     <div class="fn-left comment-main">
                                         <div class="fn-clear">
                                             <span class="fn-left">
-                                                <a href="/member/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
+                                                <a rel="nofollow" href="/member/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                             </span>
                                             <span class="fn-right ft-small">
                                                 ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} #${comment_index + 1}
@@ -74,7 +74,7 @@
                         <button class="green fn-right" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
                         <#else>
                         <div class="comment-login">
-                            <a href="javascript:window.scrollTo(0,0);Util.showLogin();">${pleaseLoginLabel}</a>
+                            <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${pleaseLoginLabel}</a>
                         </div>
                         </#if>
                     </div>
@@ -87,10 +87,10 @@
                                 <img src="${article.articleAuthorThumbnailURL}" />
                             </div>
                             <div class="fn-left">
-                                <a href="/member/${article.articleAuthorName}" title="${article.articleAuthorName}">${article.articleAuthorName}</a>
+                                <a rel="author" href="/member/${article.articleAuthorName}" title="${article.articleAuthorName}">${article.articleAuthorName}</a>
                                 <#if article.articleAuthorURL!="">
                                 <br/>
-                                <a href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
+                                <a rel="nofollow" href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
                                 </#if>
                             </div>
                         </div>
@@ -105,10 +105,10 @@
                         <ul class="index-module-list">
                             <#list sideRelevantArticles as relevantArticle>
                             <li>
-                                <a href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
+                                <a rel="nofollow" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
-                                        <a href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
+                                        <a rel="nofollow" href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
                                         <span class="date-ico"> ${relevantArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                                     </span>
                                 </div>
@@ -123,10 +123,10 @@
                         <ul class="index-module-list">
                             <#list sideRandomArticles as randomArticle>
                             <li>
-                                <a href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
+                                <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
-                                        <a href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
+                                        <a rel="nofollow" href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
                                         <span class="date-ico"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                                     </span>
                                 </div>

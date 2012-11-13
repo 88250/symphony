@@ -19,7 +19,7 @@
                         <#if tag.tagIconPath!="">
                         <img style="width:60px;height:60px;" class="avatar fn-left" src="${tag.tagIconPath}">
                         </#if>
-                        <h1><a title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
+                        <h1><a rel="tag" title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
                         ${tag.tagDescription}
                     </div>
                     <div class="fn-clear">
@@ -36,12 +36,12 @@
                             </ul>
                         </div>
                         <div style="margin-top:35px">
-                            <a style="float: left; width: 48px;" class="ft-noline fn-left" title="${creatorLabel}:${tag.tagCreatorName}" href="/member/${tag.tagCreatorName}">
+                            <a rel="nofollow" style="width: 48px;" class="ft-noline fn-left" title="${creatorLabel}:${tag.tagCreatorName}" href="/member/${tag.tagCreatorName}">
                                 <img style="margin-left:20px" class="avatar fn-left" src="${tag.tagCreatorThumbnailURL}">
                             </a>
                             <div class="fn-right">
                                 <#list tag.tagParticipants as commenter>
-                                <a style="float: left; width: 58px;" class="ft-noline" title="${contributorLabel}:${commenter.tagParticipantName}" href="/member/${commenter.tagParticipantName}">
+                                <a rel="nofollow" style="width: 58px;" class="ft-noline fn-left" title="${contributorLabel}:${commenter.tagParticipantName}" href="/member/${commenter.tagParticipantName}">
                                     <img class="avatar fn-left" src="${commenter.tagParticipantThumbnailURL}">
                                 </a>
                                 </#list>

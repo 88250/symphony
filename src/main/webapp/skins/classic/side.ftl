@@ -11,14 +11,14 @@
     <ul class="index-module-list recent-comment">
         <#list sideLatestCmts as cmt>
         <li class="fn-clear<#if !cmt_has_next> last</#if>">
-            <a class="fn-left" href="/member/${cmt.commenter.userName}" 
+            <a rel="nofollow" class="fn-left" href="/member/${cmt.commenter.userName}" 
                title="${cmt.commenter.userName}"><img class="avatar-small" src="${cmt.commenter.userThumbnailURL}" /></a>
                
             <#assign length = cmt.commentContent?length>
             <#if length gt 32>
                 <#assign length = 32>
             </#if>
-            <a class="comment-content"
+            <a rel="nofollow" class="comment-content"
                title="${cmt.commentArticleTitle}" href="${cmt.commentSharpURL}">${cmt.commentContent?substring(0, length)}</a>
         </li>
         </#list>
@@ -33,10 +33,10 @@
     <ul class="index-module-list">
         <#list sideRandomArticles as randomArticle>
         <li>
-            <a href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
+            <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
             <div class="ft-small">
                 <span>
-                    <a href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
+                    <a rel="nofollow" href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
                     <span class="date-ico"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                 </span>
             </div>
@@ -57,7 +57,7 @@
                 <#if tag.tagIconPath!="">
                 <img src="${tag.tagIconPath}" />
                 </#if>
-                <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                <a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
             </span>
             <div <#if tag.tagDescription="">style="width:auto;white-space: nowrap;"</#if>>
                 <div>${tag.tagDescription}</div>

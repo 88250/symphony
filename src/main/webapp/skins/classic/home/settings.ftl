@@ -14,7 +14,7 @@
                 <div class="module">
                     <div class="module-header fn-clear">
                         <h2 class="fn-left">
-                            <a href="/member/${user.userName}">${user.userName}</a>
+                            <a rel="nofollow" href="/member/${user.userName}">${user.userName}</a>
                             ${profilesLabel}
                         </h2>&nbsp;
                         <span style="line-height:24px">(${user.userEmail})</span>
@@ -53,7 +53,7 @@
                                     <img class="avatar fn-left" src="${user.userThumbnailURL}">
                                 </td>
                                 <td>
-                                    <a target="_blank" href="http://gravatar.com">${changeAvatarLabel}</a>
+                                    <a rel="friend" target="_blank" href="http://gravatar.com">${changeAvatarLabel}</a>
                                 </td>
                             </tr>
                             <tr>

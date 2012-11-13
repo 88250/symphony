@@ -2,7 +2,7 @@
 <#if paginationPageCount!=0 && paginationPageCount!=1>
 <div class="pagination">
     <#if paginationFirstPageNum!=1>
-    <a href="${url}"><<1</a>
+    <a rel="prev" href="${url}"><<1</a>
     </#if>
     <#list paginationPageNums as nums>
     <#if nums=paginationCurrentPageNum>
@@ -12,7 +12,7 @@
     </#if>
     </#list>
     <#if paginationLastPageNum!=paginationPageCount>
-    <a href="${url}?p=${paginationPageCount}">${paginationPageCount}>></a>
+    <a rel="next" href="${url}?p=${paginationPageCount}">${paginationPageCount}>></a>
     </#if>
 </div>
 </#if>

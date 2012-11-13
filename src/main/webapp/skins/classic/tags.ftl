@@ -25,7 +25,7 @@
                                         <#if tag.tagIconPath!="">
                                         <img width="16" height="16" src="${tag.tagIconPath}" />
                                         </#if>
-                                        <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                        <a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                     </div>
                                     <span class="ft-small fn-right">
                                         引用 ${tag.tagReferenceCount}
@@ -49,7 +49,7 @@
                                         <#if tag.tagIconPath!="">
                                         <img width="16" height="16" src="${tag.tagIconPath}" />
                                         </#if>
-                                        <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                        <a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                     </div>
                                     <span class="ft-small fn-right">
                                         引用 ${tag.tagReferenceCount}
