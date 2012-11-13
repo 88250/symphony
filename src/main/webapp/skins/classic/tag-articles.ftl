@@ -4,9 +4,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content="${tag.tagTitle}"/>
-        <meta name="description" content=""/>
+        <@head title="B3log ${symphonyLabel} - ${tag.tagTitle}">
+        <meta name="keywords" content="${tag.tagTitle},${tag.tagCreatorName}"/>
+        <meta name="description" content="${tag.tagCreatorName},${tag.tagDescription}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index.css" />
     </head>

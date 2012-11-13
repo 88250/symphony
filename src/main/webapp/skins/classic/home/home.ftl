@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="${userName} - ${articleLabel}">
+        <meta name="keywords" content="${userName},${articleLabel}"/>
+        <meta name="description" content="<#list userHomeArticles as article><#if article_index<3>${article.articleTitle},</#if></#list>"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home.css" />
     </head>

@@ -2,9 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="${userName} - ${settingsLabel}">
+        <meta name="robots" content="none" />
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home.css" />
     </head>

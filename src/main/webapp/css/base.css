@@ -201,6 +201,10 @@ textarea {
     font-size: 12px;
 }
 
+.ft-center {
+    text-align: center;
+}
+
 a.ft-noline:hover {
     text-decoration: none;
 }

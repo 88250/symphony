@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="${userName} - ${cmtLabel}">
+        <meta name="keywords" content="${userName},${cmtLabel}"/>
+        <meta name="description" content="${userName}${deLabel}${cmtLabel},${cmtLabel} by ${userName}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home.css" />
     </head>
