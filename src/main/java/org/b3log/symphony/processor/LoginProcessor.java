@@ -201,6 +201,7 @@ public final class LoginProcessor {
             }
 
             if (null == user) {
+                ret.put(Keys.MSG, langPropsService.get("notFoundUserLabel"));
                 return;
             }
 
@@ -218,7 +219,11 @@ public final class LoginProcessor {
 
                 ret.put(Keys.MSG, "");
                 ret.put(Keys.STATUS_CODE, true);
+
+                return;
             }
+
+            ret.put(Keys.MSG, langPropsService.get("wrongPwdLabel"));
         } catch (final ServiceException e) {
             ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));
         }
