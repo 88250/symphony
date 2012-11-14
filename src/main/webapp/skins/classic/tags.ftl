@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="B3log ${symphonyLabel} - ${tagLabel}">
+        <meta name="keywords" content="${trendTagsLabel},${coldTagsLabel}"/>
+        <meta name="description" content="B3log ${symphonyLabel} ${trendTagsLabel},B3log ${symphonyLabel} ${coldTagsLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index.css" />
     </head>
@@ -25,7 +25,7 @@
                                         <#if tag.tagIconPath!="">
                                         <img width="16" height="16" src="${tag.tagIconPath}" />
                                         </#if>
-                                        <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                        <a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                     </div>
                                     <span class="ft-small fn-right">
                                         引用 ${tag.tagReferenceCount}
@@ -49,7 +49,7 @@
                                         <#if tag.tagIconPath!="">
                                         <img width="16" height="16" src="${tag.tagIconPath}" />
                                         </#if>
-                                        <a href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                        <a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                     </div>
                                     <span class="ft-small fn-right">
                                         引用 ${tag.tagReferenceCount}

@@ -4,11 +4,11 @@
         <#list listData as article>
         <li>
             <div class="fn-clear">
-                <a class="ft-noline" 
+                <a rel="nofollow" class="ft-noline" 
                    href="/member/${article.articleAuthorName}" 
                    title="${article.articleAuthorName}"><img class="avatar fn-left" src="${article.articleAuthorThumbnailURL}" /></a>
                 <div class="fn-left" style="width: 550px">
-                    <h2><a href="${article.articlePermalink}">${article.articleTitle}</a></h2>
+                    <h2><a rel="bookmark" href="${article.articlePermalink}">${article.articleTitle}</a></h2>
                     <span class="ft-small">
                         <#list article.articleTags?split(",") as articleTag>
                         <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
@@ -19,12 +19,12 @@
                 </div>
             </div>
             <div class="count ft-small">
-                ${viewLabel} <a href="">${article.articleViewCount}</a><br/>
-                ${cmtLabel} <a href="">${article.articleCommentCount}</a>
+                ${viewLabel} <a rel="nofollow" href="${article.articlePermalink}">${article.articleViewCount}</a><br/>
+                ${cmtLabel} <a rel="nofollow" href="${article.articlePermalink}#comments">${article.articleCommentCount}</a>
             </div>
             <div class="commenters">
                 <#list article.articleParticipants as comment>
-                <a href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}" class="ft-noline">
+                <a rel="nofollow" href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}" class="ft-noline">
                     <img class="avatar-small" src="${comment.articleParticipantThumbnailURL}" />
                 </a>
                 </#list>

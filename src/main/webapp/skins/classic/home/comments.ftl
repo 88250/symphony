@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="${userName} - ${cmtLabel}">
+        <meta name="keywords" content="${userName},${cmtLabel}"/>
+        <meta name="description" content="${userName}${deLabel}${cmtLabel},${cmtLabel} by ${userName}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home.css" />
     </head>
@@ -30,7 +30,7 @@
                                         <div class="fn-left comment-main" style="width:670px">
                                             <div class="fn-clear">
                                                 <span class="fn-left">
-                                                    <h2><a href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a></h2>
+                                                    <h2><a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a></h2>
                                                 </span>
                                                 <span class="fn-right ft-small">
                                                     ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  

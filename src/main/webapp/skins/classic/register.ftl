@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log ${symphonyLabel}">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="B3log ${symphonyLabel} - ${registerLabel}">
+        <meta name="keywords" content="${registerLabel},B3log ${symphonyLabel}"/>
+        <meta name="description" content="${registerLabel} B3log ${symphonyLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index.css" />
     </head>

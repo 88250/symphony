@@ -3,21 +3,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="${userName} - block">
+        <meta name="robots" content="none" />
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home.css" />
     </head>
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear">
-                <div class="content">
-                    ${userBlockLabel}
-                </div>
+            <div class="wrapper ft-center">
+                <h2>${userBlockLabel}</h2>
             </div>
         </div>
-        <#include "../footer.ftl">
-    </body>
+    </div>
+    <#include "../footer.ftl">
+</body>
 </html>

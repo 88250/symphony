@@ -2,9 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="${userName} - ${addArticleLabel}">
+        <meta name="robots" content="none" />
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home.css" />
     </head>
@@ -23,7 +22,7 @@
                         <div class="fn-left">
                             <input type="checkbox" id="syncWithSymphonyClient"/> 
                             ${syncWithSymphonyClientLabel}
-                            <a href="">guide</a>
+                            <a href="/post-guide" target="_blank">guide</a>
                         </div>
                         <div class="fn-right">
                             <button class="red" onclick="AddArticle.add()">Post</button>

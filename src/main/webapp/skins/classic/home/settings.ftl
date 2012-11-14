@@ -2,9 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="${userName} - ${settingsLabel}">
+        <meta name="robots" content="none" />
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home.css" />
     </head>
@@ -15,7 +14,7 @@
                 <div class="module">
                     <div class="module-header fn-clear">
                         <h2 class="fn-left">
-                            <a href="/member/${user.userName}">${user.userName}</a>
+                            <a rel="nofollow" href="/member/${user.userName}">${user.userName}</a>
                             ${profilesLabel}
                         </h2>&nbsp;
                         <span style="line-height:24px">(${user.userEmail})</span>
@@ -54,7 +53,7 @@
                                     <img class="avatar fn-left" src="${user.userThumbnailURL}">
                                 </td>
                                 <td>
-                                    <a target="_blank" href="http://gravatar.com">${changeAvatarLabel}</a>
+                                    <a rel="friend" target="_blank" href="http://gravatar.com">${changeAvatarLabel}</a>
                                 </td>
                             </tr>
                             <tr>

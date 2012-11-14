@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log 社区">
-        <meta name="keywords" content=""/>
-        <meta name="description" content=""/>
+        <@head title="${userName} - ${articleLabel}">
+        <meta name="keywords" content="${userName},${articleLabel}"/>
+        <meta name="description" content="<#list userHomeArticles as article><#if article_index<3>${article.articleTitle},</#if></#list>"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home.css" />
     </head>
@@ -29,7 +29,7 @@
                                 <li>
                                     <div class="fn-clear">
                                         <div class="fn-left" style="width:625px">
-                                            <h2><a href="${article.articlePermalink}">${article.articleTitle}</a></h2>
+                                            <h2><a rel="bookmark" href="${article.articlePermalink}">${article.articleTitle}</a></h2>
                                             <span class="ft-small">
                                                 <#list article.articleTags?split(",") as articleTag>
                                                 <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
@@ -40,8 +40,8 @@
                                         </div>
                                     </div>
                                     <div class="count ft-small">
-                                        ${viewLabel} <a href="">${article.articleViewCount}</a><br/>
-                                        ${cmtLabel} <a href="">${article.articleCommentCount}</a>
+                                        ${viewLabel} <a rel="nofollow" href="${article.articlePermalink}">${article.articleViewCount}</a><br/>
+                                        ${cmtLabel} <a rel="nofollow" href="${article.articlePermalink}#comments">${article.articleCommentCount}</a>
                                     </div>
                                 </li>
                                 </#list>
