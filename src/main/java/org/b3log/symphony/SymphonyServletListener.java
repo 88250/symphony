@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * B3log Symphony servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 6, 2011
+ * @version 1.0.0.6, Nov 14, 2012
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -126,6 +126,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
+            httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, false);
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
             LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
