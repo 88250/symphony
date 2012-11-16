@@ -37,9 +37,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
@@ -63,7 +61,7 @@ import org.json.JSONObject;
  *   <li>Shows an article (/article/{articleId}), GET</li>
  *   <li>Shows article adding form page (/add-article), GET </li>
  *   <li>Adds an article (/article) <em>locally</em>, PUT</li> 
- *   <li>Adds an article (/rhythm/article) <em>remotely</em>, PUT</li> 
+ *   <li>Adds an article (/rhythm/article) <em>remotely</em>, POST</li> 
  * </ul> 
  *
  * <p> 
@@ -72,7 +70,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.10, Nov 14, 2012
+ * @version 1.0.1.11, Nov 16, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -279,7 +277,7 @@ public final class ArticleProcessor {
      * <p>This interface will be called by Rhythm, so here is no article data validation, just only validate the B3 key.</p>
      * 
      * <p>
-     * The request json object (an article), for example, 
+     * The request json object, for example, 
      * <pre>
      * {
      *     "article": {
@@ -308,7 +306,7 @@ public final class ArticleProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/rhythm/article", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/rhythm/article", method = HTTPRequestMethod.POST)
     public void addArticleFromRhythm(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -317,17 +315,13 @@ public final class ArticleProcessor {
         final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-
-        LOGGER.info(requestJSONObject.toString(SymphonyServletListener.JSON_PRINT_INDENT_FACTOR));
-
-        final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
-        final String symphonyKey = requestJSONObject.optString(Common.SYMPHONY_KEY);
-        final String clientAdminEmail = requestJSONObject.optString(Client.CLIENT_ADMIN_EMAIL);
-        final String clientName = requestJSONObject.optString(Client.CLIENT_NAME);
-        final String clientVersion = requestJSONObject.optString(Client.CLIENT_VERSION);
-        final String clientHost = requestJSONObject.optString(Client.CLIENT_HOST);
-        final String clientRuntimeEnv = requestJSONObject.optString(Client.CLIENT_RUNTIME_ENV);
+        final String userB3Key = request.getParameter(UserExt.USER_B3_KEY);
+        final String symphonyKey = request.getParameter(Common.SYMPHONY_KEY);
+        final String clientAdminEmail = request.getParameter(Client.CLIENT_ADMIN_EMAIL);
+        final String clientName = request.getParameter(Client.CLIENT_NAME);
+        final String clientVersion = request.getParameter(Client.CLIENT_VERSION);
+        final String clientHost = request.getParameter(Client.CLIENT_HOST);
+        final String clientRuntimeEnv = request.getParameter(Client.CLIENT_RUNTIME_ENV);
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
@@ -342,7 +336,7 @@ public final class ArticleProcessor {
             return;
         }
 
-        final JSONObject originalArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
+        final JSONObject originalArticle = new JSONObject(request.getParameter(Article.ARTICLE));
 
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
         final String articleTags = formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
