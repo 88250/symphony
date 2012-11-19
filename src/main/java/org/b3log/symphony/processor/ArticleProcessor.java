@@ -343,8 +343,8 @@ public final class ArticleProcessor {
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
         final String articleTags = formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
-        articleContent += "<br/><p>该文章同步自 <a href='" + clientHost + originalArticle.optString(Article.ARTICLE_PERMALINK) + "'>"
-                + clientTitle + "</a></p>";
+        articleContent += "<br/><br/><p><i>该文章同步自 <a href='" + clientHost + originalArticle.optString(Article.ARTICLE_PERMALINK) + "'>"
+                + clientTitle + "</a></i></p>";
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
