@@ -95,6 +95,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             comment.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
             comment.put(Comment.COMMENT_T_AUTHOR_URL, commenter.optString(commenter.optString(User.USER_URL)));
             comment.put(Comment.COMMENT_ON_ARTICLE_ID, originalArticle.optString(Article.ARTICLE_CLIENT_ARTICLE_ID));
+            comment.put(Comment.COMMENT_T_SYMPHONY_ID, originalArticle.optString(Keys.OBJECT_ID));
 
             requestJSONObject.put(Comment.COMMENT, comment);
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));

@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all solo model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 18, 2012
+ * @version 1.0.0.1, Nov 19, 2012
  * @since 0.2.0
  */
 public final class Client {
@@ -60,6 +60,11 @@ public final class Client {
      * Key of client administrator email.
      */
     public static final String CLIENT_ADMIN_EMAIL = "clientAdminEmail";
+    //// Transient ////
+    /**
+     * Key of client title.
+     */
+    public static final String CLIENT_T_TITLE = "clientTitle";
 
     /**
      * Private constructor.

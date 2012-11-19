@@ -293,6 +293,7 @@ public final class ArticleProcessor {
      *     "clientAdminEmail": "DL88250@gmail.com",
      *     "clientHost": "http://localhost:11099",
      *     "clientName": "B3log Solo",
+     *     "clientTitle": "简约设计の艺术",
      *     "clientRuntimeEnv": "LOCAL",
      *     "clientVersion": "0.5.0",
      *     "symphonyKey": "....",
@@ -319,6 +320,7 @@ public final class ArticleProcessor {
         final String symphonyKey = request.getParameter(Common.SYMPHONY_KEY);
         final String clientAdminEmail = request.getParameter(Client.CLIENT_ADMIN_EMAIL);
         final String clientName = request.getParameter(Client.CLIENT_NAME);
+        final String clientTitle = request.getParameter(Client.CLIENT_T_TITLE);
         final String clientVersion = request.getParameter(Client.CLIENT_VERSION);
         final String clientHost = request.getParameter(Client.CLIENT_HOST);
         final String clientRuntimeEnv = request.getParameter(Client.CLIENT_RUNTIME_ENV);
@@ -340,8 +342,9 @@ public final class ArticleProcessor {
 
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
         final String articleTags = formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
-        final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
-
+        String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
+        articleContent += "<br/><p>该文章同步自 <a href='" + clientHost + originalArticle.optString(Article.ARTICLE_PERMALINK) + "'>"
+                + clientTitle + "</a></p>";
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
