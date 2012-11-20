@@ -31,6 +31,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
@@ -39,7 +40,7 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 17, 2012
+ * @version 1.0.0.2, Nov 20, 2012
  * @since 0.2.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -61,8 +62,12 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, CommentSender.class.getName()});
+                   new Object[]{event.getType(), data, CommentSender.class.getName()});
         try {
+            if (data.optBoolean(Common.FROM_CLIENT)) {
+                return;
+            }
+
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
             if (!originalArticle.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
