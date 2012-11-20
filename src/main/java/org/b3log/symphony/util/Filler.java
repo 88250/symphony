@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 25, 2012
+ * @version 1.0.0.8, Nov 20, 2012
  * @since 0.2.0
  */
 public final class Filler {
@@ -165,6 +165,11 @@ public final class Filler {
         }
 
         currentUser = Sessions.currentUser(request);
+        if (null == currentUser) {
+            dataModel.put("loginLabel", langPropsService.get("loginLabel"));
+
+            return;
+        }
 
         dataModel.put(Common.IS_LOGGED_IN, true);
         dataModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
