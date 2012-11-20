@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Nov 12, 2012
+ * @version 1.0.0.10, Nov 20, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -231,7 +231,7 @@ public final class CommentQueryService {
      */
     public List<JSONObject> getArticleComments(final String articleId, final int currentPageNum, final int pageSize)
             throws ServiceException {
-        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
+        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.ASCENDING)
                 .setPageCount(1).setCurrentPageNum(currentPageNum).setPageSize(pageSize)
                 .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId));
         try {
