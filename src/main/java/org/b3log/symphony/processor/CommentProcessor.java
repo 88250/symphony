@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 7, 2012
+ * @version 1.0.0.2, Nov 20, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -205,6 +205,8 @@ public final class CommentProcessor {
     @Before(adviceClass = ClientCommentAddValidation.class)
     public void addCommentFromSolo(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
+        LOGGER.log(Level.FINER, "Adds a comment from solo");
+        
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final JSONObject originalCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
@@ -248,5 +250,7 @@ public final class CommentProcessor {
 
             clientMgmtService.updateClient(client);
         }
+        
+        LOGGER.log(Level.FINER, "Added a comment from solo");
     }
 }
