@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 20, 2012
+ * @version 1.0.0.7, Nov 20, 2012
  * @since 0.2.0
  */
 public final class CommentMgmtService {
@@ -127,7 +127,7 @@ public final class CommentMgmtService {
             comment.put(Comment.COMMENT_AUTHOR_ID, requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID));
             comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
             if (comment.has(Comment.COMMENT_CLIENT_COMMENT_ID)) {
-                comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, comment.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
+                comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
             }
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
 
