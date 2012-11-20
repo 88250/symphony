@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 20, 2012
+ * @version 1.0.0.3, Nov 20, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -72,18 +72,6 @@ public final class CommentProcessor {
      */
     private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class.getName());
     /**
-     * User management service.
-     */
-    private UserMgmtService userMgmtService = UserMgmtService.getInstance();
-    /**
-     * Article management service.
-     */
-    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
-    /**
-     * Article query service.
-     */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
-    /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
@@ -91,10 +79,6 @@ public final class CommentProcessor {
      * Comment management service.
      */
     private CommentMgmtService commentMgmtService = CommentMgmtService.getInstance();
-    /**
-     * Comment query service.
-     */
-    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
     /**
      * Client management service.
      */
@@ -206,7 +190,7 @@ public final class CommentProcessor {
     public void addCommentFromSolo(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         LOGGER.log(Level.FINER, "Adds a comment from solo");
-        
+
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final JSONObject originalCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
@@ -218,6 +202,7 @@ public final class CommentProcessor {
         comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, originalCmt.optString(Comment.COMMENT_T_ID));
         comment.put(Comment.COMMENT_CONTENT, originalCmt.optString(Comment.COMMENT_CONTENT));
         comment.put(Comment.COMMENT_ON_ARTICLE_ID, article.optString(Keys.OBJECT_ID));
+        comment.put(Comment.COMMENT_T_COMMENTER, defaultCommenter);
 
         commentMgmtService.addComment(comment);
 
@@ -250,7 +235,7 @@ public final class CommentProcessor {
 
             clientMgmtService.updateClient(client);
         }
-        
+
         LOGGER.log(Level.FINER, "Added a comment from solo");
     }
 }
