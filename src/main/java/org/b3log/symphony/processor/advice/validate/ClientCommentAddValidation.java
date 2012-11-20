@@ -96,7 +96,7 @@ public final class ClientCommentAddValidation extends BeforeRequestProcessAdvice
         }
 
         final String clientAdminEmail = requestJSONObject.optString(Client.CLIENT_ADMIN_EMAIL);
-        
+
         try {
             final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
             if (null == user || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
@@ -108,22 +108,22 @@ public final class ClientCommentAddValidation extends BeforeRequestProcessAdvice
 
         final String clientName = requestJSONObject.optString(Client.CLIENT_NAME);
         if (Strings.isEmptyOrNull(clientName) || clientName.length() > MAX_CLIENT_NAME_LENGTH) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Client name too long"));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Client name [" + clientName + "] too long"));
         }
 
         final String clientVersion = requestJSONObject.optString(Client.CLIENT_VERSION);
         if (Strings.isEmptyOrNull(clientVersion) || clientVersion.length() > MAX_CLIENT_VER_LENGTH) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Client version too long"));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Client version [" + clientVersion + "] too long"));
         }
 
         final String clientHost = requestJSONObject.optString(Client.CLIENT_HOST);
         if (Strings.isEmptyOrNull(clientHost) || clientHost.length() > MAX_CLIENT_HOST_LENGTH) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Client host too long"));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Client host [" + clientHost + "]too long"));
         }
 
         final String clientRuntimeEnv = requestJSONObject.optString(Client.CLIENT_RUNTIME_ENV);
         if (Strings.isEmptyOrNull(clientRuntimeEnv) || clientRuntimeEnv.length() > MAX_CLIENT_RUNTIME_LENGTH) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Client runtime too long"));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Client runtime [" + clientRuntimeEnv + "]too long"));
         }
 
         final JSONObject originalCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
