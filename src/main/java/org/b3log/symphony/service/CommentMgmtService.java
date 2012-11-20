@@ -126,7 +126,7 @@ public final class CommentMgmtService {
             comment.put(Comment.COMMENT_AUTHOR_EMAIL, requestJSONObject.optString(Comment.COMMENT_AUTHOR_EMAIL));
             comment.put(Comment.COMMENT_AUTHOR_ID, requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID));
             comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
-            if (comment.has(Comment.COMMENT_CLIENT_COMMENT_ID)) {
+            if (requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID)) {
                 comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
             }
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
