@@ -22,13 +22,14 @@
                         <div class="fn-left">
                             <input type="checkbox" id="syncWithSymphonyClient"/> 
                             ${syncWithSymphonyClientLabel}
-                            <a href="/post-guide" target="_blank">guide</a>
                         </div>
                         <div class="fn-right">
                             <button class="red" onclick="AddArticle.add()">Post</button>
                         </div>
                     </div>
-                    <div id="addArticleTip"></div>
+                    <div id="addArticleTip">
+                    </div>
+                     ${postGuideLabel}
                 </div>
             </div>
         </div>
