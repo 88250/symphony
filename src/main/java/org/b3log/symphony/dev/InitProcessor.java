@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 26, 2012
+ * @version 1.0.0.8, Nov 22, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -138,7 +138,7 @@ public class InitProcessor {
             final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
             final JSONObject article = new JSONObject();
             article.put(Article.ARTICLE_TITLE, "B3log 社区上线 &hearts;");
-            article.put(Article.ARTICLE_TAGS, "B3log, Java, B3log Announcement");
+            article.put(Article.ARTICLE_TAGS, "B3log, Java, Q&A, B3log Announcement");
             article.put(Article.ARTICLE_CONTENT, "看 [About](/about) 了解一下这里吧 ;-p");
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
             article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.optString(User.USER_EMAIL));
