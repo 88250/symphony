@@ -18,7 +18,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.8, Nov 9, 2012
+* @version 1.0.0.9, Nov 21, 2012
 */
 /* start module */
 .index-module {
@@ -212,5 +212,10 @@
 .tags-trend h2 {
     color: #cf7e7e;
 }
-
 /* end tags.html */
+
+/* start about.html */
+.about p {
+    margin: 5px 0;
+}
+/* end about.html*/

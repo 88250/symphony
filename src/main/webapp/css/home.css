@@ -18,50 +18,8 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.6, Oct 12, 2012
+* @version 1.0.0.7, Nov 22, 2012
 */
-/* start home framework */
-/*.home-content {
-    float: left;
-    margin-left: 50px;
-    width: 690px;
-}
-
-.side ul {
-    background: none repeat scroll 0 0 #EFEFEF;
-    border-radius: 2px 2px 2px 2px;
-    float: left;
-    padding: 3px;
-    width: 254px;
-}
-
-.side li {
-    list-style-type: none;
-}
-
-.side a {
-    border-bottom: 1px solid #EEEEEE;
-    border-top: 1px solid #FFFFFF;
-    display: block;
-    background-color: #FAFAFB;
-    padding: 8px 10px;
-    text-shadow: 0 1px 0 #FFFFFF;
-}
-
-.side a:hover {
-    background-color: #FDFDFE;
-    text-decoration: none;
-}
-
-.side a.current {
-    background-color: #FFFFFF;
-    border-left: 2px solid #D26911;
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0.1) inset;
-    color: #222;
-    font-weight: bold;
-}*/
-/* end home framework */
-
 /* start home side */
 .user-online {
     position: absolute;
@@ -107,6 +65,12 @@
 #tip {
     position: inherit;
     white-space: pre-wrap;
+}
+
+.tip-add-article {
+    color: #777777;
+    list-style: circle outside none;
+    margin-left: 15px;
 }
 /* end add article */
 

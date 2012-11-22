@@ -12,10 +12,13 @@
         <div class="main">
             <div class="wrapper">
                 <div class="form">
+                    ${titleLabel}
                     <input type="text" id="articleTitle" />
                     <span style="right:2px;top:10px;"></span>
+                    ${contentLabel}
                     <textarea style="height: 300px" id="articleContent"></textarea>
                     <span style="right:2px;top:338px;"></span>
+                    ${tagLabel}
                     <input id="articleTags" type="text" />
                     <span style="right:2px;top:386px;"></span>
                     <div class="fn-clear">

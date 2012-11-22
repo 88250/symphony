@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.4, Nov 8, 2012
+* @version 1.0.1.5, Nov 21, 2012
 */
 /* start reset */
 html {
@@ -678,7 +678,7 @@ button.red:active {
 
 .content-reset ul,
 .content-reset ol {
-    margin-left: 20px;
+    margin: 5px 0 5px 20px;
 }
 
 .content-reset h1, 
