@@ -51,9 +51,7 @@
                         博客是一个表达情感，分享经验、生活的地方，最重要的就是能够随心记录点点滴滴。
                     </p>
                     <p>
-                        关于选择独立博客还是选择个人博客服务的讨论
-                        <a href="https://www.google.com.hk/search?sugexp=chrome,mod=15&amp;sourceid=chrome&amp;ie=UTF-8&amp;q=%E4%B8%BA%E4%BB%80%E4%B9%88+%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2">比比皆是</a>
-                        。究其根本，如果有廉价、稳定的空间搭建独立博客，且安装部署简单、后续维护简洁、使用过程方便，那博客服务就完全没有优势了。
+                        关于选择独立博客还是选择个人博客服务的讨论<a href="https://www.google.com.hk/search?sugexp=chrome,mod=15&amp;sourceid=chrome&amp;ie=UTF-8&amp;q=%E4%B8%BA%E4%BB%80%E4%B9%88+%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2">比比皆是</a>。究其根本，如果有廉价、稳定的空间搭建独立博客，且安装部署简单、后续维护简洁、使用过程方便，那博客服务就完全没有优势了。
                     </p>
                     <p>
                         随着云环境的普及（或者说成是泛滥）、廉价、稳定。易管理的空间已经有很多，各大互联网公司 xAE 的运营也日趋成熟。
