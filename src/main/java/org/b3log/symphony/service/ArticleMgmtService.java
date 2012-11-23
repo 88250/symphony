@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Nov 7, 2012
+ * @version 1.0.1.1, Nov 23, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -160,8 +160,8 @@ public final class ArticleMgmtService {
                 // The article content security has been processed by Rhythm
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             } else {
-                article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT)
-                        .replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;"));
+                article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
+                        replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;").replace("\n", "<br/>"));
             }
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
@@ -188,7 +188,7 @@ public final class ArticleMgmtService {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
-                
+
                 LOGGER.log(Level.WARNING, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
                 throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
             }

@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Nov 20, 2012
+ * @version 1.0.0.8, Nov 23, 2012
  * @since 0.2.0
  */
 public final class CommentMgmtService {
@@ -122,7 +122,7 @@ public final class CommentMgmtService {
             comment.put(Keys.OBJECT_ID, ret);
 
             final String securedContent = requestJSONObject.optString(Comment.COMMENT_CONTENT)
-                    .replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;");
+                    .replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;").replace("\n", "<br/>");
             comment.put(Comment.COMMENT_CONTENT, securedContent);
             comment.put(Comment.COMMENT_AUTHOR_EMAIL, requestJSONObject.optString(Comment.COMMENT_AUTHOR_EMAIL));
             comment.put(Comment.COMMENT_AUTHOR_ID, requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID));
