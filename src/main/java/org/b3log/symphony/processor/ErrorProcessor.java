@@ -15,10 +15,6 @@
  */
 package org.b3log.symphony.processor;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,16 +26,16 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
-import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.util.Filler;
 
 /**
  * Error processor.
- * 
+ *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 10, 2012
+ * @version 1.0.0.2, Nov 23, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -60,12 +56,12 @@ public final class ErrorProcessor {
 
     /**
      * Shows the user template page.
-     * 
+     *
      * @param context the specified context
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      * @param statusCode the specified status code
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/error/{statusCode}", method = HTTPRequestMethod.GET)
     public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
@@ -74,59 +70,13 @@ public final class ErrorProcessor {
         final String templateName = statusCode + ".ftl";
         LOGGER.log(Level.FINE, "Shows error page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
 
-        final ErrorRenderer renderer = new ErrorRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        renderer.setTemplateName("error/" + templateName);
         context.setRenderer(renderer);
-        renderer.setTemplateName(templateName);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
-    }
-
-    /**
-     * <a href="http://freemarker.org">FreeMarker</a> HTTP response 
-     * renderer for error page rendering.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Aug 16, 2012
-     * @since 0.2.0
-     */
-    private static final class ErrorRenderer extends AbstractFreeMarkerRenderer {
-
-        /**
-         * Logger.
-         */
-        private static final Logger LOGGER = Logger.getLogger(ErrorRenderer.class.getName());
-        /**
-         * FreeMarker configuration.
-         */
-        public static final Configuration TEMPLATE_CFG;
-
-        static {
-            TEMPLATE_CFG = new Configuration();
-            TEMPLATE_CFG.setDefaultEncoding("UTF-8");
-            try {
-                final String webRootPath = SymphonyServletListener.getWebRoot();
-
-                TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(webRootPath + File.separatorChar + "error"));
-            } catch (final IOException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            }
-        }
-
-        @Override
-        protected Template getTemplate(final String templateDirName, final String templateName)
-                throws IOException {
-            return TEMPLATE_CFG.getTemplate(templateName);
-        }
-
-        @Override
-        protected void beforeRender(final HTTPRequestContext context) throws Exception {
-        }
-
-        @Override
-        protected void afterRender(final HTTPRequestContext context) throws Exception {
-        }
     }
 }
