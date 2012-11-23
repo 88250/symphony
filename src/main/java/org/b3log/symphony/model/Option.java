@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines option model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 23, 2012
+ * @version 1.0.0.2, Nov 23, 2012
  * @since 0.2.0
  */
 public final class Option {
@@ -58,9 +58,9 @@ public final class Option {
      */
     public static final String ID_C_STATISTIC_CMT_COUNT = "statisticCmtCount";
     /**
-     * Key of max online member count.
+     * Key of max online visitor count.
      */
-    public static final String ID_C_STATISTIC_MAX_ONLINE_MEMBER_COUNT = "statisticMaxOnlineMemberCount";
+    public static final String ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT = "statisticMaxOnlineVisitorCount";
     // Category constants
     /**
      * Statistic.

@@ -17,7 +17,7 @@
                 </div>
                 <div class="fn-right info">
                     <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt}
-                    <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineMemberCount}
+                    <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount}
                     <span class="ft-small">${memberCountLabel}</span> ${statistic.statisticMemberCount}
                     <span class="ft-small">${articleCountLabel}</span> ${statistic.statisticArticleCount}
                     <span class="ft-small">${tagCountLabel}</span> ${statistic.statisticTagCount}
