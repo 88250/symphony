@@ -1,5 +1,4 @@
 <#include "../macro-head.ftl">
-<#include "../macro-pagination.ftl">
 <!DOCTYPE html>
 <html>
     <head>

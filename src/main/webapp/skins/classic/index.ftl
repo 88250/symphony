@@ -14,7 +14,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper fn-clear">
-                <div class="content">
+                <div class="content fn-clear">
                     <@list listData=latestCmtArticles/>
                     <@pagination url=""/>
                 </div>

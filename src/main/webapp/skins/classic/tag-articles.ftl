@@ -48,8 +48,10 @@
                             </div>
                         </div>
                     </div>
-                    <@list listData=articles/>
-                    <@pagination url="/tags/${tag.tagTitle?url('utf-8')}"/>
+                    <div class="fn-clear">
+                        <@list listData=articles/>
+                        <@pagination url="/tags/${tag.tagTitle?url('utf-8')}"/>
+                    </div>
                 </div> 
                 <div class="side">
                     <#include "side.ftl">

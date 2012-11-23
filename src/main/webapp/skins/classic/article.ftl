@@ -39,32 +39,34 @@
                             ${article.articleContent}
                         </div>
                     </div>
-                    <div class="comment-list list fn-clear" id="comments">
-                        <h2>${article.articleCommentCount} ${cmtLabel}</h2>
-                        <ul>
-                            <#list article.articleComments as comment>
-                            <li id="${comment.oId}">
-                                <div class="fn-clear">
-                                    <div class="fn-left avatar">
-                                        <img title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
-                                    </div>
-                                    <div class="fn-left comment-main">
-                                        <div class="fn-clear">
-                                            <span class="fn-left">
-                                                <a rel="nofollow" href="/member/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
-                                            </span>
-                                            <span class="fn-right ft-small">
-                                                ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} #${comment_index + 1}
-                                            </span>    
+                    <div class="fn-clear">
+                        <div class="comment-list list" id="comments">
+                            <h2>${article.articleCommentCount} ${cmtLabel}</h2>
+                            <ul>
+                                <#list article.articleComments as comment>
+                                <li id="${comment.oId}">
+                                    <div class="fn-clear">
+                                        <div class="fn-left avatar">
+                                            <img title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
                                         </div>
-                                        <div class="content-reset">
-                                            ${comment.commentContent}
+                                        <div class="fn-left comment-main">
+                                            <div class="fn-clear">
+                                                <span class="fn-left">
+                                                    <a rel="nofollow" href="/member/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
+                                                </span>
+                                                <span class="fn-right ft-small">
+                                                    ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} #${comment_index + 1}
+                                                </span>    
+                                            </div>
+                                            <div class="content-reset">
+                                                ${comment.commentContent}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                            </#list>  
-                        </ul>
+                                </li>
+                                </#list>  
+                            </ul>
+                        </div>
                         <@pagination url=article.articlePermalink/>
                     </div>
                     <div class="form fn-clear">

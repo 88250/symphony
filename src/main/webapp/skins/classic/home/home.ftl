@@ -22,7 +22,7 @@
                             <a href="/member/${user.userName}/comments">${cmtLabel}</a>
                         </li>
                     </ul>
-                    <div>
+                    <div class="fn-clear">
                         <div class="article-list list">
                             <ul> 
                                 <#list userHomeArticles as article>
@@ -47,6 +47,7 @@
                                 </#list>
                             </ul>
                         </div>
+                        <@pagination url="/member/${userName}"/>
                     </div>
                 </div>
                 <div class="side">

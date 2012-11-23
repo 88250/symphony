@@ -1,13 +1,18 @@
+<#include "macro-head.ftl">
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
+        <@head title="B3log ${symphonyLabel} - 403 Forbidden!">
         <meta name="robots" content="none" />
-        <title>Symphony - 403 Forbidden!</title>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        </@head>
     </head>
     <body>
-        403
+        <#include "header.ftl">
+        <div class="main">
+            <div class="wrapper ft-center">
+                <h2>403 Forbidden!</h2>
+            </div>
+        </div>
+        <#include "footer.ftl">
     </body>
 </html>

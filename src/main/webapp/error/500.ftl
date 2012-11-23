@@ -1,12 +1,18 @@
+<#include "macro-head.ftl">
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
-        <title>Symphony - 500 Internal Server Error!</title>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
-        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        <@head title="B3log ${symphonyLabel} - ${500erroeLabel}">
+        <meta name="robots" content="none" />
+        </@head>
     </head>
     <body>
-        500
+        <#include "header.ftl">
+        <div class="main">
+            <div class="wrapper ft-center">
+                <h2>${500erroeLabel}</h2>
+            </div>
+        </div>
+        <#include "footer.ftl">
     </body>
 </html>

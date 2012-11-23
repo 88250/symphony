@@ -1,4 +1,5 @@
 <#include "../macro-head.ftl">
+<#include "../macro-pagination.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,7 +22,7 @@
                             <a href="/member/${user.userName}/comments">${cmtLabel}</a>
                         </li>
                     </ul>
-                    <div>
+                    <div class="fn-clear">
                         <div class="comment-list list">
                             <ul>
                                 <#list userHomeComments as comment>
@@ -45,6 +46,7 @@
                                 </#list>  
                             </ul>
                         </div>
+                        <@pagination url="/member/${userName}/comments"/>
                     </div>
                 </div>
                 <div class="side">
