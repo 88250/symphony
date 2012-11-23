@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 18, 2012
+ * @version 1.0.0.4, Nov 23, 2012
  * @since 0.2.0
  */
 public final class ArticleQueryService {
@@ -309,7 +309,7 @@ public final class ArticleQueryService {
      */
     public List<JSONObject> getUserArticles(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING)
-                .setPageCount(currentPageNum).setPageSize(pageSize).
+                .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                 setFilter(new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, userId));
         try {
             final JSONObject result = articleRepository.get(query);

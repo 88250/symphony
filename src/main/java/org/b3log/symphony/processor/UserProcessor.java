@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -36,6 +37,8 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
@@ -120,6 +123,13 @@ public final class UserProcessor {
             return;
         }
 
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -140,11 +150,25 @@ public final class UserProcessor {
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
-        final List<JSONObject> userArticles = articleQueryService.getUserArticles(
-                user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeArticlesCnt"));
+        final int pageSize = Symphonys.getInt("userHomeArticlesCnt");
+        final int windowSize = Symphonys.getInt("userHomeArticlesWindowSize");
+
+        final List<JSONObject> userArticles = articleQueryService.getUserArticles(user.optString(Keys.OBJECT_ID), pageNum,
+                                                                                  pageSize);
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
 
+        final int articleCnt = user.optInt(UserExt.USER_ARTICLE_COUNT);
+        final int pageCount = (int) Math.ceil((double) articleCnt / (double) pageSize);
 
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
     }
 
     /**
@@ -171,14 +195,36 @@ public final class UserProcessor {
             return;
         }
 
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
+        final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
+
         dataModel.put(User.USER, user);
         fillUserThumbnailURL(user);
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
-        final List<JSONObject> userComments =
-                commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), 1, Symphonys.getInt("userHomeCmtsCnt"));
+        final List<JSONObject> userComments = commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), pageNum, pageSize);
         dataModel.put(Common.USER_HOME_COMMENTS, userComments);
+
+        final int commentCnt = user.optInt(UserExt.USER_COMMENT_COUNT);
+        final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         Filler.fillHeader(request, response, dataModel);
         Filler.fillFooter(dataModel);
@@ -339,7 +385,7 @@ public final class UserProcessor {
     private void fillUserThumbnailURL(final JSONObject user) {
         final String userEmail = user.optString(User.USER_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(userEmail) + "?s=140&d="
-                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
     }
 }
