@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 20, 2012
+ * @version 1.0.0.3, Nov 23, 2012
  * @since 0.2.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -96,7 +96,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
                         Keys.OBJECT_ID
                     });
 
-            comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+            comment.put(Comment.COMMENT_T_AUTHOR_NAME, commenter.optString(User.USER_NAME));
             comment.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
             comment.put(Comment.COMMENT_T_AUTHOR_URL, commenter.optString(commenter.optString(User.USER_URL)));
             comment.put(Comment.COMMENT_ON_ARTICLE_ID, originalArticle.optString(Article.ARTICLE_CLIENT_ARTICLE_ID));

@@ -82,7 +82,7 @@ public final class OptionQueryService {
         final int ret = ONLINE_VISITORS.size();
 
         try {
-            final JSONObject maxOnlineMemberCntRecord = optionRepository.get(Option.ID_C_STATISTIC_MAX_ONLINE_MEMBER_COUNT);
+            final JSONObject maxOnlineMemberCntRecord = optionRepository.get(Option.ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT);
             final int maxOnlineVisitorCnt = maxOnlineMemberCntRecord.optInt(Option.OPTION_VALUE);
 
             if (maxOnlineVisitorCnt < ret) {

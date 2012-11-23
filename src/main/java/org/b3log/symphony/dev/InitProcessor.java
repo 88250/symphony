@@ -109,7 +109,7 @@ public class InitProcessor {
             optionRepository.add(option);
             
             option = new JSONObject();
-            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_MAX_ONLINE_MEMBER_COUNT);
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT);
             option.put(Option.OPTION_VALUE, "0");
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
             optionRepository.add(option);
