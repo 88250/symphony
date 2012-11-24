@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${userName} - ${cmtLabel}">
-        <meta name="keywords" content="${userName},${cmtLabel}"/>
-        <meta name="description" content="${userName}${deLabel}${cmtLabel},${cmtLabel} by ${userName}"/>
+        <@head title="${user.userName} - ${cmtLabel}">
+        <meta name="keywords" content="${user.userName},${cmtLabel}"/>
+        <meta name="description" content="${user.userName}${deLabel}${cmtLabel},${cmtLabel} by ${user.userName}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home.css" />
     </head>
@@ -46,7 +46,7 @@
                                 </#list>  
                             </ul>
                         </div>
-                        <@pagination url="/member/${userName}/comments"/>
+                        <@pagination url="/member/${user.userName}/comments"/>
                     </div>
                 </div>
                 <div class="side">

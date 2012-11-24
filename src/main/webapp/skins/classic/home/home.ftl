@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${userName} - ${articleLabel}">
-        <meta name="keywords" content="${userName},${articleLabel}"/>
+        <@head title="${user.userName} - ${articleLabel}">
+        <meta name="keywords" content="${user.userName},${articleLabel}"/>
         <meta name="description" content="<#list userHomeArticles as article><#if article_index<3>${article.articleTitle},</#if></#list>"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home.css" />
@@ -47,7 +47,7 @@
                                 </#list>
                             </ul>
                         </div>
-                        <@pagination url="/member/${userName}"/>
+                        <@pagination url="/member/${user.userName}"/>
                     </div>
                 </div>
                 <div class="side">
