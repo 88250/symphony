@@ -17,7 +17,7 @@
  * @fileoverview settings.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Oct 29, 2012
+ * @version 1.0.0.3, Nov 24, 2012
  */
 /**
  * @description Settings function
@@ -161,6 +161,36 @@ var Settings = {
             return data;
         }
         return false;
+    },
+    
+    /**
+     * @description 初识化设置页面，回车提交表单
+     */
+    init: function () {
+        $("#userURL, #userQQ").keyup(function (event) {
+            if (event.keyCode === 13) {
+                Settings.update('profiles');
+            }
+        });
+        
+        $("#userIntro").keyup(function (event) {
+            if (event.keyCode === 13 && event.ctrlKey) {
+                Settings.update('profiles');
+            }
+        });
+        
+        $("#soloKey, #soloPostURL, #soloCmtURL").keyup(function (event) {
+            if (event.keyCode === 13) {
+                Settings.update('sync/b3');
+            }
+        });
+        
+        $("#pwdOld, #pwdNew, #pwdRepeat").keyup(function (event) {
+            if (event.keyCode === 13) {
+                Settings.update('password');
+            }
+        });
     }
 };
 
+Settings.init();

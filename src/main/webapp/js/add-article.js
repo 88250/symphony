@@ -17,7 +17,7 @@
  * @fileoverview add-article.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Nov 8, 2012
+ * @version 1.0.0.6, Nov 24, 2012
  */
 
 /**
@@ -78,8 +78,21 @@ var AddArticle = {
     },
     
     /**
- * @description 初识化发文页面
- */
+     * @description 初识化发文页面，回车提交表单
+     */
     init: function () {
+        $("#articleTitle, #articleTags").keyup(function (event) {
+            if (event.keyCode === 13) {
+                AddArticle.add();
+            }
+        });
+        
+        $("#articleContent").keyup(function (event) {
+            if (event.keyCode === 13 && event.ctrlKey) {
+                AddArticle.add();
+            }
+        });
     }
 };
+
+AddArticle.init();

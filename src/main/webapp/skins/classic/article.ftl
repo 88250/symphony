@@ -46,16 +46,19 @@
                                 <#list article.articleComments as comment>
                                 <li id="${comment.oId}">
                                     <div class="fn-clear">
-                                        <div class="fn-left avatar">
-                                            <img title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
+                                        <div class="fn-left">
+                                            <img class="avatar" 
+                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
                                         </div>
                                         <div class="fn-left comment-main">
                                             <div class="fn-clear">
                                                 <span class="fn-left">
-                                                    <a rel="nofollow" href="/member/${comment.commentAuthorName}" title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
+                                                    <a rel="nofollow" href="/member/${comment.commentAuthorName}"
+                                                       title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                                 </span>
                                                 <span class="fn-right ft-small">
-                                                    ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} #${comment_index + 1}
+                                                    ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} 
+                                                    <i class="ft-normal">#${comment_index + 1}</i>
                                                 </span>    
                                             </div>
                                             <div class="content-reset">
@@ -85,11 +88,12 @@
                 <div class="side">
                     <div class="index-module">
                         <div class="fn-clear">
-                            <div class="fn-left avatar">
-                                <img src="${article.articleAuthorThumbnailURL}" />
+                            <div class="fn-left">
+                                <img class="avatar" src="${article.articleAuthorThumbnailURL}" />
                             </div>
                             <div class="fn-left">
-                                <a rel="author" href="/member/${article.articleAuthorName}" title="${article.articleAuthorName}">${article.articleAuthorName}</a>
+                                <a rel="author" href="/member/${article.articleAuthorName}" 
+                                   title="${article.articleAuthorName}">${article.articleAuthorName}</a>
                                 <#if article.articleAuthorURL!="">
                                 <br/>
                                 <a rel="nofollow" href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
@@ -110,7 +114,8 @@
                                 <a rel="nofollow" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
-                                        <a rel="nofollow" href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
+                                        <a rel="nofollow" 
+                                           href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
                                         <span class="date-ico"> ${relevantArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                                     </span>
                                 </div>
@@ -128,7 +133,8 @@
                                 <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
-                                        <a rel="nofollow" href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
+                                        <a rel="nofollow"
+                                           href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
                                         <span class="date-ico"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                                     </span>
                                 </div>

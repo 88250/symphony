@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.5, Nov 23, 2012
+* @version 1.0.1.6, Nov 24, 2012
 */
 /* start reset */
 html {
@@ -49,11 +49,6 @@ dl,
 dd,
 p {
     margin: 0;
-}
-
-h2 {
-    font-size: 16px;
-    font-weight: normal;
 }
 
 article,
@@ -208,9 +203,21 @@ textarea {
 a.ft-noline:hover {
     text-decoration: none;
 }
+
+.ft-normal {
+    color: #777;
+    font-size: 14px;
+}
 /* end function */
 
 /* start common */
+.list h2, 
+h2.article-title, 
+.module-header h2 {
+    font-size: 16px;
+    font-weight: normal;
+}
+
 /* start button */
 button {
     color: #333;

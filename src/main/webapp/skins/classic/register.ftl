@@ -11,7 +11,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear register">
+            <div class="wrapper fn-clear register content-reset">
                 <div class="form fn-left" style="width: 234px;">
                     <table cellpadding="0" cellspacing="0">
                         <tbody>
