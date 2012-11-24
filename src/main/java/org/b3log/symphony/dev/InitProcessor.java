@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Nov 22, 2012
+ * @version 1.0.0.9, Nov 24, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -77,7 +77,7 @@ public class InitProcessor {
             final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
                 LOGGER.log(Level.INFO, "Creates table result[tableName={0}, isSuccess={1}]",
-                        new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
+                           new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
 
             // Init stat.
@@ -107,7 +107,7 @@ public class InitProcessor {
             option.put(Option.OPTION_VALUE, "0");
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
             optionRepository.add(option);
-            
+
             option = new JSONObject();
             option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT);
             option.put(Option.OPTION_VALUE, "0");
@@ -124,6 +124,13 @@ public class InitProcessor {
             admin.put(User.USER_PASSWORD, "test");
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             userMgmtService.addUser(admin);
+
+            // Init V 她说她要当 2 号会员，~_~
+            final JSONObject v = new JSONObject();
+            v.put(User.USER_EMAIL, "lly219@gmail.com");
+            v.put(User.USER_NAME, "Vanessa");
+            v.put(User.USER_PASSWORD, String.valueOf(new Random().nextInt()));
+            userMgmtService.addUser(v);
 
             // Init default commenter (for sync comment from client)
             final JSONObject defaultCommenter = new JSONObject();
