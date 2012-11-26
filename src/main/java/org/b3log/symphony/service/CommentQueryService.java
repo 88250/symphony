@@ -39,6 +39,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.json.JSONObject;
 
@@ -46,7 +47,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.10, Nov 20, 2012
+ * @version 1.0.0.11, Nov 26, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -105,16 +106,18 @@ public final class CommentQueryService {
                 final JSONObject commenter = userRepository.get(commenterId);
 
                 if (UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)
-                        || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
+                    || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
                     comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
                 }
+
+                comment.put(Comment.COMMENT_CONTENT, Emotions.clear(comment.optString(Comment.COMMENT_CONTENT)));
 
                 final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
                     final String hashedEmail = MD5.hash(commenterEmail);
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                   + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 }
                 commenter.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
 
@@ -201,7 +204,7 @@ public final class CommentQueryService {
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
                     final String hashedEmail = MD5.hash(email);
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                   + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 }
 
                 final JSONObject participant = new JSONObject();
@@ -258,6 +261,7 @@ public final class CommentQueryService {
      *   <li>generates &#64;username home URL</li>
      *   <li>markdowns comment content</li>
      *   <li>blockl comment if need</li>
+     *   <li>generates emotion images</li>
      * </ul>
      * 
      * @param comments the specified comments
@@ -280,6 +284,7 @@ public final class CommentQueryService {
      *   <li>generates &#64;username home URL</li>
      *   <li>markdowns comment content</li>
      *   <li>blockl comment if need</li>
+     *   <li>generates emotion images</li>
      * </ul>
      * 
      * @param comment the specified comment
@@ -293,7 +298,7 @@ public final class CommentQueryService {
         if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
             final String hashedEmail = MD5.hash(email);
             thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                           + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         }
 
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
@@ -314,6 +319,7 @@ public final class CommentQueryService {
      *   <li>Generates &#64;username home URL</li>
      *   <li>Markdowns</li>
      *   <li>Blocks comment if need</li>
+     *   <li>Generates emotion images</li>
      * </ul>
      * 
      * @param comment the specified comment, for example, 
@@ -329,7 +335,7 @@ public final class CommentQueryService {
         final JSONObject commenter = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
 
         if (Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)
-                || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
+            || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
             comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
 
             return;
@@ -343,6 +349,8 @@ public final class CommentQueryService {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Markdowns comment content failed", e);
         }
+
+        commentContent = Emotions.convert(commentContent);
 
         comment.put(Comment.COMMENT_CONTENT, commentContent);
     }
@@ -358,7 +366,7 @@ public final class CommentQueryService {
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
             for (final String userName : userNames) {
                 commentContent = commentContent.replace('@' + userName,
-                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
+                                                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Generates @username home URL for comment content failed", e);
