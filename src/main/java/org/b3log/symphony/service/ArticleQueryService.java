@@ -46,7 +46,6 @@ import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.Makeups;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
@@ -515,7 +514,6 @@ public final class ArticleQueryService {
      *   <li>Generates secured article content</li>
      *   <li>Blocks the article if need</li>
      *   <li>Generates emotion images</li>
-     *   <li>Makeups links</li>
      * </ul>
      * 
      * @param article the specified article, for example,
@@ -552,9 +550,6 @@ public final class ArticleQueryService {
         }
 
         articleContent = Emotions.convert(articleContent);
-        articleContent = Makeups.link("http", articleContent);
-        articleContent = Makeups.link("https", articleContent);
-        
         article.put(Article.ARTICLE_CONTENT, articleContent);
 
         markdown(article);

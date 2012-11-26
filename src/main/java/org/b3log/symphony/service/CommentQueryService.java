@@ -40,7 +40,6 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
-import org.b3log.symphony.util.Makeups;
 import org.b3log.symphony.util.Markdowns;
 import org.json.JSONObject;
 
@@ -350,9 +349,6 @@ public final class CommentQueryService {
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
 
         commentContent = Emotions.convert(commentContent);
-
-        commentContent = Makeups.link("http", commentContent);
-        commentContent = Makeups.link("https", commentContent);
 
         try {
             commentContent = Markdowns.toHTML(commentContent);
