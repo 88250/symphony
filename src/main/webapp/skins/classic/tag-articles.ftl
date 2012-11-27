@@ -17,7 +17,7 @@
                 <div class="content">
                     <div class="fn-clear">
                         <#if tag.tagIconPath!="">
-                        <img class="avatar tag-article-img" src="${staticServePath}${tag.tagIconPath}">
+                        <img class="avatar tag-article-img" src="${staticServePath}/images/tags/${tag.tagIconPath}">
                         </#if>
                         <h1><a rel="tag" title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
                         ${tag.tagDescription}
