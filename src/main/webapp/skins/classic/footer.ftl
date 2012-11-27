@@ -6,6 +6,7 @@
         <div class="fn-right" style="width: 800px">
             <div>
                 <a rel="help" href="/about">About</a>
+                <a rel="help" href="/tags/B3log%20Announcement">${b3logAnnouncementLabel}</a>
                 <a rel="help" href="/tags/Q&A">Q&amp;A</a>
                 <a rel="tag" href="/tags/Java">Java</a>
                 <a href="/tags">Tags</a>
