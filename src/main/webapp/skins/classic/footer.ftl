@@ -4,12 +4,12 @@
             <img src="/images/logo.png" />
         </div>
         <div class="fn-right" style="width: 800px">
-            <div>
-                <a rel="help" href="/about">About</a>
+            <div class="footer-nav">
+                <a rel="help" href="/about">About</a> 
                 <a rel="help" href="/tags/B3log%20Announcement">${b3logAnnouncementLabel}</a>
                 <a rel="help" href="/tags/Q&A">Q&amp;A</a>
                 <a rel="tag" href="/tags/Java">Java</a>
-                <a href="/tags">Tags</a>
+                <a href="/tags" class="last">Tags</a>
             </div>
             <div class="fn-clear">
                 <div class="fn-left">

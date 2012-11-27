@@ -593,6 +593,12 @@ button.red:active {
     word-wrap: break-word;
 }
 
+.nav .tags a {
+    color: #333333;
+    font-weight: normal;
+    padding: 0 5px;
+}
+
 .header {
     padding-bottom: 20px;
     background-color: #FFF;
@@ -610,8 +616,18 @@ button.red:active {
 }
 
 .footer .info {
-    color: #4C8B36;
+    color: #4183C4;
     font-size: 12px;
+}
+
+.footer-nav a {
+    border-right: 1px solid #E0E0E0;
+    margin-right: 15px;
+    padding-right: 15px;
+}
+
+.footer-nav a.last {
+    border-right: 0;
 }
 /* end footer */
 
