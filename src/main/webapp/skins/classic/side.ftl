@@ -55,7 +55,7 @@
         <li>
             <span>
                 <#if tag.tagIconPath!="">
-                <img src="${tag.tagIconPath}" />
+                <img src="${staticServePath}/images/tags/${tag.tagIconPath}" />
                 </#if>
                 <a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
             </span>
