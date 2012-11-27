@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Nov 26, 2012
+ * @version 1.0.1.3, Nov 27, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -272,7 +272,7 @@ public final class ArticleMgmtService {
                                         article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
-                tagTmp.put(Tag.TAG_TITLE, tagTitle);
+                tagTmp.put(Tag.TAG_TITLE, tag.optString(Tag.TAG_TITLE));
                 tagTmp.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT));
                 tagTmp.put(Tag.TAG_STATUS, tag.optInt(Tag.TAG_STATUS));
                 tagTmp.put(Tag.TAG_REFERENCE_CNT, tag.optInt(Tag.TAG_REFERENCE_CNT) + 1);

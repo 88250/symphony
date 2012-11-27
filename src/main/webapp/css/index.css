@@ -153,7 +153,7 @@
     display: none;
     right: 0;
     margin-left: 3px;
-    padding: 3px;
+    padding: 3px 5px;
     position: absolute;
     top: 26px;
     width: 244px;
@@ -221,3 +221,12 @@
     margin: 5px 0;
 }
 /* end about.html*/
+
+/* start tag-article.html */
+.tag-article-img {
+    height: 60px;
+    width: 60px;
+    float: left;
+    margin-top: 6px;
+}
+/* end tag-article.html */
