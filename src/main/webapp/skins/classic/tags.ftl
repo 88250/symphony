@@ -23,13 +23,13 @@
                                 <div class="fn-clear">
                                     <div class="fn-left">
                                         <#if tag.tagIconPath!="">
-                                        <img width="16" height="16" src="${tag.tagIconPath}" />
+                                        <img width="16" height="16" src="${staticServePath}/images/tags/${tag.tagIconPath}" />
                                         </#if>
                                         <a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                     </div>
                                     <span class="ft-small fn-right">
-                                        引用 ${tag.tagReferenceCount}
-                                        评论 ${tag.tagCommentCount} 
+                                        ${referenceLabel} ${tag.tagReferenceCount}
+                                        ${cmtLabel} ${tag.tagCommentCount} 
                                     </span>
                                 </div>
                                 <div>${tag.tagDescription}</div>
@@ -52,8 +52,8 @@
                                         <a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                     </div>
                                     <span class="ft-small fn-right">
-                                        引用 ${tag.tagReferenceCount}
-                                        评论 ${tag.tagCommentCount} 
+                                        ${referenceLabel} ${tag.tagReferenceCount}
+                                        ${cmtLabel} ${tag.tagCommentCount} 
                                     </span>
                                 </div>
                                 <div>${tag.tagDescription}</div>
