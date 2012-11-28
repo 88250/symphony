@@ -13,7 +13,6 @@
         <li class="fn-clear<#if !cmt_has_next> last</#if>">
             <a rel="nofollow" class="fn-left" href="/member/${cmt.commenter.userName}" 
                title="${cmt.commenter.userName}"><img class="avatar-small" src="${cmt.commenter.userThumbnailURL}" /></a>
-               
             <#assign length = cmt.commentContent?length>
             <#if length gt 32>
                 <#assign length = 32>
@@ -55,9 +54,7 @@
         <li>
             <span>
                 <#if tag.tagIconPath!="">
-                <img src="${staticServePath}/images/tags/${tag.tagIconPath}" />
-                </#if>
-                <a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                <img src="${staticServePath}/images/tags/${tag.tagIconPath}" /></#if><a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
             </span>
             <div <#if tag.tagDescription="">style="width:auto;white-space: nowrap;"</#if>>
                 <div>${tag.tagDescription}</div>
