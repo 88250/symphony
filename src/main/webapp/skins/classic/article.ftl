@@ -51,14 +51,19 @@
                                                  title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
                                         </div>
                                         <div class="fn-left comment-main">
-                                            <div class="fn-clear">
+                                            <div class="fn-clear comment-info">
                                                 <span class="fn-left">
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
+                                                    &nbsp;<span class="fn-right ft-small">
+                                                        ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} 
+                                                    </span>
                                                 </span>
-                                                <span class="fn-right ft-small">
-                                                    ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} 
-                                                    <i class="ft-normal">#${comment_index + 1}</i>
+                                                <span class="fn-right">
+                                                   <#if isLoggedIn> 
+                                                   <span class="ico-replay" onclick="Comment.replay('@${comment.commentAuthorName}')"></span>
+                                                   </#if>
+                                                    <i>#${comment_index + 1}</i>
                                                 </span>    
                                             </div>
                                             <div class="content-reset">
@@ -116,7 +121,7 @@
                                     <span>
                                         <a rel="nofollow" 
                                            href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
-                                        <span class="date-ico"> ${relevantArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
+                                        <span class="ico-date"> ${relevantArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                                     </span>
                                 </div>
                             </li>
@@ -135,7 +140,7 @@
                                     <span>
                                         <a rel="nofollow"
                                            href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
-                                        <span class="date-ico"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
+                                        <span class="ico-date"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                                     </span>
                                 </div>
                             </li>

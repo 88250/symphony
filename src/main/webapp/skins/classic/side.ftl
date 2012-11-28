@@ -36,7 +36,7 @@
             <div class="ft-small">
                 <span>
                     <a rel="nofollow" href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
-                    <span class="date-ico"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
+                    <span class="ico-date"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
                 </span>
             </div>
         </li>

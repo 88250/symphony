@@ -35,7 +35,7 @@
                                                 <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
                                                     ${articleTag}</a><#if articleTag_has_next>, </#if>
                                                 </#list>
-                                                <span class="date-ico">${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}</span>
+                                                <span class="ico-date">${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}</span>
                                             </span>
                                         </div>
                                     </div>

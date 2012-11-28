@@ -83,6 +83,55 @@ var Comment = {
                 this.rows = 3;
             }
         });
+    },
+    
+    /**
+     * @description 点击回复评论时，把当楼层的用户名带到评论框中
+     * @param {String} userName 用户名称
+     */
+    replay: function (userName) {
+        $("#commentContent").focus();
+        var textarea = $("#commentContent").get(0),
+        position = {},
+        content = textarea.value;
+        if (textarea.setSelectionRange) {
+            // W3C
+            position.end = textarea.selectionEnd;
+            position.start = textarea.selectionStart;
+            position.text = textarea.value.substring(position.start, position.end);
+        } else if (document.selection) {
+            // IE
+            var i = 0,
+            oS = document.selection.createRange(),
+            // Don't: oR = textarea.createTextRange()
+            oR = document.body.createTextRange();
+            oR.moveToElementText(textarea);
+            position.text = oS.text;
+            oS.getBookmark();
+            // object.moveStart(sUnit [, iCount])
+            // Return Value: Integer that returns the number of units moved.
+            for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i ++) {
+                // Why? You can alert(textarea.value.length)
+                if (textarea.value.charAt(i) == '/n') {
+                    i ++;
+                }
+            }
+ 
+            position.start = i;
+            position.end = i + position.text.length;
+        }
+ 
+        textarea.value = content.substring(0, position.start) + userName + content.substring(position.start, content.length);
+ 
+        if (textarea.setSelectionRange) {
+            textarea.setSelectionRange(position.start + userName.length, position.start + userName.length);
+        } else {
+            var oR = textarea.createTextRange();
+            oR.collapse(true);
+            oR.moveStart('character', position.start + userName.length);
+            oR.moveEnd('character', position.start + userName.length);
+            oR.select();
+        }
     }
 };
 

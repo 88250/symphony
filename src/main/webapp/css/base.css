@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.6, Nov 24, 2012
+* @version 1.0.1.7, Nov 28, 2012
 */
 /* start reset */
 html {
@@ -153,6 +153,24 @@ textarea {
     overflow: auto;
     vertical-align: top;
 }
+
+.content-reset {
+    word-wrap: break-word;
+}
+
+.content-reset ul,
+.content-reset ol {
+    margin: 5px 0 5px 20px;
+}
+
+.content-reset h1, 
+.content-reset h2, 
+.content-reset h3, 
+.content-reset h4, 
+.content-reset h5, 
+.content-reset h6 {
+    margin: 3px 0;
+}
 /* end reset */
 
 /* start function */
@@ -203,16 +221,10 @@ textarea {
 a.ft-noline:hover {
     text-decoration: none;
 }
-
-.ft-normal {
-    color: #777;
-    font-size: 14px;
-}
 /* end function */
 
 /* start common */
 .list h2, 
-h2.article-title, 
 .module-header h2 {
     font-size: 16px;
     font-weight: normal;
@@ -314,9 +326,29 @@ button.red:active {
 /* end button */
 
 /* start icon */
-.date-ico {
-    background: url("/images/icons.png") no-repeat scroll -1px -22px transparent;
+.ico-date, 
+.ico-replay,
+.nav input.search {
+    background-image: url("../images/icons.png");
+    background-repeat: no-repeat;
+}
+
+.ico-date {
+    background-position: -1px -22px;
     padding-left: 23px;
+}
+
+.ico-replay {
+    background-position: 0 -67px;
+    cursor: pointer;
+    padding: 4px 31px 0 0;
+    margin-right: 5px;
+}
+
+.ico-replay:hover {
+    border-radius: 3px;
+    box-shadow: 0 0 3px #666;
+    background-color: #666;
 }
 /* end icon */
 
@@ -564,7 +596,8 @@ button.red:active {
 }
 
 .nav input.search {
-    background: url("../images/icons.png") no-repeat scroll 3px 6px #FFFFFF;
+    background-position: 3px 6px;
+    background-color: #FFF;
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
     left: 190px;
@@ -685,31 +718,8 @@ button.red:active {
 /* end article list */
 
 /* start comment list */
-.comment-list > h2 {
-    border-bottom: 1px solid #CCCCCC;
-    margin: 20px 0 0;
-}
-
 .comment-list .comment-main {
     width: 612px;
     word-break: break-all;
-}
-
-.content-reset {
-    word-wrap: break-word;
-}
-
-.content-reset ul,
-.content-reset ol {
-    margin: 5px 0 5px 20px;
-}
-
-.content-reset h1, 
-.content-reset h2, 
-.content-reset h3, 
-.content-reset h4, 
-.content-reset h5, 
-.content-reset h6 {
-    margin: 3px 0;
 }
 /* end comment list */
