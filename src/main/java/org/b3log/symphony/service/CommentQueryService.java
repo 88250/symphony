@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.11, Nov 26, 2012
+ * @version 1.0.0.12, Nov 28, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -262,7 +262,6 @@ public final class CommentQueryService {
      *   <li>markdowns comment content</li>
      *   <li>blockl comment if need</li>
      *   <li>generates emotion images</li>
-     *   <li>makeups links</li>
      * </ul>
      * 
      * @param comments the specified comments
@@ -286,7 +285,6 @@ public final class CommentQueryService {
      *   <li>markdowns comment content</li>
      *   <li>blockl comment if need</li>
      *   <li>generates emotion images</li>
-     *   <li>makeups links</li>
      * </ul>
      * 
      * @param comment the specified comment
@@ -322,7 +320,6 @@ public final class CommentQueryService {
      *   <li>Markdowns</li>
      *   <li>Blocks comment if need</li>
      *   <li>Generates emotion images</li>
-     *   <li>Makeups links</li>
      * </ul>
      * 
      * @param comment the specified comment, for example, 
@@ -348,7 +345,7 @@ public final class CommentQueryService {
 
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
 
-        commentContent = Emotions.convert(commentContent);
+        commentContent = "<p>" + Emotions.convert(commentContent) + "</p>";
 
         try {
             commentContent = Markdowns.toHTML(commentContent);
