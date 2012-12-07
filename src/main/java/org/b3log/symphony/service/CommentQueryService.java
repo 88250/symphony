@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.12, Nov 28, 2012
+ * @version 1.0.0.13, Oct 7, 2012
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -106,7 +106,7 @@ public final class CommentQueryService {
                 final JSONObject commenter = userRepository.get(commenterId);
 
                 if (UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)
-                    || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
+                        || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
                     comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
                 }
 
@@ -117,7 +117,7 @@ public final class CommentQueryService {
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
                     final String hashedEmail = MD5.hash(commenterEmail);
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                                   + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 }
                 commenter.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
 
@@ -204,7 +204,7 @@ public final class CommentQueryService {
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
                     final String hashedEmail = MD5.hash(email);
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                                   + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 }
 
                 final JSONObject participant = new JSONObject();
@@ -298,7 +298,7 @@ public final class CommentQueryService {
         if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
             final String hashedEmail = MD5.hash(email);
             thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                           + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         }
 
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
@@ -335,7 +335,7 @@ public final class CommentQueryService {
         final JSONObject commenter = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
 
         if (Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)
-            || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
+                || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
             comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
 
             return;
@@ -345,7 +345,7 @@ public final class CommentQueryService {
 
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
 
-        commentContent = "<p>" + Emotions.convert(commentContent) + "</p>";
+        commentContent = Emotions.convert(commentContent);
 
         try {
             commentContent = Markdowns.toHTML(commentContent);
@@ -367,7 +367,7 @@ public final class CommentQueryService {
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
             for (final String userName : userNames) {
                 commentContent = commentContent.replace('@' + userName,
-                                                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
+                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Generates @username home URL for comment content failed", e);
