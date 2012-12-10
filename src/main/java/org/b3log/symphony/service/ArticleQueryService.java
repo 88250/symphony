@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 26, 2012
+ * @version 1.0.0.6, Oct 10, 2012
  * @since 0.2.0
  */
 public final class ArticleQueryService {
@@ -196,7 +196,7 @@ public final class ArticleQueryService {
             subFilters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, UserExt.DEFAULT_ADMIN_EMAIL));
             query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, subFilters))
                     .addProjection(Article.ARTICLE_TITLE, String.class).addProjection(Article.ARTICLE_PERMALINK, String.class)
-                    .addProjection(Article.ARTICLE_CREATE_TIME, Long.class);
+                    .addProjection(Article.ARTICLE_CREATE_TIME, Long.class).addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING);
             result = articleRepository.get(query);
 
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
