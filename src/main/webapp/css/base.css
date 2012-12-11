@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.7, Nov 28, 2012
+* @version 1.0.1.8, Dec 11, 2012
 */
 /* start reset */
 html {
@@ -654,7 +654,6 @@ button.red:active {
 }
 
 .footer-nav a {
-    border-right: 1px solid #E0E0E0;
     margin-right: 15px;
     padding-right: 15px;
 }

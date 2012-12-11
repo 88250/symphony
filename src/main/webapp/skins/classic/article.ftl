@@ -38,6 +38,15 @@
                         <div class="content-reset">
                             ${article.articleContent}
                         </div>
+                        <div class="fn-clear">
+                            <div class="share fn-right">
+                                <span class="tencent-ico"></span>
+                                <span class="sina-ico"></span>
+                                <span class="twitter-ico"></span>
+                                <span class="google-ico"></span>
+                                <span class="clear"></span>
+                            </div>    
+                        </div>
                     </div>
                     <div class="fn-clear">
                         <div class="comment-list list" id="comments">
@@ -60,9 +69,9 @@
                                                     </span>
                                                 </span>
                                                 <span class="fn-right">
-                                                   <#if isLoggedIn> 
-                                                   <span class="ico-replay" onclick="Comment.replay('@${comment.commentAuthorName}')"></span>
-                                                   </#if>
+                                                    <#if isLoggedIn> 
+                                                    <span class="ico-replay" onclick="Comment.replay('@${comment.commentAuthorName}')"></span>
+                                                    </#if>
                                                     <i>#${comment_index + 1}</i>
                                                 </span>    
                                             </div>
@@ -154,6 +163,9 @@
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.articleOId = "${article.oId}";
+            Label.articleTitle = "${article.articleTitle}";
+            Label.articleAuthorName = "${article.articleAuthorName}";
+            Label.articlePermalink = "${article.articlePermalink}"
         </script>
         <script type="text/javascript" src="/js/article.js"></script>
     </body>

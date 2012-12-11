@@ -109,6 +109,31 @@
     overflow: hidden;
     background-color: #FAFAFA;
 }
+
+.tencent-ico, .sina-ico, .twitter-ico, .google-ico {
+    background-image: url("../images/share.png");
+    cursor: pointer;
+    float: left;
+    height: 16px;
+    margin: 0 5px 0 6px;
+    width: 16px
+}
+
+.sina-ico {
+    background-position: 0 -16px;
+}
+
+.google-ico {
+    background-position: 0 -32px;
+}
+
+.twitter-ico {
+    background-position: 0 -48px;
+}
+
+.share {
+    margin-top: 20px;
+}
 /* end article */
 
 /* start register */

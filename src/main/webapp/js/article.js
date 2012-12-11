@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Nov 8, 2012
+ * @version 1.0.0.5, Dec 11, 2012
  */
 
 /**
@@ -83,6 +83,8 @@ var Comment = {
                 this.rows = 3;
             }
         });
+        
+        this.share();
     },
     
     /**
@@ -132,6 +134,26 @@ var Comment = {
             oR.moveEnd('character', position.start + userName.length);
             oR.select();
         }
+    },
+    
+    /**
+     * @description 分享按钮
+     */
+    share: function () {
+        var title = encodeURIComponent(Label.articleTitle + " - " + Label.articleAuthorName),
+        url = "http://symphony.b3log.org/article" + Label.articlePermalink,
+        pic = $(".content-reset img").attr("src");
+        var urls = {};
+        urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
+        "&url=" + url + "&pic=" + pic;
+        urls.sina = "http://v.t.sina.com.cn/share/share.php?title=" +
+        title + "&url=" + url + "&pic=" + pic;
+        urls.google = "https://plus.google.com/share?url=" + url;
+        urls.twitter = "https://twitter.com/intent/tweet?status=" + title + " " + url;
+        $(".share span").click(function() {
+            var key = this.className.replace("-ico", "");
+            window.open(urls[key], "_blank", "top=100,left=200,width=648,height=618");
+        });
     }
 };
 
