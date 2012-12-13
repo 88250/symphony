@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.8, Dec 11, 2012
+* @version 1.0.1.9, Dec 13, 2012
 */
 /* start reset */
 html {
@@ -156,6 +156,8 @@ textarea {
 
 .content-reset {
     word-wrap: break-word;
+    overflow: hidden;
+    line-height: 145%;
 }
 
 .content-reset ul,
@@ -170,6 +172,10 @@ textarea {
 .content-reset h5, 
 .content-reset h6 {
     margin: 3px 0;
+}
+
+.content-reset p {
+    margin: 0.5em 0;
 }
 /* end reset */
 

@@ -18,7 +18,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.1, Nov 27, 2012
+* @version 1.0.1.2, Dec 13, 2012
 */
 /* start module */
 .index-module {
@@ -129,10 +129,6 @@
 
 .twitter-ico {
     background-position: 0 -48px;
-}
-
-.share {
-    margin-top: 20px;
 }
 /* end article */
 
