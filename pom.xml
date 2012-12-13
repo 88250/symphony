@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.0.2, Oct 17, 2012
+    Version: 1.0.0.3, Dec 13, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -140,7 +140,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>${servlet.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
