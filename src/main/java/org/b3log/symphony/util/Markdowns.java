@@ -28,7 +28,7 @@ import org.tautua.markdownpapers.Markdown;
  * <p>Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 19, 2012
+ * @version 1.0.0.3, Dec 13, 2012
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -36,7 +36,7 @@ public final class Markdowns {
     /**
      * Article content cleaner whitelist.
      */
-    public static final Whitelist ARTICLE_CONTENT_WHITELIST = Whitelist.relaxed().addAttributes(":all", "id", "target");
+    public static final Whitelist ARTICLE_CONTENT_WHITELIST = Whitelist.relaxed().addAttributes(":all", "id", "target", "class");
 
     /**
      * Gets the safe HTML content of the specified content.
