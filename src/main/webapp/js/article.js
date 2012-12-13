@@ -141,7 +141,7 @@ var Comment = {
      */
     share: function () {
         var title = encodeURIComponent(Label.articleTitle + " - " + Label.articleAuthorName),
-        url = "http://symphony.b3log.org/article" + Label.articlePermalink,
+        url = "http://symphony.b3log.org" + Label.articlePermalink,
         pic = $(".content-reset img").attr("src");
         var urls = {};
         urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
