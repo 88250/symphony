@@ -170,10 +170,7 @@ textarea {
 .content-reset h3, 
 .content-reset h4, 
 .content-reset h5, 
-.content-reset h6 {
-    margin: 3px 0;
-}
-
+.content-reset h6,
 .content-reset p {
     margin: 0.5em 0;
 }
