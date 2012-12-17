@@ -41,8 +41,8 @@
                             ${syncWithSymphonyClientLabel}
                         </div>
                         <div class="fn-right">
-                            <button class="green fn-none" onclick="AddArticle.preview()">Preview</button>
-                            <button class="red" onclick="AddArticle.add()">Post</button>
+                            <button class="green fn-none" onclick="AddArticle.preview()">${previewLabel}</button>
+                            <button class="red" onclick="AddArticle.add()">${postLabel}</button>
                         </div>
                     </div>
                     <div id="addArticleTip">
