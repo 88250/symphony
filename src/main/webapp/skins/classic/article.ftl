@@ -86,18 +86,22 @@
                         </div>
                         <@pagination url=article.articlePermalink/>
                     </div>
+                    <#if isLoggedIn>
                     <div class="form fn-clear">
-                        <#if isLoggedIn>
                         <textarea id="commentContent" rows="3"></textarea>
                         <span style="right:0;top:11px;"></span>
+                        <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
+                        <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
                         <button class="green fn-right" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
-                        <#else>
-                        <div class="comment-login">
-                            <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${pleaseLoginLabel}</a>
-                        </div>
-                        </#if>
                     </div>
-
+                    <div class="grammar fn-none">
+                        ${markdwonGrammarLabel}
+                    </div>
+                    <#else>
+                    <div class="comment-login">
+                        <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${pleaseLoginLabel}</a>
+                    </div>
+                    </#if>
                 </div>
                 <div class="side">
                     <div class="index-module">

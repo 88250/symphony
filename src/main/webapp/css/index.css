@@ -130,6 +130,12 @@
 .twitter-ico {
     background-position: 0 -48px;
 }
+
+.grammar dl {
+    float: left;
+    height: 70px;
+    width: 206px;
+}
 /* end article */
 
 /* start register */

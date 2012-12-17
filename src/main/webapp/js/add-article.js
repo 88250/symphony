@@ -30,22 +30,26 @@ var AddArticle = {
      * @description 发布文章
      */
     add: function () {
+        var isError = false;
+        if (this.editor.getValue().length < 4 || this.editor.getValue().length > 1048576) {
+            $("#articleContentTip").addClass("tip-error").text(Label.articleContentErrorLabel);
+        } else {
+            isError = true;
+            $("#articleContentTip").removeClass("tip-error").text("");
+        }
+        
         if (Validate.goValidate([{
             "id": "articleTitle",
             "type": 256,
             "msg": Label.articleTitleErrorLabel
         }, {
-            "id": "articleContent",
-            "type": 1048576,
-            "msg": Label.articleContentErrorLabel
-        }, {
             "id": "articleTags",
             "type": "tags",
             "msg": Label.articleTagsErrorLabel
-        }])) {
+        }]) && isError) {
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g,""),
-                articleContent: $("#articleContent").val(),
+                articleContent: this.editor.getValue(),
                 articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g,""),
                 syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked")
             };
@@ -81,17 +85,69 @@ var AddArticle = {
      * @description 初识化发文页面，回车提交表单
      */
     init: function () {
+        var it = this;
+        it.editor = CodeMirror.fromTextArea(document.getElementById("articleContent"), {
+            mode: 'markdown',
+            lineNumbers: true,
+            onKeyEvent: function (editor, event) {
+                if (it.editor.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
+                    $(".form .green").show();
+                } else {
+                    $(".form .green").hide();
+                }
+                
+                if (event.keyCode === 13 && event.ctrlKey) {
+                    AddArticle.add();
+                }
+            }
+        });
+            
         $("#articleTitle, #articleTags").keyup(function (event) {
             if (event.keyCode === 13) {
                 AddArticle.add();
             }
         });
         
-        $("#articleContent").keyup(function (event) {
-            if (event.keyCode === 13 && event.ctrlKey) {
-                AddArticle.add();
+        $("#preview").dialog({
+            "modal": true,
+            "hideFooter": true,
+            "height": 402
+        });
+    },
+    
+    /**
+     * @description 预览文章
+     */
+    preview: function () {
+        var it = this;
+        $.ajax({
+            url: "/markdown",
+            type: "POST",
+            cache: false,
+            data: {
+                markdownText: it.editor.getValue()
+            },
+            success: function(result, textStatus){
+                $("#preview").dialog("open");
+                $("#preview").html(result.html);
             }
         });
+    },
+    
+    /**
+     * @description 显示简要语法
+     */
+    grammar: function () {
+        var $grammar = $(".grammar"),
+        $codemirror = $(".CodeMirror");
+        if ($codemirror.width() > 900) {
+            $grammar.show();
+            $codemirror.width(770);
+        } else {
+            $grammar.hide();
+            $codemirror.width(996)
+        }
+       
     }
 };
 

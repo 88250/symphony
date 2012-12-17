@@ -57,8 +57,8 @@
                                 </td>
                                 <td>
                                     <input style="width:98px;" type="text" id="securityCode" />
-                                    <img id="captcha" style="cursor:pointer" src="/captcha" onclick="this.src='/captcha?'+(new Date()).getTime()" />
                                     <span style="top:202px;left:240px;"></span>
+                                    <img id="captcha" style="cursor:pointer" src="/captcha" onclick="this.src='/captcha?'+(new Date()).getTime()" />
                                 </td>
                             </tr>
                             <tr>

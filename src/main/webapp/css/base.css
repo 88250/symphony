@@ -351,7 +351,7 @@ button.red:active {
 .ico-replay:hover {
     border-radius: 3px;
     box-shadow: 0 0 3px #666;
-    background-color: #666;
+    background-color: #999;
 }
 /* end icon */
 
@@ -439,6 +439,17 @@ button.red:active {
     display: block;
 }
 /* end status */
+
+/* start editor */
+.grammar dd {
+    font-size: 12px;
+    color: #999;
+}
+
+.grammar dl {
+    margin: 10px;
+}
+/* end editor */
 /* end common */
 
 /* start form */
@@ -521,6 +532,69 @@ button.red:active {
 }
 /* end pagination */
 
+/* start dialog */
+.dialog-background {
+    background-color: #000000;
+    display: none;
+    filter: alpha(opacity=30);
+    height: 100%;
+    left: 0;
+    opacity: .3;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 90;
+}
+
+.dialog-panel {
+    display: none;
+    position: absolute;
+    z-index: 100;
+}
+.dialog-title {
+    color: #FFFFFF;
+    float: left;
+    font-size: 12px;
+    line-height: 27px;
+    margin-left: 3px;
+}
+
+.dialog-header-bg {
+    background:#fafafa;
+    background:-moz-linear-gradient(#fafafa,#eaeaea);
+    background:-webkit-linear-gradient(#fafafa,#eaeaea);
+    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#eaeaea')"; 
+    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
+    border-radius: 6px 6px 0 0;
+    border-style: solid;
+    border-width: 1px 1px 0;
+    cursor: move;
+    height: 34px;
+}
+
+.dialog-close-icon {
+    background: url("../images/icons.png") no-repeat scroll -4px -96px transparent;
+    cursor: pointer;
+    float: right;
+    height: 18px;
+    margin-top: 6px;
+    padding: 3px;
+    width: 22px;
+}
+
+.dialog-close-icon:hover {
+    background-position: -4px -120px;
+}
+
+.dialog-main {
+    background-color: #FFFFFF;
+    border: 2px solid #666666;
+    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
+    border-top-width: 0;
+    padding: 12px;
+}
+/* end dialog */
+
 /* start framework */
 .wrapper {
     width: 1000px;
@@ -546,7 +620,6 @@ button.red:active {
 
 /* start header */
 .nav {
-    background-color: #666666;
     width: 100%;
     z-index: 99;
     background:#fafafa;
