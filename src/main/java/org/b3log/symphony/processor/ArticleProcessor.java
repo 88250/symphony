@@ -50,6 +50,7 @@ import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.QueryResults;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -59,9 +60,10 @@ import org.json.JSONObject;
  *
  * <ul> 
  *   <li>Shows an article (/article/{articleId}), GET</li>
- *   <li>Shows article adding form page (/add-article), GET </li>
+ *   <li>Shows article adding form page (/add-article), GET</li>
  *   <li>Adds an article (/article) <em>locally</em>, PUT</li> 
- *   <li>Adds an article (/rhythm/article) <em>remotely</em>, POST</li> 
+ *   <li>Adds an article (/rhythm/article) <em>remotely</em>, POST</li>
+ *   <li>Markdowns text (/markdown), POST</li>
  * </ul> 
  *
  * <p> 
@@ -70,7 +72,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.14, Dec 13, 2012
+ * @version 1.0.2.14, Dec 17, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -391,6 +393,60 @@ public final class ArticleProcessor {
             client.put(Client.CLIENT_LATEST_ADD_ARTICLE_TIME, System.currentTimeMillis());
 
             clientMgmtService.updateClient(client);
+        }
+    }
+
+    /**
+     * Markdowns.
+     *
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "html": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/markdown", method = HTTPRequestMethod.POST)
+    public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws IOException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        final JSONObject result = new JSONObject();
+        renderer.setJSONObject(result);
+
+        result.put(Keys.STATUS_CODE, true);
+
+        final String markdownText = request.getParameter("markdownText");
+        if (Strings.isEmptyOrNull(markdownText)) {
+            result.put("html", "");
+
+            return;
+        }
+
+         final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            
+            return;
+        }
+
+        try {
+            final String html = Markdowns.toHTML(markdownText);
+
+            result.put("html", html);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.falseResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("Markdown Error"));
         }
     }
 
