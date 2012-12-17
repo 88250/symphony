@@ -72,7 +72,7 @@
                                                     <#if isLoggedIn> 
                                                     <span class="ico-replay" onclick="Comment.replay('@${comment.commentAuthorName}')"></span>
                                                     </#if>
-                                                    <i>#${comment_index + 1}</i>
+                                                    <i>#${(paginationCurrentPageNum - 1) * 30 + comment_index + 1}</i>
                                                 </span>    
                                             </div>
                                             <div class="content-reset">
