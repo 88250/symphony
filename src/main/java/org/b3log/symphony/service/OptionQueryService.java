@@ -28,6 +28,7 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.repository.OptionRepository;
 import org.json.JSONArray;
@@ -41,7 +42,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 1, 2012
+ * @version 1.0.0.4, Dec 21, 2012
  * @since 0.2.0
  */
 public final class OptionQueryService {
@@ -116,15 +117,7 @@ public final class OptionQueryService {
      * @param request the specified request
      */
     public static void onlineVisitorCount(final HttpServletRequest request) {
-        String remoteAddr = request.getHeader("X-forwarded-for");
-        
-        if (remoteAddr == null) {
-            remoteAddr = request.getRemoteAddr();
-        } else {
-            remoteAddr = remoteAddr.split(",")[0];
-        }
-        
-        ONLINE_VISITORS.put(remoteAddr, System.currentTimeMillis());
+        ONLINE_VISITORS.put(Requests.getRemoteAddr(request), System.currentTimeMillis());
         LOGGER.log(Level.FINEST, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
