@@ -8,6 +8,7 @@
         <meta name="description" content="${article.articleTitle}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index.css" />
+        <link type="text/css" rel="stylesheet" href="/js/lib/google-code-prettify/prettify.css">
     </head>
     <body>
         <#include "header.ftl">
@@ -171,6 +172,7 @@
             Label.articleAuthorName = "${article.articleAuthorName}";
             Label.articlePermalink = "${article.articlePermalink}"
         </script>
+        <script type="text/javascript" src="/js/lib/google-code-prettify/prettify.js"></script>
         <script type="text/javascript" src="/js/article.js"></script>
     </body>
 </html>

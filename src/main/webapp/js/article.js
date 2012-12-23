@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Dec 11, 2012
+ * @version 1.0.0.6, Dec 23, 2012
  */
 
 /**
@@ -62,29 +62,6 @@ var Comment = {
                 }
             });
         }
-    },
-    
-    /**
-     * @description 初识化发文页面
-     */
-    init: function () {
-        $("#commentContent").val("").keyup(function (event) {
-            if (event.keyCode === 13 && event.ctrlKey) {
-                Comment.add(Label.articleOId);
-            }
-            
-            this.rows = this.value.split("\n").length;
-            while (this.scrollHeight - 6 > $(this).height()) {
-                this.rows += 1;
-            }
-            this.rows += 1;
-            
-            if (this.rows < 3) {
-                this.rows = 3;
-            }
-        });
-        
-        this.share();
     },
     
     /**
@@ -134,6 +111,32 @@ var Comment = {
             oR.moveEnd('character', position.start + userName.length);
             oR.select();
         }
+    }
+};
+
+var Article = {
+    /**
+    * @description 初识化发文页面
+    */
+    init: function () {
+        $("#commentContent").val("").keyup(function (event) {
+            if (event.keyCode === 13 && event.ctrlKey) {
+                Comment.add(Label.articleOId);
+            }
+            
+            this.rows = this.value.split("\n").length;
+            while (this.scrollHeight - 6 > $(this).height()) {
+                this.rows += 1;
+            }
+            this.rows += 1;
+            
+            if (this.rows < 3) {
+                this.rows = 3;
+            }
+        });
+        
+        this.share();
+        this.parseLanguage();
     },
     
     /**
@@ -154,7 +157,23 @@ var Comment = {
             var key = this.className.replace("-ico", "");
             window.open(urls[key], "_blank", "top=100,left=200,width=648,height=618");
         });
+    },
+    
+    /*
+     * @description 解析语法高亮
+     */
+    parseLanguage: function () {
+        var isPrettify = false;
+        
+        $(".content-reset > pre, .content-reset > p > code").each(function () {
+            this.className = "prettyprint";
+            isPrettify = true;
+        });
+        
+        if (isPrettify) {       
+            prettyPrint();
+        }
     }
 };
 
-Comment.init();
+Article.init();
