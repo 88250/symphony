@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Nov 27, 2012
+ * @version 1.0.1.4, Dec 23, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -161,7 +161,9 @@ public final class ArticleMgmtService {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             } else {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
-                        replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;"));
+                        replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;")
+                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
+                
             }
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
