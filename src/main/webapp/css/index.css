@@ -235,17 +235,21 @@
 }
 
 .tags-cold > ul > li.even {
-    background: #F1FEF4;
-    background: -moz-linear-gradient(#F1FEF4, #E5F8E6);
+    background-color: #F1FEF4;
+    background: linear-gradient(#F1FEF4, #E5F8E6);
+    background: -o-linear-gradient(#F1FEF4, #E5F8E6);
+    background: -ms-linear-gradient(#F1FEF4, #E5F8E6);
     background: -webkit-linear-gradient(#F1FEF4, #E5F8E6);
-    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#F1FEF4', endColorstr='#E5F8E6')";
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#F1FEF4', endColorstr='#E5F8E6')";
 }
 
 .tags-trend > ul > li.even {
-    background: #ffe8ff;
-    background: -moz-linear-gradient(#fef3f3, #fce7e7);
+    background-color: #ffe8ff;
+    background: linear-gradient(#fef3f3, #fce7e7);
+    background: -ms-linear-gradient(#fef3f3, #fce7e7);
+    background: -o-linear-gradient(#fef3f3, #fce7e7);
     background: -webkit-linear-gradient(#ffe8ff, #ffe8e8);
-    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe8ff', endColorstr='#ffe8e8')";
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe8ff', endColorstr='#ffe8e8')";
 }
 
 .tags-cold .ft-small {

@@ -46,10 +46,12 @@
 }
 
 .module-header {
-    background:#fafafa;
-    background:-moz-linear-gradient(#FAFAFA, #EAEAEA);
-    background:-webkit-linear-gradient(#FAFAFA, #EAEAEA);
-    -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#EAEAEA')";
+    background-color: #fafafa;
+    background: linear-gradient(#FAFAFA, #EAEAEA);
+    background: -ms-linear-gradient(#FAFAFA, #EAEAEA);
+    background: -o-linear-gradient(#FAFAFA, #EAEAEA);
+    background: -webkit-linear-gradient(#FAFAFA, #EAEAEA);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#EAEAEA')";
     border-bottom: 1px solid #D8D8D8;
     color: #555;
     padding: 5px 15px;
