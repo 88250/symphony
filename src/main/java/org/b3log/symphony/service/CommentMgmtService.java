@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.10, Nov 26, 2012
+ * @version 1.0.0.11, Dec 26, 2012
  * @since 0.2.0
  */
 public final class CommentMgmtService {
@@ -112,6 +112,18 @@ public final class CommentMgmtService {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
+            final JSONObject commenter = requestJSONObject.optJSONObject(Comment.COMMENT_T_COMMENTER);
+
+            final long currentTimeMillis = System.currentTimeMillis();
+            if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepArticleTime")) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
+                LOGGER.log(Level.WARNING, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
+                throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
+            }
+
             final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
             final JSONObject article = articleRepository.get(articleId);
             article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) + 1);
@@ -154,18 +166,6 @@ public final class CommentMgmtService {
             }
 
             // Updates user comment count, latest comment time
-            final JSONObject commenter = requestJSONObject.optJSONObject(Comment.COMMENT_T_COMMENTER);
-
-            final long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepArticleTime")) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                LOGGER.log(Level.WARNING, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
-                throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
-            }
-
             commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) + 1);
             commenter.put(UserExt.USER_LATEST_CMT_TIME, currentTimeMillis);
             userRepository.update(commenter.optString(Keys.OBJECT_ID), commenter);

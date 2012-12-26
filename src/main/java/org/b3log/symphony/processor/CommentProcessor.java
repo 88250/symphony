@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 20, 2012
+ * @version 1.0.0.4, Dec 26, 2012
  * @since 0.2.0
  */
 @RequestProcessor
@@ -196,7 +196,9 @@ public final class CommentProcessor {
         comment.put(Comment.COMMENT_AUTHOR_EMAIL, defaultCommenter.optString(User.USER_EMAIL));
         comment.put(Comment.COMMENT_AUTHOR_ID, defaultCommenter.optString(Keys.OBJECT_ID));
         comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, originalCmt.optString(Comment.COMMENT_T_ID));
-        comment.put(Comment.COMMENT_CONTENT, originalCmt.optString(Comment.COMMENT_CONTENT));
+        String commentContent = originalCmt.optString(Comment.COMMENT_CONTENT)
+                                + " (" + comment.optString(Comment.COMMENT_T_AUTHOR_NAME) + ")";
+        comment.put(Comment.COMMENT_CONTENT, commentContent);
         comment.put(Comment.COMMENT_ON_ARTICLE_ID, article.optString(Keys.OBJECT_ID));
         comment.put(Comment.COMMENT_T_COMMENTER, defaultCommenter);
 

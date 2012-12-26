@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Dec 23, 2012
+ * @version 1.0.1.5, Dec 26, 2012
  * @since 0.2.0
  */
 public final class ArticleMgmtService {
@@ -151,6 +151,17 @@ public final class ArticleMgmtService {
             article.put(Keys.OBJECT_ID, ret);
 
             final String authorId = requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject author = userRepository.get(authorId);
+            final long currentTimeMillis = System.currentTimeMillis();
+            if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
+                LOGGER.log(Level.WARNING, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
+                throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
+            }
+
             final String clientArticleId = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
             final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
 
@@ -163,15 +174,12 @@ public final class ArticleMgmtService {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
                         replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;")
                         .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
-                
+
             }
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, fromClient ? true : requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT));
             article.put(Article.ARTICLE_AUTHOR_ID, authorId);
-
-            final long currentTimeMillis = System.currentTimeMillis();
-
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
             article.put(Article.ARTICLE_VIEW_CNT, 0);
             article.put(Article.ARTICLE_GOOD_CNT, 0);
@@ -185,15 +193,6 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_STATUS, 0);
             article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
 
-            final JSONObject author = userRepository.get(authorId);
-            if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                LOGGER.log(Level.WARNING, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
-                throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
-            }
 
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
 
