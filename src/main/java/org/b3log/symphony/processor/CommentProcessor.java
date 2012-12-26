@@ -196,7 +196,7 @@ public final class CommentProcessor {
         comment.put(Comment.COMMENT_AUTHOR_EMAIL, defaultCommenter.optString(User.USER_EMAIL));
         comment.put(Comment.COMMENT_AUTHOR_ID, defaultCommenter.optString(Keys.OBJECT_ID));
         comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, originalCmt.optString(Comment.COMMENT_T_ID));
-        String commentContent = originalCmt.optString(Comment.COMMENT_CONTENT)
+        final String commentContent = originalCmt.optString(Comment.COMMENT_CONTENT)
                                 + " (" + comment.optString(Comment.COMMENT_T_AUTHOR_NAME) + ")";
         comment.put(Comment.COMMENT_CONTENT, commentContent);
         comment.put(Comment.COMMENT_ON_ARTICLE_ID, article.optString(Keys.OBJECT_ID));
