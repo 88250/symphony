@@ -115,7 +115,7 @@
                                    title="${article.articleAuthorName}">${article.articleAuthorName}</a>
                                 <#if article.articleAuthorURL!="">
                                 <br/>
-                                <a rel="nofollow" href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
+                                <a target="_blank" rel="nofollow" href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
                                 </#if>
                             </div>
                         </div>

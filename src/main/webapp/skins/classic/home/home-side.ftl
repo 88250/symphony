@@ -15,7 +15,7 @@
         </div>
         <#if user.userURL!="">
         <div class="user-info">
-            <span class="ft-small">URL </span><a rel="friend" href="${user.userURL}">${user.userURL}</a>
+            <span class="ft-small">URL </span><a target="_blank" rel="friend" href="${user.userURL}">${user.userURL}</a>
         </div>
         </#if>
         <div class="user-info">

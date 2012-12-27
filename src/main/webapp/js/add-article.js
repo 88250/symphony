@@ -102,7 +102,7 @@ var AddArticle = {
             }
         });
             
-        $("#articleTitle, #articleTags").keyup(function (event) {
+        $("#articleTitle, #articleTags").keypress(function (event) {
             if (event.keyCode === 13) {
                 AddArticle.add();
             }

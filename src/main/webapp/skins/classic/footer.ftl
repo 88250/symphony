@@ -29,6 +29,7 @@
         </div>
     </div>
 </div>
+<div class="go-top" onclick="Util.goTop()"></div>
 <script type="text/javascript" src="/js/lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
 <script>

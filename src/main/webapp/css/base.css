@@ -349,7 +349,8 @@ button.red:active {
 /* start icon */
 .ico-date, 
 .ico-replay,
-.nav input.search {
+.nav input.search,
+.go-top {
     background-image: url("../images/icons.png");
     background-repeat: no-repeat;
 }
@@ -767,6 +768,24 @@ button.red:active {
 
 .footer-nav a.last {
     border-right: 0;
+}
+
+.go-top {
+    background-color: #E7ECEE;
+    background-position: 5px -146px;
+    border: 1px solid #D2D9DD;
+    border-radius: 5px 0 0 5px;
+    bottom: 77px;
+    cursor: pointer;
+    display: none;
+    height: 36px;
+    position: fixed;
+    right: -1px;
+    width: 36px;
+}
+
+.go-top:hover {
+    background-color: #d8e0e3 !important;
 }
 /* end footer */
 
