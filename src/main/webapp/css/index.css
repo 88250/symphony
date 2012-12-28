@@ -240,7 +240,7 @@
     background: -o-linear-gradient(#F1FEF4, #E5F8E6);
     background: -ms-linear-gradient(#F1FEF4, #E5F8E6);
     background: -webkit-linear-gradient(#F1FEF4, #E5F8E6);
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#F1FEF4', endColorstr='#E5F8E6')";
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#F1FEF4', endColorstr='#E5F8E6');
 }
 
 .tags-trend > ul > li.even {
@@ -249,7 +249,7 @@
     background: -ms-linear-gradient(#fef3f3, #fce7e7);
     background: -o-linear-gradient(#fef3f3, #fce7e7);
     background: -webkit-linear-gradient(#ffe8ff, #ffe8e8);
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe8ff', endColorstr='#ffe8e8')";
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#ffe8ff', endColorstr='#ffe8e8');
 }
 
 .tags-cold .ft-small {

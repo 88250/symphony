@@ -51,7 +51,7 @@
     background: -ms-linear-gradient(#FAFAFA, #EAEAEA);
     background: -o-linear-gradient(#FAFAFA, #EAEAEA);
     background: -webkit-linear-gradient(#FAFAFA, #EAEAEA);
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#EAEAEA')";
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#FAFAFA', endColorstr='#EAEAEA');
     border-bottom: 1px solid #D8D8D8;
     color: #555;
     padding: 5px 15px;
