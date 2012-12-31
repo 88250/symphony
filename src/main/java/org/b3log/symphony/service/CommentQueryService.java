@@ -42,6 +42,8 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Comment management service.
@@ -84,6 +86,10 @@ public final class CommentQueryService {
     /**
      * Gets the latest comments with the specified fetch size.
      * 
+     * <p>
+     * The returned comments content is plain text.
+     * </p>
+     * 
      * @param fetchSize the specified fetch size
      * @return the latest comments, returns an empty list if not found
      * @throws ServiceException service exception
@@ -110,7 +116,9 @@ public final class CommentQueryService {
                     comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
                 }
 
-                comment.put(Comment.COMMENT_CONTENT, Emotions.clear(comment.optString(Comment.COMMENT_CONTENT)));
+                String content = Emotions.clear(comment.optString(Comment.COMMENT_CONTENT));
+                content = Jsoup.clean(content, Whitelist.none());
+                comment.put(Comment.COMMENT_CONTENT, content);
 
                 final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
