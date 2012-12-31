@@ -49,12 +49,12 @@
     list-style: none;
 }
 
-.index-module .recent-comment li {
+.index-module .line li {
     border-bottom: 1px dotted #ccc;
     padding-bottom: 6px;
 }
 
-.index-module .recent-comment li.last {
+.index-module .line li.last {
     border-bottom-width: 0;
     padding-bottom: 0;
 }
