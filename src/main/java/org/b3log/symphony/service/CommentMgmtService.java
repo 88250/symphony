@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.11, Dec 26, 2012
+ * @version 1.0.0.12, Dec 31, 2012
  * @since 0.2.0
  */
 public final class CommentMgmtService {
@@ -100,6 +100,7 @@ public final class CommentMgmtService {
      *     "commentOnArticleId": "",
      *     "commentOriginalCommentId": "", // optional
      *     "clientCommentId": "" // optional,
+     *     "commentAuthorName": "" // If from client
      *     "commenter": {
      *         // User model
      *     }
@@ -133,17 +134,23 @@ public final class CommentMgmtService {
             final JSONObject comment = new JSONObject();
             comment.put(Keys.OBJECT_ID, ret);
 
-            final String securedContent = requestJSONObject.optString(Comment.COMMENT_CONTENT)
+            String securedContent = requestJSONObject.optString(Comment.COMMENT_CONTENT)
                     .replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;").replace("_esc_enter_88250_", "<br/>");
-            comment.put(Comment.COMMENT_CONTENT, securedContent);
+
             comment.put(Comment.COMMENT_AUTHOR_EMAIL, requestJSONObject.optString(Comment.COMMENT_AUTHOR_EMAIL));
             comment.put(Comment.COMMENT_AUTHOR_ID, requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID));
             comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
             final boolean fromClient = requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID);
             if (fromClient) {
                 comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
+
+                // Appends original commenter name
+                final String authorName = comment.optString(Comment.COMMENT_T_AUTHOR_NAME);
+                securedContent += " <i class='ft-small'>by " + authorName + "</i>";
+                comment.remove(Comment.COMMENT_T_AUTHOR_NAME);
             }
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
+            comment.put(Comment.COMMENT_CONTENT, securedContent);
 
             comment.put(Comment.COMMENT_CREATE_TIME, System.currentTimeMillis());
             comment.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "#" + ret);
