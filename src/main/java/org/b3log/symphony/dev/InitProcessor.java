@@ -26,19 +26,23 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -61,6 +65,44 @@ public class InitProcessor {
     private static final int ARTICLE_GENERATE_NUM = 49;
 
     /**
+     * Hashes user password.
+     * 
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = "/dev/hash", method = HTTPRequestMethod.GET)
+    public void hashUserPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final UserRepository userRepository = UserRepository.getInstance();
+        final JSONArray users = userRepository.get(new Query()).getJSONArray(Keys.RESULTS);
+
+        LOGGER.log(Level.INFO, "Users [cnt={0}]", users.length());
+
+        final Transaction transaction = userRepository.beginTransaction();
+        try {
+            for (int i = 0; i < users.length(); i++) {
+                final JSONObject user = users.getJSONObject(i);
+                final String oldPwd = user.optString(User.USER_PASSWORD);
+                user.put(User.USER_PASSWORD, MD5.hash(oldPwd));
+
+                userRepository.update(user.optString(Keys.OBJECT_ID), user);
+
+                LOGGER.log(Level.INFO, "Hashed user[name={0}] password.", user.optString(User.USER_NAME));
+            }
+
+            transaction.commit();
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Hash user pwd failed", e);
+
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        }
+    }
+
+    /**
      * Generates tables.
      * 
      * @param context the specified context
@@ -77,7 +119,7 @@ public class InitProcessor {
             final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
                 LOGGER.log(Level.INFO, "Creates table result[tableName={0}, isSuccess={1}]",
-                           new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
+                        new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
 
             // Init stat.

@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 8, 2012
+ * @version 1.0.0.6, Jan 4, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -89,14 +89,6 @@ public final class LoginProcessor {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
-    /**
-     * User repository.
-     */
-    private UserRepository userRepository = UserRepository.getInstance();
-    /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Shows registration page.
@@ -213,7 +205,7 @@ public final class LoginProcessor {
             }
 
             final String userPassword = user.optString(User.USER_PASSWORD);
-            if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
+            if (userPassword.equals(MD5.hash(requestJSONObject.optString(User.USER_PASSWORD)))) {
                 Sessions.login(request, response, user);
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
 
@@ -315,7 +307,7 @@ public final class LoginProcessor {
 
                 final String userPassword = user.optString(User.USER_PASSWORD);
                 final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
-                if (MD5.hash(userPassword).equals(hashPassword)) {
+                if (userPassword.equals(hashPassword)) {
                     Sessions.login(request, response, user);
                     UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
                     LOGGER.log(Level.FINER, "Logged in with cookie[email={0}]", userEmail);
