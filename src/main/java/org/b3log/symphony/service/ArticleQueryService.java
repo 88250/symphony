@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Oct 10, 2012
+ * @version 1.0.0.7, Jan 6, 2013
  * @since 0.2.0
  */
 public final class ArticleQueryService {
@@ -118,7 +118,7 @@ public final class ArticleQueryService {
         final String[] tagTitles = tagsString.split(",");
         final int tagTitlesLength = tagTitles.length;
         final int subCnt = tagTitlesLength > RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT
-                           ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
+                ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
 
         final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
         final int subFetchSize = fetchSize / subCnt;
@@ -439,6 +439,11 @@ public final class ArticleQueryService {
 
         final String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
         article.put(Article.ARTICLE_TITLE, title);
+
+        if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+            article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+            article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
+        }
     }
 
     /**
@@ -461,7 +466,7 @@ public final class ArticleQueryService {
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
         final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(authorEmail) + "?s=140&d="
-                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
@@ -529,7 +534,7 @@ public final class ArticleQueryService {
     public void processArticleContent(final JSONObject article) throws ServiceException {
         final JSONObject author = article.optJSONObject(Article.ARTICLE_T_AUTHOR);
         if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
-            || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+                || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
             article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
 
@@ -540,8 +545,7 @@ public final class ArticleQueryService {
         try {
             final Set<String> userNames = userQueryService.getUserNames(articleContent);
             for (final String userName : userNames) {
-                articleContent = articleContent.replace('@' + userName,
-                                                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
+                articleContent = articleContent.replace('@' + userName, "@<a href='/member/" + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
             final String errMsg = "Generates @username home URL for comment content failed";
