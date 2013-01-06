@@ -8,7 +8,7 @@
     <h2>
         ${recentCommentLabel}
     </h2>
-    <ul class="index-module-list line">
+    <ul class="index-module-list module-line">
         <#list sideLatestCmts as cmt>
         <li class="fn-clear<#if !cmt_has_next> last</#if>">
             <a rel="nofollow" class="fn-left" href="/member/${cmt.commenter.userName}" 
@@ -29,9 +29,9 @@
     <h2>
         ${randomArticleLabel}
     </h2>
-    <ul class="index-module-list line">
+    <ul class="index-module-list module-line">
         <#list sideRandomArticles as randomArticle>
-        <li <#if !randomArticle_has_next>class="last"</#if>>
+        <li<#if !randomArticle_has_next> class="last"</#if>>
             <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
             <div class="ft-small">
                 <span>

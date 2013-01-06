@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Dec 23, 2012
+ * @version 1.0.0.7, Jan 7, 2013
  */
 
 /**
@@ -165,7 +165,7 @@ var Article = {
     parseLanguage: function () {
         var isPrettify = false;
         
-        $(".content-reset > pre, .content-reset > p > code").each(function () {
+        $(".content-reset pre, .content-reset > p > code").each(function () {
             this.className = "prettyprint";
             isPrettify = true;
         });

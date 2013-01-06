@@ -127,9 +127,9 @@
                         <h2>
                             ${relativeArticleLabel}
                         </h2>
-                        <ul class="index-module-list">
+                        <ul class="index-module-list module-line">
                             <#list sideRelevantArticles as relevantArticle>
-                            <li>
+                            <li<#if !relevantArticle_has_next> class="last"</#if>>
                                 <a rel="nofollow" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
@@ -146,9 +146,9 @@
                         <h2>
                             ${randomArticleLabel}
                         </h2>
-                        <ul class="index-module-list">
+                        <ul class="index-module-list module-line">
                             <#list sideRandomArticles as randomArticle>
-                            <li>
+                            <li<#if !randomArticle_has_next> class="last"</#if>>
                                 <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
                                 <div class="ft-small">
                                     <span>
