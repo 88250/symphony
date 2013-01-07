@@ -167,7 +167,7 @@
         <#include "footer.ftl">
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
-            Label.symphonyLabel = "${article.symphonyLabel}";
+            Label.symphonyLabel = "${symphonyLabel}";
             Label.articleOId = "${article.oId}";
             Label.articleTitle = "${article.articleTitle}";
             Label.articlePermalink = "${article.articlePermalink}"
