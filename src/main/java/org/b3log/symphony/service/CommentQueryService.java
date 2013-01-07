@@ -49,7 +49,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.13, Oct 7, 2012
+ * @version 1.0.0.14, Jan 7, 2013
  * @since 0.2.0
  */
 public final class CommentQueryService {
@@ -158,9 +158,11 @@ public final class CommentQueryService {
 
             for (final JSONObject comment : ret) {
                 comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
+
                 final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
                 final JSONObject article = articleRepository.get(articleId);
-                comment.put(Comment.COMMENT_T_ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
+                comment.put(Comment.COMMENT_T_ARTICLE_TITLE, Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
+                        ? langPropsService.get("articleTitleBlockLabel") : article.optString(Article.ARTICLE_TITLE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
 
                 final JSONObject commenter = userRepository.get(userId);

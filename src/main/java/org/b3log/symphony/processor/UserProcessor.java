@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Nov 12, 2012
+ * @version 1.0.1.3, Jan 7, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -153,8 +153,7 @@ public final class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeArticlesWindowSize");
 
-        final List<JSONObject> userArticles = articleQueryService.getUserArticles(user.optString(Keys.OBJECT_ID), pageNum,
-                                                                                  pageSize);
+        final List<JSONObject> userArticles = articleQueryService.getUserArticles(user.optString(Keys.OBJECT_ID), pageNum, pageSize);
         dataModel.put(Common.USER_HOME_ARTICLES, userArticles);
 
         final int articleCnt = user.optInt(UserExt.USER_ARTICLE_COUNT);
@@ -385,7 +384,7 @@ public final class UserProcessor {
     private void fillUserThumbnailURL(final JSONObject user) {
         final String userEmail = user.optString(User.USER_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(userEmail) + "?s=140&d="
-                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
     }
 }
