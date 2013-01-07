@@ -143,7 +143,7 @@ var Article = {
      * @description 分享按钮
      */
     share: function () {
-        var title = encodeURIComponent(Label.articleTitle + " - " + Label.articleAuthorName),
+        var title = encodeURIComponent(Label.articleTitle + " - B3log " + Label.symphonyLabel),
         url = "http://symphony.b3log.org" + Label.articlePermalink,
         pic = $(".content-reset img").attr("src");
         var urls = {};
