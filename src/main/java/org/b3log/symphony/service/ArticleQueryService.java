@@ -212,7 +212,7 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Gets articles by the specified tag.
+     * Gets articles by the specified tag (order by article create date desc).
      * 
      * @param tag the specified tag
      * @param currentPageNum the specified page number
@@ -234,7 +234,8 @@ public final class ArticleQueryService {
                 articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
             }
 
-            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
+            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).addSort(Keys.OBJECT_ID,
+                    SortDirection.DESCENDING);
             result = articleRepository.get(query);
 
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
