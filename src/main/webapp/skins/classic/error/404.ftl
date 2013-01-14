@@ -10,7 +10,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper ft-center">
-                <h2>404 Not Found!</h2>
+                <script type="text/javascript" src="http://www.qq.com/404/search_children.js" charset="utf-8"></script>
             </div>
         </div>
         <#include "../footer.ftl">
