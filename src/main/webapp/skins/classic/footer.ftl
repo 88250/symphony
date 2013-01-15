@@ -14,7 +14,7 @@
             <div class="fn-clear">
                 <div class="fn-left">
                     ${visionLabel}
-                    <span class="ft-small">&COPY; 2012 <a rel="copyright" href="http://www.b3log.org" target="_blank">B3LOG.ORG</a></span>
+                    <span class="ft-small">&COPY; ${year} <a rel="copyright" href="http://www.b3log.org" target="_blank">B3LOG.ORG</a></span>
                 </div>
                 <div class="fn-right info">
                     <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt}
