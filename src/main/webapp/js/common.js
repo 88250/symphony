@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0 Dec 27, 2012
+ * @version 1.0.1.1 Jan 16, 2013
  */
 
 /**
@@ -77,7 +77,7 @@ var Util = {
         });
         
         $(window).scroll(function () {
-            if ($(window).scrollTop() >= window.scrollMaxY) {
+            if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
                 $(".go-top").css({
                     "background-color": "#F8F8F8",
                     "border-radius": "5px 0 0 0",

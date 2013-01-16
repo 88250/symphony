@@ -56,7 +56,7 @@
                                 <#list article.articleComments as comment>
                                 <li id="${comment.oId}">
                                     <div class="fn-clear">
-                                        <div class="fn-left">
+                                        <div class="fn-left avatar-wrapper">
                                             <img class="avatar" 
                                                  title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
                                         </div>
@@ -107,7 +107,7 @@
                 <div class="side">
                     <div class="index-module">
                         <div class="fn-clear">
-                            <div class="fn-left">
+                            <div class="fn-left avatar-wrapper">
                                 <img class="avatar" src="${article.articleAuthorThumbnailURL}" />
                             </div>
                             <div class="fn-left">
