@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.util;
 
+import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -144,6 +145,8 @@ public final class Filler {
      */
     public static void fillFooter(final Map<String, Object> dataModel) throws Exception {
         fillSysInfo(dataModel);
+
+        dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
     }
 
     /**
