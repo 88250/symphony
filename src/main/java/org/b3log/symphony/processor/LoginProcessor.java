@@ -305,8 +305,8 @@ public final class LoginProcessor {
                 }
 
                 final String userPassword = user.optString(User.USER_PASSWORD);
-                final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
-                if (userPassword.equals(hashPassword)) {
+                final String password = cookieJSONObject.optString(User.USER_PASSWORD);
+                if (userPassword.equals(password)) {
                     Sessions.login(request, response, user);
                     UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
                     LOGGER.log(Level.FINER, "Logged in with cookie[email={0}]", userEmail);
