@@ -23,12 +23,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.ArticleNotifier;
@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * B3log Symphony servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 14, 2012
+ * @version 1.0.0.7, Jan 23, 2013
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -71,9 +71,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Stopwatchs.start("Context Initialized");
 
         super.contextInitialized(servletContextEvent);
-
-        Latkes.disablePageCache();
-        Latkes.disableDataCache();
 
         Skins.loadSkin();
 
@@ -127,6 +124,11 @@ public final class SymphonyServletListener extends AbstractServletListener {
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, false);
+            
+            if (StaticResources.isStatic(httpServletRequest)) {
+                return;
+            }
+            
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
             LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
