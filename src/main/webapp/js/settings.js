@@ -133,9 +133,9 @@ var Settings = {
     },
     
     /**
- * @description settings 页面密码校验
- * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
- */
+     * @description settings 页面密码校验
+     * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
+     */
     _validatePassword: function () {
         var pwdVal = $("#pwdOld").val(),
         newPwdVal = $("#pwdNew").val();
@@ -155,9 +155,10 @@ var Settings = {
             if (newPwdVal !== $("#pwdRepeat").val()) {
                 return false;
             }
+            alert(pwdVal + "     " + newPwdVal);
             var data = {};
-            data.userPassword = pwdVal;
-            data.userNewPassword = newPwdVal;
+            data.userPassword = calcMD5(pwdVal);
+            data.userNewPassword = calcMD5(newPwdVal);
             return data;
         }
         return false;

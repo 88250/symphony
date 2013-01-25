@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * 
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 29, 2012 
+ * @version 1.0.0.5, Jan 25, 2013
  */
 public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
@@ -51,8 +51,10 @@ public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
     public static final int MIN_USER_NAME_LENGTH = 1;
     /**
      * Max password length.
+     * 
+     * <p>MD5 32</p>
      */
-    private static final int MAX_PWD_LENGTH = 16;
+    private static final int MAX_PWD_LENGTH = 32;
     /**
      * Min password length.
      */

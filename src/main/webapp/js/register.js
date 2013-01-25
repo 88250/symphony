@@ -53,7 +53,7 @@ var Register = {
             var requestJSONObject = {
                 userName: $("#userName").val().replace(/(^\s*)|(\s*$)/g,""),
                 userEmail: $("#userEmail").val().replace(/(^\s*)|(\s*$)/g,""),
-                userPassword: $("#userPassword").val(),
+                userPassword: calcMD5($("#userPassword").val()),
                 captcha: $("#securityCode").val()
             };
             

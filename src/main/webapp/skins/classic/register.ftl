@@ -77,6 +77,7 @@
         </div>
         <#include "footer.ftl">
         <script type="text/javascript" src="/js/register.js"></script>
+        <script type="text/javascript" src="/js/lib/md5.js"></script>
         <script>
             Register.init();
             Label.userNameErrorLabel = "${userNameErrorLabel}";

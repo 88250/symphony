@@ -32,6 +32,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
@@ -45,7 +46,7 @@ import org.json.JSONObject;
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Nov 24, 2012
+ * @version 1.0.0.10, Jan 25, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -121,7 +122,7 @@ public class InitProcessor {
             JSONObject admin = new JSONObject();
             admin.put(User.USER_EMAIL, UserExt.DEFAULT_ADMIN_EMAIL);
             admin.put(User.USER_NAME, UserExt.DEFAULT_ADMIN_NAME);
-            admin.put(User.USER_PASSWORD, "test");
+            admin.put(User.USER_PASSWORD, MD5.hash("test"));
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             userMgmtService.addUser(admin);
 
@@ -129,14 +130,14 @@ public class InitProcessor {
             final JSONObject v = new JSONObject();
             v.put(User.USER_EMAIL, "lly219@gmail.com");
             v.put(User.USER_NAME, "Vanessa");
-            v.put(User.USER_PASSWORD, String.valueOf(new Random().nextInt()));
+            v.put(User.USER_PASSWORD, MD5.hash(String.valueOf(new Random().nextInt())));
             userMgmtService.addUser(v);
 
             // Init default commenter (for sync comment from client)
             final JSONObject defaultCommenter = new JSONObject();
             defaultCommenter.put(User.USER_EMAIL, UserExt.DEFAULT_CMTER_EMAIL);
             defaultCommenter.put(User.USER_NAME, UserExt.DEFAULT_CMTER_NAME);
-            defaultCommenter.put(User.USER_PASSWORD, String.valueOf(new Random().nextInt()));
+            defaultCommenter.put(User.USER_PASSWORD, MD5.hash(String.valueOf(new Random().nextInt())));
             defaultCommenter.put(User.USER_ROLE, UserExt.DEFAULT_CMTER_ROLE);
             userMgmtService.addUser(defaultCommenter);
 

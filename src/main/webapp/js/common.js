@@ -127,7 +127,7 @@ var Util = {
         }])) {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g,""),
-                userPassword: $("#loginPassword").val()
+                userPassword: calcMD5($("#loginPassword").val())
             };
             
             $.ajax({

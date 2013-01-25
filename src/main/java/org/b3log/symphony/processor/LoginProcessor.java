@@ -38,7 +38,6 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserServiceFactory;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
@@ -204,7 +203,7 @@ public final class LoginProcessor {
             }
 
             final String userPassword = user.optString(User.USER_PASSWORD);
-            if (userPassword.equals(MD5.hash(requestJSONObject.optString(User.USER_PASSWORD)))) {
+            if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
                 Sessions.login(request, response, user);
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
 

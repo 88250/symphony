@@ -69,6 +69,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Stopwatchs.start("Context Initialized");
+        
+        // For CloudFoundry 
+        // System.out.println(System.getenv("VCAP_SERVICES"));
+        // LOGGER.info(System.getenv("VCAP_SERVICES"));
 
         super.contextInitialized(servletContextEvent);
 

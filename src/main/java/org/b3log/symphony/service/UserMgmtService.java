@@ -24,7 +24,6 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
@@ -35,7 +34,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jan 4, 2013
+ * @version 1.0.0.9, Jan 25, 2013
  * @since 0.2.0
  */
 public final class UserMgmtService {
@@ -187,7 +186,7 @@ public final class UserMgmtService {
      * <pre>
      * {
      *     "oId": "",
-     *     "userPassword": "", // Unhashed
+     *     "userPassword": "", // Hashed
      * }
      * </pre>
      * @throws ServiceException service exception
@@ -204,7 +203,7 @@ public final class UserMgmtService {
             }
 
             // Update
-            oldUser.put(User.USER_PASSWORD, MD5.hash(requestJSONObject.optString(User.USER_PASSWORD)));
+            oldUser.put(User.USER_PASSWORD, requestJSONObject.optString(User.USER_PASSWORD));
 
             userRepository.update(oldUserId, oldUser);
             transaction.commit();
@@ -226,7 +225,7 @@ public final class UserMgmtService {
      * {
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassword": "", // Unhashed
+     *     "userPassword": "", // Hashed
      *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead, if not speciffied
      * }
      * </pre>,see {@link User} for more details
@@ -259,7 +258,7 @@ public final class UserMgmtService {
 
             user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
-            user.put(User.USER_PASSWORD, MD5.hash(requestJSONObject.optString(User.USER_PASSWORD)));
+            user.put(User.USER_PASSWORD, requestJSONObject.optString(User.USER_PASSWORD));
             user.put(User.USER_ROLE, requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE));
 
             user.put(User.USER_URL, "");

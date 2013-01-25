@@ -155,6 +155,7 @@
         </div>
         <#include "../footer.ftl">
         <script type="text/javascript" src="/js/settings.js"></script>
+        <script type="text/javascript" src="/js/lib/md5.js"></script>
         <script>
             Label.updateSuccLabel = "${updateSuccLabel}";
             Label.invalidUserURLLabel = "${invalidUserURLLabel}";

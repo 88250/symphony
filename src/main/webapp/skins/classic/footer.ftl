@@ -32,6 +32,7 @@
 <div class="go-top" onclick="Util.goTop()"></div>
 <script type="text/javascript" src="/js/lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/lib/md5.js"></script>
 <script>
     Util.init();
     Label.invalidPasswordLabel = "${invalidPasswordLabel}";
