@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-        <div id="preview"></div>
+        <div id="preview" class="content-reset"></div>
         <#include "../footer.ftl">
         <script>
             Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
