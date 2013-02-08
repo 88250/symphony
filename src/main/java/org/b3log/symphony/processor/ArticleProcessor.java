@@ -72,7 +72,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.15, Dec 17, 2012
+ * @version 1.0.2.16, Feb 8, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -82,30 +82,37 @@ public final class ArticleProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class.getName());
+
     /**
      * Article management service.
      */
     private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+
     /**
      * Article query service.
      */
     private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+
     /**
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+
     /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * Client management service.
      */
     private ClientMgmtService clientMgmtService = ClientMgmtService.getInstance();
+
     /**
      * Client query service.
      */
     private ClientQueryService clientQueryService = ClientQueryService.getInstance();
+
     /**
      * Language service.
      */
@@ -348,8 +355,8 @@ public final class ArticleProcessor {
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
         articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
-                          + "<i style='margin-right:5px;'><a target='_blank' href='"
-                          + clientHost + originalArticle.optString(Article.ARTICLE_PERMALINK) + "'>" + clientTitle + "</a></i></span></p>";
+                + "<i style='margin-right:5px;'><a target='_blank' href='"
+                + clientHost + originalArticle.optString(Article.ARTICLE_PERMALINK) + "'>" + clientTitle + "</a></i></span></p>";
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -424,31 +431,24 @@ public final class ArticleProcessor {
 
         result.put(Keys.STATUS_CODE, true);
 
-        final String markdownText = request.getParameter("markdownText");
+        String markdownText = request.getParameter("markdownText");
         if (Strings.isEmptyOrNull(markdownText)) {
             result.put("html", "");
 
             return;
         }
 
-         final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
+        final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            
+
             return;
         }
 
-        try {
-            final String html = Markdowns.toHTML(markdownText);
+        markdownText = markdownText.replace("<", "&lt;").replace(">", "&gt;").replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;",
+                "</pre>");
 
-            result.put("html", html);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            final JSONObject jsonObject = QueryResults.falseResult();
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("Markdown Error"));
-        }
+        result.put("html", Markdowns.toHTML(markdownText));
     }
 
     /**

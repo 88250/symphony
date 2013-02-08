@@ -172,7 +172,7 @@ public final class ArticleMgmtService {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             } else {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
-                        replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;")
+                        replace("<", "&lt;").replace(">", "&gt;")
                         .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
 
             }

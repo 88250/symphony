@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jan 6, 2013
+ * @version 1.0.0.8, Feb 8, 2013
  * @since 0.2.0
  */
 public final class ArticleQueryService {
@@ -64,38 +64,47 @@ public final class ArticleQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleQueryService.class.getName());
+
     /**
      * Singleton.
      */
     private static final ArticleQueryService SINGLETON = new ArticleQueryService();
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepository.getInstance();
+
     /**
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository = TagArticleRepository.getInstance();
+
     /**
      * Tag repository.
      */
     private TagRepository tagRepository = TagRepository.getInstance();
+
     /**
      * User repository.
      */
     private UserRepository userRepository = UserRepository.getInstance();
+
     /**
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+
     /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * Count to fetch article tags for relevant articles.
      */
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
+
     /**
      * Language service.
      */
@@ -571,14 +580,10 @@ public final class ArticleQueryService {
      * @param article the specified article content
      */
     private void markdown(final JSONObject article) {
-        String content = "Markdown Error";
+        String content = langPropsService.get("markdownErrorLabel");
 
-        try {
-            content = Markdowns.toHTML(article.optString(Article.ARTICLE_CONTENT));
-            content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Markdown failed", e);
-        }
+        content = Markdowns.toHTML(article.optString(Article.ARTICLE_CONTENT));
+        content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
 
         article.put(Article.ARTICLE_CONTENT, content);
     }

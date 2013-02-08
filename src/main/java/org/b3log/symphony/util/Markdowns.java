@@ -17,10 +17,14 @@ package org.b3log.symphony.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.tautua.markdownpapers.Markdown;
+import org.tautua.markdownpapers.parser.ParseException;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
@@ -28,10 +32,20 @@ import org.tautua.markdownpapers.Markdown;
  * <p>Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 4, 2013
+ * @version 1.0.0.5, Feb 8, 2013
  * @since 0.2.0
  */
 public final class Markdowns {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Markdowns.class.getName());
+
+    /**
+     * Language service.
+     */
+    private static final LangPropsService LANG_SVC = LangPropsService.getInstance();
 
     /**
      * Article content cleaner whitelist.
@@ -54,10 +68,10 @@ public final class Markdowns {
      * Converts the specified markdown text to HTML.
      * 
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}
-     * @throws Exception exception 
+     * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}, returns 'markdownErrorLabel' if
+     * exception
      */
-    public static String toHTML(final String markdownText) throws Exception {
+    public static String toHTML(final String markdownText) {
         if (Strings.isEmptyOrNull(markdownText)) {
             return null;
         }
@@ -65,7 +79,13 @@ public final class Markdowns {
         final StringWriter writer = new StringWriter();
         final Markdown markdown = new Markdown();
 
-        markdown.transform(new StringReader(markdownText), writer);
+        try {
+            markdown.transform(new StringReader(markdownText), writer);
+        } catch (final ParseException e) {
+            LOGGER.log(Level.SEVERE, "Markdown error", e);
+
+            return LANG_SVC.get("markdownErrorLabel");
+        }
 
         return writer.toString();
     }

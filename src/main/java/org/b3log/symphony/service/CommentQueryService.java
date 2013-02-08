@@ -58,26 +58,32 @@ public final class CommentQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentQueryService.class.getName());
+
     /**
      * Singleton.
      */
     private static final CommentQueryService SINGLETON = new CommentQueryService();
+
     /**
      * Comment repository.
      */
     private CommentRepository commentRepository = CommentRepository.getInstance();
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepository.getInstance();
+
     /**
      * User repository.
      */
     private UserRepository userRepository = UserRepository.getInstance();
+
     /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * Language service.
      */
@@ -357,11 +363,7 @@ public final class CommentQueryService {
 
         commentContent = Emotions.convert(commentContent);
 
-        try {
-            commentContent = Markdowns.toHTML(commentContent);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Markdowns comment content failed", e);
-        }
+        commentContent = Markdowns.toHTML(commentContent);
 
         comment.put(Comment.COMMENT_CONTENT, commentContent);
     }
