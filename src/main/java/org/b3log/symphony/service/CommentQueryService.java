@@ -166,7 +166,13 @@ public final class CommentQueryService {
                 comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
 
                 final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                
+                LOGGER.info(comment.toString());
+                
                 final JSONObject article = articleRepository.get(articleId);
+                
+                LOGGER.info(article.toString());
+                
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE, Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
                         ? langPropsService.get("articleTitleBlockLabel") : article.optString(Article.ARTICLE_TITLE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
