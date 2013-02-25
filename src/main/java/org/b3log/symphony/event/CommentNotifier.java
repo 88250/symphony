@@ -38,12 +38,14 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Sends a comment notification to IM server.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 9, 2012
+ * @version 1.0.0.4, Feb 25, 2013
  * @since 0.2.0
  */
 public final class CommentNotifier extends AbstractEventListener<JSONObject> {
@@ -52,10 +54,12 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentNotifier.class.getName());
+
     /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * URL fetch service.
      */
@@ -85,12 +89,12 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
                     return;
                 }
             }
-            
-            
+
+
             final JSONObject commenter = userQueryService.getUser(originalComment.optString(Comment.COMMENT_AUTHOR_ID));
             final String commenterName = commenter.optString(User.USER_NAME);
             userNames.remove(commenterName); // Do not notify commenter itself
-            
+
 
             final Set<String> qqSet = new HashSet<String>();
             for (final String userName : userNames) {
@@ -128,7 +132,7 @@ public final class CommentNotifier extends AbstractEventListener<JSONObject> {
             final StringBuilder msgContent = new StringBuilder("----\n");
             msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
                     .append(originalComment.optString(Comment.COMMENT_SHARP_URL)).append("\n\n")
-                    .append(commentContent.replace("&gt;", ">").replace("&lt;", "<")).append("\n----");
+                    .append(Jsoup.clean(commentContent.replace("&gt;", ">").replace("&lt;", "<"), Whitelist.none())).append("\n----");
 
             requestJSONObject.put("messageContent", msgContent.toString());
 
