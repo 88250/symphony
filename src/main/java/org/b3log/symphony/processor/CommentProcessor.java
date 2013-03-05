@@ -46,8 +46,8 @@ import org.json.JSONObject;
  * Comment processor.
  *
  * <ul> 
- *   <li>Adds a comment (/comment) <em>locally</em>, PUT</li> 
- *   <li>Adds a comment (/solo/comment) <em>remotely</em>, PUT</li> 
+ *   <li>Adds a comment (/comment) <em>locally</em>, POST</li> 
+ *   <li>Adds a comment (/solo/comment) <em>remotely</em>, POST</li> 
  * </ul> 
  *
  * <p> 
@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 31, 2012
+ * @version 1.0.0.7, Mar 5, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -102,7 +102,7 @@ public final class CommentProcessor {
      * @throws IOException io exception
      * @throws ServletException servlet exception 
      */
-    @RequestProcessing(value = "/comment", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = CommentAddValidation.class)
     public void addComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
@@ -176,7 +176,7 @@ public final class CommentProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/solo/comment", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/solo/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = ClientCommentAddValidation.class)
     public void addCommentFromSolo(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {

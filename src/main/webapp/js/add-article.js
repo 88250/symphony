@@ -17,7 +17,7 @@
  * @fileoverview add-article.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Dec 27, 2012
+ * @version 1.0.0.8, Mar 5, 2013
  */
 
 /**
@@ -56,7 +56,7 @@ var AddArticle = {
             
             $.ajax({
                 url: "/article",
-                type: "PUT",
+                type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 beforeSend: function () {

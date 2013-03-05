@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * <ul> 
  *   <li>Shows an article (/article/{articleId}), GET</li>
  *   <li>Shows article adding form page (/add-article), GET</li>
- *   <li>Adds an article (/article) <em>locally</em>, PUT</li> 
+ *   <li>Adds an article (/article) <em>locally</em>, POST</li> 
  *   <li>Adds an article (/rhythm/article) <em>remotely</em>, POST</li>
  *   <li>Markdowns text (/markdown), POST</li>
  * </ul> 
@@ -72,7 +72,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.16, Feb 8, 2013
+ * @version 1.0.2.17, Mar 5, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -233,7 +233,7 @@ public final class ArticleProcessor {
      * @throws IOException io exception
      * @throws ServletException servlet exception 
      */
-    @RequestProcessing(value = "/article", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = ArticleAddValidation.class)
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
@@ -250,7 +250,73 @@ public final class ArticleProcessor {
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
 
-        // TODO: add article validate
+        final JSONObject article = new JSONObject();
+        article.put(Article.ARTICLE_TITLE, articleTitle);
+        article.put(Article.ARTICLE_TAGS, articleTags);
+        article.put(Article.ARTICLE_CONTENT, articleContent);
+        article.put(Article.ARTICLE_EDITOR_TYPE, 0);
+        article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
+
+        final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
+
+        final String authorEmail = currentUser.optString(User.USER_EMAIL);
+        article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
+
+        try {
+            articleMgmtService.addArticle(article);
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            final String msg = e.getMessage();
+            LOGGER.log(Level.SEVERE, "Adds article[title=" + articleTitle + "] failed", e);
+
+            ret.put(Keys.MSG, msg);
+        }
+    }
+
+    /**
+     * Updates an article locally.
+     *
+     * <p>
+     * The request json object (an article): 
+     * <pre>
+     * {
+     *   "articleTitle": "",
+     *   "articleTags": "", // Tags spliting by ','
+     *   "articleContent": "",
+     *   "syncWithSymphonyClient": boolean
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param id the specified article id
+     * @throws IOException io exception
+     * @throws ServletException servlet exception 
+     */
+    @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
+    @Before(adviceClass = ArticleAddValidation.class)
+    public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String id) throws IOException, ServletException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+
+        final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+        final String articleTags = formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
+        final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
+        final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);

@@ -43,7 +43,7 @@ var Comment = {
             
             $.ajax({
                 url: "/comment",
-                type: "PUT",
+                type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 beforeSend: function () {
