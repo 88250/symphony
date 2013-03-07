@@ -66,18 +66,22 @@ public final class CommentProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class.getName());
+
     /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * Comment management service.
      */
     private CommentMgmtService commentMgmtService = CommentMgmtService.getInstance();
+
     /**
      * Client management service.
      */
     private ClientMgmtService clientMgmtService = ClientMgmtService.getInstance();
+
     /**
      * Client query service.
      */
@@ -116,8 +120,6 @@ public final class CommentProcessor {
 
         final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
         final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
-
-        // TODO: add comment validate
 
         final JSONObject comment = new JSONObject();
         comment.put(Comment.COMMENT_CONTENT, commentContent);
@@ -176,7 +178,9 @@ public final class CommentProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/solo/comment", method = HTTPRequestMethod.POST)
+    // TODO: 88250, after Solo 060 released, change method to POST only
+    @RequestProcessing(value = "/solo/comment", method = {HTTPRequestMethod.POST,
+        HTTPRequestMethod.PUT})
     @Before(adviceClass = ClientCommentAddValidation.class)
     public void addCommentFromSolo(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -194,7 +198,7 @@ public final class CommentProcessor {
         comment.put(Comment.COMMENT_CONTENT, originalCmt.optString(Comment.COMMENT_CONTENT));
         comment.put(Comment.COMMENT_ON_ARTICLE_ID, article.optString(Keys.OBJECT_ID));
         comment.put(Comment.COMMENT_T_COMMENTER, defaultCommenter);
-        
+
         comment.put(Comment.COMMENT_T_AUTHOR_NAME, originalCmt.optString(Comment.COMMENT_T_AUTHOR_NAME));
 
         commentMgmtService.addComment(comment);

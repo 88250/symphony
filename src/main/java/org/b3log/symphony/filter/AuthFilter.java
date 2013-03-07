@@ -31,8 +31,8 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 
 /**
- * Authentication filter.
- *
+ * Authentication (/settings) filter.
+ * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 16, 2012
  * @since 0.2.0
@@ -69,8 +69,6 @@ public final class AuthFilter implements Filter {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
         try {
-            // TODO: 88250, LoginProcessor.tryLogInWithCookie(httpServletRequest, httpServletResponse);
-
             final GeneralUser currentUser = userService.getCurrentUser(httpServletRequest);
             if (null == currentUser) {
                 LOGGER.warning("The request has been forbidden");
