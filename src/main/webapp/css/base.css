@@ -353,7 +353,8 @@ button.red:active {
 .ico-date, 
 .ico-replay,
 .nav input.search,
-.go-top {
+.go-top,
+.ico-edit {
     background-image: url("../images/icons.png");
     background-repeat: no-repeat;
 }
@@ -364,16 +365,44 @@ button.red:active {
 }
 
 .ico-replay {
-    background-position: 0 -67px;
+    background-position: -7px -70px;
     cursor: pointer;
-    padding: 4px 31px 0 0;
-    margin-right: 5px;
+    margin-right: 10px;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    padding-right: 19px;
+    transition: opacity 0.2s ease-out 0s;
+}
+
+.list > ul > li:hover .ico-replay {
+    opacity: 1;
+    filter: alpha(opacity=100);
 }
 
 .ico-replay:hover {
-    border-radius: 3px;
-    box-shadow: 0 0 3px #666;
-    background-color: #999;
+    background-position: -7px -69px;
+}
+
+.ico-edit {
+    background-position: -6px -45px;
+    float: left;
+    height: 17px;
+    margin-right: 5px;
+    width: 17px;
+    cursor: pointer;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    transition: opacity 0.2s ease-out 0s;
+}
+
+
+.list > ul > li:hover .ico-edit {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+.ico-edit:hover {
+    background-position: -6px -44px;
 }
 /* end icon */
 

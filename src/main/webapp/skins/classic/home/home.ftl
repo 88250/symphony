@@ -44,7 +44,7 @@
                                         ${cmtLabel} <a rel="nofollow" href="${article.articlePermalink}#comments">${article.articleCommentCount}</a>
                                     </div>
                                     <div class="commenters">
-                                        <a href="${servePath}/update-article?id=${article.oId}">Edit</a>
+                                        <a href="${servePath}/update-article?id=${article.oId}"><span class="ico-edit"></span></a>
                                     </div>
                                 </li>
                                 </#list>
