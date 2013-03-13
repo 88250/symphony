@@ -15,7 +15,7 @@
                 <div class="form">
                     ${titleLabel}
                     <div>
-                        <input type="text" id="articleTitle" />
+                        <input type="text" id="articleTitle" value="<#if article??>${article.articleTitle}</#if>" />
                         <span style="right:2px;top:30px;"></span>
                     </div>
                     ${contentLabel}
@@ -23,7 +23,7 @@
                     <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
                     <div class="fn-clear">
                         <div class="fn-left">
-                            <textarea id="articleContent"></textarea>
+                            <textarea id="articleContent"><#if article??>${article.articleContent}</#if></textarea>
                             <span id="articleContentTip" style="right:2px;top:410px;"></span>
                         </div>
                         <div class="fn-left grammar fn-none">
@@ -32,17 +32,17 @@
                     </div>
                     ${tagLabel}
                     <div>
-                        <input id="articleTags" type="text" />
+                        <input id="articleTags" type="text" value="<#if article??>${article.articleTags}</#if>" />
                         <span style="right:2px;top:478px;"></span>
                     </div>
                     <div class="fn-clear">
                         <div class="fn-left">
-                            <input type="checkbox" id="syncWithSymphonyClient"/> 
+                            <input<#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked="checked"</#if></#if> type="checkbox" id="syncWithSymphonyClient"/> 
                             ${syncWithSymphonyClientLabel}
                         </div>
                         <div class="fn-right">
-                            <button class="green fn-none" onclick="AddArticle.preview()">${previewLabel}</button>
-                            <button class="red" onclick="AddArticle.add()">${postLabel}</button>
+                            <button class="green<#if !article??> fn-none</#if>" onclick="AddArticle.preview()">${previewLabel}</button>
+                            <button class="red" onclick="AddArticle.add(<#if article??>'${article.oId}'</#if>)">${postLabel}</button>
                         </div>
                     </div>
                     <div id="addArticleTip">

@@ -28,8 +28,9 @@ var AddArticle = {
 
     /**
      * @description 发布文章
+     * @id [string] 文章 id ，如不为空则表示更新文章否则为添加文章
      */
-    add: function () {
+    add: function (id) {
         var isError = false;
         if (this.editor.getValue().length < 4 || this.editor.getValue().length > 1048576) {
             $("#articleContentTip").addClass("tip-error").text(Label.articleContentErrorLabel);
@@ -52,11 +53,18 @@ var AddArticle = {
                 articleContent: this.editor.getValue(),
                 articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g,""),
                 syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked")
-            };
+            },
+            url = "/article",
+            type = "POST";
+    
+            if (id) {
+                url = url + "/" + id;
+                type = "PUT";
+            }
             
             $.ajax({
-                url: "/article",
-                type: "POST",
+                url: url,
+                type: type,
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 beforeSend: function () {

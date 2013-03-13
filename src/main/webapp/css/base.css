@@ -605,6 +605,7 @@ button.red:active {
     display: none;
     position: absolute;
     z-index: 100;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 .dialog-title {
     color: #FFFFFF;
@@ -614,27 +615,13 @@ button.red:active {
     margin-left: 3px;
 }
 
-.dialog-header-bg {
-    background-color: #fafafa;
-    background: linear-gradient(#fafafa, #eaeaea);
-    background: -ms-linear-gradient(#fafafa, #eaeaea);
-    background: -o-linear-gradient(#fafafa, #eaeaea);
-    background: -webkit-linear-gradient(#fafafa, #eaeaea);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#fafafa', endColorstr='#eaeaea');
-    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
-    border-radius: 6px 6px 0 0;
-    border-style: solid;
-    border-width: 1px 1px 0;
-    cursor: move;
-    height: 34px;
-}
-
 .dialog-close-icon {
     background: url("../images/icons.png") no-repeat scroll -4px -96px transparent;
     cursor: pointer;
     float: right;
     height: 18px;
-    margin-top: 6px;
+    margin-right: -17px;
+    margin-top: -8px;
     padding: 3px;
     width: 22px;
 }
@@ -645,9 +632,7 @@ button.red:active {
 
 .dialog-main {
     background-color: #FFFFFF;
-    border: 2px solid #666666;
-    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
-    border-top-width: 0;
+    border: 1px solid #777;
     padding: 12px;
 }
 /* end dialog */
