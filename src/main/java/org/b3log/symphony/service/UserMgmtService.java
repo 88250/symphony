@@ -146,6 +146,7 @@ public final class UserMgmtService {
      *     "oId": "",
      *     "userB3Key": "",
      *     "userB3ClientAddArticleURL": "",
+     *     "userB3ClientUpdateArticleURL": "",
      *     "userB3ClientAddCommentURL": "",
      * }
      * </pre>
@@ -165,6 +166,7 @@ public final class UserMgmtService {
             // Update
             oldUser.put(UserExt.USER_B3_KEY, requestJSONObject.optString(UserExt.USER_B3_KEY));
             oldUser.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL));
+            oldUser.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, requestJSONObject.optString(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL));
             oldUser.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL));
 
             userRepository.update(oldUserId, oldUser);

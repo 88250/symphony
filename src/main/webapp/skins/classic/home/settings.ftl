@@ -92,6 +92,15 @@
                             </tr>
                             <tr>
                                 <td>
+                                    ${clientUpdateArticleLabel}
+                                </td>
+                                <td>
+                                    <input id="soloUpdateURL" type="text" value="${user.userB3ClientUpdateArticleURL}" />
+                                    <span style="right:24px;top:85px;"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     ${clientCmtLabel}
                                 </td>
                                 <td>
@@ -157,13 +166,13 @@
         <script type="text/javascript" src="/js/settings.js"></script>
         <script type="text/javascript" src="/js/lib/md5.js"></script>
         <script>
-            Label.updateSuccLabel = "${updateSuccLabel}";
-            Label.invalidUserURLLabel = "${invalidUserURLLabel}";
-            Label.invalidUserQQLabel = "${invalidUserQQLabel}";
-            Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
-            Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
-            Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
-            Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
+                                        Label.updateSuccLabel = "${updateSuccLabel}";
+                                        Label.invalidUserURLLabel = "${invalidUserURLLabel}";
+                                        Label.invalidUserQQLabel = "${invalidUserQQLabel}";
+                                        Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
+                                        Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
+                                        Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
+                                        Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
         </script>
     </body>
 </html>
