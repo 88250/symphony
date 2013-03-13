@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Jan 25, 2013
+ * @version 1.0.1.0, Mar 13, 2013
  * @since 0.2.0
  */
 public final class UserMgmtService {
@@ -268,6 +268,7 @@ public final class UserMgmtService {
             user.put(UserExt.USER_STATUS, 0);
             user.put(UserExt.USER_B3_KEY, "");
             user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, "");
+            user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, "");
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, "");
             user.put(UserExt.USER_INTRO, "");
             user.put(UserExt.USER_QQ, "");

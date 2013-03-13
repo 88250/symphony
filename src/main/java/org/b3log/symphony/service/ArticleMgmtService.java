@@ -15,6 +15,9 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -40,6 +43,7 @@ import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -55,38 +59,47 @@ public final class ArticleMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class.getName());
+
     /**
      * Singleton.
      */
     private static final ArticleMgmtService SINGLETON = new ArticleMgmtService();
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepository.getInstance();
+
     /**
      * Tag repository.
      */
     private TagRepository tagRepository = TagRepository.getInstance();
+
     /**
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository = TagArticleRepository.getInstance();
+
     /**
      * User repository.
      */
     private UserRepository userRepository = UserRepository.getInstance();
+
     /**
      * User-Tag repository.
      */
     private UserTagRepository userTagRepository = UserTagRepository.getInstance();
+
     /**
      * Option repository.
      */
     private OptionRepository optionRepository = OptionRepository.getInstance();
+
     /**
      * Event manager.
      */
     private EventManager eventManager = EventManager.getInstance();
+
     /**
      * Language service.
      */
@@ -193,13 +206,12 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_STATUS, 0);
             article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
 
-
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
             articleCntOption.put(Option.OPTION_VALUE, articleCnt + 1);
-            optionRepository.update(Option.ID_C_STATISTIC_ARTICLE_COUNT, articleCntOption); // Updates global tag/article count
+            optionRepository.update(Option.ID_C_STATISTIC_ARTICLE_COUNT, articleCntOption);
 
             author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) + 1);
             author.put(UserExt.USER_LATEST_ARTICLE_TIME, currentTimeMillis);
@@ -231,6 +243,204 @@ public final class ArticleMgmtService {
     }
 
     /**
+     * Updates an article with the specified request json object.
+     * 
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "articleTitle": "",
+     *     "articleTags": "",
+     *     "articleContent": "",
+     *     "articleEditorType": ""
+     * }
+     * </pre>, see {@link Article} for more details
+     * @throws ServiceException service exception
+     */
+    public void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
+        final Transaction transaction = articleRepository.beginTransaction();
+
+        try {
+            final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
+            final JSONObject oldArticle = articleRepository.get(articleId);
+            final String authorId = oldArticle.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject author = userRepository.get(authorId);
+
+            processTagsForArticleUpdate(oldArticle, requestJSONObject, author);
+            userRepository.update(author.optString(Keys.OBJECT_ID), author);
+
+            final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
+
+            oldArticle.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
+            oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
+            if (fromClient) {
+                // The article content security has been processed by Rhythm
+                oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
+            } else {
+                oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
+                        replace("<", "&lt;").replace(">", "&gt;")
+                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
+            }
+
+            oldArticle.put(Article.ARTICLE_UPDATE_TIME, System.currentTimeMillis());
+
+            articleRepository.update(articleId, oldArticle);
+
+            transaction.commit();
+
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Common.FROM_CLIENT, fromClient);
+            eventData.put(Article.ARTICLE, oldArticle);
+            try {
+                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
+            } catch (final EventException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Updates an article failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Processes tags for article update.
+     *
+     * <ul> 
+     *   <li>Un-tags old article, decrements tag reference count</li>
+     *   <li>Removes old article-tag relations</li> 
+     *   <li>Saves new article-tag relations with tag reference count</li>
+     * </ul>
+     *
+     * @param oldArticle the specified old article
+     * @param newArticle the specified new article
+     * @param author the specified author
+     * @throws Exception exception
+     */
+    private void processTagsForArticleUpdate(final JSONObject oldArticle, final JSONObject newArticle, final JSONObject author)
+            throws Exception {
+        final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
+        final List<JSONObject> oldTags = tagRepository.getByArticleId(oldArticleId);
+        final String tagsString = newArticle.getString(Article.ARTICLE_TAGS);
+        String[] tagStrings = tagsString.split(",");
+        final List<JSONObject> newTags = new ArrayList<JSONObject>();
+
+        for (int i = 0; i < tagStrings.length; i++) {
+            final String tagTitle = tagStrings[i].trim();
+            JSONObject newTag = tagRepository.getByTitle(tagTitle);
+
+            if (null == newTag) {
+                newTag = new JSONObject();
+                newTag.put(Tag.TAG_TITLE, tagTitle);
+            }
+            newTags.add(newTag);
+        }
+
+        final List<JSONObject> tagsDropped = new ArrayList<JSONObject>();
+        final List<JSONObject> tagsNeedToAdd = new ArrayList<JSONObject>();
+
+        for (final JSONObject newTag : newTags) {
+            final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
+
+            if (!tagExists(newTagTitle, oldTags)) {
+                LOGGER.log(Level.FINER, "Tag need to add[title={0}]", newTagTitle);
+                tagsNeedToAdd.add(newTag);
+            }
+        }
+        for (final JSONObject oldTag : oldTags) {
+            final String oldTagTitle = oldTag.getString(Tag.TAG_TITLE);
+
+            if (!tagExists(oldTagTitle, newTags)) {
+                LOGGER.log(Level.FINER, "Tag dropped[title={0}]", oldTag);
+                tagsDropped.add(oldTag);
+            }
+        }
+
+        for (final JSONObject tagDropped : tagsDropped) {
+            final String tagId = tagDropped.getString(Keys.OBJECT_ID);
+            final int refCnt = tagDropped.getInt(Tag.TAG_REFERENCE_CNT);
+
+            tagDropped.put(Tag.TAG_REFERENCE_CNT, refCnt - 1);
+            tagRepository.update(tagId, tagDropped);
+        }
+
+        final String[] tagIdsDropped = new String[tagsDropped.size()];
+
+        for (int i = 0; i < tagIdsDropped.length; i++) {
+            final JSONObject tag = tagsDropped.get(i);
+            final String id = tag.getString(Keys.OBJECT_ID);
+
+            tagIdsDropped[i] = id;
+        }
+
+        removeTagArticleRelations(oldArticleId, 0 == tagIdsDropped.length ? new String[]{"l0y0l"} : tagIdsDropped);
+
+        tagStrings = new String[tagsNeedToAdd.size()];
+        for (int i = 0; i < tagStrings.length; i++) {
+            final JSONObject tag = tagsNeedToAdd.get(i);
+            final String tagTitle = tag.getString(Tag.TAG_TITLE);
+
+            tagStrings[i] = tagTitle;
+        }
+
+        tag(tagStrings, newArticle, author);
+    }
+
+    /**
+     * Removes tag-article relations by the specified article id and tag ids of the relations to be removed.
+     *
+     * <p>
+     * Removes all relations if not specified the tag ids.
+     * </p>
+     *
+     * @param articleId the specified article id
+     * @param tagIds the specified tag ids of the relations to be removed
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void removeTagArticleRelations(final String articleId, final String... tagIds)
+            throws JSONException, RepositoryException {
+        final List<String> tagIdList = Arrays.asList(tagIds);
+        final List<JSONObject> tagArticleRelations = tagArticleRepository.getByArticleId(articleId);
+
+        for (int i = 0; i < tagArticleRelations.size(); i++) {
+            final JSONObject tagArticleRelation = tagArticleRelations.get(i);
+            String relationId;
+
+            if (tagIdList.isEmpty()) { // Removes all if un-specified
+                relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
+                tagArticleRepository.remove(relationId);
+            } else {
+                if (tagIdList.contains(tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID))) {
+                    relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
+                    tagArticleRepository.remove(relationId);
+                }
+            }
+        }
+    }
+
+    /**
+     * Determines whether the specified tag title exists in the specified tags.
+     *
+     * @param tagTitle the specified tag title
+     * @param tags the specified tags
+     * @return {@code true} if it exists, {@code false} otherwise
+     * @throws JSONException json exception
+     */
+    private static boolean tagExists(final String tagTitle, final List<JSONObject> tags) throws JSONException {
+        for (final JSONObject tag : tags) {
+            if (tag.getString(Tag.TAG_TITLE).equals(tagTitle)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Tags the specified article with the specified tag titles.
      *
      * @param tagTitles the specified tag titles
@@ -247,7 +457,7 @@ public final class ArticleMgmtService {
 
             if (null == tag) {
                 LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
-                           new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                        new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
@@ -269,8 +479,8 @@ public final class ArticleMgmtService {
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
-                           new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
-                                        article.optString(Article.ARTICLE_TITLE)});
+                        new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
+                    article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 tagTmp.put(Tag.TAG_TITLE, tag.optString(Tag.TAG_TITLE));
