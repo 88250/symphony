@@ -108,6 +108,7 @@ var Settings = {
     _validateSyncB3: function () {
         var keyVal = $("#soloKey").val().replace(/(^\s*)|(\s*$)/g,""),
         postURLVal = $("#soloPostURL").val().replace(/(^\s*)|(\s*$)/g,""),
+        updateURLVal = $("#soloUpdateURL").val().replace(/(^\s*)|(\s*$)/g,""),
         cmtURLVal = $("#soloCmtURL").val().replace(/(^\s*)|(\s*$)/g,"");
         
         if (Validate.goValidate([{
@@ -119,6 +120,10 @@ var Settings = {
             "type": "150",
             "msg": Label.invalidUserB3ClientURLLabel
         }, {
+            "id": "soloUpdateURL",
+            "type": "150",
+            "msg": Label.invalidUserB3ClientURLLabel
+        }, {
             "id": "soloCmtURL",
             "type": "150",
             "msg": Label.invalidUserB3ClientURLLabel
@@ -126,6 +131,7 @@ var Settings = {
             var data = {};
             data.userB3Key = keyVal;
             data.userB3ClientAddArticleURL = postURLVal;
+            data.userB3ClientUpdateArticleURL = updateURLVal;
             data.userB3ClientAddCommentURL = cmtURLVal;
             return data;
         }
@@ -180,7 +186,7 @@ var Settings = {
             }
         });
         
-        $("#soloKey, #soloPostURL, #soloCmtURL").keyup(function (event) {
+        $("#soloKey, #soloPostURL, , #soloUpdateURL, #soloCmtURL").keyup(function (event) {
             if (event.keyCode === 13) {
                 Settings.update('sync/b3');
             }

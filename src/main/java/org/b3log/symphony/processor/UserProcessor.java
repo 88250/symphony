@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Jan 7, 2013
+ * @version 1.0.1.4, Mar 13, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -314,11 +314,13 @@ public final class UserProcessor {
 
         final String b3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
         final String addArticleURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL);
+        final String updateArticleURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL);
         final String addCommentURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
 
         final JSONObject user = LoginProcessor.getCurrentUser(request);
         user.put(UserExt.USER_B3_KEY, b3Key);
         user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
+        user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
         user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
 
         try {
