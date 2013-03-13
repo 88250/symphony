@@ -25,10 +25,10 @@ import org.b3log.latke.util.Requests;
 import org.json.JSONObject;
 
 /**
- * Validates for article updating.
+ * Validates for article updating, removes the duplicated tags.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Mar 5, 2013
+ * @version 1.0.0.1, Mar 13, 2013
  */
 public class ArticleUpdateValidation extends BeforeRequestProcessAdvice {
 

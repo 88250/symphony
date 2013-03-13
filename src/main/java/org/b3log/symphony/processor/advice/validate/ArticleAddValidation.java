@@ -15,7 +15,9 @@
  */
 package org.b3log.symphony.processor.advice.validate;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.TreeSet;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.service.LangPropsService;
@@ -28,10 +30,10 @@ import org.b3log.symphony.model.Article;
 import org.json.JSONObject;
 
 /**
- * Validates for article adding locally.
+ * Validates for article adding locally, removes the duplicated tags.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Mar 5, 2013
+ * @version 1.0.0.3, Mar 13, 2013
  */
 public final class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
@@ -88,10 +90,14 @@ public final class ArticleAddValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
         }
 
-        final String[] tagTitles = articleTags.split(",");
+        String[] tagTitles = articleTags.split(",");
         if (null == tagTitles || 0 == tagTitles.length) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
         }
+        
+        tagTitles = new TreeSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
+        
+        final StringBuilder tagBuilder = new StringBuilder();
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
             if (Strings.isEmptyOrNull(tagTitle)) {
@@ -101,7 +107,12 @@ public final class ArticleAddValidation extends BeforeRequestProcessAdvice {
             if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
             }
+            
+            tagBuilder.append(tagTitle).append(",");
         }
+        
+        tagBuilder.deleteCharAt(tagBuilder.length() - 1);
+        requestJSONObject.put(Article.ARTICLE_TAGS, tagBuilder.toString());
 
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         if (Strings.isEmptyOrNull(articleContent) || articleContent.length() > MAX_ARTICLE_CONTENT_LENGTH

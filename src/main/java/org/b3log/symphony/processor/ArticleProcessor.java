@@ -357,6 +357,7 @@ public final class ArticleProcessor {
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
 
         final JSONObject article = new JSONObject();
+        article.put(Keys.OBJECT_ID, id);
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_CONTENT, articleContent);
@@ -375,7 +376,7 @@ public final class ArticleProcessor {
         article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
 
         try {
-            articleMgmtService.addArticle(article);
+            articleMgmtService.updateArticle(article);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
