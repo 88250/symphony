@@ -17,7 +17,7 @@
  * @fileoverview add-article.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, Mar 5, 2013
+ * @version 1.0.0.9, Mar 13, 2013
  */
 
 /**
@@ -118,8 +118,7 @@ var AddArticle = {
         
         $("#preview").dialog({
             "modal": true,
-            "hideFooter": true,
-            "height": 402
+            "hideFooter": true
         });
     },
     
