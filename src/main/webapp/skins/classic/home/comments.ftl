@@ -37,7 +37,7 @@
                                         </span>    
                                     </div>
                                     <div class="content-reset">
-                                        ${comment.commentContent}  
+                                        ${comment.commentContent}
                                     </div>
                                 </li>
                                 </#list>  

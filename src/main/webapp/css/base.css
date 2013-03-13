@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.1, Jan 16, 2013
+* @version 1.0.2.2, Mar 13, 2013
 */
 /* start reset */
 html {
@@ -386,19 +386,12 @@ button.red:active {
 .ico-edit {
     background-position: -6px -45px;
     float: left;
-    height: 17px;
+    height: 18px;
     margin-right: 5px;
     width: 17px;
     cursor: pointer;
     opacity: 0.7;
     filter: alpha(opacity=70);
-    transition: opacity 0.2s ease-out 0s;
-}
-
-
-.list > ul > li:hover .ico-edit {
-    opacity: 1;
-    filter: alpha(opacity=100);
 }
 
 .ico-edit:hover {
