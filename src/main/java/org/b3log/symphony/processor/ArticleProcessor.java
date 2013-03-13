@@ -289,13 +289,24 @@ public final class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/update-article", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = ArticleUpdateValidation.class)
     public void showUpdateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
+        final String articleId = request.getParameter("id");
+        if (Strings.isEmptyOrNull(articleId)) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
+        final JSONObject article = articleQueryService.getArticleById(articleId);
+        if (null == article) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
-
-        final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
 
         renderer.setTemplateName("/home/add-article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -329,7 +340,7 @@ public final class ArticleProcessor {
      * @throws ServletException servlet exception 
      */
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
-    @Before(adviceClass = ArticleAddValidation.class)
+    @Before(adviceClass = ArticleUpdateValidation.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String id) throws IOException, ServletException {
         final JSONRenderer renderer = new JSONRenderer();
