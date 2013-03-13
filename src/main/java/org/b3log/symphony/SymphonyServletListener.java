@@ -34,6 +34,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.ArticleNotifier;
 import org.b3log.symphony.event.CommentNotifier;
 import org.b3log.symphony.event.solo.ArticleSender;
+import org.b3log.symphony.event.solo.ArticleUpdater;
 import org.b3log.symphony.event.solo.CommentSender;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * B3log Symphony servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jan 23, 2013
+ * @version 1.0.0.8, Mar 7, 2013
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -81,6 +82,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         // Register event listeners
         final EventManager eventManager = EventManager.getInstance();
         eventManager.registerListener(new ArticleSender());
+        eventManager.registerListener(new ArticleUpdater());
         eventManager.registerListener(new CommentSender());
         eventManager.registerListener(new CommentNotifier());
         eventManager.registerListener(new ArticleNotifier());

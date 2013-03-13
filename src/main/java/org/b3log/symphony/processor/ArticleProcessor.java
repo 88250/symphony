@@ -43,6 +43,7 @@ import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.ArticleAddValidation;
+import org.b3log.symphony.processor.advice.validate.ArticleUpdateValidation;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.ClientMgmtService;
@@ -277,6 +278,32 @@ public final class ArticleProcessor {
 
             ret.put(Keys.MSG, msg);
         }
+    }
+
+    /**
+     * Shows add article.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/update-article", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = ArticleUpdateValidation.class)
+    public void showUpdateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
+
+        renderer.setTemplateName("/home/add-article.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModel.put(Article.ARTICLE, article);
+
+        Filler.fillHeader(request, response, dataModel);
+        Filler.fillFooter(dataModel);
     }
 
     /**

@@ -1,407 +1,411 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.0.1.7, Jan 4, 2013",
+    "version": "1.0.1.8, Mar 13, 2013",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
-    
     "repositories": [
-    {
-        "name": "comment",
-        "keys": [
         {
-            "name": "oId",
-            "type": "String",
-            "length": 19
+            "name": "comment",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "clientCommentId",
+                    "type": "String",
+                    "length": 32,
+                    "nullable": true
+                },
+                {
+                    "name": "commentContent",
+                    "type": "String",
+                    "length": 2000
+                },
+                {
+                    "name": "commentCreateTime",
+                    "type": "long"
+                },
+                {
+                    "name": "commentAuthorEmail",
+                    "type": "String",
+                    "length": 255
+                },
+                {
+                    "name": "commentAuthorId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "commentOnArticleId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "commentSharpURL",
+                    "type": "String",
+                    "length": 255
+                },
+                {
+                    "name": "commentOriginalCommentId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "commentStatus",
+                    "type": "int",
+                    "description": "0: valid, 1: invalid"
+                }
+            ]
         },
         {
-            "name": "clientCommentId",
-            "type": "String",
-            "length": 32,
-            "nullable": true
+            "name": "tag",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "tagReferenceCount",
+                    "type": "int"
+                },
+                {
+                    "name": "tagCommentCount",
+                    "type": "int"
+                },
+                {
+                    "name": "tagTitle",
+                    "type": "String",
+                    "length": 50
+                },
+                {
+                    "name": "tagDescription",
+                    "type": "String",
+                    "length": 512
+                },
+                {
+                    "name": "tagIconPath",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "tagStatus",
+                    "type": "int",
+                    "description": "0: valid, 1: invalid"
+                }
+            ]
         },
         {
-            "name": "commentContent",
-            "type": "String",
-            "length": 2000
+            "name": "option",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 64
+                },
+                {
+                    "name": "optionValue",
+                    "type": "String",
+                    "length": 512
+                },
+                {
+                    "name": "optionCategory",
+                    "type": "String",
+                    "legnth": 20
+                }
+            ]
         },
         {
-            "name": "commentCreateTime",
-            "type": "long"
+            "name": "tag_article",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "article_oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "tag_oId",
+                    "type": "String",
+                    "length": 19
+                }
+            ]
         },
         {
-            "name": "commentAuthorEmail",
-            "type": "String",
-            "length": 255
+            "name": "user_tag",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "user_oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "tag_oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "type",
+                    "type": "int",
+                    "description": "0: creator, 1: article"
+                }
+            ]
         },
         {
-            "name": "commentAuthorId",
-            "type": "String",
-            "length": 19
+            "name": "user",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "userNo",
+                    "type": "int"
+                },
+                {
+                    "name": "userEmail",
+                    "type": "String",
+                    "length": 256
+                },
+                {
+                    "name": "userName",
+                    "description": "Belongs to User Profiles",
+                    "type": "String",
+                    "length": 20
+                },
+                {
+                    "name": "userPassword",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "userURL",
+                    "description": "Belongs to User Profiles",
+                    "type": "String",
+                    "length": 100
+                },
+                {
+                    "name": "userQQ",
+                    "description": "Belongs to User Profiles",
+                    "type": "String",
+                    "length": 12
+                },
+                {
+                    "name": "userIntro",
+                    "description": "Belongs to User Profiles",
+                    "type": "String",
+                    "length": 255
+                },
+                {
+                    "name": "userOnlineFlag",
+                    "type": "boolean"
+                },
+                {
+                    "name": "userB3Key",
+                    "type": "String",
+                    "length": 20
+                },
+                {
+                    "name": "userB3ClientAddArticleURL",
+                    "type": "String",
+                    "length": 150
+                },
+                {
+                    "name": "userB3ClientUpdateArticleURL",
+                    "type": "String",
+                    "length": 150
+                },
+                {
+                    "name": "userB3ClientAddCommentURL",
+                    "type": "String",
+                    "length": 150
+                },
+                {
+                    "name": "userRole",
+                    "type": "String",
+                    "length": 20
+                },
+                {
+                    "name": "userArticleCount",
+                    "type": "int"
+                },
+                {
+                    "name": "userCommentCount",
+                    "type": "int"
+                },
+                {
+                    "name": "userTagCount",
+                    "type": "int"
+                },
+                {
+                    "name": "userStatus",
+                    "type": "int",
+                    "description": "0: valid, 1: invalid"
+                },
+                {
+                    "name": "userLatestArticleTime",
+                    "type": "long"
+                },
+                {
+                    "name": "userLatestCmtTime",
+                    "type": "long"
+                },
+                {
+                    "name": "userLatestLoginTime",
+                    "type": "long"
+                }
+            ]
         },
         {
-            "name": "commentOnArticleId",
-            "type": "String",
-            "length": 19
+            "name": "article",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "articleTitle",
+                    "type": "String",
+                    "length": 255
+                },
+                {
+                    "name": "articleTags",
+                    "type": "String",
+                    "length": 356
+                },
+                {
+                    "name": "articleAuthorEmail",
+                    "type": "String",
+                    "length": 255
+                },
+                {
+                    "name": "articleAuthorId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "articleCommentCount",
+                    "type": "int"
+                },
+                {
+                    "name": "articleViewCount",
+                    "type": "int"
+                },
+                {
+                    "name": "articleContent",
+                    "type": "String",
+                    "length": 1048576
+                },
+                {
+                    "name": "articlePermalink",
+                    "type": "String",
+                    "length": 255
+                },
+                {
+                    "name": "articleCreateTime",
+                    "type": "long"
+                },
+                {
+                    "name": "articleUpdateTime",
+                    "type": "long"
+                },
+                {
+                    "name": "articleLatestCmtTime",
+                    "type": "long"
+                },
+                {
+                    "name": "articleRandomDouble",
+                    "type": "double"
+                },
+                {
+                    "name": "articleCommentable",
+                    "type": "boolean"
+                },
+                {
+                    "name": "syncWithSymphonyClient",
+                    "type": "boolean"
+                },
+                {
+                    "name": "clientArticleId",
+                    "type": "String",
+                    "length": 32,
+                    "nullable": true
+                },
+                {
+                    "name": "articleEditorType",
+                    "description": "0: CodeMirror-Markdown",
+                    "type": "int"
+                },
+                {
+                    "name": "articleStatus",
+                    "type": "int",
+                    "description": "0: valid, 1: invalid"
+                },
+                {
+                    "name": "articleGoodCnt",
+                    "type": "int"
+                },
+                {
+                    "name": "articleBadCnt",
+                    "type": "int"
+                }
+            ]
         },
         {
-            "name": "commentSharpURL",
-            "type": "String",
-            "length": 255
-        },
-        {
-            "name": "commentOriginalCommentId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "commentStatus",
-            "type": "int",
-            "description": "0: valid, 1: invalid"
+            "name": "client",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "clientName",
+                    "type": "String",
+                    "length": 10
+                },
+                {
+                    "name": "clientVersion",
+                    "type": "String",
+                    "length": 10
+                },
+                {
+                    "name": "clientHost",
+                    "type": "String",
+                    "length": 50
+                },
+                {
+                    "name": "clientRuntimeEnv",
+                    "type": "String",
+                    "length": 10
+                },
+                {
+                    "name": "clientLatestAddArticleTime",
+                    "type": "long"
+                },
+                {
+                    "name": "clientLatestAddCommentTime",
+                    "type": "long"
+                },
+                {
+                    "name": "clientAdminEmail",
+                    "type": "String",
+                    "length": 255
+                }
+            ]
         }
-        ]
-    },
-    {
-        "name": "tag",
-        "keys": [
-        {
-            "name": "oId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "tagReferenceCount",
-            "type": "int"
-        },
-        {
-            "name": "tagCommentCount",
-            "type": "int"
-        },
-        {
-            "name": "tagTitle",
-            "type": "String",
-            "length": 50
-        },
-        {
-            "name": "tagDescription",
-            "type": "String",
-            "length": 512
-        },
-        {
-            "name": "tagIconPath",
-            "type": "String",
-            "length": 128
-        },
-        {
-            "name": "tagStatus",
-            "type": "int",
-            "description": "0: valid, 1: invalid"
-        }
-        ]
-    },
-    {
-        "name": "option",
-        "keys": [
-        {
-            "name": "oId",
-            "type": "String",
-            "length": 64
-        },
-        {
-            "name": "optionValue",
-            "type": "String",
-            "length": 512
-        },
-        {
-            "name": "optionCategory",
-            "type": "String",
-            "legnth": 20
-        }
-        ]
-    },
-    {
-        "name": "tag_article",
-        "keys": [
-        {
-            "name": "oId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "article_oId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "tag_oId",
-            "type": "String",
-            "length": 19
-        }
-        ]
-    },
-    {
-        "name": "user_tag",
-        "keys": [
-        {
-            "name": "oId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "user_oId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "tag_oId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "type",
-            "type": "int",
-            "description": "0: creator, 1: article"
-        }
-        ]
-    },
-    {
-        "name": "user",
-        "keys": [
-        {
-            "name": "oId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "userNo",
-            "type": "int"
-        },
-        {
-            "name": "userEmail",
-            "type": "String",
-            "length": 256
-        },
-        {
-            "name": "userName",
-            "description": "Belongs to User Profiles",
-            "type": "String",
-            "length": 20
-        },
-        {
-            "name": "userPassword",
-            "type": "String",
-            "length": 32
-        },
-        {
-            "name": "userURL",
-            "description": "Belongs to User Profiles",
-            "type": "String",
-            "length": 100
-        },
-        {
-            "name": "userQQ",
-            "description": "Belongs to User Profiles",
-            "type": "String",
-            "length": 12
-        },
-        {
-            "name": "userIntro",
-            "description": "Belongs to User Profiles",
-            "type": "String",
-            "length": 255
-        },
-        {
-            "name": "userOnlineFlag",
-            "type": "boolean"
-        },
-        {
-            "name": "userB3Key",
-            "type": "String",
-            "length": 20
-        },
-        {
-            "name": "userB3ClientAddArticleURL",
-            "type": "String",
-            "length": 150
-        },
-        {
-            "name": "userB3ClientAddCommentURL",
-            "type": "String",
-            "length": 150
-        },
-        {
-            "name": "userRole",
-            "type": "String",
-            "length": 20
-        },
-        {
-            "name": "userArticleCount",
-            "type": "int"
-        },
-        {
-            "name": "userCommentCount",
-            "type": "int"
-        },
-        {
-            "name": "userTagCount",
-            "type": "int"
-        },
-        {
-            "name": "userStatus",
-            "type": "int",
-            "description": "0: valid, 1: invalid"
-        },
-        {
-            "name": "userLatestArticleTime",
-            "type": "long"
-        },
-        {
-            "name": "userLatestCmtTime",
-            "type": "long"
-        },
-        {
-            "name": "userLatestLoginTime",
-            "type": "long"
-        }
-        ]
-    },
-    {
-        "name": "article",
-        "keys": [
-        {
-            "name": "oId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "articleTitle",
-            "type": "String",
-            "length": 255
-        },
-        {
-            "name": "articleTags",
-            "type": "String",
-            "length": 356
-        },
-        {
-            "name": "articleAuthorEmail",
-            "type": "String",
-            "length": 255
-        },
-        {
-            "name": "articleAuthorId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "articleCommentCount",
-            "type": "int"
-        },
-        {
-            "name": "articleViewCount",
-            "type": "int"
-        },
-        {
-            "name": "articleContent",
-            "type": "String",
-            "length": 1048576
-        },
-        {
-            "name": "articlePermalink",
-            "type": "String",
-            "length": 255
-        },
-        {
-            "name": "articleCreateTime",
-            "type": "long"
-        },
-        {
-            "name": "articleUpdateTime",
-            "type": "long"
-        },
-        {
-            "name": "articleLatestCmtTime",
-            "type": "long"
-        },
-        {
-            "name": "articleRandomDouble",
-            "type": "double"
-        },
-        {
-            "name": "articleCommentable",
-            "type": "boolean"
-        },
-        {
-            "name": "syncWithSymphonyClient",
-            "type": "boolean"
-        },
-        {
-            "name": "clientArticleId",
-            "type": "String",
-            "length": 32,
-            "nullable": true
-        },
-        {
-            "name": "articleEditorType",
-            "description": "0: CodeMirror-Markdown",
-            "type": "int"
-        },
-        {
-            "name": "articleStatus",
-            "type": "int",
-            "description": "0: valid, 1: invalid"
-        },
-        {
-            "name": "articleGoodCnt",
-            "type": "int"
-        },
-        {
-            "name": "articleBadCnt",
-            "type": "int"
-        }
-        ]
-    },
-    {
-        "name": "client",
-        "keys": [
-        {
-            "name": "oId",
-            "type": "String",
-            "length": 19
-        },
-        {
-            "name": "clientName",
-            "type": "String",
-            "length": 10
-        },
-        {
-            "name": "clientVersion",
-            "type": "String",
-            "length": 10
-        },
-        {
-            "name": "clientHost",
-            "type": "String",
-            "length": 50
-        },
-        {
-            "name": "clientRuntimeEnv",
-            "type": "String",
-            "length": 10
-        },
-        {
-            "name": "clientLatestAddArticleTime",
-            "type": "long"
-        },
-        {
-            "name": "clientLatestAddCommentTime",
-            "type": "long"
-        },
-        {
-            "name": "clientAdminEmail",
-            "type": "String",
-            "length": 255
-        }
-        ]
-    }
     ]
 }

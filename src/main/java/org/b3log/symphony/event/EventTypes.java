@@ -19,7 +19,7 @@ package org.b3log.symphony.event;
  * Event types.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 12, 2012
+ * @version 1.0.0.1, Mar 5, 2013
  * @since 0.2.0
  */
 public final class EventTypes {
@@ -28,6 +28,10 @@ public final class EventTypes {
      * Indicates a add article event.
      */
     public static final String ADD_ARTICLE = "Add Article";
+    /**
+     * Indicates a update article event.
+     */
+    public static final String UPDATE_ARTICLE = "Update Article";
     /**
      * Indicates an add comment to article event.
      */
