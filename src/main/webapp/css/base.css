@@ -755,6 +755,10 @@ button.red:active {
     padding: 0 5px;
 }
 
+.nav .tags a:hover {
+    text-decoration: underline;
+}
+
 .header {
     padding-bottom: 20px;
     background-color: #FFF;
@@ -860,8 +864,17 @@ button.red:active {
 /* end article list */
 
 /* start comment list */
-.comment-list .comment-main {
-    width: 612px;
-    word-break: break-all;
+.comment-list li {
+    list-style-type: none;
+}
+
+.comment-list .fn-clear {
+    background-color: #F7F7F7;
+    padding: 5px 10px;
+    line-height: 20px;
+}
+
+.comment-list .content-reset {
+    padding: 0 10px;
 }
 /* end comment list */

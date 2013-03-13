@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     <div class="fn-clear">
-                        <div class="comment-list list" id="comments">
+                        <div class="list" id="comments">
                             <h2>${article.articleCommentCount} ${cmtLabel}</h2>
                             <ul>
                                 <#list article.articleComments as comment>
@@ -60,7 +60,7 @@
                                             <img class="avatar" 
                                                  title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
                                         </div>
-                                        <div class="fn-left comment-main">
+                                        <div class="fn-left" style="width: 612px;">
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"

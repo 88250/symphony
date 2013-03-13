@@ -23,24 +23,21 @@
                         </li>
                     </ul>
                     <div class="fn-clear">
-                        <div class="comment-list list">
+                        <div class="comment-list">
                             <ul>
                                 <#list userHomeComments as comment>
                                 <li>
                                     <div class="fn-clear">
-                                        <div class="fn-left comment-main" style="width:670px">
-                                            <div class="fn-clear">
-                                                <span class="fn-left">
-                                                    <h2><a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a></h2>
-                                                </span>
-                                                <span class="fn-right ft-small">
-                                                    ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
-                                                </span>    
-                                            </div>
-                                            <div class="content-reset">
-                                                ${comment.commentContent}  
-                                            </div>
-                                        </div>
+                                        <span class="fn-left">
+                                            <span class="ft-small">回复了 <a target="_blank" href="">XXX</a> 创建的主题 > </span>
+                                            <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
+                                        </span>
+                                        <span class="fn-right ft-small">
+                                            ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
+                                        </span>    
+                                    </div>
+                                    <div class="content-reset">
+                                        ${comment.commentContent}  
                                     </div>
                                 </li>
                                 </#list>  
