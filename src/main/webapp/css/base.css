@@ -227,6 +227,10 @@ textarea {
 a.ft-noline:hover {
     text-decoration: none;
 }
+
+.ft-12 {
+    font-size: 12px;
+}
 /* end function */
 
 /* start common */
@@ -606,13 +610,6 @@ button.red:active {
     position: absolute;
     z-index: 100;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-}
-.dialog-title {
-    color: #FFFFFF;
-    float: left;
-    font-size: 12px;
-    line-height: 27px;
-    margin-left: 3px;
 }
 
 .dialog-close-icon {

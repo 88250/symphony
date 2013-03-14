@@ -29,7 +29,9 @@
                                 <li>
                                     <div class="fn-clear">
                                         <span class="fn-left">
-                                            <span class="ft-small">回复了 <a target="_blank" href="${comment.commentArticleAuthorURL}">${comment.commentArticleAuthorName}</a> 创建的主题 > </span>
+                                            <span class="ft-small">${replyLabel}</span>
+                                            <a class="ft-12" target="_blank" href="${comment.commentArticleAuthorURL}">${comment.commentArticleAuthorName}</a>
+                                            <span class="ft-small">${creatThemeLabel}</span>
                                             <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                                         </span>
                                         <span class="fn-right ft-small">
