@@ -29,7 +29,7 @@
                                 <li>
                                     <div class="fn-clear">
                                         <span class="fn-left">
-                                            <span class="ft-small">回复了 <a target="_blank" href="">XXX</a> 创建的主题 > </span>
+                                            <span class="ft-small">回复了 <a target="_blank" href="${comment.commentArticleAuthorURL}">${comment.commentArticleAuthorName}</a> 创建的主题 > </span>
                                             <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                                         </span>
                                         <span class="fn-right ft-small">

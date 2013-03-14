@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 19, 2012
+ * @version 1.0.0.6, Mar 14, 2013
  * @since 0.2.0
  */
 public final class Comment {
@@ -28,84 +28,114 @@ public final class Comment {
      * Comment.
      */
     public static final String COMMENT = "comment";
+
     /**
      * Comments.
      */
     public static final String COMMENTS = "comments";
+
     /**
      * Key of comment content.
      */
     public static final String COMMENT_CONTENT = "commentContent";
+
     /**
      * Key of comment create time.
      */
     public static final String COMMENT_CREATE_TIME = "commentCreateTime";
+
     /**
      * Key of comment author email.
      */
     public static final String COMMENT_AUTHOR_EMAIL = "commentAuthorEmail";
+
     /**
      * Key of comment author id.
      */
     public static final String COMMENT_AUTHOR_ID = "commentAuthorId";
+
     /**
      * Key of comment on article id.
      */
     public static final String COMMENT_ON_ARTICLE_ID = "commentOnArticleId";
+
     /**
      * Key of client comment id.
      */
     public static final String COMMENT_CLIENT_COMMENT_ID = "clientCommentId";
+
     /**
      * Key of comment sharp URL.
      */
     public static final String COMMENT_SHARP_URL = "commentSharpURL";
+
     /**
      * Key of original comment id.
      */
     public static final String COMMENT_ORIGINAL_COMMENT_ID = "commentOriginalCommentId";
+
     /**
      * Key of comment status.
      */
     public static final String COMMENT_STATUS = "commentStatus";
     //// Transient ////
+
     /**
      * Key of commenter.
      */
     public static final String COMMENT_T_COMMENTER = "commenter";
+
     /**
      * Key of comment id.
      */
     public static final String COMMENT_T_ID = "commentId";
+
     /**
      * Key of comment on symphony article id.
      */
     public static final String COMMENT_T_SYMPHONY_ID = "commentSymphonyArticleId";
+
     /**
      * Key of comment author thumbnail URL.
      */
     public static final String COMMENT_T_AUTHOR_THUMBNAIL_URL = "commentAuthorThumbnailURL";
+
     /**
      * Key of comment author name.
      */
     public static final String COMMENT_T_AUTHOR_NAME = "commentAuthorName";
+
     /**
      * Key of comment author URL.
      */
     public static final String COMMENT_T_AUTHOR_URL = "commentAuthorURL";
+
     /**
      * Key of comment article title.
      */
     public static final String COMMENT_T_ARTICLE_TITLE = "commentArticleTitle";
+
+    /**
+     * Key of comment article author name.
+     */
+    public static final String COMMENT_T_ARTICLE_AUTHOR_NAME = "commentArticleAuthorName";
+
+    /**
+     * Key of comment article author URL.
+     */
+    public static final String COMMENT_T_ARTICLE_AUTHOR_URL = "commentArticleAuthorURL";
+
     /**
      * Key of comment article permalink.
      */
     public static final String COMMENT_T_ARTICLE_PERMALINK = "commentArticlePermalink";
     // Status constants
+
     /**
      * Comment status - valid.
      */
     public static final int COMMENT_STATUS_C_VALID = 0;
+
     /**
      * Comment status - invalid.
      */

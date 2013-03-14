@@ -175,6 +175,13 @@ public final class CommentQueryService {
 
                 final JSONObject commenter = userRepository.get(userId);
                 comment.put(Comment.COMMENT_T_COMMENTER, commenter);
+                
+                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                final JSONObject articleAuthor = userRepository.get(articleAuthorId);
+                final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
+                final String articleAuthorURL = "/member/" + articleAuthor.optString(User.USER_NAME);
+                comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
+                comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, articleAuthorURL);
 
                 processCommentContent(comment);
             }
