@@ -88,9 +88,9 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
                         Article.ARTICLE_CONTENT,
                         Article.ARTICLE_TAGS,
                         Article.ARTICLE_TITLE,
-                        Keys.OBJECT_ID
                     });
 
+            article.put(Keys.OBJECT_ID, originalArticle.optString(Article.ARTICLE_CLIENT_ARTICLE_ID));
             article.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
             article.put(Article.ARTICLE_EDITOR_TYPE, "CodeMirror-Markdown");
 

@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Sends article to client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 12, 2012
+ * @version 1.0.0.1, Mar 18, 2013
  * @since 0.2.0
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -82,7 +82,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
             final HTTPRequest httpRequest = new HTTPRequest();
             httpRequest.setURL(new URL(clientURL));
-            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
+            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject(originalArticle, new String[]{
                         Article.ARTICLE_CONTENT,
