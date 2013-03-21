@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log - ${AboutLabel}">
-        <meta name="keywords" content="B3log,${AboutLabel}"/>
-        <meta name="description" content="${AboutLabel} B3log,一个正在逐渐清晰、实践的创意"/>
+        <@head title="B3log - ${aboutLabel}">
+        <meta name="keywords" content="B3log,${aboutLabel}"/>
+        <meta name="description" content="${aboutLabel} B3log,一个正在逐渐清晰、实践的创意"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index.css" />
     </head>
@@ -117,11 +117,7 @@
                         <li>有人随便看看，有人云游布道</li>
                     </ul>
                     <p>
-                        会员分级、积分这两个功能将永远不会被引入，因为这实在太无聊了，而且可能会对社区的活跃产生负面影响。
-                        在这里，随心看帖、回帖的传统美德已经足够。
-                    </p>
-                    <p>
-                        此外，会引入一些方便的功能，例如：
+                        论坛的主要目标是让大家沟通得更有效，所以在其他功能上比较简单，但也不乏特色：
                     </p>
                     <ul>
                         <li>
