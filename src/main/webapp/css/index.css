@@ -278,13 +278,6 @@
 }
 /* end tags.html */
 
-/* start about.html */
-.about p, 
-.register p {
-    margin: 5px 0;
-}
-/* end about.html*/
-
 /* start tag-article.html */
 .tag-article-img {
     height: 60px;
