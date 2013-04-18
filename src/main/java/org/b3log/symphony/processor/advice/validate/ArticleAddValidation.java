@@ -33,7 +33,8 @@ import org.json.JSONObject;
  * Validates for article adding locally, removes the duplicated tags.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Mar 13, 2013
+ * @version 1.0.0.4, Apr 18, 2013
+ * @since 0.2.0
  */
 public final class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
@@ -106,6 +107,11 @@ public final class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
             if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
+            }
+            
+            // XXX: configured
+            if ("B3log Broadcast".equals(tagTitle)) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")));
             }
             
             tagBuilder.append(tagTitle).append(",");
