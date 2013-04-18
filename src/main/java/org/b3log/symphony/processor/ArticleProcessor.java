@@ -399,7 +399,7 @@ public final class ArticleProcessor {
      *         "articleAuthorEmail": "DL88250@gmail.com",
      *         "articleContent": "&lt;p&gt;test&lt;\/p&gt;",
      *         "articleCreateDate": 1350635469922,
-     *         "articlePermalink": "/articles/2012/10/19/1350635469866.html",
+     *         "articlePermalink": "http://88250.b3log.org/articles/2012/10/19/1350635469866.html",
      *         "articleTags": "test",
      *         "articleTitle": "test",
      *         "clientArticleId": "1350635469866",

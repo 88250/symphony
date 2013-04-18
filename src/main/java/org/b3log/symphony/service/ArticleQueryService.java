@@ -172,6 +172,38 @@ public final class ArticleQueryService {
     }
 
     /**
+     * Gets broadcasts (articles permalink equals to "aBroadcast").
+     * 
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return articles, return an empty list if not found
+     * @throws ServiceException service exception 
+     */
+    public List<JSONObject> getBroadcasts(final int currentPageNum, final int pageSize) throws ServiceException {
+        try {
+            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setFilter(
+                    new PropertyFilter(Article.ARTICLE_PERMALINK, FilterOperator.EQUAL, "aBroadcast"));
+
+            final JSONObject result = articleRepository.get(query);
+            final JSONArray articles = result.optJSONArray(Keys.RESULTS);
+
+            if (0 == articles.length()) {
+                return Collections.emptyList();
+            }
+
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(articles);
+            for (final JSONObject article : ret) {
+                article.put(Article.ARTICLE_PERMALINK, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets broadcasts [currentPageNum=" + currentPageNum + ", pageSize=" + pageSize + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets news (articles tags contains "B3log Announcement").
      * 
      * @param currentPageNum the specified page number

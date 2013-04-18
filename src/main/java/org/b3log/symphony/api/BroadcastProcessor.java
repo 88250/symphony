@@ -28,49 +28,50 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.json.JSONObject;
 
 /**
- * News processor.
+ * Broadcast processor.
  *
  * <ul> 
- *   <li>Gets the news (/apis/news), GET</li>
+ *   <li>Gets the broadcasts (/apis/broadcasts), GET</li>
  * </ul> 
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 8, 2012
- * @since 0.2.0
+ * @version 1.0.0.0, Apr 18, 2013
+ * @since 0.2.1
  */
 @RequestProcessor
-public final class NewsProcessor {
+public final class BroadcastProcessor {
 
     /**
      * Article query service.
      */
     private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
-    /**
-     * News fetch size.
-     */
-    private static final int NEWS_FETCH_SIZE = 10;
 
     /**
-     * Gets the news.
+     * Broadcasts fetch size.
+     */
+    private static final int BROADCASTS_FETCH_SIZE = 10;
+
+    /**
+     * Gets the broadcasts.
      *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/apis/news", method = HTTPRequestMethod.GET)
-    public void getNews(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    @RequestProcessing(value = "/apis/broadcasts", method = HTTPRequestMethod.GET)
+    public void getBroadcasts(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer().setJSONP(true);
         context.setRenderer(renderer);
-        
+
         renderer.setCallback(request.getParameter("callback"));
 
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
-        final List<JSONObject> news = articleQueryService.getNews(1, NEWS_FETCH_SIZE);
+        final List<JSONObject> broadcasts = articleQueryService.getBroadcasts(1, BROADCASTS_FETCH_SIZE);
 
-        ret.put(Article.ARTICLES, news);
+        ret.put(Article.ARTICLES, broadcasts);
     }
 }
