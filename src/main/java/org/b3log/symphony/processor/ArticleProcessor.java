@@ -397,7 +397,7 @@ public final class ArticleProcessor {
      * {
      *     "article": {
      *         "articleAuthorEmail": "DL88250@gmail.com",
-     *         "articleContent": "<p>test<\/p>",
+     *         "articleContent": "&lt;p&gt;test&lt;\/p&gt;",
      *         "articleCreateDate": 1350635469922,
      *         "articlePermalink": "/articles/2012/10/19/1350635469866.html",
      *         "articleTags": "test",
