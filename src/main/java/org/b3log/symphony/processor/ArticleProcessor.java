@@ -431,14 +431,16 @@ public final class ArticleProcessor {
         final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
-        final String userB3Key = request.getParameter(UserExt.USER_B3_KEY);
-        final String symphonyKey = request.getParameter(Common.SYMPHONY_KEY);
-        final String clientAdminEmail = request.getParameter(Client.CLIENT_ADMIN_EMAIL);
-        final String clientName = request.getParameter(Client.CLIENT_NAME);
-        final String clientTitle = request.getParameter(Client.CLIENT_T_TITLE);
-        final String clientVersion = request.getParameter(Client.CLIENT_VERSION);
-        final String clientHost = request.getParameter(Client.CLIENT_HOST);
-        final String clientRuntimeEnv = request.getParameter(Client.CLIENT_RUNTIME_ENV);
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+
+        final String userB3Key = requestJSONObject.getString(UserExt.USER_B3_KEY);
+        final String symphonyKey = requestJSONObject.getString(Common.SYMPHONY_KEY);
+        final String clientAdminEmail = requestJSONObject.getString(Client.CLIENT_ADMIN_EMAIL);
+        final String clientName = requestJSONObject.getString(Client.CLIENT_NAME);
+        final String clientTitle = requestJSONObject.getString(Client.CLIENT_T_TITLE);
+        final String clientVersion = requestJSONObject.getString(Client.CLIENT_VERSION);
+        final String clientHost = requestJSONObject.getString(Client.CLIENT_HOST);
+        final String clientRuntimeEnv = requestJSONObject.getString(Client.CLIENT_RUNTIME_ENV);
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
