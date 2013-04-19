@@ -37,6 +37,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
@@ -423,15 +424,15 @@ public final class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/rhythm/article", method = HTTPRequestMethod.POST)
-    public void addArticleFromRhythm(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void addArticleFromRhythm(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         final JSONObject ret = QueryResults.falseResult();
         renderer.setJSONObject(ret);
 
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
         final String userB3Key = requestJSONObject.getString(UserExt.USER_B3_KEY);
         final String symphonyKey = requestJSONObject.getString(Common.SYMPHONY_KEY);
@@ -455,7 +456,7 @@ public final class ArticleProcessor {
             return;
         }
 
-        final JSONObject originalArticle = new JSONObject(request.getParameter(Article.ARTICLE));
+        final JSONObject originalArticle = requestJSONObject.getJSONObject(Article.ARTICLE);
 
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
         final String articleTags = formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));

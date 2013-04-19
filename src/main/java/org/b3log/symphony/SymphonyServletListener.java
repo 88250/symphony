@@ -62,10 +62,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
      * JSONO print indent factor.
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
-    /**
-     * B3log Rhythm address.
-     */
-    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
