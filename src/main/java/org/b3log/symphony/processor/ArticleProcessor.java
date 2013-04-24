@@ -270,6 +270,8 @@ public final class ArticleProcessor {
         final String authorEmail = currentUser.optString(User.USER_EMAIL);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
 
+        article.put(Article.ARTICLE_T_IS_BROADCAST, false);
+
         try {
             articleMgmtService.addArticle(article);
             ret.put(Keys.STATUS_CODE, true);
@@ -400,7 +402,7 @@ public final class ArticleProcessor {
      *         "articleAuthorEmail": "DL88250@gmail.com",
      *         "articleContent": "&lt;p&gt;test&lt;\/p&gt;",
      *         "articleCreateDate": 1350635469922,
-     *         "articlePermalink": "http://88250.b3log.org/articles/2012/10/19/1350635469866.html",
+     *         "articlePermalink": "/articles/2012/10/19/1350635469866.html",
      *         "articleTags": "test",
      *         "articleTitle": "test",
      *         "clientArticleId": "1350635469866",
@@ -462,9 +464,17 @@ public final class ArticleProcessor {
         final String articleTags = formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
-        articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
-                + "<i style='margin-right:5px;'><a target='_blank' href='"
-                + clientHost + originalArticle.optString(Article.ARTICLE_PERMALINK) + "'>" + clientTitle + "</a></i></span></p>";
+        final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);
+        final boolean isBroadcast = "aBroadcast".equals(permalink);
+        if (isBroadcast) {
+            articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该广播来自</span> "
+                    + "<i style='margin-right:5px;'><a target='_blank' href='"
+                    + clientHost + "'>" + clientTitle + "</a></i></span></p>";
+        } else {
+            articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
+                    + "<i style='margin-right:5px;'><a target='_blank' href='"
+                    + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
+        }
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -477,8 +487,11 @@ public final class ArticleProcessor {
         article.put(Article.ARTICLE_AUTHOR_ID, user.optString(Keys.OBJECT_ID));
         article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
 
+        article.put(Article.ARTICLE_T_IS_BROADCAST, isBroadcast);
+        
         try {
             articleMgmtService.addArticle(article);
+            
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();

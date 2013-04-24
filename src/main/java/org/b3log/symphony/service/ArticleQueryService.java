@@ -182,7 +182,7 @@ public final class ArticleQueryService {
     public List<JSONObject> getBroadcasts(final int currentPageNum, final int pageSize) throws ServiceException {
         try {
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setFilter(
-                    new PropertyFilter(Article.ARTICLE_PERMALINK, FilterOperator.EQUAL, "aBroadcast"));
+                    new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, "aBroadcast"));
 
             final JSONObject result = articleRepository.get(query);
             final JSONArray articles = result.optJSONArray(Keys.RESULTS);
@@ -194,6 +194,7 @@ public final class ArticleQueryService {
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(articles);
             for (final JSONObject article : ret) {
                 article.put(Article.ARTICLE_PERMALINK, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+                article.remove(Article.ARTICLE_CONTENT);
             }
 
             return ret;

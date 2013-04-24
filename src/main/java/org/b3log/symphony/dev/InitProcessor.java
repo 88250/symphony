@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Initializes database.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.10, Jan 25, 2013
+ * @version 1.0.0.11, Apr 24, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -56,6 +56,7 @@ public class InitProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InitProcessor.class.getName());
+
     /**
      * Number of article to generate.
      */
@@ -78,7 +79,7 @@ public class InitProcessor {
             final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
                 LOGGER.log(Level.INFO, "Creates table result[tableName={0}, isSuccess={1}]",
-                           new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
+                        new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
 
             // Init stat.
@@ -151,6 +152,7 @@ public class InitProcessor {
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
             article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.optString(User.USER_EMAIL));
             article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
+            article.put(Article.ARTICLE_T_IS_BROADCAST, false);
             articleMgmtService.addArticle(article);
 
             response.sendRedirect("/");
@@ -188,6 +190,7 @@ public class InitProcessor {
                 article.put(Article.ARTICLE_EDITOR_TYPE, 0);
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.optString(User.USER_EMAIL));
                 article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
+                article.put(Article.ARTICLE_T_IS_BROADCAST, false);
                 articleMgmtService.addArticle(article);
 
                 LOGGER.log(Level.INFO, "Generated article ({0})", i);

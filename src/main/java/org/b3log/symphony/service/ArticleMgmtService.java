@@ -150,6 +150,7 @@ public final class ArticleMgmtService {
      *     "articleAuthorId": "",
      *     "syncWithSymphonyClient": boolean, // optional
      *     "clientArticleId": "" // optional
+     *     "isBroadcast": boolean
      * }
      * </pre>, see {@link Article} for more details
      * @return generated article id
@@ -177,6 +178,7 @@ public final class ArticleMgmtService {
 
             final String clientArticleId = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
             final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
+            final boolean isBroadcast = requestJSONObject.optBoolean(Article.ARTICLE_T_IS_BROADCAST);
 
             article.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
@@ -202,9 +204,14 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_LATEST_CMT_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_PERMALINK, "/article/" + ret);
+            if (isBroadcast) {
+                article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, "aBroadcast");
+            } else {
+                article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
+            }
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.ARTICLE_STATUS, 0);
-            article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
+            
 
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
 
