@@ -111,7 +111,8 @@ public final class ArticleAddValidation extends BeforeRequestProcessAdvice {
             
             // XXX: configured
             if ("B3log Broadcast".equals(tagTitle)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")));
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
+                        + " [B3log Broadcast]"));
             }
             
             tagBuilder.append(tagTitle).append(",");
