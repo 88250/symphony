@@ -64,6 +64,7 @@ import org.json.JSONObject;
  *   <li>Shows an article (/article/{articleId}), GET</li>
  *   <li>Shows article adding form page (/add-article), GET</li>
  *   <li>Adds an article (/article) <em>locally</em>, POST</li> 
+ *   <li>Updates an article (/article/{id}) <em>locally</em>, PUT</li>
  *   <li>Adds an article (/rhythm/article) <em>remotely</em>, POST</li>
  *   <li>Markdowns text (/markdown), POST</li>
  * </ul> 
@@ -476,22 +477,155 @@ public final class ArticleProcessor {
                     + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
         }
 
+        final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
+
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
-        article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, originalArticle.optString(Keys.OBJECT_ID));
+        article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
 
         article.put(Article.ARTICLE_AUTHOR_ID, user.optString(Keys.OBJECT_ID));
         article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
 
         article.put(Article.ARTICLE_T_IS_BROADCAST, isBroadcast);
-        
+
         try {
             articleMgmtService.addArticle(article);
-            
+
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.SEVERE, msg, e);
+
+            ret.put(Keys.MSG, msg);
+        }
+
+        // Updates client record
+        JSONObject client = clientQueryService.getClientByAdminEmail(clientAdminEmail);
+        if (null == client) {
+            client = new JSONObject();
+            client.put(Client.CLIENT_ADMIN_EMAIL, clientAdminEmail);
+            client.put(Client.CLIENT_HOST, clientHost);
+            client.put(Client.CLIENT_NAME, clientName);
+            client.put(Client.CLIENT_RUNTIME_ENV, clientRuntimeEnv);
+            client.put(Client.CLIENT_VERSION, clientVersion);
+            client.put(Client.CLIENT_LATEST_ADD_COMMENT_TIME, 0L);
+            client.put(Client.CLIENT_LATEST_ADD_ARTICLE_TIME, System.currentTimeMillis());
+
+            clientMgmtService.addClient(client);
+        } else {
+            client.put(Client.CLIENT_ADMIN_EMAIL, clientAdminEmail);
+            client.put(Client.CLIENT_HOST, clientHost);
+            client.put(Client.CLIENT_NAME, clientName);
+            client.put(Client.CLIENT_RUNTIME_ENV, clientRuntimeEnv);
+            client.put(Client.CLIENT_VERSION, clientVersion);
+            client.put(Client.CLIENT_LATEST_ADD_ARTICLE_TIME, System.currentTimeMillis());
+
+            clientMgmtService.updateClient(client);
+        }
+    }
+
+    /**
+     * Updates an article remotely.
+     * 
+     * <p>This interface will be called by Rhythm, so here is no article data validation, just only validate the B3 key.</p>
+     * 
+     * <p>
+     * The request json object, for example, 
+     * <pre>
+     * {
+     *     "article": {
+     *         "articleAuthorEmail": "DL88250@gmail.com",
+     *         "articleContent": "&lt;p&gt;test&lt;\/p&gt;",
+     *         "articleCreateDate": 1350635469922,
+     *         "articlePermalink": "/articles/2012/10/19/1350635469866.html",
+     *         "articleTags": "test",
+     *         "articleTitle": "test",
+     *         "clientArticleId": "1350635469866",
+     *         "oId": "1350635469866"
+     *     },
+     *     "clientAdminEmail": "DL88250@gmail.com",
+     *     "clientHost": "http://localhost:11099",
+     *     "clientName": "B3log Solo",
+     *     "clientTitle": "简约设计の艺术",
+     *     "clientRuntimeEnv": "LOCAL",
+     *     "clientVersion": "0.5.0",
+     *     "symphonyKey": "....",
+     *     "userB3Key": "Your key"
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/rhythm/article", method = HTTPRequestMethod.PUT)
+    public void updateArticleFromRhythm(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+
+        final String userB3Key = requestJSONObject.getString(UserExt.USER_B3_KEY);
+        final String symphonyKey = requestJSONObject.getString(Common.SYMPHONY_KEY);
+        final String clientAdminEmail = requestJSONObject.getString(Client.CLIENT_ADMIN_EMAIL);
+        final String clientName = requestJSONObject.getString(Client.CLIENT_NAME);
+        final String clientTitle = requestJSONObject.getString(Client.CLIENT_T_TITLE);
+        final String clientVersion = requestJSONObject.getString(Client.CLIENT_VERSION);
+        final String clientHost = requestJSONObject.getString(Client.CLIENT_HOST);
+        final String clientRuntimeEnv = requestJSONObject.getString(Client.CLIENT_RUNTIME_ENV);
+
+        final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
+        if (null == user) {
+            LOGGER.log(Level.WARNING, "The user[email={0}] not found in community", clientAdminEmail);
+
+            return;
+        }
+
+        if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
+            LOGGER.log(Level.WARNING, "B3 key not match, ignored add article");
+
+            return;
+        }
+
+        final JSONObject originalArticle = requestJSONObject.getJSONObject(Article.ARTICLE);
+
+        final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
+        final String articleTags = formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
+        String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
+
+        final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);
+        articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
+                + "<i style='margin-right:5px;'><a target='_blank' href='"
+                + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
+
+        final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
+
+        final JSONObject article = new JSONObject();
+        article.put(Article.ARTICLE_TITLE, articleTitle);
+        article.put(Article.ARTICLE_TAGS, articleTags);
+        article.put(Article.ARTICLE_CONTENT, articleContent);
+        article.put(Article.ARTICLE_EDITOR_TYPE, 0);
+        article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
+        article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
+
+        article.put(Article.ARTICLE_AUTHOR_ID, user.optString(Keys.OBJECT_ID));
+        article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
+
+        article.put(Article.ARTICLE_T_IS_BROADCAST, false);
+
+        try {
+            articleMgmtService.updateArticle(article);
+
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
