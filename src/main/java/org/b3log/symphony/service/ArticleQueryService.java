@@ -182,7 +182,8 @@ public final class ArticleQueryService {
     public List<JSONObject> getBroadcasts(final int currentPageNum, final int pageSize) throws ServiceException {
         try {
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setFilter(
-                    new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, "aBroadcast"));
+                    new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, "aBroadcast")).
+                    addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING);
 
             final JSONObject result = articleRepository.get(query);
             final JSONArray articles = result.optJSONArray(Keys.RESULTS);
