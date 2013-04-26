@@ -609,8 +609,15 @@ public final class ArticleProcessor {
                 + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
 
         final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
+        final JSONObject oldArticle = articleQueryService.getArticleByClientArticleId(clientArticleId);
+        if (null == oldArticle) {
+            LOGGER.log(Level.WARNING, "Not found article [clientArticleId={0}]", clientArticleId);
+
+            return;
+        }
 
         final JSONObject article = new JSONObject();
+        article.put(Keys.OBJECT_ID, oldArticle.optString(Keys.OBJECT_ID));
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_CONTENT, articleContent);
