@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.0.4, Jan 24, 2013
+    Version: 1.0.0.5, May 22, 2013
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -23,6 +23,7 @@
     <properties>
         <servlet.version>2.5</servlet.version>
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
+        <org.b3log.latke-bae.version>0.5.0-SNAPSHOT</org.b3log.latke-bae.version>
         <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
         <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
         <freemarker.version>2.3.19</freemarker.version>
@@ -121,13 +122,47 @@
                     <groupId>c3p0</groupId>
                     <artifactId>c3p0</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.jolbox</groupId>
+                    <artifactId>bonecp</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>mail</artifactId>
+                    <groupId>javax.mail</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jboss</groupId>
+                    <artifactId>jboss-vfs</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-bae</artifactId>
+            <version>${org.b3log.latke-bae.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
             <version>${org.b3log.latke-repository-mysql.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.jolbox</groupId>
+                    <artifactId>bonecp</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         
         <dependency>         
@@ -136,13 +171,6 @@
             <version>${mysql-connector-java.version}</version>
         </dependency>
         
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>${servlet.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>

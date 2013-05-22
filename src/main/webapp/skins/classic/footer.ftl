@@ -1,7 +1,7 @@
 <div class="footer">
     <div class="wrapper fn-clear">
         <div class="fn-left">
-            <img src="/images/logo.png" />
+            <img src="${staticServePath}/images/logo.png" />
         </div>
         <div class="fn-right" style="width: 800px">
             <div class="footer-nav">
@@ -30,9 +30,9 @@
     </div>
 </div>
 <div class="go-top" onclick="Util.goTop()"></div>
-<script type="text/javascript" src="/js/lib/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="/js/common.js"></script>
-<script type="text/javascript" src="/js/lib/md5.js"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="${staticServePath}/js/common.js"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/md5.js"></script>
 <script>
     Util.init();
     Label.invalidPasswordLabel = "${invalidPasswordLabel}";

@@ -8,7 +8,7 @@
         <meta name="keywords" content="${visionLabel},B3log ${symphonyLabel}"/>
         <meta name="description" content="B3log ${symphonyLabel}${b3logDescriptionLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index.css" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css" />
     </head>
     <body>
         <#include "header.ftl">
