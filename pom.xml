@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.0.5, May 22, 2013
+    Version: 1.0.0.6, May 28, 2013
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -11,11 +11,11 @@
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
     <packaging>war</packaging>
-    <version>0.2.0</version>
+    <version>0.2.2</version>
     <name>B3log Symphony</name>
     <url>https://github.com/b3log/b3log-symphony</url>
     <description>
-        重来吧，B3 社区 2.0
+        B3log 社区，http://symphony.b3log.org/about
     </description>
     <inceptionYear>2012</inceptionYear>
 
@@ -248,7 +248,7 @@
                     </mapping>
                     <useDefaultMapping>true</useDefaultMapping>
                     <properties>
-                        <year>2012</year>
+                        <year>2009, 2010, 2011, 2012, 2013</year>
                         <devTeam>B3log Team</devTeam>
                     </properties>
                     <encoding>UTF-8</encoding>
