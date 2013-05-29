@@ -233,7 +233,7 @@ public final class ArticleMgmtService {
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
             try {
-                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+                eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
@@ -299,7 +299,7 @@ public final class ArticleMgmtService {
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, oldArticle);
             try {
-                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
+                eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }

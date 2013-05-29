@@ -187,7 +187,7 @@ public final class CommentMgmtService {
             eventData.put(Article.ARTICLE, article);
 
             try {
-                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
+                eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
