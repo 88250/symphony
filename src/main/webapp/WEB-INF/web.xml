@@ -50,6 +50,8 @@
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
         <url-pattern>/settings</url-pattern>
+        <url-pattern>/add-article</url-pattern>
+        <url-pattern>/update-article</url-pattern>
     </filter-mapping>
     
     <session-config>

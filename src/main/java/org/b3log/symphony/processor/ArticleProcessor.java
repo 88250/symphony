@@ -36,6 +36,9 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.user.GeneralUser;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
@@ -75,7 +78,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.17, Mar 5, 2013
+ * @version 1.0.2.18, May 29, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -120,6 +123,11 @@ public final class ArticleProcessor {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Shows add article.
@@ -309,6 +317,14 @@ public final class ArticleProcessor {
             return;
         }
 
+        final GeneralUser currentUser = userService.getCurrentUser(request);
+        if (null == currentUser
+                || !currentUser.getId().equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -340,13 +356,25 @@ public final class ArticleProcessor {
      * @param request the specified request
      * @param response the specified response
      * @param id the specified article id
-     * @throws IOException io exception
-     * @throws ServletException servlet exception 
+     * @throws Exception exception 
      */
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
     @Before(adviceClass = ArticleUpdateValidation.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String id) throws IOException, ServletException {
+            final String id) throws Exception {
+        if (Strings.isEmptyOrNull(id)) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
+        final JSONObject oldArticle = articleQueryService.getArticleById(id);
+        if (null == oldArticle) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -368,15 +396,17 @@ public final class ArticleProcessor {
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
 
-        final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
-        if (null == currentUser) {
+        final GeneralUser currentUser = userService.getCurrentUser(request);
+        if (null == currentUser
+                || !currentUser.getId().equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            
             return;
         }
 
-        article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
+        article.put(Article.ARTICLE_AUTHOR_ID, currentUser.getId());
 
-        final String authorEmail = currentUser.optString(User.USER_EMAIL);
+        final String authorEmail = currentUser.getEmail();
         article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
 
         try {
