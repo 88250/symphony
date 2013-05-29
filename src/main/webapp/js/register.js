@@ -64,7 +64,7 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus){
                     if (result.sc) {
-                        window.location = decodeURIComponent(location.search.split("=")[1]);
+                        window.location = "http://symphony.b3log.org/article/1360294444788";
                     } else {
                         $("#registerTip").text(result.msg).addClass("tip-error").css("border-left", "1px solid #E2A0A0");
                         $("#captcha").attr("src", "/captcha?code=" + Math.random());
