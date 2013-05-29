@@ -36,6 +36,9 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.user.GeneralUser;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
@@ -46,7 +49,6 @@ import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
-import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -69,7 +71,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Mar 13, 2013
+ * @version 1.0.1.5, May 29, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -92,10 +94,6 @@ public final class UserProcessor {
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
     /**
-     * Tag query service.
-     */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
-    /**
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
@@ -103,6 +101,10 @@ public final class UserProcessor {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Shows user home page.
@@ -168,6 +170,9 @@ public final class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        
+        final GeneralUser currentUser = userService.getCurrentUser(request);
+        dataModel.put(Common.IS_MY_ARTICLE, userName.equals(currentUser.getNickname()));
     }
 
     /**

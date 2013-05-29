@@ -43,9 +43,11 @@
                                         ${viewLabel} <a rel="nofollow" href="${article.articlePermalink}">${article.articleViewCount}</a><br/>
                                         ${cmtLabel} <a rel="nofollow" href="${article.articlePermalink}#comments">${article.articleCommentCount}</a>
                                     </div>
+                                    <#if isMyArticle>
                                     <div class="commenters">
                                         <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}"><span class="ico-edit"></span></a>
                                     </div>
+                                    </#if>
                                 </li>
                                 </#list>
                             </ul>
