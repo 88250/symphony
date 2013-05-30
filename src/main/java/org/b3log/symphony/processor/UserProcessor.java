@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, May 29, 2013
+ * @version 1.0.1.6, May 30, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -81,26 +81,32 @@ public final class UserProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserProcessor.class.getName());
+
     /**
      * User management service.
      */
     private UserMgmtService userMgmtService = UserMgmtService.getInstance();
+
     /**
      * Article management service.
      */
     private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+
     /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * User service.
      */
@@ -170,9 +176,13 @@ public final class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-        
+
         final GeneralUser currentUser = userService.getCurrentUser(request);
-        dataModel.put(Common.IS_MY_ARTICLE, userName.equals(currentUser.getNickname()));
+        if (null == currentUser) {
+            dataModel.put(Common.IS_MY_ARTICLE, false);
+        } else {
+            dataModel.put(Common.IS_MY_ARTICLE, userName.equals(currentUser.getNickname()));
+        }
     }
 
     /**
