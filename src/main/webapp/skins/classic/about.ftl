@@ -31,12 +31,12 @@
                         </li>
                         <li>
                             Rhythm 是<a href="http://www.iciba.com/rhythm">节奏</a>，相当于音乐中节拍器控制的节奏。
-                            <a href="http://code.google.com/p/b3log-rhythm/">B3log Rhythm</a> 
+                            <a href="https://github.com/b3log/b3log-rhythm">B3log Rhythm</a> 
                             是用来处理不同博客和社区服务之间的同步，以避免在交响乐中乱了节奏。
                         </li>
                         <li>
                             Symphony 是<a href="http://www.iciba.com/symphony">交响乐</a>。
-                            <a href="https://code.google.com/p/b3log-rhythm/">B3log Symphony</a> 
+                            <a href="https://github.com/b3log/b3log-symphony">B3log Symphony</a> 
                             以论坛的方式交互，汇总个人博客，需要很多人协同参与才能奏出美妙的乐章。
                         </li>
                     </ul>
