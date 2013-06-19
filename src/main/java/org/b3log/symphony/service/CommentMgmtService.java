@@ -15,12 +15,12 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
@@ -121,7 +121,7 @@ public final class CommentMgmtService {
                     transaction.rollback();
                 }
 
-                LOGGER.log(Level.WARNING, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
+                LOGGER.log(Level.WARN, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
                 throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
             }
 
@@ -189,7 +189,7 @@ public final class CommentMgmtService {
             try {
                 eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
             } catch (final EventException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                LOGGER.log(Level.ERROR, e.getMessage(), e);
             }
 
             return ret;
@@ -198,7 +198,7 @@ public final class CommentMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds a comment failed", e);
+            LOGGER.log(Level.ERROR, "Adds a comment failed", e);
             throw new ServiceException(e);
         }
     }

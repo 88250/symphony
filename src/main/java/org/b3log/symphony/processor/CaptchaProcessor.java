@@ -23,8 +23,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +34,8 @@ import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.image.Image;
 import org.b3log.latke.image.ImageService;
 import org.b3log.latke.image.ImageServiceFactory;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -110,7 +110,7 @@ public final class CaptchaProcessor {
             final HttpSession httpSession = request.getSession(false);
 
             if (null != httpSession) {
-                LOGGER.log(Level.FINER, "Captcha[{0}] for session[id={1}]", new Object[] {captcha, httpSession.getId()});
+                LOGGER.log(Level.DEBUG, "Captcha[{0}] for session[id={1}]", new Object[] {captcha, httpSession.getId()});
                 httpSession.setAttribute(CAPTCHA, captcha);
             }
 
@@ -120,7 +120,7 @@ public final class CaptchaProcessor {
 
             renderer.setImage(captchaImg);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -175,7 +175,7 @@ public final class CaptchaProcessor {
 
             zipFile.close();
         } catch (final Exception e) {
-            LOGGER.severe("Can not load captchs!");
+            LOGGER.error("Can not load captchs!");
 
             throw new IllegalStateException(e);
         }

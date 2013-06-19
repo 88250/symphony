@@ -17,7 +17,6 @@ package org.b3log.symphony.processor;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -55,10 +54,6 @@ import org.json.JSONObject;
 @RequestProcessor
 public final class TagProcessor {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(TagProcessor.class.getName());
     /**
      * Tag query service.
      */

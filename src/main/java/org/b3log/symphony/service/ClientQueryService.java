@@ -15,9 +15,9 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -74,7 +74,7 @@ public final class ClientQueryService {
 
             return array.optJSONObject(0);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets client failed", e);
+            LOGGER.log(Level.ERROR, "Gets client failed", e);
             throw new ServiceException(e);
         }
     }

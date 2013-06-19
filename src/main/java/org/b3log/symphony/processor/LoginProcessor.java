@@ -17,13 +17,13 @@ package org.b3log.symphony.processor;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
@@ -133,7 +133,7 @@ public final class LoginProcessor {
         try {
             requestJSONObject = new JSONObject((String) request.getParameterMap().keySet().iterator().next());
         } catch (final JSONException e1) {
-            LOGGER.log(Level.SEVERE, e1.getMessage(), e1);
+            LOGGER.log(Level.ERROR, e1.getMessage(), e1);
             requestJSONObject = new JSONObject();
         }
         final String name = requestJSONObject.optString(User.USER_NAME);
@@ -155,7 +155,7 @@ public final class LoginProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.ERROR, msg, e);
 
             ret.put(Keys.MSG, msg);
         }
@@ -256,7 +256,7 @@ public final class LoginProcessor {
         try {
             return UserRepository.getInstance().getByEmail(email);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets current user by request failed, returns null", e);
+            LOGGER.log(Level.ERROR, "Gets current user by request failed, returns null", e);
 
             return null;
         }
@@ -308,13 +308,13 @@ public final class LoginProcessor {
                 if (userPassword.equals(password)) {
                     Sessions.login(request, response, user);
                     UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
-                    LOGGER.log(Level.FINER, "Logged in with cookie[email={0}]", userEmail);
+                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userEmail);
 
                     return true;
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.WARNING, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
+            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
 
             final Cookie cookie = new Cookie("b3log-latke", null);
             cookie.setMaxAge(0);

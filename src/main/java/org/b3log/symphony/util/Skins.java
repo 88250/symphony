@@ -21,8 +21,8 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Skin;
@@ -45,7 +45,7 @@ public final class Skins {
      * Loads skin.
      */
     public static void loadSkin() {
-        LOGGER.config("Loading skin....");
+        LOGGER.debug("Loading skin....");
 
         final String skinDirName = Symphonys.get("skinDirName");
         final String skinName = getSkinName(skinDirName);
@@ -92,13 +92,13 @@ public final class Skins {
         });
 
         if (null == skinDirs) {
-            LOGGER.severe("Skin directory is null");
+            LOGGER.error("Skin directory is null");
 
             return null;
         }
 
         if (1 != skinDirs.length) {
-            LOGGER.log(Level.SEVERE, "Skin directory count[{0}]", skinDirs.length);
+            LOGGER.log(Level.ERROR, "Skin directory count[{0}]", skinDirs.length);
 
             return null;
         }
@@ -110,7 +110,7 @@ public final class Skins {
 
             return ret.getProperty("name");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Read skin configuration error[msg={0}]", e.getMessage());
+            LOGGER.log(Level.ERROR, "Read skin configuration error[msg={0}]", e.getMessage());
 
             return null;
         }

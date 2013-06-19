@@ -17,8 +17,8 @@ package org.b3log.symphony.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
@@ -82,7 +82,7 @@ public final class Markdowns {
         try {
             markdown.transform(new StringReader(markdownText), writer);
         } catch (final ParseException e) {
-            LOGGER.log(Level.SEVERE, "Markdown error", e);
+            LOGGER.log(Level.ERROR, "Markdown error", e);
 
             return LANG_SVC.get("markdownErrorLabel");
         }

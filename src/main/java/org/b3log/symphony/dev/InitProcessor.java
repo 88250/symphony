@@ -18,12 +18,12 @@ package org.b3log.symphony.dev;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
@@ -157,7 +157,7 @@ public class InitProcessor {
 
             response.sendRedirect("/");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Creates database tables failed", e);
+            LOGGER.log(Level.ERROR, "Creates database tables failed", e);
             throw new IOException("Creates database tables failed", e);
         }
     }
@@ -198,7 +198,7 @@ public class InitProcessor {
 
             response.sendRedirect("/");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Creates database tables failed", e);
+            LOGGER.log(Level.ERROR, "Creates database tables failed", e);
             throw new IOException("Creates database tables failed", e);
         }
     }

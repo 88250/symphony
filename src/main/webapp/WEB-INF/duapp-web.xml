@@ -26,10 +26,6 @@
 <du-web-app xmlns="http://bae.baidu.com/java/1.0">
     <sessions-enabled>true</sessions-enabled>
     
-    <system-properties>
-        <property name="java.util.logging.level" value="FINEST"/>
-    </system-properties>
-    
     <static-files>
         <exclude path="/**.html" />
     </static-files>

@@ -16,10 +16,10 @@
 package org.b3log.symphony.processor;
 
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -68,7 +68,7 @@ public final class ErrorProcessor {
             final String statusCode) throws Exception {
         final String requestURI = request.getRequestURI();
         final String templateName = statusCode + ".ftl";
-        LOGGER.log(Level.FINE, "Shows error page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
+        LOGGER.log(Level.DEBUG, "Shows error page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         renderer.setTemplateName("error/" + templateName);

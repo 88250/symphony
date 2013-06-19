@@ -15,8 +15,6 @@
  */
 package org.b3log.symphony.filter;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -26,6 +24,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -71,7 +71,7 @@ public final class AuthFilter implements Filter {
         try {
             final GeneralUser currentUser = userService.getCurrentUser(httpServletRequest);
             if (null == currentUser) {
-                LOGGER.warning("The request has been forbidden");
+                LOGGER.warn("The request has been forbidden");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                 return;
@@ -79,7 +79,7 @@ public final class AuthFilter implements Filter {
 
             chain.doFilter(request, response);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Auth filter failed", e);
+            LOGGER.log(Level.ERROR, "Auth filter failed", e);
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }

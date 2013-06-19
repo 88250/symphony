@@ -15,9 +15,9 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -86,7 +86,7 @@ public final class ClientMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds client failed", e);
+            LOGGER.log(Level.ERROR, "Adds client failed", e);
             throw new ServiceException(e);
         }
     }
@@ -126,7 +126,7 @@ public final class ClientMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates client failed", e);
+            LOGGER.log(Level.ERROR, "Updates client failed", e);
             throw new ServiceException(e);
         }
     }

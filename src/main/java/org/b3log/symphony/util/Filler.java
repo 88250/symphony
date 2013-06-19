@@ -17,7 +17,6 @@ package org.b3log.symphony.util;
 
 import java.util.Calendar;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -46,10 +45,6 @@ import org.json.JSONObject;
  */
 public final class Filler {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
     /**
      * User service.
      */

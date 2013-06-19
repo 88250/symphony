@@ -18,12 +18,12 @@ package org.b3log.symphony.processor;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -343,7 +343,7 @@ public final class UserProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.ERROR, msg, e);
 
             ret.put(Keys.MSG, msg);
         }
@@ -387,7 +387,7 @@ public final class UserProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.ERROR, msg, e);
 
             ret.put(Keys.MSG, msg);
         }

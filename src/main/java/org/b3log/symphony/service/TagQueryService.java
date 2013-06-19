@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
@@ -84,7 +84,7 @@ public final class TagQueryService {
         try {
             return tagRepository.getByTitle(tagTitle);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets tag [title=" + tagTitle + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets tag [title=" + tagTitle + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -104,7 +104,7 @@ public final class TagQueryService {
             final JSONObject result = tagRepository.get(query);
             return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets trend tags failed", e);
+            LOGGER.log(Level.ERROR, "Gets trend tags failed", e);
             throw new ServiceException(e);
         }
     }
@@ -124,7 +124,7 @@ public final class TagQueryService {
             final JSONObject result = tagRepository.get(query);
             return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets cold tags failed", e);
+            LOGGER.log(Level.ERROR, "Gets cold tags failed", e);
             throw new ServiceException(e);
         }
     }
@@ -143,7 +143,7 @@ public final class TagQueryService {
             final JSONObject result = tagRepository.get(query);
             return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets tags failed", e);
+            LOGGER.log(Level.ERROR, "Gets tags failed", e);
             throw new ServiceException(e);
         }
     }
@@ -188,7 +188,7 @@ public final class TagQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets tag creator failed", e);
+            LOGGER.log(Level.ERROR, "Gets tag creator failed", e);
             throw new ServiceException(e);
         }
     }
@@ -248,7 +248,7 @@ public final class TagQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets tag participants failed", e);
+            LOGGER.log(Level.ERROR, "Gets tag participants failed", e);
             throw new ServiceException(e);
         }
     }

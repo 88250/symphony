@@ -15,8 +15,6 @@
  */
 package org.b3log.symphony;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +22,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
@@ -86,7 +86,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
-        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
         Stopwatchs.release();
     }
 
@@ -112,7 +112,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             try {
                 UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
             } catch (final ServiceException e) {
-                LOGGER.log(Level.SEVERE, "Changes user online from [true] to [false] failed", e);
+                LOGGER.log(Level.ERROR, "Changes user online from [true] to [false] failed", e);
             }
         }
     }
@@ -122,7 +122,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
 
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
-            LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
+            LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, false);
@@ -133,7 +133,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
-            LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
+            LOGGER.log(Level.DEBUG, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
                        new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
                                     session.isNew()});
             // Online visitor count

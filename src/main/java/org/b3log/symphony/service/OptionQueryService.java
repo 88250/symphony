@@ -18,10 +18,10 @@ package org.b3log.symphony.service;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -101,11 +101,11 @@ public final class OptionQueryService {
                         transaction.rollback();
                     }
 
-                    LOGGER.log(Level.SEVERE, "Updates the max online visitor count failed", e);
+                    LOGGER.log(Level.ERROR, "Updates the max online visitor count failed", e);
                 }
             }
         } catch (final RepositoryException ex) {
-            LOGGER.log(Level.SEVERE, "Gets online visitor count failed", ex);
+            LOGGER.log(Level.ERROR, "Gets online visitor count failed", ex);
         }
 
         return ret;
@@ -118,7 +118,7 @@ public final class OptionQueryService {
      */
     public static void onlineVisitorCount(final HttpServletRequest request) {
         ONLINE_VISITORS.put(Requests.getRemoteAddr(request), System.currentTimeMillis());
-        LOGGER.log(Level.FINEST, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+        LOGGER.log(Level.TRACE, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**
@@ -133,7 +133,7 @@ public final class OptionQueryService {
 
             if (currentTimeMillis > (onlineVisitor.getValue() + ONLINE_VISITOR_EXPIRATION)) {
                 iterator.remove();
-                LOGGER.log(Level.FINEST, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
+                LOGGER.log(Level.TRACE, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
             }
         }
     }
@@ -160,7 +160,7 @@ public final class OptionQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets statistic failed", e);
+            LOGGER.log(Level.ERROR, "Gets statistic failed", e);
             throw new ServiceException(e);
         }
     }

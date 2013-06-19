@@ -18,12 +18,12 @@ package org.b3log.symphony.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
@@ -131,7 +131,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Incs an article view count failed", e);
+            LOGGER.log(Level.ERROR, "Incs an article view count failed", e);
             throw new ServiceException(e);
         }
     }
@@ -172,7 +172,7 @@ public final class ArticleMgmtService {
                     transaction.rollback();
                 }
 
-                LOGGER.log(Level.WARNING, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
+                LOGGER.log(Level.WARN, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
                 throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
             }
 
@@ -235,7 +235,7 @@ public final class ArticleMgmtService {
             try {
                 eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
             } catch (final EventException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                LOGGER.log(Level.ERROR, e.getMessage(), e);
             }
 
             return ret;
@@ -244,7 +244,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds an article failed", e);
+            LOGGER.log(Level.ERROR, "Adds an article failed", e);
             throw new ServiceException(e);
         }
     }
@@ -301,14 +301,14 @@ public final class ArticleMgmtService {
             try {
                 eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
             } catch (final EventException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                LOGGER.log(Level.ERROR, e.getMessage(), e);
             }
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates an article failed", e);
+            LOGGER.log(Level.ERROR, "Updates an article failed", e);
             throw new ServiceException(e);
         }
     }
@@ -353,7 +353,7 @@ public final class ArticleMgmtService {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(newTagTitle, oldTags)) {
-                LOGGER.log(Level.FINER, "Tag need to add[title={0}]", newTagTitle);
+                LOGGER.log(Level.DEBUG, "Tag need to add[title={0}]", newTagTitle);
                 tagsNeedToAdd.add(newTag);
             }
         }
@@ -361,7 +361,7 @@ public final class ArticleMgmtService {
             final String oldTagTitle = oldTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(oldTagTitle, newTags)) {
-                LOGGER.log(Level.FINER, "Tag dropped[title={0}]", oldTag);
+                LOGGER.log(Level.DEBUG, "Tag dropped[title={0}]", oldTag);
                 tagsDropped.add(oldTag);
             }
         }
@@ -472,7 +472,7 @@ public final class ArticleMgmtService {
             final int articleCmtCnt = article.optInt(Article.ARTICLE_COMMENT_CNT);
 
             if (null == tag) {
-                LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
+                LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
                         new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
@@ -494,7 +494,7 @@ public final class ArticleMgmtService {
                 author.put(UserExt.USER_TAG_COUNT, author.optInt(UserExt.USER_TAG_COUNT) + 1);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
-                LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
+                LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
                         new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
                     article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();

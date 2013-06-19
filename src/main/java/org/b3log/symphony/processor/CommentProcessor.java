@@ -16,12 +16,12 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -143,7 +143,7 @@ public final class CommentProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.SEVERE, "Adds comment failed", e);
+            LOGGER.log(Level.ERROR, "Adds comment failed", e);
 
             ret.put(Keys.MSG, msg);
         }
@@ -184,7 +184,7 @@ public final class CommentProcessor {
     @Before(adviceClass = ClientCommentAddValidation.class)
     public void addCommentFromSolo(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        LOGGER.log(Level.FINER, "Adds a comment from solo");
+        LOGGER.log(Level.DEBUG, "Adds a comment from solo");
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final JSONObject originalCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
@@ -233,6 +233,6 @@ public final class CommentProcessor {
             clientMgmtService.updateClient(client);
         }
 
-        LOGGER.log(Level.FINER, "Added a comment from solo");
+        LOGGER.log(Level.DEBUG, "Added a comment from solo");
     }
 }

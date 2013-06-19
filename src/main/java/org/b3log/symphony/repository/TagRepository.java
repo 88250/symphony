@@ -17,7 +17,6 @@ package org.b3log.symphony.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
@@ -39,10 +38,6 @@ import org.json.JSONObject;
  */
 public final class TagRepository extends AbstractRepository {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(TagRepository.class.getName());
     /**
      * Singleton.
      */

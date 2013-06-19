@@ -18,12 +18,12 @@ package org.b3log.symphony.processor;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -286,7 +286,7 @@ public final class ArticleProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.SEVERE, "Adds article[title=" + articleTitle + "] failed", e);
+            LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed", e);
 
             ret.put(Keys.MSG, msg);
         }
@@ -414,7 +414,7 @@ public final class ArticleProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.SEVERE, "Adds article[title=" + articleTitle + "] failed", e);
+            LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed", e);
 
             ret.put(Keys.MSG, msg);
         }
@@ -478,13 +478,13 @@ public final class ArticleProcessor {
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
-            LOGGER.log(Level.WARNING, "The user[email={0}] not found in community", clientAdminEmail);
+            LOGGER.log(Level.WARN, "The user[email={0}] not found in community", clientAdminEmail);
 
             return;
         }
 
         if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-            LOGGER.log(Level.WARNING, "B3 key not match, ignored add article");
+            LOGGER.log(Level.WARN, "B3 key not match, ignored add article");
 
             return;
         }
@@ -528,7 +528,7 @@ public final class ArticleProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.ERROR, msg, e);
 
             ret.put(Keys.MSG, msg);
         }
@@ -616,13 +616,13 @@ public final class ArticleProcessor {
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
-            LOGGER.log(Level.WARNING, "The user[email={0}] not found in community", clientAdminEmail);
+            LOGGER.log(Level.WARN, "The user[email={0}] not found in community", clientAdminEmail);
 
             return;
         }
 
         if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-            LOGGER.log(Level.WARNING, "B3 key not match, ignored add article");
+            LOGGER.log(Level.WARN, "B3 key not match, ignored add article");
 
             return;
         }
@@ -641,7 +641,7 @@ public final class ArticleProcessor {
         final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
         final JSONObject oldArticle = articleQueryService.getArticleByClientArticleId(clientArticleId);
         if (null == oldArticle) {
-            LOGGER.log(Level.WARNING, "Not found article [clientArticleId={0}]", clientArticleId);
+            LOGGER.log(Level.WARN, "Not found article [clientArticleId={0}]", clientArticleId);
 
             return;
         }
@@ -666,7 +666,7 @@ public final class ArticleProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
-            LOGGER.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.ERROR, msg, e);
 
             ret.put(Keys.MSG, msg);
         }

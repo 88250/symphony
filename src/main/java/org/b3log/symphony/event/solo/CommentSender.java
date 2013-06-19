@@ -16,12 +16,12 @@
 package org.b3log.symphony.event.solo;
 
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.HTTPRequest;
@@ -61,7 +61,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(), data, CommentSender.class.getName()});
         try {
             if (data.optBoolean(Common.FROM_CLIENT)) {
@@ -107,10 +107,10 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
 
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Sends a comment to client error: {0}", e.getMessage());
+            LOGGER.log(Level.ERROR, "Sends a comment to client error: {0}", e.getMessage());
         }
 
-        LOGGER.log(Level.FINER, "Sent a comment to client");
+        LOGGER.log(Level.DEBUG, "Sent a comment to client");
     }
 
     /**

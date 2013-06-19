@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
@@ -140,7 +140,7 @@ public final class CommentQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets user comments failed", e);
+            LOGGER.log(Level.ERROR, "Gets user comments failed", e);
             throw new ServiceException(e);
         }
     }
@@ -188,7 +188,7 @@ public final class CommentQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets user comments failed", e);
+            LOGGER.log(Level.ERROR, "Gets user comments failed", e);
             throw new ServiceException(e);
         }
     }
@@ -243,7 +243,7 @@ public final class CommentQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets article [" + articleId + "] participants failed", e);
+            LOGGER.log(Level.ERROR, "Gets article [" + articleId + "] participants failed", e);
             throw new ServiceException(e);
         }
     }
@@ -270,7 +270,7 @@ public final class CommentQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets article [" + articleId + "] comments failed", e);
+            LOGGER.log(Level.ERROR, "Gets article [" + articleId + "] comments failed", e);
             throw new ServiceException(e);
         }
     }
@@ -391,7 +391,7 @@ public final class CommentQueryService {
                         "@<a href='/member/" + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, "Generates @username home URL for comment content failed", e);
+            LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);
         }
 
         comment.put(Comment.COMMENT_CONTENT, commentContent);

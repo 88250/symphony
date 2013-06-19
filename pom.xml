@@ -22,6 +22,7 @@
     <!-- Properties -->
     <properties>
         <servlet.version>2.5</servlet.version>
+        <slf4j.version>1.7.5</slf4j.version>
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
         <org.b3log.latke-bae.version>0.5.0-SNAPSHOT</org.b3log.latke-bae.version>
         <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
@@ -112,7 +113,12 @@
     </scm>
 
     <dependencies>
-            
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke</artifactId>

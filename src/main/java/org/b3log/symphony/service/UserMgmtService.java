@@ -15,9 +15,9 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
@@ -85,7 +85,7 @@ public final class UserMgmtService {
 
             transaction.commit();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Updates user online status failed", e);
+            LOGGER.log(Level.ERROR, "Updates user online status failed", e);
 
             if (null != transaction && transaction.isActive()) {
                 transaction.rollback();
@@ -132,7 +132,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates user profiles failed", e);
+            LOGGER.log(Level.ERROR, "Updates user profiles failed", e);
             throw new ServiceException(langPropsService.get("updateFailLabel"));
         }
     }
@@ -176,7 +176,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates user sync b3log settings failed", e);
+            LOGGER.log(Level.ERROR, "Updates user sync b3log settings failed", e);
             throw new ServiceException(e);
         }
     }
@@ -214,7 +214,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates user sync b3log settings failed", e);
+            LOGGER.log(Level.ERROR, "Updates user sync b3log settings failed", e);
             throw new ServiceException(e);
         }
     }
@@ -298,7 +298,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds a user failed", e);
+            LOGGER.log(Level.ERROR, "Adds a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -321,7 +321,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes a user[id=" + userId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Removes a user[id=" + userId + "] failed", e);
             throw new ServiceException(e);
         }
     }

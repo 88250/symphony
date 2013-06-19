@@ -20,15 +20,11 @@
     Description: Web deployment descriptor on GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/appconfig.html
                  for more details.
-    Version: 1.0.0.0, Jul 30, 2012
+    Version: 1.0.0.1, Jun 19, 2013
     Author: Liang Ding
 -->
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
 
-    <system-properties>
-        <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties" />
-    </system-properties>
-    
     <static-files>
         <!-- Uses the STANDARD Ant Path Pattern to configure these paths!  -->
          
