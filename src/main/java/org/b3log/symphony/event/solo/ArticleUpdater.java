@@ -20,6 +20,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -47,10 +49,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleUpdater.class.getName());
-    /**
-     * User query service.
-     */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * URL fetch service.
      */
@@ -60,7 +59,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(), data, ArticleUpdater.class.getName()});
+                new Object[]{event.getType(), data, ArticleUpdater.class.getName()});
         try {
             if (data.optBoolean(Common.FROM_CLIENT)) {
                 return;
@@ -71,6 +70,10 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
             if (!originalArticle.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
                 return;
             }
+
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+
 
             final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userQueryService.getUser(authorId);
@@ -85,10 +88,9 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
             httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject(originalArticle, new String[]{
-                        Article.ARTICLE_CONTENT,
-                        Article.ARTICLE_TAGS,
-                        Article.ARTICLE_TITLE,
-                    });
+                Article.ARTICLE_CONTENT,
+                Article.ARTICLE_TAGS,
+                Article.ARTICLE_TITLE});
 
             article.put(Keys.OBJECT_ID, originalArticle.optString(Article.ARTICLE_CLIENT_ARTICLE_ID));
             article.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));

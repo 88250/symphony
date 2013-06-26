@@ -16,6 +16,7 @@
 package org.b3log.symphony.repository;
 
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Option;
 
 /**
@@ -25,28 +26,13 @@ import org.b3log.symphony.model.Option;
  * @version 1.0.1.0, Oct 16, 2012
  * @since 0.2.0
  */
+@Repository
 public final class OptionRepository extends AbstractRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final OptionRepository SINGLETON = new OptionRepository(Option.OPTION);
-    
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private OptionRepository(final String name) {
-        super(name);
-    }
-
-    /**
-     * Gets the {@link OptionRepository} singleton.
-     *
-     * @return the singleton
-     */
-    public static OptionRepository getInstance() {
-        return SINGLETON;
+    public OptionRepository() {
+        super(Option.OPTION);
     }
 }

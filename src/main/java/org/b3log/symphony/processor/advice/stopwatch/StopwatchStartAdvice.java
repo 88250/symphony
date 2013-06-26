@@ -16,6 +16,8 @@
 package org.b3log.symphony.processor.advice.stopwatch;
 
 import java.util.Map;
+import javax.inject.Named;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -28,6 +30,8 @@ import org.b3log.latke.util.Stopwatchs;
  * @version 1.0.0.0, Oct 17, 2012
  * @since 0.2.0
  */
+@Named
+@Service
 public final class StopwatchStartAdvice extends BeforeRequestProcessAdvice {
 
     @Override

@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -22,8 +23,8 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.repository.ClientRepository;
 import org.json.JSONArray;
@@ -36,24 +37,19 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Oct 18, 2012
  * @since 0.2.0
  */
+@Service
 public final class ClientQueryService {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ClientQueryService.class.getName());
-    /**
-     * Singleton.
-     */
-    private static final ClientQueryService SINGLETON = new ClientQueryService();
+
     /**
      * Client repository.
      */
-    private ClientRepository clientRepository = ClientRepository.getInstance();
-    /**
-     * Language service.
-     */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private ClientRepository clientRepository;
 
     /**
      * Adds a client by the specified administrator email.
@@ -77,20 +73,5 @@ public final class ClientQueryService {
             LOGGER.log(Level.ERROR, "Gets client failed", e);
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Gets the {@link ClientQueryService} singleton.
-     *
-     * @return the singleton
-     */
-    public static ClientQueryService getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ClientQueryService() {
     }
 }

@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -36,6 +37,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
@@ -58,6 +60,7 @@ import org.json.JSONObject;
  * @version 1.0.0.8, Feb 8, 2013
  * @since 0.2.0
  */
+@Service
 public final class ArticleQueryService {
 
     /**
@@ -66,39 +69,40 @@ public final class ArticleQueryService {
     private static final Logger LOGGER = Logger.getLogger(ArticleQueryService.class.getName());
 
     /**
-     * Singleton.
-     */
-    private static final ArticleQueryService SINGLETON = new ArticleQueryService();
-
-    /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepository.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepository.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepository.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepository.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Comment query service.
      */
-    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Count to fetch article tags for relevant articles.
@@ -108,7 +112,8 @@ public final class ArticleQueryService {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Gets the relevant articles of the specified article with the specified fetch size.
@@ -516,21 +521,6 @@ public final class ArticleQueryService {
 
         final JSONObject author = userRepository.getByEmail(authorEmail);
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
-    }
-
-    /**
-     * Gets the {@link ArticleQueryService} singleton.
-     *
-     * @return the singleton
-     */
-    public static ArticleQueryService getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ArticleQueryService() {
     }
 
     /**

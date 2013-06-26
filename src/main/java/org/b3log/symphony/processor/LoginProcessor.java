@@ -17,15 +17,14 @@ package org.b3log.symphony.processor;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -36,15 +35,12 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
-import org.b3log.latke.user.GeneralUser;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
-import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -75,18 +71,30 @@ public final class LoginProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
+
     /**
      * User management service.
      */
-    private UserMgmtService userMgmtService = UserMgmtService.getInstance();
+    @Inject
+    private UserMgmtService userMgmtService;
+
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
+
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
+    
+    /**
+     * Filler.
+     */
+    @Inject
+    private Filler filler;
 
     /**
      * Shows registration page.
@@ -106,8 +114,8 @@ public final class LoginProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
     }
 
     /**
@@ -196,7 +204,7 @@ public final class LoginProcessor {
             }
 
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
-                UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
                 ret.put(Keys.MSG, langPropsService.get("userBlockLabel"));
 
                 return;
@@ -237,92 +245,5 @@ public final class LoginProcessor {
         }
 
         context.getResponse().sendRedirect(destinationURL);
-    }
-
-    /**
-     * Gets the current user.
-     *
-     * @param request the specified request
-     * @return the current user, {@code null} if not found
-     */
-    public static JSONObject getCurrentUser(final HttpServletRequest request) {
-        final GeneralUser currentUser = UserServiceFactory.getUserService().getCurrentUser(request);
-        if (null == currentUser) {
-            return null;
-        }
-
-        final String email = currentUser.getEmail();
-
-        try {
-            return UserRepository.getInstance().getByEmail(email);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets current user by request failed, returns null", e);
-
-            return null;
-        }
-    }
-
-    /**
-     * Tries to login with cookie.
-     *
-     * @param request the specified request
-     * @param response the specified response
-     * @return returns {@code true} if logged in, returns {@code false} otherwise
-     */
-    public static boolean tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
-        final Cookie[] cookies = request.getCookies();
-        if (null == cookies || 0 == cookies.length) {
-            return false;
-        }
-
-        try {
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
-
-                if (!"b3log-latke".equals(cookie.getName())) {
-                    continue;
-                }
-
-                final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
-
-                final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
-                if (Strings.isEmptyOrNull(userEmail)) {
-                    break;
-                }
-
-                final JSONObject user = UserQueryService.getInstance().getUserByEmail(userEmail.toLowerCase().trim());
-                if (null == user) {
-                    break;
-                }
-
-                if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
-                    Sessions.logout(request, response);
-
-                    UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
-
-                    return false;
-                }
-
-                final String userPassword = user.optString(User.USER_PASSWORD);
-                final String password = cookieJSONObject.optString(User.USER_PASSWORD);
-                if (userPassword.equals(password)) {
-                    Sessions.login(request, response, user);
-                    UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
-                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userEmail);
-
-                    return true;
-                }
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
-
-            final Cookie cookie = new Cookie("b3log-latke", null);
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
-
-            response.addCookie(cookie);
-        }
-
-        return false;
     }
 }

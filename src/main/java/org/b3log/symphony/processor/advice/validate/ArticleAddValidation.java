@@ -18,6 +18,9 @@ package org.b3log.symphony.processor.advice.validate;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeSet;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.service.LangPropsService;
@@ -36,12 +39,15 @@ import org.json.JSONObject;
  * @version 1.0.0.4, Apr 18, 2013
  * @since 0.2.0
  */
+@Named
+@Singleton
 public final class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.
      */
-    private static LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private static LangPropsService langPropsService;
     /**
      * Max article title length.
      */

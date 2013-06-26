@@ -16,6 +16,7 @@
 package org.b3log.symphony.api;
 
 import java.util.List;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -44,7 +45,9 @@ public final class NewsProcessor {
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
+
     /**
      * News fetch size.
      */
@@ -63,7 +66,7 @@ public final class NewsProcessor {
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer().setJSONP(true);
         context.setRenderer(renderer);
-        
+
         renderer.setCallback(request.getParameter("callback"));
 
         final JSONObject ret = new JSONObject();

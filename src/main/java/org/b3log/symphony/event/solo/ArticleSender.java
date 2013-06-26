@@ -20,6 +20,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -47,10 +49,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleSender.class.getName());
-    /**
-     * User query service.
-     */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * URL fetch service.
      */
@@ -60,7 +59,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(), data, ArticleSender.class.getName()});
+                new Object[]{event.getType(), data, ArticleSender.class.getName()});
         try {
             if (data.optBoolean(Common.FROM_CLIENT)) {
                 return;
@@ -71,7 +70,10 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             if (!originalArticle.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
                 return;
             }
-
+            
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+            
             final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userQueryService.getUser(authorId);
             final String clientURL = author.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL);
@@ -85,11 +87,11 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             httpRequest.setRequestMethod(HTTPRequestMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject(originalArticle, new String[]{
-                        Article.ARTICLE_CONTENT,
-                        Article.ARTICLE_TAGS,
-                        Article.ARTICLE_TITLE,
-                        Keys.OBJECT_ID
-                    });
+                Article.ARTICLE_CONTENT,
+                Article.ARTICLE_TAGS,
+                Article.ARTICLE_TITLE,
+                Keys.OBJECT_ID
+            });
 
             article.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
             article.put(Article.ARTICLE_EDITOR_TYPE, "CodeMirror-Markdown");

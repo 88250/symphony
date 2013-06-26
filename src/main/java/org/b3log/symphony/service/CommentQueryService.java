@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -31,6 +32,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
@@ -52,6 +54,7 @@ import org.jsoup.safety.Whitelist;
  * @version 1.0.0.14, Jan 7, 2013
  * @since 0.2.0
  */
+@Service
 public final class CommentQueryService {
 
     /**
@@ -60,34 +63,34 @@ public final class CommentQueryService {
     private static final Logger LOGGER = Logger.getLogger(CommentQueryService.class.getName());
 
     /**
-     * Singleton.
-     */
-    private static final CommentQueryService SINGLETON = new CommentQueryService();
-
-    /**
      * Comment repository.
      */
-    private CommentRepository commentRepository = CommentRepository.getInstance();
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepository.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepository.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Gets the latest comments with the specified fetch size.
@@ -167,15 +170,15 @@ public final class CommentQueryService {
 
                 final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
                 final JSONObject article = articleRepository.get(articleId);
-                
-                
+
+
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE, Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
                         ? langPropsService.get("articleTitleBlockLabel") : article.optString(Article.ARTICLE_TITLE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
 
                 final JSONObject commenter = userRepository.get(userId);
                 comment.put(Comment.COMMENT_T_COMMENTER, commenter);
-                
+
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                 final JSONObject articleAuthor = userRepository.get(articleAuthorId);
                 final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
@@ -395,20 +398,5 @@ public final class CommentQueryService {
         }
 
         comment.put(Comment.COMMENT_CONTENT, commentContent);
-    }
-
-    /**
-     * Gets the {@link CommentQueryService} singleton.
-     *
-     * @return the singleton
-     */
-    public static CommentQueryService getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private CommentQueryService() {
     }
 }

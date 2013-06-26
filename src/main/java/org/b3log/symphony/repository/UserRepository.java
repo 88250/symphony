@@ -23,6 +23,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.annotation.Repository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -33,29 +34,14 @@ import org.json.JSONObject;
  * @version 1.0.0.3, Aug 10, 2012
  * @since 0.2.0
  */
+@Repository
 public final class UserRepository extends AbstractRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final UserRepository SINGLETON = new UserRepository(User.USER);
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private UserRepository(final String name) {
-        super(name);
-    }
-
-    /**
-     * Gets the {@link UserRepository} singleton.
-     *
-     * @return the singleton
-     */
-    public static UserRepository getInstance() {
-        return SINGLETON;
+    public UserRepository() {
+        super(User.USER);
     }
 
     /**

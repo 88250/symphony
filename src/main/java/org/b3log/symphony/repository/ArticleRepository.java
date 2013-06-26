@@ -16,6 +16,7 @@
 package org.b3log.symphony.repository;
 
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Article;
 
 /**
@@ -25,28 +26,13 @@ import org.b3log.symphony.model.Article;
  * @version 1.0.0.0, Sep 28, 2012
  * @since 0.2.0
  */
+@Repository
 public final class ArticleRepository extends AbstractRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final ArticleRepository SINGLETON = new ArticleRepository(Article.ARTICLE);
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private ArticleRepository(final String name) {
-        super(name);
-    }
-
-    /**
-     * Gets the {@link ArticleRepository} singleton.
-     *
-     * @return the singleton
-     */
-    public static ArticleRepository getInstance() {
-        return SINGLETON;
+    public ArticleRepository() {
+        super(Article.ARTICLE);
     }
 }

@@ -20,6 +20,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -49,10 +51,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentSender.class.getName());
-    /**
-     * User query service.
-     */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * URL fetch service.
      */
@@ -62,7 +61,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(), data, CommentSender.class.getName()});
+                new Object[]{event.getType(), data, CommentSender.class.getName()});
         try {
             if (data.optBoolean(Common.FROM_CLIENT)) {
                 return;
@@ -73,6 +72,9 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             if (!originalArticle.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
                 return;
             }
+
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
 
             final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userQueryService.getUser(authorId);
@@ -91,10 +93,10 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject comment = new JSONObject(originalComment, new String[]{
-                        Comment.COMMENT_AUTHOR_EMAIL,
-                        Comment.COMMENT_CONTENT,
-                        Keys.OBJECT_ID
-                    });
+                Comment.COMMENT_AUTHOR_EMAIL,
+                Comment.COMMENT_CONTENT,
+                Keys.OBJECT_ID
+            });
 
             comment.put(Comment.COMMENT_T_AUTHOR_NAME, commenter.optString(User.USER_NAME));
             comment.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));

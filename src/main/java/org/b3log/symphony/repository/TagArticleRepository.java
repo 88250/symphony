@@ -23,6 +23,7 @@ import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
@@ -36,12 +37,15 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Sep 28, 2012
  * @since 0.2.0
  */
+@Repository
 public final class TagArticleRepository extends AbstractRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final TagArticleRepository SINGLETON = new TagArticleRepository(Tag.TAG + "_" + Article.ARTICLE);
+    public TagArticleRepository() {
+        super(Tag.TAG + "_" + Article.ARTICLE);
+    }
 
     /**
      * Gets tag-article relations by the specified article id.
@@ -101,23 +105,5 @@ public final class TagArticleRepository extends AbstractRepository {
                 setPageCount(1);
 
         return get(query);
-    }
-
-    /**
-     * Gets the {@link TagArticleRepository} singleton.
-     *
-     * @return the singleton
-     */
-    public static TagArticleRepository getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private TagArticleRepository(final String name) {
-        super(name);
     }
 }

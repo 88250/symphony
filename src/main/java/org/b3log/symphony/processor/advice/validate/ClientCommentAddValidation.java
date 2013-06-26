@@ -16,6 +16,9 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import java.util.Map;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.service.LangPropsService;
@@ -39,40 +42,53 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Oct 29, 2012 
  */
+@Named
+@Singleton
 public final class ClientCommentAddValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
+
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
+
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
+
     /**
      * Max client name length.
      */
     public static final int MAX_CLIENT_NAME_LENGTH = 10;
+
     /**
      * Max client version length.
      */
     public static final int MAX_CLIENT_VER_LENGTH = 10;
+
     /**
      * Max client host length.
      */
     public static final int MAX_CLIENT_HOST_LENGTH = 50;
+
     /**
      * Max client runtime length.
      */
     public static final int MAX_CLIENT_RUNTIME_LENGTH = 10;
+
     /**
      * Max client comment id length.
      */
     public static final int MAX_CLIENT_COMMENT_ID_LENGTH = 32;
+
     /**
      * Max client comment article id length.
      */

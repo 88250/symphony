@@ -16,6 +16,7 @@
 package org.b3log.symphony.processor;
 
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.logging.Level;
@@ -27,8 +28,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.symphony.util.Filler;
 
 /**
@@ -45,14 +44,17 @@ public final class ErrorProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ErrorProcessor.class.getName());
+
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
+
     /**
-     * User service.
+     * Filler.
      */
-    private static UserService userService = UserServiceFactory.getUserService();
+    private Filler filler;
 
     /**
      * Shows the user template page.
@@ -76,7 +78,7 @@ public final class ErrorProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
     }
 }

@@ -18,6 +18,7 @@ package org.b3log.symphony.processor;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -85,32 +86,43 @@ public final class UserProcessor {
     /**
      * User management service.
      */
-    private UserMgmtService userMgmtService = UserMgmtService.getInstance();
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Article management service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Comment query service.
      */
-    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+
+    /**
+     * Filler.
+     */
+    @Inject
+    private Filler filler;
 
     /**
      * Shows user home page.
@@ -142,8 +154,8 @@ public final class UserProcessor {
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
 
         if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
             renderer.setTemplateName("/home/block.ftl");
@@ -240,8 +252,8 @@ public final class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
     }
 
     /**
@@ -260,14 +272,14 @@ public final class UserProcessor {
         renderer.setTemplateName("/home/settings.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        final JSONObject user = userQueryService.getCurrentUser(request);
 
         dataModel.put(User.USER, user);
 
         fillUserThumbnailURL(user);
 
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
     }
 
     /**
@@ -294,7 +306,7 @@ public final class UserProcessor {
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
 
-        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        final JSONObject user = userQueryService.getCurrentUser(request);
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
         user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
@@ -332,7 +344,7 @@ public final class UserProcessor {
         final String updateArticleURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL);
         final String addCommentURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
 
-        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        final JSONObject user = userQueryService.getCurrentUser(request);
         user.put(UserExt.USER_B3_KEY, b3Key);
         user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
         user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
@@ -372,7 +384,7 @@ public final class UserProcessor {
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
         final String newPassword = requestJSONObject.optString(User.USER_NEW_PASSWORD);
 
-        final JSONObject user = LoginProcessor.getCurrentUser(request);
+        final JSONObject user = userQueryService.getCurrentUser(request);
 
         if (!password.equals(user.optString(User.USER_PASSWORD))) {
             ret.put(Keys.MSG, langPropsService.get("invalidOldPwdLabel"));

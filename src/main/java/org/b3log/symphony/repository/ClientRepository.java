@@ -16,6 +16,7 @@
 package org.b3log.symphony.repository;
 
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Client;
 
 /**
@@ -25,28 +26,13 @@ import org.b3log.symphony.model.Client;
  * @version 1.0.1.0, Oct 18, 2012
  * @since 0.2.0
  */
+@Repository
 public final class ClientRepository extends AbstractRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final ClientRepository SINGLETON = new ClientRepository(Client.CLIENT);
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private ClientRepository(final String name) {
-        super(name);
-    }
-
-    /**
-     * Gets the {@link ClientRepository} singleton.
-     *
-     * @return the singleton
-     */
-    public static ClientRepository getInstance() {
-        return SINGLETON;
+    public ClientRepository() {
+        super(Client.CLIENT);
     }
 }

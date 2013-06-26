@@ -16,6 +16,8 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import java.util.Map;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -30,6 +32,8 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Mar 13, 2013
  */
+@Named
+@Singleton
 public class ArticleUpdateValidation extends BeforeRequestProcessAdvice {
 
     @Override

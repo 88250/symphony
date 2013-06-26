@@ -67,10 +67,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Stopwatchs.start("Context Initialized");
         
-        // For CloudFoundry 
-        // System.out.println(System.getenv("VCAP_SERVICES"));
-        // LOGGER.info(System.getenv("VCAP_SERVICES"));
-
         super.contextInitialized(servletContextEvent);
 
         Skins.loadSkin();
@@ -110,7 +106,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             final JSONObject user = (JSONObject) userObj;
 
             try {
-                UserMgmtService.getInstance().updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
+                new UserMgmtService().updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
             } catch (final ServiceException e) {
                 LOGGER.log(Level.ERROR, "Changes user online from [true] to [false] failed", e);
             }

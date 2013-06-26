@@ -18,6 +18,8 @@ package org.b3log.symphony.processor.advice.validate;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
@@ -36,12 +38,14 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.3, Nov 26, 2012 
  */
+@Named
+@Singleton
 public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    private LangPropsService langPropsService;
     /**
      * Max user URL length.
      */

@@ -54,11 +54,10 @@ public abstract class AbstractTestCase {
         Latkes.initRuntimeEnv();
 
         // Repositories
-        userRepository = UserRepository.getInstance();
+        userRepository = new UserRepository();
 
         // Services
-        userMgmtService = UserMgmtService.getInstance();
-
+        userMgmtService = new UserMgmtService();
     }
 
     /**

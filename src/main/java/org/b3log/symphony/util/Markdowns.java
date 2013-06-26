@@ -17,6 +17,8 @@ package org.b3log.symphony.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
@@ -32,7 +34,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * <p>Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Feb 8, 2013
+ * @version 1.0.0.6, Jun 26, 2013
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -43,15 +45,11 @@ public final class Markdowns {
     private static final Logger LOGGER = Logger.getLogger(Markdowns.class.getName());
 
     /**
-     * Language service.
-     */
-    private static final LangPropsService LANG_SVC = LangPropsService.getInstance();
-
-    /**
      * Article content cleaner whitelist.
      */
     public static final Whitelist ARTICLE_CONTENT_WHITELIST = Whitelist.relaxed().
-            addTags("span").addAttributes(":all", "id", "target", "class", "style");
+            addTags("span").addAttributes(":all", "id", "target", "class", "style")
+            .addTags("hr");
 
     /**
      * Gets the safe HTML content of the specified content.
@@ -83,8 +81,11 @@ public final class Markdowns {
             markdown.transform(new StringReader(markdownText), writer);
         } catch (final ParseException e) {
             LOGGER.log(Level.ERROR, "Markdown error", e);
+            
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
 
-            return LANG_SVC.get("markdownErrorLabel");
+            return langPropsService.get("markdownErrorLabel");
         }
 
         return writer.toString();

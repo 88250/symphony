@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -26,6 +27,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
@@ -49,44 +51,54 @@ import org.json.JSONObject;
  * @version 1.0.0.13, Dec 31, 2012
  * @since 0.2.0
  */
+@Service
 public final class CommentMgmtService {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentMgmtService.class.getName());
-    /**
-     * Singleton.
-     */
-    private static final CommentMgmtService SINGLETON = new CommentMgmtService();
+
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository = CommentRepository.getInstance();
+    @Inject
+    private CommentRepository commentRepository;
+
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepository.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
+
     /**
      * Option repository.
      */
-    private OptionRepository optionRepository = OptionRepository.getInstance();
+    @Inject
+    private OptionRepository optionRepository;
+
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepository.getInstance();
+    @Inject
+    private TagRepository tagRepository;
+
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepository.getInstance();
+    @Inject
+    private UserRepository userRepository;
+
     /**
      * Event manager.
      */
     private EventManager eventManager = EventManager.getInstance();
+
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Adds a comment with the specified request json object.
@@ -201,20 +213,5 @@ public final class CommentMgmtService {
             LOGGER.log(Level.ERROR, "Adds a comment failed", e);
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Gets the {@link CommentMgmtService} singleton.
-     *
-     * @return the singleton
-     */
-    public static CommentMgmtService getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private CommentMgmtService() {
     }
 }

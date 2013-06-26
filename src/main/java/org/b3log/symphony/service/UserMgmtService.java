@@ -15,6 +15,10 @@
  */
 package org.b3log.symphony.service;
 
+import javax.inject.Inject;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -24,6 +28,9 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Sessions;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
@@ -37,28 +44,95 @@ import org.json.JSONObject;
  * @version 1.0.1.0, Mar 13, 2013
  * @since 0.2.0
  */
+@Service
 public final class UserMgmtService {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserMgmtService.class.getName());
-    /**
-     * Singleton.
-     */
-    private static final UserMgmtService SINGLETON = new UserMgmtService();
+
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepository.getInstance();
+    @Inject
+    private UserRepository userRepository;
+
     /**
      * Option repository.
      */
-    private OptionRepository optionRepository = OptionRepository.getInstance();
+    @Inject
+    private OptionRepository optionRepository;
+
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
+     * Tries to login with cookie.
+     *
+     * @param request the specified request
+     * @param response the specified response
+     * @return returns {@code true} if logged in, returns {@code false} otherwise
+     */
+    public boolean tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
+        final Cookie[] cookies = request.getCookies();
+        if (null == cookies || 0 == cookies.length) {
+            return false;
+        }
+
+        try {
+            for (int i = 0; i < cookies.length; i++) {
+                final Cookie cookie = cookies[i];
+
+                if (!"b3log-latke".equals(cookie.getName())) {
+                    continue;
+                }
+
+                final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
+
+                final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
+                if (Strings.isEmptyOrNull(userEmail)) {
+                    break;
+                }
+
+                final JSONObject user = userRepository.getByEmail(userEmail.toLowerCase().trim());
+                if (null == user) {
+                    break;
+                }
+
+                if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
+                    Sessions.logout(request, response);
+
+                    updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
+
+                    return false;
+                }
+
+                final String userPassword = user.optString(User.USER_PASSWORD);
+                final String password = cookieJSONObject.optString(User.USER_PASSWORD);
+                if (userPassword.equals(password)) {
+                    Sessions.login(request, response, user);
+                    updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
+                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userEmail);
+
+                    return true;
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
+
+            final Cookie cookie = new Cookie("b3log-latke", null);
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+
+            response.addCookie(cookie);
+        }
+
+        return false;
+    }
 
     /**
      * Updates a user's online status and saves the login time.
@@ -324,20 +398,5 @@ public final class UserMgmtService {
             LOGGER.log(Level.ERROR, "Removes a user[id=" + userId + "] failed", e);
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Gets the {@link UserMgmtService} singleton.
-     *
-     * @return the singleton
-     */
-    public static UserMgmtService getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private UserMgmtService() {
     }
 }

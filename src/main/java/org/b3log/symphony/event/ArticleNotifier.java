@@ -22,6 +22,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -51,10 +53,7 @@ public final class ArticleNotifier extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleNotifier.class.getName());
-    /**
-     * User query service.
-     */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * URL fetch service.
      */
@@ -65,6 +64,10 @@ public final class ArticleNotifier extends AbstractEventListener<JSONObject> {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, ArticleNotifier.class.getName()});
+
+
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
 
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);

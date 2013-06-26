@@ -18,6 +18,7 @@ package org.b3log.symphony.processor;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -92,42 +93,55 @@ public final class ArticleProcessor {
     /**
      * Article management service.
      */
-    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+    @Inject
+    private ArticleMgmtService articleMgmtService;
 
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * Comment query service.
      */
-    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Client management service.
      */
-    private ClientMgmtService clientMgmtService = ClientMgmtService.getInstance();
+    @Inject
+    private ClientMgmtService clientMgmtService;
 
     /**
      * Client query service.
      */
-    private ClientQueryService clientQueryService = ClientQueryService.getInstance();
+    @Inject
+    private ClientQueryService clientQueryService;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+
+    /**
+     * Filler.
+     */
+    @Inject
+    private Filler filler;
 
     /**
      * Shows add article.
@@ -146,8 +160,8 @@ public final class ArticleProcessor {
         renderer.setTemplateName("/home/add-article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
     }
 
     /**
@@ -216,11 +230,11 @@ public final class ArticleProcessor {
             articleMgmtService.incArticleViewCount(articleId);
         }
 
-        Filler.fillRelevantArticles(dataModel, article);
-        Filler.fillRandomArticles(dataModel);
+        filler.fillRelevantArticles(dataModel, article);
+        filler.fillRandomArticles(dataModel);
 
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
     }
 
     /**
@@ -268,20 +282,20 @@ public final class ArticleProcessor {
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
 
-        final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
-        if (null == currentUser) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-
-        article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
-
-        final String authorEmail = currentUser.optString(User.USER_EMAIL);
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
-
-        article.put(Article.ARTICLE_T_IS_BROADCAST, false);
-
         try {
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            if (null == currentUser) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+
+            article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
+
+            final String authorEmail = currentUser.optString(User.USER_EMAIL);
+            article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
+
+            article.put(Article.ARTICLE_T_IS_BROADCAST, false);
+
             articleMgmtService.addArticle(article);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
@@ -333,8 +347,8 @@ public final class ArticleProcessor {
 
         dataModel.put(Article.ARTICLE, article);
 
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
     }
 
     /**
@@ -400,7 +414,7 @@ public final class ArticleProcessor {
         if (null == currentUser
                 || !currentUser.getId().equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            
+
             return;
         }
 
@@ -711,11 +725,11 @@ public final class ArticleProcessor {
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param context the specified http request context
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/markdown", method = HTTPRequestMethod.POST)
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws IOException {
+            throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject result = new JSONObject();
@@ -730,7 +744,7 @@ public final class ArticleProcessor {
             return;
         }
 
-        final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 

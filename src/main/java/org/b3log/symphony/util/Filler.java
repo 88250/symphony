@@ -17,23 +17,25 @@ package org.b3log.symphony.util;
 
 import java.util.Calendar;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Sessions;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
-import org.b3log.symphony.processor.LoginProcessor;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
+import org.b3log.symphony.service.UserMgmtService;
 import org.json.JSONObject;
 
 /**
@@ -43,32 +45,49 @@ import org.json.JSONObject;
  * @version 1.0.0.8, Nov 20, 2012
  * @since 0.2.0
  */
+@Service
 public final class Filler {
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * User service.
      */
-    private static UserService userService = UserServiceFactory.getUserService();
+    private UserService userService = UserServiceFactory.getUserService();
+
     /**
      * Article query service.
      */
-    private static ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
+
     /**
      * Comment query service.
      */
-    private static CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    @Inject
+    private CommentQueryService commentQueryService;
+
     /**
      * Tag query service.
      */
-    private static TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
+
     /**
      * Option query service.
      */
-    private static OptionQueryService optionQueryService = OptionQueryService.getInstance();
+    @Inject
+    private OptionQueryService optionQueryService;
+
     /**
-     * Language service.
+     * User management service.
      */
-    private static LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Fills relevant articles.
@@ -77,7 +96,7 @@ public final class Filler {
      * @param article the specified article
      * @throws Exception exception
      */
-    public static void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
+    public void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
                 articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
     }
@@ -88,7 +107,7 @@ public final class Filler {
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    public static void fillLatestCmts(final Map<String, Object> dataModel) throws Exception {
+    public void fillLatestCmts(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.SIDE_LATEST_CMTS, commentQueryService.getLatestComments(Symphonys.getInt("sizeLatestCmtsCnt")));
     }
 
@@ -98,7 +117,7 @@ public final class Filler {
      * @param dataModel the specified data model
      * @throws Exception exception 
      */
-    public static void fillRandomArticles(final Map<String, Object> dataModel) throws Exception {
+    public void fillRandomArticles(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(Symphonys.getInt("sideRandomArticlesCnt")));
     }
 
@@ -108,7 +127,7 @@ public final class Filler {
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    public static void fillSideTags(final Map<String, Object> dataModel) throws Exception {
+    public void fillSideTags(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.SIDE_TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
     }
 
@@ -120,7 +139,7 @@ public final class Filler {
      * @param dataModel the specified data model
      * @throws Exception exception 
      */
-    public static void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
+    public void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
             final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         Keys.fillServer(dataModel);
@@ -138,7 +157,7 @@ public final class Filler {
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    public static void fillFooter(final Map<String, Object> dataModel) throws Exception {
+    public void fillFooter(final Map<String, Object> dataModel) throws Exception {
         fillSysInfo(dataModel);
 
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
@@ -151,12 +170,12 @@ public final class Filler {
      * @param response the specified response
      * @param dataModel the specified data model
      */
-    private static void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
+    private void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
             final Map<String, Object> dataModel) {
         dataModel.put(Common.IS_LOGGED_IN, false);
 
         JSONObject currentUser = Sessions.currentUser(request);
-        if (null == currentUser && !LoginProcessor.tryLogInWithCookie(request, response)) {
+        if (null == currentUser && !userMgmtService.tryLogInWithCookie(request, response)) {
             dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
             return;
@@ -183,7 +202,7 @@ public final class Filler {
      * 
      * @param dataModel the specified data model
      */
-    public static void fillMinified(final Map<String, Object> dataModel) {
+    public void fillMinified(final Map<String, Object> dataModel) {
         switch (Latkes.getRuntimeMode()) {
             case DEVELOPMENT:
                 dataModel.put(Common.MINI_POSTFIX, "");
@@ -201,7 +220,7 @@ public final class Filler {
      * 
      * @param dataModel the specified data model
      */
-    private static void fillLangs(final Map<String, Object> dataModel) {
+    private void fillLangs(final Map<String, Object> dataModel) {
         dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
     }
 
@@ -211,7 +230,7 @@ public final class Filler {
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    private static void fillTrendTags(final Map<String, Object> dataModel) throws Exception {
+    private void fillTrendTags(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
     }
 
@@ -221,17 +240,11 @@ public final class Filler {
      * @param dataModel the specified data model
      * @throws Exception exception 
      */
-    private static void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
+    private void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
-        dataModel.put(Common.ONLINE_VISITOR_CNT, OptionQueryService.getInstance().getOnlineVisitorCount());
+        dataModel.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
 
         final JSONObject statistic = optionQueryService.getStatistic();
         dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Filler() {
     }
 }

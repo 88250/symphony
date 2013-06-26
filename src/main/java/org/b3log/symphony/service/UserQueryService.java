@@ -18,6 +18,8 @@ package org.b3log.symphony.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -27,6 +29,8 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Paginator;
@@ -43,24 +47,42 @@ import org.json.JSONObject;
  * @version 1.0.0.3, Oct 18, 2012
  * @since 0.2.0
  */
+@Service
 public final class UserQueryService {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserQueryService.class.getName());
-    /**
-     * Singleton.
-     */
-    private static final UserQueryService SINGLETON = new UserQueryService();
+
     /**
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepository.getInstance();
+    @Inject
+    private UserRepository userRepository;
+
+    /**
+     * Gets the current user.
+     *
+     * @param request the specified request
+     * @return the current user, {@code null} if not found
+     * @throws ServiceException service exception 
+     */
+    public JSONObject getCurrentUser(final HttpServletRequest request) throws ServiceException {
+        final GeneralUser currentUser = UserServiceFactory.getUserService().getCurrentUser(request);
+        if (null == currentUser) {
+            return null;
+        }
+
+        final String email = currentUser.getEmail();
+
+        return getUserByEmail(email);
+    }
 
     /**
      * Gets the administrator.
@@ -267,20 +289,5 @@ public final class UserQueryService {
      */
     public String getLoginURL(final String redirectURL) {
         return userService.createLoginURL(redirectURL);
-    }
-
-    /**
-     * Gets the {@link UserQueryService} singleton.
-     *
-     * @return the singleton
-     */
-    public static UserQueryService getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private UserQueryService() {
     }
 }

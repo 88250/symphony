@@ -22,6 +22,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Tag;
 import org.json.JSONObject;
 
@@ -32,13 +33,16 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Oct 2, 2012
  * @since 0.2.0
  */
+@Repository
 public final class UserTagRepository extends AbstractRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final UserTagRepository SINGLETON = new UserTagRepository(User.USER + "_" + Tag.TAG);
-    
+    public UserTagRepository() {
+        super(User.USER + "_" + Tag.TAG);
+    }
+
     /**
      * Gets user-tag relations by the specified user id.
      *
@@ -95,23 +99,5 @@ public final class UserTagRepository extends AbstractRepository {
                 setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
 
         return get(query);
-    }
-
-    /**
-     * Gets the {@link UserTagRepository} singleton.
-     *
-     * @return the singleton
-     */
-    public static UserTagRepository getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private UserTagRepository(final String name) {
-        super(name);
     }
 }

@@ -16,6 +16,8 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import java.util.Map;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
@@ -33,12 +35,14 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Oct 29, 2012 
  */
+@Named
+@Singleton
 public final class UpdatePasswordValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    private LangPropsService langPropsService;
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {

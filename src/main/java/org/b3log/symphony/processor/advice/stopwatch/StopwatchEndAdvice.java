@@ -15,8 +15,10 @@
  */
 package org.b3log.symphony.processor.advice.stopwatch;
 
+import javax.inject.Named;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.AfterRequestProcessAdvice;
 import org.b3log.latke.util.Stopwatchs;
@@ -29,6 +31,8 @@ import org.b3log.latke.util.Strings;
  * @version 1.0.0.0, Oct 17, 2012
  * @since 0.2.0
  */
+@Named
+@Service
 public final class StopwatchEndAdvice extends AfterRequestProcessAdvice {
 
     /**

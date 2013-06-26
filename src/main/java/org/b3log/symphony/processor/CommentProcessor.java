@@ -16,6 +16,7 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,22 +71,26 @@ public final class CommentProcessor {
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Comment management service.
      */
-    private CommentMgmtService commentMgmtService = CommentMgmtService.getInstance();
+    @Inject
+    private CommentMgmtService commentMgmtService;
 
     /**
      * Client management service.
      */
-    private ClientMgmtService clientMgmtService = ClientMgmtService.getInstance();
+    @Inject
+    private ClientMgmtService clientMgmtService;
 
     /**
      * Client query service.
      */
-    private ClientQueryService clientQueryService = ClientQueryService.getInstance();
+    @Inject
+    private ClientQueryService clientQueryService;
 
     /**
      * Adds a comment locally.
@@ -125,20 +130,20 @@ public final class CommentProcessor {
         comment.put(Comment.COMMENT_CONTENT, commentContent);
         comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
 
-        final JSONObject currentUser = LoginProcessor.getCurrentUser(request);
-        if (null == currentUser) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-
-        comment.put(Comment.COMMENT_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
-
-        final String authorEmail = currentUser.optString(User.USER_EMAIL);
-        comment.put(Comment.COMMENT_AUTHOR_EMAIL, authorEmail);
-
-        comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
-
         try {
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            if (null == currentUser) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+
+            comment.put(Comment.COMMENT_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
+
+            final String authorEmail = currentUser.optString(User.USER_EMAIL);
+            comment.put(Comment.COMMENT_AUTHOR_EMAIL, authorEmail);
+
+            comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
+
             commentMgmtService.addComment(comment);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {

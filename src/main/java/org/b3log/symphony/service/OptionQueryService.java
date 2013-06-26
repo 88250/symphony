@@ -18,6 +18,7 @@ package org.b3log.symphony.service;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -28,6 +29,7 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.repository.OptionRepository;
@@ -45,20 +47,20 @@ import org.json.JSONObject;
  * @version 1.0.0.4, Dec 21, 2012
  * @since 0.2.0
  */
+@Service
 public final class OptionQueryService {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(OptionQueryService.class.getName());
-    /**
-     * Singleton.
-     */
-    private static final OptionQueryService SINGLETON = new OptionQueryService();
+
     /**
      * Option repository.
      */
-    private OptionRepository optionRepository = OptionRepository.getInstance();
+    @Inject
+    private OptionRepository optionRepository;
+
     /**
      * Online visitor cache.
      * 
@@ -67,6 +69,7 @@ public final class OptionQueryService {
      * </p>
      */
     private static final Map<String, Long> ONLINE_VISITORS = new HashMap<String, Long>();
+
     /**
      * Online visitor expiration in 5 minutes.
      */
@@ -163,20 +166,5 @@ public final class OptionQueryService {
             LOGGER.log(Level.ERROR, "Gets statistic failed", e);
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Gets the {@link OptionQueryService} singleton.
-     *
-     * @return the singleton
-     */
-    public static OptionQueryService getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private OptionQueryService() {
     }
 }

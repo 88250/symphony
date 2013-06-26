@@ -16,6 +16,8 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import java.util.Map;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.service.LangPropsService;
@@ -33,12 +35,14 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Oct 26, 2012 
  */
+@Named
+@Singleton
 public final class UpdateSyncB3Validation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    private LangPropsService langPropsService;
     /**
      * Max user B3 key length.
      */

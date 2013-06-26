@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Symphony web deployment descriptor.
-    Version: 1.0.0.3, Jun 19, 2013
+    Version: 1.0.0.4, Jun 25, 2013
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -63,14 +63,6 @@
     <servlet>
         <servlet-name>HTTPRequestDispatcher</servlet-name>
         <servlet-class>org.b3log.latke.servlet.HTTPRequestDispatcher</servlet-class>
-        
-        <!-- Latke Request Processors Scan -->
-        <!-- See https://github.com/b3log/b3log-latke/issues/17 for more details -->
-        <init-param>
-            <param-name>scanPath</param-name>
-            <param-value>org.b3log.symphony</param-value>
-        </init-param>
-        
         <load-on-startup>2</load-on-startup>
     </servlet>
     <servlet-mapping>

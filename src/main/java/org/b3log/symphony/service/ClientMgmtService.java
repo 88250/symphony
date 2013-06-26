@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -22,6 +23,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.repository.ClientRepository;
 import org.json.JSONObject;
 
@@ -32,24 +34,25 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Oct 18, 2012
  * @since 0.2.0
  */
+@Service
 public final class ClientMgmtService {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ClientMgmtService.class.getName());
-    /**
-     * Singleton.
-     */
-    private static final ClientMgmtService SINGLETON = new ClientMgmtService();
+
     /**
      * Client repository.
      */
-    private ClientRepository clientRepository = ClientRepository.getInstance();
+    @Inject
+    private ClientRepository clientRepository;
+
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Adds a client by the specified request json object.
@@ -129,20 +132,5 @@ public final class ClientMgmtService {
             LOGGER.log(Level.ERROR, "Updates client failed", e);
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Gets the {@link ClientMgmtService} singleton.
-     *
-     * @return the singleton
-     */
-    public static ClientMgmtService getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ClientMgmtService() {
     }
 }

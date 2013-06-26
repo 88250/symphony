@@ -17,6 +17,7 @@ package org.b3log.symphony.processor;
 
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.model.Pagination;
@@ -59,15 +60,26 @@ public final class IndexProcessor {
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
+
     /**
      * Comment query service.
      */
-    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    @Inject
+    private CommentQueryService commentQueryService;
+
     /**
      * Option query service.
      */
-    private OptionQueryService optionQueryService = OptionQueryService.getInstance();
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
+     * Filler.
+     */
+    @Inject
+    private Filler filler;
 
     /**
      * Shows index.
@@ -113,11 +125,11 @@ public final class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
-        Filler.fillRandomArticles(dataModel);
-        Filler.fillSideTags(dataModel);
-        Filler.fillLatestCmts(dataModel);
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
+        filler.fillRandomArticles(dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
     }
 
     /**
@@ -136,10 +148,10 @@ public final class IndexProcessor {
         renderer.setTemplateName("about.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        Filler.fillHeader(request, response, dataModel);
-        Filler.fillFooter(dataModel);
-        Filler.fillRandomArticles(dataModel);
-        Filler.fillSideTags(dataModel);
-        Filler.fillLatestCmts(dataModel);
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
+        filler.fillRandomArticles(dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
     }
 }

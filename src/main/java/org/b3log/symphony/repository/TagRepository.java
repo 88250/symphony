@@ -17,6 +17,7 @@ package org.b3log.symphony.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
@@ -24,6 +25,7 @@ import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Tag;
 import org.json.JSONArray;
@@ -36,16 +38,21 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Sep 28, 2012
  * @since 0.2.0
  */
+@Repository
 public final class TagRepository extends AbstractRepository {
 
     /**
-     * Singleton.
-     */
-    private static final TagRepository SINGLETON = new TagRepository(Tag.TAG);
-    /**
      * Tag-Article relation repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepository.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
+
+    /**
+     * Public constructor.
+     */
+    public TagRepository() {
+        super(Tag.TAG);
+    }
 
     /**
      * Gets a tag by the specified tag title.
@@ -103,23 +110,5 @@ public final class TagRepository extends AbstractRepository {
         }
 
         return ret;
-    }
-
-    /**
-     * Gets the {@link TagRepository} singleton.
-     *
-     * @return the singleton
-     */
-    public static TagRepository getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private TagRepository(final String name) {
-        super(name);
     }
 }

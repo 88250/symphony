@@ -16,6 +16,7 @@
 package org.b3log.symphony.repository;
 
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Comment;
 
 /**
@@ -25,28 +26,13 @@ import org.b3log.symphony.model.Comment;
  * @version 1.0.0.0, Oct 7, 2012
  * @since 0.2.0
  */
+@Repository
 public final class CommentRepository extends AbstractRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final CommentRepository SINGLETON = new CommentRepository(Comment.COMMENT);
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private CommentRepository(final String name) {
-        super(name);
-    }
-
-    /**
-     * Gets the {@link CommentRepository} singleton.
-     *
-     * @return the singleton
-     */
-    public static CommentRepository getInstance() {
-        return SINGLETON;
+    public CommentRepository() {
+        super(Comment.COMMENT);
     }
 }

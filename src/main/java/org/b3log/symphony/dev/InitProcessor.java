@@ -18,6 +18,7 @@ package org.b3log.symphony.dev;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -63,6 +64,30 @@ public class InitProcessor {
     private static final int ARTICLE_GENERATE_NUM = 49;
 
     /**
+     * Option repository.
+     */
+    @Inject
+    private OptionRepository optionRepository;
+
+    /**
+     * Article management service.
+     */
+    @Inject
+    private ArticleMgmtService articleMgmtService;
+
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
      * Generates tables.
      * 
      * @param context the specified context
@@ -83,7 +108,6 @@ public class InitProcessor {
             }
 
             // Init stat.
-            final OptionRepository optionRepository = OptionRepository.getInstance();
             final Transaction transaction = optionRepository.beginTransaction();
 
             JSONObject option = new JSONObject();
@@ -119,8 +143,7 @@ public class InitProcessor {
             transaction.commit();
 
             // Init admin
-            final UserMgmtService userMgmtService = UserMgmtService.getInstance();
-            JSONObject admin = new JSONObject();
+            final JSONObject admin = new JSONObject();
             admin.put(User.USER_EMAIL, UserExt.DEFAULT_ADMIN_EMAIL);
             admin.put(User.USER_NAME, UserExt.DEFAULT_ADMIN_NAME);
             admin.put(User.USER_PASSWORD, MD5.hash("test"));
@@ -143,8 +166,6 @@ public class InitProcessor {
             userMgmtService.addUser(defaultCommenter);
 
             // Hello World!
-            admin = UserQueryService.getInstance().getAdmin();
-            final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
             final JSONObject article = new JSONObject();
             article.put(Article.ARTICLE_TITLE, "B3log 社区上线 &hearts;");
             article.put(Article.ARTICLE_TAGS, "B3log, Java, Q&A, B3log Announcement");
@@ -174,10 +195,7 @@ public class InitProcessor {
     public void genArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         try {
-            final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
-            final UserQueryService userQueryService = UserQueryService.getInstance();
             final JSONObject admin = userQueryService.getAdmin();
-            final OptionRepository optionRepository = OptionRepository.getInstance();
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int start = articleCntOption.optInt(Option.OPTION_VALUE) + 1;
             final int end = start + ARTICLE_GENERATE_NUM;

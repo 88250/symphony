@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -33,6 +34,7 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Common;
@@ -50,28 +52,31 @@ import org.json.JSONObject;
  * @version 1.0.0.3, Oct 29, 2012
  * @since 0.2.0
  */
+@Service
 public final class TagQueryService {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagQueryService.class.getName());
-    /**
-     * Singleton.
-     */
-    private static final TagQueryService SINGLETON = new TagQueryService();
+
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepository.getInstance();
+    @Inject
+    private TagRepository tagRepository;
+
     /**
      * User-Tag repository.
      */
-    private UserTagRepository userTagRepository = UserTagRepository.getInstance();
+    @Inject
+    private UserTagRepository userTagRepository;
+
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepository.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Gets a tag by the specified tag title.
@@ -180,7 +185,7 @@ public final class TagQueryService {
 
             final String creatorEmail = creator.optString(User.USER_EMAIL);
             final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(creatorEmail) + "?s=140&d="
-                                        + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
             final JSONObject ret = new JSONObject();
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
@@ -239,7 +244,7 @@ public final class TagQueryService {
 
                 final String hashedEmail = MD5.hash(user.optString(User.USER_EMAIL));
                 final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                        + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
 
@@ -251,20 +256,5 @@ public final class TagQueryService {
             LOGGER.log(Level.ERROR, "Gets tag participants failed", e);
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Gets the {@link TagQueryService} singleton.
-     *
-     * @return the singleton
-     */
-    public static TagQueryService getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private TagQueryService() {
     }
 }

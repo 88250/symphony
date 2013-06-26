@@ -18,6 +18,7 @@ package org.b3log.symphony.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -29,6 +30,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
@@ -53,6 +55,7 @@ import org.json.JSONObject;
  * @version 1.0.1.5, Dec 26, 2012
  * @since 0.2.0
  */
+@Service
 public final class ArticleMgmtService {
 
     /**
@@ -61,39 +64,40 @@ public final class ArticleMgmtService {
     private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class.getName());
 
     /**
-     * Singleton.
-     */
-    private static final ArticleMgmtService SINGLETON = new ArticleMgmtService();
-
-    /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepository.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepository.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepository.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepository.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * User-Tag repository.
      */
-    private UserTagRepository userTagRepository = UserTagRepository.getInstance();
+    @Inject
+    private UserTagRepository userTagRepository;
 
     /**
      * Option repository.
      */
-    private OptionRepository optionRepository = OptionRepository.getInstance();
+    @Inject
+    private OptionRepository optionRepository;
 
     /**
      * Event manager.
@@ -103,7 +107,8 @@ public final class ArticleMgmtService {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Increments the view count of the specified article by the given article id.
@@ -211,7 +216,7 @@ public final class ArticleMgmtService {
             }
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.ARTICLE_STATUS, 0);
-            
+
 
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
 
@@ -524,20 +529,5 @@ public final class ArticleMgmtService {
             userTagRelation.put(Common.TYPE, userTagType);
             userTagRepository.add(userTagRelation);
         }
-    }
-
-    /**
-     * Gets the {@link UserMgmtService} singleton.
-     *
-     * @return the singleton
-     */
-    public static ArticleMgmtService getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ArticleMgmtService() {
     }
 }
