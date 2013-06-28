@@ -22,6 +22,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -45,7 +47,7 @@ import org.json.JSONObject;
  * B3log Symphony servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Mar 7, 2013
+ * @version 1.0.0.9, Jun 28, 2013
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -53,7 +55,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     /**
      * B3log Symphony version.
      */
-    public static final String VERSION = "0.2.0";
+    public static final String VERSION = "0.2.1";
     /**
      * Logger.
      */
@@ -104,9 +106,12 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final Object userObj = session.getAttribute(User.USER);
         if (null != userObj) { // User logout
             final JSONObject user = (JSONObject) userObj;
-
+            
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
+            
             try {
-                new UserMgmtService().updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
             } catch (final ServiceException e) {
                 LOGGER.log(Level.ERROR, "Changes user online from [true] to [false] failed", e);
             }
