@@ -385,6 +385,7 @@ public final class CommentQueryService {
      * 
      * @param comment the specified comment
      */
+    // XXX: [Performance Issue] genCommentContentUserName
     private void genCommentContentUserName(final JSONObject comment) {
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
         try {
