@@ -20,7 +20,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -142,7 +141,6 @@ public final class Filler {
     public void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
             final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
-        Keys.fillServer(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
 
         fillTrendTags(dataModel);
