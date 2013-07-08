@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * @since 0.2.0
  */
 @RequestProcessor
-public final class IndexProcessor {
+public class IndexProcessor {
 
     /**
      * Article query service.

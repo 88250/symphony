@@ -55,7 +55,7 @@ import org.jsoup.safety.Whitelist;
  * @since 0.2.0
  */
 @Service
-public final class CommentQueryService {
+public class CommentQueryService {
 
     /**
      * Logger.

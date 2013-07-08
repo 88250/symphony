@@ -38,7 +38,7 @@ import org.b3log.symphony.util.Filler;
  * @since 0.2.0
  */
 @RequestProcessor
-public final class ErrorProcessor {
+public class ErrorProcessor {
 
     /**
      * Logger.

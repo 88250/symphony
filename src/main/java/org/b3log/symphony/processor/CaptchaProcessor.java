@@ -56,7 +56,7 @@ import org.b3log.symphony.SymphonyServletListener;
  * @since 0.2.2
  */
 @RequestProcessor
-public final class CaptchaProcessor {
+public class CaptchaProcessor {
 
     /**
      * Logger.

@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * @since 0.2.1
  */
 @RequestProcessor
-public final class BroadcastProcessor {
+public class BroadcastProcessor {
 
     /**
      * Article query service.
