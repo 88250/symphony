@@ -46,7 +46,7 @@ import org.json.JSONObject;
 /**
  * Initializes database.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.11, Apr 24, 2013
  * @since 0.2.0
  */
@@ -148,7 +148,8 @@ public class InitProcessor {
             admin.put(User.USER_NAME, UserExt.DEFAULT_ADMIN_NAME);
             admin.put(User.USER_PASSWORD, MD5.hash("test"));
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-            userMgmtService.addUser(admin);
+            final String adminId = userMgmtService.addUser(admin);
+            admin.put(Keys.OBJECT_ID, adminId);
 
             // Init V 她说她要当 2 号会员，~_~
             final JSONObject v = new JSONObject();

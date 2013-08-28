@@ -30,7 +30,7 @@ import org.json.JSONObject;
 /**
  * Client management service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Oct 18, 2012
  * @since 0.2.0
  */

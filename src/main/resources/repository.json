@@ -1,9 +1,64 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.0.1.8, Mar 13, 2013",
+    "version": "1.0.1.9, Aug 28, 2013",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
+        {
+            "name": "notification",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "dataId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "dataType",
+                    "type": "int",
+                    "description": "0: article, 1: comment"
+                },
+                {
+                    "name": "hasRead",
+                    "type": "boolean",
+                    "desription": "has read or not"
+                }
+            ]
+        },
+        {
+            "name": "follow",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "followerId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "followingId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "followingType",
+                    "type": "int",
+                    "description": "0: user, 1: tag"
+                }
+            ]
+        },
         {
             "name": "comment",
             "keys": [

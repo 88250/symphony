@@ -17,22 +17,22 @@ package org.b3log.symphony.repository;
 
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Notification;
 
 /**
- * Article repository.
+ * Notification repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 28, 2012
- * @since 0.2.0
+ * @version 1.0.0.0, Aug 28, 2013
+ * @since 0.2.5
  */
 @Repository
-public final class ArticleRepository extends AbstractRepository {
+public final class NotificationRepository extends AbstractRepository {
 
     /**
      * Public constructor.
      */
-    public ArticleRepository() {
-        super(Article.ARTICLE);
+    public NotificationRepository() {
+        super(Notification.NOTIFICATION);
     }
 }

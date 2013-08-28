@@ -16,37 +16,47 @@
 package org.b3log.symphony.model;
 
 /**
- * This class defines all skin model relevant keys.
+ * This class defines all notification model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 22, 2010
+ * @version 1.0.0.0, Aug 28, 2013
+ * @since 0.2.5
  */
-public final class Skin {
+public final class Notification {
 
     /**
-     * Skin.
+     * Notification.
      */
-    public static final String SKIN = "skin";
+    public static final String NOTIFICATION = "notification";
+
     /**
-     * Skins.
+     * Notifications.
      */
-    public static final String SKINS = "skins";
+    public static final String NOTIFICATIONS = "notifications";
+
     /**
-     * Key of skin name, current selected skin name.
+     * Key of user id.
      */
-    public static final String SKIN_NAME = "skinName";
+    public static final String NOTIFICATION_USER_ID = "userId";
+
     /**
-     * Key of skin names.
+     * Key of data id.
      */
-    public static final String SKIN_NAMES = "skinNames";
+    public static final String NOTIFICATION_ID = "dataId";
+
     /**
-     * Key of skin directory name.
+     * Key of data type.
      */
-    public static final String SKIN_DIR_NAME = "skinDirName";
+    public static final String NOTIFICATION_TYPE = "dataType";
+
+    /**
+     * Key of has read.
+     */
+    public static final String NOTIFICATION_HAS_READ = "hasRead";
 
     /**
      * Private constructor.
      */
-    private Skin() {
+    private Notification() {
     }
 }

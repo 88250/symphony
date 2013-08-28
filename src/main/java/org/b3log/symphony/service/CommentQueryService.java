@@ -50,7 +50,7 @@ import org.jsoup.safety.Whitelist;
 /**
  * Comment management service.
  * 
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.14, Jan 7, 2013
  * @since 0.2.0
  */

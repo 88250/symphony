@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
     <action>
+        <actionName>CUSTOM-jetty-debug</actionName>
+        <displayName>jetty-debug</displayName>
+        <goals>
+            <goal>jetty:run</goal>
+        </goals>
+        <properties>
+            <jpda.listen>maven</jpda.listen>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-jetty-run</actionName>
+        <displayName>jetty-run</displayName>
+        <goals>
+            <goal>jetty:run</goal>
+        </goals>
+    </action>
+    <action>
         <actionName>CUSTOM-license-check</actionName>
         <displayName>license-check</displayName>
         <goals>

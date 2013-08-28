@@ -16,37 +16,53 @@
 package org.b3log.symphony.model;
 
 /**
- * This class defines all skin model relevant keys.
+ * This class defines all follow model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 22, 2010
+ * @version 1.0.0.0, Aug 28, 2013
+ * @since 0.2.5
  */
-public final class Skin {
+public final class Follow {
 
     /**
-     * Skin.
+     * Follow.
      */
-    public static final String SKIN = "skin";
+    public static final String FOLLOW = "follow";
+
     /**
-     * Skins.
+     * Follows.
      */
-    public static final String SKINS = "skins";
+    public static final String FOLLOWS = "follows";
+
     /**
-     * Key of skin name, current selected skin name.
+     * Key of follower id.
      */
-    public static final String SKIN_NAME = "skinName";
+    public static final String FOLLOWER_ID = "followerId";
+
     /**
-     * Key of skin names.
+     * Key of following id.
      */
-    public static final String SKIN_NAMES = "skinNames";
+    public static final String FOLLOWING_ID = "followingId";
+
     /**
-     * Key of skin directory name.
+     * Key of following type.
      */
-    public static final String SKIN_DIR_NAME = "skinDirName";
+    public static final String FOLLOWING_TYPE = "followingType";
+
+    // Type constants
+    /**
+     * Following type - user.
+     */
+    public static final int FOLLOWING_TYPE_C_USER = 0;
+    
+    /**
+     * Following type - tag.
+     */
+    public static final int FOLLOWING_TYPE_C_TAG = 1;
 
     /**
      * Private constructor.
      */
-    private Skin() {
+    private Follow() {
     }
 }

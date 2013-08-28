@@ -51,7 +51,7 @@ import org.json.JSONObject;
 /**
  * Article management service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.5, Dec 26, 2012
  * @since 0.2.0
  */
