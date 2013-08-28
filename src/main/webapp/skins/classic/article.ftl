@@ -173,6 +173,7 @@
             Label.articlePermalink = "${article.articlePermalink}"
         </script>
         <script type="text/javascript" src="/js/lib/google-code-prettify/prettify.js"></script>
+        <script type="text/javascript" src="/js/lib/jquery/jquery.linkify-1.0-min.js"></script>
         <script type="text/javascript" src="/js/article.js"></script>
     </body>
 </html>

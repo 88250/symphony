@@ -165,3 +165,5 @@ pip-log.txt
 /target/
 /.classpath
 /.project
+.idea
+symphony.iml

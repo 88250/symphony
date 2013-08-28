@@ -177,3 +177,6 @@ var Article = {
 };
 
 Article.init();
+$('.content-reset').linkify({
+    target: "_blank"
+});
