@@ -49,7 +49,7 @@ public final class Follow {
      */
     public static final String FOLLOWING_TYPE = "followingType";
 
-    // Type constants
+    // Following type constants
     /**
      * Following type - user.
      */

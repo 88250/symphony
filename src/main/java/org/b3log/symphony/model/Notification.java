@@ -54,6 +54,22 @@ public final class Notification {
      */
     public static final String NOTIFICATION_HAS_READ = "hasRead";
 
+    // Data type constants
+    /**
+     * Data type - article.
+     */
+    public static final int DATA_TYPE_C_ARTICLE = 0;
+
+    /**
+     * Data type - comment.
+     */
+    public static final int DATA_TYPE_C_COMMENT = 1;
+
+    /**
+     * Data type - @.
+     */
+    public static final int DATA_TYPE_C_AT = 2;
+
     /**
      * Private constructor.
      */
