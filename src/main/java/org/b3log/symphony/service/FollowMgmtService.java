@@ -59,9 +59,10 @@ public class FollowMgmtService {
         try {
             follow(followerId, followingTagId, Follow.FOLLOWING_TYPE_C_TAG);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "User[id=" + followerId + "] follows a tag[id=" + followingTagId + "] failed", e);
+            final String msg = "User[id=" + followerId + "] follows a tag[id=" + followingTagId + "] failed";
+            LOGGER.log(Level.ERROR, msg, e);
 
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(msg);
         }
     }
 
@@ -77,9 +78,10 @@ public class FollowMgmtService {
         try {
             follow(followerId, followingUserId, Follow.FOLLOWING_TYPE_C_USER);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "User[id=" + followerId + "] follows an user[id=" + followingUserId + "] failed", e);
+            final String msg = "User[id=" + followerId + "] follows an user[id=" + followingUserId + "] failed";
+            LOGGER.log(Level.ERROR, msg, e);
 
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(msg);
         }
     }
 

@@ -42,12 +42,12 @@ public final class Notification {
     /**
      * Key of data id.
      */
-    public static final String NOTIFICATION_ID = "dataId";
+    public static final String NOTIFICATION_DATA_ID = "dataId";
 
     /**
      * Key of data type.
      */
-    public static final String NOTIFICATION_TYPE = "dataType";
+    public static final String NOTIFICATION_DATA_TYPE = "dataType";
 
     /**
      * Key of has read.
@@ -69,6 +69,11 @@ public final class Notification {
      * Data type - @.
      */
     public static final int DATA_TYPE_C_AT = 2;
+
+    /**
+     * Data type - commented.
+     */
+    public static final int DATA_TYPE_C_COMMENTED = 3;
 
     /**
      * Private constructor.

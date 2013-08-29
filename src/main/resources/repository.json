@@ -25,7 +25,7 @@
                 {
                     "name": "dataType",
                     "type": "int",
-                    "description": "0: article, 1: comment, 2: at"
+                    "description": "0: article, 1: comment, 2: at, 3: commented"
                 },
                 {
                     "name": "hasRead",
