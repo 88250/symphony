@@ -34,7 +34,7 @@ import org.b3log.symphony.util.Filler;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Nov 23, 2012
+ * @version 1.0.0.3, Aug 29, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -54,6 +54,7 @@ public class ErrorProcessor {
     /**
      * Filler.
      */
+    @Inject
     private Filler filler;
 
     /**
