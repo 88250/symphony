@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 29, 2013
+ * @version 1.0.0.2, Sep 1, 2013
  * @since 0.2.5
  */
 @Service
@@ -170,7 +170,7 @@ public class NotificationMgmtService {
         notification.put(Notification.NOTIFICATION_HAS_READ, false);
         notification.put(Notification.NOTIFICATION_USER_ID, requestJSONObject.optString(Notification.NOTIFICATION_USER_ID));
         notification.put(Notification.NOTIFICATION_DATA_ID, requestJSONObject.optString(Notification.NOTIFICATION_DATA_ID));
-        notification.put(Notification.NOTIFICATION_DATA_TYPE, requestJSONObject.optBoolean(Notification.NOTIFICATION_DATA_TYPE));
+        notification.put(Notification.NOTIFICATION_DATA_TYPE, requestJSONObject.optInt(Notification.NOTIFICATION_DATA_TYPE));
 
         notificationRepository.add(notification);
     }

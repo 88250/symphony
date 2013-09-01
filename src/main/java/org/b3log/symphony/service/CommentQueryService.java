@@ -51,7 +51,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  * 
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.14, Jan 7, 2013
+ * @version 1.0.1.14, Sep 1, 2013
  * @since 0.2.0
  */
 @Service
@@ -91,6 +91,28 @@ public class CommentQueryService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Gets comment with the specified comment id.
+     * 
+     * @param commentId the specified comment id
+     * @return comment, returns {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getComment(final String commentId) throws ServiceException {
+
+        try {
+            final JSONObject ret = commentRepository.get(commentId);
+
+            organizeComment(ret);
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+
+            throw new ServiceException("Gets comment[id=" + commentId + "] failed");
+        }
+    }
 
     /**
      * Gets the latest comments with the specified fetch size.
@@ -288,7 +310,7 @@ public class CommentQueryService {
      *   <li>generates comment author name</li>
      *   <li>generates &#64;username home URL</li>
      *   <li>markdowns comment content</li>
-     *   <li>blockl comment if need</li>
+     *   <li>block comment if need</li>
      *   <li>generates emotion images</li>
      * </ul>
      * 
@@ -311,7 +333,7 @@ public class CommentQueryService {
      *   <li>generates comment author name</li>
      *   <li>generates &#64;username home URL</li>
      *   <li>markdowns comment content</li>
-     *   <li>blockl comment if need</li>
+     *   <li>block comment if need</li>
      *   <li>generates emotion images</li>
      * </ul>
      * 

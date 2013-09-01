@@ -15,13 +15,12 @@
  */
 package org.b3log.symphony.processor;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -30,8 +29,9 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
@@ -88,17 +88,24 @@ public class NotificationProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @param userName the specified user name
      * @throws Exception exception
      */
     @RequestProcessing(value = "/notifications/commented", method = HTTPRequestMethod.GET)
     public void showCommentedNotifications(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response,
-            final String userName) throws Exception {
+            final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/notifications/commented.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -107,26 +114,26 @@ public class NotificationProcessor {
 
         final int pageNum = Integer.valueOf(pageNumStr);
 
-        final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
-        final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
+        final int pageSize = Symphonys.getInt("commentedNotificationsCnt");
+        final int windowSize = Symphonys.getInt("commentedNotificationsWindowSize");
 
-        final List<JSONObject> commentedNotifications = new ArrayList<JSONObject>();
-        for (int i = 0; i < Integer.valueOf("15"); i++) {
-            final JSONObject commented = new JSONObject();
-            commented.put("content", "xxx 评论");
-            commented.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, "commentAuthorThumbnailURL");
-            commented.put(Comment.COMMENT_T_ARTICLE_TITLE, "xxx 文章");
-            commented.put(Comment.COMMENT_T_ARTICLE_PERMALINK, "xxx 文章链接");
-            commented.put(Comment.COMMENT_CREATE_TIME, new Date());
+        final List<JSONObject> commentedNotifications =
+                notificationQueryService.getCommentedNotifications(userId, false, pageNum, pageSize);
 
-            commentedNotifications.add(commented);
+        dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
+
+        // TODO: notifications count
+        final int pageCount = Integer.valueOf("10"); // (int) Math.ceil((double) commentCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
         }
 
-        dataModel.put("commenteds", commentedNotifications);
-
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
-        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, Integer.valueOf("2"));
-        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, Integer.valueOf("5"));
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         filler.fillHeader(request, response, dataModel);
         filler.fillFooter(dataModel);

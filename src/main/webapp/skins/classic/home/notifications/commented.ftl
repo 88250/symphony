@@ -14,9 +14,9 @@
             <div class="wrapper fn-clear">
                 <div class="content">
                     <ul>
-                        <#list commenteds as cmt>
+                        <#list commentedNotifications as notification>
                         <li>
-                            ${cmt}
+                            ${notification}
                         </li>
                         </#list>
                     </ul>

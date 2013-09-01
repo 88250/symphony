@@ -286,6 +286,7 @@ public class ArticleProcessor {
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
             if (null == currentUser) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                
                 return;
             }
 

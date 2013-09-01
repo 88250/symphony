@@ -15,15 +15,27 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.CompositeFilter;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.Filter;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.NotificationRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -48,29 +60,68 @@ public class NotificationQueryService {
     private NotificationRepository notificationRepository;
 
     /**
-     * Adds a 'comment' type notification with the specified request json object.
-     * 
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "userId"; "",
-     *     "dataId": ""
-     * }
-     * </pre>
-     * @throws ServiceException 
+     * Article repository.
      */
-    @Transactional
-    public void getCommentedNotifications(final JSONObject requestJSONObject) throws ServiceException {
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
+
+    /**
+     * Gets 'commented' type notifications with the specified user id, current page number and page size.
+     * 
+     * @param userId the specified user id
+     * @param hasRead {@code true} to get notifications has been read, {@code false} otherwise
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return commented notifications, return an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getCommentedNotifications(final String userId, final boolean hasRead,
+            final int currentPageNum, final int pageSize) throws ServiceException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_COMMENTED));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, hasRead));
+
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
         try {
-            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_COMMENT);
+            final JSONArray results = notificationRepository.get(query).optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < results.length(); i++) {
+                final JSONObject notification = results.optJSONObject(i);
+                final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
 
-            throw new RepositoryException();
-            // addNotification(requestJSONObject);
+                final JSONObject comment = commentQueryService.getComment(commentId);
+
+                final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
+                        setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
+                        comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
+                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
+                final JSONObject article = rlts.optJSONObject(0);
+                final String articleTitle = article.optString(Article.ARTICLE_TITLE);
+
+                final JSONObject commentedNotification = new JSONObject();
+                commentedNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
+                commentedNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
+                        comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, articleTitle);
+                commentedNotification.put(Comment.COMMENT_T_ARTICLE_PERMALINK, comment.optString(Comment.COMMENT_T_ARTICLE_PERMALINK));
+                commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.optString(Comment.COMMENT_CREATE_TIME));
+
+                ret.add(commentedNotification);
+            }
+
+            return ret;
         } catch (final RepositoryException e) {
-            final String msg = "Adds notification [type=comment] failed";
-            LOGGER.log(Level.ERROR, msg, e);
-
-            throw new ServiceException(msg);
+            LOGGER.log(Level.ERROR, "Gets commented notifications", e);
+            throw new ServiceException(e);
         }
     }
 }

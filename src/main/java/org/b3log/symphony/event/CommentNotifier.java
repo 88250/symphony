@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Sends a comment notification.
  * 
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Aug 30, 2013
+ * @version 1.0.0.6, Sep 1, 2013
  * @since 0.2.0
  */
 @Named
@@ -93,14 +93,23 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final JSONObject commenter = userQueryService.getUser(originalComment.optString(Comment.COMMENT_AUTHOR_ID));
             final String commenterName = commenter.optString(User.USER_NAME);
             userNames.remove(commenterName); // Do not notify commenter itself
+            
+            // Commented Notification
+            final JSONObject requestJSONObject = new JSONObject();
+            requestJSONObject.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalComment.optString(Keys.OBJECT_ID));
 
-            for (final String userName : userNames) {
-                final JSONObject requestJSONObject = new JSONObject();
-                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
-                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalComment.optString(Keys.OBJECT_ID));
-                
-                notificationMgmtService.addCommentedNotification(requestJSONObject);
-            }
+            notificationMgmtService.addCommentedNotification(requestJSONObject);
+
+            // At Notification
+//            for (final String userName : userNames) {
+            // TODO: userName -> userId
+//                final JSONObject requestJSONObject = new JSONObject();
+//                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, userId);
+//                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalComment.optString(Keys.OBJECT_ID));
+//                
+//                notificationMgmtService.addAtNotification(requestJSONObject);
+//            }
 
 //            final Set<String> qqSet = new HashSet<String>();
 //            for (final String userName : userNames) {
