@@ -188,7 +188,7 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
+        
         final GeneralUser currentUser = userService.getCurrentUser(request);
         if (null == currentUser) {
             dataModel.put(Common.IS_MY_ARTICLE, false);
