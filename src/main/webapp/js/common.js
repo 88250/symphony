@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.1 Jan 16, 2013
+ * @version 1.0.1.2 Sep 1, 2013
  */
 
 /**
@@ -101,7 +101,7 @@ var Util = {
     _initNav: function () {
         var pathname = location.pathname;
         $(".nav .user-nav > a").each(function () {
-            if (pathname === $(this).attr("href")) {
+            if (pathname === $(this).attr("href") || pathname === $(this).attr("href") + "/comments") {
                 $(this).addClass("current");
             } 
             

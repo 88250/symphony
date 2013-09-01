@@ -18,7 +18,7 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.7, Nov 22, 2012
+* @version 1.0.0.8, Sep 1, 2013
 */
 /* start home side */
 .user-online {
@@ -104,3 +104,45 @@
     text-decoration: none;
 }
 /* end home */
+
+/* start notifications */
+.note-list {
+    background-image: linear-gradient(to right, #F6F6F6 0%, #FDFDFD 8px);
+    box-shadow: 1px 0 0 #EEEEEE inset;
+    list-style: none;
+    padding: 15px 0;
+}
+
+.note-list li a {
+    cursor: pointer;
+    margin: 5px 0;
+    display: block;
+    padding: 8px 10px;
+    text-decoration: none;
+}
+
+.note-list li a:hover {
+    box-shadow: 2px 0 0 #CCC inset;
+}
+
+.note-list li.current a {
+    background: none repeat scroll 0 0 #FDFDFD;    
+    box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    font-weight: bold;
+    position: relative;
+    border: 1px solid #EEE;
+    border-left-width: 0;
+}
+
+.note-list li.current a:after {
+    background-image: linear-gradient(#D26911, #BA5D0F);
+    bottom: -1px;
+    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1) inset;
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    width: 3px;
+}
+/* end notifications */
