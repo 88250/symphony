@@ -15,11 +15,15 @@
  */
 package org.b3log.symphony.processor;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -27,10 +31,13 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONObject;
 
 /**
  * Notification processor.
@@ -58,6 +65,12 @@ public class NotificationProcessor {
     private UserQueryService userQueryService;
 
     /**
+     * Notification query service.
+     */
+    @Inject
+    private NotificationQueryService notificationQueryService;
+
+    /**
      * Comment query service.
      */
     @Inject
@@ -79,7 +92,7 @@ public class NotificationProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/notifications/commented", method = HTTPRequestMethod.GET)
-    public void showNotificationsCommented(final HTTPRequestContext context, final HttpServletRequest request,
+    public void showCommentedNotifications(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response,
             final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -97,9 +110,23 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
 
-//        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
-//        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-//        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        final List<JSONObject> commentedNotifications = new ArrayList<JSONObject>();
+        for (int i = 0; i < Integer.valueOf("15"); i++) {
+            final JSONObject commented = new JSONObject();
+            commented.put("content", "xxx 评论");
+            commented.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, "commentAuthorThumbnailURL");
+            commented.put(Comment.COMMENT_T_ARTICLE_TITLE, "xxx 文章");
+            commented.put(Comment.COMMENT_T_ARTICLE_PERMALINK, "xxx 文章链接");
+            commented.put(Comment.COMMENT_CREATE_TIME, new Date());
+
+            commentedNotifications.add(commented);
+        }
+
+        dataModel.put("commenteds", commentedNotifications);
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, Integer.valueOf("2"));
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, Integer.valueOf("5"));
 
         filler.fillHeader(request, response, dataModel);
         filler.fillFooter(dataModel);
