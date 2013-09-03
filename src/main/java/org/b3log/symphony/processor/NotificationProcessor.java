@@ -33,6 +33,7 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -69,6 +70,12 @@ public class NotificationProcessor {
      */
     @Inject
     private NotificationQueryService notificationQueryService;
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * Comment query service.
@@ -117,13 +124,16 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("commentedNotificationsCnt");
         final int windowSize = Symphonys.getInt("commentedNotificationsWindowSize");
 
-        final List<JSONObject> commentedNotifications =
-                notificationQueryService.getCommentedNotifications(userId, false, pageNum, pageSize);
+        final JSONObject result = notificationQueryService.getCommentedNotifications(userId, pageNum, pageSize);
+        @SuppressWarnings("unchecked")
+        final List<JSONObject> commentedNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
 
-        // TODO: notifications count
-        final int pageCount = Integer.valueOf("10"); // (int) Math.ceil((double) commentCnt / (double) pageSize);
+        notificationMgmtService.makeRead(commentedNotifications);
+
+        final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil((double) recordCnt / (double) pageSize);
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {

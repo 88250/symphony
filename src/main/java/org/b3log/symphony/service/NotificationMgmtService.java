@@ -15,7 +15,9 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.Collection;
 import javax.inject.Inject;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -30,7 +32,7 @@ import org.json.JSONObject;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 1, 2013
+ * @version 1.0.0.3, Sep 2, 2013
  * @since 0.2.5
  */
 @Service
@@ -46,6 +48,48 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Makes the specified notifications have been read.
+     * 
+     * @param notifications the specified notifications
+     * @throws ServiceException service exception 
+     */
+    @Transactional
+    public void makeRead(final Collection<JSONObject> notifications) throws ServiceException {
+        for (final JSONObject notification : notifications) {
+            makeRead(notification);
+        }
+    }
+
+    /**
+     * Makes the specified notification have been read.
+     * 
+     * @param notification the specified notification, return directly if this notification has been read (notification.hasRead equals to 
+     * {@code true})
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void makeRead(final JSONObject notification) throws ServiceException {
+        if (notification.optBoolean(Notification.NOTIFICATION_HAS_READ)) {
+            return;
+        }
+        
+        final String id = notification.optString(Keys.OBJECT_ID);
+
+        try {
+            final JSONObject record = notificationRepository.get(id);
+
+            record.put(Notification.NOTIFICATION_HAS_READ, true);
+
+            notificationRepository.update(id, record);
+        } catch (final RepositoryException e) {
+            final String msg = "Makes notification as read failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
 
     /**
      * Adds a 'comment' type notification with the specified request json object.

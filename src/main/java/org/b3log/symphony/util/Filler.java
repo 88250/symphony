@@ -24,14 +24,17 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Sessions;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -41,7 +44,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Nov 20, 2012
+ * @version 1.0.0.9, Sep 2, 2013
  * @since 0.2.0
  */
 @Service
@@ -87,6 +90,12 @@ public class Filler {
      */
     @Inject
     private UserMgmtService userMgmtService;
+    
+    /**
+     * Notification query service.
+     */
+    @Inject
+    private NotificationQueryService notificationQueryService;
 
     /**
      * Fills relevant articles.
@@ -172,15 +181,14 @@ public class Filler {
             final Map<String, Object> dataModel) {
         dataModel.put(Common.IS_LOGGED_IN, false);
 
-        JSONObject currentUser = Sessions.currentUser(request);
-        if (null == currentUser && !userMgmtService.tryLogInWithCookie(request, response)) {
+        if (null == Sessions.currentUser(request) && !userMgmtService.tryLogInWithCookie(request, response)) {
             dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
             return;
         }
-
-        currentUser = Sessions.currentUser(request);
-        if (null == currentUser) {
+        
+        final GeneralUser curUser = userService.getCurrentUser(request);
+        if (null == curUser) {
             dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
             return;
@@ -191,8 +199,11 @@ public class Filler {
 
         dataModel.put("logoutLabel", langPropsService.get("logoutLabel"));
 
-        final String userName = currentUser.optString(User.USER_NAME);
+        final String userName = curUser.getNickname();
         dataModel.put(User.USER_NAME, userName);
+        
+        final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.getId());
+        dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);
     }
 
     /**

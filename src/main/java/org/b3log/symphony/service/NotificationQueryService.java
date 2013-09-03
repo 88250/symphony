@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.Filter;
@@ -28,6 +29,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Article;
@@ -42,7 +44,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 1, 2013
+ * @version 1.0.0.1, Sep 2, 2013
  * @since 0.2.5
  */
 @Service
@@ -72,28 +74,78 @@ public class NotificationQueryService {
     private CommentQueryService commentQueryService;
 
     /**
+     * Gets the count of unread notifications of an user specified with the given user id.
+     * 
+     * @param userId the given user id
+     * @return count of unread notifications, returns {@code 0} if occurs exception
+     */
+    // XXX: Performance Issue
+    public int getUnreadNotificationCount(final String userId) {
+        final List<Filter> filters = new ArrayList<Filter>();
+
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
+
+        final Query query = new Query();
+        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addProjection(Keys.OBJECT_ID, String.class);
+
+        try {
+            final JSONObject result = notificationRepository.get(query);
+
+            return result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets unread notification count failed [userId=" + userId + "]", e);
+
+            return 0;
+        }
+    }
+
+    /**
      * Gets 'commented' type notifications with the specified user id, current page number and page size.
      * 
      * @param userId the specified user id
-     * @param hasRead {@code true} to get notifications has been read, {@code false} otherwise
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return commented notifications, return an empty list if not found
+     * @return result json object, for example, 
+     * <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         "oId": "", // notification record id
+     *         "commentContent": "",
+     *         "commentAuthorThumbnailURL": "",
+     *         "commentArticleTitle": "",
+     *         "commentArticlePermalink": "",
+     *         "commentCreateTime": java.util.Date,
+     *         "hasRead": boolean
+     *     }, ....]
+     * }
+     * </pre>
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getCommentedNotifications(final String userId, final boolean hasRead,
-            final int currentPageNum, final int pageSize) throws ServiceException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+    public JSONObject getCommentedNotifications(final String userId, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+
+        ret.put(Keys.RESULTS, (Object) rslts);
 
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_COMMENTED));
-        filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, hasRead));
 
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
-                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        
         try {
-            final JSONArray results = notificationRepository.get(query).optJSONArray(Keys.RESULTS);
+            final JSONObject queryResult = notificationRepository.get(query);
+            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT,
+                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
+
             for (int i = 0; i < results.length(); i++) {
                 final JSONObject notification = results.optJSONObject(i);
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
@@ -108,14 +160,16 @@ public class NotificationQueryService {
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
 
                 final JSONObject commentedNotification = new JSONObject();
+                commentedNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 commentedNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
                 commentedNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
                         comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, articleTitle);
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_PERMALINK, comment.optString(Comment.COMMENT_T_ARTICLE_PERMALINK));
                 commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.optString(Comment.COMMENT_CREATE_TIME));
+                commentedNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
 
-                ret.add(commentedNotification);
+                rslts.add(commentedNotification);
             }
 
             return ret;

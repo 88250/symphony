@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
@@ -34,7 +35,7 @@ import org.b3log.symphony.util.Filler;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Aug 29, 2013
+ * @version 1.0.0.4, Sep 2, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -78,6 +79,8 @@ public class ErrorProcessor {
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
+        
+        dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
 
         filler.fillHeader(request, response, dataModel);
         filler.fillFooter(dataModel);

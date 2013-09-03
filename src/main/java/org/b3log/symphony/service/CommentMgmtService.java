@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.13, Dec 31, 2012
+ * @version 1.0.0.14, Sep 2, 2013
  * @since 0.2.0
  */
 @Service
@@ -128,7 +128,7 @@ public class CommentMgmtService {
             final JSONObject commenter = requestJSONObject.optJSONObject(Comment.COMMENT_T_COMMENTER);
 
             final long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepArticleTime")) {
+            if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }

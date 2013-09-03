@@ -109,7 +109,7 @@ public class TagQueryService {
             final JSONObject result = tagRepository.get(query);
             return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets trend tags failed", e);
+            LOGGER.log(Level.ERROR, "Gets trend tags failed");
             throw new ServiceException(e);
         }
     }
