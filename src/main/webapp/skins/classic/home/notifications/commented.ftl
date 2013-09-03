@@ -13,6 +13,7 @@
         <div class="main">
             <div class="wrapper fn-clear">
                 <div class="content">
+                    <#if commentedNotifications?size == 0>
                     <ul>
                         <#list commentedNotifications as notification>
                         <li>
@@ -20,6 +21,9 @@
                         </li>
                         </#list>
                     </ul>
+                    <#else>
+                    ${noMessageLabel}
+                    </#if>
                 </div>
                 <div class="side">
                     <ul class="note-list">
@@ -36,7 +40,7 @@
                             <a href="/notifications/commented">commted</a>  
                         </li>
                     </ul>
-                     <@pagination url="/notifications/commented"/>
+                    <@pagination url="/notifications/commented"/>
                 </div>
             </div>
         </div>
