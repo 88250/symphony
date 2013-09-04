@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 2, 2013
+ * @version 1.0.0.2, Sep 4, 2013
  * @since 0.2.5
  */
 @Service
@@ -161,12 +161,13 @@ public class NotificationQueryService {
 
                 final JSONObject commentedNotification = new JSONObject();
                 commentedNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
+                commentedNotification.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
                 commentedNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
                 commentedNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
                         comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, articleTitle);
-                commentedNotification.put(Comment.COMMENT_T_ARTICLE_PERMALINK, comment.optString(Comment.COMMENT_T_ARTICLE_PERMALINK));
-                commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.optString(Comment.COMMENT_CREATE_TIME));
+                commentedNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
+                commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
                 commentedNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
 
                 rslts.add(commentedNotification);

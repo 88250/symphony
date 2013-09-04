@@ -18,12 +18,12 @@
                         <#list commentedNotifications as notification>
                         <li class="fn-clear<#if notification.hasRead> read</#if>">
                             <img class="avatar fn-left" src="${notification.commentAuthorThumbnailURL}"/>
-                            <a href="">username</a>
-                            <span class="ft-small">在</span>
-                            <a href="${notification.commentArticlePermalink}"> ${notification.commentArticleTitle}</a>
-                            <span class="ft-small">中回复了你</span>
-                            <span class="ico-date ft-small fn-right">2013-09-03 17:49</span>
-                            <#--${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}-->
+                            <a rel="nofollow" href="/member/${notification.commentAuthorName}" 
+                               title="${notification.commentAuthorName}">${notification.commentAuthorName}</a>
+                            <span class="ft-small">${commentOnLabel}</span>
+                            <a href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>
+                            <span class="ft-small">${replyYouLabel}</span>
+                            <span class="ico-date ft-small fn-right">${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span>
                             <div class="content-reset">
                                 ${notification.commentContent}
                             </div>
@@ -37,16 +37,16 @@
                 <div class="side">
                     <ul class="note-list">
                         <li class="current">
-                            <a href="/notifications/commented">我收到的评论</a> 
+                            <a href="/notifications/commented">${notificationCommentedLabel}</a> 
                         </li>
                         <li>
-                            <a href="#">@我的(开发ing)</a>
+                            <a href="#">${notificationAtLabel}</a>
                         </li>
                         <li>
-                            <a href="#">我关注的人(开发ing)</a>
+                            <a href="#">${notificationFollowingUserLabel}</a>
                         </li>
                         <li>
-                            <a href="#">我关注的标签(开发ing)</a>
+                            <a href="#">${notificationFollowingTagLabel}</a>
                         </li>
                     </ul>
                     <@pagination url="/notifications/commented"/>
