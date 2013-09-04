@@ -18,7 +18,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.6, Feb 20, 2013
+* @version 1.0.1.7, Sep 4, 2013
 */
 /* start module */
 .index-module {
@@ -89,6 +89,10 @@
     margin: 20px 0 0;
 }
 
+#comments .content-reset p {
+    margin: 7px 0 0;
+}
+
 .comment-login {
     border: 1px solid #D9D9D9;
     border-top-color: #C0C0C0; 
@@ -105,8 +109,8 @@
     padding: 21px 0px 21px;
 }
 
-.comment-info {
-    line-height: 24px;
+.comment-info .ico-date {
+    margin-top: 2px;
 }
 
 #commentContent {

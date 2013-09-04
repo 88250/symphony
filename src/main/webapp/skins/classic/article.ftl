@@ -65,7 +65,7 @@
                                                 <span class="fn-left">
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
-                                                    &nbsp;<span class="fn-right ft-small">
+                                                    &nbsp;<span class="ico-date fn-right ft-small">
                                                         ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} 
                                                     </span>
                                                 </span>

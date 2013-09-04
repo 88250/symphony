@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.2, Mar 13, 2013
+* @version 1.0.2.3, Sep 4, 2013
 */
 /* start reset */
 html {
@@ -31,6 +31,16 @@ body {
     font-family: '\5fae\8f6f\96c5\9ed1';
     font-size: 14px;
     background-color: #F8F8F8;
+}
+
+::-moz-selection {
+    text-shadow: none;
+    background: rgba(65,131,196,0.4);
+}
+
+::selection { 
+    text-shadow: none;
+    background: rgba(65,131,196,0.4)
 }
 
 ul,
@@ -366,6 +376,7 @@ button.red:active {
 .ico-date {
     background-position: -1px -22px;
     padding-left: 23px;
+    white-space: nowrap;
 }
 
 .ico-replay {
@@ -862,19 +873,3 @@ button.red:active {
     display: block;
 }
 /* end article list */
-
-/* start comment list */
-.comment-list li {
-    list-style-type: none;
-}
-
-.comment-list .fn-clear {
-    background-color: #F7F7F7;
-    padding: 5px 10px;
-    line-height: 20px;
-}
-
-.comment-list .content-reset {
-    padding: 0 10px;
-}
-/* end comment list */

@@ -34,7 +34,7 @@
                                             <span class="ft-small">${creatThemeLabel}</span>
                                             <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                                         </span>
-                                        <span class="fn-right ft-small">
+                                        <span class="fn-right ft-small ico-date">
                                             ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
                                         </span>    
                                     </div>
