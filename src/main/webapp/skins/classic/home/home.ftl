@@ -7,7 +7,7 @@
         <meta name="keywords" content="${user.userName},${articleLabel}"/>
         <meta name="description" content="<#list userHomeArticles as article><#if article_index<3>${article.articleTitle},</#if></#list>"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/home.css" />
+        <link type="text/css" rel="stylesheet" href="/css/home.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">

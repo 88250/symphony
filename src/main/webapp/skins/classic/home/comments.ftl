@@ -7,7 +7,7 @@
         <meta name="keywords" content="${user.userName},${cmtLabel}"/>
         <meta name="description" content="${user.userName}${deLabel}${cmtLabel},${cmtLabel} by ${user.userName}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/home.css" />
+        <link type="text/css" rel="stylesheet" href="/css/home.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">

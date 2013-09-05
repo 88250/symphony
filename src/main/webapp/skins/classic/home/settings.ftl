@@ -5,7 +5,7 @@
         <@head title="${userName} - ${settingsLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/home.css" />
+        <link type="text/css" rel="stylesheet" href="/css/home.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">
@@ -163,8 +163,8 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script type="text/javascript" src="/js/settings.js"></script>
-        <script type="text/javascript" src="/js/lib/md5.js"></script>
+        <script type="text/javascript" src="/js/settings.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="/js/lib/md5.js?${staticResourceVersion}"></script>
         <script>
                                         Label.updateSuccLabel = "${updateSuccLabel}";
                                         Label.invalidUserURLLabel = "${invalidUserURLLabel}";
