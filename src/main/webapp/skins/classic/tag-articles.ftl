@@ -8,7 +8,7 @@
         <meta name="keywords" content="${tag.tagTitle},${tag.tagCreatorName}"/>
         <meta name="description" content="${tag.tagCreatorName},${tag.tagDescription}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index.css" />
+        <link type="text/css" rel="stylesheet" href="/css/index.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">

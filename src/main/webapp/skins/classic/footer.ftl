@@ -30,9 +30,9 @@
     </div>
 </div>
 <div class="go-top" onclick="Util.goTop()"></div>
-<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="${staticServePath}/js/common.js"></script>
-<script type="text/javascript" src="${staticServePath}/js/lib/md5.js"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/common.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/md5.js?${staticResourceVersion}"></script>
 <script>
     Util.init();
     Label.invalidPasswordLabel = "${invalidPasswordLabel}";

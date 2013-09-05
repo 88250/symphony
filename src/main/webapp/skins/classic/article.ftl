@@ -7,8 +7,8 @@
         <meta name="keywords" content="${article.articleTags}"/>
         <meta name="description" content="${article.articleTitle}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index.css" />
-        <link type="text/css" rel="stylesheet" href="/js/lib/google-code-prettify/prettify.css">
+        <link type="text/css" rel="stylesheet" href="/css/index.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="/js/lib/google-code-prettify/prettify.css?${staticResourceVersion}">
     </head>
     <body>
         <#include "header.ftl">
@@ -172,8 +172,8 @@
             Label.articleTitle = "${article.articleTitle}";
             Label.articlePermalink = "${article.articlePermalink}"
         </script>
-        <script type="text/javascript" src="/js/lib/google-code-prettify/prettify.js"></script>
-        <script type="text/javascript" src="/js/lib/jquery/jquery.linkify-1.0-min.js"></script>
-        <script type="text/javascript" src="/js/article.js"></script>
+        <script type="text/javascript" src="/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="/js/lib/jquery/jquery.linkify-1.0-min.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="/js/article.js?${staticResourceVersion}"></script>
     </body>
 </html>

@@ -6,7 +6,7 @@
         <meta name="keywords" content="${registerLabel},B3log ${symphonyLabel}"/>
         <meta name="description" content="${registerLabel} B3log ${symphonyLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index.css" />
+        <link type="text/css" rel="stylesheet" href="/css/index.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
@@ -76,8 +76,8 @@
             </div>
         </div>
         <#include "footer.ftl">
-        <script type="text/javascript" src="/js/register.js"></script>
-        <script type="text/javascript" src="/js/lib/md5.js"></script>
+        <script type="text/javascript" src="/js/register.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="/js/lib/md5.js?${staticResourceVersion}"></script>
         <script>
             Register.init();
             Label.userNameErrorLabel = "${userNameErrorLabel}";

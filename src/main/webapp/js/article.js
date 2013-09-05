@@ -26,30 +26,29 @@
  */
 var Comment = {
     _validateData: [{
-        "id": "commentContent",
-        "type": 256,
-        "msg": Label.commentErrorLabel
-    }],
-
+            "id": "commentContent",
+            "type": 256,
+            "msg": Label.commentErrorLabel
+        }],
     /**
      * @description 添加评论
      */
-    add: function (id) {
+    add: function(id) {
         if (Validate.goValidate(this._validateData)) {
             var requestJSONObject = {
                 articleId: id,
-                commentContent: $("#commentContent").val().replace(/(^\s*)|(\s*$)/g,"")
+                commentContent: $("#commentContent").val().replace(/(^\s*)|(\s*$)/g, "")
             };
-            
+
             $.ajax({
                 url: "/comment",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                beforeSend: function () {
+                beforeSend: function() {
                     $(".form button.green").attr("disabled", "disabled").css("opacity", "0.3");
                 },
-                success: function(result, textStatus){
+                success: function(result, textStatus) {
                     $(".form button.green").removeAttr("disabled").css("opacity", "1");
                     if (result.sc) {
                         window.location.reload();
@@ -57,22 +56,21 @@ var Comment = {
                         $("#commentContent").next().addClass("tip-error").text(result.msg);
                     }
                 },
-                complete: function () {
+                complete: function() {
                     $(".form button.green").removeAttr("disabled").css("opacity", "1");
                 }
             });
         }
     },
-    
     /**
      * @description 点击回复评论时，把当楼层的用户名带到评论框中
      * @param {String} userName 用户名称
      */
-    replay: function (userName) {
+    replay: function(userName) {
         $("#commentContent").focus();
         var textarea = $("#commentContent").get(0),
-        position = {},
-        content = textarea.value;
+                position = {},
+                content = textarea.value;
         if (textarea.setSelectionRange) {
             // W3C
             position.end = textarea.selectionEnd;
@@ -81,27 +79,27 @@ var Comment = {
         } else if (document.selection) {
             // IE
             var i = 0,
-            oS = document.selection.createRange(),
-            // Don't: oR = textarea.createTextRange()
-            oR = document.body.createTextRange();
+                    oS = document.selection.createRange(),
+                    // Don't: oR = textarea.createTextRange()
+                    oR = document.body.createTextRange();
             oR.moveToElementText(textarea);
             position.text = oS.text;
             oS.getBookmark();
             // object.moveStart(sUnit [, iCount])
             // Return Value: Integer that returns the number of units moved.
-            for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i ++) {
+            for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i++) {
                 // Why? You can alert(textarea.value.length)
                 if (textarea.value.charAt(i) == '/n') {
-                    i ++;
+                    i++;
                 }
             }
- 
+
             position.start = i;
             position.end = i + position.text.length;
         }
- 
+
         textarea.value = content.substring(0, position.start) + userName + content.substring(position.start, content.length);
- 
+
         if (textarea.setSelectionRange) {
             textarea.setSelectionRange(position.start + userName.length, position.start + userName.length);
         } else {
@@ -116,41 +114,43 @@ var Comment = {
 
 var Article = {
     /**
-    * @description 初识化发文页面
-    */
-    init: function () {
-        $("#commentContent").val("").keyup(function (event) {
+     * @description 初识化发文页面
+     */
+    init: function() {
+        $("#commentContent").val("").keyup(function(event) {
             if (event.keyCode === 13 && event.ctrlKey) {
                 Comment.add(Label.articleOId);
             }
-            
+
             this.rows = this.value.split("\n").length;
             while (this.scrollHeight - 6 > $(this).height()) {
                 this.rows += 1;
             }
             this.rows += 1;
-            
+
             if (this.rows < 3) {
                 this.rows = 3;
             }
         });
-        
+
         this.share();
         this.parseLanguage();
+
+        // NOTE: https://github.com/b3log/b3log-symphony/issues/53 放到后台后需要移除此及相关的 js
+        $('.content-reset').linkify();
     },
-    
     /**
      * @description 分享按钮
      */
-    share: function () {
+    share: function() {
         var title = encodeURIComponent(Label.articleTitle + " - B3log " + Label.symphonyLabel),
-        url = "http://symphony.b3log.org" + Label.articlePermalink,
-        pic = $(".content-reset img").attr("src");
+                url = "http://symphony.b3log.org" + Label.articlePermalink,
+                pic = $(".content-reset img").attr("src");
         var urls = {};
         urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
-        "&url=" + url + "&pic=" + pic;
+                "&url=" + url + "&pic=" + pic;
         urls.sina = "http://v.t.sina.com.cn/share/share.php?title=" +
-        title + "&url=" + url + "&pic=" + pic;
+                title + "&url=" + url + "&pic=" + pic;
         urls.google = "https://plus.google.com/share?url=" + url;
         urls.twitter = "https://twitter.com/intent/tweet?status=" + title + " " + url;
         $(".share span").click(function() {
@@ -158,25 +158,21 @@ var Article = {
             window.open(urls[key], "_blank", "top=100,left=200,width=648,height=618");
         });
     },
-    
     /*
      * @description 解析语法高亮
      */
-    parseLanguage: function () {
+    parseLanguage: function() {
         var isPrettify = false;
-        
-        $(".content-reset pre, .content-reset > p > code").each(function () {
+
+        $(".content-reset pre, .content-reset > p > code").each(function() {
             this.className = "prettyprint";
             isPrettify = true;
         });
-        
-        if (isPrettify) {       
+
+        if (isPrettify) {
             prettyPrint();
         }
     }
 };
 
 Article.init();
-$('.content-reset').linkify({
-    target: "_blank"
-});
