@@ -112,10 +112,11 @@ public class NotificationQueryService {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
      *         "oId": "", // notification record id
+     *         "commentAuthorName": "",
      *         "commentContent": "",
      *         "commentAuthorThumbnailURL": "",
      *         "commentArticleTitle": "",
-     *         "commentArticlePermalink": "",
+     *         "commentSharpURL": "",
      *         "commentCreateTime": java.util.Date,
      *         "hasRead": boolean
      *     }, ....]
@@ -175,7 +176,87 @@ public class NotificationQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets commented notifications", e);
+            LOGGER.log(Level.ERROR, "Gets [commented] notifications", e);
+            throw new ServiceException(e);
+        }
+    }
+    
+    /**
+     * Gets 'at' type notifications with the specified user id, current page number and page size.
+     * 
+     * @param userId the specified user id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return result json object, for example, 
+     * <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         "oId": "", // notification record id
+     *         "commentContent": "",
+     *         "commentAuthorThumbnailURL": "",
+     *         "commentArticleTitle": "",
+     *         "commentArticlePermalink": "",
+     *         "commentCreateTime": java.util.Date,
+     *         "hasRead": boolean
+     *     }, ....]
+     * }
+     * </pre>
+     * @throws ServiceException service exception
+     */
+    public JSONObject getAtNotifications(final String userId, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+
+        ret.put(Keys.RESULTS, (Object) rslts);
+
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_AT));
+
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        
+        try {
+            final JSONObject queryResult = notificationRepository.get(query);
+            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT,
+                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
+
+            for (int i = 0; i < results.length(); i++) {
+                final JSONObject notification = results.optJSONObject(i);
+                final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
+
+                final JSONObject comment = commentQueryService.getComment(commentId);
+
+                final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
+                        setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
+                        comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
+                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
+                final JSONObject article = rlts.optJSONObject(0);
+                final String articleTitle = article.optString(Article.ARTICLE_TITLE);
+
+                final JSONObject atNotification = new JSONObject();
+                atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
+                atNotification.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
+                atNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
+                atNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
+                        comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                atNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, articleTitle);
+                atNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
+                atNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
+                atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
+
+                rslts.add(atNotification);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets [at] notifications", e);
             throw new ServiceException(e);
         }
     }

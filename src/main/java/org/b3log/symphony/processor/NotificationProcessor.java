@@ -90,7 +90,7 @@ public class NotificationProcessor {
     private Filler filler;
 
     /**
-     * Shows comments of an article.
+     * Shows [commented] notifications.
      *
      * @param context the specified context
      * @param request the specified request
@@ -131,6 +131,66 @@ public class NotificationProcessor {
         dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
 
         notificationMgmtService.makeRead(commentedNotifications);
+
+        final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil((double) recordCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
+    }
+
+    /**
+     * Shows [at] notifications.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/notifications/at", method = HTTPRequestMethod.GET)
+    public void showAtNotifications(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/notifications/at.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("atNotificationsCnt");
+        final int windowSize = Symphonys.getInt("atNotificationsWindowSize");
+
+        final JSONObject result = notificationQueryService.getAtNotifications(userId, pageNum, pageSize);
+        @SuppressWarnings("unchecked")
+        final List<JSONObject> atNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
+
+        dataModel.put(Common.AT_NOTIFICATIONS, atNotifications);
+
+        notificationMgmtService.makeRead(atNotifications);
 
         final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil((double) recordCnt / (double) pageSize);
