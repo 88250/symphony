@@ -160,4 +160,8 @@
     opacity: 0.5;
     filter: alpha(opacity=50);
 }
+
+.notification li {
+    background-color: #F8F8FF;
+}
 /* end notifications */
