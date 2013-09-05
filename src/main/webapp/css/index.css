@@ -18,7 +18,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.7, Sep 4, 2013
+* @version 1.0.1.8, Sep 5, 2013
 */
 /* start module */
 .index-module {
@@ -87,10 +87,6 @@
     padding-bottom: 5px;
     border-bottom: 1px solid #CCCCCC;
     margin: 20px 0 0;
-}
-
-#comments .content-reset p {
-    margin: 7px 0 0;
 }
 
 .comment-login {

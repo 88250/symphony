@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.3, Sep 4, 2013
+* @version 1.0.2.4, Sep 5, 2013
 */
 /* start reset */
 html {
@@ -163,6 +163,42 @@ textarea {
     overflow: auto;
     vertical-align: top;
 }
+@-webkit-keyframes spaceboots {
+    0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
+30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
+45%{-webkit-transform:translate(0px,2px);-moz-transform:translate(0px,2px);-o-transform:translate(0px,2px);-ms-transform:translate(0px,2px);transform:translate(0px,2px)}
+50%{-webkit-transform:translate(0px,3px);-moz-transform:translate(0px,3px);-o-transform:translate(0px,3px);-ms-transform:translate(0px,3px);transform:translate(0px,3px)}
+60%{-webkit-transform:translate(0px,2px);-moz-transform:translate(0px,2px);-o-transform:translate(0px,2px);-ms-transform:translate(0px,2px);transform:translate(0px,2px)}
+80%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
+}
+
+
+@-o-keyframes spaceboots{
+    0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
+30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
+45%{-webkit-transform:translate(0px,2px);-moz-transform:translate(0px,2px);-o-transform:translate(0px,2px);-ms-transform:translate(0px,2px);transform:translate(0px,2px)}
+50%{-webkit-transform:translate(0px,3px);-moz-transform:translate(0px,3px);-o-transform:translate(0px,3px);-ms-transform:translate(0px,3px);transform:translate(0px,3px)}
+60%{-webkit-transform:translate(0px,2px);-moz-transform:translate(0px,2px);-o-transform:translate(0px,2px);-ms-transform:translate(0px,2px);transform:translate(0px,2px)}
+80%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
+}
+
+@-ms-keyframes spaceboots{
+    0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
+30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
+45%{-webkit-transform:translate(0px,2px);-moz-transform:translate(0px,2px);-o-transform:translate(0px,2px);-ms-transform:translate(0px,2px);transform:translate(0px,2px)}
+50%{-webkit-transform:translate(0px,3px);-moz-transform:translate(0px,3px);-o-transform:translate(0px,3px);-ms-transform:translate(0px,3px);transform:translate(0px,3px)}
+60%{-webkit-transform:translate(0px,2px);-moz-transform:translate(0px,2px);-o-transform:translate(0px,2px);-ms-transform:translate(0px,2px);transform:translate(0px,2px)}
+80%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
+}
+
+@keyframes spaceboots{
+    0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
+30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
+45%{-webkit-transform:translate(0px,2px);-moz-transform:translate(0px,2px);-o-transform:translate(0px,2px);-ms-transform:translate(0px,2px);transform:translate(0px,2px)}
+50%{-webkit-transform:translate(0px,3px);-moz-transform:translate(0px,3px);-o-transform:translate(0px,3px);-ms-transform:translate(0px,3px);transform:translate(0px,3px)}
+60%{-webkit-transform:translate(0px,2px);-moz-transform:translate(0px,2px);-o-transform:translate(0px,2px);-ms-transform:translate(0px,2px);transform:translate(0px,2px)}
+80%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
+}
 
 .content-reset {
     word-wrap: break-word;
@@ -186,6 +222,10 @@ textarea {
 
 .content-reset p {
     margin: 1em 0;
+}
+
+.content-reset-p p {
+    margin: 7px 0 0;
 }
 /* end reset */
 
@@ -236,10 +276,6 @@ textarea {
 
 a.ft-noline:hover {
     text-decoration: none;
-}
-
-.ft-12 {
-    font-size: 12px;
 }
 /* end function */
 
@@ -710,6 +746,43 @@ button.red:active {
     border-bottom: 2px solid #D26911;
     color: #222;
     padding-bottom: 13px;
+}
+
+.nav .user-nav .no-msg {
+    background-color: #777;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    font-size: 10px;
+    font-weight: normal;
+    margin-top: 12px;
+    padding: 5px 8px;
+    text-shadow: 0 0 0;
+}
+
+.nav .user-nav .msg {
+    -webkit-animation:spaceboots 1s infinite;
+    -moz-animation:spaceboots 1s infinite;
+    -o-animation:spaceboots 1s infinite;
+    -ms-animation:spaceboots 1s infinite;
+    animation:spaceboots 1s infinite;
+    background-color: #D26911;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    margin-top: 10px;
+    padding: 5px 8px;
+}
+
+.nav .user-nav > a.current.msg,
+.nav .user-nav > a.current.no-msg{
+    background-color: #D26911;
+    padding-bottom: 5px;
+    border-bottom-width: 0;
+    -webkit-animation:none;
+    -moz-animation:none;
+    -o-animation:none;
+    -ms-animation:none;
+    animation:none;
+    color: #FFF;
 }
 
 .nav .form {

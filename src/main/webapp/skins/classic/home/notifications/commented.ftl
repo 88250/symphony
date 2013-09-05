@@ -18,13 +18,13 @@
                         <#list commentedNotifications as notification>
                         <li class="fn-clear<#if notification.hasRead> read</#if>">
                             <img class="avatar fn-left" src="${notification.commentAuthorThumbnailURL}"/>
-                            <a rel="nofollow" href="/member/${notification.commentAuthorName}" 
+                            <a target="_blank" rel="nofollow" href="/member/${notification.commentAuthorName}" 
                                title="${notification.commentAuthorName}">${notification.commentAuthorName}</a>
                             <span class="ft-small">${commentOnLabel}</span>
                             <a href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>
                             <span class="ft-small">${replyYouLabel}</span>
                             <span class="ico-date ft-small fn-right">${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span>
-                            <div class="content-reset">
+                            <div class="content-reset content-reset-p ">
                                 ${notification.commentContent}
                             </div>
                         </li>
@@ -33,6 +33,8 @@
                     <#else>
                     ${noMessageLabel}
                     </#if>
+                    
+                    <@pagination url="/notifications/commented"/>
                 </div>
                 <div class="side">
                     <ul class="note-list">
@@ -49,7 +51,6 @@
                             <a href="#">${notificationFollowingTagLabel}</a>
                         </li>
                     </ul>
-                    <@pagination url="/notifications/commented"/>
                 </div>
             </div>
         </div>

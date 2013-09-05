@@ -76,7 +76,7 @@
                                                     <i>#${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}</i>
                                                 </span>    
                                             </div>
-                                            <div class="content-reset">
+                                            <div class="content-reset content-reset-p">
                                                 ${comment.commentContent}
                                             </div>
                                         </div>
