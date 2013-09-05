@@ -51,7 +51,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  * 
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.14, Sep 1, 2013
+ * @version 1.0.1.15, Sep 5, 2013
  * @since 0.2.0
  */
 @Service
@@ -207,6 +207,10 @@ public class CommentQueryService {
                 final String articleAuthorURL = "/member/" + articleAuthor.optString(User.USER_NAME);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, articleAuthorURL);
+                final String articleAuthorEmail = articleAuthor.optString(User.USER_EMAIL);
+                final String articleAuthorThumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(articleAuthorEmail) + "?s=140&d="
+                        + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
 
                 processCommentContent(comment);
             }
