@@ -22,6 +22,7 @@ import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -34,7 +35,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * <p>Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Jun 26, 2013
+ * @version 1.0.0.7, Sep 6, 2013
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -83,7 +84,7 @@ public final class Markdowns {
             LOGGER.log(Level.ERROR, "Markdown error", e);
             
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-            final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
+            final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
 
             return langPropsService.get("markdownErrorLabel");
         }
