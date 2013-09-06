@@ -16,12 +16,15 @@
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.Filter;
@@ -32,11 +35,14 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.NotificationRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -72,6 +78,12 @@ public class NotificationQueryService {
      */
     @Inject
     private CommentQueryService commentQueryService;
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Gets the count of unread notifications of an user specified with the given user id.
@@ -118,7 +130,7 @@ public class NotificationQueryService {
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, notificationDataType));
-        
+
         final Query query = new Query();
         query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addProjection(Keys.OBJECT_ID, String.class);
 
@@ -226,12 +238,14 @@ public class NotificationQueryService {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
      *         "oId": "", // notification record id
-     *         "commentContent": "",
-     *         "commentAuthorThumbnailURL": "",
-     *         "commentArticleTitle": "",
-     *         "commentArticlePermalink": "",
-     *         "commentCreateTime": java.util.Date,
-     *         "hasRead": boolean
+     *         "authorName": "",
+     *         "content": "",
+     *         "thumbnailURL": "",
+     *         "articleTitle": "",
+     *         "url": "",
+     *         "createTime": java.util.Date,
+     *         "hasRead": boolean,
+     *         "atInArticle": boolean
      *     }, ....]
      * }
      * </pre>
@@ -265,26 +279,49 @@ public class NotificationQueryService {
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
 
                 final JSONObject comment = commentQueryService.getComment(commentId);
+                if (null != comment) {
+                    final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
+                            setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
+                            comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
+                    final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
+                    final JSONObject article = rlts.optJSONObject(0);
+                    final String articleTitle = article.optString(Article.ARTICLE_TITLE);
 
-                final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
-                        setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
-                        comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
-                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
-                final JSONObject article = rlts.optJSONObject(0);
-                final String articleTitle = article.optString(Article.ARTICLE_TITLE);
+                    final JSONObject atNotification = new JSONObject();
+                    atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
+                    atNotification.put(Common.AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
+                    atNotification.put(Common.CONTENT, comment.optString(Comment.COMMENT_CONTENT));
+                    atNotification.put(Common.THUMBNAIL_URL,
+                            comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                    atNotification.put(Common.ARTICLE_TITLE, articleTitle);
+                    atNotification.put(Common.URL, comment.optString(Comment.COMMENT_SHARP_URL));
+                    atNotification.put(Common.CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
+                    atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
+                    atNotification.put(Notification.NOTIFICATION_T_AT_IN_ARTICLE, false);
 
-                final JSONObject atNotification = new JSONObject();
-                atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
-                atNotification.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
-                atNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
-                atNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
-                        comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
-                atNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, articleTitle);
-                atNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
-                atNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
-                atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
+                    rslts.add(atNotification);
+                } else { // The 'at' in article content
+                    final JSONObject article = articleRepository.get(commentId);
 
-                rslts.add(atNotification);
+                    final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                    final JSONObject articleAuthor = userRepository.get(articleAuthorId);
+
+                    final JSONObject atNotification = new JSONObject();
+                    atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
+                    atNotification.put(Common.AUTHOR_NAME, articleAuthor.optString(User.USER_NAME));
+                    atNotification.put(Common.CONTENT, "");
+                    final String thumbnailURL = "http://secure.gravatar.com/avatar/"
+                            + MD5.hash(articleAuthor.optString(User.USER_EMAIL)) + "?s=140&d="
+                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                    atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
+                    atNotification.put(Common.ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
+                    atNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
+                    atNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
+                    atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
+                    atNotification.put(Notification.NOTIFICATION_T_AT_IN_ARTICLE, true);
+
+                    rslts.add(atNotification);
+                }
             }
 
             return ret;

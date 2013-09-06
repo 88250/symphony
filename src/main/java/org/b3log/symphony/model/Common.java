@@ -128,12 +128,43 @@ public final class Common {
      * Key of 'at' notifications.
      */
     public static final String AT_NOTIFICATIONS = "atNotifications";
-
+    
     /**
      * Key of unread 'at' notifications count.
      */
     public static final String UNREAD_AT_NOTIFICATION_CNT = "unreadAtNotificationCnt";
+    
+    /**
+     * Key of author name.
+     */
+    public static final String AUTHOR_NAME = "authorName";
+    
+    /**
+     * Key of content.
+     */
+    public static final String CONTENT = "content";
+    
+    /**
+     * Key of thumbnail URL.
+     */
+    public static final String THUMBNAIL_URL = "thumbnailURL";
+    
+    /**
+     * Key of article title.
+     */
+    public static final String ARTICLE_TITLE = "articleTitle";
+    
+    /**
+     * Key of URL.
+     */
+    public static final String URL = "url";
+    
+    /**
+     * Create time.
+     */
+    public static final String CREATE_TIME = "createTime";
 
+    
     /**
      * Key of version.
      */

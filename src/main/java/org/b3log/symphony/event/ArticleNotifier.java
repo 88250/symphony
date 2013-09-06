@@ -15,10 +15,10 @@
  */
 package org.b3log.symphony.event;
 
-import java.net.URL;
-import java.util.HashSet;
 import java.util.Set;
-import org.b3log.latke.Latkes;
+import javax.inject.Inject;
+import javax.inject.Named;
+import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -27,27 +27,23 @@ import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
-import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Nov 6, 2012
+ * @version 1.0.0.3, Sep 6, 2013
  * @since 0.2.0
  */
-public final class ArticleNotifier extends AbstractEventListener<JSONObject> {
+@Named
+public class ArticleNotifier extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
@@ -58,6 +54,12 @@ public final class ArticleNotifier extends AbstractEventListener<JSONObject> {
      * URL fetch service.
      */
     private URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
@@ -77,55 +79,73 @@ public final class ArticleNotifier extends AbstractEventListener<JSONObject> {
             final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
 
             final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
-            final Set<String> userNames = userQueryService.getUserNames(articleContent);
-            userNames.remove(articleAuthorName); // Do not notify the author itself
+            final Set<String> atUserNames = userQueryService.getUserNames(articleContent);
+            atUserNames.remove(articleAuthorName); // Do not notify the author itself
 
-            if (userNames.isEmpty()) {
+            if (atUserNames.isEmpty()) {
                 return;
             }
 
-            final Set<String> qqSet = new HashSet<String>();
-            for (final String userName : userNames) {
+            // 'At' Notification
+            for (final String userName : atUserNames) {
                 final JSONObject user = userQueryService.getUserByName(userName);
-                final String qq = user.optString(UserExt.USER_QQ);
-                if (!Strings.isEmptyOrNull(qq)) {
-                    qqSet.add(qq);
+
+                if (null == user) {
+                    LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
+
+                    continue;
                 }
+
+                final JSONObject requestJSONObject = new JSONObject();
+                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, user.optString(Keys.OBJECT_ID));
+                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalArticle.optString(Keys.OBJECT_ID));
+
+                notificationMgmtService.addAtNotification(requestJSONObject);
             }
 
-            if (qqSet.isEmpty()) {
-                return;
-            }
 
-            /*
-             * {
-             *     "key": "",
-             *     "messageContent": "",
-             *     "messageProcessor": "QQ",
-             *     "messageToAccounts": [
-             *         "", ....
-             *     ]
-             * }
-             */
-            final HTTPRequest httpRequest = new HTTPRequest();
-            httpRequest.setURL(new URL(Symphonys.get("imServePath")));
-            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
-            final JSONObject requestJSONObject = new JSONObject();
-            final JSONArray qqs = CollectionUtils.toJSONArray(qqSet);
+//            final Set<String> qqSet = new HashSet<String>();
+//            for (final String userName : atUserNames) {
+//                final JSONObject user = userQueryService.getUserByName(userName);
+//                final String qq = user.optString(UserExt.USER_QQ);
+//                if (!Strings.isEmptyOrNull(qq)) {
+//                    qqSet.add(qq);
+//                }
+//            }
+//
+//            if (qqSet.isEmpty()) {
+//                return;
+//            }
 
-            requestJSONObject.put("messageProcessor", "QQ");
-            requestJSONObject.put("messageToAccounts", qqs);
-            requestJSONObject.put("key", Symphonys.get("keyOfSymphony"));
-
-            final StringBuilder msgContent = new StringBuilder("----\n");
-            msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
-                    .append(originalArticle.optString(Article.ARTICLE_PERMALINK)).append("\n\n");
-
-            requestJSONObject.put("messageContent", msgContent.toString());
-
-            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-
-            urlFetchService.fetchAsync(httpRequest);
+//            /*
+//             * {
+//             *     "key": "",
+//             *     "messageContent": "",
+//             *     "messageProcessor": "QQ",
+//             *     "messageToAccounts": [
+//             *         "", ....
+//             *     ]
+//             * }
+//             */
+//            final HTTPRequest httpRequest = new HTTPRequest();
+//            httpRequest.setURL(new URL(Symphonys.get("imServePath")));
+//            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
+//            final JSONObject requestJSONObject = new JSONObject();
+//            final JSONArray qqs = CollectionUtils.toJSONArray(qqSet);
+//
+//            requestJSONObject.put("messageProcessor", "QQ");
+//            requestJSONObject.put("messageToAccounts", qqs);
+//            requestJSONObject.put("key", Symphonys.get("keyOfSymphony"));
+//
+//            final StringBuilder msgContent = new StringBuilder("----\n");
+//            msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
+//                    .append(originalArticle.optString(Article.ARTICLE_PERMALINK)).append("\n\n");
+//
+//            requestJSONObject.put("messageContent", msgContent.toString());
+//
+//            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
+//
+//            urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article notification failed", e);
         }

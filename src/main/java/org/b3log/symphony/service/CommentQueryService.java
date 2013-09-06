@@ -103,6 +103,9 @@ public class CommentQueryService {
 
         try {
             final JSONObject ret = commentRepository.get(commentId);
+            if (null == ret) {
+                return null;
+            }
 
             organizeComment(ret);
 

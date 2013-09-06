@@ -80,6 +80,10 @@ public final class Notification {
      * Key of unread notification count.
      */
     public static final String NOTIFICATION_T_UNREAD_COUNT = "unreadNotificationCount";
+    /**
+     * Key of at in article.
+     */
+    public static final String NOTIFICATION_T_AT_IN_ARTICLE = "atInArticle";
 
     /**
      * Private constructor.

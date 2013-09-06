@@ -96,7 +96,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final String commenterName = commenter.optString(User.USER_NAME);
             atUserNames.remove(commenterName); // Do not notify commenter itself
             
-            // 1. Commented Notification
+            // 1. 'Commented' Notification
             if (!commenterIsArticleAuthor) {
                 final JSONObject requestJSONObject = new JSONObject();
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
@@ -105,7 +105,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 notificationMgmtService.addCommentedNotification(requestJSONObject);
             }
 
-            // 2. At Notification
+            // 2. 'At' Notification
             for (final String userName : atUserNames) {
                 final JSONObject user = userQueryService.getUserByName(userName);
 

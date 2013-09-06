@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * B3log Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Agu 30, 2013
+ * @version 1.0.1.1, Sep 6, 2013
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -83,8 +83,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
         
         final CommentNotifier commentNotifier = beanManager.getReference(CommentNotifier.class);
         eventManager.registerListener(commentNotifier);
-
-        eventManager.registerListener(new ArticleNotifier());
+        
+        final ArticleNotifier articleNotifier = beanManager.getReference(ArticleNotifier.class);
+        eventManager.registerListener(articleNotifier);
 
         LOGGER.info("Initialized the context");
 
