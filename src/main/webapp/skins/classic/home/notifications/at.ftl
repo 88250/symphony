@@ -13,16 +13,16 @@
         <div class="main">
             <div class="wrapper fn-clear">
                 <div class="list content">
-                    <#if commentedNotifications?size != 0>
+                    <#if atNotifications?size != 0>
                     <ul class="notification">
-                        <#list commentedNotifications as notification>
+                        <#list atNotifications as notification>
                         <li class="fn-clear<#if notification.hasRead> read</#if>">
                             <img class="avatar fn-left" src="${notification.commentAuthorThumbnailURL}"/>
                             <a target="_blank" rel="nofollow" href="/member/${notification.commentAuthorName}" 
                                title="${notification.commentAuthorName}">${notification.commentAuthorName}</a>
-                            <span class="ft-small">${commentOnLabel}</span>
+                            <span class="ft-small">${commentOnLabel}${cmtLabel}${articleLabel}</span>
                             <a href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>
-                            <span class="ft-small">${replyYouLabel}</span>
+                            <span class="ft-small">${atYouLabel}</span>
                             <span class="ico-date ft-small fn-right">${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span>
                             <div class="content-reset content-reset-p ">
                                 ${notification.commentContent}
@@ -34,16 +34,16 @@
                     ${noMessageLabel}
                     </#if>
 
-                    <@pagination url="/notifications/commented"/>
+                    <@pagination url="/notifications/at"/>
                 </div>
                 <div class="side">
                     <ul class="note-list">
-                        <li class="current">
+                        <li>
                             <a href="/notifications/commented">
                                 <#if unreadCommentedNotificationCnt &gt; 0>
                                 ${unreadCommentedNotificationCnt}  </#if>${notificationCommentedLabel}</a> 
                         </li>
-                        <li>
+                        <li class="current">
                             <a href="/notifications/at">
                                 <#if unreadAtNotificationCnt &gt; 0>
                                 ${unreadAtNotificationCnt} </#if>${notificationAtLabel}</a>

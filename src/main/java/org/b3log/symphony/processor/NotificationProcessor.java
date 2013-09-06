@@ -32,6 +32,7 @@ import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
@@ -130,6 +131,17 @@ public class NotificationProcessor {
 
         dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
 
+        final int unreadCommentedNotificationCnt =
+                notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
+        dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
+        final int unreadAtNotificationCnt =
+                notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
+        dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
+        final int unreadCommentNotificationCnt =
+                notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENT);
+        final int unreadArticleNotificationCnt =
+                notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE);
+
         notificationMgmtService.makeRead(commentedNotifications);
 
         final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
@@ -189,6 +201,17 @@ public class NotificationProcessor {
         final List<JSONObject> atNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.AT_NOTIFICATIONS, atNotifications);
+
+        final int unreadCommentedNotificationCnt =
+                notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
+        dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
+        final int unreadAtNotificationCnt =
+                notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
+        dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
+        final int unreadCommentNotificationCnt =
+                notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENT);
+        final int unreadArticleNotificationCnt =
+                notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_ARTICLE);
 
         notificationMgmtService.makeRead(atNotifications);
 

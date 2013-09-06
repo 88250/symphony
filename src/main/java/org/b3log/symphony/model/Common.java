@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.6, Sep 5, 2013
+ * @version 1.0.1.7, Sep 6, 2013
  * @since 0.2.0
  */
 public final class Common {
@@ -115,14 +115,24 @@ public final class Common {
     public static final String USER_HOME_COMMENTS = "userHomeComments";
 
     /**
-     * Key of commented notifications.
+     * Key of 'commented' notifications.
      */
     public static final String COMMENTED_NOTIFICATIONS = "commentedNotifications";
 
     /**
-     * Key of at notifications.
+     * Key of unread 'commented' notifications count.
+     */
+    public static final String UNREAD_COMMENTED_NOTIFICATION_CNT = "unreadCommentedNotificationCnt";
+
+    /**
+     * Key of 'at' notifications.
      */
     public static final String AT_NOTIFICATIONS = "atNotifications";
+
+    /**
+     * Key of unread 'at' notifications count.
+     */
+    public static final String UNREAD_AT_NOTIFICATION_CNT = "unreadAtNotificationCnt";
 
     /**
      * Key of version.

@@ -16,14 +16,13 @@
 package org.b3log.symphony.event;
 
 import java.util.Set;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -40,7 +39,7 @@ import org.json.JSONObject;
  * Sends a comment notification.
  * 
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Sep 5, 2013
+ * @version 1.0.0.8, Sep 6, 2013
  * @since 0.2.0
  */
 @Named
@@ -62,56 +61,61 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     @Inject
     private NotificationMgmtService notificationMgmtService;
 
+    /**
+     * Bean manager.
+     */
+    @Inject
+    private BeanManager beanManager;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, CommentNotifier.class.getName()});
 
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
-
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
 
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
-            final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
-            final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
-
             final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
-            final Set<String> userNames = userQueryService.getUserNames(commentContent);
-            userNames.add(articleAuthorName); // Adds the article author first
 
-            if (articleAuthorId.equals(originalComment.optString(Comment.COMMENT_AUTHOR_ID))) {
-                userNames.remove(articleAuthorName); // The commenter is the article author, do not notify itself
-                if (userNames.isEmpty()) {
-                    return;
-                }
+            final Set<String> atUserNames = userQueryService.getUserNames(commentContent);
+            final boolean commenterIsArticleAuthor = articleAuthorId.equals(originalComment.optString(Comment.COMMENT_AUTHOR_ID));
+            if (commenterIsArticleAuthor && atUserNames.isEmpty()) {
+                return;
             }
 
             final JSONObject commenter = userQueryService.getUser(originalComment.optString(Comment.COMMENT_AUTHOR_ID));
             final String commenterName = commenter.optString(User.USER_NAME);
-            userNames.remove(commenterName); // Do not notify commenter itself
-
+            atUserNames.remove(commenterName); // Do not notify commenter itself
+            
             // 1. Commented Notification
-            JSONObject requestJSONObject = new JSONObject();
-            requestJSONObject.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
-            requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalComment.optString(Keys.OBJECT_ID));
+            if (!commenterIsArticleAuthor) {
+                final JSONObject requestJSONObject = new JSONObject();
+                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
+                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalComment.optString(Keys.OBJECT_ID));
 
-            notificationMgmtService.addCommentedNotification(requestJSONObject);
+                notificationMgmtService.addCommentedNotification(requestJSONObject);
+            }
 
             // 2. At Notification
-            for (final String userName : userNames) {
+            for (final String userName : atUserNames) {
                 final JSONObject user = userQueryService.getUserByName(userName);
 
                 if (null == user) {
                     LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
-                    
+
                     continue;
                 }
-                
-                requestJSONObject = new JSONObject();
+
+                final JSONObject requestJSONObject = new JSONObject();
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, user.optString(Keys.OBJECT_ID));
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalComment.optString(Keys.OBJECT_ID));
 

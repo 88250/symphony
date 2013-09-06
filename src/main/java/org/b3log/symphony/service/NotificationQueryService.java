@@ -79,7 +79,7 @@ public class NotificationQueryService {
      * @param userId the given user id
      * @return count of unread notifications, returns {@code 0} if occurs exception
      */
-    // XXX: Performance Issue
+    // XXX: Performance Issue: count without result list
     public int getUnreadNotificationCount(final String userId) {
         final List<Filter> filters = new ArrayList<Filter>();
 
@@ -95,6 +95,39 @@ public class NotificationQueryService {
             return result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets unread notification count failed [userId=" + userId + "]", e);
+
+            return 0;
+        }
+    }
+
+    /**
+     * Gets the count of unread notifications with the specified data of an user specified with the given user id.
+     * 
+     * @param userId the given user id
+     * @param notificationDataType the specified notification data type
+     * @return count of unread notifications, returns {@code 0} if occurs exception
+     * @see Notification#DATA_TYPE_C_ARTICLE
+     * @see Notification#DATA_TYPE_C_AT
+     * @see Notification#DATA_TYPE_C_COMMENT
+     * @see Notification#DATA_TYPE_C_COMMENTED
+     */
+    // XXX: Performance Issue: count type notification
+    public int getUnreadNotificationCountByType(final String userId, final int notificationDataType) {
+        final List<Filter> filters = new ArrayList<Filter>();
+
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, notificationDataType));
+        
+        final Query query = new Query();
+        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addProjection(Keys.OBJECT_ID, String.class);
+
+        try {
+            final JSONObject result = notificationRepository.get(query);
+
+            return result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets [commented] notification count failed [userId=" + userId + "]", e);
 
             return 0;
         }
@@ -139,7 +172,7 @@ public class NotificationQueryService {
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-        
+
         try {
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
@@ -180,7 +213,7 @@ public class NotificationQueryService {
             throw new ServiceException(e);
         }
     }
-    
+
     /**
      * Gets 'at' type notifications with the specified user id, current page number and page size.
      * 
@@ -219,7 +252,7 @@ public class NotificationQueryService {
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                 addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-        
+
         try {
             final JSONObject queryResult = notificationRepository.get(query);
             final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
