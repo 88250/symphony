@@ -90,7 +90,7 @@
                     <#if isLoggedIn>
                     <div class="form fn-clear">
                         <textarea id="commentContent" rows="3"></textarea>
-                        <span style="right:0;top:11px;"></span>
+                        <span style="bottom: 4px; right: 75px;"></span>
                         <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
                         <button class="green fn-right" onclick="Comment.add('${article.oId}')">${submitLabel}</button>

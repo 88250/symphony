@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Jan 7, 2013
+ * @version 1.0.0.8, Sep 9, 2013
  */
 
 /**
@@ -118,6 +118,12 @@ var Article = {
      */
     init: function() {
         $("#commentContent").val("").keyup(function(event) {
+            if (Validate.goValidate(Comment._validateData)) {
+                $("#commentContent").next().removeClass("tip-error").text("");
+            } else {
+                $("#commentContent").next().addClass("tip-error").text(Label.commentErrorLabel);
+            }
+            
             if (event.keyCode === 13 && event.ctrlKey) {
                 Comment.add(Label.articleOId);
             }
