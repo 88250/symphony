@@ -18,7 +18,7 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.0, Sep 5, 2013
+* @version 1.0.1.1, Sep 11, 2013
 */
 /* start home side */
 .user-online {
@@ -123,6 +123,17 @@
 
 .note-list li a:hover {
     box-shadow: 2px 0 0 #CCC inset;
+}
+
+.note-list li a > span.counter {
+    background-color: #EEEEEE;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 0 -1px 0 #E3E3E3 inset;
+    color: #999999;
+    float: right;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 5px;
 }
 
 .note-list li.current a {

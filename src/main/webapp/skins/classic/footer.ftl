@@ -12,18 +12,19 @@
                 <a href="/tags" class="last">${tagLabel}</a>
             </div>
             <div class="fn-clear">
-                <div class="fn-left">
-                    ${visionLabel}
-                    <span class="ft-small">&COPY; ${year} <a rel="copyright" href="http://www.b3log.org" target="_blank">B3LOG.ORG</a></span>
+                <div class="fn-left info">
+                    <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt} &nbsp;
+                    <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount} &nbsp;
+                    <span class="ft-small">${memberLabel}</span> ${statistic.statisticMemberCount} &nbsp;
+                    <span class="ft-small">${articleLabel}</span> ${statistic.statisticArticleCount} &nbsp;
+                    <span class="ft-small">${tagLabel}</span> ${statistic.statisticTagCount} &nbsp;
+                    <span class="ft-small">${cmtLabel}</span> ${statistic.statisticCmtCount}
                 </div>
-                <div class="fn-right info">
-                    <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt}
-                    <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount}
-                    <span class="ft-small">${memberCountLabel}</span> ${statistic.statisticMemberCount}
-                    <span class="ft-small">${articleCountLabel}</span> ${statistic.statisticArticleCount}
-                    <span class="ft-small">${tagCountLabel}</span> ${statistic.statisticTagCount}
-                    <span class="ft-small">${cmtCountLabel}</span> ${statistic.statisticCmtCount}
-                    <span class="ft-small">${versionLabel}</span> ${version}
+                <div class="fn-right">
+                    ${visionLabel}
+                    <span class="ft-small">&COPY; ${year} </span>
+                    <a rel="copyright" href="http://www.b3log.org" target="_blank">B3LOG.ORG</a>
+                    <span class="ft-small">${version}</span>
                 </div>
             </div>
         </div>

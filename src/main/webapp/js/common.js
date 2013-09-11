@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.2 Sep 1, 2013
+ * @version 1.0.1.2 Sep 11, 2013
  */
 
 /**
@@ -101,8 +101,14 @@ var Util = {
     _initNav: function () {
         var pathname = location.pathname;
         $(".nav .user-nav > a").each(function () {
+            // 用户下面有两个页面：用户的评论及文章列表
             if (pathname === $(this).attr("href") || pathname === $(this).attr("href") + "/comments") {
                 $(this).addClass("current");
+            } 
+            
+            // 提醒下面有四个页面
+            if (pathname.indexOf("/notifications/") > -1) {
+                 $($(".nav .user-nav > a")[1]).addClass("current");
             } 
             
             // 注册没有使用 href，对其进行特殊处理

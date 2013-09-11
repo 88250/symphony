@@ -64,7 +64,7 @@
                             <tr>
                                 <td colspan="2" align="right">
                                     <span id="registerTip"></span>
-                                    <button onclick="Register.register()">${registerLabel}</button>
+                                    <button class="green" onclick="Register.register()">${registerLabel}</button>
                                 </td>
                             </tr>
                         </tbody>

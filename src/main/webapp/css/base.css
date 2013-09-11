@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.4, Sep 5, 2013
+* @version 1.0.2.5, Sep 11, 2013
 */
 /* start reset */
 html {
@@ -754,8 +754,8 @@ button.red:active {
     color: #FFFFFF;
     font-size: 10px;
     font-weight: normal;
-    margin-top: 12px;
-    padding: 5px 8px;
+    margin-top: 14px;
+    padding: 3px 8px;
     text-shadow: 0 0 0;
 }
 
@@ -768,14 +768,14 @@ button.red:active {
     background-color: #D26911;
     border-radius: 3px 3px 3px 3px;
     color: #FFFFFF;
-    margin-top: 10px;
-    padding: 5px 8px;
+    margin-top: 12px;
+    padding: 3px 8px;
 }
 
 .nav .user-nav > a.current.msg,
 .nav .user-nav > a.current.no-msg{
     background-color: #D26911;
-    padding-bottom: 5px;
+    padding-bottom: 3px;
     border-bottom-width: 0;
     -webkit-animation:none;
     -moz-animation:none;
@@ -862,8 +862,8 @@ button.red:active {
 }
 
 .footer .info {
-    color: #4183C4;
-    font-size: 12px;
+    color: #666;
+    font-size: 11px;
 }
 
 .footer-nav a {
