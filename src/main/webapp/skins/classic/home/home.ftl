@@ -39,10 +39,12 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="count ft-small">
-                                        ${viewLabel} <a rel="nofollow" href="${article.articlePermalink}">${article.articleViewCount}</a><br/>
-                                        ${cmtLabel} <a rel="nofollow" href="${article.articlePermalink}#comments">${article.articleCommentCount}</a>
+                                    <#if article.articleCommentCount != 0>
+                                    <div class="count ft-small ico-cmt">
+                                        ${article.articleCommentCount}
+                                        ${cmtLabel}
                                     </div>
+                                    </#if>
                                     <#if isMyArticle>
                                     <div class="commenters">
                                         <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}"><span class="ico-edit"></span></a>

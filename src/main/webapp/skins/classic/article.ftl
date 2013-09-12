@@ -24,12 +24,13 @@
                                 </#list>
                             </div>
                             <div class="fn-right">
-                                &nbsp;${viewLabel} <a rel="nofollow" href="${article.articlePermalink}">${article.articleViewCount}</a> 
-                                ${cmtLabel} <a rel="nofollow" href="${article.articlePermalink}#comments">${article.articleCommentCount}</a>   
+                                <span class="ico-date">
+                                    ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
+                                </span>
+                                <a class="ico-cmt" title="${cmtLabel}" rel="nofollow" href="#comments">${article.articleCommentCount}</a>   
+                                <a class="ico-view" title="${viewLabel}" rel="nofollow" href="#">${article.articleViewCount}</a> 
                             </div>
-                            <div class="fn-right">
-                                ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
-                            </div>
+
                         </div>
                         <h2 class="article-title">
                             <a href="${article.articlePermalink}" rel="bookmark">
@@ -166,11 +167,11 @@
         </div>
         <#include "footer.ftl">
         <script>
-            Label.commentErrorLabel = "${commentErrorLabel}";
-            Label.symphonyLabel = "${symphonyLabel}";
-            Label.articleOId = "${article.oId}";
-            Label.articleTitle = "${article.articleTitle}";
-            Label.articlePermalink = "${article.articlePermalink}"
+                                                        Label.commentErrorLabel = "${commentErrorLabel}";
+                                                        Label.symphonyLabel = "${symphonyLabel}";
+                                                        Label.articleOId = "${article.oId}";
+                                                        Label.articleTitle = "${article.articleTitle}";
+                                                        Label.articlePermalink = "${article.articlePermalink}"
         </script>
         <script type="text/javascript" src="/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="/js/lib/jquery/jquery.linkify-1.0-min.js?${staticResourceVersion}"></script>

@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.5, Sep 11, 2013
+* @version 1.0.2.6, Sep 12, 2013
 */
 /* start reset */
 html {
@@ -259,11 +259,6 @@ textarea {
     word-wrap: normal;
 }
 
-.fn-box {
-    border: 1px solid #CACACA;
-    padding: 3px;
-}
-
 .ft-small,
 .ft-small a {
     color: #999;
@@ -278,13 +273,6 @@ a.ft-noline:hover {
     text-decoration: none;
 }
 /* end function */
-
-/* start common */
-.list h2, 
-.module-header h2 {
-    font-size: 16px;
-    font-weight: normal;
-}
 
 /* start button */
 button {
@@ -404,7 +392,9 @@ button.red:active {
 .ico-replay,
 .nav input.search,
 .go-top,
-.ico-edit {
+.ico-edit,
+.ico-cmt,
+.ico-view {
     background-image: url("../images/icons.png");
     background-repeat: no-repeat;
 }
@@ -447,6 +437,16 @@ button.red:active {
 
 .ico-edit:hover {
     background-position: -6px -44px;
+}
+
+.ico-cmt {
+    background-position: -3px -101px;
+    padding-left: 25px;
+}
+
+.ico-view {
+    background-position: -3px -126px;
+    padding-left: 25px;
 }
 /* end icon */
 
@@ -895,6 +895,11 @@ button.red:active {
 /* end footer */
 
 /* start list */
+.list h2 {
+    font-size: 16px;
+    font-weight: normal;
+}
+
 .list > ul {
     list-style: none;
 }
@@ -923,13 +928,12 @@ button.red:active {
 .article-list li .commenters {
     position: absolute;
     right: 10px;
-    top: 18px;
-    display: block;
+    top: 40%;
 }
 
 .article-list li .commenters {
     display: none;
-    top: 22px;
+    top: 32%;
 }
 
 .article-list li .commenters > a {

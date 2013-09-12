@@ -58,6 +58,11 @@
     text-shadow: 0 1px 0 #FFFFFF;
 }
 
+.module-header h2 {
+    font-size: 16px;
+    font-weight: normal;
+}
+
 .module-panel {
     padding: 20px;
 }

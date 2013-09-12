@@ -18,10 +18,12 @@
                     </span>
                 </div>
             </div>
-            <div class="count ft-small">
-                ${viewLabel} <a rel="nofollow" href="${article.articlePermalink}">${article.articleViewCount}</a><br/>
-                ${cmtLabel} <a rel="nofollow" href="${article.articlePermalink}#comments">${article.articleCommentCount}</a>
+            <#if article.articleCommentCount != 0>
+            <div class="count ft-small ico-cmt">
+                ${article.articleCommentCount}
+                ${cmtLabel}
             </div>
+            </#if>
             <div class="commenters">
                 <#list article.articleParticipants as comment>
                 <a rel="nofollow" href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}" class="ft-noline">
