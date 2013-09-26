@@ -183,9 +183,7 @@ public class CommentProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    // TODO: 88250, after Solo 060 released, change method to POST only
-    @RequestProcessing(value = "/solo/comment", method = {HTTPRequestMethod.POST,
-        HTTPRequestMethod.PUT})
+    @RequestProcessing(value = "/solo/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = ClientCommentAddValidation.class)
     public void addCommentFromSolo(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {

@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Validates for comment adding remotely.
  * 
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Oct 29, 2012 
+ * @version 1.0.0.2, Sep 26, 2013
  */
 @Named
 @Singleton
@@ -113,9 +113,10 @@ public final class ClientCommentAddValidation extends BeforeRequestProcessAdvice
 
         final String clientAdminEmail = requestJSONObject.optString(Client.CLIENT_ADMIN_EMAIL);
 
+        JSONObject author;
         try {
-            final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
-            if (null == user || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
+            author = userQueryService.getUserByEmail(clientAdminEmail);
+            if (null == author || !author.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Wrong B3 key"));
             }
         } catch (final ServiceException e) {
@@ -163,7 +164,8 @@ public final class ClientCommentAddValidation extends BeforeRequestProcessAdvice
         }
 
         try {
-            final JSONObject article = articleQueryService.getArticleByClientArticleId(commentClientArticleId);
+            final JSONObject article = 
+                    articleQueryService.getArticleByClientArticleId(author.optString(Keys.OBJECT_ID), commentClientArticleId);
             if (null == article) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Article not found, do not sync comment"));
             }

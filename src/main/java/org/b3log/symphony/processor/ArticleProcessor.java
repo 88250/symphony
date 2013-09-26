@@ -286,7 +286,7 @@ public class ArticleProcessor {
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
             if (null == currentUser) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                
+
                 return;
             }
 
@@ -505,40 +505,57 @@ public class ArticleProcessor {
         }
 
         final JSONObject originalArticle = requestJSONObject.getJSONObject(Article.ARTICLE);
+        final String authorId = user.optString(Keys.OBJECT_ID);
+        final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
 
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
         final String articleTags = formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
-        final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);
-        final boolean isBroadcast = "aBroadcast".equals(permalink);
-        if (isBroadcast) {
-            articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该广播来自</span> "
-                    + "<i style='margin-right:5px;'><a target='_blank' href='"
-                    + clientHost + "'>" + clientTitle + "</a></i></span></p>";
-        } else {
-            articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
-                    + "<i style='margin-right:5px;'><a target='_blank' href='"
-                    + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
-        }
-
-        final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
-
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_TAGS, articleTags);
-        article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
         article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
 
-        article.put(Article.ARTICLE_AUTHOR_ID, user.optString(Keys.OBJECT_ID));
+        article.put(Article.ARTICLE_AUTHOR_ID, authorId);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
 
-        article.put(Article.ARTICLE_T_IS_BROADCAST, isBroadcast);
+        final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);
+
+        final JSONObject articleExisted = articleQueryService.getArticleByClientArticleId(authorId, clientArticleId);
+        final boolean toAdd = null == articleExisted;
+        if (!toAdd) { // Client requests to add an article, but the article already exist in server
+            article.put(Keys.OBJECT_ID, articleExisted.optString(Keys.OBJECT_ID));
+            article.put(Article.ARTICLE_T_IS_BROADCAST, false);
+
+            articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
+                    + "<i style='margin-right:5px;'><a target='_blank' href='"
+                    + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
+        } else { // Add
+            final boolean isBroadcast = "aBroadcast".equals(permalink);
+            if (isBroadcast) {
+                articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该广播来自</span> "
+                        + "<i style='margin-right:5px;'><a target='_blank' href='"
+                        + clientHost + "'>" + clientTitle + "</a></i></span></p>";
+            } else {
+                articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
+                        + "<i style='margin-right:5px;'><a target='_blank' href='"
+                        + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
+            }
+
+            article.put(Article.ARTICLE_T_IS_BROADCAST, isBroadcast);
+        }
+
+        article.put(Article.ARTICLE_CONTENT, articleContent);
 
         try {
-            articleMgmtService.addArticle(article);
+            if (toAdd) {
+                articleMgmtService.addArticle(article);
+            } else {
+                articleMgmtService.updateArticle(article);
+            }
 
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
@@ -653,8 +670,9 @@ public class ArticleProcessor {
                 + "<i style='margin-right:5px;'><a target='_blank' href='"
                 + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
 
+        final String authorId = user.optString(Keys.OBJECT_ID);
         final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
-        final JSONObject oldArticle = articleQueryService.getArticleByClientArticleId(clientArticleId);
+        final JSONObject oldArticle = articleQueryService.getArticleByClientArticleId(authorId, clientArticleId);
         if (null == oldArticle) {
             LOGGER.log(Level.WARN, "Not found article [clientArticleId={0}]", clientArticleId);
 
@@ -670,7 +688,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
         article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
 
-        article.put(Article.ARTICLE_AUTHOR_ID, user.optString(Keys.OBJECT_ID));
+        article.put(Article.ARTICLE_AUTHOR_ID, authorId);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
 
         article.put(Article.ARTICLE_T_IS_BROADCAST, false);

@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Feb 8, 2013
+ * @version 1.0.0.9, Sep 26, 2013
  * @since 0.2.0
  */
 @Service
@@ -302,13 +302,17 @@ public class ArticleQueryService {
     /**
      * Gets an article by the specified client article id.
      * 
+     * @param authorId the specified author id
      * @param clientArticleId the specified client article id
      * @return article, return {@code null} if not found
      * @throws ServiceException service exception 
      */
-    public JSONObject getArticleByClientArticleId(final String clientArticleId) throws ServiceException {
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, clientArticleId));
+    public JSONObject getArticleByClientArticleId(final String authorId, final String clientArticleId) throws ServiceException {
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, clientArticleId));
+        filters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, authorId));
+
+        final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
         try {
             final JSONObject result = articleRepository.get(query);
             final JSONArray array = result.optJSONArray(Keys.RESULTS);
