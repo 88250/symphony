@@ -92,7 +92,8 @@ public class CommentMgmtService {
     /**
      * Event manager.
      */
-    private EventManager eventManager = EventManager.getInstance();
+    @Inject
+    private EventManager eventManager;
 
     /**
      * Language service.

@@ -76,7 +76,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         
         // Register event listeners
-        final EventManager eventManager = EventManager.getInstance();
+        final EventManager eventManager = beanManager.getReference(EventManager.class);
         eventManager.registerListener(new ArticleSender());
         eventManager.registerListener(new ArticleUpdater());
         eventManager.registerListener(new CommentSender());
