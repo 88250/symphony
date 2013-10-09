@@ -41,7 +41,7 @@ import org.json.JSONObject;
  */
 @Named
 @Singleton
-public final class ArticleAddValidation extends BeforeRequestProcessAdvice {
+public class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.

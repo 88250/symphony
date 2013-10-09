@@ -27,7 +27,7 @@ import org.b3log.symphony.model.Notification;
  * @since 0.2.5
  */
 @Repository
-public final class NotificationRepository extends AbstractRepository {
+public class NotificationRepository extends AbstractRepository {
 
     /**
      * Public constructor.

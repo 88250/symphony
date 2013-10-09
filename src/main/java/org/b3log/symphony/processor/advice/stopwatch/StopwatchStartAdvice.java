@@ -30,7 +30,7 @@ import org.b3log.latke.util.Stopwatchs;
  * @since 0.2.0
  */
 @Service
-public final class StopwatchStartAdvice extends BeforeRequestProcessAdvice {
+public class StopwatchStartAdvice extends BeforeRequestProcessAdvice {
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {

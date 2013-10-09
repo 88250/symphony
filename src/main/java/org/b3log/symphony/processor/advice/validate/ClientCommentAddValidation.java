@@ -44,7 +44,7 @@ import org.json.JSONObject;
  */
 @Named
 @Singleton
-public final class ClientCommentAddValidation extends BeforeRequestProcessAdvice {
+public class ClientCommentAddValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.

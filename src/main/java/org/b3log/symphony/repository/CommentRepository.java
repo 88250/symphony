@@ -27,7 +27,7 @@ import org.b3log.symphony.model.Comment;
  * @since 0.2.0
  */
 @Repository
-public final class CommentRepository extends AbstractRepository {
+public class CommentRepository extends AbstractRepository {
 
     /**
      * Public constructor.

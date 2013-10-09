@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * @since 0.2.5
  */
 @Repository
-public final class FollowRepository extends AbstractRepository {
+public class FollowRepository extends AbstractRepository {
     
     /**
      * Removes a follow relationship by the specified follower id and the specified following entity id.

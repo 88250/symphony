@@ -31,7 +31,7 @@ import org.b3log.latke.util.Strings;
  * @since 0.2.0
  */
 @Service
-public final class StopwatchEndAdvice extends AfterRequestProcessAdvice {
+public class StopwatchEndAdvice extends AfterRequestProcessAdvice {
 
     /**
      * Logger.

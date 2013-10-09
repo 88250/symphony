@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * @since 0.2.0
  */
 @Repository
-public final class UserTagRepository extends AbstractRepository {
+public class UserTagRepository extends AbstractRepository {
 
     /**
      * Public constructor.

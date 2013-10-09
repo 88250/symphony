@@ -27,7 +27,7 @@ import org.b3log.symphony.model.Client;
  * @since 0.2.0
  */
 @Repository
-public final class ClientRepository extends AbstractRepository {
+public class ClientRepository extends AbstractRepository {
 
     /**
      * Public constructor.

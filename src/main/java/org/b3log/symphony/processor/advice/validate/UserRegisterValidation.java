@@ -39,7 +39,7 @@ import org.json.JSONObject;
  */
 @Named
 @Singleton
-public final class UserRegisterValidation extends BeforeRequestProcessAdvice {
+public class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.

@@ -27,7 +27,7 @@ import org.b3log.symphony.model.Option;
  * @since 0.2.0
  */
 @Repository
-public final class OptionRepository extends AbstractRepository {
+public class OptionRepository extends AbstractRepository {
 
     /**
      * Public constructor.

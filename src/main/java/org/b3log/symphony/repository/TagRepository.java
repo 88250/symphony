@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * @since 0.2.0
  */
 @Repository
-public final class TagRepository extends AbstractRepository {
+public class TagRepository extends AbstractRepository {
 
     /**
      * Tag-Article relation repository.

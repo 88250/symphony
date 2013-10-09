@@ -37,7 +37,7 @@ import org.json.JSONObject;
  */
 @Named
 @Singleton
-public final class UpdateSyncB3Validation extends BeforeRequestProcessAdvice {
+public class UpdateSyncB3Validation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.

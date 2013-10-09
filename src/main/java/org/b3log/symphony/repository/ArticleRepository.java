@@ -27,7 +27,7 @@ import org.b3log.symphony.model.Article;
  * @since 0.2.0
  */
 @Repository
-public final class ArticleRepository extends AbstractRepository {
+public class ArticleRepository extends AbstractRepository {
 
     /**
      * Public constructor.

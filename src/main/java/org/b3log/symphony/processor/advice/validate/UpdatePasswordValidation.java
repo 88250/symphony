@@ -37,7 +37,7 @@ import org.json.JSONObject;
  */
 @Named
 @Singleton
-public final class UpdatePasswordValidation extends BeforeRequestProcessAdvice {
+public class UpdatePasswordValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.
