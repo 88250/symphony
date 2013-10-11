@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.6, Sep 12, 2013
+* @version 1.0.2.7, Oct 11, 2013
 */
 /* start reset */
 html {
@@ -425,18 +425,18 @@ button.red:active {
 }
 
 .ico-edit {
-    background-position: -6px -45px;
-    float: left;
-    height: 18px;
-    margin-right: 5px;
-    width: 17px;
+    background-position: -6px -41px;
     cursor: pointer;
+    float: right;
+    height: 22px;
+    margin-right: 5px;
     opacity: 0.7;
+    width: 33px;
     filter: alpha(opacity=70);
 }
 
 .ico-edit:hover {
-    background-position: -6px -44px;
+    background-position: -6px -40px;
 }
 
 .ico-cmt {
@@ -861,7 +861,8 @@ button.red:active {
     z-index: 1;
 }
 
-.footer .info {
+.footer .info,
+.tags > li > div > .fn-right {
     color: #666;
     font-size: 11px;
 }
@@ -922,6 +923,10 @@ button.red:active {
 .article-list li > div {
     white-space: normal;
     word-wrap: break-word;
+}
+
+.article-list li h2 {
+    margin-bottom: 5px;
 }
 
 .article-list li .count,

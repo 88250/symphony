@@ -19,7 +19,7 @@
                         <#if tag.tagIconPath!="">
                         <img class="avatar tag-article-img" src="${staticServePath}/images/tags/${tag.tagIconPath}">
                         </#if>
-                        <h1><a rel="tag" title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
+                        <h1><a rel="tag" title="${tag.tagTitle?url('UTF-8')}" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
                         ${tag.tagDescription}
                     </div>
                     <div class="fn-clear">
@@ -27,11 +27,11 @@
                             <ul class="status fn-clear">
                                 <li>
                                     <strong>${tag.tagReferenceCount}</strong>
-                                    <span class="ft-small">${referenceCountLabel}</span>
+                                    <span class="ft-small">${referenceLabel}</span>
                                 </li>
                                 <li>
                                     <strong>${tag.tagCommentCount}</strong>
-                                    <span class="ft-small">${cmtCountLabel}</span>
+                                    <span class="ft-small">${cmtLabel}</span>
                                 </li>
                             </ul>
                         </div>

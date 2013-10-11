@@ -3,7 +3,7 @@
         <h1 style="margin-top:4px"><a rel="nofollow" href="/">Symphony</a></h1>
         <form target="_blank" method="get" action="http://www.google.com/search">
             <input class="search" type="text" name="q" />
-            <input class="fn-none" type="submit" name="btnG" value="" class="none" />
+            <input class="fn-none" type="submit" name="btnG" value=""/>
             <input type="hidden" name="oe" value="UTF-8" />
             <input type="hidden" name="ie" value="UTF-8" />
             <input type="hidden" name="newwindow" value="0" />
@@ -11,7 +11,7 @@
         </form>
         <span class="tags">
             <#list trendTags as trendTag>
-            <a rel="tag" href="/tags/${trendTag.tagTitle}">${trendTag.tagTitle}</a>
+            <a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
             </#list>
         </span>
         <div class="fn-right fn-clear user-nav">

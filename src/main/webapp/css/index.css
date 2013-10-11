@@ -18,7 +18,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.8, Sep 5, 2013
+* @version 1.0.1.9, Oct 11, 2013
 */
 /* start module */
 .index-module {
@@ -218,10 +218,6 @@
     z-index: 1;
     opacity: 0.9;
     filter: alpha(opacity=90);
-}
-
-.tags > li > div > .ft-small {
-    color: #333
 }
 /* end side tags */
 

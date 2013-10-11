@@ -132,13 +132,8 @@
                             <#list sideRelevantArticles as relevantArticle>
                             <li<#if !relevantArticle_has_next> class="last"</#if>>
                                 <a rel="nofollow" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
-                                <div class="ft-small">
-                                    <span>
-                                        <a rel="nofollow" 
-                                           href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
-                                        <span class="ico-date"> ${relevantArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
-                                    </span>
-                                </div>
+                                <a class="ft-small" rel="nofollow" 
+                                   href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
                             </li>
                             </#list>
                         </ul>
@@ -151,13 +146,8 @@
                             <#list sideRandomArticles as randomArticle>
                             <li<#if !randomArticle_has_next> class="last"</#if>>
                                 <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
-                                <div class="ft-small">
-                                    <span>
-                                        <a rel="nofollow"
-                                           href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
-                                        <span class="ico-date"> ${randomArticle.articleCreateTime?string('yyyy-MM-dd')}</span>
-                                    </span>
-                                </div>
+                                <a class="ft-small" rel="nofollow"
+                                   href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
                             </li>
                             </#list>
                         </ul>
