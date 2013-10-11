@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.7, Sep 6, 2013
+ * @version 1.0.1.8, Oct 11, 2013
  * @since 0.2.0
  */
 public final class Common {
@@ -174,6 +174,11 @@ public final class Common {
      * Key of year.
      */
     public static final String YEAR = "year";
+    
+    /**
+     * Key of site visit statistic code.
+     */
+    public static final String SITE_VISIT_STAT_CODE = "siteVisitStatCode";
 
     /**
      * Key of online visitor count.

@@ -168,6 +168,7 @@ public class Filler {
         fillSysInfo(dataModel);
 
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, Symphonys.get("siteVisitStatCode"));
     }
 
     /**
