@@ -315,6 +315,7 @@
                     <configLocation>${basedir}/src/main/resources/etc/beyondtrack_checks.xml</configLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <excludes>
+                        **/*TestCase.java,
                     </excludes>
                     <consoleOutput>true</consoleOutput>
                     <failOnViolation>true</failOnViolation>

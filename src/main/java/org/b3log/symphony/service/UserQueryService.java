@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Oct 18, 2012
+ * @version 1.0.0.4, Oct 11, 2013
  * @since 0.2.0
  */
 @Service
@@ -142,15 +143,38 @@ public class UserQueryService {
     public Set<String> getUserNames(final String text) throws ServiceException {
         final Set<String> ret = new HashSet<String>();
 
-        String copy = text;
-        int idx = copy.indexOf('@');
+        int idx = text.indexOf('@');
 
         if (-1 == idx) {
             return ret;
         }
 
-        for (int i = UserRegisterValidation.MAX_USER_NAME_LENGTH; i > 0; i--) {
-            final String maybeUserName = StringUtils.substring(copy, idx + 1, i + idx + 1);
+        String copy = text.trim();
+        copy = copy.replaceAll("\\n", " ");
+        String[] userNames = StringUtils.substringsBetween(copy, "@", " ");
+        String tail = StringUtils.substringAfterLast(copy, "@");
+        
+        if (tail.contains(" ")) {
+            tail = null;
+        }
+        
+        if (null != tail) {
+            if (null == userNames) {
+                userNames = new String[1];
+                userNames[0] = tail;
+            } else {
+                userNames = Arrays.copyOf(userNames, userNames.length + 1);
+                userNames[userNames.length - 1] = tail;
+            }
+        }
+        
+        if (null == userNames) {
+            return ret;
+        }
+
+        for (int i = 0; i < userNames.length; i++) {
+            final String maybeUserName = userNames[i];
+
             if (!UserRegisterValidation.invalidUserName(maybeUserName)) { // A string match the user name pattern
                 if (null != getUserByName(maybeUserName)) { // Found a user
                     ret.add(maybeUserName);
@@ -160,8 +184,6 @@ public class UserQueryService {
                     if (-1 == idx) {
                         return ret;
                     }
-
-                    i = UserRegisterValidation.MAX_USER_NAME_LENGTH;
                 }
             }
         }
