@@ -21,19 +21,20 @@
         <div class="user-info">
             <span class="ft-small">${joinTimeLabel} ${user.userCreateTime?string('yyyy-MM-dd HH:mm:ss')}</span>
         </div>
+
+        <ul class="status fn-clear">
+            <li>
+                <strong>${user.userTagCount}</strong>
+                <span class="ft-small">${tagLabel}</span>
+            </li>
+            <li>
+                <strong>${user.userArticleCount}</strong>
+                <span class="ft-small">${articleLabel}</span>
+            </li>
+            <li>
+                <strong>${user.userCommentCount}</strong>
+                <span class="ft-small">${cmtLabel}</span>
+            </li>
+        </ul>
     </div>
-    <ul class="status fn-clear">
-        <li>
-            <strong>${user.userTagCount}</strong>
-            <span class="ft-small">${tagLabel}</span>
-        </li>
-        <li>
-            <strong>${user.userArticleCount}</strong>
-            <span class="ft-small">${articleLabel}</span>
-        </li>
-        <li>
-            <strong>${user.userCommentCount}</strong>
-            <span class="ft-small">${cmtLabel}</span>
-        </li>
-    </ul>
 </div>

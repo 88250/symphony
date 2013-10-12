@@ -25,7 +25,7 @@
                     <span class="ft-small">&COPY; ${year} </span>
                     <a rel="copyright" href="http://www.b3log.org" target="_blank">B3LOG.ORG</a>
                     <span class="ft-small">${version}</span>
-                    <span>
+                    <span class="fn-none">
                       ${siteVisitStatCode}
                     </span>
                 </div>

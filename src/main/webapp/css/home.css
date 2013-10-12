@@ -18,19 +18,20 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.1, Sep 11, 2013
+* @version 1.0.1.2, Sep 12, 2013
 */
 /* start home side */
 .user-online {
     position: absolute;
-    right: 25px;
-    top: 194px;
+    right: 24px;
+    top: 220px;
 }
 
 .user-name {
+    border-bottom: 1px dotted #CCCCCC;
     font-size: 25px;
-    margin: 5px 0;
-    text-align: center;
+    margin: 15px 0 25px;
+    padding-bottom: 15px;
 }
 
 .user-info {
@@ -40,9 +41,9 @@
 
 /* start settings */
 .module {
-    background-color: #F8F8FF;
     border: 1px solid #CCC;
     margin-bottom: 20px;
+    background-color: #FFF;
 }
 
 .module-header {
@@ -53,7 +54,6 @@
     background: -webkit-linear-gradient(#FAFAFA, #EAEAEA);
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#FAFAFA', endColorstr='#EAEAEA');
     border-bottom: 1px solid #D8D8D8;
-    color: #555;
     padding: 5px 15px;
     text-shadow: 0 1px 0 #FFFFFF;
 }
@@ -64,7 +64,18 @@
 }
 
 .module-panel {
-    padding: 20px;
+    padding: 8px 20px 20px 20px;
+}
+
+.module-panel strong {
+    display: inline-block;
+    margin-top: 14px;
+}
+
+.module-panel input[type=text],
+.module-panel input[type=password],
+.module-panel textarea {
+    width: 97%;
 }
 /* end settings */
 
