@@ -17,7 +17,7 @@
  * @fileoverview settings.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Nov 24, 2012
+ * @version 1.0.0.4, Oct 12, 2013
  */
 /**
  * @description Settings function
@@ -59,12 +59,10 @@ var Settings = {
                 if (result.sc) {
                     $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-succ").text(Label.updateSuccLabel).css({
                         "border-left": "1px solid #78909B",
-                        "width": "860px"
                     });
                 } else {
                     $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-error").text(result.msg).css({
                         "border-left": "1px solid #E2A0A0",
-                        "width": "855px"
                     });
                 }
             }
