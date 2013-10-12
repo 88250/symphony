@@ -226,7 +226,7 @@ textarea {
 }
 
 .content-reset-p p {
-    margin: 7px 0 0;
+    margin: 9px 0 0;
 }
 /* end reset */
 
@@ -432,7 +432,7 @@ button.red:active {
     height: 22px;
     margin-right: 5px;
     opacity: 0.7;
-    width: 33px;
+    width: 27px;
     filter: alpha(opacity=70);
 }
 
@@ -821,7 +821,7 @@ button.red:active {
     background-color: #FFF;
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
-    left: 180px;
+    left: 170px;
     padding: 3px 5px 3px 20px;
     position: absolute;
     top: 12px;
@@ -839,7 +839,7 @@ button.red:active {
 }
 
 .nav .tags {
-    left: 235px;
+    left: 220px;
     position: absolute;
     top: 5px;
     white-space: normal;

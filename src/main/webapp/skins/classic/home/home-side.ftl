@@ -11,15 +11,18 @@
         </div>
         </#if>
         <div class="user-info">
-            <span class="ft-small">Symphony ${user.userNo} ${noVIPLabel}</span>
+            <span class="ft-small">Symphony</span>
+            ${user.userNo}
+            <span class="ft-small">${noVIPLabel}</span>
         </div>
         <#if user.userURL!="">
         <div class="user-info">
-            <span class="ft-small">URL </span><a target="_blank" rel="friend" href="${user.userURL}">${user.userURL}</a>
+            <span class="ft-small">URL</span>
+            <a target="_blank" rel="friend" href="${user.userURL}">${user.userURL}</a>
         </div>
         </#if>
         <div class="user-info">
-            <span class="ft-small">${joinTimeLabel} ${user.userCreateTime?string('yyyy-MM-dd HH:mm:ss')}</span>
+            <span class="ft-small">${joinTimeLabel}</span> ${user.userCreateTime?string('yyyy-MM-dd HH:mm:ss')}
         </div>
 
         <ul class="status fn-clear">

@@ -16,7 +16,7 @@
                     <label>${titleLabel}</label>
                     <div>
                         <input type="text" id="articleTitle" value="<#if article??>${article.articleTitle}</#if>" />
-                        <span style="right:2px;top:30px;"></span>
+                        <span style="right:5px;top:41px;"></span>
                     </div>
                     <label>
                         ${contentLabel}
@@ -27,7 +27,7 @@
                     <div class="fn-clear">
                         <div class="fn-left">
                             <textarea id="articleContent"><#if article??>${article.articleContent}</#if></textarea>
-                            <span id="articleContentTip" style="right:2px;top:410px;"></span>
+                            <span id="articleContentTip" style="top: 429px; right: 5px;"></span>
                         </div>
                         <div class="fn-left grammar fn-none">
                             ${markdwonGrammarLabel}
@@ -36,7 +36,7 @@
                     <label>${tagLabel}</label>
                     <div>
                         <input id="articleTags" type="text" value="<#if article??>${article.articleTags}</#if>" />
-                        <span style="right:2px;top:478px;"></span>
+                        <span style="right:5px;top:510px;"></span><br/><br/>
                     </div>
                     <div class="fn-clear">
                         <div class="fn-left">
