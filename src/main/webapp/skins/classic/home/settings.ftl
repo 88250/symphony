@@ -94,8 +94,10 @@
                 </div>
                 <div class="side">
                     <#if ADLabel!="">
-                    <div class="index-module">
-                        ${ADLabel}
+                    <div class="module">
+                        <div class="module-header ad">
+                            ${ADLabel}
+                        </div> 
                     </div>
                     </#if>
                 </div>

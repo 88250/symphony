@@ -12,7 +12,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper fn-clear register content-reset">
-                <div class="form fn-left" style="width: 234px;">
+                <div class="form fn-left">
                     <table cellpadding="0" cellspacing="0">
                         <tbody>
                             <tr>
@@ -21,7 +21,7 @@
                                 </td>
                                 <td width="165">
                                     <input type="text" id="userName" />
-                                    <span style="left:240px;top:10px;"></span>
+                                    <span style="left: 289px; top: 14px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -30,7 +30,7 @@
                                 </td>
                                 <td>
                                     <input type="text" id="userEmail" />
-                                    <span style="left:240px;top:58px;"></span>
+                                    <span style="left:289px;top:69px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -39,7 +39,7 @@
                                 </td>
                                 <td>
                                     <input id="userPassword"  type="password" />
-                                    <span style="left:240px;top:106px;"></span>
+                                    <span style="left:289px;top:124px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -48,7 +48,7 @@
                                 </td>
                                 <td>
                                     <input id="confirmPassword" type="password" />
-                                    <span style="left:240px;top:154px;"></span>
+                                    <span style="left:289px;top:179px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -56,21 +56,21 @@
                                     <label for="securityCode">${captchaLabel}</label>
                                 </td>
                                 <td>
-                                    <input style="width:98px;" type="text" id="securityCode" />
-                                    <span style="top:202px;left:240px;"></span>
+                                    <input type="text" id="securityCode" />
+                                    <span style="top:234px;left:289px;"></span>
                                     <img id="captcha" style="cursor:pointer" src="/captcha" onclick="this.src='/captcha?'+(new Date()).getTime()" />
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <span id="registerTip"></span>
+                                    <span id="registerTip" style="top: 279px; right: 71px;"></span>
                                     <button class="green" onclick="Register.register()">${registerLabel}</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="fn-left intro">
+                <div class="intro">
                     ${introLabel}
                 </div>
             </div>

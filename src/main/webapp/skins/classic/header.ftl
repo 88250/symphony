@@ -32,7 +32,7 @@
                         </td>
                         <td>
                             <input id="nameOrEmail" type="text"/>
-                            <span style="left:220px;left:208px\9;top:20px;"></span>
+                            <span style="top: 28px; left: 241px;"></span>
                         </td>
                         <td>&nbsp;</td>
                     </tr>
@@ -42,14 +42,14 @@
                         </td>
                         <td>
                             <input type="password" id="loginPassword" />
-                            <span style="left:220px;left:208px\9;top:68px;"></span>
+                            <span style="top: 83px; left: 241px;"></span>
                         </td>
                         <td>&nbsp;</td>
                     </tr>
                     <tr>
                         <td colspan="3" align="right">
                             <span id="loginTip"></span>
-                            <button onclick="Util.login()">${loginLabel}</button>
+                            <button class="red" onclick="Util.login()">${loginLabel}</button>
                         </td>
                     </tr>
                 </table>

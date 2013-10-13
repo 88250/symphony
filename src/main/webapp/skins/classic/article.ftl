@@ -106,52 +106,65 @@
                     </#if>
                 </div>
                 <div class="side">
-                    <div class="index-module">
-                        <div class="fn-clear">
-                            <div class="fn-left avatar-wrapper">
-                                <img class="avatar" src="${article.articleAuthorThumbnailURL}" />
+                    <div class="module">
+                        <div class="module-header ad">
+                            <div class="fn-clear">
+                                <div class="fn-left avatar-wrapper">
+                                    <img class="avatar" src="${article.articleAuthorThumbnailURL}" />
+                                </div>
+                                <div class="fn-left">
+                                    <a rel="author" href="/member/${article.articleAuthorName}" 
+                                       title="${article.articleAuthorName}">${article.articleAuthorName}</a>
+                                    <#if article.articleAuthorURL!="">
+                                    <br/>
+                                    <a target="_blank" rel="nofollow" href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
+                                    </#if>
+                                </div>
                             </div>
-                            <div class="fn-left">
-                                <a rel="author" href="/member/${article.articleAuthorName}" 
-                                   title="${article.articleAuthorName}">${article.articleAuthorName}</a>
-                                <#if article.articleAuthorURL!="">
-                                <br/>
-                                <a target="_blank" rel="nofollow" href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
-                                </#if>
+                            <div>
+                                ${article.articleAuthorIntro}
                             </div>
+                        </div> 
+                    </div>
+
+                    <div class="module">
+                        <div class="module-header">
+                            <h2>
+                                ${relativeArticleLabel}
+                            </h2>
                         </div>
-                        <div>
-                            ${article.articleAuthorIntro}
+                        <div class="module-panel">
+                            <ul class="module-list">
+                                <#list sideRelevantArticles as relevantArticle>
+                                <li<#if !relevantArticle_has_next> class="last"</#if>>
+                                    <a rel="nofollow" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
+                                    <a class="ft-small" rel="nofollow" 
+                                       href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
+                                </li>
+                                </#list>
+                            </ul>
                         </div>
                     </div>
-                    <div class="index-module">
-                        <h2>
-                            ${relativeArticleLabel}
-                        </h2>
-                        <ul class="index-module-list module-line">
-                            <#list sideRelevantArticles as relevantArticle>
-                            <li<#if !relevantArticle_has_next> class="last"</#if>>
-                                <a rel="nofollow" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
-                                <a class="ft-small" rel="nofollow" 
-                                   href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
-                            </li>
-                            </#list>
-                        </ul>
+
+                    <div class="module">
+                        <div class="module-header">
+                            <h2>
+                                ${randomArticleLabel}
+                            </h2>
+                        </div>
+                        <div class="module-panel">
+                            <ul class="module-list">
+                                <#list sideRandomArticles as randomArticle>
+                                <li<#if !randomArticle_has_next> class="last"</#if>>
+                                    <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
+                                    <a class="ft-small" rel="nofollow"
+                                       href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
+                                </li>
+                                </#list>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="index-module">
-                        <h2>
-                            ${randomArticleLabel}
-                        </h2>
-                        <ul class="index-module-list module-line">
-                            <#list sideRandomArticles as randomArticle>
-                            <li<#if !randomArticle_has_next> class="last"</#if>>
-                                <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
-                                <a class="ft-small" rel="nofollow"
-                                   href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
-                            </li>
-                            </#list>
-                        </ul>
-                    </div>
+
                 </div>
             </div>
         </div>

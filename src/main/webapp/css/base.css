@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.8, Oct 12, 2013
+* @version 1.0.2.9, Oct 13, 2013
 */
 /* start reset */
 html {
@@ -800,20 +800,21 @@ button.red:active {
 }
 
 .nav .form {
-    background-color: #fafafa;
-    background: linear-gradient(#fafafa, #eaeaea);
-    background: -o-linear-gradient(#fafafa, #eaeaea);
-    background: -ms-linear-gradient(#fafafa, #eaeaea);
-    background: -webkit-linear-gradient(#fafafa, #eaeaea);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#fafafa', endColorstr='#eaeaea');
+    background-color: #FFF;
     border: 1px solid #CACACA;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
+    padding: 14px;
     position: absolute;
-    right: 0;
+    right: -2px;
     top: 49px;
     z-index: 1;
-    width: 208px;
+    width: 232px;
+}
+
+.nav .form input[type="text"], 
+.nav .form input[type="password"] {
+    margin: 10px 0;
+    width: 170px;
 }
 
 .nav input.search {
@@ -879,6 +880,8 @@ button.red:active {
 .tags > li > div > .fn-right {
     color: #666;
     font-size: 11px;
+    white-space: nowrap;
+    word-wrap: normal;
 }
 
 .footer-nav a {
@@ -927,6 +930,10 @@ button.red:active {
 .list > ul > li:hover {
     background-color: #F7F7F7;
 }
+
+.list li.last {
+    border-bottom-width: 0;
+}
 /* end list */
 
 /* start article list */
@@ -940,7 +947,7 @@ button.red:active {
 }
 
 .article-list li h2 {
-    margin-bottom: 5px;
+    margin-bottom: 7px;
 }
 
 .article-list li .count,
@@ -971,23 +978,72 @@ button.red:active {
 /* end article list */
 
 /* start side module */
-.index-module {
-    background-color: #F7F7F7;
-    border: 1px solid #DDDDDD;
-    border-radius: 5px 5px 5px 5px;
-    float: right;
+.module {
+    border: 1px solid #CCC;
     margin-bottom: 20px;
-    padding: 10px;
-    width: 258px;
+    background-color: #FFF;
+    border-radius: 5px;
+    width: 100%;
     word-wrap: break-word;
 }
 
-.index-module > h2 {
-    border-bottom: 1px solid #CCCCCC;
-    color: #AAAAAA;
-    font-size: 14px;
+.module-header {
+    border-radius: 5px 5px 0 0;
+    background-color: #fafafa;
+    background: linear-gradient(#FAFAFA, #EAEAEA);
+    background: -ms-linear-gradient(#FAFAFA, #EAEAEA);
+    background: -o-linear-gradient(#FAFAFA, #EAEAEA);
+    background: -webkit-linear-gradient(#FAFAFA, #EAEAEA);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#FAFAFA', endColorstr='#EAEAEA');
+    border-bottom: 1px solid #D8D8D8;
+    padding: 5px 15px;
+    text-shadow: 0 1px 0 #FFFFFF;
+    line-height: 24px;
+}
+
+.module-header h2 {
+    font-size: 15px;
     font-weight: normal;
-    margin-bottom: 7px;
-    padding-bottom: 3px;
+}
+
+.module-panel {
+    border-radius: 0 0 5px 5px;
+}
+
+.module-panel strong {
+    display: inline-block;
+    margin-top: 14px;
+}
+
+.module-panel input[type=text],
+.module-panel input[type=password],
+.module-panel textarea {
+    width: 97%;
+}
+
+.module-panel .module-list li {
+    border-bottom: 1px dotted #CCCCCC;
+    list-style: none outside none;
+    padding: 5px 10px;
+}
+
+.module-panel .module-list li.last {
+    border-bottom-width: 0;
+}
+
+.module .comment-content {
+    color: #999999;
+    float: left;
+    margin-left: 5px;
+    width: 210px;
+}
+
+.module-header.ad {
+    border-bottom-width: 0;
+    border-radius: 5px; 
+}
+
+.module-panel.form {
+    padding: 10px 20px 20px;
 }
 /* end side module */

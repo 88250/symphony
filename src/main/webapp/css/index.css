@@ -18,7 +18,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.0, Oct 12, 2013
+* @version 1.0.2.1, Oct 13, 2013
 */
 /* start module */
 .index-module .index-module-list > li {
@@ -90,8 +90,10 @@
 }
 
 #commentContent {
-    overflow: hidden;
     background-color: #FAFAFA;
+    margin: 20px 0;
+    overflow: hidden;
+    width: 672px;
 }
 
 .tencent-ico, 
@@ -140,17 +142,35 @@
 /* start register */
 .register .intro {
     border-left: 1px dashed #C0C0C0;
-    margin-left: 30px;
+    float: right;
+    margin-left: 50px;
     min-height: 200px;
     padding-left: 30px;
-    width: 705px;
+    width: 630px;
+}
+
+.register .form input[type="text"],
+.register .form input[type="password"], 
+.register .form textarea {
+    margin: 10px 0;
+    width: 200px;
+}
+
+#securityCode {
+    margin-right: 10px;
+    width: 131px;
 }
 /* end register */
 
 /* start side tags */
+.module-panel .tags {
+    margin: 10px;
+}
+
 .tags > li {
     float: left;
     position: relative;
+    list-style: none;
 }
 
 .tags > li:hover > div {
@@ -160,8 +180,7 @@
 .tags > li > span {
     float: left;
     padding: 3px 10px;
-    border: 1px solid #F7F7F7;
-    border-bottom-width: 0;
+    border: 1px solid #FFF;
     position: relative;
     height: 20px;
     white-space: nowrap;
@@ -169,12 +188,12 @@
 }
 
 .tags > li:hover > span {
-    background-color: #FFFFFF;
+    background-color: #F7F7F7;
     border-color: #DDDDDD;
     border-radius: 3px 3px 0 0;
     opacity: 0.9;
     filter: alpha(opacity=90);
-    z-index: 2;
+    z-index: 1;
 }
 
 .tags > li > span > img {
@@ -185,67 +204,41 @@
 }
 
 .tags > li > div {
-    background-color: #FFFFFF;
+    background-color: #F7F7F7;
     border: 1px solid #DDDDDD;
-    border-radius: 3px 3px 3px 3px;
+    border-top-style: dotted;
+    border-radius: 0 0 3px 3px;
     display: none;
     right: 0;
     margin-left: 3px;
     padding: 3px 5px;
     position: absolute;
-    top: 26px;
-    width: 244px;
-    z-index: 1;
+    top: 27px;
+    z-index: 2;
     opacity: 0.9;
     filter: alpha(opacity=90);
 }
 /* end side tags */
 
 /* start tags.html */
-.tags-cold > ul > li {
-    border-bottom: 1px solid #CFE0D0;
-    border-top: 1px solid #F5FCF6;
+.tags-trend a,
+.tags-trend li h2 {
+    color: #cf7e7e;
+    display: inline;
 }
-
-.tags-trend > ul > li {
-    border-bottom: 1px solid #ffcece;
-    border-top: 1px solid #F5FCF6;
-}
-
-.tags-cold > ul > li.even {
-    background-color: #F1FEF4;
-    background: linear-gradient(#F1FEF4, #E5F8E6);
-    background: -o-linear-gradient(#F1FEF4, #E5F8E6);
-    background: -ms-linear-gradient(#F1FEF4, #E5F8E6);
-    background: -webkit-linear-gradient(#F1FEF4, #E5F8E6);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#F1FEF4', endColorstr='#E5F8E6');
-}
-
-.tags-trend > ul > li.even {
-    background-color: #ffe8ff;
-    background: linear-gradient(#fef3f3, #fce7e7);
-    background: -ms-linear-gradient(#fef3f3, #fce7e7);
-    background: -o-linear-gradient(#fef3f3, #fce7e7);
-    background: -webkit-linear-gradient(#ffe8ff, #ffe8e8);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#ffe8ff', endColorstr='#ffe8e8');
-}
-
-.tags-cold .ft-small {
-    color: #a2be9e;
-} 
 
 .tags-trend .ft-small {
     color: #e4b6b6;
 } 
 
-.tags-cold div.fn-left > a,
-.tags-cold h2 {
-    color: #85A980;
-}
+.tags-cold .ft-small {
+    color: #a2be9e;
+} 
 
-.tags-trend div.fn-left > a,
-.tags-trend h2 {
-    color: #cf7e7e;
+.tags-cold a,
+.tags-cold li h2 {
+    color: #85A980;
+    display: inline;
 }
 /* end tags.html */
 

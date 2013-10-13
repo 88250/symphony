@@ -18,7 +18,7 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.2, Sep 12, 2013
+* @version 1.0.1.3, Sep 13, 2013
 */
 /* start home side */
 .user-online {
@@ -40,46 +40,6 @@
     color: #666666;
 }
 /* end home side */
-
-/* start settings */
-.module {
-    border: 1px solid #CCC;
-    margin-bottom: 20px;
-    background-color: #FFF;
-}
-
-.module-header {
-    background-color: #fafafa;
-    background: linear-gradient(#FAFAFA, #EAEAEA);
-    background: -ms-linear-gradient(#FAFAFA, #EAEAEA);
-    background: -o-linear-gradient(#FAFAFA, #EAEAEA);
-    background: -webkit-linear-gradient(#FAFAFA, #EAEAEA);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#FAFAFA', endColorstr='#EAEAEA');
-    border-bottom: 1px solid #D8D8D8;
-    padding: 5px 15px;
-    text-shadow: 0 1px 0 #FFFFFF;
-}
-
-.module-header h2 {
-    font-size: 16px;
-    font-weight: normal;
-}
-
-.module-panel {
-    padding: 8px 20px 20px 20px;
-}
-
-.module-panel strong {
-    display: inline-block;
-    margin-top: 14px;
-}
-
-.module-panel input[type=text],
-.module-panel input[type=password],
-.module-panel textarea {
-    width: 97%;
-}
-/* end settings */
 
 /* start add article */
 #tip {
