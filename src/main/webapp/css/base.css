@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.9, Oct 13, 2013
+* @version 1.0.3.0, Oct 14, 2013
 */
 /* start reset */
 html {
@@ -1041,6 +1041,10 @@ button.red:active {
 .module-header.ad {
     border-bottom-width: 0;
     border-radius: 5px; 
+}
+
+.module-header.ad .fn-clear {
+    margin-top: 7px;
 }
 
 .module-panel.form {
