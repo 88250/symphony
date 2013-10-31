@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, Oct 14, 2013
+ * @version 1.0.1.0, Oct 31, 2013
  */
 
 /**
@@ -27,7 +27,7 @@
 var Comment = {
     _validateData: [{
             "id": "commentContent",
-            "type": 256,
+            "type": 1000,
             "msg": Label.commentErrorLabel
         }],
     /**
