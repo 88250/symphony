@@ -16,7 +16,6 @@
 package org.b3log.symphony.event;
 
 import java.util.Set;
-import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.b3log.latke.Keys;
@@ -26,8 +25,6 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Notification;
@@ -39,7 +36,7 @@ import org.json.JSONObject;
  * Sends a comment notification.
  * 
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Sep 6, 2013
+ * @version 1.0.0.9, Nov 9, 2013
  * @since 0.2.0
  */
 @Named
@@ -51,21 +48,10 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     private static final Logger LOGGER = Logger.getLogger(CommentNotifier.class.getName());
 
     /**
-     * URL fetch service.
-     */
-    private URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
-
-    /**
      * Notification management service.
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
-
-    /**
-     * Bean manager.
-     */
-    @Inject
-    private BeanManager beanManager;
 
     /**
      * User query service.
@@ -95,7 +81,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final JSONObject commenter = userQueryService.getUser(originalComment.optString(Comment.COMMENT_AUTHOR_ID));
             final String commenterName = commenter.optString(User.USER_NAME);
             atUserNames.remove(commenterName); // Do not notify commenter itself
-            
+
             // 1. 'Commented' Notification
             if (!commenterIsArticleAuthor) {
                 final JSONObject requestJSONObject = new JSONObject();
@@ -115,6 +101,10 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                     continue;
                 }
 
+                if (user.optString(Keys.OBJECT_ID).equals(articleAuthorId)) {
+                    continue; // Has added in step 1
+                }
+                
                 final JSONObject requestJSONObject = new JSONObject();
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, user.optString(Keys.OBJECT_ID));
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalComment.optString(Keys.OBJECT_ID));
