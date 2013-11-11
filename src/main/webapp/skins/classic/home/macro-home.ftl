@@ -29,18 +29,6 @@
                         <li<#if type == "comments"> class="current"</#if>>
                             <a href="/member/${user.userName}/comments">${cmtLabel}</a>
                         </li>
-                        <#if isLoggedIn && (userName != user.userName)>
-                        <li class="follow">
-                            <a href="javascript:void(0)" onclick="Util.follow(this, '${followingId}')"> 
-                                <#if isFollowing>
-                                <span>${unfollowLabel}</span>
-                                <#else>
-                                <span>${followLabel}</span>
-                                </#if>
-                                <img class="avatar-small" src="${user.userThumbnailURL}"/>
-                            </a>
-                        </li>
-                        </#if>
                     </ul>
                     <div class="fn-clear">
                         <#nested>

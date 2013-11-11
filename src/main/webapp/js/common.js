@@ -34,13 +34,13 @@ var Util = {
         if ($(it).hasClass("disabled")) {
             return false;
         }
-        
+
         var requestJSONObject = {
             followingId: id
         };
-        
+
         $(it).addClass("disabled");
-        
+
         $.ajax({
             url: "/follow/user",
             type: "POST",
@@ -48,11 +48,10 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function(result, textStatus) {
                 if (result.sc) {
-                    $(it).removeClass("disabled").attr("onclick", "Util.unfollow(this, '" + id + "')");
-                    $(it).find("span").text(Label.unfollowLabel);
+                    $(it).removeClass("disabled").removeClass("green").addClass("red")
+                            .attr("onclick", "Util.unfollow(this, '" + id + "')")
+                            .text(Label.unfollowLabel);
                 }
-            },
-            complete: function(jqXHR, textStatus) {
             }
         });
     },
@@ -60,8 +59,30 @@ var Util = {
      * @description 取消关注     
      * @param {String} type 取消关注的类型
      */
-    unfollow: function(type) {
+    unfollow: function(it, id) {
+        if ($(it).hasClass("disabled")) {
+            return false;
+        }
 
+        var requestJSONObject = {
+            followingId: id
+        };
+
+        $(it).addClass("disabled");
+
+        $.ajax({
+            url: "/follow/user",
+            type: "DELETE",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus) {
+                if (result.sc) {
+                    $(it).removeClass("disabled").removeClass("red").addClass("green")
+                            .attr("onclick", "Util.follow(this, '" + id + "')")
+                            .text(Label.followLabel);
+                }
+            }
+        });
     },
     /**
      * @description 回到顶部
