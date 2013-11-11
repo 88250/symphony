@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony.event;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,15 +24,15 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
@@ -39,7 +41,7 @@ import org.json.JSONObject;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Sep 6, 2013
+ * @version 1.0.0.4, Nov 11, 2013
  * @since 0.2.0
  */
 @Named
@@ -61,15 +63,23 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
     @Inject
     private NotificationMgmtService notificationMgmtService;
 
+    /**
+     * Follow query service.
+     */
+    @Inject
+    private FollowQueryService followQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleNotifier.class.getName()});
-
-
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+                   new Object[]{event.getType(), data, ArticleNotifier.class.getName()});
 
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
@@ -86,6 +96,8 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                 return;
             }
 
+            final Set<String> atedUserIds = new HashSet<String>();
+            
             // 'At' Notification
             for (final String userName : atUserNames) {
                 final JSONObject user = userQueryService.getUserByName(userName);
@@ -97,12 +109,30 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                 }
 
                 final JSONObject requestJSONObject = new JSONObject();
-                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, user.optString(Keys.OBJECT_ID));
+                final String atedUserId = user.optString(Keys.OBJECT_ID);
+                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, atedUserId);
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalArticle.optString(Keys.OBJECT_ID));
 
                 notificationMgmtService.addAtNotification(requestJSONObject);
+                
+                atedUserIds.add(atedUserId);
             }
+            
+            // 'Article' Notification
+            final List<JSONObject> followerUsers = followQueryService.getFollowerUsers(articleAuthorId, 1, Integer.MAX_VALUE);
+            for (final JSONObject followerUser : followerUsers) {
+                final JSONObject requestJSONObject = new JSONObject();
+                final String followerUserId = followerUser.optString(Follow.FOLLOWER_ID);
+                
+                if (atedUserIds.contains(followerUserId)) {
+                    continue;
+                }
+                
+                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, followerUserId);
+                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalArticle.optString(Keys.OBJECT_ID));
 
+                notificationMgmtService.addFollowingUserNotification(requestJSONObject);
+            }
 
 //            final Set<String> qqSet = new HashSet<String>();
 //            for (final String userName : atUserNames) {
@@ -116,7 +146,6 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
 //            if (qqSet.isEmpty()) {
 //                return;
 //            }
-
 //            /*
 //             * {
 //             *     "key": "",
@@ -153,7 +182,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
 
     /**
      * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
-     * 
+     *
      * @return event type
      */
     @Override

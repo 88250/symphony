@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all notification model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 2, 2013
+ * @version 1.0.0.2, Nov 11, 2013
  * @since 0.2.5
  */
 public final class Notification {
@@ -74,7 +74,12 @@ public final class Notification {
      * Data type - commented.
      */
     public static final int DATA_TYPE_C_COMMENTED = 3;
-
+    
+    /**
+     * Data type - followingUser.
+     */
+    public static final int DATA_TYPE_C_FOLLOWING_USER = 4;
+    
     //// Transient ////
     /**
      * Key of unread notification count.

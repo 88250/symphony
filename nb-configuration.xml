@@ -17,6 +17,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>markdowns</word>
         <word>permalink</word>
         <word>servlet</word>
+        <word>Unfollows</word>
         <word>whitelist</word>
     </spellchecker-wordlist>
 </project-shared-configuration>

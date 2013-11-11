@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.8, Oct 11, 2013
+ * @version 1.0.1.9, Nov 11, 2013
  * @since 0.2.0
  */
 public final class Common {
@@ -103,6 +103,11 @@ public final class Common {
      * Key of latest comment articles.
      */
     public static final String LATEST_CMT_ARTICLES = "latestCmtArticles";
+    
+    /**
+     * Key of user id.
+     */
+    public static final String USER_ID = "userId";
 
     /**
      * Key of user home articles.
@@ -133,6 +138,16 @@ public final class Common {
      * Key of unread 'at' notifications count.
      */
     public static final String UNREAD_AT_NOTIFICATION_CNT = "unreadAtNotificationCnt";
+    
+    /**
+     * Key of 'followingUser' notifications.
+     */
+    public static final String FOLLOWING_USER_NOTIFICATIONS = "followingUserNotifications";
+    
+    /**
+     * Key of unread 'followingUser' notifications count.
+     */
+    public static final String UNREAD_FOLLOWING_USER_NOTIFICATION_CNT = "unreadFollowingUserNotificationCnt";
     
     /**
      * Key of author name.

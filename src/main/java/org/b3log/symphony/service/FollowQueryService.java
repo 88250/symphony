@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 28, 2013
+ * @version 1.0.0.1, Nov 11, 2013
  * @since 0.2.5
  */
 @Service
@@ -60,7 +60,7 @@ public class FollowQueryService {
 
     /**
      * Gets following tags of the specified follower.
-     * 
+     *
      * @param followerId the specified follower id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -80,7 +80,7 @@ public class FollowQueryService {
 
     /**
      * Gets following users of the specified follower.
-     * 
+     *
      * @param followerId the specified follower id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -99,19 +99,64 @@ public class FollowQueryService {
     }
 
     /**
-     * Gets the followings of a follower specified by the given follower id and follow type.
-     * 
+     * Gets follower users of the specified following user.
+     *
+     * @param followingUserId the specified following user id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return follower users, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getFollowerUsers(final String followingUserId, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        try {
+            return getFollowers(followingUserId, pageSize, currentPageNum, Follow.FOLLOWING_TYPE_C_USER);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets follower users of following user[id=" + followingUserId + "] failed", e);
+
+            return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Gets the followings of a follower specified by the given follower id and following type.
+     *
      * @param followerId the given follower id
      * @param followingType the specified following type
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
      * @return followings, returns an empty list if not found
-     * @throws RepositoryException 
+     * @throws RepositoryException repository exception
      */
     private List<JSONObject> getFollowings(final String followerId, final int followingType, final int currentPageNum, final int pageSize)
             throws RepositoryException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Follow.FOLLOWER_ID, FilterOperator.EQUAL, followerId));
+        filters.add(new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, followingType));
+
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters))
+                .setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+
+        final JSONObject result = followRepository.get(query);
+
+        return CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+    }
+
+    /**
+     * Gets the followers of a following specified by the given following id and follow type.
+     *
+     * @param followingId the given following id
+     * @param followingType the specified following type
+     * @param currentPageNum the specified current page number
+     * @param pageSize the specified page size
+     * @return followers, returns an empty list if not found
+     * @throws RepositoryException repository exception
+     */
+    private List<JSONObject> getFollowers(final String followingId, final int followingType, final int currentPageNum, final int pageSize)
+            throws RepositoryException {
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Follow.FOLLOWING_ID, FilterOperator.EQUAL, followingId));
         filters.add(new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, followingType));
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
