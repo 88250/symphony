@@ -227,17 +227,19 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                  final String userName) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("/home/comments.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
         final JSONObject user = userQueryService.getUserByName(userName);
         if (null == user) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
+        
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/comments.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -251,6 +253,12 @@ public class UserProcessor {
 
         dataModel.put(User.USER, user);
         filler.fillUserThumbnailURL(user);
+
+        if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
+            renderer.setTemplateName("/home/block.ftl");
+
+            return;
+        }
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -281,9 +289,6 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
     }
 
     /**
