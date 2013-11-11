@@ -43,6 +43,11 @@ public final class Common {
      * Key of go to.
      */
     public static final String GOTO = "goto";
+    
+    /**
+     * Key of current user.
+     */
+    public static final String CURRENT_USER = "currentUser";
 
     /**
      * Key of is logged in.

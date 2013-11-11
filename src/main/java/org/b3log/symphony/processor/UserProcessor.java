@@ -22,7 +22,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -40,7 +39,6 @@ import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
@@ -176,7 +174,8 @@ public class UserProcessor {
 
         renderer.setTemplateName("/home/home.ftl");
 
-        fillUserThumbnailURL(user);
+        dataModel.put(User.USER, user);
+        filler.fillUserThumbnailURL(user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
@@ -251,7 +250,7 @@ public class UserProcessor {
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
 
         dataModel.put(User.USER, user);
-        fillUserThumbnailURL(user);
+        filler.fillUserThumbnailURL(user);
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
@@ -290,12 +289,6 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/settings.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-        final JSONObject user = userQueryService.getCurrentUser(request);
-
-        dataModel.put(User.USER, user);
-
-        fillUserThumbnailURL(user);
 
         filler.fillHeader(request, response, dataModel);
         filler.fillFooter(dataModel);
@@ -422,17 +415,5 @@ public class UserProcessor {
 
             ret.put(Keys.MSG, msg);
         }
-    }
-
-    /**
-     * Fills the specified user thumbnail URL.
-     *
-     * @param user the specified user
-     */
-    private void fillUserThumbnailURL(final JSONObject user) {
-        final String userEmail = user.optString(User.USER_EMAIL);
-        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(userEmail) + "?s=140&d="
-                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
-        user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
     }
 }

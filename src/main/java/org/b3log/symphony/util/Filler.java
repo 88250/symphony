@@ -20,24 +20,30 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Sessions;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
@@ -50,6 +56,10 @@ import org.json.JSONObject;
 @Service
 public class Filler {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
     /**
      * Language service.
      */
@@ -90,7 +100,13 @@ public class Filler {
      */
     @Inject
     private UserMgmtService userMgmtService;
-    
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
     /**
      * Notification query service.
      */
@@ -99,19 +115,19 @@ public class Filler {
 
     /**
      * Fills relevant articles.
-     * 
+     *
      * @param dataModel the specified data model
      * @param article the specified article
      * @throws Exception exception
      */
     public void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                      articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
     }
 
     /**
      * Fills the latest comments.
-     * 
+     *
      * @param dataModel the specified data model
      * @throws Exception exception
      */
@@ -121,9 +137,9 @@ public class Filler {
 
     /**
      * Fills random articles.
-     * 
+     *
      * @param dataModel the specified data model
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     public void fillRandomArticles(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(Symphonys.getInt("sideRandomArticlesCnt")));
@@ -131,7 +147,7 @@ public class Filler {
 
     /**
      * Fills tags.
-     * 
+     *
      * @param dataModel the specified data model
      * @throws Exception exception
      */
@@ -141,14 +157,14 @@ public class Filler {
 
     /**
      * Fills header.
-     * 
+     *
      * @param request the specified request
      * @param response the specified response
      * @param dataModel the specified data model
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     public void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) throws Exception {
+                           final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
 
@@ -160,7 +176,7 @@ public class Filler {
 
     /**
      * Fills footer.
-     * 
+     *
      * @param dataModel the specified data model
      * @throws Exception exception
      */
@@ -173,13 +189,13 @@ public class Filler {
 
     /**
      * Fills personal navigation.
-     * 
+     *
      * @param request the specified request
      * @param response the specified response
      * @param dataModel the specified data model
      */
     private void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) {
+                                 final Map<String, Object> dataModel) {
         dataModel.put(Common.IS_LOGGED_IN, false);
 
         if (null == Sessions.currentUser(request) && !userMgmtService.tryLogInWithCookie(request, response)) {
@@ -187,8 +203,15 @@ public class Filler {
 
             return;
         }
-        
-        final GeneralUser curUser = userService.getCurrentUser(request);
+
+        JSONObject curUser = null;
+
+        try {
+            curUser = userQueryService.getCurrentUser(request);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.ERROR, "Gets the current user failed", e);
+        }
+
         if (null == curUser) {
             dataModel.put("loginLabel", langPropsService.get("loginLabel"));
 
@@ -200,18 +223,19 @@ public class Filler {
 
         dataModel.put("logoutLabel", langPropsService.get("logoutLabel"));
 
-        final String userName = curUser.getNickname();
+        final String userName = curUser.optString(User.USER_NAME);
         dataModel.put(User.USER_NAME, userName);
-        
-        dataModel.put(User.USER, curUser);
-        
-        final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.getId());
+        fillUserThumbnailURL(curUser);
+
+        dataModel.put(Common.CURRENT_USER, curUser);
+
+        final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
         dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);
     }
 
     /**
      * Fills minified directory and file postfix for static JavaScript, CSS.
-     * 
+     *
      * @param dataModel the specified data model
      */
     public void fillMinified(final Map<String, Object> dataModel) {
@@ -228,8 +252,20 @@ public class Filler {
     }
 
     /**
+     * Fills the specified user thumbnail URL.
+     *
+     * @param user the specified user
+     */
+    public void fillUserThumbnailURL(final JSONObject user) {
+        final String userEmail = user.optString(User.USER_EMAIL);
+        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(userEmail) + "?s=140&d="
+                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+        user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
+    }
+
+    /**
      * Fills the all language labels.
-     * 
+     *
      * @param dataModel the specified data model
      */
     private void fillLangs(final Map<String, Object> dataModel) {
@@ -238,7 +274,7 @@ public class Filler {
 
     /**
      * Fills trend tags.
-     * 
+     *
      * @param dataModel the specified data model
      * @throws Exception exception
      */
@@ -248,9 +284,9 @@ public class Filler {
 
     /**
      * Fills system info.
-     * 
+     *
      * @param dataModel the specified data model
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     private void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
