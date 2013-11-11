@@ -179,7 +179,7 @@ public class UserProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(User.USER);
+            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
@@ -265,7 +265,7 @@ public class UserProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(User.USER);
+            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
