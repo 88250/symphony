@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.2 Sep 11, 2013
+ * @version 1.0.1.3 Nov 10, 2013
  */
 
 /**
@@ -26,15 +26,51 @@
  */
 var Util = {
     /**
+     * @description 关注
+     * @param {BOM} it 触发事件的元素
+     * @param {String} id 关注 id
+     */
+    follow: function(it, id) {
+        if ($(it).hasClass("disabled")) {
+            return false;
+        }
+        
+        var requestJSONObject = {
+            followingId: id
+        };
+        
+        $(it).addClass("disabled");
+        
+        $.ajax({
+            url: "/follow/user",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus) {
+                if (result.sc) {
+                    $(it).removeClass("disabled").attr("onclick", "Util.unfollow(this, '" + id + "')");
+                    $(it).find("span").text(Label.unfollowLabel);
+                }
+            },
+            complete: function(jqXHR, textStatus) {
+            }
+        });
+    },
+    /**
+     * @description 取消关注     
+     * @param {String} type 取消关注的类型
+     */
+    unfollow: function(type) {
+
+    },
+    /**
      * @description 回到顶部
      */
     goTop: function() {
         var acceleration = acceleration || 0.1;
-
         var y = $(window).scrollTop();
         var speed = 1 + acceleration;
         window.scrollTo(0, Math.floor(y / speed));
-
         if (y > 0) {
             var invokeFunction = "Util.goTop(" + acceleration + ")";
             window.setTimeout(invokeFunction, 16);
@@ -58,21 +94,18 @@ var Util = {
     init: function() {
         // 导航
         this._initNav();
-
         // 登录密码输入框回车事件
         $("#loginPassword").keyup(function(event) {
             if (event.keyCode === 13) {
                 Util.login();
             }
         });
-
         // search input
         $(".nav input.search").focus(function() {
             $(".nav .tags").hide();
         }).blur(function() {
             $(".nav .tags").show("slow");
         });
-
         $(window).scroll(function() {
             if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
                 $(".go-top").css({
@@ -130,7 +163,6 @@ var Util = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userPassword: calcMD5($("#loginPassword").val())
             };
-
             $.ajax({
                 url: "/login",
                 type: "POST",
@@ -140,12 +172,7 @@ var Util = {
                     if (result.sc) {
                         window.location.reload();
                     } else {
-                        $("#loginTip").text(result.msg).addClass("tip-error").css({
-                            "border-left": "1px solid #E2A0A0",
-                            "left": "10px",
-                            "top": "107px",
-                            "width": "125px"
-                        });
+                        $("#loginTip").text(result.msg).addClass("tip-error");
                     }
                 },
                 complete: function(jqXHR, textStatus) {
@@ -154,7 +181,6 @@ var Util = {
         }
     }
 };
-
 /**
  * @description 数据验证
  * @static
@@ -259,12 +285,10 @@ var Validate = {
         return isValidate;
     }
 };
-
 /**
  * @description 全局变量
  */
 var Label = {};
-
 if (!Cookie) {
     /**
      * @description Cookie 相关操作

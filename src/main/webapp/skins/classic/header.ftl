@@ -14,16 +14,16 @@
             <a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
             </#list>
         </span>
-        <div class="fn-right fn-clear user-nav">
+        <div class="fn-clear user-nav">
             <#if isLoggedIn>
-            <a href="/member/${userName}">${userName}</a>
-            <a class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications/commented" title="${messageLabel}">${unreadNotificationCount}</a>
-            <a href="/add-article">${addArticleLabel}</a>
-            <a href="/settings">${settingsLabel}</a>
             <a href="${logoutURL}" title="${logoutLabel}" class="last">${logoutLabel}</a>
+            <a href="/settings">${settingsLabel}</a>
+            <a href="/add-article">${addArticleLabel}</a>
+            <a class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications/commented" title="${messageLabel}">${unreadNotificationCount}</a>
+            <a href="/member/${userName}">${userName}</a>
             <#else>
-            <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>
             <a href="javascript:Util.goRegister()" class="last">${registerLabel}</a>
+            <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>
             <div class="form fn-none">
                 <table cellspacing="0" cellpadding="0">
                     <tr>
@@ -48,7 +48,7 @@
                     </tr>
                     <tr>
                         <td colspan="3" align="right">
-                            <span id="loginTip"></span>
+                            <span id="loginTip" style="right: 82px; top: 128px;"></span>
                             <button class="red" onclick="Util.login()">${loginLabel}</button>
                         </td>
                     </tr>

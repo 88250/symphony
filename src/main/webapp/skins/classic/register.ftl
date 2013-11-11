@@ -58,7 +58,7 @@
                                 <td>
                                     <input type="text" id="securityCode" />
                                     <span style="top:234px;left:289px;"></span>
-                                    <img id="captcha" style="cursor:pointer" src="/captcha" onclick="this.src='/captcha?'+(new Date()).getTime()" />
+                                    <img id="captcha" style="cursor:pointer" src="/captcha" onclick="this.src = '/captcha?' + (new Date()).getTime()" />
                                 </td>
                             </tr>
                             <tr>
@@ -79,11 +79,13 @@
         <script type="text/javascript" src="/js/register.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="/js/lib/md5.js?${staticResourceVersion}"></script>
         <script>
-            Register.init();
-            Label.userNameErrorLabel = "${userNameErrorLabel}";
-            Label.invalidEmailLabel = "${invalidEmailLabel}";
-            Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
-            Label.captchaErrorLabel = "${captchaErrorLabel}";
+                                        Register.init();
+                                        var Label = {
+                                            userNameErrorLabel: "${userNameErrorLabel}",
+                                            invalidEmailLabel: "${invalidEmailLabel}",
+                                            confirmPwdErrorLabel: "${confirmPwdErrorLabel}",
+                                            captchaErrorLabel: "${captchaErrorLabel}"
+                                        };
         </script>
     </body>
 </html>

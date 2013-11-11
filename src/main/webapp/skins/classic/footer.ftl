@@ -26,7 +26,7 @@
                     <a rel="copyright" href="http://www.b3log.org" target="_blank">B3LOG.ORG</a>
                     <span class="ft-small">${version}</span>
                     <span class="fn-none">
-                      ${siteVisitStatCode}
+                        ${siteVisitStatCode}
                     </span>
                 </div>
             </div>
@@ -39,6 +39,8 @@
 <script type="text/javascript" src="${staticServePath}/js/lib/md5.js?${staticResourceVersion}"></script>
 <script>
     Util.init();
-    Label.invalidPasswordLabel = "${invalidPasswordLabel}";
-    Label.loginNameErrorLabel = "${loginNameErrorLabel}";
+    var Label = {
+        invalidPasswordLabel: "${invalidPasswordLabel}",
+        loginNameErrorLabel: "${loginNameErrorLabel}"
+    };
 </script>

@@ -107,13 +107,15 @@
         <script type="text/javascript" src="/js/settings.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="/js/lib/md5.js?${staticResourceVersion}"></script>
         <script>
-                                Label.updateSuccLabel = "${updateSuccLabel}";
-                                Label.invalidUserURLLabel = "${invalidUserURLLabel}";
-                                Label.invalidUserQQLabel = "${invalidUserQQLabel}";
-                                Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
-                                Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
-                                Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
-                                Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
+                                var Label = {
+                                    updateSuccLabel: "${updateSuccLabel}",
+                                    invalidUserURLLabel: "${invalidUserURLLabel}",
+                                    invalidUserQQLabel: "${invalidUserQQLabel}",
+                                    invalidUserIntroLabel: "${invalidUserIntroLabel}",
+                                    invalidUserB3KeyLabel: "${invalidUserB3KeyLabel}",
+                                    invalidUserB3ClientURLLabel: "${invalidUserB3ClientURLLabel}",
+                                    confirmPwdErrorLabel: "${confirmPwdErrorLabel}"
+                                };
         </script>
     </body>
 </html>

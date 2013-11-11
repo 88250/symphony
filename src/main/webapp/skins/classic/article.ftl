@@ -169,15 +169,17 @@
             </div>
         </div>
         <#include "footer.ftl">
-        <script>
-                                                        Label.commentErrorLabel = "${commentErrorLabel}";
-                                                        Label.symphonyLabel = "${symphonyLabel}";
-                                                        Label.articleOId = "${article.oId}";
-                                                        Label.articleTitle = "${article.articleTitle}";
-                                                        Label.articlePermalink = "${article.articlePermalink}"
-        </script>
         <script type="text/javascript" src="/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="/js/lib/jquery/jquery.linkify-1.0-min.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="/js/article.js?${staticResourceVersion}"></script>
+        <script>
+            var Label = {
+                commentErrorLabel: "${commentErrorLabel}",
+                symphonyLabel: "${symphonyLabel}",
+                articleOId: "${article.oId}",
+                articleTitle: "${article.articleTitle}",
+                articlePermalink: "${article.articlePermalink}"
+            };
+        </script>
     </body>
 </html>

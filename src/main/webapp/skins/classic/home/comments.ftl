@@ -21,6 +21,18 @@
                         <li class="current">
                             <a href="/member/${user.userName}/comments">${cmtLabel}</a>
                         </li>
+                        <#if isLoggedIn && (userName != user.userName)>
+                        <li class="follow">
+                            <a href="javascript:void(0)" onclick="Util.follow(this, '${followingId}')"> 
+                                <#if isFollowing>
+                                <span>${unfollowLabel}</span>
+                                <#else>
+                                <span>${followLabel}</span>
+                                </#if>
+                                <img class="avatar-small" src="${user.userThumbnailURL}"/>
+                            </a>
+                        </li>
+                        </#if>
                     </ul>
                     <div class="fn-clear">
                         <div class="list">
@@ -50,5 +62,11 @@
             </div>
         </div>
         <#include "../footer.ftl">
+        <script>
+                                var Label = {
+                                    followLabel: "${followLabel}",
+                                    unfollowLabel: "${unfollowLabel}"
+                                };
+        </script>
     </body>
 </html>

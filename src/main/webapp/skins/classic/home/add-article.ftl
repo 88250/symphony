@@ -45,7 +45,7 @@
                         </div>
                         <div class="fn-right">
                             <button class="green<#if !article??> fn-none</#if>" onclick="AddArticle.preview()">${previewLabel}</button>
-                            <button class="red" onclick="AddArticle.add(<#if article??>'${article.oId}'</#if>)"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
+                            <button class="red" onclick="AddArticle.add( < #if article?? > '${article.oId}' < /#if>)"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>
                     <div id="addArticleTip">
@@ -56,13 +56,16 @@
         </div>
         <div id="preview" class="content-reset"></div>
         <#include "../footer.ftl">
-        <script>
-                                                Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
-                                                Label.articleContentErrorLabel = "${articleContentErrorLabel}";
-                                                Label.articleTagsErrorLabel = "${articleTagsErrorLabel}";
-                                                Label.userName = "${userName}";        </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/codemirror/codemirror.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/add-article.js?${staticResourceVersion}"></script>
+        <script>
+                                var Label = {
+                                    articleTitleErrorLabel: "${articleTitleErrorLabel}",
+                                    articleContentErrorLabel: "${articleContentErrorLabel}",
+                                    articleTagsErrorLabel: "${articleTagsErrorLabel}",
+                                    userName: "${userName}"
+                                };
+        </script>
     </body>
 </html>
