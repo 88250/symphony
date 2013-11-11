@@ -15,25 +15,25 @@
                     <div class="module">
                         <div class="module-header fn-clear">
                             <h2 class="fn-left">
-                                <a rel="nofollow" href="/member/${user.userName}">${user.userName}</a>
+                                <a rel="nofollow" href="/member/${currentUser.userName}">${currentUser.userName}</a>
                                 ${profilesLabel}
                             </h2>&nbsp;
-                            <span style="line-height:24px">(${user.userEmail})</span>
+                            <span style="line-height:24px">(${currentUser.userEmail})</span>
                         </div>
                         <div class="module-panel form fn-clear">
                             <label>URL</label><br/>
-                            <input id="userURL" type="text" value="${user.userURL}"/>
+                            <input id="userURL" type="text" value="${currentUser.userURL}"/>
                             <span style="top: 49px; right: 24px;"></span>
 
                             <label>QQ</label><br/>
-                            <input id="userQQ" type="text" value="${user.userQQ}" />
+                            <input id="userQQ" type="text" value="${currentUser.userQQ}" />
                             <span style="right:24px;top:121px;"></span>
 
                             <label>${userIntroLabel}</label><br/>
-                            <textarea id="userIntro">${user.userIntro}</textarea>
+                            <textarea id="userIntro">${currentUser.userIntro}</textarea>
                             <span style="right:24px;top:193px;"></span><br/><br/>
 
-                            <img class="avatar fn-left" src="${user.userThumbnailURL}">
+                            <img class="avatar fn-left" src="${currentUser.userThumbnailURL}">
                             <strong>
                                 <a rel="friend" target="_blank" href="http://gravatar.com">${changeAvatarLabel}</a>
                             </strong>
@@ -50,19 +50,19 @@
                         </div>
                         <div class="module-panel form fn-clear">
                             <label>B3log Key</label>
-                            <input id="soloKey" type="text" value="${user.userB3Key}" /> 
+                            <input id="soloKey" type="text" value="${currentUser.userB3Key}" /> 
                             <span style="right:24px;top:49px;"></span><br/>
 
                             <label>${clientArticleLabel}</label>
-                            <input id="soloPostURL" type="text" value="${user.userB3ClientAddArticleURL}" />
+                            <input id="soloPostURL" type="text" value="${currentUser.userB3ClientAddArticleURL}" />
                             <span style="right:24px;top:121px;"></span><br/>
 
                             <label>${clientUpdateArticleLabel}</label>
-                            <input id="soloUpdateURL" type="text" value="${user.userB3ClientUpdateArticleURL}" />
+                            <input id="soloUpdateURL" type="text" value="${currentUser.userB3ClientUpdateArticleURL}" />
                             <span style="right:24px;top:193px;"></span><br/>
 
                             <label>${clientCmtLabel}</label>
-                            <input id="soloCmtURL" type="text" value="${user.userB3ClientAddCommentURL}" /> 
+                            <input id="soloCmtURL" type="text" value="${currentUser.userB3ClientAddCommentURL}" /> 
                             <span style="right:24px;top:265px;"></span><br/><br/>
 
                             <span id="syncb3Tip" style="right: 95px; top: 320px;"></span>
