@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Sep 2, 2013
+ * @version 1.0.0.10, Nov 11, 2013
  * @since 0.2.0
  */
 @Service
@@ -202,6 +202,8 @@ public class Filler {
 
         final String userName = curUser.getNickname();
         dataModel.put(User.USER_NAME, userName);
+        
+        dataModel.put(User.USER, curUser);
         
         final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.getId());
         dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);

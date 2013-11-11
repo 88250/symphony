@@ -44,12 +44,14 @@ import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -60,15 +62,15 @@ import org.json.JSONObject;
 /**
  * User processor.
  *
- * <p> 
- * For user 
- *   <ul> 
- *     <li>User Home (/member/{userName}), GET</li> 
- *     <li>Settings (/settings), GET</li> 
- *     <li>Profiles (/settings/profiles), POST</li>
- *     <li>Sync (/settings/sync/b3), POST</li>
- *     <li>Password (/settings/password), POST</li>
- *   </ul> 
+ * <p>
+ * For user
+ * <ul>
+ * <li>User Home (/member/{userName}), GET</li>
+ * <li>Settings (/settings), GET</li>
+ * <li>Profiles (/settings/profiles), POST</li>
+ * <li>Sync (/settings/sync/b3), POST</li>
+ * <li>Password (/settings/password), POST</li>
+ * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -114,6 +116,12 @@ public class UserProcessor {
     private LangPropsService langPropsService;
 
     /**
+     * Follow query service.
+     */
+    @Inject
+    private FollowQueryService followQueryService;
+
+    /**
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
@@ -135,7 +143,7 @@ public class UserProcessor {
      */
     @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userName) throws Exception {
+                         final String userName) throws Exception {
         final JSONObject user = userQueryService.getUserByName(userName);
         if (null == user) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -163,10 +171,21 @@ public class UserProcessor {
             return;
         }
 
+        final String followingId = user.optString(Keys.OBJECT_ID);
+        dataModel.put(Follow.FOLLOWING_ID, followingId);
+
         renderer.setTemplateName("/home/home.ftl");
 
-        dataModel.put(User.USER, user);
         fillUserThumbnailURL(user);
+
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        if (isLoggedIn) {
+            final JSONObject currentUser = (JSONObject) dataModel.get(User.USER);
+            final String followerId = currentUser.optString(Keys.OBJECT_ID);
+
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            dataModel.put(Common.IS_FOLLOWING, isFollowing);
+        }
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
@@ -188,7 +207,7 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-        
+
         final GeneralUser currentUser = userService.getCurrentUser(request);
         if (null == currentUser) {
             dataModel.put(Common.IS_MY_ARTICLE, false);
@@ -208,7 +227,7 @@ public class UserProcessor {
      */
     @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userName) throws Exception {
+                                 final String userName) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
@@ -407,13 +426,13 @@ public class UserProcessor {
 
     /**
      * Fills the specified user thumbnail URL.
-     * 
+     *
      * @param user the specified user
      */
     private void fillUserThumbnailURL(final JSONObject user) {
         final String userEmail = user.optString(User.USER_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(userEmail) + "?s=140&d="
-                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
     }
 }

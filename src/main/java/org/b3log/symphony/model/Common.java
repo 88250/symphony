@@ -48,6 +48,11 @@ public final class Common {
      * Key of is logged in.
      */
     public static final String IS_LOGGED_IN = "isLoggedIn";
+    
+    /**
+     * Key of is following.
+     */
+    public static final String IS_FOLLOWING = "isFollowing";
 
     /**
      * Key of is my article.
