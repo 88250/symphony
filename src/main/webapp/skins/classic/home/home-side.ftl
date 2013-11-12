@@ -5,13 +5,15 @@
         <div class="user-name">
             <a href="/member/${user.userName}">${user.userName}</a><br/>
             <#if isLoggedIn && (userName != user.userName)>
-            <button class="<#if isFollowing>red<#else>green</#if>" onclick="Util.follow(this, '${followingId}')"> 
-                <#if isFollowing>
+            <#if isFollowing>
+            <button class="red" onclick="Util.unfollow(this, '${followingId}')"> 
                 ${unfollowLabel}
-                <#else>
-                ${followLabel}
-                </#if>
             </button>
+            <#else>
+            <button class="green" onclick="Util.follow(this, '${followingId}')"> 
+                ${followLabel}
+            </button>
+            </#if>
             </#if>
         </div>
         <#if user.userIntro!="">
