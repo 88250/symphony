@@ -29,11 +29,14 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
+import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
- * Login check. Gets user from request attribute named "user" if logged in.
+ * User block check. Gets user from request attribute named "user".
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Nov 12, 2013
@@ -41,12 +44,12 @@ import org.json.JSONObject;
  */
 @Named
 @Singleton
-public class LoginCheck extends BeforeRequestProcessAdvice {
+public class UserBlockCheck extends BeforeRequestProcessAdvice {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LoginCheck.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserBlockCheck.class.getName());
 
     /**
      * User query service.
@@ -59,18 +62,31 @@ public class LoginCheck extends BeforeRequestProcessAdvice {
         final HttpServletRequest request = context.getRequest();
 
         final JSONObject exception = new JSONObject();
-        exception.put(Keys.MSG, HttpServletResponse.SC_FORBIDDEN);
-        exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+        exception.put(Keys.MSG, HttpServletResponse.SC_NOT_FOUND);
+        exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
 
+        JSONObject user;
+        final String userName = (String) args.get("userName");
         try {
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
-            if (null == currentUser) {
+            user = userQueryService.getUserByName(userName);
+            if (null == user) {
                 throw new RequestProcessAdviceException(exception);
             }
-            
-            request.setAttribute(User.USER, currentUser);
+
+            final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+            context.setRenderer(renderer);
+
+            if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
+                renderer.setTemplateName("/home/block.ftl");
+                
+                exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_OK);
+
+                return;
+            }
+
+            request.setAttribute(User.USER, user);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "Login check failed");
+            LOGGER.log(Level.ERROR, "User block check failed");
 
             throw new RequestProcessAdviceException(exception);
         }

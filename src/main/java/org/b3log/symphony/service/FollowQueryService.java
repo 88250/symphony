@@ -16,7 +16,6 @@
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
@@ -35,6 +34,8 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.repository.FollowRepository;
+import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Filler;
 import org.json.JSONObject;
 
 /**
@@ -59,6 +60,18 @@ public class FollowQueryService {
     private FollowRepository followRepository;
 
     /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+    
+    /**
+     * Filler.
+     */
+    @Inject
+    private Filler filler;
+
+    /**
      * Determines whether exists a follow relationship for the specified follower and the specified following entity.
      *
      * @param followerId the specified follower id
@@ -77,26 +90,6 @@ public class FollowQueryService {
     }
 
     /**
-     * Gets following tags of the specified follower.
-     *
-     * @param followerId the specified follower id
-     * @param currentPageNum the specified page number
-     * @param pageSize the specified page size
-     * @return following tags, returns an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getFollowingTags(final String followerId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
-        try {
-            return getFollowings(followerId, pageSize, currentPageNum, Follow.FOLLOWING_TYPE_C_TAG);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets following tags of follower[id=" + followerId + "] failed", e);
-
-            return Collections.emptyList();
-        }
-    }
-
-    /**
      * Gets following users of the specified follower.
      *
      * @param followerId the specified follower id
@@ -107,13 +100,31 @@ public class FollowQueryService {
      */
     public List<JSONObject> getFollowingUsers(final String followerId, final int currentPageNum, final int pageSize)
             throws ServiceException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
         try {
-            return getFollowings(followerId, pageSize, currentPageNum, Follow.FOLLOWING_TYPE_C_USER);
+            final List<JSONObject> followings = getFollowings(followerId, pageSize, currentPageNum, Follow.FOLLOWING_TYPE_C_USER);
+
+            for (final JSONObject follow : followings) {
+                final String followingId = follow.optString(Follow.FOLLOWING_ID);
+                final JSONObject user = userRepository.get(followingId);
+
+                if (null == user) {
+                    LOGGER.log(Level.WARN, "Not found user[id=" + followingId + ']');
+
+                    continue;
+                }
+                
+                filler.fillUserThumbnailURL(user);
+
+                ret.add(user);
+            }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets following users of follower[id=" + followerId + "] failed", e);
 
-            return Collections.emptyList();
         }
+        
+        return ret;
     }
 
     /**
@@ -127,13 +138,30 @@ public class FollowQueryService {
      */
     public List<JSONObject> getFollowerUsers(final String followingUserId, final int currentPageNum, final int pageSize)
             throws ServiceException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
         try {
-            return getFollowers(followingUserId, pageSize, currentPageNum, Follow.FOLLOWING_TYPE_C_USER);
+            final List<JSONObject> followers = getFollowers(followingUserId, pageSize, currentPageNum, Follow.FOLLOWING_TYPE_C_USER);
+
+            for (final JSONObject follow : followers) {
+                final String followerId = follow.optString(Follow.FOLLOWER_ID);
+                final JSONObject user = userRepository.get(followerId);
+
+                if (null == user) {
+                    LOGGER.log(Level.WARN, "Not found user[id=" + followerId + ']');
+
+                    continue;
+                }
+                
+                filler.fillUserThumbnailURL(user);
+
+                ret.add(user);
+            }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets follower users of following user[id=" + followingUserId + "] failed", e);
-
-            return Collections.emptyList();
         }
+        
+        return ret;
     }
 
     /**

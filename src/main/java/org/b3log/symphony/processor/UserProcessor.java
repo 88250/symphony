@@ -44,6 +44,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.UserBlockCheck;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
@@ -63,7 +64,10 @@ import org.json.JSONObject;
  * <p>
  * For user
  * <ul>
- * <li>User Home (/member/{userName}), GET</li>
+ * <li>User articles (/member/{userName}), GET</li>
+ * <li>User comments (/member/{userName}/comments), GET</li>
+ * <li>User comments (/member/{userName}/following/users), GET</li>
+ * <li>User comments (/member/{userName}/followers), GET</li>
  * <li>Settings (/settings), GET</li>
  * <li>Profiles (/settings/profiles), POST</li>
  * <li>Sync (/settings/sync/b3), POST</li>
@@ -140,14 +144,10 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = UserBlockCheck.class)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                          final String userName) throws Exception {
-        final JSONObject user = userQueryService.getUserByName(userName);
-        if (null == user) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-            return;
-        }
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -158,16 +158,9 @@ public class UserProcessor {
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
-
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeader(request, response, dataModel);
         filler.fillFooter(dataModel);
-
-        if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
-            renderer.setTemplateName("/home/block.ftl");
-
-            return;
-        }
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -225,15 +218,11 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = UserBlockCheck.class)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                                  final String userName) throws Exception {
-        final JSONObject user = userQueryService.getUserByName(userName);
-        if (null == user) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
-            return;
-        }
-        
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
@@ -254,12 +243,6 @@ public class UserProcessor {
         dataModel.put(User.USER, user);
         filler.fillUserThumbnailURL(user);
 
-        if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
-            renderer.setTemplateName("/home/block.ftl");
-
-            return;
-        }
-
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
@@ -276,6 +259,138 @@ public class UserProcessor {
 
         final List<JSONObject> userComments = commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), pageNum, pageSize);
         dataModel.put(Common.USER_HOME_COMMENTS, userComments);
+
+        final int commentCnt = user.optInt(UserExt.USER_COMMENT_COUNT);
+        final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+    }
+
+    /**
+     * Shows user home following users page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userName the specified user name
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/member/{userName}/following/users", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = UserBlockCheck.class)
+    public void showHomeFollowingUsers(final HTTPRequestContext context, final HttpServletRequest request,
+                                       final HttpServletResponse response, final String userName) throws Exception {
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/following-users.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("userHomeFollowingUsersCnt");
+        final int windowSize = Symphonys.getInt("userHomeFollowingUsersWindowSize");
+
+        dataModel.put(User.USER, user);
+        filler.fillUserThumbnailURL(user);
+
+        final String followingId = user.optString(Keys.OBJECT_ID);
+        dataModel.put(Follow.FOLLOWING_ID, followingId);
+
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        if (isLoggedIn) {
+            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final String followerId = currentUser.optString(Keys.OBJECT_ID);
+
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            dataModel.put(Common.IS_FOLLOWING, isFollowing);
+        }
+
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+
+        final List<JSONObject> followingUsers = followQueryService.getFollowingUsers(followingId, pageNum, pageSize);
+        dataModel.put(Common.USER_HOME_FOLLOWING_USERS, followingUsers);
+
+        final int commentCnt = user.optInt(UserExt.USER_COMMENT_COUNT);
+        final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+    }
+
+    /**
+     * Shows user home follower users page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userName the specified user name
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/member/{userName}/followers", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = UserBlockCheck.class)
+    public void showHomeFollowers(final HTTPRequestContext context, final HttpServletRequest request,
+                                  final HttpServletResponse response, final String userName) throws Exception {
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/followers.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeader(request, response, dataModel);
+        filler.fillFooter(dataModel);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("userHomeFollowersCnt");
+        final int windowSize = Symphonys.getInt("userHomeFollowersWindowSize");
+
+        dataModel.put(User.USER, user);
+        filler.fillUserThumbnailURL(user);
+
+        final String followingId = user.optString(Keys.OBJECT_ID);
+        dataModel.put(Follow.FOLLOWING_ID, followingId);
+
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        if (isLoggedIn) {
+            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final String followerId = currentUser.optString(Keys.OBJECT_ID);
+
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            dataModel.put(Common.IS_FOLLOWING, isFollowing);
+        }
+
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+
+        final List<JSONObject> followerUsers = followQueryService.getFollowerUsers(followingId, pageNum, pageSize);
+        dataModel.put(Common.USER_HOME_FOLLOWING_USERS, followerUsers);
 
         final int commentCnt = user.optInt(UserExt.USER_COMMENT_COUNT);
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);

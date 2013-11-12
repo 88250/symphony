@@ -43,7 +43,7 @@ public final class Common {
      * Key of go to.
      */
     public static final String GOTO = "goto";
-    
+
     /**
      * Key of current user.
      */
@@ -53,7 +53,7 @@ public final class Common {
      * Key of is logged in.
      */
     public static final String IS_LOGGED_IN = "isLoggedIn";
-    
+
     /**
      * Key of is following.
      */
@@ -113,7 +113,7 @@ public final class Common {
      * Key of latest comment articles.
      */
     public static final String LATEST_CMT_ARTICLES = "latestCmtArticles";
-    
+
     /**
      * Key of user id.
      */
@@ -130,6 +130,16 @@ public final class Common {
     public static final String USER_HOME_COMMENTS = "userHomeComments";
 
     /**
+     * Key of user home following users.
+     */
+    public static final String USER_HOME_FOLLOWING_USERS = "userHomeFollowingUsers";
+
+    /**
+     * Key of user home follower users.
+     */
+    public static final String USER_HOME_FOLLOWER_USERS = "userHomeFollowerUsers";
+
+    /**
      * Key of 'commented' notifications.
      */
     public static final String COMMENTED_NOTIFICATIONS = "commentedNotifications";
@@ -143,53 +153,52 @@ public final class Common {
      * Key of 'at' notifications.
      */
     public static final String AT_NOTIFICATIONS = "atNotifications";
-    
+
     /**
      * Key of unread 'at' notifications count.
      */
     public static final String UNREAD_AT_NOTIFICATION_CNT = "unreadAtNotificationCnt";
-    
+
     /**
      * Key of 'followingUser' notifications.
      */
     public static final String FOLLOWING_USER_NOTIFICATIONS = "followingUserNotifications";
-    
+
     /**
      * Key of unread 'followingUser' notifications count.
      */
     public static final String UNREAD_FOLLOWING_USER_NOTIFICATION_CNT = "unreadFollowingUserNotificationCnt";
-    
+
     /**
      * Key of author name.
      */
     public static final String AUTHOR_NAME = "authorName";
-    
+
     /**
      * Key of content.
      */
     public static final String CONTENT = "content";
-    
+
     /**
      * Key of thumbnail URL.
      */
     public static final String THUMBNAIL_URL = "thumbnailURL";
-    
+
     /**
      * Key of article title.
      */
     public static final String ARTICLE_TITLE = "articleTitle";
-    
+
     /**
      * Key of URL.
      */
     public static final String URL = "url";
-    
+
     /**
      * Create time.
      */
     public static final String CREATE_TIME = "createTime";
 
-    
     /**
      * Key of version.
      */
@@ -199,7 +208,7 @@ public final class Common {
      * Key of year.
      */
     public static final String YEAR = "year";
-    
+
     /**
      * Key of site visit statistic code.
      */
