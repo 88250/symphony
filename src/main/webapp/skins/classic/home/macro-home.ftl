@@ -14,6 +14,12 @@
         <meta name="keywords" content="${user.userName},${cmtLabel}"/>
         <meta name="description" content="${user.userName}${deLabel}${cmtLabel},${cmtLabel} by ${user.userName}"/>
         </@head>
+        <#elseif type == "followingUsers">
+        <@head title="${user.userName} - ${followingUsersLabel}">
+        </@head>
+        <#elseif type == "followers">
+        <@head title="${user.userName} - ${followersLabel}">
+        </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="/css/home.css?${staticResourceVersion}" />
     </head>
@@ -29,6 +35,12 @@
                         <li<#if type == "comments"> class="current"</#if>>
                             <a href="/member/${user.userName}/comments">${cmtLabel}</a>
                         </li>
+                        <li<#if type == "followingUsers"> class="current"</#if>>
+                            <a href="/member/${user.userName}/following/users">${followingUsersLabel}</a>
+                        </li>
+                        <li<#if type == "followers"> class="current"</#if>>
+                            <a href="/member/${user.userName}/followers">${followersLabel}</a>
+                        </li>
                     </ul>
                     <div class="fn-clear">
                         <#nested>
@@ -41,10 +53,10 @@
         </div>
         <#include "../footer.ftl">
         <script>
-                                var Label = {
-                                    followLabel: "${followLabel}",
-                                    unfollowLabel: "${unfollowLabel}"
-                                };
+            var Label = {
+                followLabel: "${followLabel}",
+                unfollowLabel: "${unfollowLabel}"
+            };
         </script>
     </body>
 </html>

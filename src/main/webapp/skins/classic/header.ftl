@@ -19,10 +19,10 @@
             <a href="${logoutURL}" title="${logoutLabel}" class="last">${logoutLabel}</a>
             <a href="/settings">${settingsLabel}</a>
             <a href="/add-article">${addArticleLabel}</a>
-            <a class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications/commented" title="${messageLabel}">${unreadNotificationCount}</a>
+            <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications/commented" title="${messageLabel}">${unreadNotificationCount}</a>
             <a href="/member/${userName}">${userName}</a>
             <#else>
-            <a href="javascript:Util.goRegister()" class="last">${registerLabel}</a>
+            <a id="aRegister" href="javascript:Util.goRegister()" class="last">${registerLabel}</a>
             <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>
             <div class="form fn-none">
                 <table cellspacing="0" cellpadding="0">
