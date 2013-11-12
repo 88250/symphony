@@ -103,7 +103,7 @@ public class FollowQueryService {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
         try {
-            final List<JSONObject> followings = getFollowings(followerId, pageSize, currentPageNum, Follow.FOLLOWING_TYPE_C_USER);
+            final List<JSONObject> followings = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
 
             for (final JSONObject follow : followings) {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
@@ -141,7 +141,7 @@ public class FollowQueryService {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
         try {
-            final List<JSONObject> followers = getFollowers(followingUserId, pageSize, currentPageNum, Follow.FOLLOWING_TYPE_C_USER);
+            final List<JSONObject> followers = getFollowers(followingUserId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
 
             for (final JSONObject follow : followers) {
                 final String followerId = follow.optString(Follow.FOLLOWER_ID);

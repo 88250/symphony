@@ -390,7 +390,7 @@ public class UserProcessor {
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
         final List<JSONObject> followerUsers = followQueryService.getFollowerUsers(followingId, pageNum, pageSize);
-        dataModel.put(Common.USER_HOME_FOLLOWING_USERS, followerUsers);
+        dataModel.put(Common.USER_HOME_FOLLOWER_USERS, followerUsers);
 
         final int commentCnt = user.optInt(UserExt.USER_COMMENT_COUNT);
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
