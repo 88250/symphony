@@ -2,30 +2,31 @@
 <@home "followingUsers">
 <div class="follow">
     <ol class="fn-clear">
-        <#list userHomeFollowingUsers as follower>
-        <li<#if follower_index % 2 = 1> class="even"</#if>>
-            <img class="avatar" src="${follower.userThumbnailURL}"/>
+        <#list userHomeFollowingUsers as followingUser>
+        <li<#if followingUser_index % 2 = 1> class="even"</#if>>
+            <img class="avatar" src="${followingUser.userThumbnailURL}"/>
             <img class="user-online"
-                 title="<#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>"
-                 src="/images/<#if follower.userOnlineFlag>on<#else>off</#if>line.png" />
+                 title="<#if followingUser.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>"
+                 src="/images/<#if followingUser.userOnlineFlag>on<#else>off</#if>line.png" />
             <div>
                 <h3>
-                    <a rel="nofollow" href="/member/${follower.userName}" >${follower.userName}</a>
+                    <a rel="nofollow" href="/member/${followingUser.userName}" >${followingUser.userName}</a>
                 </h3>
-                <#if follower.userArticleCount == 0>
-                <#if follower.userURL != "">
-                <a class="ft-small" target="_blank" rel="friend" href="${follower.userURL}">${follower.userURL}</a>
+                <#if followingUser.userArticleCount == 0>
+                <#if followingUser.userURL != "">
+                <a class="ft-small" target="_blank" rel="friend" href="${followingUser.userURL}">${followingUser.userURL}</a>
                 <#else>
                 <span class="ft-small">Symphony</span>
-                ${follower.userNo}
+                ${followingUser.userNo}
                 <span class="ft-small">${noVIPLabel}</span>
                 </#if>
                 <#else>
-                <span class="ft-small">${articleLabel}</span> ${follower.userArticleCount} &nbsp;
-                <span class="ft-small">${tagLabel}</span> ${follower.userTagCount}
+                <span class="ft-small">${articleLabel}</span> ${followingUser.userArticleCount} &nbsp;
+                <span class="ft-small">${tagLabel}</span> ${followingUser.userTagCount}
                 </#if>
                 <br/>
-                <button class="red" onclick="Util.unfollow(this, '${follower.oId}')">${unfollowLabel}</button>
+                ${followingUser.isFollowing?c}
+                <button class="red" onclick="Util.unfollow(this, '${followingUser.oId}')">${unfollowLabel}</button>
             </div>
         </li>
         </#list>

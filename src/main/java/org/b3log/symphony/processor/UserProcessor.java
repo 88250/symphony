@@ -76,7 +76,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.6, May 30, 2013
+ * @version 1.0.1.7, Nov 13, 2013
  * @since 0.2.0
  */
 @RequestProcessor
@@ -312,6 +312,9 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
+        final List<JSONObject> followingUsers = followQueryService.getFollowingUsers(followingId, pageNum, pageSize);
+        dataModel.put(Common.USER_HOME_FOLLOWING_USERS, followingUsers);
+
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
@@ -319,12 +322,15 @@ public class UserProcessor {
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
+
+            for (final JSONObject followingUser : followingUsers) {
+                final String homeUserFollowingUserId = followingUser.optString(Keys.OBJECT_ID);
+
+                followingUser.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingUserId));
+            }
         }
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-
-        final List<JSONObject> followingUsers = followQueryService.getFollowingUsers(followingId, pageNum, pageSize);
-        dataModel.put(Common.USER_HOME_FOLLOWING_USERS, followingUsers);
 
         final int commentCnt = user.optInt(UserExt.USER_COMMENT_COUNT);
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
@@ -378,6 +384,9 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
+        final List<JSONObject> followerUsers = followQueryService.getFollowerUsers(followingId, pageNum, pageSize);
+        dataModel.put(Common.USER_HOME_FOLLOWER_USERS, followerUsers);
+
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
@@ -385,12 +394,15 @@ public class UserProcessor {
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
+
+            for (final JSONObject followerUser : followerUsers) {
+                final String homeUserFollowerUserId = followerUser.optString(Keys.OBJECT_ID);
+
+                followerUser.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowerUserId));
+            }
         }
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-
-        final List<JSONObject> followerUsers = followQueryService.getFollowerUsers(followingId, pageNum, pageSize);
-        dataModel.put(Common.USER_HOME_FOLLOWER_USERS, followerUsers);
 
         final int commentCnt = user.optInt(UserExt.USER_COMMENT_COUNT);
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);

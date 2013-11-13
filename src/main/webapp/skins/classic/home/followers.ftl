@@ -25,6 +25,7 @@
                 <span class="ft-small">${tagLabel}</span> ${follower.userTagCount}
                 </#if>
                 <br/>
+                ${follower.isFollowing?c}
                 <button class="red" onclick="Util.unfollow(this, '${follower.oId}')">${unfollowLabel}</button>
             </div>
         </li>
