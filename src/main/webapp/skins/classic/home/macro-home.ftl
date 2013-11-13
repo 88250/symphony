@@ -16,9 +16,13 @@
         </@head>
         <#elseif type == "followingUsers">
         <@head title="${user.userName} - ${followingUsersLabel}">
+        <meta name="keywords" content="${user.userName},${followingUsersLabel}"/>
+        <meta name="description" content="${user.userName}${deLabel}${followingUsersLabel},${followingUsersLabel} by ${user.userName}"/>
         </@head>
         <#elseif type == "followers">
         <@head title="${user.userName} - ${followersLabel}">
+        <meta name="keywords" content="${user.userName},${followersLabel}"/>
+        <meta name="description" content="${user.userName}${deLabel}${followersLabel},${followersLabel} by ${user.userName}"/>
         </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="/css/home.css?${staticResourceVersion}" />

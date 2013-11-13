@@ -31,5 +31,5 @@
         </#list>
     </ol>
 </div>
-<@pagination url="/member/${user.userName}"/>
+<@pagination url="/member/${user.userName}/followers"/>
 </@home>
