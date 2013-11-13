@@ -84,7 +84,8 @@
                                             userNameErrorLabel: "${userNameErrorLabel}",
                                             invalidEmailLabel: "${invalidEmailLabel}",
                                             confirmPwdErrorLabel: "${confirmPwdErrorLabel}",
-                                            captchaErrorLabel: "${captchaErrorLabel}"
+                                            captchaErrorLabel: "${captchaErrorLabel}",
+                                            invalidPasswordLabel: "${invalidPasswordLabel}"
                                         };
         </script>
     </body>

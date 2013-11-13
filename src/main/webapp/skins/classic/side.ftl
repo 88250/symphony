@@ -18,7 +18,7 @@
             <li<#if !cmt_has_next> class="last"</#if>>
                 <table cellpadding="0" cellspacing="0">
                     <tr>
-                        <td valign="top">
+                        <td valign="top" width="25px">
                             <a rel="nofollow" href="/member/${cmt.commenter.userName}" 
                                title="${cmt.commenter.userName}"><img class="avatar-small" src="${cmt.commenter.userThumbnailURL}" /></a>
                         </td>

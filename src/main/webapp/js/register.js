@@ -70,8 +70,6 @@ var Register = {
                         $("#captcha").attr("src", "/captcha?code=" + Math.random());
                         $("#securityCode").val("");
                     }
-                },
-                complete: function (jqXHR, textStatus){
                 }
             });
         }
