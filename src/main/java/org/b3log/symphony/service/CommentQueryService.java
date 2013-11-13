@@ -43,6 +43,7 @@ import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -159,7 +160,7 @@ public class CommentQueryService {
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
                     final String hashedEmail = MD5.hash(commenterEmail);
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                            + "http://symphony.b3log.org/images/user-thumbnail.png";
+                            + Symphonys.get("defaultThumbnailURL");
                 }
                 commenter.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
 
