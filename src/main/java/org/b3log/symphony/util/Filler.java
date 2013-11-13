@@ -259,7 +259,7 @@ public class Filler {
     public void fillUserThumbnailURL(final JSONObject user) {
         final String userEmail = user.optString(User.USER_EMAIL);
         final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(userEmail) + "?s=140&d="
-                                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                                    + "http://symphony.b3log.org/images/user-thumbnail.png";
         user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
     }
 

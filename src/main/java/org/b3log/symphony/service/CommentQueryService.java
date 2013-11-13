@@ -159,7 +159,7 @@ public class CommentQueryService {
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
                     final String hashedEmail = MD5.hash(commenterEmail);
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                            + "http://symphony.b3log.org/images/user-thumbnail.png";
                 }
                 commenter.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
 
