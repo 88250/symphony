@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -89,22 +90,26 @@ public class InitProcessor {
 
     /**
      * Generates tables.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/dev/db/table/gen", method = HTTPRequestMethod.GET)
     public void genTables(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
+        if (RuntimeMode.PRODUCTION == Latkes.getRuntimeMode()) {
+            return;
+        }
+
         try {
             LOGGER.log(Level.INFO, "Database [{0}], creates all tables", Latkes.getRuntimeDatabase());
 
             final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
                 LOGGER.log(Level.INFO, "Creates table result[tableName={0}, isSuccess={1}]",
-                        new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
+                           new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
 
             // Init stat.
@@ -186,15 +191,19 @@ public class InitProcessor {
 
     /**
      * Generates mock articles.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/dev/article/gen", method = HTTPRequestMethod.GET)
     public void genArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
+        if (RuntimeMode.PRODUCTION == Latkes.getRuntimeMode()) {
+            return;
+        }
+
         try {
             final JSONObject admin = userQueryService.getAdmin();
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
