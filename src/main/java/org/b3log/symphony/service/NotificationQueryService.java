@@ -245,7 +245,9 @@ public class NotificationQueryService {
      *         "url": "",
      *         "createTime": java.util.Date,
      *         "hasRead": boolean,
-     *         "atInArticle": boolean
+     *         "atInArticle": boolean,
+     *         "articleTags": "", // if atInArticle is true
+     *         "articleCommentCnt": int // if atInArticle is true
      *     }, ....]
      * }
      * </pre>
@@ -318,6 +320,8 @@ public class NotificationQueryService {
                     atNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                     atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                     atNotification.put(Notification.NOTIFICATION_T_AT_IN_ARTICLE, true);
+                    atNotification.put(Article.ARTICLE_TAGS, article.optString(Article.ARTICLE_TAGS));
+                    atNotification.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
 
                     rslts.add(atNotification);
                 }
@@ -346,6 +350,8 @@ public class NotificationQueryService {
      *         "content": "",
      *         "thumbnailURL": "",
      *         "articleTitle": "",
+     *         "articleTags": "",
+     *         "articleCommentCnt": int,
      *         "url": "",
      *         "createTime": java.util.Date,
      *         "hasRead": boolean,
@@ -387,26 +393,28 @@ public class NotificationQueryService {
                         addProjection(Article.ARTICLE_AUTHOR_EMAIL, String.class).
                         addProjection(Article.ARTICLE_PERMALINK, String.class).
                         addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                        addProjection(Article.ARTICLE_TAGS, String.class).
+                        addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
                 final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                 final JSONObject article = rlts.optJSONObject(0);
-                
-                 if (null == article) {
+
+                if (null == article) {
                     LOGGER.warn("Not found article[id=" + articleId + ']');
 
                     continue;
                 }
-                 
+
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
                 final String articleAuthorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
                 final JSONObject author = userRepository.getByEmail(articleAuthorEmail);
-                
+
                 if (null == author) {
                     LOGGER.warn("Not found user[email=" + articleAuthorEmail + ']');
-                    
+
                     continue;
                 }
-                
+
                 final JSONObject followingUserNotification = new JSONObject();
                 followingUserNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 followingUserNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
@@ -415,9 +423,11 @@ public class NotificationQueryService {
                 followingUserNotification.put(Common.ARTICLE_TITLE, articleTitle);
                 followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                 followingUserNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
-                followingUserNotification.put(Notification.NOTIFICATION_HAS_READ, 
+                followingUserNotification.put(Notification.NOTIFICATION_HAS_READ,
                                               notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                 followingUserNotification.put(Common.TYPE, Article.ARTICLE);
+                followingUserNotification.put(Article.ARTICLE_TAGS, article.optString(Article.ARTICLE_TAGS));
+                followingUserNotification.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
 
                 rslts.add(followingUserNotification);
             }
