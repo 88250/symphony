@@ -34,12 +34,19 @@
                                 </#if>
                             </a>
                         </li>
-                        <li>
-                            <a href="#">${notificationFollowingUserLabel}</a>
+                        <li<#if type == "followingUser"> class="current"</#if>>
+                            <a href="/notifications/following-user">
+                                <span>${notificationFollowingUserLabel}</span>
+                                <#if unreadFollowingUserNotificationCnt &gt; 0>
+                                <span class="counter">${unreadFollowingUserNotificationCnt}</span>
+                                </#if>
+                            </a>
                         </li>
+                        <!--
                         <li>
                             <a href="#">${notificationFollowingTagLabel}</a>
                         </li>
+                        -->
                     </ul>
                 </div>
             </div>

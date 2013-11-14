@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 4, 2013
+ * @version 1.0.0.3, Nov 14, 2013
  * @since 0.2.5
  */
 @Service
@@ -296,7 +296,7 @@ public class NotificationQueryService {
                                        comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                     atNotification.put(Common.ARTICLE_TITLE, articleTitle);
                     atNotification.put(Common.URL, comment.optString(Comment.COMMENT_SHARP_URL));
-                    atNotification.put(Common.CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
+                    atNotification.put(Common.CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
                     atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                     atNotification.put(Notification.NOTIFICATION_T_AT_IN_ARTICLE, false);
 
@@ -326,6 +326,105 @@ public class NotificationQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [at] notifications", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets 'followingUser' type notifications with the specified user id, current page number and page size.
+     *
+     * @param userId the specified user id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return result json object, for example,
+     * <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         "oId": "", // notification record id
+     *         "authorName": "",
+     *         "content": "",
+     *         "thumbnailURL": "",
+     *         "articleTitle": "",
+     *         "url": "",
+     *         "createTime": java.util.Date,
+     *         "hasRead": boolean,
+     *         "type": "", // article/comment
+     *     }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    public JSONObject getFollowingUserNotifications(final String userId, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+
+        ret.put(Keys.RESULTS, (Object) rslts);
+
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_FOLLOWING_USER));
+
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+        try {
+            final JSONObject queryResult = notificationRepository.get(query);
+            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT,
+                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
+
+            for (int i = 0; i < results.length(); i++) {
+                final JSONObject notification = results.optJSONObject(i);
+                final String articleId = notification.optString(Notification.NOTIFICATION_DATA_ID);
+
+                final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
+                        addProjection(Article.ARTICLE_AUTHOR_EMAIL, String.class).
+                        addProjection(Article.ARTICLE_PERMALINK, String.class).
+                        addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                        setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
+                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
+                final JSONObject article = rlts.optJSONObject(0);
+                
+                 if (null == article) {
+                    LOGGER.warn("Not found article[id=" + articleId + ']');
+
+                    continue;
+                }
+                 
+                final String articleTitle = article.optString(Article.ARTICLE_TITLE);
+                final String articleAuthorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
+                final JSONObject author = userRepository.getByEmail(articleAuthorEmail);
+                
+                if (null == author) {
+                    LOGGER.warn("Not found user[email=" + articleAuthorEmail + ']');
+                    
+                    continue;
+                }
+                
+                final JSONObject followingUserNotification = new JSONObject();
+                followingUserNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
+                followingUserNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
+                followingUserNotification.put(Common.CONTENT, "");
+                followingUserNotification.put(Common.THUMBNAIL_URL, Thumbnails.getGravatarURL(articleAuthorEmail, "140"));
+                followingUserNotification.put(Common.ARTICLE_TITLE, articleTitle);
+                followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
+                followingUserNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
+                followingUserNotification.put(Notification.NOTIFICATION_HAS_READ, 
+                                              notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
+                followingUserNotification.put(Common.TYPE, Article.ARTICLE);
+
+                rslts.add(followingUserNotification);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets [followingUser] notifications", e);
             throw new ServiceException(e);
         }
     }

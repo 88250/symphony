@@ -30,7 +30,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
-import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Nov 11, 2013
+ * @version 1.0.0.5, Nov 14, 2013
  * @since 0.2.0
  */
 @Named
@@ -92,10 +91,6 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             final Set<String> atUserNames = userQueryService.getUserNames(articleContent);
             atUserNames.remove(articleAuthorName); // Do not notify the author itself
 
-            if (atUserNames.isEmpty()) {
-                return;
-            }
-
             final Set<String> atedUserIds = new HashSet<String>();
             
             // 'At' Notification
@@ -122,7 +117,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             final List<JSONObject> followerUsers = followQueryService.getFollowerUsers(articleAuthorId, 1, Integer.MAX_VALUE);
             for (final JSONObject followerUser : followerUsers) {
                 final JSONObject requestJSONObject = new JSONObject();
-                final String followerUserId = followerUser.optString(Follow.FOLLOWER_ID);
+                final String followerUserId = followerUser.optString(Keys.OBJECT_ID);
                 
                 if (atedUserIds.contains(followerUserId)) {
                     continue;

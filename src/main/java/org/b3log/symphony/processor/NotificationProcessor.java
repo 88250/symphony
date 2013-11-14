@@ -268,8 +268,7 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("followingUserNotificationsCnt");
         final int windowSize = Symphonys.getInt("followingUserNotificationsWindowSize");
 
-        // TODO: notificationQueryService.getFollowingUserNotifications
-        final JSONObject result = notificationQueryService.getAtNotifications(userId, pageNum, pageSize);
+        final JSONObject result = notificationQueryService.getFollowingUserNotifications(userId, pageNum, pageSize);
         @SuppressWarnings("unchecked")
         final List<JSONObject> followingUserNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
@@ -278,6 +277,7 @@ public class NotificationProcessor {
         final int unreadCommentedNotificationCnt
                   = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
         dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
+        
         final int unreadAtNotificationCnt
                   = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
         dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
