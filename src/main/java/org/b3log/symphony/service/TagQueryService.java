@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -36,12 +35,12 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -80,10 +79,10 @@ public class TagQueryService {
 
     /**
      * Gets a tag by the specified tag title.
-     * 
+     *
      * @param tagTitle the specified tag title
      * @return tag, returns {@code null} if not null
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public JSONObject getTagByTitle(final String tagTitle) throws ServiceException {
         try {
@@ -96,7 +95,7 @@ public class TagQueryService {
 
     /**
      * Gets the trend (sort by reference count descending) tags.
-     * 
+     *
      * @param fetchSize the specified fetch size
      * @return trend tags, returns an empty list if not found
      * @throws ServiceException service exception
@@ -116,7 +115,7 @@ public class TagQueryService {
 
     /**
      * Gets the cold (sort by reference count ascending) tags.
-     * 
+     *
      * @param fetchSize the specified fetch size
      * @return trend tags, returns an empty list if not found
      * @throws ServiceException service exception
@@ -136,7 +135,7 @@ public class TagQueryService {
 
     /**
      * Gets the tags the specified fetch size.
-     * 
+     *
      * @param fetchSize the specified fetch size
      * @return tags, returns an empty list if not found
      * @throws ServiceException service exception
@@ -155,16 +154,17 @@ public class TagQueryService {
 
     /**
      * Gets the creator of the specified tag of the given tag id.
-     * 
+     *
      * @param tagId the given tag id
-     * @return tag creator, for example, 
+     * @return tag creator, for example,
      * <pre>
      * {
      *     "tagCreatorThumbnailURL": "",
      *     "tagCreatorName": ""
      * }
      * </pre>, returns {@code null} if not found
-     * @throws ServiceException service exception 
+     *
+     * @throws ServiceException service exception
      */
     public JSONObject getCreator(final String tagId) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
@@ -184,8 +184,7 @@ public class TagQueryService {
             final JSONObject creator = userRepository.get(creatorId);
 
             final String creatorEmail = creator.optString(User.USER_EMAIL);
-            final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(creatorEmail) + "?s=140&d="
-                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+            final String thumbnailURL = Thumbnails.getGravatarURL(creatorEmail, "140");
 
             final JSONObject ret = new JSONObject();
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
@@ -200,10 +199,10 @@ public class TagQueryService {
 
     /**
      * Gets the participants (article ref) of the specified tag of the given tag id.
-     * 
+     *
      * @param tagId the given tag id
      * @param fetchSize the specified fetch size
-     * @return tag participants, for example, 
+     * @return tag participants, for example,
      * <pre>
      * [
      *     {
@@ -212,7 +211,8 @@ public class TagQueryService {
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found returns an empty list if not found
-     * @throws ServiceException service exception 
+     *
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getParticipants(final String tagId, final int fetchSize) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
@@ -242,10 +242,7 @@ public class TagQueryService {
 
                 participant.put(Tag.TAG_T_PARTICIPANT_NAME, user.optString(User.USER_NAME));
 
-                final String hashedEmail = MD5.hash(user.optString(User.USER_EMAIL));
-                final String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                        + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
-
+                final String thumbnailURL = Thumbnails.getGravatarURL(user.optString(User.USER_EMAIL), "140");
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
 
                 ret.add(participant);

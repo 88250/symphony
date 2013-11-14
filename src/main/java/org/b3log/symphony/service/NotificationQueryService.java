@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -35,7 +34,6 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
@@ -43,6 +41,7 @@ import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -87,7 +86,7 @@ public class NotificationQueryService {
 
     /**
      * Gets the count of unread notifications of an user specified with the given user id.
-     * 
+     *
      * @param userId the given user id
      * @return count of unread notifications, returns {@code 0} if occurs exception
      */
@@ -114,7 +113,7 @@ public class NotificationQueryService {
 
     /**
      * Gets the count of unread notifications with the specified data of an user specified with the given user id.
-     * 
+     *
      * @param userId the given user id
      * @param notificationDataType the specified notification data type
      * @return count of unread notifications, returns {@code 0} if occurs exception
@@ -147,11 +146,11 @@ public class NotificationQueryService {
 
     /**
      * Gets 'commented' type notifications with the specified user id, current page number and page size.
-     * 
+     *
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return result json object, for example, 
+     * @return result json object, for example,
      * <pre>
      * {
      *     "paginationRecordCount": int,
@@ -167,6 +166,7 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public JSONObject getCommentedNotifications(final String userId, final int currentPageNum, final int pageSize)
@@ -200,7 +200,7 @@ public class NotificationQueryService {
 
                 final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
-                        comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
+                                                     comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                 final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                 final JSONObject article = rlts.optJSONObject(0);
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
@@ -210,7 +210,7 @@ public class NotificationQueryService {
                 commentedNotification.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
                 commentedNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
                 commentedNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
-                        comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                                          comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, articleTitle);
                 commentedNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
                 commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
@@ -228,11 +228,11 @@ public class NotificationQueryService {
 
     /**
      * Gets 'at' type notifications with the specified user id, current page number and page size.
-     * 
+     *
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return result json object, for example, 
+     * @return result json object, for example,
      * <pre>
      * {
      *     "paginationRecordCount": int,
@@ -249,6 +249,7 @@ public class NotificationQueryService {
      *     }, ....]
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public JSONObject getAtNotifications(final String userId, final int currentPageNum, final int pageSize)
@@ -282,7 +283,7 @@ public class NotificationQueryService {
                 if (null != comment) {
                     final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
                             setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
-                            comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
+                                                         comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                     final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                     final JSONObject article = rlts.optJSONObject(0);
                     final String articleTitle = article.optString(Article.ARTICLE_TITLE);
@@ -292,7 +293,7 @@ public class NotificationQueryService {
                     atNotification.put(Common.AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
                     atNotification.put(Common.CONTENT, comment.optString(Comment.COMMENT_CONTENT));
                     atNotification.put(Common.THUMBNAIL_URL,
-                            comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                                       comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                     atNotification.put(Common.ARTICLE_TITLE, articleTitle);
                     atNotification.put(Common.URL, comment.optString(Comment.COMMENT_SHARP_URL));
                     atNotification.put(Common.CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
@@ -310,9 +311,7 @@ public class NotificationQueryService {
                     atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                     atNotification.put(Common.AUTHOR_NAME, articleAuthor.optString(User.USER_NAME));
                     atNotification.put(Common.CONTENT, "");
-                    final String thumbnailURL = "http://secure.gravatar.com/avatar/"
-                            + MD5.hash(articleAuthor.optString(User.USER_EMAIL)) + "?s=140&d="
-                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                    final String thumbnailURL = Thumbnails.getGravatarURL(articleAuthor.optString(User.USER_EMAIL), "140");
                     atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                     atNotification.put(Common.ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
                     atNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));

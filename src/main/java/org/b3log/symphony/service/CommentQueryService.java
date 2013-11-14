@@ -34,7 +34,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.UserExt;
@@ -43,14 +42,14 @@ import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.Thumbnails;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 /**
  * Comment management service.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.15, Sep 5, 2013
  * @since 0.2.0
@@ -95,7 +94,7 @@ public class CommentQueryService {
 
     /**
      * Gets comment with the specified comment id.
-     * 
+     *
      * @param commentId the specified comment id
      * @return comment, returns {@code null} if not found
      * @throws ServiceException service exception
@@ -120,11 +119,11 @@ public class CommentQueryService {
 
     /**
      * Gets the latest comments with the specified fetch size.
-     * 
+     *
      * <p>
      * The returned comments content is plain text.
      * </p>
-     * 
+     *
      * @param fetchSize the specified fetch size
      * @return the latest comments, returns an empty list if not found
      * @throws ServiceException service exception
@@ -147,7 +146,7 @@ public class CommentQueryService {
                 final JSONObject commenter = userRepository.get(commenterId);
 
                 if (UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)
-                        || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
+                    || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
                     comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
                 }
 
@@ -158,9 +157,7 @@ public class CommentQueryService {
                 final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
-                    final String hashedEmail = MD5.hash(commenterEmail);
-                    thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                            + Symphonys.get("defaultThumbnailURL");
+                    thumbnailURL = Thumbnails.getGravatarURL(commenterEmail, "140");
                 }
                 commenter.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
 
@@ -176,7 +173,7 @@ public class CommentQueryService {
 
     /**
      * Gets the user comments with the specified user id, page number and page size.
-     * 
+     *
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -197,9 +194,9 @@ public class CommentQueryService {
                 final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
                 final JSONObject article = articleRepository.get(articleId);
 
-
-                comment.put(Comment.COMMENT_T_ARTICLE_TITLE, Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
-                        ? langPropsService.get("articleTitleBlockLabel") : article.optString(Article.ARTICLE_TITLE));
+                comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
+                            Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
+                            ? langPropsService.get("articleTitleBlockLabel") : article.optString(Article.ARTICLE_TITLE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
 
                 final JSONObject commenter = userRepository.get(userId);
@@ -212,8 +209,7 @@ public class CommentQueryService {
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, articleAuthorURL);
                 final String articleAuthorEmail = articleAuthor.optString(User.USER_EMAIL);
-                final String articleAuthorThumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(articleAuthorEmail) + "?s=140&d="
-                        + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                final String articleAuthorThumbnailURL = Thumbnails.getGravatarURL(articleAuthorEmail, "140");
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
 
                 processCommentContent(comment);
@@ -228,7 +224,7 @@ public class CommentQueryService {
 
     /**
      * Gets the article participants (commenters) with the specified article article id and fetch size.
-     * 
+     *
      * @param articleId the specified article id
      * @param fetchSize the specified fetch size
      * @return article participants, for example,
@@ -241,7 +237,8 @@ public class CommentQueryService {
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found
-     * @throws ServiceException service exception 
+     *
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getArticleLatestParticipants(final String articleId, final int fetchSize) throws ServiceException {
         final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
@@ -260,9 +257,7 @@ public class CommentQueryService {
 
                 String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
-                    final String hashedEmail = MD5.hash(email);
-                    thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                            + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                    thumbnailURL = Thumbnails.getGravatarURL(email, "140");
                 }
 
                 final JSONObject participant = new JSONObject();
@@ -283,7 +278,7 @@ public class CommentQueryService {
 
     /**
      * Gets the article comments with the specified article id, page number and page size.
-     * 
+     *
      * @param articleId the specified article id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -310,20 +305,20 @@ public class CommentQueryService {
 
     /**
      * Organizes the specified comments.
-     * 
+     *
      * <ul>
-     *   <li>converts comment create time (long) to date type</li>
-     *   <li>generates comment author thumbnail URL</li>
-     *   <li>generates comment author URL</li>
-     *   <li>generates comment author name</li>
-     *   <li>generates &#64;username home URL</li>
-     *   <li>markdowns comment content</li>
-     *   <li>block comment if need</li>
-     *   <li>generates emotion images</li>
+     * <li>converts comment create time (long) to date type</li>
+     * <li>generates comment author thumbnail URL</li>
+     * <li>generates comment author URL</li>
+     * <li>generates comment author name</li>
+     * <li>generates &#64;username home URL</li>
+     * <li>markdowns comment content</li>
+     * <li>block comment if need</li>
+     * <li>generates emotion images</li>
      * </ul>
-     * 
+     *
      * @param comments the specified comments
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
     private void organizeComments(final List<JSONObject> comments) throws RepositoryException {
         for (final JSONObject comment : comments) {
@@ -333,18 +328,18 @@ public class CommentQueryService {
 
     /**
      * Organizes the specified comment.
-     * 
+     *
      * <ul>
-     *   <li>converts comment create time (long) to date type</li>
-     *   <li>generates comment author thumbnail URL</li>
-     *   <li>generates comment author URL</li>
-     *   <li>generates comment author name</li>
-     *   <li>generates &#64;username home URL</li>
-     *   <li>markdowns comment content</li>
-     *   <li>block comment if need</li>
-     *   <li>generates emotion images</li>
+     * <li>converts comment create time (long) to date type</li>
+     * <li>generates comment author thumbnail URL</li>
+     * <li>generates comment author URL</li>
+     * <li>generates comment author name</li>
+     * <li>generates &#64;username home URL</li>
+     * <li>markdowns comment content</li>
+     * <li>block comment if need</li>
+     * <li>generates emotion images</li>
      * </ul>
-     * 
+     *
      * @param comment the specified comment
      * @throws RepositoryException repository exception
      */
@@ -354,9 +349,7 @@ public class CommentQueryService {
         final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
         String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
         if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
-            final String hashedEmail = MD5.hash(email);
-            thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=140&d="
-                    + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+            thumbnailURL = Thumbnails.getGravatarURL(email, "140");
         }
 
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
@@ -372,19 +365,19 @@ public class CommentQueryService {
 
     /**
      * Processes the specified comment content.
-     * 
+     *
      * <ul>
-     *   <li>Generates &#64;username home URL</li>
-     *   <li>Markdowns</li>
-     *   <li>Blocks comment if need</li>
-     *   <li>Generates emotion images</li>
+     * <li>Generates &#64;username home URL</li>
+     * <li>Markdowns</li>
+     * <li>Blocks comment if need</li>
+     * <li>Generates emotion images</li>
      * </ul>
-     * 
-     * @param comment the specified comment, for example, 
+     *
+     * @param comment the specified comment, for example,
      * <pre>
      * {
      *     "commentContent": "",
-     *     ...., 
+     *     ....,
      *     "commenter": {}
      * }
      * </pre>
@@ -393,7 +386,7 @@ public class CommentQueryService {
         final JSONObject commenter = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
 
         if (Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)
-                || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
+            || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
             comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
 
             return;
@@ -412,7 +405,7 @@ public class CommentQueryService {
 
     /**
      * Generates &#64;username home URL for the specified comment content.
-     * 
+     *
      * @param comment the specified comment
      */
     // XXX: [Performance Issue] genCommentContentUserName
@@ -422,7 +415,7 @@ public class CommentQueryService {
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
             for (final String userName : userNames) {
                 commentContent = commentContent.replace('@' + userName,
-                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
+                                                        "@<a href='/member/" + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);

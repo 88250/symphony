@@ -118,7 +118,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                 atedUserIds.add(atedUserId);
             }
             
-            // 'Article' Notification
+            // 'FollowingUser' Notification
             final List<JSONObject> followerUsers = followQueryService.getFollowerUsers(articleAuthorId, 1, Integer.MAX_VALUE);
             for (final JSONObject followerUser : followerUsers) {
                 final JSONObject requestJSONObject = new JSONObject();

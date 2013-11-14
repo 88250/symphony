@@ -39,7 +39,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
@@ -50,6 +49,7 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -518,10 +518,8 @@ public class ArticleQueryService {
      */
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
         final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
-        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(authorEmail) + "?s=140&d="
-                + Latkes.getStaticServePath() + "/images/user-thumbnail.png";
 
-        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
+        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, Thumbnails.getGravatarURL(authorEmail, "140"));
 
         final JSONObject author = userRepository.getByEmail(authorEmail);
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
