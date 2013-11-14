@@ -44,6 +44,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.UserBlockCheck;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
@@ -427,6 +428,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = LoginCheck.class)
     public void showSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -447,7 +449,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/profiles", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = UpdateProfilesValidation.class)
+    @Before(adviceClass = {LoginCheck.class, UpdateProfilesValidation.class})
     public void updateProfiles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -484,7 +486,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/sync/b3", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = UpdateSyncB3Validation.class)
+    @Before(adviceClass = {LoginCheck.class, UpdateSyncB3Validation.class})
     public void updateSyncB3(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -526,7 +528,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/password", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = UpdatePasswordValidation.class)
+    @Before(adviceClass = {LoginCheck.class, UpdatePasswordValidation.class})
     public void updatePassword(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();

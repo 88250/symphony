@@ -140,7 +140,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
-            LOGGER.log(Level.DEBUG, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
+            LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
                        new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
                                     session.isNew()});
             // Online visitor count

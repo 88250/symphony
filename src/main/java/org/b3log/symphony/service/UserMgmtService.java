@@ -84,9 +84,7 @@ public class UserMgmtService {
         }
 
         try {
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
-
+            for (final Cookie cookie : cookies) {
                 if (!"b3log-latke".equals(cookie.getName())) {
                     continue;
                 }

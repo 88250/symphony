@@ -25,6 +25,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
@@ -33,6 +34,7 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
@@ -101,6 +103,7 @@ public class NotificationProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/notifications/commented", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = LoginCheck.class)
     public void showCommentedNotifications(final HTTPRequestContext context, final HttpServletRequest request,
                                            final HttpServletResponse response) throws Exception {
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
@@ -171,6 +174,7 @@ public class NotificationProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/notifications/at", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = LoginCheck.class)
     public void showAtNotifications(final HTTPRequestContext context, final HttpServletRequest request,
                                     final HttpServletResponse response) throws Exception {
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
@@ -242,6 +246,7 @@ public class NotificationProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/notifications/following-user", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = LoginCheck.class)
     public void showFollowingUserNotifications(final HTTPRequestContext context, final HttpServletRequest request,
                                     final HttpServletResponse response) throws Exception {
         final JSONObject currentUser = userQueryService.getCurrentUser(request);

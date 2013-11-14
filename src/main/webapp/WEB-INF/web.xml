@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Symphony web deployment descriptor.
-    Version: 1.0.0.6, Sep 27, 2013
+    Version: 1.0.0.7, Nov 14, 2013
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -41,18 +41,6 @@
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    
-    <filter>
-        <filter-name>AuthFilter</filter-name>
-        <filter-class>org.b3log.symphony.filter.AuthFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>/settings</url-pattern>
-        <url-pattern>/notifications/*</url-pattern>
-        <url-pattern>/add-article</url-pattern>
-        <url-pattern>/update-article</url-pattern>
     </filter-mapping>
     
     <session-config>

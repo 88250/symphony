@@ -298,7 +298,7 @@ public class NotificationQueryService {
                                        comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                     atNotification.put(Common.ARTICLE_TITLE, articleTitle);
                     atNotification.put(Common.URL, comment.optString(Comment.COMMENT_SHARP_URL));
-                    atNotification.put(Common.CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
+                    atNotification.put(Common.CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
                     atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                     atNotification.put(Notification.NOTIFICATION_T_AT_IN_ARTICLE, false);
 

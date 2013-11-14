@@ -47,6 +47,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.validate.ArticleAddValidation;
 import org.b3log.symphony.processor.advice.validate.ArticleUpdateValidation;
 import org.b3log.symphony.service.ArticleMgmtService;
@@ -152,6 +153,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/add-article", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = LoginCheck.class)
     public void showAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -259,7 +261,7 @@ public class ArticleProcessor {
      * @throws ServletException servlet exception 
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = ArticleAddValidation.class)
+    @Before(adviceClass = {LoginCheck.class, ArticleAddValidation.class})
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
         final JSONRenderer renderer = new JSONRenderer();
@@ -283,12 +285,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
 
         try {
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
-            if (null == currentUser) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-                return;
-            }
+            final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
 
             article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
 
@@ -316,6 +313,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/update-article", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = LoginCheck.class)
     public void showUpdateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String articleId = request.getParameter("id");
@@ -374,7 +372,7 @@ public class ArticleProcessor {
      * @throws Exception exception 
      */
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
-    @Before(adviceClass = ArticleUpdateValidation.class)
+    @Before(adviceClass = {LoginCheck.class, ArticleUpdateValidation.class})
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String id) throws Exception {
         if (Strings.isEmptyOrNull(id)) {
@@ -389,7 +387,7 @@ public class ArticleProcessor {
 
             return;
         }
-
+        
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -411,17 +409,17 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
 
-        final GeneralUser currentUser = userService.getCurrentUser(request);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser
-                || !currentUser.getId().equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
+                || !currentUser.optString(Keys.OBJECT_ID).equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
 
-        article.put(Article.ARTICLE_AUTHOR_ID, currentUser.getId());
+        article.put(Article.ARTICLE_AUTHOR_ID, currentUser.optString(Keys.OBJECT_ID));
 
-        final String authorEmail = currentUser.getEmail();
+        final String authorEmail = currentUser.optString(User.USER_EMAIL);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
 
         try {

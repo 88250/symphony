@@ -29,6 +29,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
+import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
@@ -54,6 +55,12 @@ public class LoginCheck extends BeforeRequestProcessAdvice {
     @Inject
     private UserQueryService userQueryService;
 
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
+
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
@@ -64,10 +71,10 @@ public class LoginCheck extends BeforeRequestProcessAdvice {
 
         try {
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
-            if (null == currentUser) {
+            if (null == currentUser && !userMgmtService.tryLogInWithCookie(request, context.getResponse())) {
                 throw new RequestProcessAdviceException(exception);
             }
-            
+
             request.setAttribute(User.USER, currentUser);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Login check failed");
