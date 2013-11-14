@@ -26,6 +26,7 @@
                 </#if>
                 <br/>
 
+                <#if isLoggedIn>
                 <#if followingUser.isFollowing>
                 <button class="red" onclick="Util.unfollow(this, '${followingUser.oId}')"> 
                     ${unfollowLabel}
@@ -34,6 +35,7 @@
                 <button class="green" onclick="Util.follow(this, '${followingUser.oId}')"> 
                     ${followLabel}
                 </button>
+                </#if>
                 </#if>
             </div>
         </li>
