@@ -313,7 +313,8 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final List<JSONObject> followingUsers = followQueryService.getFollowingUsers(followingId, pageNum, pageSize);
+        final JSONObject followingUsersResult = followQueryService.getFollowingUsers(followingId, pageNum, pageSize);
+        final List<JSONObject> followingUsers = (List<JSONObject>) followingUsersResult.opt(Keys.RESULTS);
         dataModel.put(Common.USER_HOME_FOLLOWING_USERS, followingUsers);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
@@ -333,8 +334,8 @@ public class UserProcessor {
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
-        final int commentCnt = user.optInt(UserExt.USER_COMMENT_COUNT);
-        final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
+        final int followingUserCnt = followingUsersResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil((double) followingUserCnt / (double) pageSize);
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {
@@ -385,7 +386,8 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final List<JSONObject> followerUsers = followQueryService.getFollowerUsers(followingId, pageNum, pageSize);
+        final JSONObject followerUsersResult = followQueryService.getFollowerUsers(followingId, pageNum, pageSize);
+        final List<JSONObject> followerUsers = (List) followerUsersResult.opt(Keys.RESULTS);
         dataModel.put(Common.USER_HOME_FOLLOWER_USERS, followerUsers);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
@@ -405,8 +407,8 @@ public class UserProcessor {
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
-        final int commentCnt = user.optInt(UserExt.USER_COMMENT_COUNT);
-        final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
+        final int followerUserCnt = followerUsersResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil((double) followerUserCnt / (double) pageSize);
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {

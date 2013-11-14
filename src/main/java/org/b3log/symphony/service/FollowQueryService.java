@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.Filter;
@@ -64,7 +65,7 @@ public class FollowQueryService {
      */
     @Inject
     private UserRepository userRepository;
-    
+
     /**
      * Filler.
      */
@@ -95,15 +96,29 @@ public class FollowQueryService {
      * @param followerId the specified follower id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return following users, returns an empty list if not found
+     * @return result json object, for example,
+     * <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         User
+     *     }, ....]
+     * }
+     * </pre>
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getFollowingUsers(final String followerId, final int currentPageNum, final int pageSize)
+    public JSONObject getFollowingUsers(final String followerId, final int currentPageNum, final int pageSize)
             throws ServiceException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> records = new ArrayList<JSONObject>();
+        
+        ret.put(Keys.RESULTS, (Object) records);
+        ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
 
         try {
-            final List<JSONObject> followings = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
+            final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
+            @SuppressWarnings("unchecked")
+            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
 
             for (final JSONObject follow : followings) {
                 final String followingId = follow.optString(Follow.FOLLOWING_ID);
@@ -114,16 +129,18 @@ public class FollowQueryService {
 
                     continue;
                 }
-                
+
                 filler.fillUserThumbnailURL(user);
 
-                ret.add(user);
+                records.add(user);
             }
+            
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets following users of follower[id=" + followerId + "] failed", e);
 
         }
-        
+
         return ret;
     }
 
@@ -133,15 +150,30 @@ public class FollowQueryService {
      * @param followingUserId the specified following user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return follower users, returns an empty list if not found
+     * @return result json object, for example,
+     * <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         User
+     *     }, ....]
+     * }
+     * </pre>
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getFollowerUsers(final String followingUserId, final int currentPageNum, final int pageSize)
+    public JSONObject getFollowerUsers(final String followingUserId, final int currentPageNum, final int pageSize)
             throws ServiceException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> records = new ArrayList<JSONObject>();
+        
+        ret.put(Keys.RESULTS, (Object) records);
+        ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
 
         try {
-            final List<JSONObject> followers = getFollowers(followingUserId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
+            final JSONObject result = getFollowers(followingUserId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
+            
+            @SuppressWarnings("unchecked")
+            final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
 
             for (final JSONObject follow : followers) {
                 final String followerId = follow.optString(Follow.FOLLOWER_ID);
@@ -152,15 +184,17 @@ public class FollowQueryService {
 
                     continue;
                 }
-                
+
                 filler.fillUserThumbnailURL(user);
 
-                ret.add(user);
+                records.add(user);
             }
+            
+           ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets follower users of following user[id=" + followingUserId + "] failed", e);
         }
-        
+
         return ret;
     }
 
@@ -171,10 +205,21 @@ public class FollowQueryService {
      * @param followingType the specified following type
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
-     * @return followings, returns an empty list if not found
+     * @return result json object, for example,
+     * <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         "oId": "",
+     *         "followerId": "",
+     *         "followingId": "",
+     *         "followingType": int
+     *     }, ....]
+     * }
+     * </pre>
      * @throws RepositoryException repository exception
      */
-    private List<JSONObject> getFollowings(final String followerId, final int followingType, final int currentPageNum, final int pageSize)
+    private JSONObject getFollowings(final String followerId, final int followingType, final int currentPageNum, final int pageSize)
             throws RepositoryException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Follow.FOLLOWER_ID, FilterOperator.EQUAL, followerId));
@@ -185,8 +230,14 @@ public class FollowQueryService {
                 .setPageSize(pageSize).setCurrentPageNum(currentPageNum);
 
         final JSONObject result = followRepository.get(query);
+        final List<JSONObject> records = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        final int recordCnt = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
 
-        return CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.RESULTS, (Object) records);
+        ret.put(Pagination.PAGINATION_RECORD_COUNT, recordCnt);
+
+        return ret;
     }
 
     /**
@@ -196,10 +247,22 @@ public class FollowQueryService {
      * @param followingType the specified following type
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
-     * @return followers, returns an empty list if not found
+     * @return result json object, for example,
+     * <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         "oId": "",
+     *         "followerId": "",
+     *         "followingId": "",
+     *         "followingType": int
+     *     }, ....]
+     * }
+     * </pre>
+     *
      * @throws RepositoryException repository exception
      */
-    private List<JSONObject> getFollowers(final String followingId, final int followingType, final int currentPageNum, final int pageSize)
+    private JSONObject getFollowers(final String followingId, final int followingType, final int currentPageNum, final int pageSize)
             throws RepositoryException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Follow.FOLLOWING_ID, FilterOperator.EQUAL, followingId));
@@ -211,6 +274,13 @@ public class FollowQueryService {
 
         final JSONObject result = followRepository.get(query);
 
-        return CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        final List<JSONObject> records = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        final int recordCnt = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
+
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.RESULTS, (Object) records);
+        ret.put(Pagination.PAGINATION_RECORD_COUNT, recordCnt);
+        
+        return ret;
     }
 }
