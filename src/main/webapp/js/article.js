@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0, Oct 31, 2013
+ * @version 1.0.1.1, Nov 14, 2013
  */
 
 /**
@@ -98,7 +98,7 @@ var Comment = {
             position.end = i + position.text.length;
         }
 
-        textarea.value = content.substring(0, position.start) + userName + content.substring(position.start, content.length);
+        textarea.value = content.substring(0, position.start) + userName + content.substring(position.end, content.length);
 
         if (textarea.setSelectionRange) {
             textarea.setSelectionRange(position.start + userName.length, position.start + userName.length);

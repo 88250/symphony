@@ -72,7 +72,7 @@
                                                 </span>
                                                 <span class="fn-right">
                                                     <#if isLoggedIn> 
-                                                    <span class="ico-replay" onclick="Comment.replay('@${comment.commentAuthorName}')"></span>
+                                                    <span class="ico-replay" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
                                                     </#if>
                                                     <i>#${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}</i>
                                                 </span>    

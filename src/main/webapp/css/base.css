@@ -273,6 +273,10 @@ textarea {
 a.ft-noline:hover {
     text-decoration: none;
 }
+
+.fn-inline {
+    display: inline-block;
+}
 /* end function */
 
 /* start button */

@@ -26,7 +26,7 @@
                 </#if>
                 <br/>
 
-                <#if isLoggedIn>
+                <#if isLoggedIn && (userName != followingUser.userName)> 
                 <#if followingUser.isFollowing>
                 <button class="red" onclick="Util.unfollow(this, '${followingUser.oId}')"> 
                     ${unfollowLabel}

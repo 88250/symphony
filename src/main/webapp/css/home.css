@@ -18,7 +18,7 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.5, Nov 13, 2013
+* @version 1.0.1.6, Nov 14, 2013
 */
 /* start home side */
 .user-online {
@@ -157,6 +157,13 @@
 
 .notification li {
     background-color: #F8F8FF;
+    position: relative;
+}
+
+.notification li .ico-cmt {
+    position: absolute;
+    right: 10px;
+    top: 40%;
 }
 /* end notifications */
 
