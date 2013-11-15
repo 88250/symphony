@@ -16,6 +16,7 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import java.util.Map;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
  * 
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Jan 25, 2013
+ * @version 1.0.0.6, Nov 15, 2013
  */
 @Named
 @Singleton
@@ -44,6 +45,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
     /**
      * Language service.
      */
+    @Inject
     private LangPropsService langPropsService;
     /**
      * Max user name length.
