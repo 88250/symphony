@@ -18,7 +18,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.1, Oct 13, 2013
+* @version 1.0.2.2, Nov 19, 2013
 */
 /* start module */
 .index-module .index-module-list > li {
@@ -229,10 +229,12 @@
 
 .tags-trend .ft-small {
     color: #e4b6b6;
+    line-height: 21px;
 } 
 
 .tags-cold .ft-small {
     color: #a2be9e;
+    line-height: 21px;
 } 
 
 .tags-cold a,
@@ -248,5 +250,12 @@
     width: 60px;
     float: left;
     margin-top: 6px;
+}
+
+.tag-artile-user {
+    float: left;
+    margin-left: 20px;
+    margin-top: 35px;
+    width: 498px;
 }
 /* end tag-article.html */

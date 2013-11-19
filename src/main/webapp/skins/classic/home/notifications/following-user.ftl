@@ -8,15 +8,17 @@
            title="${notification.authorName}">
             <img class="avatar fn-left" src="${notification.thumbnailURL}"/>
         </a>
-        <h2> <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
-        <div class="content-reset-p ">
-            <p class="ft-small">
-                <#list notification.articleTags?split(",") as articleTag>
-                <a rel="tag" href="/tags/${notification?url('UTF-8')}">
-                    ${articleTag}</a><#if notification_has_next>, </#if>
-                </#list>
-                <span class="ico-date">${notification.createTime?string('yyyy-MM-dd HH:mm')}</span>
-            </p>
+        <div class="list-content fn-left">
+            <h2> <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
+            <div class="comment">
+                <p class="ft-small">
+                    <#list notification.articleTags?split(",") as articleTag>
+                    <a rel="tag" href="/tags/${notification?url('UTF-8')}">
+                        ${articleTag}</a><#if notification_has_next>, </#if>
+                    </#list>
+                    <span class="ico-date">${notification.createTime?string('yyyy-MM-dd HH:mm')}</span>
+                </p>
+            </div> 
         </div>
         <#if notification.articleCommentCount != 0>
         <div class="ft-small ico-cmt">

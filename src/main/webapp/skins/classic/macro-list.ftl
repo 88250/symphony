@@ -4,10 +4,10 @@
         <#list listData as article>
         <li>
             <div class="fn-clear">
-                <a rel="nofollow" class="ft-noline" 
+                <a rel="nofollow"
                    href="/member/${article.articleAuthorName}" 
                    title="${article.articleAuthorName}"><img class="avatar fn-left" src="${article.articleAuthorThumbnailURL}" /></a>
-                <div class="fn-left" style="width: 550px">
+                <div class="fn-left list-content">
                     <h2><a rel="bookmark" href="${article.articlePermalink}">${article.articleTitle}</a></h2>
                     <span class="ft-small">
                         <#list article.articleTags?split(",") as articleTag>
@@ -19,14 +19,14 @@
                 </div>
             </div>
             <#if article.articleCommentCount != 0>
-            <div class="count ft-small ico-cmt">
+            <div class="ft-small ico-cmt">
                 ${article.articleCommentCount}
                 ${cmtLabel}
             </div>
             </#if>
             <div class="commenters">
                 <#list article.articleParticipants as comment>
-                <a rel="nofollow" href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}" class="ft-noline">
+                <a rel="nofollow" href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}">
                     <img class="avatar-small" src="${comment.articleParticipantThumbnailURL}" />
                 </a>
                 </#list>

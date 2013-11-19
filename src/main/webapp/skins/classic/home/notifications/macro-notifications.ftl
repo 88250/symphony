@@ -42,11 +42,6 @@
                                 </#if>
                             </a>
                         </li>
-                        <!--
-                        <li>
-                            <a href="#">${notificationFollowingTagLabel}</a>
-                        </li>
-                        -->
                     </ul>
                 </div>
             </div>

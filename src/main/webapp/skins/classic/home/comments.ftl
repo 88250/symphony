@@ -12,7 +12,7 @@
             <span class="fn-right ft-small ico-date">
                 ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
             </span>    
-            <div class="content-reset content-reset-p">
+            <div class="content-reset comment">
                 ${comment.commentContent}
             </div>
         </li>

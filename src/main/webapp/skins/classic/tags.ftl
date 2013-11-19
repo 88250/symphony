@@ -22,7 +22,7 @@
                         <div class="module-panel list">
                             <ul class="tags-trend">
                                 <#list trendTags as tag>
-                                <li<#if !tag_has_next> class="last"</#if>> 
+                                <li class="fn-clear<#if !tag_has_next> last</#if>"> 
                                     <#if tag.tagIconPath!="">
                                     <img class="avatar fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}" />
                                     </#if>
@@ -48,7 +48,7 @@
                         <div class="module-panel list">
                             <ul class="tags-cold">
                                 <#list coldTags as tag>
-                                <li<#if !tag_has_next> class="last"</#if>>
+                                <li class="fn-clear<#if !tag_has_next> last</#if>">
                                     <#if tag.tagIconPath!="">
                                     <img class="avatar fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}" />
                                     </#if>

@@ -35,14 +35,14 @@
                                 </li>
                             </ul>
                         </div>
-                        <div style="margin-top:35px">
-                            <a rel="nofollow" style="width: 48px;" class="ft-noline fn-left" title="${creatorLabel}:${tag.tagCreatorName}" href="/member/${tag.tagCreatorName}">
-                                <img style="margin-left:20px" class="avatar fn-left" src="${tag.tagCreatorThumbnailURL}">
+                        <div class="tag-artile-user">
+                            <a rel="nofollow" class="fn-left" title="${creatorLabel}:${tag.tagCreatorName}" href="/member/${tag.tagCreatorName}">
+                                <img class="avatar" src="${tag.tagCreatorThumbnailURL}">
                             </a>
                             <div class="fn-right">
                                 <#list tag.tagParticipants as commenter>
-                                <a rel="nofollow" style="width: 58px;" class="ft-noline fn-left" title="${contributorLabel}:${commenter.tagParticipantName}" href="/member/${commenter.tagParticipantName}">
-                                    <img class="avatar fn-left" src="${commenter.tagParticipantThumbnailURL}">
+                                <a rel="nofollow" class="fn-left" title="${contributorLabel}:${commenter.tagParticipantName}" href="/member/${commenter.tagParticipantName}">
+                                    <img class="avatar" src="${commenter.tagParticipantThumbnailURL}">
                                 </a>
                                 </#list>
                             </div>

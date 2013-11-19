@@ -77,7 +77,7 @@
                                                     <i>#${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}</i>
                                                 </span>    
                                             </div>
-                                            <div class="content-reset content-reset-p">
+                                            <div class="content-reset comment">
                                                 ${comment.commentContent}
                                             </div>
                                         </div>
@@ -169,9 +169,8 @@
             </div>
         </div>
         <#include "footer.ftl">
-        <script type="text/javascript" src="/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="/js/lib/jquery/jquery.linkify-1.0-min.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="/js/article.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/article.js?${staticResourceVersion}"></script>
         <script>
             var Label = {
                 commentErrorLabel: "${commentErrorLabel}",

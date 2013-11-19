@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.1, Nov 14, 2013
+ * @version 1.0.1.2, Nov 19, 2013
  */
 
 /**
@@ -143,26 +143,23 @@ var Article = {
 
         this.share();
         this.parseLanguage();
-
-        // NOTE: https://github.com/b3log/b3log-symphony/issues/53 放到后台后需要移除此及相关的 js
-        $('.content-reset').linkify();
     },
     /**
      * @description 分享按钮
      */
     share: function() {
-        var title = encodeURIComponent(Label.articleTitle + " - B3log " + Label.symphonyLabel),
-                url = "http://symphony.b3log.org" + Label.articlePermalink,
-                pic = $(".content-reset img").attr("src");
-        var urls = {};
-        urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
-                "&url=" + url + "&pic=" + pic;
-        urls.sina = "http://v.t.sina.com.cn/share/share.php?title=" +
-                title + "&url=" + url + "&pic=" + pic;
-        urls.google = "https://plus.google.com/share?url=" + url;
-        urls.twitter = "https://twitter.com/intent/tweet?status=" + title + " " + url;
         $(".share span").click(function() {
             var key = this.className.replace("-ico", "");
+            var title = encodeURIComponent(Label.articleTitle + " - B3log " + Label.symphonyLabel),
+                    url = "http://symphony.b3log.org" + Label.articlePermalink,
+                    pic = $(".content-reset img").attr("src");
+            var urls = {};
+            urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
+                    "&url=" + url + "&pic=" + pic;
+            urls.sina = "http://v.t.sina.com.cn/share/share.php?title=" +
+                    title + "&url=" + url + "&pic=" + pic;
+            urls.google = "https://plus.google.com/share?url=" + url;
+            urls.twitter = "https://twitter.com/intent/tweet?status=" + title + " " + url;
             window.open(urls[key], "_blank", "top=100,left=200,width=648,height=618");
         });
     },
