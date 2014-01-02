@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.0.9, Nov 13, 2013
+    Version: 1.0.1.0, Jan 2, 2014
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -24,7 +24,6 @@
         <servlet.version>2.5</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
-        <org.b3log.latke-bae.version>0.5.0-SNAPSHOT</org.b3log.latke-bae.version>
         <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
         <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
         <jsoup.version>1.7.1</jsoup.version>
@@ -123,14 +122,6 @@
             <version>${org.b3log.latke.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>c3p0</groupId>
-                    <artifactId>c3p0</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.jolbox</groupId>
-                    <artifactId>bonecp</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
                 </exclusion>
@@ -151,12 +142,6 @@
             <version>${servlet.version}</version>
         </dependency>
         
-        <dependency>
-            <groupId>org.b3log</groupId>
-            <artifactId>latke-bae</artifactId>
-            <version>${org.b3log.latke-bae.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
