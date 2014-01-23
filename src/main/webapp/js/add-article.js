@@ -149,10 +149,10 @@ var AddArticle = {
         $codemirror = $(".CodeMirror");
         if ($codemirror.width() > 900) {
             $grammar.show();
-            $codemirror.width(770);
+            $codemirror.width(750);
         } else {
             $grammar.hide();
-            $codemirror.width(996)
+            $codemirror.width(996);
         }
        
     }
