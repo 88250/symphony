@@ -20,7 +20,10 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -29,6 +32,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
@@ -44,18 +48,24 @@ import org.json.JSONObject;
 
 /**
  * Index processor.
- * 
+ *
  * <ul>
- *   <li>Shows index (/), GET</li>
- *   <li>Shows abount (/about), GET</li>
+ * <li>Shows index (/), GET</li>
+ * <li>Shows about (/about), GET</li>
+ * <li>Shows kill browser (/kill-browser), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Nov 1, 2012
+ * @version 1.0.1.8, Jan 22, 2014
  * @since 0.2.0
  */
 @RequestProcessor
 public class IndexProcessor {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class.getName());
 
     /**
      * Article query service.
@@ -82,12 +92,18 @@ public class IndexProcessor {
     private Filler filler;
 
     /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
      * Shows index.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
@@ -134,11 +150,11 @@ public class IndexProcessor {
 
     /**
      * Shows about.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/about", method = HTTPRequestMethod.GET)
     public void showAbout(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -153,5 +169,27 @@ public class IndexProcessor {
         filler.fillRandomArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+    }
+
+    /**
+     * Shows kill browser page with the specified context.
+     *
+     * @param context the specified context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     */
+    @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
+    public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        renderer.setTemplateName("kill-browser.ftl");
+        context.setRenderer(renderer);
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+
+        dataModel.putAll(langs);
+        Keys.fillRuntime(dataModel);
+        filler.fillMinified(dataModel);
     }
 }

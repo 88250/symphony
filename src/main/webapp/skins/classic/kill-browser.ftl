@@ -2,16 +2,12 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>${blogTitle}</title>
-        <meta name="keywords" content="Java 博客,blog,b3log,kill IE6" />
-        <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客,Let's kill IE6" />
+        <title>B3log ${symphonyLabel} - ${visionLabel}</title>
+        <meta name="keywords" content="${visionLabel},B3log ${symphonyLabel}"/>
+        <meta name="description" content="B3log ${symphonyLabel}${b3logDescriptionLabel}"/>
         <meta name="owner" content="B3log Team" />
         <meta name="author" content="B3log Team" />
-        <meta name="generator" content="B3log Solo" />
         <meta name="copyright" content="B3log" />
-        <meta name="revised" content="B3log, ${year}" />
-        <meta http-equiv="Window-target" content="_top" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
     </head>
     <body>
@@ -26,8 +22,8 @@
                     <div class="main kill" style="height: 385px;">
                         ${killBrowserLabel}
                         <br/>
-                         &nbsp; &nbsp;&nbsp; <button onclick="closeIframe();">${closeLabel}</button> &nbsp; &nbsp; 
-                        <button onclick="closeIframeForever();">${closeForeverLabel}</button>
+                         &nbsp; &nbsp;&nbsp; <button onclick="closeIframe();">{closeLabel}</button> &nbsp; &nbsp; 
+                        <button onclick="closeIframeForever();">{closeForeverLabel}</button>
                         <img src='${staticServePath}/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
                         <a href="http://b3log.org" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
