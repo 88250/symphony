@@ -38,6 +38,7 @@
 <script type="text/javascript" src="${staticServePath}/js/common.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/md5.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.linkify-1.0-min.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
 <script>
     Util.init();
     var Label = {

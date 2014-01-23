@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.4, Nov 12, 2013
+ * @version 1.0.1.5, Jan 23, 2014
  */
 
 /**
@@ -110,17 +110,45 @@ var Util = {
         window.location = "/register?goto=" + encodeURIComponent(location.href);
     },
     /**
+     * @description 禁止 IE7 以下浏览器访问
+     */
+    _kill: function() {
+        //if ($.browser.msie && parseInt($.browser.version) < 8) {
+        $.ajax({
+            url: "/kill-browser",
+            type: "GET",
+            cache: false,
+            success: function(result, textStatus) {
+                $("body").append(result);
+                $("#killBrowser").dialog({
+                    "modal": true,
+                    "hideFooter": true,
+                    "height": 258,
+                    "width": 530
+                });
+
+                $("#killBrowser").dialog("open");
+            }
+        });
+        // }
+    },
+    /**
      * @description 初识化前台页面
      */
     init: function() {
+        //禁止 IE7 以下浏览器访问
+        this._kill();
+
         // 导航
         this._initNav();
+
         // 登录密码输入框回车事件
         $("#loginPassword").keyup(function(event) {
             if (event.keyCode === 13) {
                 Util.login();
             }
         });
+
         // search input
         $(".nav input.search").focus(function() {
             $(".nav .tags").hide();

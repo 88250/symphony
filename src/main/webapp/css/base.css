@@ -18,7 +18,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.3.2, Nov 21, 2013
+* @version 1.0.3.3, Jan 23, 2014
 */
 /* start reset */
 html {
@@ -681,7 +681,7 @@ button.red:active {
 
 .dialog-panel {
     display: none;
-    position: absolute;
+    position: fixed;
     z-index: 100;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
@@ -1072,3 +1072,24 @@ button.red:active {
     padding: 10px 20px 20px;
 }
 /* end side module */
+
+/* start kill-browser */
+#killBrowser .module {
+    height: 235px;
+    width: 520px;
+}
+
+#killBrowser p {
+    margin: 10px 0;
+}
+
+#killBrowser ul {
+    margin-left: 30px;
+}
+
+#killBrowser img {
+    position: absolute;
+    right: 36px;
+    top: 58px;
+}
+/* end kill-browser */
