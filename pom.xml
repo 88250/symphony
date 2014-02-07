@@ -23,8 +23,7 @@
     <properties>
         <servlet.version>2.5</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
-        <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
+        <org.b3log.latke.version>1.0.4</org.b3log.latke.version>
         <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
         <jsoup.version>1.7.1</jsoup.version>
         <markdownpapers-core.version>1.3.2</markdownpapers-core.version>
@@ -145,7 +144,7 @@
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
-            <version>${org.b3log.latke-repository-mysql.version}</version>
+            <version>${org.b3log.latke.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.jolbox</groupId>
