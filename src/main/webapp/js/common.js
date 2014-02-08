@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.5, Jan 23, 2014
+ * @version 1.0.1.6, Feb 8, 2014
  */
 
 /**
@@ -113,24 +113,24 @@ var Util = {
      * @description 禁止 IE7 以下浏览器访问
      */
     _kill: function() {
-        //if ($.browser.msie && parseInt($.browser.version) < 8) {
-        $.ajax({
-            url: "/kill-browser",
-            type: "GET",
-            cache: false,
-            success: function(result, textStatus) {
-                $("body").append(result);
-                $("#killBrowser").dialog({
-                    "modal": true,
-                    "hideFooter": true,
-                    "height": 258,
-                    "width": 530
-                });
+        if ($.browser.msie && parseInt($.browser.version) < 8) {
+            $.ajax({
+                url: "/kill-browser",
+                type: "GET",
+                cache: false,
+                success: function(result, textStatus) {
+                    $("body").append(result);
+                    $("#killBrowser").dialog({
+                        "modal": true,
+                        "hideFooter": true,
+                        "height": 258,
+                        "width": 530
+                    });
 
-                $("#killBrowser").dialog("open");
-            }
-        });
-        // }
+                    $("#killBrowser").dialog("open");
+                }
+            });
+        }
     },
     /**
      * @description 初识化前台页面
