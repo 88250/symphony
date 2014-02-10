@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Login check. Gets user from request attribute named "user" if logged in.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Nov 12, 2013
+ * @version 1.0.0.2, Feb 10, 2014
  * @since 0.2.5
  */
 @Named
@@ -70,10 +70,12 @@ public class LoginCheck extends BeforeRequestProcessAdvice {
         exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
 
         try {
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            JSONObject currentUser = userQueryService.getCurrentUser(request);
             if (null == currentUser && !userMgmtService.tryLogInWithCookie(request, context.getResponse())) {
                 throw new RequestProcessAdviceException(exception);
             }
+            
+            currentUser = userQueryService.getCurrentUser(request);
 
             request.setAttribute(User.USER, currentUser);
         } catch (final ServiceException e) {
