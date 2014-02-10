@@ -44,7 +44,7 @@
                                 ${syncWithSymphonyClientLabel}
                         </div>
                         <div class="fn-right">
-                            <button class="green<#if !article??> fn-none</#if>" onclick="AddArticle.preview()">${previewLabel}</button>
+                            <button class="green<#if !article??> fn-none</#if>" onclick="AddArticle.preview()">${previewLabel}</button> &nbsp; &nbsp; 
                             <button class="red" onclick="AddArticle.add( <#if article??> '${article.oId}' </#if>)"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>
