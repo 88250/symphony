@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
@@ -40,14 +41,14 @@ import org.b3log.symphony.event.solo.ArticleUpdater;
 import org.b3log.symphony.event.solo.CommentSender;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserMgmtService;
-import org.b3log.symphony.util.Skins;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
  * B3log Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Sep 6, 2013
+ * @version 1.0.1.2, Feb 11, 2014
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -70,9 +71,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
         Stopwatchs.start("Context Initialized");
         
         super.contextInitialized(servletContextEvent);
-
-        Skins.loadSkin();
         
+        final String skinDirName = Symphonys.get("skinDirName");
+        Latkes.loadSkin(skinDirName);
+
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         
         // Register event listeners
