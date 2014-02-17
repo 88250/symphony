@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.1.2, Feb 11, 2014
+    Version: 1.0.1.3, Feb 17, 2014
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -244,6 +244,7 @@
                     <includes>
                         <include>**/src/*/java/**/*.java</include>
                         <include>**/src/*/webapp/js/*.js</include>
+                        <include>**/src/*/webapp/css/*.css</include>
                         <include>**/src/*/resources/*.properties</include>
                         <include>**/src/*/webapp/WEB-INF/*.xml</include>
                     </includes>
