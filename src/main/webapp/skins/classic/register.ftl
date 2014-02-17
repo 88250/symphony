@@ -21,7 +21,7 @@
                                 </td>
                                 <td width="165">
                                     <input type="text" id="userName" />
-                                    <span style="left: 289px; top: 14px;"></span>
+                                    <span style="left: 275px; top: 14px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -30,7 +30,7 @@
                                 </td>
                                 <td>
                                     <input type="text" id="userEmail" />
-                                    <span style="left:289px;top:69px;"></span>
+                                    <span style="left:275px;top:69px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -39,7 +39,7 @@
                                 </td>
                                 <td>
                                     <input id="userPassword"  type="password" />
-                                    <span style="left:289px;top:124px;"></span>
+                                    <span style="left:275px;top:124px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -48,7 +48,7 @@
                                 </td>
                                 <td>
                                     <input id="confirmPassword" type="password" />
-                                    <span style="left:289px;top:179px;"></span>
+                                    <span style="left:275px;top:179px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -57,7 +57,7 @@
                                 </td>
                                 <td>
                                     <input type="text" id="securityCode" />
-                                    <span style="top:234px;left:289px;"></span>
+                                    <span style="top:234px;left:275px;"></span>
                                     <img id="captcha" style="cursor:pointer" src="/captcha" onclick="this.src = '/captcha?' + (new Date()).getTime()" />
                                 </td>
                             </tr>
@@ -79,14 +79,11 @@
         <script type="text/javascript" src="/js/register.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="/js/lib/md5.js?${staticResourceVersion}"></script>
         <script>
-                                        Register.init();
-                                        var Label = {
-                                            userNameErrorLabel: "${userNameErrorLabel}",
-                                            invalidEmailLabel: "${invalidEmailLabel}",
-                                            confirmPwdErrorLabel: "${confirmPwdErrorLabel}",
-                                            captchaErrorLabel: "${captchaErrorLabel}",
-                                            invalidPasswordLabel: "${invalidPasswordLabel}"
-                                        };
+                                                Register.init();
+                                                Label.userNameErrorLabel = "${userNameErrorLabel}";
+                                                Label.invalidEmailLabel = "${invalidEmailLabel}";
+                                                Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
+                                                Label.captchaErrorLabel = "${captchaErrorLabel}";
         </script>
     </body>
 </html>

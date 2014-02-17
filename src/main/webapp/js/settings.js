@@ -17,7 +17,7 @@
  * @fileoverview settings.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Oct 12, 2013
+ * @version 1.0.0.5, Feb 17, 2014
  */
 /**
  * @description Settings function
@@ -159,7 +159,6 @@ var Settings = {
             if (newPwdVal !== $("#pwdRepeat").val()) {
                 return false;
             }
-            alert(pwdVal + "     " + newPwdVal);
             var data = {};
             data.userPassword = calcMD5(pwdVal);
             data.userNewPassword = calcMD5(newPwdVal);

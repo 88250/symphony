@@ -17,7 +17,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.2, Nov 19, 2013
+* @version 1.0.2.3, Feb 17, 2014
 */
 /* start module */
 .index-module .index-module-list > li {
@@ -68,6 +68,10 @@
     margin: 20px 0 0;
 }
 
+#comments .comment-content {
+    width: 612px;
+}
+
 .comment-login {
     border: 1px solid #D9D9D9;
     border-top-color: #C0C0C0; 
@@ -92,7 +96,6 @@
     background-color: #FAFAFA;
     margin: 20px 0;
     overflow: hidden;
-    width: 672px;
 }
 
 .tencent-ico, 

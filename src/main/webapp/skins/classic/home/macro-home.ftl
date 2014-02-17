@@ -57,10 +57,8 @@
         </div>
         <#include "../footer.ftl">
         <script>
-            var Label = {
-                followLabel: "${followLabel}",
-                unfollowLabel: "${unfollowLabel}"
-            };
+            Label.followLabel = "${followLabel}";
+            Label.unfollowLabel = "${unfollowLabel}";
         </script>
     </body>
 </html>

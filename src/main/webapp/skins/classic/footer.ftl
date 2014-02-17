@@ -3,7 +3,7 @@
         <div class="fn-left">
             <img src="${staticServePath}/images/logo.png" />
         </div>
-        <div class="fn-right" style="width: 800px">
+        <div class="fn-right">
             <div class="footer-nav">
                 <a rel="help" href="/about">${aboutLabel}</a> 
                 <a rel="help" href="/tags/B3log%20Announcement">${b3logAnnouncementLabel}</a>

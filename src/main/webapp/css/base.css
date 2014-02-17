@@ -17,7 +17,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.3.4, Feb 10, 2014
+* @version 1.0.3.5, Feb 17, 2014
 */
 /* start reset */
 html {
@@ -581,7 +581,10 @@ button.red:active {
     border-radius: 3px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
     padding: 7px 8px;
-    width: 98%;
+    width: 100%;
+    box-sizing: padding-box;
+    -moz-box-sizing: padding-box;
+    -webkit-box-sizing: padding-box;
 }
 
 .form input[type=text]:focus,
@@ -833,7 +836,6 @@ button.red:active {
 .nav .form input[type="text"], 
 .nav .form input[type="password"] {
     margin: 10px 0;
-    width: 170px;
 }
 
 .nav input.search {
@@ -901,6 +903,10 @@ button.red:active {
     font-size: 11px;
     white-space: nowrap;
     word-wrap: normal;
+}
+
+.footer > div > .fn-right {
+    width: 800px;
 }
 
 .footer-nav a {
@@ -1034,12 +1040,6 @@ button.red:active {
 .module-panel strong {
     display: inline-block;
     margin-top: 14px;
-}
-
-.module-panel input[type=text],
-.module-panel input[type=password],
-.module-panel textarea {
-    width: 97%;
 }
 
 .module-panel .module-list li {

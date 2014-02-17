@@ -61,7 +61,7 @@
                                             <img class="avatar" 
                                                  title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
                                         </div>
-                                        <div class="fn-left" style="width: 612px;">
+                                        <div class="fn-left comment-content">
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
@@ -172,13 +172,11 @@
         <script type="text/javascript" src="${staticServePath}/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/article.js?${staticResourceVersion}"></script>
         <script>
-            var Label = {
-                commentErrorLabel: "${commentErrorLabel}",
-                symphonyLabel: "${symphonyLabel}",
-                articleOId: "${article.oId}",
-                articleTitle: "${article.articleTitle}",
-                articlePermalink: "${article.articlePermalink}"
-            };
+                            Label.commentErrorLabel = "${commentErrorLabel}";
+                            Label.symphonyLabel = "${symphonyLabel}";
+                            Label.articleOId = "${article.oId}";
+                            Label.articleTitle = "${article.articleTitle}";
+                            Label.articlePermalink = "${article.articlePermalink}";
         </script>
     </body>
 </html>

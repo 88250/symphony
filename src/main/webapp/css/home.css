@@ -17,7 +17,7 @@
 * 后台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.9, Feb 10, 2014
+* @version 1.0.2.0, Feb 17, 2014
 */
 /* start home side */
 .user-online {
@@ -59,7 +59,6 @@
 }
 
 #articleContent {
-    width: 996px;
     height: 345px;
 }
 /* end add article */
