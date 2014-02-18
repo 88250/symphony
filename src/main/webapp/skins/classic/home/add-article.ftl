@@ -5,7 +5,7 @@
         <@head title="${userName} - ${addArticleLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror/codemirror.css?${staticResourceVersion}" />
     </head>
     <body>
@@ -58,7 +58,7 @@
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/codemirror/codemirror.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/add-article.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
                                                 Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
                                                 Label.articleContentErrorLabel = "${articleContentErrorLabel}";

@@ -34,9 +34,9 @@
     </div>
 </div>
 <div class="go-top" onclick="Util.goTop()"></div>
-<link type="text/css" rel="stylesheet" href="${staticServePath}/css/responsive.css?${staticResourceVersion}" />
+<link type="text/css" rel="stylesheet" href="${staticServePath}/css/responsive${miniPostfix}.css?${staticResourceVersion}" />
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js?${staticResourceVersion}"></script>
-<script type="text/javascript" src="${staticServePath}/js/common.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/md5.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.linkify-1.0-min.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>

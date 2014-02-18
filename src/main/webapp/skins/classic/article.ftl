@@ -7,7 +7,7 @@
         <meta name="keywords" content="${article.articleTags}"/>
         <meta name="description" content="${article.articleTitle}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="/js/lib/google-code-prettify/prettify.css?${staticResourceVersion}">
     </head>
     <body>
@@ -170,7 +170,7 @@
         </div>
         <#include "footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/article.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
                             Label.commentErrorLabel = "${commentErrorLabel}";
                             Label.symphonyLabel = "${symphonyLabel}";

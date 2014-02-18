@@ -25,7 +25,7 @@
         <meta name="description" content="${user.userName}${deLabel}${followersLabel},${followersLabel} by ${user.userName}"/>
         </@head>
         </#if>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">

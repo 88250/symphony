@@ -6,7 +6,7 @@
         <meta name="keywords" content="${trendTagsLabel},${coldTagsLabel}"/>
         <meta name="description" content="B3log ${symphonyLabel} ${trendTagsLabel},B3log ${symphonyLabel} ${coldTagsLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">

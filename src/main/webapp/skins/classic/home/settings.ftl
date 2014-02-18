@@ -5,7 +5,7 @@
         <@head title="${userName} - ${settingsLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/home.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="/css/home${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">
@@ -104,7 +104,7 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script type="text/javascript" src="/js/settings.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="/js/lib/md5.js?${staticResourceVersion}"></script>
         <script>
                                 Label.updateSuccLabel = "${updateSuccLabel}";
