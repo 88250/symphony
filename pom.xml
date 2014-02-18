@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.1.3, Feb 17, 2014
+    Version: 1.0.1.4, Feb 18, 2014
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -311,6 +311,30 @@
                 </executions>
             </plugin>
             
+            <plugin>
+                <groupId>org.b3log</groupId>
+                <artifactId>maven-min-plugin</artifactId>
+                <version>${maven-min-plugin.version}</version>
+
+                <configuration>
+                    <suffix>.min</suffix>
+                    <!-- Common#MINI_POSTFIX_VALUE -->
+
+                    <cssSourceDir>${basedir}/src/main/webapp/css</cssSourceDir>
+                    <cssTargetDir>${basedir}/src/main/webapp/css</cssTargetDir>
+
+                    <jsSourceDir>${basedir}/src/main/webapp/js</jsSourceDir>
+                    <jsTargetDir>${basedir}/src/main/webapp/js</jsTargetDir>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>min</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
         <finalName>b3log-symphony</finalName>
