@@ -1,7 +1,7 @@
 <#include "macro-home.ftl">
 <@home "comments">
 <div class="list">
-    <ul>
+    <ul class="home-comments">
         <#list userHomeComments as comment>
         <li class="fn-clear">
             <a title="${comment.commentArticleAuthorName}"
