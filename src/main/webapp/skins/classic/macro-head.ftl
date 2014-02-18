@@ -10,6 +10,5 @@
 <meta name="revised" content="B3log, 2012" />
 <meta http-equiv="Window-target" content="_top" />
 <link type="text/css" rel="stylesheet" href="${staticServePath}/css/base.css?${staticResourceVersion}" />
-<link type="text/css" rel="stylesheet" href="${staticServePath}/css/responsive.css?${staticResourceVersion}" />
 <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
 </#macro>

@@ -17,14 +17,15 @@
 * base style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 1.0.0.1, Feb 17, 2014
+* @version 1.0.0.2, Feb 18, 2014
 */
 @media (max-width: 460px) {
     .nav form,
     .nav .tags,
     .article-list .avatar,
     .go-top,
-    #comments .avatar-wrapper {
+    #comments .avatar-wrapper,
+    .tag-artile-user {
         display: none;
     }
 
@@ -33,35 +34,51 @@
     .side,
     .module .comment-content,
     .list .list-content,
-     #comments .comment-content {
+    #comments .comment-content,
+    .article-list li > div:first-child,
+    .follow li,
+    .footer > div > .fn-right,
+    .footer .info {
         width: 100% !important;
+    }
+
+    .follow li > div,
+    .register .intro,
+    .nav .user-nav,
+    h2.fn-inline {
+        width: auto;
+    }
+
+    .nav {
+        height: auto;
+    }
+
+    .footer .fn-clear > .fn-right,
+    .content > div > .ft-small > .fn-left,
+    .footer > div > .fn-left,
+    .content > div > .ft-small > .fn-right,
+    .article-content,
+    .form label.article-content-label {
+        float: none;
+    }
+
+    .follow img.avatar,
+    .follow li > div,
+    .nav .user-nav {
+        float: left;
     }
 
     .module {
         border-width: 0;
     }
 
-    .footer > div > .fn-right {
-        width: 100%;
-        text-align: center;
-    }
-
+    .footer > div > .fn-right,
     .footer > div > .fn-left {
         text-align: center;
-        float: none;
     }
 
     .footer .info {
         white-space: normal;
-        width: 100%;
-    }
-
-    .footer .fn-clear > .fn-right {
-        float: none;
-    }
-
-    .nav {
-        height: auto;
     }
 
     .nav .form {
@@ -69,9 +86,7 @@
     }
 
     .nav .user-nav {
-        float: left;
         position: inherit;
-        width: auto;
     }
 
     .nav h1 {
@@ -81,5 +96,33 @@
     .comment-login {
         margin: 0px auto;
         padding: 0;
+    }
+
+    .content > div > .ft-small > .fn-right {
+        margin-left: -4px;
+    }
+
+    .register .intro {
+        border-top: 1px dashed #C0C0C0 !important;
+        border-left-width: 0 !important;
+        margin: 50px 0 0 !important;
+        padding: 20px 0 0 !important;
+    }
+
+    .user-online {
+        right: 95px;
+        top: 270px;
+    }
+
+    .side .avatar-big {
+        margin-top: 50px;
+    }
+
+    .CodeMirror {
+        width: 98%;
+    }
+    
+    .form label.article-content-label {
+        display: block;
     }
 }

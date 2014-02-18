@@ -17,7 +17,7 @@
  * @fileoverview add-article.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, Mar 13, 2013
+ * @version 1.0.1.0, Feb 18, 2014
  */
 
 /**
@@ -25,12 +25,11 @@
  * @static
  */
 var AddArticle = {
-
     /**
      * @description 发布文章
      * @id [string] 文章 id ，如不为空则表示更新文章否则为添加文章
      */
-    add: function (id) {
+    add: function(id) {
         var isError = false;
         if (this.editor.getValue().length < 4 || this.editor.getValue().length > 1048576) {
             $("#articleContentTip").addClass("tip-error").text(Label.articleContentErrorLabel);
@@ -38,39 +37,39 @@ var AddArticle = {
             isError = true;
             $("#articleContentTip").removeClass("tip-error").text("");
         }
-        
+
         if (Validate.goValidate([{
-            "id": "articleTitle",
-            "type": 256,
-            "msg": Label.articleTitleErrorLabel
-        }, {
-            "id": "articleTags",
-            "type": "tags",
-            "msg": Label.articleTagsErrorLabel
-        }]) && isError) {
+                "id": "articleTitle",
+                "type": 256,
+                "msg": Label.articleTitleErrorLabel
+            }, {
+                "id": "articleTags",
+                "type": "tags",
+                "msg": Label.articleTagsErrorLabel
+            }]) && isError) {
             var requestJSONObject = {
-                articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g,""),
+                articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g, ""),
                 articleContent: this.editor.getValue(),
-                articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g,""),
+                articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked")
             },
             url = "/article",
-            type = "POST";
-    
+                    type = "POST";
+
             if (id) {
                 url = url + "/" + id;
                 type = "PUT";
             }
-            
+
             $.ajax({
                 url: url,
                 type: type,
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                beforeSend: function () {
+                beforeSend: function() {
                     $(".form button.red").attr("disabled", "disabled").css("opacity", "0.3");
                 },
-                success: function(result, textStatus){
+                success: function(result, textStatus) {
                     $(".form button.red").removeAttr("disabled").css("opacity", "1");
                     if (result.sc) {
                         window.location = "/member/" + Label.userName;
@@ -82,50 +81,48 @@ var AddArticle = {
                         });
                     }
                 },
-                complete: function () {
-                    $(".form button.red").removeAttr("disabled").css("opacity", "1"); 
+                complete: function() {
+                    $(".form button.red").removeAttr("disabled").css("opacity", "1");
                 }
             });
         }
     },
-    
     /**
      * @description 初识化发文页面，回车提交表单
      */
-    init: function () {
+    init: function() {
         var it = this;
         it.editor = CodeMirror.fromTextArea(document.getElementById("articleContent"), {
             mode: 'markdown',
             lineNumbers: true,
-            onKeyEvent: function (editor, event) {
+            onKeyEvent: function(editor, event) {
                 if (it.editor.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
                     $(".form .green").show();
                 } else {
                     $(".form .green").hide();
                 }
-                
+
                 if (event.keyCode === 13 && event.ctrlKey) {
                     AddArticle.add();
                 }
             }
         });
-            
-        $("#articleTitle, #articleTags").keypress(function (event) {
+
+        $("#articleTitle, #articleTags").keypress(function(event) {
             if (event.keyCode === 13) {
                 AddArticle.add();
             }
         });
-        
+
         $("#preview").dialog({
             "modal": true,
             "hideFooter": true
         });
     },
-    
     /**
      * @description 预览文章
      */
-    preview: function () {
+    preview: function() {
         var it = this;
         $.ajax({
             url: "/markdown",
@@ -134,19 +131,23 @@ var AddArticle = {
             data: {
                 markdownText: it.editor.getValue()
             },
-            success: function(result, textStatus){
+            success: function(result, textStatus) {
                 $("#preview").dialog("open");
                 $("#preview").html(result.html);
             }
         });
     },
-    
     /**
      * @description 显示简要语法
      */
-    grammar: function () {
+    grammar: function() {
         var $grammar = $(".grammar"),
-        $codemirror = $(".CodeMirror");
+                $codemirror = $(".CodeMirror");
+        if ($("#articleTitle").width() < 500) {
+            // for mobile
+            $grammar.toggle();
+            return;
+        }
         if ($codemirror.width() > 900) {
             $grammar.show();
             $codemirror.width(750);
@@ -154,7 +155,6 @@ var AddArticle = {
             $grammar.hide();
             $codemirror.width(996);
         }
-       
     }
 };
 

@@ -17,7 +17,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.3.5, Feb 17, 2014
+* @version 1.0.3.6, Feb 18, 2014
 */
 /* start reset */
 html {
@@ -582,9 +582,9 @@ button.red:active {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
     padding: 7px 8px;
     width: 100%;
-    box-sizing: padding-box;
-    -moz-box-sizing: padding-box;
-    -webkit-box-sizing: padding-box;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
 .form input[type=text]:focus,
@@ -930,6 +930,7 @@ button.red:active {
     position: fixed;
     right: -1px;
     width: 36px;
+    z-index: 10;
 }
 
 .go-top:hover {

@@ -18,14 +18,14 @@
                         <input type="text" id="articleTitle" value="<#if article??>${article.articleTitle}</#if>" />
                         <span style="right:2px;top:41px;"></span>
                     </div>
-                    <label>
+                    <label class="article-content-label">
                         ${contentLabel}
                         <a href="javascript:AddArticle.grammar()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
                     </label>
 
                     <div class="fn-clear">
-                        <div class="fn-left">
+                        <div class="fn-left article-content">
                             <textarea id="articleContent"><#if article??>${article.articleContent}</#if></textarea>
                             <span id="articleContentTip" style="top: 429px; right: 2px;"></span>
                         </div>
