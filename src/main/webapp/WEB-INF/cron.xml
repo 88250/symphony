@@ -17,7 +17,7 @@
 
 -->
 <!--
-    Description: Cron job configurations on GAE. See
+    Description: Cron job configurations. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
     Version: 1.0.0.0, Jul 30, 2012
