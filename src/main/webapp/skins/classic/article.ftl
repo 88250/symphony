@@ -94,7 +94,10 @@
                         <span style="bottom: 4px; right: 75px;"></span>
                         <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                        <button class="green fn-right" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
+                        <div class="fn-right">
+                        <button class="green fn-none" onclick="Comment.preview()">预览</button> &nbsp; &nbsp; 
+                        <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
+                        </div>
                     </div>
                     <div class="grammar fn-none">
                         ${markdwonGrammarLabel}
@@ -164,19 +167,20 @@
                             </ul>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <#include "footer.ftl">
-        <script type="text/javascript" src="${staticServePath}/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script>
+        <div id="preview" class="content-reset"></div>
+         <script>
                             Label.commentErrorLabel = "${commentErrorLabel}";
                             Label.symphonyLabel = "${symphonyLabel}";
                             Label.articleOId = "${article.oId}";
                             Label.articleTitle = "${article.articleTitle}";
                             Label.articlePermalink = "${article.articlePermalink}";
         </script>
+        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
     </body>
 </html>

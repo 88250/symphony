@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.2, Nov 19, 2013
+ * @version 1.1.1.2, Mar 18, 2014
  */
 
 /**
@@ -61,6 +61,24 @@ var Comment = {
                 }
             });
         }
+    },
+    /**
+     * @description 预览文章
+     */
+    preview: function() {
+        $.ajax({
+            url: "/markdown",
+            type: "POST",
+            cache: false,
+            data: {
+                markdownText: $("#commentContent").val()
+            },
+            success: function(result, textStatus) {
+                $(".dialog-background").height($("body").height());
+                $("#preview").dialog("open");
+                $("#preview").html(result.html);
+            }
+        });
     },
     /**
      * @description 点击回复评论时，把当楼层的用户名带到评论框中
@@ -118,10 +136,13 @@ var Article = {
      */
     init: function() {
         $("#commentContent").val("").keyup(function(event) {
+            var $commentContent = $(this);
             if (Validate.goValidate(Comment._validateData)) {
-                $("#commentContent").next().removeClass("tip-error").text("");
+                $commentContent.next().removeClass("tip-error").text("");
+                $commentContent.parent().find(".green").show();
             } else {
-                $("#commentContent").next().addClass("tip-error").text(Label.commentErrorLabel);
+                $commentContent.next().addClass("tip-error").text(Label.commentErrorLabel);
+                $commentContent.parent().find(".green").hide();
             }
 
             if (event.keyCode === 13 && event.ctrlKey) {
@@ -141,6 +162,10 @@ var Article = {
             }
         });
 
+        $("#preview").dialog({
+            "modal": true,
+            "hideFooter": true
+        });
         this.share();
         this.parseLanguage();
     },
