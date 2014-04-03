@@ -17,7 +17,7 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.1.1.2, Mar 18, 2014
+ * @version 1.1.2.2, Apr 3, 2014
  */
 
 /**
@@ -174,14 +174,14 @@ var Article = {
      */
     share: function() {
         $(".share span").click(function() {
-            var key = this.className.replace("-ico", "");
+            var key = $(this).data("type");
             var title = encodeURIComponent(Label.articleTitle + " - B3log " + Label.symphonyLabel),
                     url = "http://symphony.b3log.org" + Label.articlePermalink,
                     pic = $(".content-reset img").attr("src");
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
                     "&url=" + url + "&pic=" + pic;
-            urls.sina = "http://v.t.sina.com.cn/share/share.php?title=" +
+            urls.weibo = "http://v.t.sina.com.cn/share/share.php?title=" +
                     title + "&url=" + url + "&pic=" + pic;
             urls.google = "https://plus.google.com/share?url=" + url;
             urls.twitter = "https://twitter.com/intent/tweet?status=" + title + " " + url;

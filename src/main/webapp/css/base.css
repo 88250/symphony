@@ -17,7 +17,7 @@
 * base style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.3.6, Feb 18, 2014
+* @version 1.0.4.6, Apr 3, 2014
 */
 /* start reset */
 html {
@@ -445,6 +445,15 @@ button.red:active {
     content: "\e601";
 }
 
+.icon-search {
+    color: #999999;
+    left: 176px;
+    position: absolute;
+    top: 19px;
+    z-index: 10;
+    cursor: pointer;
+}
+
 .icon-date:before {
     content: "\e603";
 }
@@ -456,6 +465,21 @@ button.red:active {
 .icon-cmts:before {
     content: "\e605";
 }
+
+.icon-cmt {
+    cursor: pointer;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    transition: opacity 0.2s ease-out 0s;
+    font-size: 19px;
+    vertical-align: top;
+}
+
+.icon-cmt:hover {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
 .icon-cmt:before {
     content: "\e606";
 }
@@ -464,12 +488,47 @@ button.red:active {
     content: "\e607";
 }
 
+.icon-up {
+    background-color: #E7ECEE;
+    border: 1px solid #D2D9DD;
+    border-right-width: 0;
+    border-radius: 5px 0 0 5px;
+    bottom: 76px;
+    color: #999;
+    cursor: pointer;
+    display: none;
+    line-height: 36px;
+    font-size: 20px;
+    text-align: center;
+    height: 36px;
+    position: fixed;
+    width: 36px;
+    z-index: 10;
+    right: 0;
+}
+
+.icon-up:hover {
+    background-color: #d8e0e3 !important;
+}
+
 .icon-twitter:before {
     content: "\e608";
 }
 
 .icon-edit:before {
     content: "\e609";
+}
+
+.icon-edit:hover {
+    color: #333;
+}
+
+.icon-tag:before {
+    content: "\e60b";
+}
+
+.icon-tags:before {
+    content: "\e60c";
 }
 /* end icon */
 
@@ -923,25 +982,6 @@ button.red:active {
 .footer-nav a.last {
     border-right: 0;
 }
-
-.go-top {
-    background-color: #E7ECEE;
-    background-position: 5px -146px;
-    border: 1px solid #D2D9DD;
-    border-radius: 5px 0 0 5px;
-    bottom: 77px;
-    cursor: pointer;
-    display: none;
-    height: 36px;
-    position: fixed;
-    right: -1px;
-    width: 36px;
-    z-index: 10;
-}
-
-.go-top:hover {
-    background-color: #d8e0e3 !important;
-}
 /* end footer */
 
 /* start list */
@@ -984,7 +1024,7 @@ button.red:active {
     margin-bottom: 7px;
 }
 
-.article-list li .ico-cmt,
+.cmts,
 .article-list li .commenters {
     position: absolute;
     right: 10px;
@@ -1000,9 +1040,10 @@ button.red:active {
     float: left;
     margin-left: 4px;
     width: 25px;
+    text-decoration: none;
 }
 
-.article-list li:hover .ico-cmt {
+.article-list li:hover .cmts {
     display: none;
 }
 

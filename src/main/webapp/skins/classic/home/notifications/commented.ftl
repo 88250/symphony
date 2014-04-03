@@ -11,7 +11,10 @@
         <h2 class="fn-inline">
              <a rel="bookmark" href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>
         </h2>
-        <span class="ico-date ft-small fn-right">${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span>
+        <span class="ft-small fn-right">
+            <span class="icon icon-date"></span>
+            ${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}
+        </span>
         <div class="content-reset comment">
             ${notification.commentContent}
         </div>

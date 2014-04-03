@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.6, Feb 8, 2014
+ * @version 1.0.2.6, Apr 3, 2014
  */
 
 /**
@@ -150,6 +150,9 @@ var Util = {
         });
 
         // search input
+        $(".nav .icon-search").click(function () {
+             $(".nav input.search").focus();
+        });
         $(".nav input.search").focus(function() {
             $(".nav .tags").hide();
         }).blur(function() {
@@ -157,19 +160,19 @@ var Util = {
         });
         $(window).scroll(function() {
             if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
-                $(".go-top").css({
+                $(".icon-up").css({
                     "background-color": "#F8F8F8",
                     "border-radius": "5px 0 0 0",
                     "border-color": "#E0E0E0"
                 }).show();
             } else if ($(window).scrollTop() > 20) {
-                $(".go-top").css({
+                $(".icon-up").css({
                     "background-color": "#E7ECEE",
                     "border-radius": "5px 0 0 5px",
                     "border-color": "#D2D9DD"
                 }).show();
             } else {
-                $(".go-top").hide();
+                $(".icon-up").hide();
             }
         });
     },
