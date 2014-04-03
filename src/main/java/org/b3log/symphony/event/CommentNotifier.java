@@ -15,28 +15,42 @@
  */
 package org.b3log.symphony.event;
 
+import java.net.URL;
+import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Symphonys;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Sends a comment notification.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Nov 9, 2013
+ * @version 1.0.1.9, Apr 1, 2014
  * @since 0.2.0
  */
 @Named
@@ -59,11 +73,16 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     @Inject
     private UserQueryService userQueryService;
 
+    /**
+     * URL fetch service.
+     */
+    private URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, CommentNotifier.class.getName()});
+        LOGGER.log(Level.INFO, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                   new Object[]{event.getType(), data, CommentNotifier.class.getName()});
 
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
@@ -104,7 +123,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 if (user.optString(Keys.OBJECT_ID).equals(articleAuthorId)) {
                     continue; // Has added in step 1
                 }
-                
+
                 final JSONObject requestJSONObject = new JSONObject();
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, user.optString(Keys.OBJECT_ID));
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalComment.optString(Keys.OBJECT_ID));
@@ -112,49 +131,58 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 notificationMgmtService.addAtNotification(requestJSONObject);
             }
 
-//            final Set<String> qqSet = new HashSet<String>();
-//            for (final String userName : userNames) {
-//                final JSONObject user = userQueryService.getUserByName(userName);
-//                final String qq = user.optString(UserExt.USER_QQ);
-//                if (!Strings.isEmptyOrNull(qq)) {
-//                    qqSet.add(qq);
-//                }
-//            }
-//
-//            if (qqSet.isEmpty()) {
-//                return;
-//            }
-//
-//            /*
-//             * {
-//             *     "key": "",
-//             *     "messageContent": "",
-//             *     "messageProcessor": "QQ",
-//             *     "messageToAccounts": [
-//             *         "", ....
-//             *     ]
-//             * }
-//             */
-//            final HTTPRequest httpRequest = new HTTPRequest();
-//            httpRequest.setURL(new URL(Symphonys.get("imServePath")));
-//            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
-//            final JSONObject requestJSONObject = new JSONObject();
-//            final JSONArray qqs = CollectionUtils.toJSONArray(qqSet);
-//
-//            requestJSONObject.put("messageProcessor", "QQ");
-//            requestJSONObject.put("messageToAccounts", qqs);
-//            requestJSONObject.put("key", Symphonys.get("keyOfSymphony"));
-//
-//            final StringBuilder msgContent = new StringBuilder("----\n");
-//            msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
-//                    .append(originalComment.optString(Comment.COMMENT_SHARP_URL)).append("\n\n")
-//                    .append(Jsoup.clean(commentContent.replace("&gt;", ">").replace("&lt;", "<"), Whitelist.none())).append("\n----");
-//
-//            requestJSONObject.put("messageContent", msgContent.toString());
-//
-//            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-//
-//            urlFetchService.fetchAsync(httpRequest);
+            final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
+
+            final Set<String> qqSet = new HashSet<String>();
+            for (final String userName : atUserNames) {
+                final JSONObject user = userQueryService.getUserByName(userName);
+                final String qq = user.optString(UserExt.USER_QQ);
+                if (!Strings.isEmptyOrNull(qq)) {
+                    qqSet.add(qq);
+                }
+            }
+
+            final String qq = articleAuthor.optString(UserExt.USER_QQ);
+            if (!Strings.isEmptyOrNull(qq)) {
+                qqSet.add(qq);
+            }
+
+            if (qqSet.isEmpty()) {
+                return;
+            }
+
+            /*
+             * {
+             *     "key": "",
+             *     "messageContent": "",
+             *     "messageProcessor": "QQ",
+             *     "messageToAccounts": [
+             *         "", ....
+             *     ]
+             * }
+             */
+            final HTTPRequest httpRequest = new HTTPRequest();
+            httpRequest.setURL(new URL(Symphonys.get("imServePath")));
+            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
+            final JSONObject requestJSONObject = new JSONObject();
+            final JSONArray qqs = CollectionUtils.toJSONArray(qqSet);
+
+            requestJSONObject.put("messageProcessor", "QQ");
+            requestJSONObject.put("messageToAccounts", qqs);
+            requestJSONObject.put("key", Symphonys.get("keyOfSymphony"));
+
+            final StringBuilder msgContent = new StringBuilder("----\n");
+            msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
+                    .append(originalComment.optString(Comment.COMMENT_SHARP_URL)).append("\n\n")
+                    .append(Jsoup.clean(commentContent.replace("&gt;", ">").replace("&lt;", "<"), Whitelist.none())).append("\n----");
+
+            requestJSONObject.put("messageContent", msgContent.toString());
+
+            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
+
+            urlFetchService.fetchAsync(httpRequest);
+
+            LOGGER.debug("Sent QQ message [qqs=" + qqs.toString() + ", content=" + requestJSONObject.toString() + "]");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the comment notification failed", e);
         }
@@ -162,7 +190,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
     /**
      * Gets the event type {@linkplain EventTypes#ADD_COMMENT_TO_ARTICLE}.
-     * 
+     *
      * @return event type
      */
     @Override
