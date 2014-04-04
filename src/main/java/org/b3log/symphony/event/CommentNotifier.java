@@ -15,42 +15,30 @@
  */
 package org.b3log.symphony.event;
 
-import java.net.URL;
-import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
-import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 /**
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.9, Apr 1, 2014
+ * @version 1.0.2.9, Apr 4, 2014
  * @since 0.2.0
  */
 @Named
@@ -131,58 +119,61 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 notificationMgmtService.addAtNotification(requestJSONObject);
             }
 
-            final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
-
-            final Set<String> qqSet = new HashSet<String>();
-            for (final String userName : atUserNames) {
-                final JSONObject user = userQueryService.getUserByName(userName);
-                final String qq = user.optString(UserExt.USER_QQ);
-                if (!Strings.isEmptyOrNull(qq)) {
-                    qqSet.add(qq);
-                }
-            }
-
-            final String qq = articleAuthor.optString(UserExt.USER_QQ);
-            if (!Strings.isEmptyOrNull(qq)) {
-                qqSet.add(qq);
-            }
-
-            if (qqSet.isEmpty()) {
-                return;
-            }
-
-            /*
-             * {
-             *     "key": "",
-             *     "messageContent": "",
-             *     "messageProcessor": "QQ",
-             *     "messageToAccounts": [
-             *         "", ....
-             *     ]
-             * }
-             */
-            final HTTPRequest httpRequest = new HTTPRequest();
-            httpRequest.setURL(new URL(Symphonys.get("imServePath")));
-            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
-            final JSONObject requestJSONObject = new JSONObject();
-            final JSONArray qqs = CollectionUtils.toJSONArray(qqSet);
-
-            requestJSONObject.put("messageProcessor", "QQ");
-            requestJSONObject.put("messageToAccounts", qqs);
-            requestJSONObject.put("key", Symphonys.get("keyOfSymphony"));
-
-            final StringBuilder msgContent = new StringBuilder("----\n");
-            msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
-                    .append(originalComment.optString(Comment.COMMENT_SHARP_URL)).append("\n\n")
-                    .append(Jsoup.clean(commentContent.replace("&gt;", ">").replace("&lt;", "<"), Whitelist.none())).append("\n----");
-
-            requestJSONObject.put("messageContent", msgContent.toString());
-
-            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-
-            urlFetchService.fetchAsync(httpRequest);
-
-            LOGGER.debug("Sent QQ message [qqs=" + qqs.toString() + ", content=" + requestJSONObject.toString() + "]");
+//            final Set<String> qqSet = new HashSet<String>();
+//
+//            if (!commenterIsArticleAuthor) {
+//                final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
+//                final String qq = articleAuthor.optString(UserExt.USER_QQ);
+//                if (!Strings.isEmptyOrNull(qq)) {
+//                    qqSet.add(qq);
+//                }
+//            }
+//
+//            for (final String userName : atUserNames) {
+//                final JSONObject user = userQueryService.getUserByName(userName);
+//                final String q = user.optString(UserExt.USER_QQ);
+//                if (!Strings.isEmptyOrNull(q)) {
+//                    qqSet.add(q);
+//                }
+//            }
+//
+//            if (qqSet.isEmpty()) {
+//                return;
+//            }
+//
+//            /*
+//             * {
+//             *     "key": "",
+//             *     "messageContent": "",
+//             *     "messageProcessor": "QQ",
+//             *     "messageToAccounts": [
+//             *         "", ....
+//             *     ]
+//             * }
+//             */
+//            final HTTPRequest httpRequest = new HTTPRequest();
+//            httpRequest.setURL(new URL(Symphonys.get("imServePath")));
+//            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
+//            final JSONObject requestJSONObject = new JSONObject();
+//            final JSONArray qqs = CollectionUtils.toJSONArray(qqSet);
+//
+//            requestJSONObject.put("messageProcessor", "QQ");
+//            requestJSONObject.put("messageToAccounts", qqs);
+//            requestJSONObject.put("key", Symphonys.get("keyOfSymphony"));
+//
+//            final StringBuilder msgContent = new StringBuilder("----\n");
+//            msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
+//                    .append(originalComment.optString(Comment.COMMENT_SHARP_URL)).append("\n\n")
+//                    .append(Jsoup.clean(commentContent.replace("&gt;", ">").replace("&lt;", "<"), Whitelist.none())).append("\n----");
+//
+//            requestJSONObject.put("messageContent", msgContent.toString());
+//
+//            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
+//
+//            urlFetchService.fetchAsync(httpRequest);
+//
+//            LOGGER.debug("Sent QQ message [qqs=" + qqs.toString() + ", content=" + requestJSONObject.toString() + "]");
+//            
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the comment notification failed", e);
         }
