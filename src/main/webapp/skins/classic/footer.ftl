@@ -13,12 +13,12 @@
             </div>
             <div class="fn-clear">
                 <div class="fn-left info">
-                    <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt} &nbsp;
-                    <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount} &nbsp;
-                    <span class="ft-small">${memberLabel}</span> ${statistic.statisticMemberCount} &nbsp;
-                    <span class="ft-small">${articleLabel}</span> ${statistic.statisticArticleCount} &nbsp;
-                    <span class="ft-small">${tagLabel}</span> ${statistic.statisticTagCount} &nbsp;
-                    <span class="ft-small">${cmtLabel}</span> ${statistic.statisticCmtCount}
+                    <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c} &nbsp;
+                    <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
+                    <span class="ft-small">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
+                    <span class="ft-small">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
+                    <span class="ft-small">${tagLabel}</span> ${statistic.statisticTagCount?c} &nbsp;
+                    <span class="ft-small">${cmtLabel}</span> ${statistic.statisticCmtCount?c}
                 </div>
                 <div class="fn-right">
                     ${visionLabel}
