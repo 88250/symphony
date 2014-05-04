@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.1.5, Mar 28, 2014
+    Version: 1.0.1.6, May 4, 2014
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -21,7 +21,7 @@
 
     <!-- Properties -->
     <properties>
-        <org.b3log.latke.version>1.0.7</org.b3log.latke.version>
+        <org.b3log.latke.version>1.0.11</org.b3log.latke.version>
         <servlet.version>2.5</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
         <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
