@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.14, Sep 2, 2013
+ * @version 1.0.1.14, May 13, 2014
  * @since 0.2.0
  */
 @Service
@@ -148,7 +148,8 @@ public class CommentMgmtService {
             comment.put(Keys.OBJECT_ID, ret);
 
             String securedContent = requestJSONObject.optString(Comment.COMMENT_CONTENT)
-                    .replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;").replace("_esc_enter_88250_", "<br/>");
+                    .replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;")
+                    .replace("&lt;pre&gt;", "<pre>").replace("_esc_enter_88250_", "<br/>");
 
             comment.put(Comment.COMMENT_AUTHOR_EMAIL, requestJSONObject.optString(Comment.COMMENT_AUTHOR_EMAIL));
             comment.put(Comment.COMMENT_AUTHOR_ID, requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID));
