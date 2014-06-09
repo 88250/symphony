@@ -30,11 +30,17 @@
                                 <a title="${cmtLabel}" rel="nofollow" href="#comments">
                                     <span class="icon icon-cmts"></span>
                                     ${article.articleCommentCount}
-                                </a> &nbsp;   
+                                </a> &nbsp;
                                 <a title="${viewLabel}" rel="nofollow" href="#"> 
                                     <span class="icon icon-view"></span>
                                     ${article.articleViewCount}
-                                </a> 
+                                </a>
+                                <#if article.isMyArticle>
+                                &nbsp;
+                                <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}">
+                                    <span class="ft-small icon icon-edit"></span>
+                                </a>
+                                </#if>
                             </div>
                         </div>
                         <h2 class="article-title">
