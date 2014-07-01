@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.1.8, Jul 1, 2014
+    Version: 1.0.1.7, Jun 9, 2014
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -37,7 +37,7 @@
         <maven-javancss-plugin.version>2.0</maven-javancss-plugin.version>
         <maven-javadoc-plugin.version>2.7</maven-javadoc-plugin.version>
         <maven-cobertura-plugin.version>2.5.1</maven-cobertura-plugin.version>
-        <maven-min-plugin.version>1.0.0</maven-min-plugin.version>
+        <maven-min-plugin.version>0.5.0-SNAPSHOT</maven-min-plugin.version>
         <!-- Unit Test -->
         <testng.version>6.1.1</testng.version>
         <!-- -->
