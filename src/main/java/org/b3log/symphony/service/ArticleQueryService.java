@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
@@ -39,6 +40,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
@@ -57,7 +59,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Sep 26, 2013
+ * @version 1.1.0.9, Oct 19, 2014
  * @since 0.2.0
  */
 @Service
@@ -117,22 +119,22 @@ public class ArticleQueryService {
 
     /**
      * Gets the relevant articles of the specified article with the specified fetch size.
-     * 
+     *
      * <p>
      * The relevant articles exist the same tag with the specified article.
      * </p>
-     * 
+     *
      * @param article the specified article
      * @param fetchSize the specified fetch size
      * @return relevant articles, returns an empty list if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getRelevantArticles(final JSONObject article, final int fetchSize) throws ServiceException {
         final String tagsString = article.optString(Article.ARTICLE_TAGS);
         final String[] tagTitles = tagsString.split(",");
         final int tagTitlesLength = tagTitles.length;
         final int subCnt = tagTitlesLength > RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT
-                ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
+                           ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
 
         final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
         final int subFetchSize = fetchSize / subCnt;
@@ -178,11 +180,11 @@ public class ArticleQueryService {
 
     /**
      * Gets broadcasts (articles permalink equals to "aBroadcast").
-     * 
+     *
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
      * @return articles, return an empty list if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getBroadcasts(final int currentPageNum, final int pageSize) throws ServiceException {
         try {
@@ -212,11 +214,11 @@ public class ArticleQueryService {
 
     /**
      * Gets news (articles tags contains "B3log Announcement").
-     * 
+     *
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
      * @return articles, return an empty list if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getNews(final int currentPageNum, final int pageSize) throws ServiceException {
         JSONObject tag = null;
@@ -260,13 +262,70 @@ public class ArticleQueryService {
     }
 
     /**
+     * Gets articles by the specified tags (order by article create date desc).
+     *
+     * @param tags the specified tags
+     * @param currentPageNum the specified page number
+     * @param articleFields the specified article fields to return
+     * @param pageSize the specified page size
+     * @return articles, return an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getArticlesByTags(final int currentPageNum, final int pageSize,
+                                              final Map<String, Class<?>> articleFields, final JSONObject... tags) throws ServiceException {
+        try {
+            final List<Filter> filters = new ArrayList<Filter>();
+            for (final JSONObject tag : tags) {
+                filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)));
+            }
+
+            Filter filter;
+            if (filters.size() >= 2) {
+                filter = new CompositeFilter(CompositeFilterOperator.OR, filters);
+            } else {
+                filter = filters.get(0);
+            }
+
+            Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                    setFilter(filter).setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+
+            JSONObject result = tagArticleRepository.get(query);
+            final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
+
+            final Set<String> articleIds = new HashSet<String>();
+            for (int i = 0; i < tagArticleRelations.length(); i++) {
+                articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
+            }
+
+            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+            for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
+                query.addProjection(articleField.getKey(), articleField.getValue());
+            }
+
+            result = articleRepository.get(query);
+
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            organizeArticles(ret);
+
+            final Integer participantsCnt = Symphonys.getInt("tagArticleParticipantsCnt");
+            genParticipants(ret, participantsCnt);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets articles by tags [tagLength=" + tags.length + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets articles by the specified tag (order by article create date desc).
-     * 
+     *
      * @param tag the specified tag
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
      * @return articles, return an empty list if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesByTag(final JSONObject tag, final int currentPageNum, final int pageSize) throws ServiceException {
         try {
@@ -282,8 +341,8 @@ public class ArticleQueryService {
                 articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
             }
 
-            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).addSort(Keys.OBJECT_ID,
-                    SortDirection.DESCENDING);
+            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
             result = articleRepository.get(query);
 
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -301,11 +360,11 @@ public class ArticleQueryService {
 
     /**
      * Gets an article by the specified client article id.
-     * 
+     *
      * @param authorId the specified author id
      * @param clientArticleId the specified client article id
      * @return article, return {@code null} if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public JSONObject getArticleByClientArticleId(final String authorId, final String clientArticleId) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
@@ -330,10 +389,10 @@ public class ArticleQueryService {
 
     /**
      * Gets an article by the specified id.
-     * 
+     *
      * @param articleId the specified id
      * @return article, return {@code null} if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public JSONObject getArticleById(final String articleId) throws ServiceException {
         try {
@@ -354,7 +413,7 @@ public class ArticleQueryService {
 
     /**
      * Gets the user articles with the specified user id, page number and page size.
-     * 
+     *
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -379,7 +438,7 @@ public class ArticleQueryService {
 
     /**
      * Gets the random articles with the specified fetch size.
-     * 
+     *
      * @param fetchSize the specified fetch size
      * @return recent articles, returns an empty list if not found
      * @throws ServiceException service exception
@@ -398,7 +457,7 @@ public class ArticleQueryService {
 
     /**
      * Gets the recent (sort by create time) articles with the specified fetch size.
-     * 
+     *
      * @param fetchSize the specified fetch size
      * @return recent articles, returns an empty list if not found
      * @throws ServiceException service exception
@@ -421,7 +480,7 @@ public class ArticleQueryService {
 
     /**
      * Gets the latest comment articles with the specified fetch size.
-     * 
+     *
      * @param currentPageNum the specified current page number
      * @param fetchSize the specified fetch size
      * @return recent articles, returns an empty list if not found
@@ -456,16 +515,16 @@ public class ArticleQueryService {
 
     /**
      * Organizes the specified articles.
-     * 
+     *
      * <ul>
-     *   <li>converts create/update/latest comment time (long) to date type</li>
-     *   <li>generates author thumbnail URL</li>
-     *   <li>generates author name</li>
-     *   <li>escapes article  title &lt; and &gt;</li>
+     * <li>converts create/update/latest comment time (long) to date type</li>
+     * <li>generates author thumbnail URL</li>
+     * <li>generates author name</li>
+     * <li>escapes article title &lt; and &gt;</li>
      * </ul>
-     * 
+     *
      * @param articles the specified articles
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
     private void organizeArticles(final List<JSONObject> articles) throws RepositoryException {
         for (final JSONObject article : articles) {
@@ -475,16 +534,16 @@ public class ArticleQueryService {
 
     /**
      * Organizes the specified article.
-     * 
+     *
      * <ul>
-     *   <li>converts create/update/latest comment time (long) to date type</li>
-     *   <li>generates author thumbnail URL</li>
-     *   <li>generates author name</li>
-     *   <li>escapes article  title &lt; and &gt;</li>
+     * <li>converts create/update/latest comment time (long) to date type</li>
+     * <li>generates author thumbnail URL</li>
+     * <li>generates author name</li>
+     * <li>escapes article title &lt; and &gt;</li>
      * </ul>
-     * 
+     *
      * @param article the specified article
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
     private void organizeArticle(final JSONObject article) throws RepositoryException {
         toArticleDate(article);
@@ -501,7 +560,7 @@ public class ArticleQueryService {
 
     /**
      * Converts the specified article create/update/latest comment time (long) to date type.
-     * 
+     *
      * @param article the specified article
      */
     private void toArticleDate(final JSONObject article) {
@@ -512,12 +571,16 @@ public class ArticleQueryService {
 
     /**
      * Generates the specified article author name and thumbnail URL.
-     * 
+     *
      * @param article the specified article
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
         final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
+
+        if (Strings.isEmptyOrNull(authorEmail)) {
+            return;
+        }
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, Thumbnails.getGravatarURL(authorEmail, "140"));
 
@@ -527,7 +590,7 @@ public class ArticleQueryService {
 
     /**
      * Generates participants for the specified articles.
-     * 
+     *
      * @param articles the specified articles
      * @param participantsCnt the specified generate size
      * @throws ServiceException service exception
@@ -537,8 +600,8 @@ public class ArticleQueryService {
             final String participantName = "";
             final String participantThumbnailURL = "";
 
-            final List<JSONObject> articleParticipants =
-                    commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
+            final List<JSONObject> articleParticipants
+                                   = commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
             article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
 
             article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
@@ -548,29 +611,30 @@ public class ArticleQueryService {
 
     /**
      * Processes the specified article content.
-     * 
+     *
      * <ul>
-     *   <li>Generates &#64;username home URL</li>
-     *   <li>Markdowns</li>
-     *   <li>Generates secured article content</li>
-     *   <li>Blocks the article if need</li>
-     *   <li>Generates emotion images</li>
+     * <li>Generates &#64;username home URL</li>
+     * <li>Markdowns</li>
+     * <li>Generates secured article content</li>
+     * <li>Blocks the article if need</li>
+     * <li>Generates emotion images</li>
      * </ul>
-     * 
+     *
      * @param article the specified article, for example,
      * <pre>
      * {
      *     "articleTitle": "",
-     *     ...., 
+     *     ....,
      *     "author": {}
      * }
      * </pre>
-     * @throws ServiceException service exception 
+     *
+     * @throws ServiceException service exception
      */
     public void processArticleContent(final JSONObject article) throws ServiceException {
         final JSONObject author = article.optJSONObject(Article.ARTICLE_T_AUTHOR);
         if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
-                || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+            || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
             article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
 
@@ -598,12 +662,12 @@ public class ArticleQueryService {
 
     /**
      * Markdowns the specified article content.
-     * 
+     *
      * <ul>
-     *   <li>Markdowns article content</li>
-     *   <li>Generates secured article content</li>
+     * <li>Markdowns article content</li>
+     * <li>Generates secured article content</li>
      * </ul>
-     * 
+     *
      * @param article the specified article content
      */
     private void markdown(final JSONObject article) {
