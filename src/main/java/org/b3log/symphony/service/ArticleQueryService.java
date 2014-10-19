@@ -285,6 +285,8 @@ public class ArticleQueryService {
             } else {
                 filter = filters.get(0);
             }
+            
+            // XXX: 这里的分页是有问题的，后面取文章的时候会少（因为一篇文章可以有多个标签，但是文章 id 一样）
 
             Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     setFilter(filter).setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);

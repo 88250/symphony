@@ -17,6 +17,7 @@ package org.b3log.symphony.api;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,8 +130,10 @@ public class ArticleProcessor {
             article.remove(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL);
             article.remove(Article.ARTICLE_LATEST_CMT_TIME);
             article.remove(Article.ARTICLE_UPDATE_TIME);
+
+            article.put(Article.ARTICLE_CREATE_TIME, ((Date) article.get(Article.ARTICLE_CREATE_TIME)).getTime());
         }
-        
+
         ret.put(Article.ARTICLES, articles);
     }
 }
