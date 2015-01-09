@@ -14,7 +14,7 @@
                 </h3>
                 <#if followingUser.userArticleCount == 0>
                 <#if followingUser.userURL != "">
-                <a class="ft-small" target="_blank" rel="friend" href="${followingUser.userURL}">${followingUser.userURL}</a>
+                <a class="ft-small" target="_blank" rel="friend" href="${followingUser.userURL?html}">${followingUser.userURL?html}</a>
                 <#else>
                 <span class="ft-small">Symphony</span>
                 ${followingUser.userNo}

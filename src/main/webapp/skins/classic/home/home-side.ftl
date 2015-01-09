@@ -29,7 +29,7 @@
         <#if user.userURL!="">
         <div class="user-info">
             <span class="ft-small">URL</span>
-            <a target="_blank" rel="friend" href="${user.userURL}">${user.userURL}</a>
+            <a target="_blank" rel="friend" href="${user.userURL?html}">${user.userURL?html}</a>
         </div>
         </#if>
         <div class="user-info">
