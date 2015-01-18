@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.1.8, Jul 1, 2014
+    Version: 1.0.1.9, Jul 18, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -267,8 +267,8 @@
                     </mapping>
                     <useDefaultMapping>true</useDefaultMapping>
                     <properties>
-                        <year>2009, 2010, 2011, 2012, 2013</year>
-                        <devTeam>B3log Team</devTeam>
+                        <year>2015</year>
+                        <devTeam>b3log.org</devTeam>
                     </properties>
                     <encoding>UTF-8</encoding>
                 </configuration>
