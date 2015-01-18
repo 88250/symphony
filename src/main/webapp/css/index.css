@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
+ * Copyright (c) 2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 * 前台样式
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.2.3, Feb 17, 2014
+* @version 1.0.3.3, Apr 3, 2014
 */
 /* start module */
 .index-module .index-module-list > li {
@@ -88,50 +88,29 @@
     padding: 21px 0px 21px;
 }
 
-.comment-info .ico-date {
-    margin-top: 2px;
-}
-
 #commentContent {
     background-color: #FAFAFA;
     margin: 20px 0;
     overflow: hidden;
 }
 
-.tencent-ico, 
-.sina-ico, 
-.twitter-ico, 
-.google-ico {
-    background-image: url("../images/share.png");
+.icon-tencent, 
+.icon-weibo, 
+.icon-twitter, 
+.icon-google {
     cursor: pointer;
-    float: left;
-    height: 16px;
-    margin: 0 5px 0 6px;
-    width: 16px;
     transition: all 0.2s ease-out 0s;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
+    display: inline-block;
+    font-size: 16px;
+    color: #666;
 }
 
-.tencent-ico:hover, 
-.sina-ico:hover, 
-.twitter-ico:hover, 
-.google-ico:hover {
+.icon-tencent:hover, 
+.icon-weibo:hover, 
+.icon-twitter:hover, 
+.icon-google:hover {
     transform: rotate(360deg);
-    opacity: 1;
-    filter: alpha(opacity=100);
-}
-
-.sina-ico {
-    background-position: 0 -16px;
-}
-
-.google-ico {
-    background-position: 0 -32px;
-}
-
-.twitter-ico {
-    background-position: 0 -48px;
+    color: #333;
 }
 
 .grammar dl {

@@ -9,7 +9,8 @@
                 <img class="avatar fn-left" src="${comment.commentArticleAuthorThumbnailURL}"/>
             </a>
             <h2 class="fn-inline"><a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a></h2>
-            <span class="fn-right ft-small ico-date">
+            <span class="fn-right ft-small">
+                <span class="icon icon-date"></span>
                 ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
             </span>    
             <div class="content-reset comment">

@@ -10,7 +10,10 @@
         </a>
         <#if !notification.atInArticle>
         <h2 class="fn-inline"><a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
-        <span class="ico-date ft-small fn-right">${notification.createTime?string('yyyy-MM-dd HH:mm')}</span>
+        <span class="ft-small fn-right">
+            <span class="icon icon-date"></span>
+            ${notification.createTime?string('yyyy-MM-dd HH:mm')}
+        </span>
         <div class="content-reset comment">
             ${notification.content}
         </div>
@@ -19,16 +22,20 @@
             <h2><a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
             <div class="comment">
                 <p class="ft-small">
+                    <span class="icon icon-tags"></span>
                     <#list notification.articleTags?split(",") as articleTag>
                     <a rel="tag" href="/tags/${notification?url('UTF-8')}">
                         ${articleTag}</a><#if notification_has_next>, </#if>
                     </#list>
-                    <span class="ico-date">${notification.createTime?string('yyyy-MM-dd HH:mm')}</span>
+                    &nbsp; 
+                    <span class="icon icon-date"></span>
+                    ${notification.createTime?string('yyyy-MM-dd HH:mm')}
                 </p>
             </div>  
         </div>
         <#if notification.articleCommentCount != 0>
-        <div class="ft-small ico-cmt">
+        <div class="ft-small cmts">
+             <span class="icon icon-cmts"></span>
             ${notification.articleCommentCount}
             ${cmtLabel}
         </div>

@@ -13,12 +13,12 @@
             </div>
             <div class="fn-clear">
                 <div class="fn-left info">
-                    <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt} &nbsp;
-                    <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount} &nbsp;
-                    <span class="ft-small">${memberLabel}</span> ${statistic.statisticMemberCount} &nbsp;
-                    <span class="ft-small">${articleLabel}</span> ${statistic.statisticArticleCount} &nbsp;
-                    <span class="ft-small">${tagLabel}</span> ${statistic.statisticTagCount} &nbsp;
-                    <span class="ft-small">${cmtLabel}</span> ${statistic.statisticCmtCount}
+                    <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c} &nbsp;
+                    <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
+                    <span class="ft-small">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
+                    <span class="ft-small">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
+                    <span class="ft-small">${tagLabel}</span> ${statistic.statisticTagCount?c} &nbsp;
+                    <span class="ft-small">${cmtLabel}</span> ${statistic.statisticCmtCount?c}
                 </div>
                 <div class="fn-right">
                     ${visionLabel}
@@ -33,7 +33,7 @@
         </div>
     </div>
 </div>
-<div class="go-top" onclick="Util.goTop()"></div>
+<div class="icon-up icon" onclick="Util.goTop()"></div>
 <link type="text/css" rel="stylesheet" href="${staticServePath}/css/responsive${miniPostfix}.css?${staticResourceVersion}" />
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>

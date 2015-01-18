@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
+ * Copyright (c) 2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,22 +65,22 @@ import org.json.JSONObject;
 /**
  * Article processor.
  *
- * <ul> 
- *   <li>Shows an article (/article/{articleId}), GET</li>
- *   <li>Shows article adding form page (/add-article), GET</li>
- *   <li>Adds an article (/article) <em>locally</em>, POST</li> 
- *   <li>Updates an article (/article/{id}) <em>locally</em>, PUT</li>
- *   <li>Adds an article (/rhythm/article) <em>remotely</em>, POST</li>
- *   <li>Markdowns text (/markdown), POST</li>
- * </ul> 
+ * <ul>
+ * <li>Shows an article (/article/{articleId}), GET</li>
+ * <li>Shows article adding form page (/add-article), GET</li>
+ * <li>Adds an article (/article) <em>locally</em>, POST</li>
+ * <li>Updates an article (/article/{id}) <em>locally</em>, PUT</li>
+ * <li>Adds an article (/rhythm/article) <em>remotely</em>, POST</li>
+ * <li>Markdowns text (/markdown), POST</li>
+ * </ul>
  *
- * <p> 
+ * <p>
  * The '<em>locally</em>' means user post an article on Symphony directly rather than receiving an article from externally (for example
- * Rhythm). 
+ * Rhythm).
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.18, May 29, 2013
+ * @version 1.1.2.18, Jun 9, 2014
  * @since 0.2.0
  */
 @RequestProcessor
@@ -177,7 +177,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String articleId) throws Exception {
+                            final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -197,6 +197,12 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_T_AUTHOR_URL, author.optString(User.USER_URL));
         article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
         dataModel.put(Article.ARTICLE, article);
+
+        article.put(Common.IS_MY_ARTICLE, false);
+        final GeneralUser currentUser = userService.getCurrentUser(request);
+        if (null != currentUser) {
+            article.put(Common.IS_MY_ARTICLE, currentUser.getId().equals(article.optString(Article.ARTICLE_AUTHOR_ID)));
+        }
 
         article.put(Article.ARTICLE_T_AUTHOR, author);
 
@@ -243,7 +249,7 @@ public class ArticleProcessor {
      * Adds an article locally.
      *
      * <p>
-     * The request json object (an article): 
+     * The request json object (an article):
      * <pre>
      * {
      *   "articleTitle": "",
@@ -258,7 +264,7 @@ public class ArticleProcessor {
      * @param request the specified request
      * @param response the specified response
      * @throws IOException io exception
-     * @throws ServletException servlet exception 
+     * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, ArticleAddValidation.class})
@@ -332,7 +338,7 @@ public class ArticleProcessor {
 
         final GeneralUser currentUser = userService.getCurrentUser(request);
         if (null == currentUser
-                || !currentUser.getId().equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
+            || !currentUser.getId().equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -354,7 +360,7 @@ public class ArticleProcessor {
      * Updates an article locally.
      *
      * <p>
-     * The request json object (an article): 
+     * The request json object (an article):
      * <pre>
      * {
      *   "articleTitle": "",
@@ -369,12 +375,12 @@ public class ArticleProcessor {
      * @param request the specified request
      * @param response the specified response
      * @param id the specified article id
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
     @Before(adviceClass = {LoginCheck.class, ArticleUpdateValidation.class})
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String id) throws Exception {
+                              final String id) throws Exception {
         if (Strings.isEmptyOrNull(id)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -387,7 +393,7 @@ public class ArticleProcessor {
 
             return;
         }
-        
+
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -411,7 +417,7 @@ public class ArticleProcessor {
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser
-                || !currentUser.optString(Keys.OBJECT_ID).equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
+            || !currentUser.optString(Keys.OBJECT_ID).equals(oldArticle.optString(Article.ARTICLE_AUTHOR_ID))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -435,11 +441,12 @@ public class ArticleProcessor {
 
     /**
      * Adds an article remotely.
-     * 
-     * <p>This interface will be called by Rhythm, so here is no article data validation, just only validate the B3 key.</p>
-     * 
+     *
      * <p>
-     * The request json object, for example, 
+     * This interface will be called by Rhythm, so here is no article data validation, just only validate the B3 key.</p>
+     *
+     * <p>
+     * The request json object, for example,
      * <pre>
      * {
      *     "article": {
@@ -471,7 +478,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/rhythm/article", method = HTTPRequestMethod.POST)
     public void addArticleFromRhythm(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                                     final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -529,18 +536,18 @@ public class ArticleProcessor {
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
 
             articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
-                    + "<i style='margin-right:5px;'><a target='_blank' href='"
-                    + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
+                              + "<i style='margin-right:5px;'><a target='_blank' href='"
+                              + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
         } else { // Add
             final boolean isBroadcast = "aBroadcast".equals(permalink);
             if (isBroadcast) {
                 articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该广播来自</span> "
-                        + "<i style='margin-right:5px;'><a target='_blank' href='"
-                        + clientHost + "'>" + clientTitle + "</a></i></span></p>";
+                                  + "<i style='margin-right:5px;'><a target='_blank' href='"
+                                  + clientHost + "'>" + clientTitle + "</a></i></span></p>";
             } else {
                 articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
-                        + "<i style='margin-right:5px;'><a target='_blank' href='"
-                        + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
+                                  + "<i style='margin-right:5px;'><a target='_blank' href='"
+                                  + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
             }
 
             article.put(Article.ARTICLE_T_IS_BROADCAST, isBroadcast);
@@ -590,11 +597,12 @@ public class ArticleProcessor {
 
     /**
      * Updates an article remotely.
-     * 
-     * <p>This interface will be called by Rhythm, so here is no article data validation, just only validate the B3 key.</p>
-     * 
+     *
      * <p>
-     * The request json object, for example, 
+     * This interface will be called by Rhythm, so here is no article data validation, just only validate the B3 key.</p>
+     *
+     * <p>
+     * The request json object, for example,
      * <pre>
      * {
      *     "article": {
@@ -626,7 +634,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/rhythm/article", method = HTTPRequestMethod.PUT)
     public void updateArticleFromRhythm(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+                                        final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -665,8 +673,8 @@ public class ArticleProcessor {
 
         final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);
         articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
-                + "<i style='margin-right:5px;'><a target='_blank' href='"
-                + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
+                          + "<i style='margin-right:5px;'><a target='_blank' href='"
+                          + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
 
         final String authorId = user.optString(Keys.OBJECT_ID);
         final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
@@ -769,18 +777,18 @@ public class ArticleProcessor {
         }
 
         markdownText = markdownText.replace("<", "&lt;").replace(">", "&gt;").replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;",
-                "</pre>");
+                                                                                                                      "</pre>");
 
         result.put("html", Markdowns.toHTML(markdownText));
     }
 
     /**
      * Formats the specified article tags.
-     * 
+     *
      * <p>
      * Trims every tag.
      * </p>
-     * 
+     *
      * @param articleTags the specified article tags
      * @return formatted tags string
      */

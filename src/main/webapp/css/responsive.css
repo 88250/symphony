@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
+ * Copyright (c) 2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
 * base style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 1.0.0.2, Feb 18, 2014
+* @version 1.0.1.2, Apr 3, 2014
 */
 @media (max-width: 460px) {
     .nav form,
     .nav .tags,
     .article-list .avatar,
-    .go-top,
+    .icon-up,
     #comments .avatar-wrapper,
     .tag-artile-user,
     .notification .avatar {
@@ -60,7 +60,7 @@
     .content > div > .ft-small > .fn-right,
     .article-content,
     .form label.article-content-label,
-    .home-comments span.ico-date {
+    .home-comments li > span.fn-right {
         float: none;
     }
 
@@ -127,10 +127,5 @@
 
     .CodeMirror {
         width: 98%;
-    }
-
-    .home-comments span.ico-date {
-        display: inline-block;
-        margin: 7px 0 2px -4px;
     }
 }

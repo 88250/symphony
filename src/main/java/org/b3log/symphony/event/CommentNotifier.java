@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
+ * Copyright (c) 2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Notification;
@@ -34,9 +36,9 @@ import org.json.JSONObject;
 
 /**
  * Sends a comment notification.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Nov 9, 2013
+ * @version 1.0.2.9, Apr 4, 2014
  * @since 0.2.0
  */
 @Named
@@ -59,11 +61,16 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     @Inject
     private UserQueryService userQueryService;
 
+    /**
+     * URL fetch service.
+     */
+    private URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, CommentNotifier.class.getName()});
+        LOGGER.log(Level.INFO, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                   new Object[]{event.getType(), data, CommentNotifier.class.getName()});
 
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
@@ -104,7 +111,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 if (user.optString(Keys.OBJECT_ID).equals(articleAuthorId)) {
                     continue; // Has added in step 1
                 }
-                
+
                 final JSONObject requestJSONObject = new JSONObject();
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, user.optString(Keys.OBJECT_ID));
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalComment.optString(Keys.OBJECT_ID));
@@ -113,11 +120,20 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
 
 //            final Set<String> qqSet = new HashSet<String>();
-//            for (final String userName : userNames) {
-//                final JSONObject user = userQueryService.getUserByName(userName);
-//                final String qq = user.optString(UserExt.USER_QQ);
+//
+//            if (!commenterIsArticleAuthor) {
+//                final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
+//                final String qq = articleAuthor.optString(UserExt.USER_QQ);
 //                if (!Strings.isEmptyOrNull(qq)) {
 //                    qqSet.add(qq);
+//                }
+//            }
+//
+//            for (final String userName : atUserNames) {
+//                final JSONObject user = userQueryService.getUserByName(userName);
+//                final String q = user.optString(UserExt.USER_QQ);
+//                if (!Strings.isEmptyOrNull(q)) {
+//                    qqSet.add(q);
 //                }
 //            }
 //
@@ -155,6 +171,9 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 //            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
 //
 //            urlFetchService.fetchAsync(httpRequest);
+//
+//            LOGGER.debug("Sent QQ message [qqs=" + qqs.toString() + ", content=" + requestJSONObject.toString() + "]");
+//            
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the comment notification failed", e);
         }
@@ -162,7 +181,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
     /**
      * Gets the event type {@linkplain EventTypes#ADD_COMMENT_TO_ARTICLE}.
-     * 
+     *
      * @return event type
      */
     @Override

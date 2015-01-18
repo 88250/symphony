@@ -18,19 +18,30 @@
                     <div>
                         <div class="ft-small fn-clear">
                             <div class="fn-left">
+                                <span class="icon icon-tags"></span>
                                 <#list article.articleTags?split(",") as articleTag>
                                 <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
                                     ${articleTag}</a><#if articleTag_has_next>, </#if>
                                 </#list>
                             </div>
                             <div class="fn-right">
-                                <span class="ico-date">
-                                    ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
-                                </span>
-                                <a class="ico-cmt" title="${cmtLabel}" rel="nofollow" href="#comments">${article.articleCommentCount}</a>   
-                                <a class="ico-view" title="${viewLabel}" rel="nofollow" href="#">${article.articleViewCount}</a> 
+                                <span class="icon icon-date"></span>
+                                ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;
+                                <a title="${cmtLabel}" rel="nofollow" href="#comments">
+                                    <span class="icon icon-cmts"></span>
+                                    ${article.articleCommentCount}
+                                </a> &nbsp;
+                                <a title="${viewLabel}" rel="nofollow" href="#"> 
+                                    <span class="icon icon-view"></span>
+                                    ${article.articleViewCount}
+                                </a>
+                                <#if article.isMyArticle>
+                                &nbsp;
+                                <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}">
+                                    <span class="ft-small icon icon-edit"></span>
+                                </a>
+                                </#if>
                             </div>
-
                         </div>
                         <h2 class="article-title">
                             <a href="${article.articlePermalink}" rel="bookmark">
@@ -42,11 +53,10 @@
                         </div>
                         <div class="fn-clear">
                             <div class="share fn-right">
-                                <span class="tencent-ico"></span>
-                                <span class="sina-ico"></span>
-                                <span class="twitter-ico"></span>
-                                <span class="google-ico"></span>
-                                <span class="clear"></span>
+                                <span class="icon icon-tencent" data-type="tencent"></span>
+                                <span class="icon icon-weibo" data-type="weibo"></span>
+                                <span class="icon icon-twitter" data-type="twitter"></span>
+                                <span class="icon icon-google" data-type="google"></span>
                             </div>    
                         </div>
                     </div>
@@ -66,13 +76,12 @@
                                                 <span class="fn-left">
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
-                                                    &nbsp;<span class="ico-date fn-right ft-small">
-                                                        ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')} 
-                                                    </span>
+                                                    &nbsp;<span class="icon icon-date ft-small"></span>
+                                                    <span class="ft-small">${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span> 
                                                 </span>
                                                 <span class="fn-right">
                                                     <#if isLoggedIn> 
-                                                    <span class="ico-replay" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
+                                                    <span class="icon icon-cmt" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
                                                     </#if>
                                                     <i>#${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}</i>
                                                 </span>    
@@ -95,8 +104,8 @@
                         <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
                         <div class="fn-right">
-                        <button class="green fn-none" onclick="Comment.preview()">预览</button> &nbsp; &nbsp; 
-                        <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
+                            <button class="green fn-none" onclick="Comment.preview()">预览</button> &nbsp; &nbsp; 
+                            <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
                         </div>
                     </div>
                     <div class="grammar fn-none">
@@ -172,12 +181,12 @@
         </div>
         <#include "footer.ftl">
         <div id="preview" class="content-reset"></div>
-         <script>
-                            Label.commentErrorLabel = "${commentErrorLabel}";
-                            Label.symphonyLabel = "${symphonyLabel}";
-                            Label.articleOId = "${article.oId}";
-                            Label.articleTitle = "${article.articleTitle}";
-                            Label.articlePermalink = "${article.articlePermalink}";
+        <script>
+            Label.commentErrorLabel = "${commentErrorLabel}";
+            Label.symphonyLabel = "${symphonyLabel}";
+            Label.articleOId = "${article.oId}";
+            Label.articleTitle = "${article.articleTitle}";
+            Label.articlePermalink = "${article.articlePermalink}";
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
