@@ -1,4 +1,10 @@
-## B3log 社区，第一乐章
+# Symphony
+
+## Intro
+
+Symphony is a simple community forum written by Java, see [here](http://symphony.b3log.org/about) for the originality.
+
+## Project
 
 * Project Home: https://github.com/b3log/b3log-symphony
 * Request Features/Report Bugs: https://github.com/b3log/b3log-symphony/issues/new
@@ -11,9 +17,4 @@
 * If you want to use Symphony for commercial purpose, please mail to support@liuyun.io for request a commercial license
 * Copyright (c) [b3log.org](http://b3log.org), all rights reserved
 
-====
 
-平等，自由，奔放
-Equality, Freedom, Passion
-
-;-)
