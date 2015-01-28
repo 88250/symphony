@@ -1,4 +1,4 @@
-# Symphony
+# Symphony [![Build Status](https://img.shields.io/travis/b3log/b3log-symphony.svg?style=flat)](https://travis-ci.org/b3log/b3log-symphony)
 
 ## Intro
 
