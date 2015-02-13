@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.0.1.10, Jul 28, 2015
+    Version: 1.0.1.11, Feb 13, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -125,8 +125,8 @@
                     <artifactId>h2</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>c3p0</groupId>
-                    <artifactId>c3p0</artifactId>
+                    <groupId>com.alibaba</groupId>
+                    <artifactId>druid</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.jolbox</groupId>
