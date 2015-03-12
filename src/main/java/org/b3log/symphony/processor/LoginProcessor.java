@@ -144,8 +144,8 @@ public class LoginProcessor {
             LOGGER.log(Level.ERROR, e1.getMessage(), e1);
             requestJSONObject = new JSONObject();
         }
+        
         final String name = requestJSONObject.optString(User.USER_NAME);
-
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
 

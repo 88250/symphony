@@ -40,7 +40,10 @@ import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.UserExt;
@@ -73,11 +76,12 @@ import org.json.JSONObject;
  * <li>Profiles (/settings/profiles), POST</li>
  * <li>Sync (/settings/sync/b3), POST</li>
  * <li>Password (/settings/password), POST</li>
+ * <li>SyncUser (/apis/user), POST</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.7, Nov 13, 2013
+ * @version 1.1.1.7, Mar 12, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -562,6 +566,87 @@ public class UserProcessor {
             LOGGER.log(Level.ERROR, msg, e);
 
             ret.put(Keys.MSG, msg);
+        }
+    }
+
+    /**
+     * Sync user. Experimental API.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/apis/user", method = HTTPRequestMethod.POST)
+    public void syncUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        
+        final String name = requestJSONObject.optString(User.USER_NAME);
+        final String email = requestJSONObject.optString(User.USER_EMAIL);
+        final String password = requestJSONObject.optString(User.USER_PASSWORD);
+        final String clientHost = requestJSONObject.optString(Client.CLIENT_HOST);
+        final String b3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
+        final String addArticleURL = clientHost + "/apis/symphony/article";
+        final String updateArticleURL = clientHost + "/apis/symphony/article";
+        final String addCommentURL = clientHost + "/apis/symphony/comment";
+
+        JSONObject user = userQueryService.getUserByEmail(email);
+        if (null == user) {
+            user = new JSONObject();
+            user.put(User.USER_NAME, name);
+            user.put(User.USER_EMAIL, email);
+            user.put(User.USER_PASSWORD, password);
+            user.put(UserExt.USER_B3_KEY, b3Key);
+            user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
+            user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
+            user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
+
+            try {
+                final String id = userMgmtService.addUser(user);
+                user.put(Keys.OBJECT_ID, id);
+
+                userMgmtService.updateSyncB3(user);
+                
+                LOGGER.log(Level.INFO, "Added a user via Solo sync", user.toString(SymphonyServletListener.JSON_PRINT_INDENT_FACTOR));
+
+                ret.put(Keys.STATUS_CODE, true);
+            } catch (final ServiceException e) {
+                LOGGER.log(Level.ERROR, "Sync add user error", e);
+            }
+
+            return;
+        }
+        
+        if (!user.optString(UserExt.USER_B3_KEY).equals(b3Key)) {
+            LOGGER.log(Level.WARN, "Sync update user B3Key dismatch");
+            
+            return;
+        }
+
+        user.put(User.USER_NAME, name);
+        user.put(User.USER_EMAIL, email);
+        user.put(User.USER_PASSWORD, password);
+        user.put(UserExt.USER_B3_KEY, b3Key);
+        user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
+        user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
+        user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
+
+        try {
+            userMgmtService.updatePassword(user);
+            userMgmtService.updateSyncB3(user);
+            
+            LOGGER.log(Level.INFO, "Updated a user via Solo sync", user.toString(SymphonyServletListener.JSON_PRINT_INDENT_FACTOR));
+            
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.ERROR, "Sync update user error", e);
         }
     }
 }
