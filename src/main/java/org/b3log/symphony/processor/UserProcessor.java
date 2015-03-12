@@ -42,7 +42,6 @@ import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
@@ -587,7 +586,7 @@ public class UserProcessor {
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-        
+
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
@@ -613,20 +612,20 @@ public class UserProcessor {
                 user.put(Keys.OBJECT_ID, id);
 
                 userMgmtService.updateSyncB3(user);
-                
-                LOGGER.log(Level.INFO, "Added a user via Solo sync", user.toString(SymphonyServletListener.JSON_PRINT_INDENT_FACTOR));
+
+                LOGGER.log(Level.INFO, "Added a user[{0}] via Solo sync", name);
 
                 ret.put(Keys.STATUS_CODE, true);
             } catch (final ServiceException e) {
-                LOGGER.log(Level.ERROR, "Sync add user error", e);
+                LOGGER.log(Level.ERROR, "Sync add user[" + name + "] error", e);
             }
 
             return;
         }
-        
+
         if (!user.optString(UserExt.USER_B3_KEY).equals(b3Key)) {
-            LOGGER.log(Level.WARN, "Sync update user B3Key dismatch");
-            
+            LOGGER.log(Level.WARN, "Sync update user[{0}] B3Key dismatch", name);
+
             return;
         }
 
@@ -641,12 +640,12 @@ public class UserProcessor {
         try {
             userMgmtService.updatePassword(user);
             userMgmtService.updateSyncB3(user);
-            
-            LOGGER.log(Level.INFO, "Updated a user via Solo sync", user.toString(SymphonyServletListener.JSON_PRINT_INDENT_FACTOR));
-            
+
+            LOGGER.log(Level.INFO, "Updated a user[{0}] via Solo sync", name);
+
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "Sync update user error", e);
+            LOGGER.log(Level.ERROR, "Sync update user[" + name + "] error", e);
         }
     }
 }
