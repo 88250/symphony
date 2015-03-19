@@ -38,9 +38,9 @@ import org.json.JSONObject;
 
 /**
  * Validates for comment adding remotely.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 26, 2013
+ * @version 1.0.0.3, Mar 19, 2015
  */
 @Named
 @Singleton
@@ -108,7 +108,7 @@ public class ClientCommentAddValidation extends BeforeRequestProcessAdvice {
 
         final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
         if (Strings.isEmptyOrNull(userB3Key) || userB3Key.length() > UpdateSyncB3Validation.MAX_USER_B3_KEY_LENGTH) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Wrong B3 key"));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Wrong B3 key [" + userB3Key + "]"));
         }
 
         final String clientAdminEmail = requestJSONObject.optString(Client.CLIENT_ADMIN_EMAIL);
@@ -116,8 +116,14 @@ public class ClientCommentAddValidation extends BeforeRequestProcessAdvice {
         JSONObject author;
         try {
             author = userQueryService.getUserByEmail(clientAdminEmail);
-            if (null == author || !author.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Wrong B3 key"));
+            if (null == author) {
+                throw new RequestProcessAdviceException(
+                        new JSONObject().put(Keys.MSG, "User not exists [clientAdminEmail=" + clientAdminEmail + "]"));
+            }
+
+            if (!author.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Wrong B3 key [client=" + userB3Key + ", sym="
+                                                                                       + author.optString(UserExt.USER_B3_KEY) + "]"));
             }
         } catch (final ServiceException e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Unknown Error"));
@@ -164,8 +170,8 @@ public class ClientCommentAddValidation extends BeforeRequestProcessAdvice {
         }
 
         try {
-            final JSONObject article = 
-                    articleQueryService.getArticleByClientArticleId(author.optString(Keys.OBJECT_ID), commentClientArticleId);
+            final JSONObject article
+                             = articleQueryService.getArticleByClientArticleId(author.optString(Keys.OBJECT_ID), commentClientArticleId);
             if (null == article) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Article not found, do not sync comment"));
             }
