@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.9, Apr 4, 2014
+ * @version 1.0.2.10, Mar 23, 2015
  * @since 0.2.0
  */
 @Named
@@ -69,7 +69,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.INFO, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(), data, CommentNotifier.class.getName()});
 
         try {
