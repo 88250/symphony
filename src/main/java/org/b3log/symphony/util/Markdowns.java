@@ -81,7 +81,7 @@ public final class Markdowns {
         try {
             markdown.transform(new StringReader(markdownText), writer);
         } catch (final ParseException e) {
-            LOGGER.log(Level.ERROR, "Markdown error", e);
+            LOGGER.log(Level.ERROR, "Markdown error[text={0}]", markdownText);
             
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
