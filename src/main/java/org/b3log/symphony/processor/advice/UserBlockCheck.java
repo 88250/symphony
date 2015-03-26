@@ -70,6 +70,7 @@ public class UserBlockCheck extends BeforeRequestProcessAdvice {
         try {
             user = userQueryService.getUserByName(userName);
             if (null == user) {
+                exception.put(Keys.MSG, "Not found user [" + userName + "]");
                 throw new RequestProcessAdviceException(exception);
             }
 
