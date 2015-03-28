@@ -150,7 +150,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                         final String userName) throws Exception {
+            final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         String pageNumStr = request.getParameter("p");
@@ -224,7 +224,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                 final String userName) throws Exception {
+            final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -290,7 +290,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/following/users", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeFollowingUsers(final HTTPRequestContext context, final HttpServletRequest request,
-                                       final HttpServletResponse response, final String userName) throws Exception {
+            final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -363,7 +363,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/followers", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeFollowers(final HTTPRequestContext context, final HttpServletRequest request,
-                                  final HttpServletResponse response, final String userName) throws Exception {
+            final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -624,8 +624,8 @@ public class UserProcessor {
         }
 
         if (!user.optString(UserExt.USER_B3_KEY).equals(b3Key)) {
-            LOGGER.log(Level.WARN, "Sync update user[{0}] B3Key dismatch [sym={1}, solo={2}]", 
-                    name, user.optString(UserExt.USER_B3_KEY), b3Key);
+            LOGGER.log(Level.WARN, "Sync update user[name={0}, host={1}] B3Key dismatch [sym={2}, solo={3}]",
+                    name, clientHost, user.optString(UserExt.USER_B3_KEY), b3Key);
 
             return;
         }
@@ -642,11 +642,11 @@ public class UserProcessor {
             userMgmtService.updatePassword(user);
             userMgmtService.updateSyncB3(user);
 
-            LOGGER.log(Level.INFO, "Updated a user[{0}] via Solo sync", name);
+            LOGGER.log(Level.INFO, "Updated a user[name={0}, host={1}] via Solo sync", name, clientHost);
 
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "Sync update user[" + name + "] error", e);
+            LOGGER.log(Level.ERROR, "Sync update user[name=" + name + ", host=" + clientHost + "] error", e);
         }
     }
 }
