@@ -80,7 +80,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.18, Jun 9, 2014
+ * @version 1.2.2.18, Mar 28, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -793,12 +793,12 @@ public class ArticleProcessor {
      * @return formatted tags string
      */
     private String formatArticleTags(final String articleTags) {
-        final String[] tagTitles = articleTags.split(",");
+        final String common = "，";
+        final String articleTags1 = articleTags.replaceAll(common, ",");
+        final String[] tagTitles = articleTags1.split(",");
         final StringBuilder tagsBuilder = new StringBuilder();
-        for (int i = 0; i < tagTitles.length; i++) {
-            final String tagTitle = tagTitles[i].trim();
-
-            tagsBuilder.append(tagTitle).append(",");
+        for (final String tagTitle : tagTitles) {
+            tagsBuilder.append(tagTitle.trim()).append(",");
         }
         if (tagsBuilder.length() > 0) {
             tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
