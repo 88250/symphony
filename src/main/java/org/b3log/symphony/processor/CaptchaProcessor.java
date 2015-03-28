@@ -128,7 +128,7 @@ public class CaptchaProcessor {
      * Loads captcha.
      */
     private synchronized void loadCaptchas() {
-        LOGGER.info("Loading captchas....");
+        LOGGER.trace("Loading captchas....");
 
         try {
             captchas = new Image[CAPTCHA_COUNT];
@@ -180,6 +180,6 @@ public class CaptchaProcessor {
             throw new IllegalStateException(e);
         }
 
-        LOGGER.info("Loaded captch images");
+        LOGGER.trace("Loaded captch images");
     }
 }
