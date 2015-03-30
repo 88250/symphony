@@ -680,7 +680,7 @@ public class ArticleProcessor {
         final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
         final JSONObject oldArticle = articleQueryService.getArticleByClientArticleId(authorId, clientArticleId);
         if (null == oldArticle) {
-            LOGGER.log(Level.WARN, "Not found article [clientArticleId={0}]", clientArticleId);
+            LOGGER.log(Level.WARN, "Not found article [clientArticleId={0}] to update", clientArticleId);
 
             return;
         }
