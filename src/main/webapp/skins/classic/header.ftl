@@ -18,6 +18,7 @@
         <div class="fn-clear user-nav">
             <#if isLoggedIn>
             <a href="${logoutURL}" title="${logoutLabel}" class="last">${logoutLabel}</a>
+            <a href="/admin/index" title="${adminLabel}">${adminLabel}</a>
             <a href="/settings">${settingsLabel}</a>
             <a href="/add-article">${addArticleLabel}</a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications/commented" title="${messageLabel}">${unreadNotificationCount}</a>

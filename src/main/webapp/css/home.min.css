@@ -1,1 +1,16 @@
+/**
+ * Copyright (c) 2012-2015, b3log.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 .user-online{position:absolute;right:24px;top:220px}.user-name{border-bottom:1px dotted #ccc;font-size:25px;margin:15px 0 20px;padding-bottom:15px}.user-name>button{font-size:12px;padding:2px 10px}.user-info{line-height:25px;font-size:12px;color:#666}#tip{position:inherit;white-space:pre-wrap}.tip-add-article{color:#777;list-style:circle outside none;margin-left:15px;line-height:22px}#articleContent{height:345px;width:1000px}.tab{border-bottom:1px solid #DDD}.tab>li{cursor:pointer;float:left;list-style:none outside none;padding:8px 12px}.tab>li.current{background-color:#fff;border:1px solid #DDD;border-bottom:0;border-radius:3px 3px 0 0;font-weight:bold;line-height:20px;margin-bottom:-1px}.tab>li>a{color:#666;line-height:20px;text-decoration:none}.note-list{background-image:linear-gradient(to right,#f6f6f6 0,#fdfdfd 8px);box-shadow:1px 0 0 #eee inset;list-style:none;padding:15px 0}.note-list li a{cursor:pointer;margin:5px 0;display:block;padding:8px 10px;text-decoration:none}.note-list li a:hover{box-shadow:2px 0 0 #CCC inset}.note-list li a>span.counter{background-color:#eee;border-radius:2px 2px 2px 2px;box-shadow:0 -1px 0 #e3e3e3 inset;color:#999;float:right;font-size:11px;font-weight:bold;padding:2px 5px}.note-list li.current a{background:none repeat scroll 0 0 #fdfdfd;box-shadow:2px 1px 3px rgba(0,0,0,0.05);color:#333;font-weight:bold;position:relative;border:1px solid #EEE;border-left-width:0}.note-list li.current a:after{background-image:linear-gradient(#d26911,#ba5d0f);bottom:-1px;box-shadow:-1px -1px 0 rgba(0,0,0,0.1) inset;content:"";position:absolute;right:-1px;top:-1px;width:3px}.notification{list-style:none}.notification li>div.content-reset{float:right;width:612px}.notification .read{background-color:#fafafa;opacity:.5;filter:alpha(opacity=50)}.notification li{background-color:#f8f8ff}h2.fn-inline{width:483px}.follow{margin-top:20px}.follow li{position:relative;float:left;border-bottom:1px solid #eee;float:left;margin-bottom:20px;margin-right:20px;padding-bottom:20px;width:335px;list-style:none}.follow li.even{margin-right:0}.follow li>div{float:right;width:240px}.follow li h3{font-weight:normal;margin-bottom:4px}.follow .user-online{left:60px;top:60px}.follow img.avatar{height:75px;width:75px}.follow button{font-size:12px;padding:2px 10px;margin-top:9px}

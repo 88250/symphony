@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.1.1.15, Mar 28, 2015
+    Version: 1.1.2.15, Apr 2, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -239,6 +239,68 @@
             </plugin>
             
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.b3log</groupId>
+                <artifactId>maven-min-plugin</artifactId>
+                <version>${maven-min-plugin.version}</version>
+
+                <configuration>
+                    <suffix>.min</suffix>
+                    <!-- Common#MINI_POSTFIX_VALUE -->
+
+                    <cssSourceDir>${basedir}/src/main/webapp/css</cssSourceDir>
+                    <cssTargetDir>${basedir}/src/main/webapp/css</cssTargetDir>
+
+                    <jsSourceDir>${basedir}/src/main/webapp/js</jsSourceDir>
+                    <jsTargetDir>${basedir}/src/main/webapp/js</jsTargetDir>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>min</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- For source code style check -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>${basedir}/src/main/resources/etc/beyondtrack_checks.xml</configLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <excludes>
+                        **/*TestCase.java,
+                    </excludes>
+                    <consoleOutput>true</consoleOutput>
+                    <failOnViolation>true</failOnViolation>
+                    <failsOnError>true</failsOnError>
+                    <encoding>UTF-8</encoding>
+                    <!-- Do NOT skip code style check before committing -->
+                    <skip>false</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
                 <version>${maven-license-plugin.version}</version>
@@ -277,68 +339,6 @@
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
-            
-            <!-- For source code style check -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
-                <configuration>
-                    <configLocation>${basedir}/src/main/resources/etc/beyondtrack_checks.xml</configLocation>
-                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <excludes>
-                        **/*TestCase.java,
-                    </excludes>
-                    <consoleOutput>true</consoleOutput>
-                    <failOnViolation>true</failOnViolation>
-                    <failsOnError>true</failsOnError>
-                    <encoding>UTF-8</encoding>
-                    <!-- Do NOT skip code style check before committing -->
-                    <skip>false</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>checkstyle</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.b3log</groupId>
-                <artifactId>maven-min-plugin</artifactId>
-                <version>${maven-min-plugin.version}</version>
-
-                <configuration>
-                    <suffix>.min</suffix>
-                    <!-- Common#MINI_POSTFIX_VALUE -->
-
-                    <cssSourceDir>${basedir}/src/main/webapp/css</cssSourceDir>
-                    <cssTargetDir>${basedir}/src/main/webapp/css</cssTargetDir>
-
-                    <jsSourceDir>${basedir}/src/main/webapp/js</jsSourceDir>
-                    <jsTargetDir>${basedir}/src/main/webapp/js</jsTargetDir>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>min</goal>
                         </goals>
                     </execution>
                 </executions>
