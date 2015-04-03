@@ -238,6 +238,7 @@ public class Filler {
 
         final String userName = curUser.optString(User.USER_NAME);
         dataModel.put(User.USER_NAME, userName);
+        dataModel.put(User.USER_ROLE, curUser.optString(User.USER_ROLE));
         fillUserThumbnailURL(curUser);
 
         dataModel.put(Common.CURRENT_USER, curUser);
