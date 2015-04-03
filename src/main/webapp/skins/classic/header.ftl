@@ -17,16 +17,20 @@
         </span>
         <div class="fn-clear user-nav">
             <#if isLoggedIn>
-            <a href="${logoutURL}" title="${logoutLabel}" class="last">${logoutLabel}</a>
+            <a href="${logoutURL}" title="${logoutLabel}" class="last icon icon-logout"></a>
             <#if "adminRole" == userRole>
-            <a href="/admin" title="${adminLabel}">${adminLabel}</a>
+            <a href="/admin" title="${adminLabel}" class="icon icon-setting"></a>
             </#if>
-            <a href="/member/${userName}">${userName}</a>
+            <a href="/member/${userName}" style="padding-bottom: 10px;">
+                 <img class="avatar-small" 
+                 title="${userName}" src="https://avatars1.githubusercontent.com/u/873584?v=3&s=32" />
+             </a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications/commented" title="${messageLabel}">${unreadNotificationCount}</a>
-            <a href="/add-article">${addArticleLabel}</a>
+            <a href="/add-article" title="${addArticleLabel}" class="icon icon-addfile"></a>
             <#else>
-            <a id="aRegister" href="javascript:Util.goRegister()" class="last">${registerLabel}</a>
-            <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>
+            <a id="aRegister" href="javascript:Util.goRegister()" class="last icon icon-register" 
+               title="${registerLabel}"></a>
+            <a href="javascript: Util.showLogin();" class="icon icon-login" title="${loginLabel}"></a>
             <div class="form fn-none">
                 <table cellspacing="0" cellpadding="0">
                     <tr>

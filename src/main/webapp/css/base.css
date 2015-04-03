@@ -430,19 +430,19 @@ button.red:active {
 }
 
 .icon-weibo:before {
-    content: "\e602";
+    content: "\e605";
 }
 
 .icon-tencent:before {
-    content: "\e60a";
+    content: "\e60d";
 }
 
 .icon-google:before {
-    content: "\e600";
+    content: "\e603";
 }
 
 .icon-search:before {
-    content: "\e601";
+    content: "\e604";
 }
 
 .icon-search {
@@ -455,15 +455,15 @@ button.red:active {
 }
 
 .icon-date:before {
-    content: "\e603";
+    content: "\e606";
 }
 
 .icon-view:before {
-    content: "\e604";
+    content: "\e607";
 }
 
 .icon-cmts:before {
-    content: "\e605";
+    content: "\e608";
 }
 
 .icon-cmt {
@@ -481,11 +481,11 @@ button.red:active {
 }
 
 .icon-cmt:before {
-    content: "\e606";
+    content: "\e609";
 }
 
 .icon-up:before {
-    content: "\e607";
+    content: "\e60a";
 }
 
 .icon-up {
@@ -512,11 +512,11 @@ button.red:active {
 }
 
 .icon-twitter:before {
-    content: "\e608";
+    content: "\e60b";
 }
 
 .icon-edit:before {
-    content: "\e609";
+    content: "\e60c";
 }
 
 .icon-edit:hover {
@@ -524,11 +524,31 @@ button.red:active {
 }
 
 .icon-tag:before {
-    content: "\e60b";
+    content: "\e60e";
 }
 
 .icon-tags:before {
-    content: "\e60c";
+    content: "\e60f";
+}
+
+.icon-addfile:before {
+    content: "\e610";
+}
+
+.icon-setting:before {
+    content: "\e602";
+}
+
+.icon-logout:before {
+    content: "\e601";
+}
+
+.icon-login:before {
+    content: "\e611";
+}
+
+.icon-register:before {
+    content: "\e600";
 }
 /* end icon */
 
@@ -815,7 +835,6 @@ button.red:active {
 
 .nav a {
     color: #777;
-    font-weight: bold;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     text-decoration: none;
 }
@@ -828,15 +847,15 @@ button.red:active {
     position: absolute;
     right: 0;
     top: 0;
-    width: 290px;
+    width: 260px;
 }
 
 .nav .user-nav > a {
-    float: left;
     margin: 0 5px;
     padding: 15px 5px;
     float: right;
     line-height: 20px;
+    font-size: 20px;
 }
 
 .nav .user-nav > a.last {
@@ -851,12 +870,12 @@ button.red:active {
 
 .nav .user-nav .no-msg {
     background-color: #777;
-    border-radius: 3px 3px 3px 3px;
+    border-radius: 5px;
     color: #FFFFFF;
     font-size: 10px;
     font-weight: normal;
-    margin-top: 14px;
-    padding: 3px 8px;
+    margin: 15px 10px 0 10px;
+    padding: 2px 7px 1px;
     text-shadow: 0 0 0;
 }
 
@@ -867,16 +886,18 @@ button.red:active {
     -ms-animation:spaceboots 1s infinite;
     animation:spaceboots 1s infinite;
     background-color: #D26911;
-    border-radius: 3px 3px 3px 3px;
+    border-radius: 5px;
     color: #FFFFFF;
-    margin-top: 12px;
-    padding: 3px 8px;
+    font-size: 10px;
+    font-weight: normal;
+    margin: 14px 10px 0 10px;
+    padding: 2px 7px 1px;
 }
 
 .nav .user-nav > a.current.msg,
 .nav .user-nav > a.current.no-msg{
     background-color: #D26911;
-    padding-bottom: 3px;
+    padding-bottom: 1px;
     border-bottom-width: 0;
     -webkit-animation:none;
     -moz-animation:none;
@@ -884,6 +905,13 @@ button.red:active {
     -ms-animation:none;
     animation:none;
     color: #FFF;
+    margin-top: 15px;
+}
+
+.nav .avatar-small {
+    height: 23px;
+    width: 23px;
+    vertical-align: top;
 }
 
 .nav .form {
@@ -922,7 +950,7 @@ button.red:active {
 .nav input.search:focus {
     border-color: #51A7E8;
     box-shadow: 0 0 3px rgba(81, 167, 232, 0.5), 0 1px 1px rgba(0, 0, 0, 0.2) inset;
-    width: 510px;
+    width: 494px;
 }
 
 .nav .tags {
@@ -930,7 +958,7 @@ button.red:active {
     position: absolute;
     top: 5px;
     white-space: normal;
-    width: 510px;
+    width: 494px;
     word-wrap: break-word;
 }
 
