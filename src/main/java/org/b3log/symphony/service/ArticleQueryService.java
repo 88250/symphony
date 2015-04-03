@@ -674,7 +674,6 @@ public class ArticleQueryService {
      *     "paginationWindowSize": 10
      * }, see {@link Pagination} for more details
      * </pre>
-     *
      * @param articleFields the specified article fields to return
      *
      * @return for example,

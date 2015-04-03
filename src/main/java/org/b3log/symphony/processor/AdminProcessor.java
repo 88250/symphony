@@ -201,7 +201,7 @@ public class AdminProcessor {
         articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
         articleFields.put(Article.ARTICLE_VIEW_CNT, Integer.class);
         articleFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
-        
+
         final JSONObject result = articleQueryService.getArticles(requestJSONObject, articleFields);
         dataModel.put(Article.ARTICLES, result.optJSONArray(Article.ARTICLES));
 
@@ -245,7 +245,12 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
-        final JSONObject result = commentQueryService.getComments(requestJSONObject);
+        final Map<String, Class<?>> commentFields = new HashMap<String, Class<?>>();
+        commentFields.put(Comment.COMMENT_CREATE_TIME, String.class);
+        commentFields.put(Comment.COMMENT_AUTHOR_ID, String.class);
+        commentFields.put(Comment.COMMENT_ON_ARTICLE_ID, String.class);
+
+        final JSONObject result = commentQueryService.getComments(requestJSONObject, commentFields);
         dataModel.put(Comment.COMMENTS, result.optJSONArray(Comment.COMMENTS));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);

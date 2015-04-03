@@ -18,6 +18,7 @@ package org.b3log.symphony.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
@@ -305,7 +306,7 @@ public class CommentQueryService {
             throw new ServiceException(e);
         }
     }
-    
+
     /**
      * Gets comments by the specified request json object.
      *
@@ -317,6 +318,8 @@ public class CommentQueryService {
      *     "paginationWindowSize": 10,
      * }, see {@link Pagination} for more details
      * </pre>
+     *
+     * @param commentFields the specified article fields to return
      *
      * @return for example,
      * <pre>
@@ -337,13 +340,17 @@ public class CommentQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getComments(final JSONObject requestJSONObject) throws ServiceException {
+    public JSONObject getComments(final JSONObject requestJSONObject, final Map<String, Class<?>> commentFields) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize)
+                .addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING);
+        for (final Map.Entry<String, Class<?>> commentField : commentFields.entrySet()) {
+            query.addProjection(commentField.getKey(), commentField.getValue());
+        }
 
         JSONObject result = null;
 
@@ -364,7 +371,27 @@ public class CommentQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        ret.put(Comment.COMMENTS, data);
+        final List<JSONObject> comments = CollectionUtils.<JSONObject>jsonArrayToList(data);
+
+        try {
+            for (final JSONObject comment : comments) {
+                organizeComment(comment);
+
+                final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                final JSONObject article = articleRepository.get(articleId);
+
+                comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
+                            Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
+                            ? langPropsService.get("articleTitleBlockLabel") : article.optString(Article.ARTICLE_TITLE));
+                comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Organizes comments failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        ret.put(Comment.COMMENTS, comments);
 
         return ret;
     }
