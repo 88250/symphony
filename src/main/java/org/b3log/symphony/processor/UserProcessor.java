@@ -150,7 +150,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userName) throws Exception {
+                         final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         String pageNumStr = request.getParameter("p");
@@ -224,7 +224,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String userName) throws Exception {
+                                 final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -290,7 +290,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/following/users", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeFollowingUsers(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
+                                       final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -363,7 +363,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/followers", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeFollowers(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
+                                  final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -440,6 +440,11 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/settings.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+        dataModel.put(User.USER, user);
+        filler.fillUserThumbnailURL(user);
 
         filler.fillHeader(request, response, dataModel);
         filler.fillFooter(dataModel);
@@ -625,7 +630,7 @@ public class UserProcessor {
 
         if (!user.optString(UserExt.USER_B3_KEY).equals(b3Key)) {
             LOGGER.log(Level.WARN, "Sync update user[name={0}, host={1}] B3Key dismatch [sym={2}, solo={3}]",
-                    name, clientHost, user.optString(UserExt.USER_B3_KEY), b3Key);
+                       name, clientHost, user.optString(UserExt.USER_B3_KEY), b3Key);
 
             return;
         }

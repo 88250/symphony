@@ -24,6 +24,11 @@
         <meta name="keywords" content="${user.userName},${followersLabel}"/>
         <meta name="description" content="${user.userName}${deLabel}${followersLabel},${followersLabel} by ${user.userName}"/>
         </@head>
+        <#elseif type == "settings">
+        <@head title="${user.userName} - ${settingsLabel}">
+        <meta name="keywords" content="${user.userName},${settingsLabel}"/>
+        <meta name="description" content="${user.userName}${deLabel}${settingsLabel},${settingsLabel} by ${user.userName}"/>
+        </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
     </head>
@@ -45,6 +50,9 @@
                         <li<#if type == "followers"> class="current"</#if>>
                             <a href="/member/${user.userName}/followers">${followersLabel}</a>
                         </li>
+                        <li<#if type == "settings"> class="current"</#if>>
+                            <a href="/settings">${settingsLabel}</a>
+                        </li>
                     </ul>
                     <div class="fn-clear">
                         <#nested>
@@ -56,9 +64,21 @@
             </div>
         </div>
         <#include "../footer.ftl">
+        <link type="text/css" rel="stylesheet" href="/css/home${miniPostfix}.css?${staticResourceVersion}" />
+        <script type="text/javascript" src="/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
+            Util.init();
             Label.followLabel = "${followLabel}";
             Label.unfollowLabel = "${unfollowLabel}";
+            Label.invalidPasswordLabel = "${invalidPasswordLabel}";
+            Label.loginNameErrorLabel = "${loginNameErrorLabel}";
+            Label.updateSuccLabel = "${updateSuccLabel}";
+            Label.invalidUserURLLabel = "${invalidUserURLLabel}";
+            Label.invalidUserQQLabel = "${invalidUserQQLabel}";
+            Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
+            Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
+            Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
+            Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
         </script>
     </body>
 </html>

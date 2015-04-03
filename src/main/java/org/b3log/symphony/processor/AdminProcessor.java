@@ -26,6 +26,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
@@ -33,6 +34,7 @@ import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.processor.advice.AdminCheck;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
@@ -112,6 +114,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/index", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = AdminCheck.class)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -131,6 +134,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/users", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = AdminCheck.class)
     public void showUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -174,6 +178,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/articles", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = AdminCheck.class)
     public void showArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -224,6 +229,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/comments", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = AdminCheck.class)
     public void showComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -272,6 +278,7 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = AdminCheck.class)
     public void showMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();

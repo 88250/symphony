@@ -18,11 +18,12 @@
         <div class="fn-clear user-nav">
             <#if isLoggedIn>
             <a href="${logoutURL}" title="${logoutLabel}" class="last">${logoutLabel}</a>
+            <#if "adminRole" == userRole>
             <a href="/admin/index" title="${adminLabel}">${adminLabel}</a>
-            <a href="/settings">${settingsLabel}</a>
-            <a href="/add-article">${addArticleLabel}</a>
-            <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications/commented" title="${messageLabel}">${unreadNotificationCount}</a>
+            </#if>
             <a href="/member/${userName}">${userName}</a>
+            <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications/commented" title="${messageLabel}">${unreadNotificationCount}</a>
+            <a href="/add-article">${addArticleLabel}</a>
             <#else>
             <a id="aRegister" href="javascript:Util.goRegister()" class="last">${registerLabel}</a>
             <a href="javascript: Util.showLogin();" title="${loginLabel}">${loginLabel}</a>
