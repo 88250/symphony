@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
@@ -48,10 +49,13 @@ import org.json.JSONObject;
  * <ul>
  * <li>Shows admin index (/admin/index), GET</li>
  * <li>Shows users (/admin/users), GET</li>
+ * <li>Shows a user (/admin/user/{userId}), GET</li>
  * <li>Updates a user (/admin/user/{userId}), PUT</li>
  * <li>Shows articles (/admin/articles), GET</li>
+ * <li>Shows an article (/admin/article/{articleId}), GET</li>
  * <li>Updates an article (/admin/article/{articleId}), PUT</li>
  * <li>Shows comments (/admin/comments), GET</li>
+ * <li>Show a comment (/admin/comment/{commentId}), GET</li>
  * <li>Updates a comment (/admin/comment/{commentId}), PUT</li>
  * <li>Shows miscellaneous (/admin/misc), GET</li>
  * <li>Updates flag of allow register(/admin/misc/allow-register), PUT</li>
@@ -113,7 +117,7 @@ public class AdminProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/admin/index", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/admin", method = HTTPRequestMethod.GET)
     @Before(adviceClass = AdminCheck.class)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -170,6 +174,30 @@ public class AdminProcessor {
     }
 
     /**
+     * Shows a user.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userId the specified user id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = AdminCheck.class)
+    public void showUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                         final String userId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/user.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject user = userQueryService.getUser(userId);
+        dataModel.put(User.USER, user);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
      * Shows admin articles.
      *
      * @param context the specified context
@@ -201,6 +229,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final Map<String, Class<?>> articleFields = new HashMap<String, Class<?>>();
+        articleFields.put(Keys.OBJECT_ID, String.class);
         articleFields.put(Article.ARTICLE_TITLE, String.class);
         articleFields.put(Article.ARTICLE_PERMALINK, String.class);
         articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
@@ -216,6 +245,30 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows an article.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param articleId the specified article id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = AdminCheck.class)
+    public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                            final String articleId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/article.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject article = articleQueryService.getArticleById(articleId);
+        dataModel.put(Article.ARTICLE, article);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
@@ -252,6 +305,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final Map<String, Class<?>> commentFields = new HashMap<String, Class<?>>();
+        commentFields.put(Keys.OBJECT_ID, String.class);
         commentFields.put(Comment.COMMENT_CREATE_TIME, String.class);
         commentFields.put(Comment.COMMENT_AUTHOR_ID, String.class);
         commentFields.put(Comment.COMMENT_ON_ARTICLE_ID, String.class);
@@ -265,6 +319,30 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows a comment.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param commentId the specified comment id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = AdminCheck.class)
+    public void showComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                            final String commentId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/comment.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject comment = commentQueryService.getComment(commentId);
+        dataModel.put(Comment.COMMENT, comment);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }

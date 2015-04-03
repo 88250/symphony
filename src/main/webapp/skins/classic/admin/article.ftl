@@ -11,11 +11,8 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear">
-                ${articleAdminLabel}
-            </div>
             <div>
-                ${articles}
+                ${article}
             </div>
         </div>
         <#include "../footer.ftl">
