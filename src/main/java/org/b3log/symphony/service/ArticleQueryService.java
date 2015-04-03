@@ -391,7 +391,7 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets an article by the specified id.
+     * Gets an article with {@link #organizeArticle(org.json.JSONObject)}  by the specified id.
      *
      * @param articleId the specified id
      * @return article, return {@code null} if not found
@@ -406,6 +406,28 @@ public class ArticleQueryService {
             }
 
             organizeArticle(ret);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets article [articleId=" + articleId + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+    
+     /**
+     * Gets an article by the specified id.
+     *
+     * @param articleId the specified id
+     * @return article, return {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getArticle(final String articleId) throws ServiceException {
+        try {
+            final JSONObject ret = articleRepository.get(articleId);
+
+            if (null == ret) {
+                return null;
+            }
 
             return ret;
         } catch (final RepositoryException e) {

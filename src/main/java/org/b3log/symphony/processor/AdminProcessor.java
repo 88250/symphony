@@ -37,6 +37,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.processor.advice.AdminCheck;
+import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
@@ -92,6 +93,12 @@ public class AdminProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
+    /**
+     * Article management service.
+     */
+    @Inject
+    private ArticleMgmtService articleMgmtService;
 
     /**
      * Comment query service.
@@ -235,7 +242,7 @@ public class AdminProcessor {
         }
 
         userMgmtService.updateUser(userId, user);
-        
+
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
@@ -309,9 +316,45 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final JSONObject article = articleQueryService.getArticleById(articleId);
+        final JSONObject article = articleQueryService.getArticle(articleId);
         dataModel.put(Article.ARTICLE, article);
 
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Updates an article.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param articleId the specified article id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = AdminCheck.class)
+    public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                              final String articleId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/article.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        JSONObject article = articleQueryService.getArticle(articleId);
+
+        final Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            final String name = parameterNames.nextElement();
+            final String value = request.getParameter(name);
+
+            article.put(name, value);
+        }
+
+        articleMgmtService.updateArticle(articleId, article);
+        
+        article = articleQueryService.getArticle(articleId);
+        dataModel.put(Article.ARTICLE, article);
+        
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 

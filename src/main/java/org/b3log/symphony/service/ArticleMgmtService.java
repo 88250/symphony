@@ -113,9 +113,9 @@ public class ArticleMgmtService {
 
     /**
      * Increments the view count of the specified article by the given article id.
-     * 
+     *
      * @param articleId the given article id
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public void incArticleViewCount(final String articleId) throws ServiceException {
         final Transaction transaction = articleRepository.beginTransaction();
@@ -144,7 +144,7 @@ public class ArticleMgmtService {
 
     /**
      * Adds an article with the specified request json object.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -159,6 +159,7 @@ public class ArticleMgmtService {
      *     "isBroadcast": boolean
      * }
      * </pre>, see {@link Article} for more details
+     *
      * @return generated article id
      * @throws ServiceException service exception
      */
@@ -193,8 +194,8 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             } else {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
-                        replace("<", "&lt;").replace(">", "&gt;")
-                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
+                            replace("<", "&lt;").replace(">", "&gt;")
+                            .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
 
             }
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
@@ -217,7 +218,6 @@ public class ArticleMgmtService {
             }
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.ARTICLE_STATUS, 0);
-
 
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
 
@@ -257,7 +257,7 @@ public class ArticleMgmtService {
 
     /**
      * Updates an article with the specified request json object.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -268,6 +268,7 @@ public class ArticleMgmtService {
      *     "articleEditorType": ""
      * }
      * </pre>, see {@link Article} for more details
+     *
      * @throws ServiceException service exception
      */
     public void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
@@ -291,8 +292,8 @@ public class ArticleMgmtService {
                 oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             } else {
                 oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
-                        replace("<", "&lt;").replace(">", "&gt;")
-                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
+                               replace("<", "&lt;").replace(">", "&gt;")
+                               .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
             }
 
             oldArticle.put(Article.ARTICLE_UPDATE_TIME, System.currentTimeMillis());
@@ -320,12 +321,39 @@ public class ArticleMgmtService {
     }
 
     /**
+     * Updates the specified article by the given user id.
+     *
+     * @param articleId the given article id
+     * @param article the specified article
+     * @throws ServiceException service exception
+     */
+    public void updateArticle(final String articleId, final JSONObject article) throws ServiceException {
+        final Transaction transaction = articleRepository.beginTransaction();
+
+        try {
+            article.put(Article.ARTICLE_COMMENTABLE, Boolean.valueOf(article.optBoolean(Article.ARTICLE_COMMENTABLE)));
+            article.put(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.valueOf(article.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)));
+            
+            articleRepository.update(articleId, article);
+
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Updates an article[id=" + articleId + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Processes tags for article update.
      *
-     * <ul> 
-     *   <li>Un-tags old article, decrements tag reference count</li>
-     *   <li>Removes old article-tag relations</li> 
-     *   <li>Saves new article-tag relations with tag reference count</li>
+     * <ul>
+     * <li>Un-tags old article, decrements tag reference count</li>
+     * <li>Removes old article-tag relations</li>
+     * <li>Saves new article-tag relations with tag reference count</li>
      * </ul>
      *
      * @param oldArticle the specified old article
@@ -479,7 +507,7 @@ public class ArticleMgmtService {
 
             if (null == tag) {
                 LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
-                        new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                           new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
@@ -501,8 +529,8 @@ public class ArticleMgmtService {
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
-                        new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
-                    article.optString(Article.ARTICLE_TITLE)});
+                           new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
+                                        article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 tagTmp.put(Tag.TAG_TITLE, tag.optString(Tag.TAG_TITLE));
