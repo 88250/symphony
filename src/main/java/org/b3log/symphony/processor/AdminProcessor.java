@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.processor;
 
+import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,8 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
@@ -69,6 +72,7 @@ public class AdminProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
+
     /**
      * Article query service.
      */
@@ -98,7 +102,8 @@ public class AdminProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
-/**
+
+    /**
      * Shows admin index.
      *
      * @param context the specified context
@@ -114,13 +119,9 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
     }
-    
+
     /**
      * Shows admin users.
      *
@@ -150,6 +151,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
         final JSONObject result = userQueryService.getUsers(requestJSONObject);
         dataModel.put(User.USERS, result.optJSONArray(User.USERS));
 
@@ -160,11 +162,118 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
+    /**
+     * Shows admin articles.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/articles", method = HTTPRequestMethod.GET)
+    public void showArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/articles.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageSize = Integer.valueOf("20");
+        final int windowSize = Integer.valueOf("20");
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
+        final Map<String, Class<?>> articleFields = new HashMap<String, Class<?>>();
+        articleFields.put(Article.ARTICLE_TITLE, String.class);
+        articleFields.put(Article.ARTICLE_PERMALINK, String.class);
+        articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
+        articleFields.put(Article.ARTICLE_VIEW_CNT, Integer.class);
+        articleFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
+        
+        final JSONObject result = articleQueryService.getArticles(requestJSONObject, articleFields);
+        dataModel.put(Article.ARTICLES, result.optJSONArray(Article.ARTICLES));
+
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final int pageNums = pagination.optInt(Pagination.PAGINATION_PAGE_NUMS);
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows admin comments.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/comments", method = HTTPRequestMethod.GET)
+    public void showComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/comments.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageSize = Integer.valueOf("20");
+        final int windowSize = Integer.valueOf("20");
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
+        final JSONObject result = commentQueryService.getComments(requestJSONObject);
+        dataModel.put(Comment.COMMENTS, result.optJSONArray(Comment.COMMENTS));
+
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final int pageNums = pagination.optInt(Pagination.PAGINATION_PAGE_NUMS);
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows admin miscellaneous.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.GET)
+    public void showMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/misc.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
 }

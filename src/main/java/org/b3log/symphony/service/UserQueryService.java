@@ -230,7 +230,8 @@ public class UserQueryService {
      *         "userName": "",
      *         "userEmail": "",
      *         "userPassword": "",
-     *         "roleName": ""
+     *         "roleName": "",
+     *         ....
      *      }, ....]
      * }
      * </pre>

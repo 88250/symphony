@@ -27,6 +27,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
@@ -40,6 +41,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
@@ -59,7 +61,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, Oct 19, 2014
+ * @version 1.2.0.9, Apr 3, 2015
  * @since 0.2.0
  */
 @Service
@@ -285,9 +287,8 @@ public class ArticleQueryService {
             } else {
                 filter = filters.get(0);
             }
-            
-            // XXX: 这里的分页是有问题的，后面取文章的时候会少（因为一篇文章可以有多个标签，但是文章 id 一样）
 
+            // XXX: 这里的分页是有问题的，后面取文章的时候会少（因为一篇文章可以有多个标签，但是文章 id 一样）
             Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     setFilter(filter).setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
 
@@ -660,6 +661,85 @@ public class ArticleQueryService {
         article.put(Article.ARTICLE_CONTENT, articleContent);
 
         markdown(article);
+    }
+
+    /**
+     * Gets articles by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "paginationCurrentPageNum": 1,
+     *     "paginationPageSize": 20,
+     *     "paginationWindowSize": 10
+     * }, see {@link Pagination} for more details
+     * </pre>
+     *
+     * @param articleFields the specified article fields to return
+     *
+     * @return for example,
+     * <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "articles": [{
+     *         "oId": "",
+     *         "articleTitle": "",
+     *         "articleContent": "",
+     *         ....
+     *      }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     * @see Pagination
+     */
+    public JSONObject getArticles(final JSONObject requestJSONObject, final Map<String, Class<?>> articleFields) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
+        final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
+        final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                addSort(Article.ARTICLE_UPDATE_TIME, SortDirection.DESCENDING);
+        for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
+            query.addProjection(articleField.getKey(), articleField.getValue());
+        }
+
+        JSONObject result = null;
+
+        try {
+            result = articleRepository.get(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets articles failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        final JSONArray data = result.optJSONArray(Keys.RESULTS);
+        final List<JSONObject> articles = CollectionUtils.<JSONObject>jsonArrayToList(data);
+
+        try {
+            organizeArticles(articles);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        ret.put(Article.ARTICLES, articles);
+
+        return ret;
     }
 
     /**

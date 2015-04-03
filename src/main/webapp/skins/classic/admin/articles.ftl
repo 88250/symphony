@@ -12,13 +12,10 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper fn-clear">
-                ${adminLabel}
-                <ul>
-                    <li><a href="users">${userAdminLabel}</a></li>
-                    <li><a href="articles">${articleAdminLabel}</a></li>
-                    <li><a href="comments">${commentAdminLabel}</a></li>
-                    <li><a href="misc">${miscAdminLabel}</a></li>
-                </ul>
+                ${articleAdminLabel}
+            </div>
+            <div>
+                ${articles}
             </div>
         </div>
         <#include "../footer.ftl">

@@ -24,6 +24,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
@@ -34,6 +35,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.UserExt;
@@ -43,6 +45,7 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Thumbnails;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -51,7 +54,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.15, Sep 5, 2013
+ * @version 1.1.1.15, Apr 3, 2015
  * @since 0.2.0
  */
 @Service
@@ -301,6 +304,69 @@ public class CommentQueryService {
             LOGGER.log(Level.ERROR, "Gets article [" + articleId + "] comments failed", e);
             throw new ServiceException(e);
         }
+    }
+    
+    /**
+     * Gets comments by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "paginationCurrentPageNum": 1,
+     *     "paginationPageSize": 20,
+     *     "paginationWindowSize": 10,
+     * }, see {@link Pagination} for more details
+     * </pre>
+     *
+     * @return for example,
+     * <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "comments": [{
+     *         "oId": "",
+     *         "commentContent": "",
+     *         "commentCreateTime": "",
+     *         ....
+     *      }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     * @see Pagination
+     */
+    public JSONObject getComments(final JSONObject requestJSONObject) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
+        final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
+        final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+
+        JSONObject result = null;
+
+        try {
+            result = commentRepository.get(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets comments failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        final JSONArray data = result.optJSONArray(Keys.RESULTS);
+        ret.put(Comment.COMMENTS, data);
+
+        return ret;
     }
 
     /**

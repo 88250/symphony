@@ -185,6 +185,20 @@ public class Filler {
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.SITE_VISIT_STAT_CODE, Symphonys.get("siteVisitStatCode"));
     }
+    
+    /**
+     * Fills header and footer.
+     * 
+     * @param request the specified request
+     * @param response the specified response
+     * @param dataModel the specified data model
+     * @throws Exception exception
+     */
+    public void fillHeaderAndFooter(final HttpServletRequest request, final HttpServletResponse response,
+                           final Map<String, Object> dataModel) throws Exception {
+        fillHeader(request, response, dataModel);
+        fillFooter(dataModel);
+    }
 
     /**
      * Fills personal navigation.
