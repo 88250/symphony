@@ -14,10 +14,10 @@
             <div class="wrapper fn-clear">
                 ${adminLabel}
                 <ul>
-                    <li><a href="users">${userAdminLabel}</a></li>
-                    <li><a href="articles">${articleAdminLabel}</a></li>
-                    <li><a href="comments">${commentAdminLabel}</a></li>
-                    <li><a href="misc">${miscAdminLabel}</a></li>
+                    <li><a href="/admin/users">${userAdminLabel}</a></li>
+                    <li><a href="/admin/articles">${articleAdminLabel}</a></li>
+                    <li><a href="/admin/comments">${commentAdminLabel}</a></li>
+                    <li><a href="/admin/misc">${miscAdminLabel}</a></li>
                 </ul>
             </div>
         </div>

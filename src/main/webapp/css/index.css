@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
-* 前台样式
-*
-* @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.3.3, Apr 3, 2014
-*/
+ * 前台样式
+ *
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.3.3, Apr 3, 2014
+ */
 /* start module */
 .index-module .index-module-list > li {
     margin: 3px 0;

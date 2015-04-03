@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.processor;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -39,6 +40,7 @@ import org.b3log.symphony.processor.advice.AdminCheck;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.json.JSONObject;
@@ -78,6 +80,12 @@ public class AdminProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
+
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Article query service.
@@ -194,6 +202,40 @@ public class AdminProcessor {
         final JSONObject user = userQueryService.getUser(userId);
         dataModel.put(User.USER, user);
 
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Updates a user.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userId the specified user id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = AdminCheck.class)
+    public void updateUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                           final String userId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/user.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject user = userQueryService.getUser(userId);
+        dataModel.put(User.USER, user);
+
+        final Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            final String name = parameterNames.nextElement();
+            final String value = request.getParameter(name);
+
+            user.put(name, value);
+        }
+
+        userMgmtService.updateUser(userId, user);
+        
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 

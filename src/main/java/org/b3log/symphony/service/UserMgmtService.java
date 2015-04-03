@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Mar 13, 2013
+ * @version 1.1.1.0, Apr 3, 2015
  * @since 0.2.0
  */
 @Service
@@ -134,10 +134,10 @@ public class UserMgmtService {
 
     /**
      * Updates a user's online status and saves the login time.
-     * 
+     *
      * @param userId the specified user id
      * @param onlineFlag the specified online flag
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public void updateOnlineStatus(final String userId, final boolean onlineFlag) throws ServiceException {
         Transaction transaction = null;
@@ -179,6 +179,7 @@ public class UserMgmtService {
      *     "userIntro": ""
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public void updateProfiles(final JSONObject requestJSONObject) throws ServiceException {
@@ -222,6 +223,7 @@ public class UserMgmtService {
      *     "userB3ClientAddCommentURL": "",
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public void updateSyncB3(final JSONObject requestJSONObject) throws ServiceException {
@@ -263,6 +265,7 @@ public class UserMgmtService {
      *     "userPassword": "", // Hashed
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public void updatePassword(final JSONObject requestJSONObject) throws ServiceException {
@@ -293,7 +296,7 @@ public class UserMgmtService {
 
     /**
      * Adds a user with the specified request json object.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -303,6 +306,7 @@ public class UserMgmtService {
      *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead, if not speciffied
      * }
      * </pre>,see {@link User} for more details
+     *
      * @return generated user id
      * @throws ServiceException if user name or email duplicated, or repository exception
      */
@@ -394,6 +398,30 @@ public class UserMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Removes a user[id=" + userId + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Updates the specified user by the given user id.
+     *
+     * @param userId the given user id
+     * @param user the specified user
+     * @throws ServiceException service exception
+     */
+    public void updateUser(final String userId, final JSONObject user) throws ServiceException {
+        final Transaction transaction = userRepository.beginTransaction();
+
+        try {
+            userRepository.update(userId, user);
+
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Updates a user[id=" + userId + "] failed", e);
             throw new ServiceException(e);
         }
     }
