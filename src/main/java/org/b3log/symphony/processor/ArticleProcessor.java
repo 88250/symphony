@@ -255,7 +255,8 @@ public class ArticleProcessor {
      *   "articleTitle": "",
      *   "articleTags": "", // Tags spliting by ','
      *   "articleContent": "",
-     *   "syncWithSymphonyClient": boolean
+     *   "syncWithSymphonyClient": boolean,
+     *   "articleCommentable": boolean
      * }
      * </pre>
      * </p>
@@ -282,6 +283,7 @@ public class ArticleProcessor {
         final String articleTags = formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
+        final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -289,6 +291,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
+        article.put(Article.ARTICLE_COMMENTABLE, articleCommentable);
 
         try {
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -366,7 +369,8 @@ public class ArticleProcessor {
      *   "articleTitle": "",
      *   "articleTags": "", // Tags spliting by ','
      *   "articleContent": "",
-     *   "syncWithSymphonyClient": boolean
+     *   "syncWithSymphonyClient": boolean,
+     *   "articleCommentable": boolean
      * }
      * </pre>
      * </p>
@@ -406,6 +410,7 @@ public class ArticleProcessor {
         final String articleTags = formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
+        final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
 
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, id);
@@ -414,6 +419,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
+        article.put(Article.ARTICLE_COMMENTABLE, articleCommentable);
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser

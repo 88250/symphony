@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Validates for comment adding remotely.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Mar 19, 2015
+ * @version 1.1.0.3, Apr 3, 2015
  */
 @Named
 @Singleton
@@ -174,6 +174,10 @@ public class ClientCommentAddValidation extends BeforeRequestProcessAdvice {
                              = articleQueryService.getArticleByClientArticleId(author.optString(Keys.OBJECT_ID), commentClientArticleId);
             if (null == article) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Article not found, do not sync comment"));
+            }
+
+            if (!article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Article not allow comment, do not sync comment"));
             }
 
             request.setAttribute(Article.ARTICLE, article);

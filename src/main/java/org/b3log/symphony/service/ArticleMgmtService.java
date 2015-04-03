@@ -154,6 +154,7 @@ public class ArticleMgmtService {
      *     "articleEditorType": "",
      *     "articleAuthorEmail": "",
      *     "articleAuthorId": "",
+     *     "articleCommentable": boolean, // optional, default to true
      *     "syncWithSymphonyClient": boolean, // optional
      *     "clientArticleId": "" // optional
      *     "isBroadcast": boolean
@@ -206,7 +207,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_VIEW_CNT, 0);
             article.put(Article.ARTICLE_GOOD_CNT, 0);
             article.put(Article.ARTICLE_BAD_CNT, 0);
-            article.put(Article.ARTICLE_COMMENTABLE, true);
+            article.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             article.put(Article.ARTICLE_CREATE_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_LATEST_CMT_TIME, currentTimeMillis);
@@ -265,7 +266,8 @@ public class ArticleMgmtService {
      *     "articleTitle": "",
      *     "articleTags": "",
      *     "articleContent": "",
-     *     "articleEditorType": ""
+     *     "articleEditorType": "",
+     *     "articleCommentable": boolean, // optional, default to true
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -287,6 +289,7 @@ public class ArticleMgmtService {
 
             oldArticle.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
             oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
+            oldArticle.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             if (fromClient) {
                 // The article content security has been processed by Rhythm
                 oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
