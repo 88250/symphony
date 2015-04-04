@@ -11,7 +11,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
     <packaging>war</packaging>
-    <version>0.2.5</version>
+    <version>0.3.0</version>
     <name>B3log Symphony</name>
     <url>https://github.com/b3log/b3log-symphony</url>
     <description>
