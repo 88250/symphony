@@ -17,7 +17,8 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.6, Apr 3, 2014
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.1.2.6, Apr 4, 2015
  */
 
 /**
@@ -102,6 +103,7 @@ var Util = {
      */
     showLogin: function() {
         $(".nav .form").slideToggle();
+        $("#nameOrEmail").focus();
     },
     /**
      * @description 跳转到注册页面

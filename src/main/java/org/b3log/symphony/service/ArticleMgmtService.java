@@ -336,7 +336,7 @@ public class ArticleMgmtService {
         try {
             article.put(Article.ARTICLE_COMMENTABLE, Boolean.valueOf(article.optBoolean(Article.ARTICLE_COMMENTABLE)));
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.valueOf(article.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)));
-            
+
             articleRepository.update(articleId, article);
 
             transaction.commit();

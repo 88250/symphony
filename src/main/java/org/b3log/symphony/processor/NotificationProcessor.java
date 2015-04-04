@@ -134,7 +134,7 @@ public class NotificationProcessor {
         @SuppressWarnings("unchecked")
         final List<JSONObject> commentedNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
         dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
-        
+
         final int unreadCommentedNotificationCnt
                   = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
         dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
@@ -161,8 +161,7 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -233,11 +232,10 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
     }
-    
-     /**
+
+    /**
      * Shows [followingUser] notifications.
      *
      * @param context the specified context
@@ -248,7 +246,7 @@ public class NotificationProcessor {
     @RequestProcessing(value = "/notifications/following-user", method = HTTPRequestMethod.GET)
     @Before(adviceClass = LoginCheck.class)
     public void showFollowingUserNotifications(final HTTPRequestContext context, final HttpServletRequest request,
-                                    final HttpServletResponse response) throws Exception {
+                                               final HttpServletResponse response) throws Exception {
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -282,7 +280,7 @@ public class NotificationProcessor {
         final int unreadCommentedNotificationCnt
                   = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
         dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
-        
+
         final int unreadAtNotificationCnt
                   = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
         dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
@@ -306,7 +304,6 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
     }
 }

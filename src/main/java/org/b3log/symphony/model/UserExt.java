@@ -29,98 +29,121 @@ public final class UserExt {
      * Key of user article count.
      */
     public static final String USER_ARTICLE_COUNT = "userArticleCount";
+
     /**
      * Key of user comment count.
      */
     public static final String USER_COMMENT_COUNT = "userCommentCount";
+
     /**
      * Key of new tag count.
      */
     public static final String USER_TAG_COUNT = "userTagCount";
+
     /**
      * Key of user status.
      */
     public static final String USER_STATUS = "userStatus";
+
     /**
      * Key of user QQ.
      */
     public static final String USER_QQ = "userQQ";
+
     /**
      * Key of user number.
      */
     public static final String USER_NO = "userNo";
+
     /**
      * Key of user intro.
      */
     public static final String USER_INTRO = "userIntro";
+
     /**
      * Key of user B3log key.
      */
     public static final String USER_B3_KEY = "userB3Key";
+
     /**
      * Key of user B3log client add article URL.
      */
     public static final String USER_B3_CLIENT_ADD_ARTICLE_URL = "userB3ClientAddArticleURL";
+
     /**
      * Key of user B3log client update article URL.
      */
     public static final String USER_B3_CLIENT_UPDATE_ARTICLE_URL = "userB3ClientUpdateArticleURL";
+
     /**
      * Key of user B3log client add comment URL.
      */
     public static final String USER_B3_CLIENT_ADD_COMMENT_URL = "userB3ClientAddCommentURL";
+
     /**
      * Key of online flag.
      */
     public static final String USER_ONLINE_FLAG = "userOnlineFlag";
+
     /**
      * Key of latest post article time.
      */
     public static final String USER_LATEST_ARTICLE_TIME = "userLatestArticleTime";
+
     /**
      * Key of latest comment time.
      */
     public static final String USER_LATEST_CMT_TIME = "userLatestCmtTime";
+
     /**
      * Key of latest login time.
      */
     public static final String USER_LATEST_LOGIN_TIME = "userLatestLoginTime";
+
     //// Transient ////
     /**
      * Key of user thumbnail URL.
      */
     public static final String USER_T_THUMBNAIL_URL = "userThumbnailURL";
+
     /**
      * Key of user create time.
      */
     public static final String USER_T_CREATE_TIME = "userCreateTime";
+
     //// Default Commenter constants
     /**
      * Default commenter name.
      */
     public static final String DEFAULT_CMTER_NAME = "Default Commenter";
+
     /**
      * Default commenter email.
      */
     public static final String DEFAULT_CMTER_EMAIL = "default_commenter@b3log.org";
+
     /**
      * Default commenter role.
      */
     public static final String DEFAULT_CMTER_ROLE = "defaultCommenterRole";
+
     //// Admin constants
     /**
      * Default administrator email.
      */
     public static final String DEFAULT_ADMIN_EMAIL = "dl88250@gmail.com";
+
     /**
      * Default administrator name.
      */
     public static final String DEFAULT_ADMIN_NAME = "88250";
+
     // Status constants
     /**
      * User status - valid.
      */
     public static final int USER_STATUS_C_VALID = 0;
+
     /**
      * User status - invalid.
      */

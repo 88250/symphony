@@ -15,13 +15,11 @@
  */
 package org.b3log.symphony.util;
 
-
 import org.b3log.latke.util.MD5;
-
 
 /**
  * Thumbnail utilities.
- * 
+ *
  * <p>
  * By using <a href="http://gravatar.com">Gravatar</a> for user thumbnail.
  * </p>
@@ -39,7 +37,7 @@ public final class Thumbnails {
 
     /**
      * Gets the Gravatar URL for the specified email with the specified size.
-     * 
+     *
      * @param email the specified email
      * @param size the specified size
      * @return the Gravatar URL
@@ -51,5 +49,6 @@ public final class Thumbnails {
     /**
      * Private constructor.
      */
-    private Thumbnails() {}
+    private Thumbnails() {
+    }
 }

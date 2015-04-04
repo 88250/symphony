@@ -79,7 +79,7 @@ public class UserBlockCheck extends BeforeRequestProcessAdvice {
 
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
                 renderer.setTemplateName("/home/block.ftl");
-                
+
                 exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_OK);
 
                 return;

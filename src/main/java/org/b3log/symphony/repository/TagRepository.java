@@ -93,7 +93,7 @@ public class TagRepository extends AbstractRepository {
 
     /**
      * Gets tags of an article specified by the article id.
-     * 
+     *
      * @param articleId the specified article id
      * @return a list of tags of the specified article, returns an empty list if not found
      * @throws RepositoryException repository exception

@@ -391,7 +391,7 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets an article with {@link #organizeArticle(org.json.JSONObject)}  by the specified id.
+     * Gets an article with {@link #organizeArticle(org.json.JSONObject)} by the specified id.
      *
      * @param articleId the specified id
      * @return article, return {@code null} if not found
@@ -413,8 +413,8 @@ public class ArticleQueryService {
             throw new ServiceException(e);
         }
     }
-    
-     /**
+
+    /**
      * Gets an article by the specified id.
      *
      * @param articleId the specified id
@@ -696,6 +696,7 @@ public class ArticleQueryService {
      *     "paginationWindowSize": 10
      * }, see {@link Pagination} for more details
      * </pre>
+     *
      * @param articleFields the specified article fields to return
      *
      * @return for example,

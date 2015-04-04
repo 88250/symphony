@@ -46,14 +46,14 @@ import org.json.JSONObject;
 /**
  * Comment processor.
  *
- * <ul> 
- *   <li>Adds a comment (/comment) <em>locally</em>, POST</li> 
- *   <li>Adds a comment (/solo/comment) <em>remotely</em>, POST</li> 
- * </ul> 
+ * <ul>
+ * <li>Adds a comment (/comment) <em>locally</em>, POST</li>
+ * <li>Adds a comment (/solo/comment) <em>remotely</em>, POST</li>
+ * </ul>
  *
- * <p> 
+ * <p>
  * The '<em>locally</em>' means user post a comment on Symphony directly rather than receiving a comment from externally (for example
- * Solo). 
+ * Solo).
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -96,7 +96,7 @@ public class CommentProcessor {
      * Adds a comment locally.
      *
      * <p>
-     * The request json object (a comment): 
+     * The request json object (a comment):
      * <pre>
      * {
      *     "articleId": "",
@@ -109,7 +109,7 @@ public class CommentProcessor {
      * @param request the specified request
      * @param response the specified response
      * @throws IOException io exception
-     * @throws ServletException servlet exception 
+     * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/comment", method = HTTPRequestMethod.POST)
     @Before(adviceClass = CommentAddValidation.class)
@@ -156,9 +156,9 @@ public class CommentProcessor {
 
     /**
      * Adds a comment remotely.
-     * 
+     *
      * <p>
-     * The request json object (a comment): 
+     * The request json object (a comment):
      * <pre>
      * {
      *     "comment": {

@@ -34,7 +34,7 @@ import org.json.JSONObject;
 
 /**
  * Validates for article adding locally, removes the duplicated tags.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.4, Apr 18, 2013
  * @since 0.2.0
@@ -48,18 +48,22 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
      */
     @Inject
     private static LangPropsService langPropsService;
+
     /**
      * Max article title length.
      */
     public static final int MAX_ARTICLE_TITLE_LENGTH = 255;
+
     /**
      * Max tag title length.
      */
     public static final int MAX_TAG_TITLE_LENGTH = 50;
+
     /**
      * Max article content length.
      */
     public static final int MAX_ARTICLE_CONTENT_LENGTH = 1048576;
+
     /**
      * Min article content length.
      */
@@ -76,15 +80,15 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         } catch (final Exception e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
-        
+
         validateArticleFields(requestJSONObject);
     }
 
     /**
      * Validates article fields.
-     * 
+     *
      * @param requestJSONObject the specified request object
-     * @throws RequestProcessAdviceException 
+     * @throws RequestProcessAdviceException if validate failed
      */
     public static void validateArticleFields(final JSONObject requestJSONObject) throws RequestProcessAdviceException {
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
@@ -101,9 +105,9 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         if (null == tagTitles || 0 == tagTitles.length) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
         }
-        
+
         tagTitles = new TreeSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
-        
+
         final StringBuilder tagBuilder = new StringBuilder();
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
@@ -114,16 +118,16 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
             if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
             }
-            
+
             // XXX: configured
             if ("B3log Broadcast".equals(tagTitle)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
-                        + " [B3log Broadcast]"));
+                                                                                       + " [B3log Broadcast]"));
             }
-            
+
             tagBuilder.append(tagTitle).append(",");
         }
-        
+
         tagBuilder.deleteCharAt(tagBuilder.length() - 1);
         requestJSONObject.put(Article.ARTICLE_TAGS, tagBuilder.toString());
 

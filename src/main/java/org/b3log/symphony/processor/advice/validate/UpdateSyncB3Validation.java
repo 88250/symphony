@@ -31,9 +31,9 @@ import org.json.JSONObject;
 
 /**
  * Validates for user sync B3 update.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Oct 26, 2012 
+ * @version 1.0.0.0, Oct 26, 2012
  */
 @Named
 @Singleton
@@ -43,10 +43,12 @@ public class UpdateSyncB3Validation extends BeforeRequestProcessAdvice {
      * Language service.
      */
     private LangPropsService langPropsService;
+
     /**
      * Max user B3 key length.
      */
     public static final int MAX_USER_B3_KEY_LENGTH = 20;
+
     /**
      * Max user B3 client interface URL length.
      */

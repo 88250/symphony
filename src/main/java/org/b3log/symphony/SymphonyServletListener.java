@@ -57,10 +57,12 @@ public final class SymphonyServletListener extends AbstractServletListener {
      * B3log Symphony version.
      */
     public static final String VERSION = "0.3.0-DEV";
+
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(SymphonyServletListener.class.getName());
+
     /**
      * JSONO print indent factor.
      */
@@ -69,23 +71,23 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Stopwatchs.start("Context Initialized");
-        
+
         super.contextInitialized(servletContextEvent);
-        
+
         final String skinDirName = Symphonys.get("skinDirName");
         Latkes.loadSkin(skinDirName);
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-        
+
         // Register event listeners
         final EventManager eventManager = beanManager.getReference(EventManager.class);
         eventManager.registerListener(new ArticleSender());
         eventManager.registerListener(new ArticleUpdater());
         eventManager.registerListener(new CommentSender());
-        
+
         final CommentNotifier commentNotifier = beanManager.getReference(CommentNotifier.class);
         eventManager.registerListener(commentNotifier);
-        
+
         final ArticleNotifier articleNotifier = beanManager.getReference(ArticleNotifier.class);
         eventManager.registerListener(articleNotifier);
 
@@ -114,10 +116,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final Object userObj = session.getAttribute(User.USER);
         if (null != userObj) { // User logout
             final JSONObject user = (JSONObject) userObj;
-            
+
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-            
+
             try {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
             } catch (final ServiceException e) {
@@ -135,11 +137,11 @@ public final class SymphonyServletListener extends AbstractServletListener {
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, false);
-            
+
             if (StaticResources.isStatic(httpServletRequest)) {
                 return;
             }
-            
+
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
             LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",

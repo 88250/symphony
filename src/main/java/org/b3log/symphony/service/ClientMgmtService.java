@@ -68,6 +68,7 @@ public class ClientMgmtService {
      *     ....
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public void addClient(final JSONObject requestJSONObject) throws ServiceException {
@@ -108,6 +109,7 @@ public class ClientMgmtService {
      *     ....
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public void updateClient(final JSONObject requestJSONObject) throws ServiceException {

@@ -35,7 +35,7 @@ import org.json.JSONObject;
 
 /**
  * Validates for comment adding locally.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.1, Apr 3, 2015
  */
@@ -82,12 +82,12 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
             if (Strings.isEmptyOrNull(articleId)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
             }
-            
+
             final JSONObject article = articleQueryService.getArticleById(articleId);
             if (null == article) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
             }
-            
+
             if (!article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notAllowCmtLabel")));
             }

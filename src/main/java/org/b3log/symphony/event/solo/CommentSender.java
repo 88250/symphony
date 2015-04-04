@@ -61,7 +61,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, CommentSender.class.getName()});
+                   new Object[]{event.getType(), data, CommentSender.class.getName()});
         try {
             if (data.optBoolean(Common.FROM_CLIENT)) {
                 return;
@@ -117,7 +117,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
 
     /**
      * Gets the event type {@linkplain EventTypes#ADD_COMMENT_TO_ARTICLE}.
-     * 
+     *
      * @return event type
      */
     @Override

@@ -27,18 +27,22 @@ public final class Skin {
      * Skin.
      */
     public static final String SKIN = "skin";
+
     /**
      * Skins.
      */
     public static final String SKINS = "skins";
+
     /**
      * Key of skin name, current selected skin name.
      */
     public static final String SKIN_NAME = "skinName";
+
     /**
      * Key of skin names.
      */
     public static final String SKIN_NAMES = "skinNames";
+
     /**
      * Key of skin directory name.
      */

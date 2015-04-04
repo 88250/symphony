@@ -72,7 +72,7 @@ public class UserQueryService {
      *
      * @param request the specified request
      * @return the current user, {@code null} if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public JSONObject getCurrentUser(final HttpServletRequest request) throws ServiceException {
         final GeneralUser currentUser = UserServiceFactory.getUserService().getCurrentUser(request);
@@ -87,7 +87,7 @@ public class UserQueryService {
 
     /**
      * Gets the administrator.
-     * 
+     *
      * @return administrator, returns {@code null} if not found
      * @throws ServiceException service exception
      */
@@ -102,7 +102,7 @@ public class UserQueryService {
 
     /**
      * Gets the default commenter.
-     * 
+     *
      * @return default commenter
      * @throws ServiceException service exception
      */
@@ -128,17 +128,17 @@ public class UserQueryService {
 
     /**
      * Gets user names from the specified text.
-     * 
+     *
      * <p>
      * A user name is between &#64; and a punctuation, a blank or a line break (\n).
-     * For example, the specified text is 
+     * For example, the specified text is
      * <pre>&#64;88250 It is a nice day. &#64;Vanessa, we are on the way.</pre>
      * There are two user names in the text, 88250 and Vanessa.
      * </p>
-     * 
+     *
      * @param text the specified text
      * @return user names, returns an empty set if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public Set<String> getUserNames(final String text) throws ServiceException {
         final Set<String> ret = new HashSet<String>();
@@ -153,11 +153,11 @@ public class UserQueryService {
         copy = copy.replaceAll("\\n", " ");
         String[] userNames = StringUtils.substringsBetween(copy, "@", " ");
         String tail = StringUtils.substringAfterLast(copy, "@");
-        
+
         if (tail.contains(" ")) {
             tail = null;
         }
-        
+
         if (null != tail) {
             if (null == userNames) {
                 userNames = new String[1];
@@ -167,7 +167,7 @@ public class UserQueryService {
                 userNames[userNames.length - 1] = tail;
             }
         }
-        
+
         if (null == userNames) {
             return ret;
         }
@@ -218,6 +218,7 @@ public class UserQueryService {
      *     "paginationWindowSize": 10,
      * }, see {@link Pagination} for more details
      * </pre>
+     *
      * @return for example,
      * <pre>
      * {
@@ -235,6 +236,7 @@ public class UserQueryService {
      *      }, ....]
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      * @see Pagination
      */
@@ -284,6 +286,7 @@ public class UserQueryService {
      *     ....
      * }
      * </pre>, returns {@code null} if not found
+     *
      * @throws ServiceException service exception
      */
     public JSONObject getUser(final String userId) throws ServiceException {

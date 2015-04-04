@@ -74,17 +74,18 @@ public final class Notification {
      * Data type - commented.
      */
     public static final int DATA_TYPE_C_COMMENTED = 3;
-    
+
     /**
      * Data type - followingUser.
      */
     public static final int DATA_TYPE_C_FOLLOWING_USER = 4;
-    
+
     //// Transient ////
     /**
      * Key of unread notification count.
      */
     public static final String NOTIFICATION_T_UNREAD_COUNT = "unreadNotificationCount";
+
     /**
      * Key of at in article.
      */

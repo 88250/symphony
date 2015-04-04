@@ -59,7 +59,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleUpdater.class.getName()});
+                   new Object[]{event.getType(), data, ArticleUpdater.class.getName()});
         try {
             if (data.optBoolean(Common.FROM_CLIENT)) {
                 return;
@@ -73,7 +73,6 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
-
 
             final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userQueryService.getUser(authorId);
@@ -109,7 +108,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
     /**
      * Gets the event type {@link EventTypes#UPDATE_ARTICLE}.
-     * 
+     *
      * @return event type
      */
     @Override

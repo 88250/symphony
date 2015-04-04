@@ -51,9 +51,9 @@ public class NotificationMgmtService {
 
     /**
      * Makes the specified notifications have been read.
-     * 
+     *
      * @param notifications the specified notifications
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     @Transactional
     public void makeRead(final Collection<JSONObject> notifications) throws ServiceException {
@@ -64,8 +64,8 @@ public class NotificationMgmtService {
 
     /**
      * Makes the specified notification have been read.
-     * 
-     * @param notification the specified notification, return directly if this notification has been read (notification.hasRead equals to 
+     *
+     * @param notification the specified notification, return directly if this notification has been read (notification.hasRead equals to
      * {@code true})
      * @throws ServiceException service exception
      */
@@ -74,7 +74,7 @@ public class NotificationMgmtService {
         if (notification.optBoolean(Notification.NOTIFICATION_HAS_READ)) {
             return;
         }
-        
+
         final String id = notification.optString(Keys.OBJECT_ID);
 
         try {
@@ -93,7 +93,7 @@ public class NotificationMgmtService {
 
     /**
      * Adds a 'comment' type notification with the specified request json object.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -101,7 +101,8 @@ public class NotificationMgmtService {
      *     "dataId": ""
      * }
      * </pre>
-     * @throws ServiceException 
+     *
+     * @throws ServiceException service exception
      */
     @Transactional
     public void addCommentNotification(final JSONObject requestJSONObject) throws ServiceException {
@@ -119,7 +120,7 @@ public class NotificationMgmtService {
 
     /**
      * Adds a 'at' type notification with the specified request json object.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -127,7 +128,8 @@ public class NotificationMgmtService {
      *     "dataId": ""
      * }
      * </pre>
-     * @throws ServiceException 
+     *
+     * @throws ServiceException  service exception
      */
     @Transactional
     public void addAtNotification(final JSONObject requestJSONObject) throws ServiceException {
@@ -145,7 +147,7 @@ public class NotificationMgmtService {
 
     /**
      * Adds a 'article' type notification with the specified request json object.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -153,7 +155,8 @@ public class NotificationMgmtService {
      *     "dataId": ""
      * }
      * </pre>
-     * @throws ServiceException 
+     *
+     * @throws ServiceException service exception 
      */
     @Transactional
     public void addArticleNotification(final JSONObject requestJSONObject) throws ServiceException {
@@ -168,10 +171,10 @@ public class NotificationMgmtService {
             throw new ServiceException(msg);
         }
     }
-    
+
     /**
      * Adds a 'followingUser' type notification with the specified request json object.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -179,7 +182,8 @@ public class NotificationMgmtService {
      *     "dataId": ""
      * }
      * </pre>
-     * @throws ServiceException 
+     *
+     * @throws ServiceException service exception
      */
     @Transactional
     public void addFollowingUserNotification(final JSONObject requestJSONObject) throws ServiceException {
@@ -197,7 +201,7 @@ public class NotificationMgmtService {
 
     /**
      * Adds a 'commented' type notification with the specified request json object.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -205,7 +209,8 @@ public class NotificationMgmtService {
      *     "dataId": ""
      * }
      * </pre>
-     * @throws ServiceException 
+     *
+     * @throws ServiceException service exception
      */
     @Transactional
     public void addCommentedNotification(final JSONObject requestJSONObject) throws ServiceException {
@@ -223,7 +228,7 @@ public class NotificationMgmtService {
 
     /**
      * Adds a notification with the specified request json object.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -232,6 +237,7 @@ public class NotificationMgmtService {
      *     "dataType": int
      * }
      * </pre>
+     *
      * @throws RepositoryException repository exception
      */
     private void addNotification(final JSONObject requestJSONObject) throws RepositoryException {

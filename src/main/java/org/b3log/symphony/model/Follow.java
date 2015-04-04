@@ -54,7 +54,7 @@ public final class Follow {
      * Following type - user.
      */
     public static final int FOLLOWING_TYPE_C_USER = 0;
-    
+
     /**
      * Following type - tag.
      */

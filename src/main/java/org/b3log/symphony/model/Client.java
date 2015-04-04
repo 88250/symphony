@@ -28,38 +28,47 @@ public final class Client {
      * Client.
      */
     public static final String CLIENT = "client";
+
     /**
      * Clients.
      */
     public static final String CLIENTS = "clients";
+
     /**
      * Key of client name.
      */
     public static final String CLIENT_NAME = "clientName";
+
     /**
      * Key of client version.
      */
     public static final String CLIENT_VERSION = "clientVersion";
+
     /**
      * Key of client host.
      */
     public static final String CLIENT_HOST = "clientHost";
+
     /**
      * Key of client runtime environment.
      */
     public static final String CLIENT_RUNTIME_ENV = "clientRuntimeEnv";
+
     /**
      * Key of client latest add (client -> symphony) article time.
      */
     public static final String CLIENT_LATEST_ADD_ARTICLE_TIME = "clientLatestAddArticleTime";
+
     /**
      * Key of client latest add (client -> symphony) comment time.
      */
     public static final String CLIENT_LATEST_ADD_COMMENT_TIME = "clientLatestAddCommentTime";
+
     /**
      * Key of client administrator email.
      */
     public static final String CLIENT_ADMIN_EMAIL = "clientAdminEmail";
+
     //// Transient ////
     /**
      * Key of client title.

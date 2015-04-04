@@ -59,6 +59,7 @@ public class TagArticleRepository extends AbstractRepository {
      *         "article_oId": articleId
      * }, ....], returns an empty list if not found
      * </pre>
+     *
      * @throws RepositoryException repository exception
      */
     public List<JSONObject> getByArticleId(final String articleId) throws RepositoryException {
@@ -93,6 +94,7 @@ public class TagArticleRepository extends AbstractRepository {
      *     }, ....]
      * }
      * </pre>
+     *
      * @throws RepositoryException repository exception
      */
     public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)

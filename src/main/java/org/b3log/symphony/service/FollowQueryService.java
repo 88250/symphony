@@ -105,13 +105,14 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public JSONObject getFollowingUsers(final String followerId, final int currentPageNum, final int pageSize)
             throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<JSONObject>();
-        
+
         ret.put(Keys.RESULTS, (Object) records);
         ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
 
@@ -134,7 +135,7 @@ public class FollowQueryService {
 
                 records.add(user);
             }
-            
+
             ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets following users of follower[id=" + followerId + "] failed", e);
@@ -159,19 +160,20 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public JSONObject getFollowerUsers(final String followingUserId, final int currentPageNum, final int pageSize)
             throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<JSONObject>();
-        
+
         ret.put(Keys.RESULTS, (Object) records);
         ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
 
         try {
             final JSONObject result = getFollowers(followingUserId, Follow.FOLLOWING_TYPE_C_USER, currentPageNum, pageSize);
-            
+
             @SuppressWarnings("unchecked")
             final List<JSONObject> followers = (List<JSONObject>) result.opt(Keys.RESULTS);
 
@@ -189,8 +191,8 @@ public class FollowQueryService {
 
                 records.add(user);
             }
-            
-           ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets follower users of following user[id=" + followingUserId + "] failed", e);
         }
@@ -217,6 +219,7 @@ public class FollowQueryService {
      *     }, ....]
      * }
      * </pre>
+     *
      * @throws RepositoryException repository exception
      */
     private JSONObject getFollowings(final String followerId, final int followingType, final int currentPageNum, final int pageSize)
@@ -280,7 +283,7 @@ public class FollowQueryService {
         final JSONObject ret = new JSONObject();
         ret.put(Keys.RESULTS, (Object) records);
         ret.put(Pagination.PAGINATION_RECORD_COUNT, recordCnt);
-        
+
         return ret;
     }
 }

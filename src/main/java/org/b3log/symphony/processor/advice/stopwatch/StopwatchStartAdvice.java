@@ -24,7 +24,7 @@ import org.b3log.latke.util.Stopwatchs;
 
 /**
  * Stopwatch start advice for request processors.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Oct 17, 2012
  * @since 0.2.0

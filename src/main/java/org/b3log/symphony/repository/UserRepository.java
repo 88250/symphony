@@ -49,7 +49,7 @@ public class UserRepository extends AbstractRepository {
      *
      * @param name the specified name
      * @return user, returns {@code null} if not found
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
     public JSONObject getByName(final String name) throws RepositoryException {
         final Query query = new Query().setPageCount(1);
@@ -70,7 +70,7 @@ public class UserRepository extends AbstractRepository {
      *
      * @param email the specified email
      * @return user, returns {@code null} if not found
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
     public JSONObject getByEmail(final String email) throws RepositoryException {
         final Query query = new Query().setPageCount(1);

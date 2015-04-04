@@ -28,10 +28,12 @@ public final class EventTypes {
      * Indicates a add article event.
      */
     public static final String ADD_ARTICLE = "Add Article";
+
     /**
      * Indicates a update article event.
      */
     public static final String UPDATE_ARTICLE = "Update Article";
+
     /**
      * Indicates an add comment to article event.
      */

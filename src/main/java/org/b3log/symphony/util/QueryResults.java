@@ -31,8 +31,8 @@ public final class QueryResults {
 
     /**
      * Constructs a default (false) result.
-     * 
-     * @return a false result, 
+     *
+     * @return a false result,
      * <pre>
      * {
      *     "sc": false
@@ -45,7 +45,7 @@ public final class QueryResults {
 
     /**
      * Constructs a default query results.
-     * 
+     *
      * @return a default query results,
      * <pre>
      * {

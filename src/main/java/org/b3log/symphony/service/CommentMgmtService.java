@@ -103,7 +103,7 @@ public class CommentMgmtService {
 
     /**
      * Adds a comment with the specified request json object.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -119,6 +119,7 @@ public class CommentMgmtService {
      *     }
      * }
      * </pre>, see {@link Comment} for more details
+     *
      * @return generated comment id
      * @throws ServiceException service exception
      */

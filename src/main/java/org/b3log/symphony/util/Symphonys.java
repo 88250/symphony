@@ -51,20 +51,20 @@ public final class Symphonys {
     public static String get(final String key) {
         return CFG.getString(key);
     }
-    
+
     /**
      * Gets a configuration boolean property with the specified key.
-     * 
+     *
      * @param key the specified key
      * @return boolean property value corresponding to the specified key, returns {@code null} if not found
      */
     public static Boolean getBoolean(final String key) {
         final String stringValue = get(key);
-        
+
         if (null == stringValue) {
             return null;
         }
-        
+
         return Boolean.valueOf(stringValue);
     }
 

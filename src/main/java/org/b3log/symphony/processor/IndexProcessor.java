@@ -141,8 +141,7 @@ public class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
@@ -164,8 +163,7 @@ public class IndexProcessor {
         renderer.setTemplateName("about.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);

@@ -23,7 +23,7 @@
             </#if>
             <a href="/member/${userName}" style="padding-bottom: 10px;">
                  <img class="avatar-small" 
-                 title="${userName}" src="https://avatars1.githubusercontent.com/u/873584?v=3&s=32" />
+                 title="${userName}" src="${currentUser.userThumbnailURL}" />
              </a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications/commented" title="${messageLabel}">${unreadNotificationCount}</a>
             <a href="/add-article" title="${addArticleLabel}" class="icon icon-addfile"></a>

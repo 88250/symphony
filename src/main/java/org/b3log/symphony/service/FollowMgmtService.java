@@ -49,7 +49,7 @@ public class FollowMgmtService {
 
     /**
      * The specified follower follows the specified following tag.
-     * 
+     *
      * @param followerId the specified follower id
      * @param followingTagId the specified following tag id
      * @throws ServiceException service exception
@@ -68,7 +68,7 @@ public class FollowMgmtService {
 
     /**
      * The specified follower follows the specified following user.
-     * 
+     *
      * @param followerId the specified follower id
      * @param followingUserId the specified following user id
      * @throws ServiceException service exception
@@ -87,7 +87,7 @@ public class FollowMgmtService {
 
     /**
      * The specified follower follows the specified following entity with the specified following type.
-     * 
+     *
      * @param followerId the specified follower id
      * @param followingId the specified following entity id
      * @param followingType the specified following type
@@ -108,7 +108,7 @@ public class FollowMgmtService {
 
     /**
      * Removes a follow relationship.
-     * 
+     *
      * @param followerId the specified follower id
      * @param followingId the specified following entity id
      * @throws ServiceException service exception

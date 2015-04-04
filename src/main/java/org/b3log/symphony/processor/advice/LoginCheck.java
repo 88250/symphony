@@ -74,7 +74,7 @@ public class LoginCheck extends BeforeRequestProcessAdvice {
             if (null == currentUser && !userMgmtService.tryLogInWithCookie(request, context.getResponse())) {
                 throw new RequestProcessAdviceException(exception);
             }
-            
+
             currentUser = userQueryService.getCurrentUser(request);
 
             request.setAttribute(User.USER, currentUser);

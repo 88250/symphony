@@ -59,10 +59,11 @@ public class UserTagRepository extends AbstractRepository {
      *         "oId": "",
      *         "tag_oId": "",
      *         "user_oId": userId,
-     *         "type": "" // "creator"/"article"/"comment", a tag 'creator' is also an 'article' quoter 
+     *         "type": "" // "creator"/"article"/"comment", a tag 'creator' is also an 'article' quoter
      *     }, ....]
      * }
      * </pre>
+     *
      * @throws RepositoryException repository exception
      */
     public JSONObject getByUserId(final String userId, final int currentPageNum, final int pageSize) throws RepositoryException {
@@ -88,10 +89,11 @@ public class UserTagRepository extends AbstractRepository {
      *         "oId": "",
      *         "tag_oId": "",
      *         "user_oId": userId,
-     *         "type": "" // "creator"/"article"/"comment", a tag 'creator' is also an 'article' quoter 
+     *         "type": "" // "creator"/"article"/"comment", a tag 'creator' is also an 'article' quoter
      *     }, ....]
      * }
      * </pre>
+     *
      * @throws RepositoryException repository exception
      */
     public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize) throws RepositoryException {

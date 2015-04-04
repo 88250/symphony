@@ -163,8 +163,7 @@ public class UserProcessor {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -172,7 +171,6 @@ public class UserProcessor {
         renderer.setTemplateName("/home/home.ftl");
 
         dataModel.put(User.USER, user);
-        filler.fillUserThumbnailURL(user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
@@ -231,8 +229,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -245,7 +242,6 @@ public class UserProcessor {
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
 
         dataModel.put(User.USER, user);
-        filler.fillUserThumbnailURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -297,8 +293,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/following-users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -311,7 +306,6 @@ public class UserProcessor {
         final int windowSize = Symphonys.getInt("userHomeFollowingUsersWindowSize");
 
         dataModel.put(User.USER, user);
-        filler.fillUserThumbnailURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -370,8 +364,7 @@ public class UserProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/followers.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -384,7 +377,6 @@ public class UserProcessor {
         final int windowSize = Symphonys.getInt("userHomeFollowersWindowSize");
 
         dataModel.put(User.USER, user);
-        filler.fillUserThumbnailURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -444,10 +436,8 @@ public class UserProcessor {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
         dataModel.put(User.USER, user);
-        filler.fillUserThumbnailURL(user);
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**

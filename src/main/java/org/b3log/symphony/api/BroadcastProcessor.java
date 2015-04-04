@@ -31,9 +31,9 @@ import org.json.JSONObject;
 /**
  * Broadcast processor.
  *
- * <ul> 
- *   <li>Gets the broadcasts (/apis/broadcasts), GET</li>
- * </ul> 
+ * <ul>
+ * <li>Gets the broadcasts (/apis/broadcasts), GET</li>
+ * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Apr 18, 2013

@@ -31,9 +31,9 @@ import org.json.JSONObject;
 
 /**
  * Validates for user password update.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Oct 29, 2012 
+ * @version 1.0.0.1, Oct 29, 2012
  */
 @Named
 @Singleton

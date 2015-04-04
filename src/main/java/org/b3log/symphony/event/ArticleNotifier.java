@@ -92,7 +92,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             atUserNames.remove(articleAuthorName); // Do not notify the author itself
 
             final Set<String> atedUserIds = new HashSet<String>();
-            
+
             // 'At' Notification
             for (final String userName : atUserNames) {
                 final JSONObject user = userQueryService.getUserByName(userName);
@@ -109,7 +109,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalArticle.optString(Keys.OBJECT_ID));
 
                 notificationMgmtService.addAtNotification(requestJSONObject);
-                
+
                 atedUserIds.add(atedUserId);
             }
             // 'FollowingUser' Notification
@@ -119,11 +119,11 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             for (final JSONObject followerUser : followerUsers) {
                 final JSONObject requestJSONObject = new JSONObject();
                 final String followerUserId = followerUser.optString(Keys.OBJECT_ID);
-                
+
                 if (atedUserIds.contains(followerUserId)) {
                     continue;
                 }
-                
+
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, followerUserId);
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalArticle.optString(Keys.OBJECT_ID));
 

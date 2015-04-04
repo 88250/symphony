@@ -45,10 +45,10 @@ import org.b3log.symphony.SymphonyServletListener;
 
 /**
  * Captcha processor.
- * 
+ *
  * <p>
- *    Checkout <a href="http://toy-code.googlecode.com/svn/trunk/CaptchaGenerator">
- *    the sample captcha generator</a> for more details.
+ * Checkout <a href="http://toy-code.googlecode.com/svn/trunk/CaptchaGenerator">
+ * the sample captcha generator</a> for more details.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -85,7 +85,7 @@ public class CaptchaProcessor {
 
     /**
      * Gets captcha.
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/captcha", method = HTTPRequestMethod.GET)
@@ -110,7 +110,7 @@ public class CaptchaProcessor {
             final HttpSession httpSession = request.getSession(false);
 
             if (null != httpSession) {
-                LOGGER.log(Level.DEBUG, "Captcha[{0}] for session[id={1}]", new Object[] {captcha, httpSession.getId()});
+                LOGGER.log(Level.DEBUG, "Captcha[{0}] for session[id={1}]", new Object[]{captcha, httpSession.getId()});
                 httpSession.setAttribute(CAPTCHA, captcha);
             }
 
@@ -142,7 +142,7 @@ public class CaptchaProcessor {
 
                 IOUtils.copy(inputStream, outputStream);
                 zipFile = new ZipFile(file);
-                
+
                 IOUtils.closeQuietly(inputStream);
                 IOUtils.closeQuietly(outputStream);
             } else {

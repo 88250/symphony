@@ -31,8 +31,9 @@ import org.tautua.markdownpapers.parser.ParseException;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
- * 
- * <p>Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
+ *
+ * <p>
+ * Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.7, Sep 6, 2013
@@ -54,7 +55,7 @@ public final class Markdowns {
 
     /**
      * Gets the safe HTML content of the specified content.
-     * 
+     *
      * @param content the specified content
      * @param baseURL the specified base URL, the relative path value of href will starts with this URL
      * @return safe HTML content
@@ -65,7 +66,7 @@ public final class Markdowns {
 
     /**
      * Converts the specified markdown text to HTML.
-     * 
+     *
      * @param markdownText the specified markdown text
      * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}, returns 'markdownErrorLabel' if
      * exception
@@ -82,7 +83,7 @@ public final class Markdowns {
             markdown.transform(new StringReader(markdownText), writer);
         } catch (final ParseException e) {
             LOGGER.log(Level.ERROR, "Markdown error[text={0}]", markdownText);
-            
+
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
 

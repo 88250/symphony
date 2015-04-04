@@ -34,9 +34,9 @@ import org.json.JSONObject;
 
 /**
  * Validates for user profiles update.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Nov 26, 2012 
+ * @version 1.0.0.3, Nov 26, 2012
  */
 @Named
 @Singleton
@@ -46,14 +46,17 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
      * Language service.
      */
     private LangPropsService langPropsService;
+
     /**
      * Max user URL length.
      */
     public static final int MAX_USER_URL_LENGTH = 100;
+
     /**
      * Max user QQ length.
      */
     public static final int MAX_USER_QQ_LENGTH = 12;
+
     /**
      * Max user intro length.
      */
@@ -76,7 +79,6 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserURLLabel")));
         }
 
-
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         if (!Strings.isEmptyOrNull(userQQ) && (!Strings.isNumeric(userQQ) || userQQ.length() > MAX_USER_QQ_LENGTH)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserQQLabel")));
@@ -90,7 +92,7 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Checks whether the specified user URL is invalid.
-     * 
+     *
      * @param userURL the specified user URL
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */

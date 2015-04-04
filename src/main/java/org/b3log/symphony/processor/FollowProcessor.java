@@ -96,7 +96,7 @@ public class FollowProcessor {
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
 
         followMgmtService.followUser(followerUserId, followingUserId);
-        
+
         ret.put(Keys.STATUS_CODE, true);
     }
 
@@ -134,10 +134,10 @@ public class FollowProcessor {
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
 
         followMgmtService.removeFollow(followerUserId, followingUserId);
-        
+
         ret.put(Keys.STATUS_CODE, true);
     }
-    
+
     /**
      * Follows a tag.
      *
@@ -158,7 +158,7 @@ public class FollowProcessor {
     @RequestProcessing(value = "/follow/tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void followTag(final HTTPRequestContext context, final HttpServletRequest request,
-                           final HttpServletResponse response) throws Exception {
+                          final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -194,7 +194,7 @@ public class FollowProcessor {
     @RequestProcessing(value = "/follow/tag", method = HTTPRequestMethod.DELETE)
     @Before(adviceClass = LoginCheck.class)
     public void unfollowTag(final HTTPRequestContext context, final HttpServletRequest request,
-                             final HttpServletResponse response) throws Exception {
+                            final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 

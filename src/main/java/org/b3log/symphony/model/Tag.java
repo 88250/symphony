@@ -28,55 +28,68 @@ public final class Tag {
      * Tag.
      */
     public static final String TAG = "tag";
+
     /**
      * Tags.
      */
     public static final String TAGS = "tags";
+
     /**
      * Key of tag title.
      */
     public static final String TAG_TITLE = "tagTitle";
+
     /**
      * Key of tag reference count.
      */
     public static final String TAG_REFERENCE_CNT = "tagReferenceCount";
+
     /**
      * Key of tag comment count.
      */
     public static final String TAG_COMMENT_CNT = "tagCommentCount";
+
     /**
      * Key of tag status.
      */
     public static final String TAG_STATUS = "tagStatus";
+
     //// Transient ////
     /**
      * Key of tag creator thumbnail URL.
      */
     public static final String TAG_T_CREATOR_THUMBNAIL_URL = "tagCreatorThumbnailURL";
+
     /**
      * Key of tag creator name.
      */
     public static final String TAG_T_CREATOR_NAME = "tagCreatorName";
+
     /**
      * Key of tag participants.
      */
     public static final String TAG_T_PARTICIPANTS = "tagParticipants";
+
     /**
      * Key of tag participant name.
      */
     public static final String TAG_T_PARTICIPANT_NAME = "tagParticipantName";
+
     /**
      * Key of tag participant thumbnail URL.
      */
     public static final String TAG_T_PARTICIPANT_THUMBNAIL_URL = "tagParticipantThumbnailURL";
+
     /**
      * Key of tag participant URL.
      */
     public static final String TAG_T_PPARTICIPANT_URL = "tagParticipantURL";
+
     /**
      * Key of tag icon path.
      */
     public static final String TAG_ICON_PATH = "tagIconPath";
+
     /**
      * Key of tag description.
      */

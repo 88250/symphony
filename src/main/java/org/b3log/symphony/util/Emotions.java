@@ -19,7 +19,7 @@ import org.b3log.latke.Latkes;
 
 /**
  * Emotions utilities.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Nov 26, 2012
  * @since 0.2.0
@@ -30,14 +30,15 @@ public final class Emotions {
      * Emotion count.
      */
     private static final int EMOTION_CNT = 15;
+
     /**
      * Ten.
      */
     private static final int TEN = 10;
-    
+
     /**
      * Clears the emotions ({@literal [em00]}) with specified content.
-     * 
+     *
      * @param content the specified content
      * @return cleared content
      */
@@ -47,7 +48,7 @@ public final class Emotions {
 
     /**
      * Converts the specified content with {@literal [em00]} into content with {@literal <img src='em00.png'/>}.
-     * 
+     *
      * @param content the specified content
      * @return converted content
      */

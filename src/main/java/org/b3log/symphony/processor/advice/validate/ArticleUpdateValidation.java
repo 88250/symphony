@@ -28,7 +28,7 @@ import org.json.JSONObject;
 
 /**
  * Validates for article updating, removes the duplicated tags.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Mar 13, 2013
  */

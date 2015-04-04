@@ -162,8 +162,7 @@ public class ArticleProcessor {
         renderer.setTemplateName("/home/add-article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -241,8 +240,7 @@ public class ArticleProcessor {
         filler.fillRelevantArticles(dataModel, article);
         filler.fillRandomArticles(dataModel);
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
@@ -355,8 +353,7 @@ public class ArticleProcessor {
 
         dataModel.put(Article.ARTICLE, article);
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**

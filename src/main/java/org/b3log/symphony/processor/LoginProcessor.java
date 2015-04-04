@@ -50,14 +50,14 @@ import org.json.JSONObject;
 
 /**
  * Login processor.
- * 
+ *
  * <p>
  * For user
- *   <ul>
- *     <li>Registration</li>
- *     <li>Login</li>
- *     <li>Logout</li>
- *   </ul>
+ * <ul>
+ * <li>Registration</li>
+ * <li>Login</li>
+ * <li>Logout</li>
+ * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -89,7 +89,7 @@ public class LoginProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
-    
+
     /**
      * Filler.
      */
@@ -98,11 +98,11 @@ public class LoginProcessor {
 
     /**
      * Shows registration page.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
     public void showRegister(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -114,18 +114,17 @@ public class LoginProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
      * Registers user.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws ServletException servlet exception
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.POST)
     @Before(adviceClass = UserRegisterValidation.class)
@@ -144,7 +143,7 @@ public class LoginProcessor {
             LOGGER.log(Level.ERROR, e1.getMessage(), e1);
             requestJSONObject = new JSONObject();
         }
-        
+
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
@@ -171,12 +170,12 @@ public class LoginProcessor {
 
     /**
      * Logins user.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws ServletException servlet exception
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
     public void login(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)

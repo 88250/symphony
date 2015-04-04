@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @fileoverview register.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Sep 29, 2012
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.7, Apr 4, 2015
  */
 
 /**
@@ -87,5 +89,7 @@ var Register = {
         $("input[type=text], input[type=password], textarea").blur(function () {
             $(this).removeClass("input-error");
         });
+        
+        $("#userName").focus();
     }
 };

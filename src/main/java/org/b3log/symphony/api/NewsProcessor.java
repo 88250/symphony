@@ -31,9 +31,9 @@ import org.json.JSONObject;
 /**
  * News processor.
  *
- * <ul> 
- *   <li>Gets the news (/apis/news), GET</li>
- * </ul> 
+ * <ul>
+ * <li>Gets the news (/apis/news), GET</li>
+ * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Nov 8, 2012

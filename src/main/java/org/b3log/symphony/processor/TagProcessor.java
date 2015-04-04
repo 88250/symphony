@@ -42,10 +42,10 @@ import org.json.JSONObject;
 /**
  * Tag processor.
  *
- * <ul> 
- *   <li>Shows tags wall (/tags), GET</li>
- *   <li>Shows tag articles (/tags/{tagTitle}), GET</li>
- * </ul> 
+ * <ul>
+ * <li>Shows tags wall (/tags), GET</li>
+ * <li>Shows tag articles (/tags/{tagTitle}), GET</li>
+ * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Oct 11, 2012
@@ -65,7 +65,7 @@ public class TagProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
-    
+
     /**
      * Filler.
      */
@@ -95,8 +95,7 @@ public class TagProcessor {
         dataModel.put(Common.TREND_TAGS, trendTags);
         dataModel.put(Common.COLD_TAGS, coldTags);
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
@@ -113,7 +112,7 @@ public class TagProcessor {
      */
     @RequestProcessing(value = "/tags/{tagTitle}", method = HTTPRequestMethod.GET)
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String tagTitle) throws Exception {
+                                final String tagTitle) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -161,8 +160,7 @@ public class TagProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeader(request, response, dataModel);
-        filler.fillFooter(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);

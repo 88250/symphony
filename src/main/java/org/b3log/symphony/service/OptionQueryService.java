@@ -38,9 +38,9 @@ import org.json.JSONObject;
 
 /**
  * Option query service.
- * 
+ *
  * <p>
- *   <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is NOT cluster-safe.
+ * <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is NOT cluster-safe.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -63,7 +63,7 @@ public class OptionQueryService {
 
     /**
      * Online visitor cache.
-     * 
+     *
      * <p>
      * &lt;ip, recentTime&gt;
      * </p>
@@ -77,7 +77,7 @@ public class OptionQueryService {
 
     /**
      * Gets the online visitor count.
-     * 
+     *
      * @return online visitor count
      */
     public int getOnlineVisitorCount() {
@@ -116,7 +116,7 @@ public class OptionQueryService {
 
     /**
      * Refreshes online visitor count for the specified request.
-     * 
+     *
      * @param request the specified request
      */
     public static void onlineVisitorCount(final HttpServletRequest request) {
@@ -143,7 +143,7 @@ public class OptionQueryService {
 
     /**
      * Gets the statistic.
-     * 
+     *
      * @return statistic
      * @throws ServiceException service exception
      */

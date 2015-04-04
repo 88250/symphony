@@ -40,31 +40,31 @@ import org.json.JSONObject;
  */
 @Repository
 public class FollowRepository extends AbstractRepository {
-    
+
     /**
      * Removes a follow relationship by the specified follower id and the specified following entity id.
-     * 
+     *
      * @param followerId the specified follower id
      * @param followingId the specified following entity id
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
     public void removeByFollowerIdAndFollowingId(final String followerId, final String followingId) throws RepositoryException {
         final JSONObject toRemove = getByFollowerIdAndFollowingId(followerId, followingId);
-        
+
         if (null == toRemove) {
             return;
         }
-        
+
         remove(toRemove.optString(Keys.OBJECT_ID));
     }
 
     /**
      * Gets a follow relationship by the specified follower id and the specified following entity id.
-     * 
+     *
      * @param followerId the specified follower id
      * @param followingId the specified following entity id
      * @return follow relationship, returns {@code null} if not found
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
     public JSONObject getByFollowerIdAndFollowingId(final String followerId, final String followingId) throws RepositoryException {
         final List<Filter> filters = new ArrayList<Filter>();
@@ -85,11 +85,11 @@ public class FollowRepository extends AbstractRepository {
 
     /**
      * Determines whether exists a follow relationship for the specified follower and the specified following entity.
-     * 
+     *
      * @param followerId the specified follower id
      * @param followingId the specified following entity id
      * @return {@code true} if exists, returns {@code false} otherwise
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
     public boolean exists(final String followerId, final String followingId) throws RepositoryException {
         return null != getByFollowerIdAndFollowingId(followerId, followingId);

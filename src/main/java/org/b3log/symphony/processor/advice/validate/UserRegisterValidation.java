@@ -33,7 +33,7 @@ import org.json.JSONObject;
 
 /**
  * UserRegisterValidation for validate {@link org.b3log.symphony.processor.LoginProcessor} register(Type POST) method.
- * 
+ *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.6, Nov 15, 2013
@@ -47,24 +47,30 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
      */
     @Inject
     private LangPropsService langPropsService;
+
     /**
      * Max user name length.
      */
     public static final int MAX_USER_NAME_LENGTH = 20;
+
     /**
      * Min user name length.
      */
     public static final int MIN_USER_NAME_LENGTH = 1;
+
     /**
      * Max password length.
-     * 
-     * <p>MD5 32</p>
+     *
+     * <p>
+     * MD5 32</p>
      */
     private static final int MAX_PWD_LENGTH = 32;
+
     /**
      * Min password length.
      */
     private static final int MIN_PWD_LENGTH = 1;
+
     /**
      * Captcha length.
      */
@@ -95,15 +101,15 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Checks whether the specified name is invalid.
-     * 
+     *
      * <p>
      * A valid user name:
-     *   <ul>
-     *     <li>length [1, 20]</li>
-     *     <li>content {a-z, A-Z, 0-9, _}</li>
-     *   </ul>
+     * <ul>
+     * <li>length [1, 20]</li>
+     * <li>content {a-z, A-Z, 0-9, _}</li>
+     * </ul>
      * </p>
-     * 
+     *
      * @param name the specified name
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
@@ -129,7 +135,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Checks password, length [1, 16].
-     * 
+     *
      * @param password the specific password
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
@@ -139,7 +145,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Checks whether the specified captcha is invalid.
-     * 
+     *
      * @param captcha the specified captcha
      * @param request the specified request
      * @return {@code true} if it is invalid, returns {@code false} otherwise
@@ -166,7 +172,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
     /**
      * Checks field.
-     * 
+     *
      * @param invalid the specified invalid flag
      * @param failLabel the specified fail label
      * @param fieldLabel the specified field label

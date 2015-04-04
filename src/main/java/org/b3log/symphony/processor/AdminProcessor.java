@@ -351,10 +351,10 @@ public class AdminProcessor {
         }
 
         articleMgmtService.updateArticle(articleId, article);
-        
+
         article = articleQueryService.getArticle(articleId);
         dataModel.put(Article.ARTICLE, article);
-        
+
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
