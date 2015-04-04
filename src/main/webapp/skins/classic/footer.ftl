@@ -8,7 +8,6 @@
                 <a rel="help" href="/about">${aboutLabel}</a> 
                 <a rel="help" href="/tags/B3log%20Announcement">${b3logAnnouncementLabel}</a>
                 <a rel="help" href="/tags/Q%26A">${qnaLabel}</a>
-                <a rel="tag" href="/tags/Java">Java</a>
                 <a href="/tags" class="last">${tagLabel}</a>
             </div>
             <div class="fn-clear">
