@@ -223,4 +223,11 @@ h2.fn-inline {
 .admin a.fn-right {
     text-decoration: none;
 }
+
+.admin .avatar {
+    height: 17px;
+    width: 17px;
+    vertical-align: top;
+    margin-right: 5px;
+}
 /* end admin */

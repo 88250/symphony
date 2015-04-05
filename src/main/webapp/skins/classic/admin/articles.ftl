@@ -5,16 +5,16 @@
     <ul>
         <#list articles as item>
         <li onclick="window.location = '/admin/article/${item.oId}'">
-            <img class="avatar-small"
-                 title="TODO" 
-                 src="http://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140&amp;d=http://symphony.b3log.org/images/user-thumbnail.png">
             <a href="${item.articlePermalink}">${item.articleTitle}</a> &nbsp;
             ${articleStatusLabel}
             <a href="/admin/article/${item.oId}" class="fn-right" title="${editLabel}">
                 <span class="icon icon-edit"></span>
             </a>
             <br/>
-            <span class="icon icon-userrole"></span> Vanessa &nbsp;
+            <img class="avatar"
+                 title="TODO" 
+                 src="http://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140&amp;d=http://symphony.b3log.org/images/user-thumbnail.png">
+             Vanessa &nbsp;
             <span class="icon icon-tags" title="${tagLabel}"></span>
             111, 222  
             <span class="fn-right ft-small">
