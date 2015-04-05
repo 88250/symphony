@@ -50,7 +50,7 @@
                         <li<#if type == "followers"> class="current"</#if>>
                             <a href="/member/${user.userName}/followers">${followersLabel}</a>
                         </li>
-                        <#if currentUser.userName == user.userName>
+                        <#if currentUser?? && currentUser.userName == user.userName>
                         <li<#if type == "settings"> class="current"</#if>>
                             <a href="/settings">${settingsLabel}</a>
                         </li>
