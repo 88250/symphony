@@ -551,6 +551,18 @@ button.red:active {
 .icon-register:before {
     content: "\e600";
 }
+
+.icon-articles:before {
+    content: "\e612";
+}
+
+.icon-userrole:before {
+    content: "\e613";
+}
+
+.icon-email:before {
+    content: "\e614";
+}
 /* end icon */
 
 /* start tip */

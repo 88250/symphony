@@ -218,3 +218,9 @@ h2.fn-inline {
     margin-top: 9px;
 }
 /* end follow */
+
+/* start admin */
+.admin a.fn-right {
+    text-decoration: none;
+}
+/* end admin */
