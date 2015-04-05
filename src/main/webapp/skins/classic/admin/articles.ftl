@@ -1,23 +1,14 @@
-<#include "../macro-head.ftl">
-<#include "../macro-list.ftl">
-<#include "../macro-pagination.ftl">
-<!DOCTYPE html>
-<html>
-    <head>
-        <@head title="B3log ${symphonyLabel} - ${articleAdminLabel}">
-        </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
-    </head>
-    <body>
-        <#include "../header.ftl">
-        <div class="main">
-            <div class="wrapper fn-clear">
-                ${articleAdminLabel}
-            </div>
-            <div>
-                ${articles}
-            </div>
-        </div>
-        <#include "../footer.ftl">
-    </body>
-</html>
+<#include "macro-admin.ftl">
+<@admin "articles">
+<div class="content list">
+${articles}
+作者头像
+标题
+作者
+浏览数
+评论数
+标签
+状态
+创建时间
+</div>
+</@admin>
