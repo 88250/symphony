@@ -1,4 +1,5 @@
 <#include "macro-home.ftl">
+<#include "../macro-pagination.ftl">
 <@home "comments">
 <div class="list">
     <ul class="home-comments">

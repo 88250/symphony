@@ -1,4 +1,5 @@
 <#include "macro-home.ftl">
+<#include "../macro-pagination.ftl">
 <@home "followingUsers">
 <div class="follow">
     <ol class="fn-clear">

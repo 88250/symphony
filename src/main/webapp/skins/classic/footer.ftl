@@ -33,7 +33,6 @@
     </div>
 </div>
 <div class="icon-up icon" onclick="Util.goTop()"></div>
-<link type="text/css" rel="stylesheet" href="${staticServePath}/css/responsive${miniPostfix}.css?${staticResourceVersion}" />
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/md5.js?${staticResourceVersion}"></script>

@@ -1,4 +1,5 @@
 <#include "macro-home.ftl">
+<#include "../macro-pagination.ftl">
 <@home "home">
 <div class="<#if isMyArticle>article-list<#else>home</#if> list">
     <ul> 

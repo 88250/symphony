@@ -3,10 +3,8 @@
 <div class="content" style="margin-top: 10px;">
     <div class="module">
         <div class="module-header fn-clear">
-            <h2 class="fn-left">
-                <a rel="nofollow" href="/member/${currentUser.userName}">${currentUser.userName}</a>
-                ${profilesLabel}
-            </h2>&nbsp;
+            <a rel="nofollow" href="/member/${currentUser.userName}">${currentUser.userName}</a>
+            <h2>${profilesLabel}</h2>
             <span style="line-height:24px">(${currentUser.userEmail})</span>
         </div>
         <div class="module-panel form fn-clear">

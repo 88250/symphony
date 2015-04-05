@@ -71,20 +71,21 @@
 }
 
 .tab > li {
+    border: 1px solid transparent;
+    border-bottom: 0;
     cursor: pointer;
     float: left;
     list-style: none outside none;
     padding: 8px 12px;
+    margin-bottom: -1px;
 }
 
 .tab > li.current {
     background-color: #FFFFFF;
-    border: 1px solid #DDD;
-    border-bottom: 0;
-    border-radius: 3px 3px 0 0;
+    border-color: #DDD;
     font-weight: bold;
     line-height: 20px;
-    margin-bottom: -1px;
+    border-radius: 3px 3px 0 0;
 }
 
 .tab > li > a {
