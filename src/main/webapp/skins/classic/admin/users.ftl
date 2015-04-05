@@ -1,16 +1,32 @@
 <#include "macro-admin.ftl">
+<#include "../macro-pagination.ftl">
 <@admin "users">
-<div class="list content">
-    
+<div class="list content admin">
+    <ul>
+        <#list users as item>
+        <li class="fn-clear" onclick="window.location = '/admin/user/${item.oId}'">
+            <img class="avatar-small" title="${item.userName}" 
+                 src="${item.userThumbnailURL}">
+            ${item.userName}
+            <a href="/admin/user/${item.oId}" class="fn-right" title="${editLabel}">
+                <span class="icon icon-edit"></span>
+            </a>
+            <br/>
+            <span class="icon icon-email" title="${emailLabel}"></span>
+            ${item.userEmail} &nbsp;
+            <span class="icon icon-userrole" title="${roleLabel}"></span>
+            ${item.userRole} 
+            <span class="fn-right ft-small">
+                <span class="icon icon-articles" title="${articleCountLabel}"></span>
+                ${item.userArticleCount} &nbsp;
+                <span class="icon icon-cmts" title="${commentCountLabel}"></span>
+                ${item.userCommentCount} &nbsp;
+                <span class="icon icon-date" title="${createTimeLabel}"></span>
+                ${item.userCreateTime?string('yyyy-MM-dd HH:mm')}
+            </span>
+        </li>
+        </#list>
+    </ul>
+    <@pagination url="/admin/users"/>
 </div>
-<img class="avatar-small" title="88250" 
-     src="http://secure.gravatar.com/avatar/59a5e8209c780307dbe9c9ba728073f5?s=140&amp;d=http://symphony.b3log.org/images/user-thumbnail.png">
-${users}
-头像
-用户名
-邮件
-角色
-文章数
-评论数
-创建日期
 </@admin>

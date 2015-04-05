@@ -16,6 +16,7 @@
 package org.b3log.symphony.service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +24,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -38,6 +41,7 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Filler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -66,6 +70,7 @@ public class UserQueryService {
      */
     @Inject
     private UserRepository userRepository;
+
 
     /**
      * Gets the current user.
@@ -130,8 +135,8 @@ public class UserQueryService {
      * Gets user names from the specified text.
      *
      * <p>
-     * A user name is between &#64; and a punctuation, a blank or a line break (\n).
-     * For example, the specified text is
+     * A user name is between &#64; and a punctuation, a blank or a line break
+     * (\n). For example, the specified text is
      * <pre>&#64;88250 It is a nice day. &#64;Vanessa, we are on the way.</pre>
      * There are two user names in the text, 88250 and Vanessa.
      * </p>
@@ -210,8 +215,7 @@ public class UserQueryService {
     /**
      * Gets users by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "paginationCurrentPageNum": 1,
      *     "paginationPageSize": 20,
@@ -219,8 +223,7 @@ public class UserQueryService {
      * }, see {@link Pagination} for more details
      * </pre>
      *
-     * @return for example,
-     * <pre>
+     * @return for example,      <pre>
      * {
      *     "pagination": {
      *         "paginationPageCount": 100,
@@ -269,6 +272,16 @@ public class UserQueryService {
         final JSONArray users = result.optJSONArray(Keys.RESULTS);
         ret.put(User.USERS, users);
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final Filler filler = beanManager.getReference(Filler.class);
+        
+        for (int i = 0; i < users.length(); i++) {
+            final JSONObject user = users.optJSONObject(i);
+            user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
+
+            filler.fillUserThumbnailURL(user);
+        }
+
         return ret;
     }
 
@@ -276,8 +289,7 @@ public class UserQueryService {
      * Gets a user by the specified user id.
      *
      * @param userId the specified user id
-     * @return for example,
-     * <pre>
+     * @return for example,      <pre>
      * {
      *     "oId": "",
      *     "userName": "",

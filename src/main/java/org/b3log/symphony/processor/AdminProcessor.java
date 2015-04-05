@@ -33,6 +33,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
@@ -176,7 +177,8 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
         final JSONObject result = userQueryService.getUsers(requestJSONObject);
-        dataModel.put(User.USERS, result.optJSONArray(User.USERS));
+        
+        dataModel.put(User.USERS, CollectionUtils.jsonArrayToList(result.optJSONArray(User.USERS)));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -286,7 +288,7 @@ public class AdminProcessor {
         articleFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
 
         final JSONObject result = articleQueryService.getArticles(requestJSONObject, articleFields);
-        dataModel.put(Article.ARTICLES, result.optJSONArray(Article.ARTICLES));
+        dataModel.put(Article.ARTICLES, CollectionUtils.jsonArrayToList(result.optJSONArray(Article.ARTICLES)));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -396,7 +398,7 @@ public class AdminProcessor {
         commentFields.put(Comment.COMMENT_ON_ARTICLE_ID, String.class);
 
         final JSONObject result = commentQueryService.getComments(requestJSONObject, commentFields);
-        dataModel.put(Comment.COMMENTS, result.optJSONArray(Comment.COMMENTS));
+        dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
