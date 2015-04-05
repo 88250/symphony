@@ -1,23 +1,32 @@
-<#include "../macro-head.ftl">
-<#include "../macro-list.ftl">
+<#include "macro-admin.ftl">
 <#include "../macro-pagination.ftl">
-<!DOCTYPE html>
-<html>
-    <head>
-        <@head title="B3log ${symphonyLabel} - ${userAdminLabel}">
-        </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
-    </head>
-    <body>
-        <#include "../header.ftl">
-        <div class="main">
-            <div class="wrapper fn-clear">
-                ${userAdminLabel}
-            </div>
-            <div>
-                ${users}
-            </div>
-        </div>
-        <#include "../footer.ftl">
-    </body>
-</html>
+<@admin "users">
+<div class="list content admin">
+    <ul>
+        <#list users as item>
+        <li class="fn-clear" onclick="window.location = '/admin/user/${item.oId}'">
+            <img class="avatar-small" title="${item.userName}" 
+                 src="${item.userThumbnailURL}">
+            ${item.userName}
+            <a href="/admin/user/${item.oId}" class="fn-right" title="${editLabel}">
+                <span class="icon icon-edit"></span>
+            </a>
+            <br/>
+            <span class="icon icon-email" title="${emailLabel}"></span>
+            ${item.userEmail} &nbsp;
+            <span class="icon icon-userrole" title="${roleLabel}"></span>
+            ${item.userRole} 
+            <span class="fn-right ft-small">
+                <span class="icon icon-articles" title="${articleCountLabel}"></span>
+                ${item.userArticleCount} &nbsp;
+                <span class="icon icon-cmts" title="${commentCountLabel}"></span>
+                ${item.userCommentCount} &nbsp;
+                <span class="icon icon-date" title="${createTimeLabel}"></span>
+                ${item.userCreateTime?string('yyyy-MM-dd HH:mm')}
+            </span>
+        </li>
+        </#list>
+    </ul>
+    <@pagination url="/admin/users"/>
+</div>
+</@admin>

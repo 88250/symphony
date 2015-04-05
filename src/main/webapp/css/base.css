@@ -551,6 +551,18 @@ button.red:active {
 .icon-register:before {
     content: "\e600";
 }
+
+.icon-articles:before {
+    content: "\e612";
+}
+
+.icon-userrole:before {
+    content: "\e613";
+}
+
+.icon-email:before {
+    content: "\e614";
+}
 /* end icon */
 
 /* start tip */
@@ -1086,28 +1098,24 @@ button.red:active {
     border: 1px solid #CCC;
     margin-bottom: 20px;
     background-color: #FFF;
-    border-radius: 5px;
+    border-radius: 3px;
     width: 100%;
     word-wrap: break-word;
 }
 
 .module-header {
-    border-radius: 5px 5px 0 0;
-    background-color: #fafafa;
-    background: linear-gradient(#FAFAFA, #EAEAEA);
-    background: -ms-linear-gradient(#FAFAFA, #EAEAEA);
-    background: -o-linear-gradient(#FAFAFA, #EAEAEA);
-    background: -webkit-linear-gradient(#FAFAFA, #EAEAEA);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#FAFAFA', endColorstr='#EAEAEA');
+    border-radius: 3px 3px 0 0;
+    background-color: #f5f5f5;
     border-bottom: 1px solid #D8D8D8;
-    padding: 5px 15px;
+    padding: 9px 10px 10px;
     text-shadow: 0 1px 0 #FFFFFF;
-    line-height: 24px;
+    font-size: 14px;
+    line-height: 17px;
 }
 
 .module-header h2 {
-    font-size: 15px;
-    font-weight: normal;
+    display: inline;
+    font-size: 14px;
 }
 
 .module-panel {

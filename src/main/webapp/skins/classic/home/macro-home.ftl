@@ -1,6 +1,5 @@
 <#macro home type>
 <#include "../macro-head.ftl">
-<#include "../macro-pagination.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -66,7 +65,6 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <link type="text/css" rel="stylesheet" href="/css/home${miniPostfix}.css?${staticResourceVersion}" />
         <script type="text/javascript" src="/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Util.init();
