@@ -473,7 +473,7 @@ button.red:active {
     filter: alpha(opacity=70);
     transition: opacity 0.2s ease-out 0s;
     font-size: 19px;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .icon-cmt:hover {
