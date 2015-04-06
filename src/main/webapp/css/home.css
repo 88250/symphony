@@ -220,8 +220,13 @@ h2.fn-inline {
 /* end follow */
 
 /* start admin */
-.admin a.fn-right {
+.admin a.edit {
+    color: #666;
     text-decoration: none;
+}
+
+.admin a.edit:hover {
+    color: #4183c4;
 }
 
 .admin .avatar {

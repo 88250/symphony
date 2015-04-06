@@ -63,6 +63,14 @@
     font-weight: normal;
 }
 
+.article-info > .fn-right a {
+    text-decoration: none;
+}
+
+.article-info > .fn-right a:hover {
+    color: #4183C4;
+}
+
 #comments > h2 {
     padding-bottom: 5px;
     border-bottom: 1px solid #CCCCCC;

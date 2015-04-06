@@ -2,95 +2,72 @@
 <@admin "users">
 <div class="content">
     <form action="/admin/user/${user.oId}" method="POST">
-        <!-- The following items are unmodifiable -->
-        <div class="form-item">
-            <label class="form-label" for="oId">Id</label>
-            <input class="form-input" id="oId" name="oId" value="${user.oId}" readonly="readonly" />
-        </div>
+        <div class="module">
+            <div class="module-header">
+                <h2>基本信息</h2>
+            </div>
+            <div class="module-panel form fn-clear">
+                <label for="oId">Id</label>
+                <input type="text" id="oId" value="${user.oId}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="userName"></label>
-            <input class="form-input"  id="userName" name="userName" value="${user.userName}" readonly="readonly" />
-        </div>
+                <label for="userName">${userNameLabel}</label>
+                <input type="text" id="userName" name="userName" value="${user.userName}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="userNo">${userNoLabel}</label>
-            <input class="form-input"  id="userNo" name="userNo" value="${user.userNo}" readonly="readonly" />
-        </div>
+                <label for="userNo">${userNoLabel}</label>
+                <input type="text" id="userNo" name="userNo" value="${user.userNo}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="userEmail">${userEmailLabel}</label>
-            <input class="form-input"  id="userEmail" name="userEmail" value="${user.userEmail}" readonly="readonly" />
-        </div>
+                <label for="userEmail">${userEmailLabel}</label>
+                <input type="text" id="userEmail" name="userEmail" value="${user.userEmail}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="userArticleCount">${articleCountLabel}</label>
-            <input class="form-input"  id="userArticleCount" name="userArticleCount" value="${user.userArticleCount}" readonly="readonly" />
-        </div>
+                <label for="userArticleCount">${articleCountLabel}</label>
+                <input type="text" id="userArticleCount" name="userArticleCount" value="${user.userArticleCount}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="userCommentCount">${commentCountLabel}</label>
-            <input class="form-input"  id="userCommentCount" name="userCommentCount" value="${user.userCommentCount}" readonly="readonly" />
-        </div>
+                <label for="userCommentCount">${commentCountLabel}</label>
+                <input type="text" id="userCommentCount" name="userCommentCount" value="${user.userCommentCount}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="userTagCount">${tagCountLabel}</label>
-            <input class="form-input"  id="userTagCount" name="userTagCount" value="${user.userTagCount}" readonly="readonly" />
+                <label for="userTagCount">${tagCountLabel}</label>
+                <input type="text" id="userTagCount" name="userTagCount" value="${user.userTagCount}" readonly="readonly" />
+            </div>
         </div>
+        <div class="module">
+            <div class="module-header">
+                <h2>可修改信息</h2>
+            </div>
+            <div class="module-panel form fn-clear">
+                <label for="userPassword">${userPasswordLabel}</label>
+                <input type="text" id="userPassword" name="userPassword" value="${user.userPassword}" />
 
-        <hr>
-        <!-- The following items are modifiable -->
-        <div>
-            <label class="form-label" for="userPassword">${userPasswordLabel}</label>
-            <input class="form-input"  id="userPassword" name="userPassword" value="${user.userPassword}" />
+                <label for="userURL">URL</label>
+                <input type="text" id="userURL" name="userURL" value="${user.userURL}" />
+
+                <label for="userQQ">QQ</label>
+                <input type="text" id="userQQ" name="userQQ" value="${user.userQQ}" />
+
+                <label for="userIntro">${userIntroLabel}</label>
+                <input type="text" id="userIntro" name="userIntro" value="${user.userIntro}" />
+
+                <label for="userRole">${roleLabel}</label>
+                <input type="text" id="userRole" name="userRole" value="${user.userRole}" />
+
+                <label for="userStatus">${userStatus}</label>
+                <input type="text" id="userStatus" name="userStatus" value="${user.userStatus}" />
+
+                <label for="userB3Key">B3 Key</label>
+                <input type="text" id="userB3Key" name="userB3Key" value="${user.userB3Key}" />
+
+                <label for="userB3ClientAddArticleURL">${clientArticleLabel}</label>
+                <input type="text" id="userB3ClientAddArticleURL" name="userB3ClientAddArticleURL" value="${user.userB3ClientAddArticleURL}" />
+
+                <label for="userB3ClientUpdateArticleURL">${clientUpdateArticleLabel}</label>
+                <input type="text" id="userB3ClientUpdateArticleURL" name="userB3ClientUpdateArticleURL" value="${user.userB3ClientUpdateArticleURL}" />
+
+                <label for="userB3ClientAddCommentURL">${clientCmtLabel}</label>
+                <input type="text" id="userB3ClientAddCommentURL" name="userB3ClientAddCommentURL" value="${user.userB3ClientAddCommentURL}" />
+
+                <br/><br/>
+                <button type="submit" class="green fn-right">${submitLabel}</button>
+            </div>
         </div>
-
-        <div>
-            <label class="form-label" for="userURL">URL</label>
-            <input class="form-input"  id="userURL" name="userURL" value="${user.userURL}" />
-        </div>
-
-        <div>
-            <label class="form-label" for="userQQ">QQ</label>
-            <input class="form-input"  id="userQQ" name="userQQ" value="${user.userQQ}" />
-        </div>
-
-        <div>
-            <label class="form-label" for="userIntro">${userIntroLabel}</label>
-            <input class="form-input"  id="userIntro" name="userIntro" value="${user.userIntro}" />
-        </div>
-
-        <div>
-            <label class="form-label" for="userRole">${roleLabel}</label>
-            <input class="form-input"  id="userRole" name="userRole" value="${user.userRole}" />
-        </div>
-
-        <div>
-            <label class="form-label" for="userStatus">${userStatus}</label>
-            <input class="form-input"  id="userStatus" name="userStatus" value="${user.userStatus}" />
-        </div>
-
-        <div>
-            <label class="form-label" for="userB3Key">B3 Key</label>
-            <input class="form-input"  id="userB3Key" name="userB3Key" value="${user.userB3Key}" />
-        </div>
-
-        <div>
-            <label class="form-label" for="userB3ClientAddArticleURL">${clientArticleLabel}</label>
-            <input class="form-input"  id="userB3ClientAddArticleURL" name="userB3ClientAddArticleURL" value="${user.userB3ClientAddArticleURL}" />
-        </div>
-
-        <div>
-            <label class="form-label" for="userB3ClientUpdateArticleURL">${clientUpdateArticleLabel}</label>
-            <input class="form-input"  id="userB3ClientUpdateArticleURL" name="userB3ClientUpdateArticleURL" value="${user.userB3ClientUpdateArticleURL}" />
-        </div>
-
-        <div>
-            <label class="form-label" for="userB3ClientAddCommentURL">${clientCmtLabel}</label>
-            <input class="form-input"  id="userB3ClientAddCommentURL" name="userB3ClientAddCommentURL" value="${user.userB3ClientAddCommentURL}" />
-        </div>
-
-        <input type="submit" value="${submitLabel}" />
     </form>
 </div>
 </@admin>

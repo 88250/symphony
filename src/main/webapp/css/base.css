@@ -520,10 +520,6 @@ button.red:active {
     content: "\e60c";
 }
 
-.icon-edit:hover {
-    color: #333;
-}
-
 .icon-tag:before {
     content: "\e60e";
 }
@@ -1082,6 +1078,11 @@ button.red:active {
     margin-left: 4px;
     width: 25px;
     text-decoration: none;
+    color: #999;
+}
+
+.article-list li .commenters > a:hover {
+    color: #4183c4;
 }
 
 .article-list li:hover .cmts {

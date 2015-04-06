@@ -2,91 +2,71 @@
 <@admin "articles">
 <div class="content">
     <form action="/admin/article/${article.oId}" method="POST">
-        <!-- The following items are unmodifiable -->
-        <div class="form-item">
-            <label class="form-label" for="oId">Id</label>
-            <input class="form-input" id="oId" name="oId" value="${article.oId}" readonly="readonly" />
-        </div>
+        <div class="module">
+            <div class="module-header">
+                <h2>基本信息</h2>
+            </div>
+            <div class="module-panel form fn-clear">
+                <label for="oId">Id</label>
+                <input type="text" id="oId" name="oId" value="${article.oId}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="articleTags">${tagLabel}</label>
-            <input class="form-input"  id="articleTags" name="articleTags" value="${article.articleTags}" readonly="readonly" />
-        </div>
+                <label for="articleTags">${tagLabel}</label>
+                <input type="text" id="articleTags" name="articleTags" value="${article.articleTags}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="articleAuthorEmail">${authorEmailLabel}</label>
-            <input class="form-input"  id="articleAuthorEmail" name="articleAuthorEmail" value="${article.articleAuthorEmail}" readonly="readonly" />
-        </div>
+                <label for="articleAuthorEmail">${authorEmailLabel}</label>
+                <input type="text" id="articleAuthorEmail" name="articleAuthorEmail" value="${article.articleAuthorEmail}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="articleAuthorId">${authorIdLabel}</label>
-            <input class="form-input"  id="articleAuthorId" name="articleAuthorId" value="${article.articleAuthorId}" readonly="readonly" />
-        </div>
+                <label for="articleAuthorId">${authorIdLabel}</label>
+                <input type="text" id="articleAuthorId" name="articleAuthorId" value="${article.articleAuthorId}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="articleCommentCount">${commentCountLabel}</label>
-            <input class="form-input"  id="articleCommentCount" name="articleCommentCount" value="${article.articleCommentCount}" readonly="readonly" />
-        </div>
+                <label for="articleCommentCount">${commentCountLabel}</label>
+                <input type="text" id="articleCommentCount" name="articleCommentCount" value="${article.articleCommentCount}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="articleViewCount">${viewCountLabel}</label>
-            <input class="form-input"  id="articleViewCount" name="articleViewCount" value="${article.articleViewCount}" readonly="readonly" />
-        </div>
+                <label for="articleViewCount">${viewCountLabel}</label>
+                <input type="text" id="articleViewCount" name="articleViewCount" value="${article.articleViewCount}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="articlePermalink">${permalinkLabel}</label>
-            <input class="form-input"  id="articlePermalink" name="articlePermalink" value="${article.articlePermalink}" />
-        </div>
+                <label for="articlePermalink">${permalinkLabel}</label>
+                <input type="text" id="articlePermalink" name="articlePermalink" value="${article.articlePermalink}" />
 
-        <div>
-            <label class="form-label" for="articleCreateTime">${createTimeLabel}</label>
-            <input class="form-input"  id="articleCreateTime" name="articleCreateTime" value="${article.articleCreateTime?c}" />
-        </div>
+                <label for="articleCreateTime">${createTimeLabel}</label>
+                <input type="text" id="articleCreateTime" name="articleCreateTime" value="${article.articleCreateTime?c}" />
 
-        <div>
-            <label class="form-label" for="articleUpdateTime">${updateTimeLabel}</label>
-            <input class="form-input"  id="articleUpdateTime" name="articleUpdateTime" value="${article.articleUpdateTime?c}" />
-        </div>
+                <label for="articleUpdateTime">${updateTimeLabel}</label>
+                <input type="text" id="articleUpdateTime" name="articleUpdateTime" value="${article.articleUpdateTime?c}" />
 
-        <div>
-            <label class="form-label" for="syncWithSymphonyClient">${symClientSyncLabel}</label>
-            <input class="form-input"  id="syncWithSymphonyClient" name="syncWithSymphonyClient" value="${article.syncWithSymphonyClient?c}" readonly="readonly" />
-        </div>
+                <label for="syncWithSymphonyClient">${symClientSyncLabel}</label>
+                <input type="text" id="syncWithSymphonyClient" name="syncWithSymphonyClient" value="${article.syncWithSymphonyClient?c}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="clientArticleId">${clientArticleIdLabel}</label>
-            <input class="form-input"  id="clientArticleId" name="clientArticleId" value="${article.clientArticleId}" readonly="readonly" />
-        </div>
+                <label for="clientArticleId">${clientArticleIdLabel}</label>
+                <input type="text" id="clientArticleId" name="clientArticleId" value="${article.clientArticleId}" readonly="readonly" />
 
-        <div>
-            <label class="form-label" for="articleEditorType">${eidotrTypeLabel}</label>
-            <input class="form-input"  id="articleEditorType" name="articleEditorType" value="${article.articleEditorType}" readonly="readonly" />
+                <label for="articleEditorType">${eidotrTypeLabel}</label>
+                <input type="text" id="articleEditorType" name="articleEditorType" value="${article.articleEditorType}" readonly="readonly" />
+            </div>
         </div>
+        <div class="module">
+            <div class="module-header">
+                <h2>可修改信息</h2>
+            </div>
+            <div class="module-panel form fn-clear">
+                <label for="articleTitle">${titleLabel}</label>
+                <input type="text" id="articleTitle" name="articleTitle" value="${article.articleTitle}" />
 
-        <hr>
-        <!-- The following items are modifiable -->
-        <div>
-            <label class="form-label" for="articleTitle">${titleLabel}</label>
-            <input class="form-input"  id="articleTitle" name="articleTitle" value="${article.articleTitle}" />
-        </div>
-
-        <div>
-            <label class="form-label" for="articleContent">${contentLabel1}</label>
-            <textarea class="form-input"  id="articleContent" name="articleContent">
+                <label for="articleContent">${contentLabel1}</label>
+                <textarea style="width: 100%" id="articleContent" name="articleContent">
                         ${article.articleContent}
-            </textarea>
-        </div>
+                </textarea>
 
-        <div>
-            <label class="form-label" for="articleCommentable">${commentableLabel}</label>
-            <input class="form-input"  id="articleCommentable" name="articleCommentable" value="${article.articleCommentable?c}" />
-        </div>
+                <label for="articleCommentable">${commentableLabel}</label>
+                <input type="text" id="articleCommentable" name="articleCommentable" value="${article.articleCommentable?c}" />
 
-        <div>
-            <label class="form-label" for="articleStatus">${articleStatusLabel}</label>
-            <input class="form-input"  id="articleStatus" name="articleStatus" value="${article.articleStatus}" />
+                <label for="articleStatus">${articleStatusLabel}</label>
+                <input type="text" id="articleStatus" name="articleStatus" value="${article.articleStatus}" />
+                
+                <br/><br/>
+                <button type="submit" class="green fn-right" >${submitLabel}</button>
+            </div>
         </div>
-        <input type="submit" value="${submitLabel}" />
     </form>
 </div>
 </@admin>

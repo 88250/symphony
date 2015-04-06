@@ -8,7 +8,7 @@
             <img class="avatar-small" title="${item.userName}" 
                  src="${item.userThumbnailURL}">
             ${item.userName}
-            <a href="/admin/user/${item.oId}" class="fn-right" title="${editLabel}">
+            <a href="/admin/user/${item.oId}" class="fn-right edit" title="${editLabel}">
                 <span class="icon icon-edit"></span>
             </a>
             <br/>

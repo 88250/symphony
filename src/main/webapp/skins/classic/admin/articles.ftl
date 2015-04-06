@@ -7,7 +7,7 @@
         <li onclick="window.location = '/admin/article/${item.oId}'">
             <a href="${item.articlePermalink}">${item.articleTitle}</a> &nbsp;
             ${articleStatusLabel}
-            <a href="/admin/article/${item.oId}" class="fn-right" title="${editLabel}">
+            <a href="/admin/article/${item.oId}" class="fn-right edit" title="${editLabel}">
                 <span class="icon icon-edit"></span>
             </a>
             <br/>

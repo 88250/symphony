@@ -16,7 +16,7 @@
             <div class="wrapper fn-clear">
                 <div class="content">
                     <div>
-                        <div class="ft-small fn-clear">
+                        <div class="ft-small fn-clear article-info">
                             <div class="fn-left">
                                 <span class="icon icon-tags"></span>
                                 <#list article.articleTags?split(",") as articleTag>
@@ -38,7 +38,7 @@
                                 <#if article.isMyArticle>
                                 &nbsp;
                                 <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}">
-                                    <span class="ft-small icon icon-edit"></span>
+                                    <span class="icon icon-edit"></span>
                                 </a>
                                 </#if>
                             </div>

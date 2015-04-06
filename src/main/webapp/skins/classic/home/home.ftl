@@ -27,7 +27,7 @@
             <#if isMyArticle>
             <div class="commenters">
                 <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}">
-                    <span class="ft-small icon icon-edit"></span>
+                    <span class="icon icon-edit"></span>
                 </a>
             </div>
             </#if>
