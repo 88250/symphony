@@ -188,7 +188,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.length() - 1));
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
@@ -300,7 +300,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.length() - 1));
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
@@ -412,7 +412,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.length() - 1));
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }

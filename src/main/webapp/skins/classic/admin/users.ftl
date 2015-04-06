@@ -7,7 +7,7 @@
         <li class="fn-clear" onclick="window.location = '/admin/user/${item.oId}'">
             <img class="avatar-small" title="${item.userName}" 
                  src="${item.userThumbnailURL}">
-            ${item.userName}
+            <a href="/member/${item.userName}">${item.userName}</a>
             <a href="/admin/user/${item.oId}" class="fn-right edit" title="${editLabel}">
                 <span class="icon icon-edit"></span>
             </a>
