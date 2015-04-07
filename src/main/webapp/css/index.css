@@ -259,4 +259,16 @@ code.prettyprint {
     border-radius: initial;
     padding: initial;
 }
+
+code .str { color: initial; } /* string  - green */
+code .kwd { color: initial; } /* keyword - dark pink */
+code .com { color: initial; font-style: italic; } /* comment - gray */
+code .typ { color: initial; } /* type - light blue */
+code .lit { color: initial; } /* literal - blue */
+code .pun { color: initial; } /* punctuation - white */
+code .pln { color: initial; } /* plaintext - white */
+code .tag { color: initial; } /* html/xml tag    - light blue */
+code .atn { color: initial; } /* html/xml attribute name  - khaki */
+code .atv { color: initial; } /* html/xml attribute value - green */
+code .dec { color: initial; } /* decimal - blue */
 /* end overwrite prettify.css */
