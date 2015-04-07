@@ -7,8 +7,8 @@
         <meta name="keywords" content="${article.articleTags}"/>
         <meta name="description" content="${article.articleTitle}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="/js/lib/google-code-prettify/prettify.css?${staticResourceVersion}">
+        <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
