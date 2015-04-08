@@ -80,7 +80,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.7, Mar 12, 2015
+ * @version 1.1.1.8, Apr 8, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -613,7 +613,7 @@ public class UserProcessor {
 
                 userMgmtService.updateSyncB3(user);
 
-                LOGGER.log(Level.INFO, "Added a user[{0}] via Solo sync", name);
+                LOGGER.log(Level.INFO, "Added a user[{0}] via Solo[{1}] sync", name, clientHost);
 
                 ret.put(Keys.STATUS_CODE, true);
             } catch (final ServiceException e) {
@@ -642,7 +642,7 @@ public class UserProcessor {
             userMgmtService.updatePassword(user);
             userMgmtService.updateSyncB3(user);
 
-            LOGGER.log(Level.INFO, "Updated a user[name={0}, host={1}] via Solo sync", name, clientHost);
+            LOGGER.log(Level.INFO, "Updated a user[name={0}] via Solo[{1}] sync", name, clientHost);
 
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
