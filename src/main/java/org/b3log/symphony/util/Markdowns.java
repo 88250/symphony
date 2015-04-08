@@ -25,7 +25,11 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 import org.tautua.markdownpapers.Markdown;
 import org.tautua.markdownpapers.parser.ParseException;
 
@@ -33,10 +37,11 @@ import org.tautua.markdownpapers.parser.ParseException;
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  *
  * <p>
- * Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
+ * Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.
+ * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Sep 6, 2013
+ * @version 1.1.0.7, Apr 8, 2015
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -47,21 +52,31 @@ public final class Markdowns {
     private static final Logger LOGGER = Logger.getLogger(Markdowns.class.getName());
 
     /**
-     * Article content cleaner whitelist.
-     */
-    public static final Whitelist ARTICLE_CONTENT_WHITELIST = Whitelist.relaxed().
-            addTags("span").addAttributes(":all", "id", "target", "class", "style")
-            .addTags("hr");
-
-    /**
      * Gets the safe HTML content of the specified content.
      *
      * @param content the specified content
-     * @param baseURL the specified base URL, the relative path value of href will starts with this URL
+     * @param baseURI the specified base URI, the relative path value of href will starts with this URL
      * @return safe HTML content
      */
-    public static String clean(final String content, final String baseURL) {
-        return Jsoup.clean(content, baseURL, ARTICLE_CONTENT_WHITELIST);
+    public static String clean(final String content, final String baseURI) {
+        final Document.OutputSettings outputSettings = new Document.OutputSettings();
+        outputSettings.prettyPrint(false);
+
+        final String tmp = Jsoup.clean(content,
+                                       baseURI, Whitelist.relaxed().addAttributes(":all", "id", "target", "class", "style").addTags("span").
+                                       addTags("hr").addTags("iframe").addAttributes("iframe", "src", "width", "height"),
+                                       outputSettings);
+        final Document doc = Jsoup.parse(tmp, baseURI, Parser.xmlParser());
+        final Elements iframes = doc.getElementsByTag("iframe");
+
+        for (final Element iframe : iframes) {
+            final String src = iframe.attr("src");
+            if (!src.startsWith("https://wide.b3log.org")) {
+                iframe.remove();
+            }
+        }
+
+        return doc.html();
     }
 
     /**
