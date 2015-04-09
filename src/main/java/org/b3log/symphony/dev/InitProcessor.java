@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Initializes database.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.11, Apr 24, 2013
+ * @version 1.1.0.11, Apr 9, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -112,9 +112,9 @@ public class InitProcessor {
                            new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
 
-            // Init stat.
             final Transaction transaction = optionRepository.beginTransaction();
 
+            // Init statistic
             JSONObject option = new JSONObject();
             option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_MEMBER_COUNT);
             option.put(Option.OPTION_VALUE, "0");
@@ -143,6 +143,13 @@ public class InitProcessor {
             option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT);
             option.put(Option.OPTION_VALUE, "0");
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+
+            // Init misc
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_REGISTER);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
             optionRepository.add(option);
 
             transaction.commit();

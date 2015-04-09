@@ -28,7 +28,9 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.processor.CaptchaProcessor;
+import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
 
 /**
@@ -36,7 +38,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Nov 15, 2013
+ * @version 1.1.0.6, Apr 9, 2015
  */
 @Named
 @Singleton
@@ -47,6 +49,12 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
 
     /**
      * Max user name length.
@@ -78,16 +86,22 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
-
         final HttpServletRequest request = context.getRequest();
 
         JSONObject requestJSONObject;
         try {
             final String json = (String) request.getParameterMap().keySet().iterator().next();
             requestJSONObject = new JSONObject(json);
+
+            // check if admin allow to register
+            final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_REGISTER);
+            if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
+                throw new Exception(langPropsService.get("notAllowRegisterLabel"));
+            }
         } catch (final Exception e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
+
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);

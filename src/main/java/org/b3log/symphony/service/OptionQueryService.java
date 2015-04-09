@@ -17,6 +17,7 @@ package org.b3log.symphony.service;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +29,10 @@ import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.repository.OptionRepository;
@@ -44,7 +47,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Dec 21, 2012
+ * @version 1.1.0.4, Apr 9, 2015
  * @since 0.2.0
  */
 @Service
@@ -74,7 +77,11 @@ public class OptionQueryService {
      * Online visitor expiration in 5 minutes.
      */
     private static final int ONLINE_VISITOR_EXPIRATION = 300000;
-
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
     /**
      * Gets the online visitor count.
      *
@@ -164,6 +171,54 @@ public class OptionQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets statistic failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the miscellaneous.
+     *
+     * @return misc
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getMisc() throws ServiceException {
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_MISC));
+        try {
+            final JSONObject result = optionRepository.get(query);
+            final JSONArray options = result.optJSONArray(Keys.RESULTS);
+            
+            for (int i = 0; i < options.length(); i++) {
+                final JSONObject option = options.optJSONObject(i);
+                
+                option.put("label", langPropsService.get(option.optString(Keys.OBJECT_ID) + "Label"));
+            }
+
+            return CollectionUtils.jsonArrayToList(options);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets misc failed", e);
+            throw new ServiceException(e);
+        }
+    }
+    
+    /**
+     * Gets an option by the specified id.
+     *
+     * @param optionId the specified id
+     * @return option, return {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getOption(final String optionId) throws ServiceException {
+        try {
+            final JSONObject ret = optionRepository.get(optionId);
+
+            if (null == ret) {
+                return null;
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets an option [optionId=" + optionId + "] failed", e);
             throw new ServiceException(e);
         }
     }

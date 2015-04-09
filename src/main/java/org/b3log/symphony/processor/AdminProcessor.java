@@ -15,8 +15,10 @@
  */
 package org.b3log.symphony.processor;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +27,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
@@ -37,11 +38,13 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.processor.advice.AdminCheck;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.OptionMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -56,15 +59,15 @@ import org.json.JSONObject;
  * <li>Shows admin index (/admin/index), GET</li>
  * <li>Shows users (/admin/users), GET</li>
  * <li>Shows a user (/admin/user/{userId}), GET</li>
- * <li>Updates a user (/admin/user/{userId}), PUT</li>
+ * <li>Updates a user (/admin/user/{userId}), POST</li>
  * <li>Shows articles (/admin/articles), GET</li>
  * <li>Shows an article (/admin/article/{articleId}), GET</li>
- * <li>Updates an article (/admin/article/{articleId}), PUT</li>
+ * <li>Updates an article (/admin/article/{articleId}), POST</li>
  * <li>Shows comments (/admin/comments), GET</li>
  * <li>Show a comment (/admin/comment/{commentId}), GET</li>
- * <li>Updates a comment (/admin/comment/{commentId}), PUT</li>
+ * <li>Updates a comment (/admin/comment/{commentId}), POST</li>
  * <li>Shows miscellaneous (/admin/misc), GET</li>
- * <li>Updates flag of allow register(/admin/misc/allow-register), PUT</li>
+ * <li>Updates miscellaneous (/admin/misc), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -122,16 +125,16 @@ public class AdminProcessor {
     private OptionQueryService optionQueryService;
 
     /**
+     * Option management service.
+     */
+    @Inject
+    private OptionMgmtService optionMgmtService;
+
+    /**
      * Filler.
      */
     @Inject
     private Filler filler;
-
-    /**
-     * Language service.
-     */
-    @Inject
-    private LangPropsService langPropsService;
 
     /**
      * Shows admin index.
@@ -506,6 +509,51 @@ public class AdminProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/misc.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final List<JSONObject> misc = optionQueryService.getMisc();
+        dataModel.put(Option.OPTIONS, misc);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Updates admin miscellaneous.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = AdminCheck.class)
+    public void updateMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/misc.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        List<JSONObject> misc = new ArrayList<JSONObject>();
+
+        final Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            final String name = parameterNames.nextElement();
+            final String value = request.getParameter(name);
+
+            final JSONObject option = new JSONObject();
+            option.put(Keys.OBJECT_ID, name);
+            option.put(Option.OPTION_VALUE, value);
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+
+            misc.add(option);
+        }
+
+        for (final JSONObject option : misc) {
+            optionMgmtService.updateOption(option.getString(Keys.OBJECT_ID), option);
+        }
+
+        misc = optionQueryService.getMisc();
+        dataModel.put(Option.OPTIONS, misc);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
