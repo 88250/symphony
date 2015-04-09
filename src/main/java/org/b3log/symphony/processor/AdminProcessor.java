@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 2, 2015
+ * @version 1.1.0.0, Apr 9, 2015
  * @since 0.3.0
  */
 @RequestProcessor
@@ -404,6 +404,9 @@ public class AdminProcessor {
         commentFields.put(Comment.COMMENT_CREATE_TIME, String.class);
         commentFields.put(Comment.COMMENT_AUTHOR_ID, String.class);
         commentFields.put(Comment.COMMENT_ON_ARTICLE_ID, String.class);
+        commentFields.put(Comment.COMMENT_SHARP_URL, String.class);
+        commentFields.put(Comment.COMMENT_STATUS, Integer.class);
+        commentFields.put(Comment.COMMENT_CONTENT, String.class);
 
         final JSONObject result = commentQueryService.getComments(requestJSONObject, commentFields);
         dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));

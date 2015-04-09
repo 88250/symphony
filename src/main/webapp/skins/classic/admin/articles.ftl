@@ -4,7 +4,7 @@
 <div class="list content admin">
     <ul>
         <#list articles as item>
-        <li onclick="window.location = '/admin/article/${item.oId}'">
+        <li>
             <a href="${item.articlePermalink}">${item.articleTitle}</a> &nbsp;
             <#if item.articleStatus == 0>
             ${validLabel}
@@ -17,11 +17,11 @@
                 <span class="icon icon-edit"></span>
             </a>
             <br/>
-            <img class="avatar"
-                 src="${item.articleAuthorThumbnailURL}">
-             ${item.articleAuthorName} &nbsp;
+            <img class="avatar" src="${item.articleAuthorThumbnailURL}">${item.articleAuthorName} &nbsp;
             <span class="icon icon-tags" title="${tagLabel}"></span>
-            ${item.articleTags}  
+            <span class="tags">
+                ${item.articleTags}
+            </span> 
             <span class="fn-right ft-small">
                 <span class="icon icon-view" title="${viewCountLabel}"></span>
                 ${item.articleViewCount} &nbsp;

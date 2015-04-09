@@ -235,4 +235,13 @@ h2.fn-inline {
     vertical-align: top;
     margin-right: 5px;
 }
+
+.admin .tags {
+    display: inline-block; 
+    width: 50%; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    overflow: hidden;
+    vertical-align: bottom;
+}
 /* end admin */

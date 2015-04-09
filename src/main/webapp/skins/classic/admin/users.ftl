@@ -4,7 +4,7 @@
 <div class="list content admin">
     <ul>
         <#list users as item>
-        <li class="fn-clear" onclick="window.location = '/admin/user/${item.oId}'">
+        <li class="fn-clear">
             <img class="avatar-small" title="${item.userName}" 
                  src="${item.userThumbnailURL}">
             <a href="/member/${item.userName}">${item.userName}</a>
