@@ -10,12 +10,25 @@
             <a href="/member/${item.userName}">${item.userName}</a>
             <a href="/admin/user/${item.oId}" class="fn-right edit" title="${editLabel}">
                 <span class="icon icon-edit"></span>
-            </a>
+            </a> &nbsp;
+             <#if item.userStatus == 0>
+            ${validLabel}
+            <#else>
+            <font style="color: red">
+            ${banLabel}
+            </font>
+            </#if>
             <br/>
             <span class="icon icon-email" title="${emailLabel}"></span>
             ${item.userEmail} &nbsp;
             <span class="icon icon-userrole" title="${roleLabel}"></span>
-            ${item.userRole} 
+            <#if item.userRole == "adminRole">
+            ${administratorLabel}
+            <#elseif item.userRole == "defaultCommenterRole">
+            ${defaultCommenterLabel}
+            <#else>
+            ${defaultUserLabel}
+            </#if>
             <span class="fn-right ft-small">
                 <span class="icon icon-articles" title="${articleCountLabel}"></span>
                 ${item.userArticleCount} &nbsp;

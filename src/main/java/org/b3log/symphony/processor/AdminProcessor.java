@@ -289,6 +289,9 @@ public class AdminProcessor {
         articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
         articleFields.put(Article.ARTICLE_VIEW_CNT, Integer.class);
         articleFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
+        articleFields.put(Article.ARTICLE_AUTHOR_EMAIL, String.class);
+        articleFields.put(Article.ARTICLE_TAGS, String.class);
+        articleFields.put(Article.ARTICLE_STATUS, Integer.class);
 
         final JSONObject result = articleQueryService.getArticles(requestJSONObject, articleFields);
         dataModel.put(Article.ARTICLES, CollectionUtils.jsonArrayToList(result.optJSONArray(Article.ARTICLES)));

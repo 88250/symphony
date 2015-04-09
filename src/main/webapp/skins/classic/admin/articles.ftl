@@ -6,17 +6,22 @@
         <#list articles as item>
         <li onclick="window.location = '/admin/article/${item.oId}'">
             <a href="${item.articlePermalink}">${item.articleTitle}</a> &nbsp;
-            ${articleStatusLabel}
+            <#if item.articleStatus == 0>
+            ${validLabel}
+            <#else>
+            <font style="color: red">
+            ${banLabel}
+            </font>
+            </#if>
             <a href="/admin/article/${item.oId}" class="fn-right edit" title="${editLabel}">
                 <span class="icon icon-edit"></span>
             </a>
             <br/>
             <img class="avatar"
-                 title="TODO" 
-                 src="http://secure.gravatar.com/avatar/22ae6b52ee5c2d024b68531bd250be5b?s=140&amp;d=http://symphony.b3log.org/images/user-thumbnail.png">
-             Vanessa &nbsp;
+                 src="${item.articleAuthorThumbnailURL}">
+             ${item.articleAuthorName} &nbsp;
             <span class="icon icon-tags" title="${tagLabel}"></span>
-            111, 222  
+            ${item.articleTags}  
             <span class="fn-right ft-small">
                 <span class="icon icon-view" title="${viewCountLabel}"></span>
                 ${item.articleViewCount} &nbsp;

@@ -518,6 +518,7 @@ public class ArticleQueryService {
         try {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            
             organizeArticles(ret);
 
             for (final JSONObject article : ret) {
