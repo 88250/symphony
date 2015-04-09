@@ -40,6 +40,7 @@ import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.processor.advice.AdminCheck;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -68,7 +69,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.0, Apr 9, 2015
- * @since 0.3.0
+ * @since 1.1.0
  */
 @RequestProcessor
 public class AdminProcessor {
@@ -107,6 +108,12 @@ public class AdminProcessor {
      */
     @Inject
     private CommentQueryService commentQueryService;
+
+    /**
+     * Comment management service.
+     */
+    @Inject
+    private CommentMgmtService commentMgmtService;
 
     /**
      * Option query service.
@@ -442,6 +449,42 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject comment = commentQueryService.getComment(commentId);
+        dataModel.put(Comment.COMMENT, comment);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Updates a comment.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param commentId the specified comment id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = AdminCheck.class)
+    public void updateComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                              final String commentId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/comment.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        JSONObject comment = commentQueryService.getComment(commentId);
+
+        final Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            final String name = parameterNames.nextElement();
+            final String value = request.getParameter(name);
+
+            comment.put(name, value);
+        }
+
+        commentMgmtService.updateComment(commentId, comment);
+
+        comment = commentQueryService.getComment(commentId);
         dataModel.put(Comment.COMMENT, comment);
 
         filler.fillHeaderAndFooter(request, response, dataModel);

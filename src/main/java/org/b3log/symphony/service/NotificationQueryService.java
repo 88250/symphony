@@ -196,7 +196,7 @@ public class NotificationQueryService {
                 final JSONObject notification = results.optJSONObject(i);
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
 
-                final JSONObject comment = commentQueryService.getComment(commentId);
+                final JSONObject comment = commentQueryService.getCommentById(commentId);
 
                 final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
@@ -281,7 +281,7 @@ public class NotificationQueryService {
                 final JSONObject notification = results.optJSONObject(i);
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
 
-                final JSONObject comment = commentQueryService.getComment(commentId);
+                final JSONObject comment = commentQueryService.getCommentById(commentId);
                 if (null != comment) {
                     final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
                             setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,

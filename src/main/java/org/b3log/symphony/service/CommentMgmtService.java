@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.14, May 13, 2014
+ * @version 1.1.1.14, Apr 9, 2015
  * @since 0.2.0
  */
 @Service
@@ -214,6 +214,30 @@ public class CommentMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Adds a comment failed", e);
+            throw new ServiceException(e);
+        }
+    }
+    
+    /**
+     * Updates the specified comment by the given comment id.
+     *
+     * @param commentId the given comment id
+     * @param comment the specified comment
+     * @throws ServiceException service exception
+     */
+    public void updateComment(final String commentId, final JSONObject comment) throws ServiceException {
+        final Transaction transaction = commentRepository.beginTransaction();
+
+        try {
+            commentRepository.update(commentId, comment);
+
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Updates a comment[id=" + commentId + "] failed", e);
             throw new ServiceException(e);
         }
     }

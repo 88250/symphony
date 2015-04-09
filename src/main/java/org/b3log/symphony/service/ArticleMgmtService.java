@@ -324,7 +324,7 @@ public class ArticleMgmtService {
     }
 
     /**
-     * Updates the specified article by the given user id.
+     * Updates the specified article by the given article id.
      *
      * @param articleId the given article id
      * @param article the specified article

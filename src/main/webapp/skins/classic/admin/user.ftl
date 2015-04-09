@@ -1,39 +1,39 @@
 <#include "macro-admin.ftl">
 <@admin "users">
 <div class="content">
-    <form action="/admin/user/${user.oId}" method="POST">
-        <div class="module">
-            <div class="module-header">
-                <h2>基本信息</h2>
-            </div>
-            <div class="module-panel form fn-clear">
-                <label for="oId">Id</label>
-                <input type="text" id="oId" value="${user.oId}" readonly="readonly" />
-
-                <label for="userName">${userNameLabel}</label>
-                <input type="text" id="userName" name="userName" value="${user.userName}" readonly="readonly" />
-
-                <label for="userNo">${userNoLabel}</label>
-                <input type="text" id="userNo" name="userNo" value="${user.userNo}" readonly="readonly" />
-
-                <label for="userEmail">${userEmailLabel}</label>
-                <input type="text" id="userEmail" name="userEmail" value="${user.userEmail}" readonly="readonly" />
-
-                <label for="userArticleCount">${articleCountLabel}</label>
-                <input type="text" id="userArticleCount" name="userArticleCount" value="${user.userArticleCount}" readonly="readonly" />
-
-                <label for="userCommentCount">${commentCountLabel}</label>
-                <input type="text" id="userCommentCount" name="userCommentCount" value="${user.userCommentCount}" readonly="readonly" />
-
-                <label for="userTagCount">${tagCountLabel}</label>
-                <input type="text" id="userTagCount" name="userTagCount" value="${user.userTagCount}" readonly="readonly" />
-            </div>
+    <div class="module">
+        <div class="module-header">
+            <h2>${unmodifiableLabel}</h2>
         </div>
-        <div class="module">
-            <div class="module-header">
-                <h2>可修改信息</h2>
-            </div>
-            <div class="module-panel form fn-clear">
+        <div class="module-panel form fn-clear">
+            <label for="oId">Id</label>
+            <input type="text" id="oId" value="${user.oId}" readonly="readonly" />
+
+            <label for="userName">${userNameLabel}</label>
+            <input type="text" id="userName" name="userName" value="${user.userName}" readonly="readonly" />
+
+            <label for="userNo">${userNoLabel}</label>
+            <input type="text" id="userNo" name="userNo" value="${user.userNo}" readonly="readonly" />
+
+            <label for="userEmail">${userEmailLabel}</label>
+            <input type="text" id="userEmail" name="userEmail" value="${user.userEmail}" readonly="readonly" />
+
+            <label for="userArticleCount">${articleCountLabel}</label>
+            <input type="text" id="userArticleCount" name="userArticleCount" value="${user.userArticleCount}" readonly="readonly" />
+
+            <label for="userCommentCount">${commentCountLabel}</label>
+            <input type="text" id="userCommentCount" name="userCommentCount" value="${user.userCommentCount}" readonly="readonly" />
+
+            <label for="userTagCount">${tagCountLabel}</label>
+            <input type="text" id="userTagCount" name="userTagCount" value="${user.userTagCount}" readonly="readonly" />
+        </div>
+    </div>
+    <div class="module">
+        <div class="module-header">
+            <h2>${modifiableLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/user/${user.oId}" method="POST">
                 <label for="userPassword">${userPasswordLabel}</label>
                 <input type="text" id="userPassword" name="userPassword" value="${user.userPassword}" />
 
@@ -49,7 +49,7 @@
                 <label for="userRole">${roleLabel}</label>
                 <input type="text" id="userRole" name="userRole" value="${user.userRole}" />
 
-                <label for="userStatus">${userStatus}</label>
+                <label for="userStatus">${userStatusLabel}</label>
                 <input type="text" id="userStatus" name="userStatus" value="${user.userStatus}" />
 
                 <label for="userB3Key">B3 Key</label>
@@ -66,8 +66,8 @@
 
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
-            </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 </@admin>

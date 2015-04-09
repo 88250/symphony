@@ -409,7 +409,7 @@ public class ArticleQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets article [articleId=" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets an article [articleId=" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -431,7 +431,7 @@ public class ArticleQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets article [articleId=" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets an article [articleId=" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
     }

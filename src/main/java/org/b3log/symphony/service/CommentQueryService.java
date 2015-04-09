@@ -97,13 +97,13 @@ public class CommentQueryService {
     private LangPropsService langPropsService;
 
     /**
-     * Gets comment with the specified comment id.
+     * Gets a comment with {@link #organizeComment(org.json.JSONObject)} by the specified comment id.
      *
      * @param commentId the specified comment id
      * @return comment, returns {@code null} if not found
      * @throws ServiceException service exception
      */
-    public JSONObject getComment(final String commentId) throws ServiceException {
+    public JSONObject getCommentById(final String commentId) throws ServiceException {
 
         try {
             final JSONObject ret = commentRepository.get(commentId);
@@ -118,6 +118,28 @@ public class CommentQueryService {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             throw new ServiceException("Gets comment[id=" + commentId + "] failed");
+        }
+    }
+
+    /**
+     * Gets a comment by the specified id.
+     *
+     * @param commentId the specified id
+     * @return comment, return {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getComment(final String commentId) throws ServiceException {
+        try {
+            final JSONObject ret = commentRepository.get(commentId);
+
+            if (null == ret) {
+                return null;
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets a comment [articleId=" + commentId + "] failed", e);
+            throw new ServiceException(e);
         }
     }
 

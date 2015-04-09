@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Symphony POM.
-    Version: 1.1.2.15, Apr 2, 2015
+    Version: 1.2.2.15, Apr 9, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -11,7 +11,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>symphony</artifactId>
     <packaging>war</packaging>
-    <version>0.3.0</version>
+    <version>1.1.0</version>
     <name>B3log Symphony</name>
     <url>https://github.com/b3log/b3log-symphony</url>
     <description>
