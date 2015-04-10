@@ -1,7 +1,9 @@
 <div class="footer">
     <div class="wrapper fn-clear">
-        <div class="fn-left">
-            <img src="${staticServePath}/images/logo.png" />
+        <div class="fn-left" style="margin-top: 4px;">
+            <a href="http://b3log.org" target="_blank"><img src="http://b3log.org/images/b3log.png" alt="b3log" width="48" /></a>
+            &nbsp;
+            <a href="https://wide.b3log.org" target="_blank"><img src="http://b3log.org/images/wide.png" alt="wide" width="48" /></a>
         </div>
         <div class="fn-right">
             <div class="footer-nav">
