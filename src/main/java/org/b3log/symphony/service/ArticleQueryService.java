@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.9, Apr 3, 2015
+ * @version 1.2.0.10, Apr 14, 2015
  * @since 0.2.0
  */
 @Service
@@ -512,13 +512,16 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getLatestCmtArticles(final int currentPageNum, final int fetchSize) throws ServiceException {
-        final Query query = new Query().addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
+        final Query query = new Query()
+                .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
+                .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
+                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
 
         try {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            
+
             organizeArticles(ret);
 
             for (final JSONObject article : ret) {

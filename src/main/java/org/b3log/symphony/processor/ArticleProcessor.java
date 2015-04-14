@@ -80,7 +80,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.18, Mar 28, 2015
+ * @version 1.2.2.19, Apr 14, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -683,7 +683,7 @@ public class ArticleProcessor {
         final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
         final JSONObject oldArticle = articleQueryService.getArticleByClientArticleId(authorId, clientArticleId);
         if (null == oldArticle) {
-            LOGGER.log(Level.WARN, "Not found article [clientArticleId={0}] to update", clientArticleId);
+            LOGGER.log(Level.WARN, "Not found article [clientHost={0}, clientArticleId={1}] to update", clientHost, clientArticleId);
 
             return;
         }

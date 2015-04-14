@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.0.2.0, Nov 11, 2013",
+    "version": "1.0.2.1, Apr 14, 2015",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
@@ -411,10 +411,12 @@
                 },
                 {
                     "name": "articleGoodCnt",
+                    "description": "Favour count",
                     "type": "int"
                 },
                 {
                     "name": "articleBadCnt",
+                    "description": "Oppose count",
                     "type": "int"
                 }
             ]
