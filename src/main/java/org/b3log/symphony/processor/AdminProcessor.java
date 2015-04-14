@@ -39,6 +39,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.processor.advice.AdminCheck;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -46,6 +47,7 @@ import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -66,12 +68,13 @@ import org.json.JSONObject;
  * <li>Shows comments (/admin/comments), GET</li>
  * <li>Show a comment (/admin/comment/{commentId}), GET</li>
  * <li>Updates a comment (/admin/comment/{commentId}), POST</li>
+ * <li>Shows tags (/admin/tags), GET</li>
  * <li>Shows miscellaneous (/admin/misc), GET</li>
  * <li>Updates miscellaneous (/admin/misc), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Apr 9, 2015
+ * @version 1.2.0.0, Apr 14, 2015
  * @since 1.1.0
  */
 @RequestProcessor
@@ -131,10 +134,21 @@ public class AdminProcessor {
     private OptionMgmtService optionMgmtService;
 
     /**
+     * Tag query service.
+     */
+    @Inject
+    private TagQueryService tagQueryService;
+
+    /**
      * Filler.
      */
     @Inject
     private Filler filler;
+    
+    /**
+     * Pagination window size.
+     */
+    private static final int WINDOW_SIZE = 15;
 
     /**
      * Shows admin index.
@@ -180,7 +194,7 @@ public class AdminProcessor {
 
         final int pageNum = Integer.valueOf(pageNumStr);
         final int pageSize = Integer.valueOf("20");
-        final int windowSize = Integer.valueOf("20");
+        final int windowSize = WINDOW_SIZE;
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
@@ -290,7 +304,7 @@ public class AdminProcessor {
 
         final int pageNum = Integer.valueOf(pageNumStr);
         final int pageSize = Integer.valueOf("20");
-        final int windowSize = Integer.valueOf("20");
+                final int windowSize = WINDOW_SIZE;
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
@@ -412,7 +426,7 @@ public class AdminProcessor {
 
         final int pageNum = Integer.valueOf(pageNumStr);
         final int pageSize = Integer.valueOf("20");
-        final int windowSize = Integer.valueOf("20");
+        final int windowSize = WINDOW_SIZE;
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
@@ -564,6 +578,66 @@ public class AdminProcessor {
 
         misc = optionQueryService.getMisc();
         dataModel.put(Option.OPTIONS, misc);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows admin tags.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/tags", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = AdminCheck.class)
+    public void showTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/tags.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageSize = Integer.valueOf("20");
+        final int windowSize = WINDOW_SIZE;
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
+        final String tagTitle = request.getParameter("title");
+        if (!Strings.isEmptyOrNull(tagTitle)) {
+            requestJSONObject.put(Tag.TAG_TITLE, tagTitle);
+        }
+
+        final Map<String, Class<?>> tagFields = new HashMap<String, Class<?>>();
+        tagFields.put(Keys.OBJECT_ID, String.class);
+        tagFields.put(Tag.TAG_COMMENT_CNT, String.class);
+        tagFields.put(Tag.TAG_DESCRIPTION, String.class);
+        tagFields.put(Tag.TAG_ICON_PATH, String.class);
+        tagFields.put(Tag.TAG_REFERENCE_CNT, String.class);
+        tagFields.put(Tag.TAG_STATUS, String.class);
+        tagFields.put(Tag.TAG_TITLE, String.class);
+
+        final JSONObject result = tagQueryService.getTags(requestJSONObject, tagFields);
+        dataModel.put(Tag.TAGS, CollectionUtils.jsonArrayToList(result.optJSONArray(Tag.TAGS)));
+
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final JSONArray pageNums = pagination.optJSONArray(Pagination.PAGINATION_PAGE_NUMS);
+        dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.opt(0));
+        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.opt(pageNums.length() - 1));
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }

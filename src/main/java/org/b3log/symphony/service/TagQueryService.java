@@ -16,13 +16,16 @@
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
@@ -35,6 +38,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.TagRepository;
@@ -48,7 +52,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Oct 29, 2012
+ * @version 1.1.0.3, Apr 14, 2015
  * @since 0.2.0
  */
 @Service
@@ -253,5 +257,85 @@ public class TagQueryService {
             LOGGER.log(Level.ERROR, "Gets tag participants failed", e);
             throw new ServiceException(e);
         }
+    }
+
+    /**
+     * Gets tags by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "tagTitle": "", // optional
+     *     "paginationCurrentPageNum": 1,
+     *     "paginationPageSize": 20,
+     *     "paginationWindowSize": 10
+     * }, see {@link Pagination} for more details
+     * </pre>
+     *
+     * @param tagFields the specified tag fields to return
+     *
+     * @return for example,
+     * <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "tags": [{
+     *         "oId": "",
+     *         "tagTitle": "",
+     *         "tagDescription": "",
+     *         ....
+     *      }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     * @see Pagination
+     */
+    public JSONObject getTags(final JSONObject requestJSONObject, final Map<String, Class<?>> tagFields) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
+        final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
+        final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        for (final Map.Entry<String, Class<?>> tagField : tagFields.entrySet()) {
+            query.addProjection(tagField.getKey(), tagField.getValue());
+        }
+
+        if (requestJSONObject.has(Tag.TAG_TITLE)) {
+            query.setFilter(new PropertyFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, requestJSONObject.optString(Tag.TAG_TITLE)));
+        }
+
+        JSONObject result = null;
+
+        try {
+            result = tagRepository.get(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets tags failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        final JSONArray data = result.optJSONArray(Keys.RESULTS);
+        final List<JSONObject> tags = CollectionUtils.<JSONObject>jsonArrayToList(data);
+
+        for (final JSONObject tag : tags) {
+            tag.put(Tag.TAG_T_CREATE_TIME, new Date(tag.optLong(Keys.OBJECT_ID)));
+        }
+
+        ret.put(Tag.TAGS, tags);
+
+        return ret;
     }
 }
