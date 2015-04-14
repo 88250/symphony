@@ -2,6 +2,13 @@
 <#include "../macro-pagination.ftl">
 <@admin "articles">
 <div class="list content admin">
+    <div>
+        <form method="GET" action="articles">
+            <input name="id" style="margin-right: 10px; " placeholder="${articleLabel} Id"/>
+            <button type="submit" class="green">${searchLabel}</button>
+        </form>
+    </div>
+
     <ul>
         <#list articles as item>
         <li>

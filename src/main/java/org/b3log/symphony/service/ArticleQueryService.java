@@ -695,6 +695,7 @@ public class ArticleQueryService {
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
+     *     "oId": "", // optional
      *     "paginationCurrentPageNum": 1,
      *     "paginationPageSize": 20,
      *     "paginationWindowSize": 10
@@ -732,6 +733,10 @@ public class ArticleQueryService {
                 addSort(Article.ARTICLE_UPDATE_TIME, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
             query.addProjection(articleField.getKey(), articleField.getValue());
+        }
+
+        if (requestJSONObject.has(Keys.OBJECT_ID)) {
+            query.setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, requestJSONObject.optString(Keys.OBJECT_ID)));
         }
 
         JSONObject result = null;

@@ -2,6 +2,13 @@
 <#include "../macro-pagination.ftl">
 <@admin "users">
 <div class="list content admin">
+    <div>
+        <form method="GET" action="users">
+            <input name="name" style="margin-right: 10px; " placeholder="${userNameLabel}"/>
+             <button type="submit" class="green">${searchLabel}</button>
+        </form>
+    </div>
+
     <ul>
         <#list users as item>
         <li class="fn-clear">
@@ -11,7 +18,7 @@
             <a href="/admin/user/${item.oId}" class="fn-right edit" title="${editLabel}">
                 <span class="icon icon-edit"></span>
             </a> &nbsp;
-             <#if item.userStatus == 0>
+            <#if item.userStatus == 0>
             ${validLabel}
             <#else>
             <font style="color: red">

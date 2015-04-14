@@ -30,8 +30,11 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.user.GeneralUser;
@@ -70,7 +73,6 @@ public class UserQueryService {
      */
     @Inject
     private UserRepository userRepository;
-
 
     /**
      * Gets the current user.
@@ -215,15 +217,18 @@ public class UserQueryService {
     /**
      * Gets users by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
      * {
+     *     "userName": "", // optional
      *     "paginationCurrentPageNum": 1,
      *     "paginationPageSize": 20,
      *     "paginationWindowSize": 10,
      * }, see {@link Pagination} for more details
      * </pre>
      *
-     * @return for example,      <pre>
+     * @return for example,      
+     * <pre>
      * {
      *     "pagination": {
      *         "paginationPageCount": 100,
@@ -249,7 +254,12 @@ public class UserQueryService {
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+        
+        if (requestJSONObject.has(User.USER_NAME)) {
+            query.setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, requestJSONObject.optString(User.USER_NAME)));
+        }
 
         JSONObject result = null;
 
@@ -274,7 +284,7 @@ public class UserQueryService {
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final Filler filler = beanManager.getReference(Filler.class);
-        
+
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.optJSONObject(i);
             user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
