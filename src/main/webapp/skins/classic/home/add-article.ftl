@@ -44,7 +44,7 @@
                                 ${syncWithSymphonyClientLabel}
                         </div>
                         <div class="fn-left" style="margin-left: 5px;">
-                            <input<#if article??><#if article.articleCommentable> checked="checked"</#if></#if> type="checkbox" id="articleCommentable"/> 
+                            <input<#if article??><#if article.articleCommentable> checked="checked"</#if><#else> checked="checked"</#if> type="checkbox" id="articleCommentable"/> 
                                 ${commentableLabel}
                         </div>
                         <div class="fn-right">
