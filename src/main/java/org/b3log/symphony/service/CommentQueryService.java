@@ -138,7 +138,7 @@ public class CommentQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets a comment [articleId=" + commentId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets a comment [commentId=" + commentId + "] failed", e);
             throw new ServiceException(e);
         }
     }

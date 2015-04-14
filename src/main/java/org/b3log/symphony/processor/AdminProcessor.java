@@ -47,6 +47,7 @@ import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.service.TagMgmtService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -69,6 +70,8 @@ import org.json.JSONObject;
  * <li>Show a comment (/admin/comment/{commentId}), GET</li>
  * <li>Updates a comment (/admin/comment/{commentId}), POST</li>
  * <li>Shows tags (/admin/tags), GET</li>
+ * <li>Show a tag (/admin/tag/{tagId}), GET</li>
+ * <li>Updates a tag (/admin/tag/{tagId}), POST</li>
  * <li>Shows miscellaneous (/admin/misc), GET</li>
  * <li>Updates miscellaneous (/admin/misc), POST</li>
  * </ul>
@@ -140,11 +143,17 @@ public class AdminProcessor {
     private TagQueryService tagQueryService;
 
     /**
+     * Tag Management service.
+     */
+    @Inject
+    private TagMgmtService tagMgmtService;
+
+    /**
      * Filler.
      */
     @Inject
     private Filler filler;
-    
+
     /**
      * Pagination window size.
      */
@@ -304,7 +313,7 @@ public class AdminProcessor {
 
         final int pageNum = Integer.valueOf(pageNumStr);
         final int pageSize = Integer.valueOf("20");
-                final int windowSize = WINDOW_SIZE;
+        final int windowSize = WINDOW_SIZE;
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
@@ -638,6 +647,72 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows a tag.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param tagId the specified tag id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = AdminCheck.class)
+    public void showTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                        final String tagId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/tag.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject tag = tagQueryService.getTag(tagId);
+        dataModel.put(Tag.TAG, tag);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Updates a tag.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param tagId the specified tag id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = AdminCheck.class)
+    public void updateTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                          final String tagId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/tag.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        JSONObject tag = tagQueryService.getTag(tagId);
+        
+        final String oldTitle = tag.optString(Tag.TAG_TITLE);
+
+        final Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            final String name = parameterNames.nextElement();
+            final String value = request.getParameter(name);
+
+            tag.put(name, value);
+        }
+        
+        final String newTitle = tag.optString(Tag.TAG_TITLE);
+        
+        if (oldTitle.equalsIgnoreCase(newTitle)) {
+            tagMgmtService.updateTag(tagId, tag);
+        }
+
+        tag = tagQueryService.getTag(tagId);
+        dataModel.put(Tag.TAG, tag);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }

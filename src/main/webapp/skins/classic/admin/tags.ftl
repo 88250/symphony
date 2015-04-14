@@ -24,7 +24,8 @@
                 <span class="icon icon-edit"></span>
             </a>
             <br/>
-            <img class="avatar" src="${staticServePath}/images/tags/${item.tagIconPath}" onerror="this.src=''">${item.tagDescription} &nbsp;
+            <img class="avatar" src="${staticServePath}/images/tags/${item.tagIconPath}" onerror="this.src=''">
+            <span class="tags">${item.tagDescription}</span>
             <span class="fn-right ft-small">
                 <span class="icon icon-view" title="${refCountLabel}"></span>
                 ${item.tagReferenceCount} &nbsp;
