@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Apr 14, 2015
+ * @version 1.2.0.4, Apr 15, 2015
  * @since 0.2.0
  */
 @Service
@@ -145,7 +145,9 @@ public class TagQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getTags(final int fetchSize) throws ServiceException {
-        final Query query = new Query().setPageCount(1).setPageSize(fetchSize);
+        final Query query = new Query().addSort(" RAND() " /* MySQL navtive dialect here*/, SortDirection.ASCENDING).
+                setFilter(new PropertyFilter(Tag.TAG_ICON_PATH, FilterOperator.NOT_EQUAL, "")).
+                setPageCount(1).setPageSize(fetchSize);
 
         try {
             final JSONObject result = tagRepository.get(query);
