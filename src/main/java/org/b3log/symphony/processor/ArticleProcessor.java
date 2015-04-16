@@ -796,8 +796,7 @@ public class ArticleProcessor {
      * @return formatted tags string
      */
     private String formatArticleTags(final String articleTags) {
-        final String common = "，";
-        final String articleTags1 = articleTags.replaceAll(common, ",");
+        final String articleTags1 = articleTags.replaceAll("，", ",").replaceAll("、", ",");
         final String[] tagTitles = articleTags1.split(",");
         final StringBuilder tagsBuilder = new StringBuilder();
         for (final String tagTitle : tagTitles) {

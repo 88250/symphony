@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.9, Nov 11, 2013
+ * @version 1.1.1.9, Apr 16, 2015
  * @since 0.2.0
  */
 public final class Common {
@@ -53,6 +53,11 @@ public final class Common {
      * Key of is logged in.
      */
     public static final String IS_LOGGED_IN = "isLoggedIn";
+    
+    /**
+     * Key of is admin.
+     */
+    public static final String IS_ADMIN_LOGGED_IN = "isAdminLoggedIn";
 
     /**
      * Key of is following.

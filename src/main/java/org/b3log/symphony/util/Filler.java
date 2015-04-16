@@ -24,6 +24,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -211,6 +212,7 @@ public class Filler {
     private void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
                                  final Map<String, Object> dataModel) {
         dataModel.put(Common.IS_LOGGED_IN, false);
+        dataModel.put(Common.IS_ADMIN_LOGGED_IN, false);
 
         if (null == Sessions.currentUser(request) && !userMgmtService.tryLogInWithCookie(request, response)) {
             dataModel.put("loginLabel", langPropsService.get("loginLabel"));
@@ -239,7 +241,10 @@ public class Filler {
 
         final String userName = curUser.optString(User.USER_NAME);
         dataModel.put(User.USER_NAME, userName);
-        dataModel.put(User.USER_ROLE, curUser.optString(User.USER_ROLE));
+        final String userRole = curUser.optString(User.USER_ROLE);
+        dataModel.put(User.USER_ROLE, userRole);
+        dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ADMIN_ROLE.equals(userRole));
+        
         fillUserThumbnailURL(curUser);
 
         dataModel.put(Common.CURRENT_USER, curUser);
