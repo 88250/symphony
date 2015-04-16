@@ -96,9 +96,6 @@ public class TagProcessor {
         dataModel.put(Common.COLD_TAGS, coldTags);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
     }
 
     /**

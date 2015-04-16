@@ -11,7 +11,7 @@
             <input type="hidden" name="sitesearch" value="symphony.b3log.org" />
         </form>
         <span class="tags">
-            <#list trendTags as trendTag>
+            <#list navTrendTags as trendTag>
             <a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
             </#list>
         </span>

@@ -88,6 +88,11 @@ public final class Common {
      * Key of side tags.
      */
     public static final String SIDE_TAGS = "sideTags";
+    
+    /**
+     * Key of navigation trend tags.
+     */
+    public static final String NAV_TREND_TAGS = "navTrendTags";
 
     /**
      * Key of trend tags.

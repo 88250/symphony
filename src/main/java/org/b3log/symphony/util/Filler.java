@@ -298,7 +298,7 @@ public class Filler {
      * @throws Exception exception
      */
     private void fillTrendTags(final Map<String, Object> dataModel) throws Exception {
-        dataModel.put(Common.TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
+        dataModel.put(Common.NAV_TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
     }
 
     /**
