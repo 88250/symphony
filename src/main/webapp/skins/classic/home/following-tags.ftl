@@ -10,7 +10,7 @@
             </#if>
             <div>
                 <h3>
-                    <a rel="nofollow" href="/tags/${followingTag.tagTitle}" >${followingTag.tagTitle}</a>
+                    <a rel="nofollow" href="/tags/${followingTag.tagTitle?url('utf-8')}" >${followingTag.tagTitle}</a>
                 </h3>
 
                 <span class="ft-small">${referenceLabel}</span> ${followingTag.tagReferenceCount}
