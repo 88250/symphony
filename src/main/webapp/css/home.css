@@ -222,15 +222,6 @@ h2.fn-inline {
 /* end follow */
 
 /* start admin */
-.admin a.edit {
-    color: #666;
-    text-decoration: none;
-}
-
-.admin a.edit:hover {
-    color: #4183c4;
-}
-
 .admin .avatar {
     height: 17px;
     width: 17px;
@@ -245,5 +236,14 @@ h2.fn-inline {
     white-space: nowrap; 
     overflow: hidden;
     vertical-align: bottom;
+}
+
+.admin .form input[type=text] {
+    width: 50%;
+    margin-right: 10px;
+}
+
+.admin li > div.first {
+    margin-bottom: 6px;
 }
 /* end admin */

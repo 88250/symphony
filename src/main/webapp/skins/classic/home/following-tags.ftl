@@ -15,14 +15,14 @@
 
                 <span class="ft-small">${referenceLabel}</span> ${followingTag.tagReferenceCount}
                 <span class="ft-small">${cmtLabel}</span> ${followingTag.tagCommentCount} &nbsp;
-
+                <br/>
                 <#if isLoggedIn> 
                 <#if followingTag.isFollowing>
-                <button class="red fn-right" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
+                <button class="red" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
                     ${unfollowLabel}
                 </button>
                 <#else>
-                <button class="green fn-right" onclick="Util.follow(this, '${followingTag.oId}', 'tag')"> 
+                <button class="green" onclick="Util.follow(this, '${followingTag.oId}', 'tag')"> 
                     ${followLabel}
                 </button>
                 </#if>

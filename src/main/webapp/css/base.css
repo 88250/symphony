@@ -295,6 +295,10 @@ textarea {
     font-size: 12px;
 }
 
+.ft-red {
+    color: #D26911;
+}
+
 .ft-center {
     text-align: center;
 }
@@ -519,6 +523,18 @@ button.red:active {
 
 .icon-edit:before {
     content: "\e60c";
+}
+
+a.icon-edit-wrap {
+    text-decoration: none;
+}
+
+a .icon-edit {
+    color: #666;
+}
+
+a:hover .icon-edit {
+    color: #4183C4;
 }
 
 .icon-tag:before {

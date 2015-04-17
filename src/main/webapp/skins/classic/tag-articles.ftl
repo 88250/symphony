@@ -20,9 +20,13 @@
                         <img class="avatar tag-article-img" src="${staticServePath}/images/tags/${tag.tagIconPath}">
                         </#if>
                         <div>
-                            <h1 style="display: inline;"><a rel="tag" title="${tag.tagTitle?url('UTF-8')}" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
+                            <h1 class="fn-inline">
+                                <a rel="tag" 
+                                   title="${tag.tagTitle?url('UTF-8')}" 
+                                   href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                            </h1>
                             <#if isAdminLoggedIn>
-                            <a href="${servePath}/admin/tag/${tag.oId}" title="${editLabel}">
+                            <a href="${servePath}/admin/tag/${tag.oId}" class="icon-edit-wrap" title="${editLabel}">
                                 <span class="icon icon-edit"></span>
                             </a>
                             </#if>
@@ -54,12 +58,15 @@
                             </ul>
                         </div>
                         <div class="tag-artile-user">
-                            <a rel="nofollow" class="fn-left" title="${creatorLabel}:${tag.tagCreatorName}" href="/member/${tag.tagCreatorName}">
+                            <a rel="nofollow" class="fn-left" title="${creatorLabel}:${tag.tagCreatorName}" 
+                               href="/member/${tag.tagCreatorName}">
                                 <img class="avatar" src="${tag.tagCreatorThumbnailURL}">
                             </a>
                             <div class="fn-right">
                                 <#list tag.tagParticipants as commenter>
-                                <a rel="nofollow" class="fn-left" title="${contributorLabel}:${commenter.tagParticipantName}" href="/member/${commenter.tagParticipantName}">
+                                <a rel="nofollow" class="fn-left" 
+                                   title="${contributorLabel}:${commenter.tagParticipantName}"
+                                   href="/member/${commenter.tagParticipantName}">
                                     <img class="avatar" src="${commenter.tagParticipantThumbnailURL}">
                                 </a>
                                 </#list>
