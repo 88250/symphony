@@ -12,7 +12,7 @@
     <ul>
         <#list tags as item>
         <li>
-            <a href="/tags/${item.tagTitle}">${item.tagTitle}</a> &nbsp;
+            <a href="/tags/${item.tagTitle?url('utf-8')}">${item.tagTitle}</a> &nbsp;
             <#if item.tagStatus == 0>
             ${validLabel}
             <#else>
