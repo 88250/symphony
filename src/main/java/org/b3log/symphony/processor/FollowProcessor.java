@@ -172,6 +172,8 @@ public class FollowProcessor {
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
 
         followMgmtService.followTag(followerUserId, followingTagId);
+
+        ret.put(Keys.STATUS_CODE, true);
     }
 
     /**
@@ -208,5 +210,7 @@ public class FollowProcessor {
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
 
         followMgmtService.removeFollow(followerUserId, followingTagId);
+
+        ret.put(Keys.STATUS_CODE, true);
     }
 }

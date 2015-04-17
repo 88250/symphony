@@ -18,7 +18,8 @@
  * 后台样式
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.3.0, Apr 3, 2014
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.3.1, Apr 17, 2015
  */
 /* start home side */
 .user-online {
@@ -185,6 +186,7 @@ h2.fn-inline {
     margin-right: 20px;
     padding-bottom: 20px;
     width: 335px;
+    height: 58px;
     list-style: none;
 }
 
@@ -203,19 +205,19 @@ h2.fn-inline {
 }
 
 .follow .user-online {
-    left: 60px;
-    top: 60px;
+    left: 45px;
+    top: 45px;
 }
 
 .follow img.avatar {
-    height: 75px;
-    width: 75px;
+    height: 60px;
+    width: 60px;
 }
 
 .follow button {
     font-size: 12px;
     padding: 2px 10px;
-    margin-top: 9px;
+    margin-top: 5px;
 }
 /* end follow */
 

@@ -34,6 +34,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
@@ -65,6 +66,12 @@ public class TagProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
+    /**
+     * Follow query service.
+     */
+    @Inject
+    private FollowQueryService followQueryService;
 
     /**
      * Filler.
@@ -115,6 +122,7 @@ public class TagProcessor {
 
         renderer.setTemplateName("tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeaderAndFooter(request, response, dataModel);
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -132,12 +140,21 @@ public class TagProcessor {
             return;
         }
 
-        final List<JSONObject> articles = articleQueryService.getArticlesByTag(tag, pageNum, pageSize);
-        dataModel.put(Article.ARTICLES, articles);
-
         dataModel.put(Tag.TAG, tag);
 
         final String tagId = tag.optString(Keys.OBJECT_ID);
+
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        if (isLoggedIn) {
+            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final String followerId = currentUser.optString(Keys.OBJECT_ID);
+
+            final boolean isFollowing = followQueryService.isFollowing(followerId, tagId);
+            dataModel.put(Common.IS_FOLLOWING, isFollowing);
+        }
+
+        final List<JSONObject> articles = articleQueryService.getArticlesByTag(tag, pageNum, pageSize);
+        dataModel.put(Article.ARTICLES, articles);
 
         final JSONObject tagCreator = tagQueryService.getCreator(tagId);
         tag.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, tagCreator.optString(Tag.TAG_T_CREATOR_THUMBNAIL_URL));
@@ -145,7 +162,7 @@ public class TagProcessor {
         tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(tagId, Symphonys.getInt("tagParticipantsCnt")));
 
         final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_CNT);
-        final int pageCount = (int) Math.ceil((double) tagRefCnt / (double) pageSize);
+        final int pageCount = (int) Math.ceil(tagRefCnt / (double) pageSize);
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {
@@ -157,7 +174,6 @@ public class TagProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);

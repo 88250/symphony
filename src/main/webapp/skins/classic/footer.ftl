@@ -44,6 +44,8 @@
     Util.init();
     var Label = {
         invalidPasswordLabel: "${invalidPasswordLabel}",
-        loginNameErrorLabel: "${loginNameErrorLabel}"
+        loginNameErrorLabel: "${loginNameErrorLabel}",
+        followLabel: "${followLabel}",
+        unfollowLabel: "${unfollowLabel}"
     };
 </script>

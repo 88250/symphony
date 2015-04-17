@@ -26,6 +26,17 @@
                                 <span class="icon icon-edit"></span>
                             </a>
                             </#if>
+                            <#if isLoggedIn> 
+                            <#if isFollowing>
+                            <button class="red fn-right" onclick="Util.unfollow(this, '${tag.oId}', 'tag')"> 
+                                ${unfollowLabel}
+                            </button>
+                            <#else>
+                            <button class="green fn-right" onclick="Util.follow(this, '${tag.oId}', 'tag')"> 
+                                ${followLabel}
+                            </button>
+                            </#if>
+                            </#if>
                         </div>
                         ${tag.tagDescription}
                     </div>
