@@ -515,6 +515,7 @@ public class ArticleMgmtService {
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
                 tag.put(Tag.TAG_COMMENT_CNT, articleCmtCnt);
+                tag.put(Tag.TAG_FOLLOWER_CNT, 0);
                 tag.put(Tag.TAG_DESCRIPTION, "");
                 tag.put(Tag.TAG_ICON_PATH, "");
                 tag.put(Tag.TAG_STATUS, 0);
@@ -542,6 +543,7 @@ public class ArticleMgmtService {
                 tagTmp.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + articleCmtCnt);
                 tagTmp.put(Tag.TAG_STATUS, tag.optInt(Tag.TAG_STATUS));
                 tagTmp.put(Tag.TAG_REFERENCE_CNT, tag.optInt(Tag.TAG_REFERENCE_CNT) + 1);
+                tagTmp.put(Tag.TAG_FOLLOWER_CNT, tag.optInt(Tag.TAG_FOLLOWER_CNT));
                 tagTmp.put(Tag.TAG_DESCRIPTION, tag.optString(Tag.TAG_DESCRIPTION));
                 tagTmp.put(Tag.TAG_ICON_PATH, tag.optString(Tag.TAG_ICON_PATH));
                 tagTmp.put(Tag.TAG_GOOD_CNT, tag.optInt(Tag.TAG_GOOD_CNT));

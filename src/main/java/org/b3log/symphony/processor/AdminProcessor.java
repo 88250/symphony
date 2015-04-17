@@ -629,12 +629,15 @@ public class AdminProcessor {
 
         final Map<String, Class<?>> tagFields = new HashMap<String, Class<?>>();
         tagFields.put(Keys.OBJECT_ID, String.class);
-        tagFields.put(Tag.TAG_COMMENT_CNT, String.class);
+        tagFields.put(Tag.TAG_TITLE, String.class);
         tagFields.put(Tag.TAG_DESCRIPTION, String.class);
         tagFields.put(Tag.TAG_ICON_PATH, String.class);
-        tagFields.put(Tag.TAG_REFERENCE_CNT, String.class);
-        tagFields.put(Tag.TAG_STATUS, String.class);
-        tagFields.put(Tag.TAG_TITLE, String.class);
+        tagFields.put(Tag.TAG_COMMENT_CNT, Integer.class);
+        tagFields.put(Tag.TAG_REFERENCE_CNT, Integer.class);
+        tagFields.put(Tag.TAG_FOLLOWER_CNT, Integer.class);
+        tagFields.put(Tag.TAG_STATUS, Integer.class);
+        tagFields.put(Tag.TAG_GOOD_CNT, Integer.class);
+        tagFields.put(Tag.TAG_BAD_CNT, Integer.class);
 
         final JSONObject result = tagQueryService.getTags(requestJSONObject, tagFields);
         dataModel.put(Tag.TAGS, CollectionUtils.jsonArrayToList(result.optJSONArray(Tag.TAGS)));

@@ -133,7 +133,7 @@ public class FollowProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
 
-        followMgmtService.removeFollow(followerUserId, followingUserId);
+        followMgmtService.unfollowUser(followerUserId, followingUserId);
 
         ret.put(Keys.STATUS_CODE, true);
     }
@@ -209,7 +209,7 @@ public class FollowProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
 
-        followMgmtService.removeFollow(followerUserId, followingTagId);
+        followMgmtService.unfollowTag(followerUserId, followingTagId);
 
         ret.put(Keys.STATUS_CODE, true);
     }

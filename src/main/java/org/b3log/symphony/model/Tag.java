@@ -50,6 +50,11 @@ public final class Tag {
     public static final String TAG_COMMENT_CNT = "tagCommentCount";
 
     /**
+     * Key of tag follower count.
+     */
+    public static final String TAG_FOLLOWER_CNT = "tagFollowerCount";
+
+    /**
      * Key of tag status.
      */
     public static final String TAG_STATUS = "tagStatus";

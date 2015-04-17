@@ -14,6 +14,9 @@
 
             <label for="tagCommentCount">${commentCountLabel}</label>
             <input type="text" id="tagCommentCount" name="tagCommentCount" value="${tag.tagCommentCount}" readonly="readonly" />
+
+            <label for="tagFollowerCount">${followerCountLabel}</label>
+            <input type="text" id="tagFollowerCount" name="tagFollowerCount" value="${tag.tagFollowerCount}" />
         </div>
     </div>
     <div class="module">

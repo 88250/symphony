@@ -131,6 +131,10 @@
                     "type": "int"
                 },
                 {
+                    "name": "tagFollowerCount",
+                    "type": "int"
+                },
+                {
                     "name": "tagTitle",
                     "type": "String",
                     "length": 50

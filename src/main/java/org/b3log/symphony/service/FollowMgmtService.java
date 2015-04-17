@@ -23,14 +23,16 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.FollowRepository;
+import org.b3log.symphony.repository.TagRepository;
 import org.json.JSONObject;
 
 /**
  * Follow management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 28, 2013
+ * @version 1.1.0.0, Apr 17, 2015
  * @since 0.2.5
  */
 @Service
@@ -46,6 +48,12 @@ public class FollowMgmtService {
      */
     @Inject
     private FollowRepository followRepository;
+
+    /**
+     * Tag repository.
+     */
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * The specified follower follows the specified following tag.
@@ -86,6 +94,44 @@ public class FollowMgmtService {
     }
 
     /**
+     * The specified follower unfollows the specified following user.
+     *
+     * @param followerId the specified follower id
+     * @param followingUserId the specified following user id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void unfollowUser(final String followerId, final String followingUserId) throws ServiceException {
+        try {
+            unfollow(followerId, followingUserId, Follow.FOLLOWING_TYPE_C_USER);
+        } catch (final RepositoryException e) {
+            final String msg = "User[id=" + followerId + "] unfollows an user[id=" + followingUserId + "] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
+     * The specified follower unfollows the specified following tag.
+     *
+     * @param followerId the specified follower id
+     * @param followingTagId the specified following tag id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void unfollowTag(final String followerId, final String followingTagId) throws ServiceException {
+        try {
+            unfollow(followerId, followingTagId, Follow.FOLLOWING_TYPE_C_TAG);
+        } catch (final RepositoryException e) {
+            final String msg = "User[id=" + followerId + "] unfollows a tag[id=" + followingTagId + "] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
      * The specified follower follows the specified following entity with the specified following type.
      *
      * @param followerId the specified follower id
@@ -96,6 +142,19 @@ public class FollowMgmtService {
     private void follow(final String followerId, final String followingId, final int followingType) throws RepositoryException {
         if (followRepository.exists(followerId, followingId)) {
             return;
+        }
+
+        if (Follow.FOLLOWING_TYPE_C_TAG == followingType) {
+            final JSONObject tag = tagRepository.get(followingId);
+            if (null == tag) {
+                LOGGER.log(Level.ERROR, "Not found tag [id={0}] to follow", followingId);
+
+                return;
+            }
+
+            tag.put(Tag.TAG_FOLLOWER_CNT, tag.optInt(Tag.TAG_FOLLOWER_CNT) + 1);
+
+            tagRepository.update(followingId, tag);
         }
 
         final JSONObject follow = new JSONObject();
@@ -111,14 +170,23 @@ public class FollowMgmtService {
      *
      * @param followerId the specified follower id
      * @param followingId the specified following entity id
-     * @throws ServiceException service exception
+     * @param followingType the specified following type
+     * @throws RepositoryException repository exception
      */
-    @Transactional
-    public void removeFollow(final String followerId, final String followingId) throws ServiceException {
-        try {
-            followRepository.removeByFollowerIdAndFollowingId(followerId, followingId);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Removes a follow[folowerId=" + followerId + ", followingId=" + followingId + "] failed", e);
+    public void unfollow(final String followerId, final String followingId, final int followingType) throws RepositoryException {
+        followRepository.removeByFollowerIdAndFollowingId(followerId, followingId);
+
+        if (Follow.FOLLOWING_TYPE_C_TAG == followingType) {
+            final JSONObject tag = tagRepository.get(followingId);
+            if (null == tag) {
+                LOGGER.log(Level.ERROR, "Not found tag [id={0}] to follow", followingId);
+
+                return;
+            }
+
+            tag.put(Tag.TAG_FOLLOWER_CNT, tag.optInt(Tag.TAG_FOLLOWER_CNT) - 1);
+
+            tagRepository.update(followingId, tag);
         }
     }
 }
