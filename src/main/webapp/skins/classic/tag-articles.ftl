@@ -20,7 +20,7 @@
                         <img class="avatar tag-article-img" src="${staticServePath}/images/tags/${tag.tagIconPath}">
                         </#if>
                         <div>
-                            <h1<#if isAdminLoggedIn> style="display: inline;"</#if>><a rel="tag" title="${tag.tagTitle?url('UTF-8')}" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
+                            <h1 style="display: inline;"><a rel="tag" title="${tag.tagTitle?url('UTF-8')}" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h1>
                             <#if isAdminLoggedIn>
                             <a href="${servePath}/admin/tag/${tag.oId}" title="${editLabel}">
                                 <span class="icon icon-edit"></span>
