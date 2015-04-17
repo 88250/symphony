@@ -178,13 +178,18 @@
     word-wrap: normal;
 }
 
+.tags > li > span > a {
+    text-decoration: none;
+}
+
 .tags > li:hover > span {
     background-color: #F7F7F7;
     border-color: #DDDDDD;
+    border-bottom-style: dotted;
     border-radius: 3px 3px 0 0;
     opacity: 0.9;
     filter: alpha(opacity=90);
-    z-index: 1;
+    z-index: 3;
 }
 
 .tags > li > span > img {
@@ -197,8 +202,7 @@
 .tags > li > div {
     background-color: #F7F7F7;
     border: 1px solid #DDDDDD;
-    border-top-style: dotted;
-    border-radius: 0 0 3px 3px;
+    border-radius: 3px 0 3px 3px;
     display: none;
     right: 0;
     margin-left: 3px;
@@ -208,6 +212,7 @@
     z-index: 2;
     opacity: 0.9;
     filter: alpha(opacity=90);
+    width: 260px;
 }
 /* end side tags */
 
