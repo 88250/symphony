@@ -61,10 +61,10 @@
                 <label for="articleStatus">${articleStatusLabel}</label>
                 <input type="text" id="articleStatus" name="articleStatus" value="${article.articleStatus}" />
                 
-                <label for="articleGoodCnt">${articleGoodCntLabel}</label>
+                <label for="articleGoodCnt">${goodCntLabel}</label>
                 <input type="text" id="articleGoodCnt" name="articleGoodCnt" value="${article.articleGoodCnt}" />
                 
-                <label for="articleBadCnt">${articleBadCntLabel}</label>
+                <label for="articleBadCnt">${badCntLabel}</label>
                 <input type="text" id="articleBadCnt" name="articleBadCnt" value="${article.articleBadCnt}" />
 
                 <br/><br/>

@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Mar 5, 2013
+ * @version 1.0.0.8, Apr 17, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -148,7 +148,7 @@ public class CommentProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.ERROR, "Adds comment failed", e);
+            LOGGER.log(Level.ERROR, msg);
 
             ret.put(Keys.MSG, msg);
         }

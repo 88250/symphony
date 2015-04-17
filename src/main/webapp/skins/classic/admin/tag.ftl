@@ -34,6 +34,12 @@
                 <label for="tagStatus">${tagStatusLabel}</label>
                 <input type="text" id="tagStatus" name="tagStatus" value="${tag.tagStatus}" />
 
+                <label for="tagGoodCnt">${goodCntLabel}</label>
+                <input type="text" id="tagGoodCnt" name="tagGoodCnt" value="${tag.tagGoodCnt}" />
+
+                <label for="tagBadCnt">${badCntLabel}</label>
+                <input type="text" id="tagBadCnt" name="tagBadCnt" value="${tag.tagBadCnt}" />
+
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>

@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.0.2.1, Apr 14, 2015",
+    "version": "1.1.2.1, Apr 17, 2015",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
@@ -149,6 +149,16 @@
                     "name": "tagStatus",
                     "type": "int",
                     "description": "0: valid, 1: invalid"
+                },
+                {
+                    "name": "tagGoodCnt",
+                    "description": "Favour count",
+                    "type": "int"
+                },
+                {
+                    "name": "tagBadCnt",
+                    "description": "Oppose count",
+                    "type": "int"
                 }
             ]
         },
