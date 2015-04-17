@@ -675,7 +675,8 @@ public class ArticleQueryService {
             // XXX: [Performance Issue] genArticleContentUserName
             final Set<String> userNames = userQueryService.getUserNames(articleContent);
             for (final String userName : userNames) {
-                articleContent = articleContent.replace('@' + userName, "@<a href='/member/" + userName + "'>" + userName + "</a>");
+                articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
+                                                                        + "/member/" + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
             final String errMsg = "Generates @username home URL for article content failed";
