@@ -11,7 +11,7 @@
         <#list tags as item>
         <li>
             <div class="fn-clear first">
-                <a href="/tags/${item.tagTitle}">${item.tagTitle}</a> &nbsp;
+                <a href="/tags/${item.tagTitle?url('utf-8')}">${item.tagTitle}</a> &nbsp;
                 <#if item.tagStatus == 0>
                 <span class="ft-small">${validLabel}</span>
                 <#else>
