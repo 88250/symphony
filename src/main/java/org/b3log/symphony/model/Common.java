@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.9, Apr 16, 2015
+ * @version 1.2.1.9, Apr 17, 2015
  * @since 0.2.0
  */
 public final class Common {
@@ -53,7 +53,7 @@ public final class Common {
      * Key of is logged in.
      */
     public static final String IS_LOGGED_IN = "isLoggedIn";
-    
+
     /**
      * Key of is admin.
      */
@@ -88,7 +88,7 @@ public final class Common {
      * Key of side tags.
      */
     public static final String SIDE_TAGS = "sideTags";
-    
+
     /**
      * Key of navigation trend tags.
      */
@@ -143,6 +143,11 @@ public final class Common {
      * Key of user home following users.
      */
     public static final String USER_HOME_FOLLOWING_USERS = "userHomeFollowingUsers";
+
+    /**
+     * Key of user home following tags.
+     */
+    public static final String USER_HOME_FOLLOWING_TAGS = "userHomeFollowingTags";
 
     /**
      * Key of user home follower users.

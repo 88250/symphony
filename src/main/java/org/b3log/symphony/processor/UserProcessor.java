@@ -70,6 +70,7 @@ import org.json.JSONObject;
  * <li>User articles (/member/{userName}), GET</li>
  * <li>User comments (/member/{userName}/comments), GET</li>
  * <li>User comments (/member/{userName}/following/users), GET</li>
+ * <li>User comments (/member/{userName}/following/tags), GET</li>
  * <li>User comments (/member/{userName}/followers), GET</li>
  * <li>Settings (/settings), GET</li>
  * <li>Profiles (/settings/profiles), POST</li>
@@ -80,7 +81,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.8, Apr 8, 2015
+ * @version 1.2.1.8, Apr 17, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -347,6 +348,79 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
     }
+    
+     /**
+     * Shows user home following tags page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userName the specified user name
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/member/{userName}/following/tags", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = UserBlockCheck.class)
+    public void showHomeFollowingTags(final HTTPRequestContext context, final HttpServletRequest request,
+                                       final HttpServletResponse response, final String userName) throws Exception {
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/following-tags.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeaderAndFooter(request, response, dataModel);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("userHomeFollowingTagsCnt");
+        final int windowSize = Symphonys.getInt("userHomeFollowingTagsWindowSize");
+
+        dataModel.put(User.USER, user);
+
+        final String followingId = user.optString(Keys.OBJECT_ID);
+        dataModel.put(Follow.FOLLOWING_ID, followingId);
+        filler.fillUserThumbnailURL(user);
+
+        final JSONObject followingTagsResult = followQueryService.getFollowingTags(followingId, pageNum, pageSize);
+        final List<JSONObject> followingTags = (List<JSONObject>) followingTagsResult.opt(Keys.RESULTS);
+        dataModel.put(Common.USER_HOME_FOLLOWING_TAGS, followingTags);
+
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        if (isLoggedIn) {
+            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final String followerId = currentUser.optString(Keys.OBJECT_ID);
+
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            dataModel.put(Common.IS_FOLLOWING, isFollowing);
+
+            for (final JSONObject followingTag : followingTags) {
+                final String homeUserFollowingTagId = followingTag.optString(Keys.OBJECT_ID);
+
+                followingTag.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingTagId));
+            }
+        }
+
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+
+        final int followingTagCnt = followingTagsResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil(followingTagCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+    }
+
 
     /**
      * Shows user home follower users page.

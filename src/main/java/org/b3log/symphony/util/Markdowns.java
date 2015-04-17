@@ -62,10 +62,9 @@ public final class Markdowns {
         final Document.OutputSettings outputSettings = new Document.OutputSettings();
         outputSettings.prettyPrint(false);
 
-        final String tmp = Jsoup.clean(content,
-                                       baseURI, Whitelist.relaxed().addAttributes(":all", "id", "target", "class", "style").addTags("span").
-                                       addTags("hr").addTags("iframe").addAttributes("iframe", "src", "width", "height"),
-                                       outputSettings);
+        final String tmp = Jsoup.clean(content, baseURI, Whitelist.relaxed().
+                                       addAttributes(":all", "id", "target", "class", "style").
+                                       addTags("span", "hr").addAttributes("iframe", "src", "width", "height"), outputSettings);
         final Document doc = Jsoup.parse(tmp, baseURI, Parser.xmlParser());
         final Elements iframes = doc.getElementsByTag("iframe");
 

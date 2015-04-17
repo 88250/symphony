@@ -6,11 +6,11 @@
             <a href="/member/${user.userName}">${user.userName}</a><br/>
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>
-            <button class="red" onclick="Util.unfollow(this, '${followingId}')"> 
+            <button class="red" onclick="Util.unfollow(this, '${followingId}', 'user')"> 
                 ${unfollowLabel}
             </button>
             <#else>
-            <button class="green" onclick="Util.follow(this, '${followingId}')"> 
+            <button class="green" onclick="Util.follow(this, '${followingId}', 'user')"> 
                 ${followLabel}
             </button>
             </#if>

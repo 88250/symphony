@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.6, Apr 4, 2015
+ * @version 1.2.2.6, Apr 17, 2015
  */
 
 /**
@@ -30,8 +30,9 @@ var Util = {
      * @description 关注
      * @param {BOM} it 触发事件的元素
      * @param {String} id 关注 id
+     * @param {String} type 取消关注的类型
      */
-    follow: function(it, id) {
+    follow: function (it, id, type) {
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -43,14 +44,14 @@ var Util = {
         $(it).addClass("disabled");
 
         $.ajax({
-            url: "/follow/user",
+            url: "/follow/" + type,
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeClass("disabled").removeClass("green").addClass("red")
-                            .attr("onclick", "Util.unfollow(this, '" + id + "')")
+                            .attr("onclick", "Util.unfollow(this, '" + id + "', 'user')")
                             .text(Label.unfollowLabel);
                 }
             }
@@ -60,7 +61,7 @@ var Util = {
      * @description 取消关注     
      * @param {String} type 取消关注的类型
      */
-    unfollow: function(it, id) {
+    unfollow: function (it, id, type) {
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -72,14 +73,14 @@ var Util = {
         $(it).addClass("disabled");
 
         $.ajax({
-            url: "/follow/user",
+            url: "/follow/" + type,
             type: "DELETE",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeClass("disabled").removeClass("red").addClass("green")
-                            .attr("onclick", "Util.follow(this, '" + id + "')")
+                            .attr("onclick", "Util.follow(this, '" + id + "', 'user')")
                             .text(Label.followLabel);
                 }
             }
@@ -88,7 +89,7 @@ var Util = {
     /**
      * @description 回到顶部
      */
-    goTop: function() {
+    goTop: function () {
         var acceleration = acceleration || 0.1;
         var y = $(window).scrollTop();
         var speed = 1 + acceleration;
@@ -101,26 +102,26 @@ var Util = {
     /**
      * @description 页面初始化执行的函数 
      */
-    showLogin: function() {
+    showLogin: function () {
         $(".nav .form").slideToggle();
         $("#nameOrEmail").focus();
     },
     /**
      * @description 跳转到注册页面
      */
-    goRegister: function() {
+    goRegister: function () {
         window.location = "/register?goto=" + encodeURIComponent(location.href);
     },
     /**
      * @description 禁止 IE7 以下浏览器访问
      */
-    _kill: function() {
+    _kill: function () {
         if ($.browser.msie && parseInt($.browser.version) < 8) {
             $.ajax({
                 url: "/kill-browser",
                 type: "GET",
                 cache: false,
-                success: function(result, textStatus) {
+                success: function (result, textStatus) {
                     $("body").append(result);
                     $("#killBrowser").dialog({
                         "modal": true,
@@ -137,7 +138,7 @@ var Util = {
     /**
      * @description 初识化前台页面
      */
-    init: function() {
+    init: function () {
         //禁止 IE7 以下浏览器访问
         this._kill();
 
@@ -145,7 +146,7 @@ var Util = {
         this._initNav();
 
         // 登录密码输入框回车事件
-        $("#loginPassword").keyup(function(event) {
+        $("#loginPassword").keyup(function (event) {
             if (event.keyCode === 13) {
                 Util.login();
             }
@@ -153,14 +154,14 @@ var Util = {
 
         // search input
         $(".nav .icon-search").click(function () {
-             $(".nav input.search").focus();
+            $(".nav input.search").focus();
         });
-        $(".nav input.search").focus(function() {
+        $(".nav input.search").focus(function () {
             $(".nav .tags").hide();
-        }).blur(function() {
+        }).blur(function () {
             $(".nav .tags").show("slow");
         });
-        $(window).scroll(function() {
+        $(window).scroll(function () {
             if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
                 $(".icon-up").css({
                     "background-color": "#F8F8F8",
@@ -181,9 +182,9 @@ var Util = {
     /**
      * @description 设置导航状态
      */
-    _initNav: function() {
+    _initNav: function () {
         var pathname = location.pathname;
-        $(".nav .user-nav > a").each(function() {
+        $(".nav .user-nav > a").each(function () {
             if (pathname.indexOf("/notifications/") > -1) {
                 // 提醒下面有四个页面
                 $("#aNotifications").addClass("current");
@@ -199,7 +200,7 @@ var Util = {
     /**
      * @description 登录
      */
-    login: function() {
+    login: function () {
         if (Validate.goValidate([{
                 "id": "nameOrEmail",
                 "type": 256,
@@ -218,14 +219,14 @@ var Util = {
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus) {
+                success: function (result, textStatus) {
                     if (result.sc) {
                         window.location.reload();
                     } else {
                         $("#loginTip").text(result.msg).addClass("tip-error");
                     }
                 },
-                complete: function(jqXHR, textStatus) {
+                complete: function (jqXHR, textStatus) {
                 }
             });
         }
@@ -241,7 +242,7 @@ var Validate = {
      * @param {array} data 验证数据
      * @returns 验证通过返回 true，否则为 false。 
      */
-    goValidate: function(data) {
+    goValidate: function (data) {
         for (var j = 0; j < data.length; j++) {
             var $it = $("#" + data[j].id);
             for (var i = 0; i < data.length; i++) {
@@ -270,7 +271,7 @@ var Validate = {
      * @param {string} val 待验证数据 
      * @returns 验证通过返回 true，否则为 false。 
      */
-    validate: function(type, val) {
+    validate: function (type, val) {
         var isValidate = true;
         if (typeof (type) === "string" && type.indexOf("|") > -1) {
             var passwordId = type.split("|")[1];
@@ -350,7 +351,7 @@ if (!Cookie) {
          * @param {String} name cookie key
          * @returns {String} 对应 key 的值，如 key 不存在则返回 ""
          */
-        readCookie: function(name) {
+        readCookie: function (name) {
             var nameEQ = name + "=";
             var ca = document.cookie.split(';');
             for (var i = 0; i < ca.length; i++) {
@@ -366,7 +367,7 @@ if (!Cookie) {
          * @description 清除 Cookie
          * @param {String} name 清除 key 为 name 的该条 Cookie
          */
-        eraseCookie: function(name) {
+        eraseCookie: function (name) {
             this.createCookie(name, "", -1);
         },
         /**
@@ -375,7 +376,7 @@ if (!Cookie) {
          * @param {String} value 每条 Cookie 对应的值
          * @param {Int} days Cookie 保存时间
          */
-        createCookie: function(name, value, days) {
+        createCookie: function (name, value, days) {
             var expires = "";
             if (days) {
                 var date = new Date();

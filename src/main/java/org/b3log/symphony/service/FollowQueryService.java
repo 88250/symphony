@@ -35,6 +35,7 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.repository.FollowRepository;
+import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Filler;
 import org.json.JSONObject;
@@ -43,7 +44,7 @@ import org.json.JSONObject;
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Nov 11, 2013
+ * @version 1.1.0.1, Apr 17, 2015
  * @since 0.2.5
  */
 @Service
@@ -65,6 +66,12 @@ public class FollowQueryService {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Tag repository.
+     */
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Filler.
@@ -108,8 +115,7 @@ public class FollowQueryService {
      *
      * @throws ServiceException service exception
      */
-    public JSONObject getFollowingUsers(final String followerId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public JSONObject getFollowingUsers(final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> records = new ArrayList<JSONObject>();
 
@@ -139,7 +145,57 @@ public class FollowQueryService {
             ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets following users of follower[id=" + followerId + "] failed", e);
+        }
 
+        return ret;
+    }
+
+    /**
+     * Gets following tags of the specified follower.
+     *
+     * @param followerId the specified follower id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return result json object, for example,
+     * <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         Tag
+     *     }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    public JSONObject getFollowingTags(final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> records = new ArrayList<JSONObject>();
+
+        ret.put(Keys.RESULTS, (Object) records);
+        ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
+
+        try {
+            final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_TAG, currentPageNum, pageSize);
+            @SuppressWarnings("unchecked")
+            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
+
+            for (final JSONObject follow : followings) {
+                final String followingId = follow.optString(Follow.FOLLOWING_ID);
+                final JSONObject tag = tagRepository.get(followingId);
+
+                if (null == tag) {
+                    LOGGER.log(Level.WARN, "Not found tag[id=" + followingId + ']');
+
+                    continue;
+                }
+
+                records.add(tag);
+            }
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets following tags of follower[id=" + followerId + "] failed", e);
         }
 
         return ret;

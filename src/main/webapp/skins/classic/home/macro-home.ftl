@@ -10,23 +10,23 @@
         </@head>
         <#elseif type == "comments">
         <@head title="${user.userName} - ${cmtLabel}">
-        <meta name="keywords" content="${user.userName},${cmtLabel}"/>
-        <meta name="description" content="${user.userName}${deLabel}${cmtLabel},${cmtLabel} by ${user.userName}"/>
+        <meta name="description" content="${user.userName}${deLabel}${cmtLabel}"/>
         </@head>
         <#elseif type == "followingUsers">
         <@head title="${user.userName} - ${followingUsersLabel}">
-        <meta name="keywords" content="${user.userName},${followingUsersLabel}"/>
-        <meta name="description" content="${user.userName}${deLabel}${followingUsersLabel},${followingUsersLabel} by ${user.userName}"/>
+        <meta name="description" content="${user.userName}${deLabel}${followingUsersLabel}"/>
+        </@head>
+        <#elseif type == "followingTags">
+        <@head title="${user.userName} - ${followingTagsLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${followingTagsLabel}"/>
         </@head>
         <#elseif type == "followers">
         <@head title="${user.userName} - ${followersLabel}">
-        <meta name="keywords" content="${user.userName},${followersLabel}"/>
-        <meta name="description" content="${user.userName}${deLabel}${followersLabel},${followersLabel} by ${user.userName}"/>
+        <meta name="description" content="${user.userName}${deLabel}${followersLabel}"/>
         </@head>
         <#elseif type == "settings">
         <@head title="${user.userName} - ${settingsLabel}">
-        <meta name="keywords" content="${user.userName},${settingsLabel}"/>
-        <meta name="description" content="${user.userName}${deLabel}${settingsLabel},${settingsLabel} by ${user.userName}"/>
+        <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
@@ -45,6 +45,9 @@
                         </li>
                         <li<#if type == "followingUsers"> class="current"</#if>>
                             <a href="/member/${user.userName}/following/users">${followingUsersLabel}</a>
+                        </li>
+                        <li<#if type == "followingTags"> class="current"</#if>>
+                            <a href="/member/${user.userName}/following/tags">${followingTagsLabel}</a>
                         </li>
                         <li<#if type == "followers"> class="current"</#if>>
                             <a href="/member/${user.userName}/followers">${followersLabel}</a>

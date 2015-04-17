@@ -55,7 +55,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.15, Apr 3, 2015
+ * @version 1.1.2.15, Apr 17, 2015
  * @since 0.2.0
  */
 @Service
@@ -514,6 +514,7 @@ public class CommentQueryService {
         commentContent = Emotions.convert(commentContent);
 
         commentContent = Markdowns.toHTML(commentContent);
+        commentContent = Markdowns.clean(commentContent, "");
 
         comment.put(Comment.COMMENT_CONTENT, commentContent);
     }
