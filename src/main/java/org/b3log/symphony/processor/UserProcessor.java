@@ -348,8 +348,8 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
     }
-    
-     /**
+
+    /**
      * Shows user home following tags page.
      *
      * @param context the specified context
@@ -361,7 +361,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/following/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeFollowingTags(final HTTPRequestContext context, final HttpServletRequest request,
-                                       final HttpServletResponse response, final String userName) throws Exception {
+                                      final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -381,9 +381,13 @@ public class UserProcessor {
         final int windowSize = Symphonys.getInt("userHomeFollowingTagsWindowSize");
 
         dataModel.put(User.USER, user);
+
+        final String followingId = user.optString(Keys.OBJECT_ID);
+        dataModel.put(Follow.FOLLOWING_ID, followingId);
         filler.fillUserThumbnailURL(user);
 
-        final String followerId = user.optString(Keys.OBJECT_ID);
+        final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+        final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
         final JSONObject followingTagsResult = followQueryService.getFollowingTags(followerId, pageNum, pageSize);
         final List<JSONObject> followingTags = (List<JSONObject>) followingTagsResult.opt(Keys.RESULTS);
@@ -391,6 +395,9 @@ public class UserProcessor {
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            dataModel.put(Common.IS_FOLLOWING, isFollowing);
+
             for (final JSONObject followingTag : followingTags) {
                 final String homeUserFollowingTagId = followingTag.optString(Keys.OBJECT_ID);
 
@@ -413,7 +420,6 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
     }
-
 
     /**
      * Shows user home follower users page.

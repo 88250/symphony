@@ -34,9 +34,6 @@
         <maven-surefire-plugin.version>2.9</maven-surefire-plugin.version>
         <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
         <maven-checkstyle-plugin.version>2.15</maven-checkstyle-plugin.version>
-        <maven-javancss-plugin.version>2.0</maven-javancss-plugin.version>
-        <maven-javadoc-plugin.version>2.7</maven-javadoc-plugin.version>
-        <maven-cobertura-plugin.version>2.5.1</maven-cobertura-plugin.version>
         <maven-min-plugin.version>1.0.0</maven-min-plugin.version>
         <!-- Unit Test -->
         <testng.version>6.1.1</testng.version>
