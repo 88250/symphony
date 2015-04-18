@@ -6,11 +6,15 @@
         <#list userHomeFollowingTags as followingTag>
         <li<#if followingTag_index % 2 = 1> class="even"</#if>>
             <#if "" != followingTag.tagIconPath>
-            <img class="avatar tag-article-img" src="${staticServePath}/images/tags/${followingTag.tagIconPath}">
+            <a href="/tags/${followingTag.tagTitle?url('utf-8')}">
+                <img title="${followingTag.tagTitle}" class="avatar tag-article-img" src="${staticServePath}/images/tags/${followingTag.tagIconPath}">
+            </a>
+            <#else>
+            <a class="icon-edit-wrap" href="/tags/${followingTag.tagTitle?url('utf-8')}"><span class="icon icon-tags" style="font-size: 60px;"></span></a>
             </#if>
             <div>
                 <h3>
-                    <a rel="nofollow" href="/tags/${followingTag.tagTitle?url('utf-8')}" >${followingTag.tagTitle}</a>
+                    <a href="/tags/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
                 </h3>
 
                 <span class="ft-small">${referenceLabel}</span> ${followingTag.tagReferenceCount}

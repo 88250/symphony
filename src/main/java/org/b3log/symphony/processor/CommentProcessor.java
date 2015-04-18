@@ -147,10 +147,7 @@ public class CommentProcessor {
             commentMgmtService.addComment(comment);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            final String msg = e.getMessage();
-            LOGGER.log(Level.ERROR, msg);
-
-            ret.put(Keys.MSG, msg);
+            ret.put(Keys.MSG, e.getMessage());
         }
     }
 
