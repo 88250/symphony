@@ -386,15 +386,15 @@ public class UserProcessor {
         dataModel.put(Follow.FOLLOWING_ID, followingId);
         filler.fillUserThumbnailURL(user);
 
-        final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
-        final String followerId = currentUser.optString(Keys.OBJECT_ID);
-
-        final JSONObject followingTagsResult = followQueryService.getFollowingTags(followerId, pageNum, pageSize);
+        final JSONObject followingTagsResult = followQueryService.getFollowingTags(followingId, pageNum, pageSize);
         final List<JSONObject> followingTags = (List<JSONObject>) followingTagsResult.opt(Keys.RESULTS);
         dataModel.put(Common.USER_HOME_FOLLOWING_TAGS, followingTags);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
+            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final String followerId = currentUser.optString(Keys.OBJECT_ID);
+
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
 
