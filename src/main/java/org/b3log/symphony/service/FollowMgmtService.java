@@ -86,7 +86,7 @@ public class FollowMgmtService {
         try {
             follow(followerId, followingUserId, Follow.FOLLOWING_TYPE_C_USER);
         } catch (final RepositoryException e) {
-            final String msg = "User[id=" + followerId + "] follows an user[id=" + followingUserId + "] failed";
+            final String msg = "User[id=" + followerId + "] follows a user[id=" + followingUserId + "] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -105,7 +105,7 @@ public class FollowMgmtService {
         try {
             unfollow(followerId, followingUserId, Follow.FOLLOWING_TYPE_C_USER);
         } catch (final RepositoryException e) {
-            final String msg = "User[id=" + followerId + "] unfollows an user[id=" + followingUserId + "] failed";
+            final String msg = "User[id=" + followerId + "] unfollows a user[id=" + followingUserId + "] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);

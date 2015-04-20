@@ -85,7 +85,7 @@ public class NotificationQueryService {
     private UserRepository userRepository;
 
     /**
-     * Gets the count of unread notifications of an user specified with the given user id.
+     * Gets the count of unread notifications of a user specified with the given user id.
      *
      * @param userId the given user id
      * @return count of unread notifications, returns {@code 0} if occurs exception
@@ -112,7 +112,7 @@ public class NotificationQueryService {
     }
 
     /**
-     * Gets the count of unread notifications with the specified data of an user specified with the given user id.
+     * Gets the count of unread notifications with the specified data of a user specified with the given user id.
      *
      * @param userId the given user id
      * @param notificationDataType the specified notification data type

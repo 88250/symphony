@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Apr 10, 2015
+ * @version 1.0.0.8, Apr 20, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -160,6 +160,8 @@ public class LoginProcessor {
             userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
 
             ret.put(Keys.STATUS_CODE, true);
+
+            LOGGER.log(Level.INFO, "Created a user [name={0}, email={1}]", name, email);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
