@@ -21,29 +21,29 @@
                         美妙而动听的音乐可能是一个人的独奏，也可以是一种很有感觉的节奏，亦或者是一场宏伟的交响乐。B3log 将以不同的方式为您呈现出同样优美的旋律。
                     </p>
                     <p>
-                        悦耳的音乐至少有三部分构成：不同乐器的演奏、统一的节奏配合，最终编曲合成。B3log 系服务基于此观念，诞生了三个产品：
+                        悦耳的音乐至少有三部分构成：不同乐器的演奏、统一的节奏配合，最终编曲合成。B3log 系列服务基于此观念，诞生了三个产品：
                     </p>
                     <ul>
                         <li>
-                            Solo 是<a href="http://www.iciba.com/solo">独奏</a>。
-                            <a href="https://github.com/b3log/b3log-solo">B3log Solo</a> 
-                            是一个独立的个人博客程序，在音乐中相当于乐手各自所拿的乐器，使用它来演奏不同的声音。
+                            Solo 是<a href="http://www.iciba.com/solo">独奏</a>，
+                            <a href="https://github.com/b3log/b3log-solo">Solo</a> 
+                            也是一个独立的个人博客系统，在音乐中相当于乐手各自所拿的乐器，使用它来演奏不同的声音。
                         </li>
                         <li>
                             Rhythm 是<a href="http://www.iciba.com/rhythm">节奏</a>，相当于音乐中节拍器控制的节奏。
-                            <a href="https://github.com/b3log/b3log-rhythm">B3log Rhythm</a> 
-                            是用来处理不同博客和社区服务之间的同步，以避免在交响乐中乱了节奏。
+                            <a href="https://github.com/b3log/b3log-rhythm">Rhythm</a> 
+                            用来处理不同博客和社区服务之间的同步，以避免在交响乐中乱了节奏。
                         </li>
                         <li>
                             Symphony 是<a href="http://www.iciba.com/symphony">交响乐</a>。
-                            <a href="https://github.com/b3log/b3log-symphony">B3log Symphony</a> 
+                            <a href="https://github.com/b3log/b3log-symphony">Symphony</a> 
                             以论坛的方式交互，汇总个人博客，需要很多人协同参与才能奏出美妙的乐章。
                         </li>
                     </ul>
                     <p>
                         B3log 名字
                         <a href="http://88250.b3log.org/articles/2009/12/09/1260370800000.html">来源于</a>
-                        "Bulletin Board Blog"缩写，目标是将个人<i>独立博客</i>与论坛结合，形成一种<i>新的网络社区体验</i>。
+                        “Bulletin Board Blog”缩写，目标是将个人<i>独立博客</i>与论坛结合，形成一种<i>新的网络社区体验</i>。
                     </p>
                     <br/>
                     <h3>独立博客</h3>
@@ -84,7 +84,7 @@
                     <br/>
                     <h3>Solo</h3>
                     <p>
-                        从功能上看，Solo 是一个开源的 Java 博客程序，是一个轻量、简洁的写作环境。
+                        从功能上看，Solo 是一个开源的 Java 博客系统，是一个轻量、简洁的写作环境。
                     </p>
                     <p>
                         目前支持部署在 
