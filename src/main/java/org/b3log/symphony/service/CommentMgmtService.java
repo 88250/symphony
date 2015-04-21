@@ -22,6 +22,7 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
@@ -48,7 +49,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.14, Apr 21, 2015
+ * @version 1.2.1.15, Apr 21, 2015
  * @since 0.2.0
  */
 @Service
@@ -141,13 +142,15 @@ public class CommentMgmtService {
             final JSONObject commenter = requestJSONObject.optJSONObject(Comment.COMMENT_T_COMMENTER);
 
             final long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")) {
+            if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
+                && !Role.ADMIN_ROLE.equals(commenter.optString(User.USER_ROLE))
+                && !UserExt.DEFAULT_CMTER_ROLE.equals(commenter.optString(User.USER_ROLE))) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
 
                 LOGGER.log(Level.WARN, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
-                throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
+                throw new ServiceException(langPropsService.get("tooFrequentCmtLabel"));
             }
 
             final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);

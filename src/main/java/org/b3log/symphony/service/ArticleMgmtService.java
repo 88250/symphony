@@ -25,6 +25,7 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
@@ -52,7 +53,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.5, Apr 21, 2015
+ * @version 1.1.1.6, Apr 21, 2015
  * @since 0.2.0
  */
 @Service
@@ -186,7 +187,8 @@ public class ArticleMgmtService {
             final String authorId = requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userRepository.get(authorId);
             final long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")) {
+            if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")
+                    && !Role.ADMIN_ROLE.equals(author.optString(User.USER_ROLE))) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
