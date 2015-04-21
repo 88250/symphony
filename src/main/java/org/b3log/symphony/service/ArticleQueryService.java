@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.10, Apr 14, 2015
+ * @version 1.2.0.11, Apr 20, 2015
  * @since 0.2.0
  */
 @Service
@@ -785,9 +785,9 @@ public class ArticleQueryService {
      * @param article the specified article content
      */
     private void markdown(final JSONObject article) {
-        String content = langPropsService.get("markdownErrorLabel");
+        String content = article.optString(Article.ARTICLE_CONTENT);
 
-        content = Markdowns.toHTML(article.optString(Article.ARTICLE_CONTENT));
+        content = Markdowns.toHTML(content);
         content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
 
         article.put(Article.ARTICLE_CONTENT, content);

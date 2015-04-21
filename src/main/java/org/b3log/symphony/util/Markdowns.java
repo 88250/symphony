@@ -17,12 +17,8 @@ package org.b3log.symphony.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,7 +37,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Apr 8, 2015
+ * @version 1.2.0.7, Apr 20, 2015
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -98,10 +94,7 @@ public final class Markdowns {
         } catch (final ParseException e) {
             LOGGER.log(Level.ERROR, "Markdown error[text={0}]", markdownText);
 
-            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-            final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
-
-            return langPropsService.get("markdownErrorLabel");
+            return markdownText;
         }
 
         return writer.toString();

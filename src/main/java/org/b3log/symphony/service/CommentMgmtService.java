@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.14, Apr 9, 2015
+ * @version 1.2.1.14, Apr 21, 2015
  * @since 0.2.0
  */
 @Service
@@ -124,6 +124,17 @@ public class CommentMgmtService {
      * @throws ServiceException service exception
      */
     public String addComment(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            // check if admin allow to add comment
+            final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_COMMENT);
+
+            if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
+                throw new ServiceException(langPropsService.get("notAllowAddCommentLabel"));
+            }
+        } catch (final RepositoryException e) {
+            throw new ServiceException(e);
+        }
+
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
@@ -217,7 +228,7 @@ public class CommentMgmtService {
             throw new ServiceException(e);
         }
     }
-    
+
     /**
      * Updates the specified comment by the given comment id.
      *

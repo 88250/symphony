@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Dec 26, 2012
+ * @version 1.1.1.5, Apr 21, 2015
  * @since 0.2.0
  */
 @Service
@@ -165,6 +165,17 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public String addArticle(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            // check if admin allow to add article
+            final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_ARTICLE);
+
+            if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
+                throw new ServiceException(langPropsService.get("notAllowAddArticleLabel"));
+            }
+        } catch (final RepositoryException e) {
+            throw new ServiceException(e);
+        }
+
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
@@ -274,6 +285,17 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            // check if admin allow to add article
+            final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_ARTICLE);
+
+            if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
+                throw new ServiceException(langPropsService.get("notAllowAddArticleLabel"));
+            }
+        } catch (final RepositoryException e) {
+            throw new ServiceException(e);
+        }
+
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {

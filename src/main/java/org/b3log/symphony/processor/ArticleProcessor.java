@@ -305,7 +305,7 @@ public class ArticleProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed", e);
+            LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed: {0}", e.getMessage());
 
             ret.put(Keys.MSG, msg);
         }
@@ -436,7 +436,7 @@ public class ArticleProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
-            LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed", e);
+            LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed: {0}", e.getMessage());
 
             ret.put(Keys.MSG, msg);
         }
