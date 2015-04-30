@@ -24,9 +24,11 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
@@ -63,6 +65,8 @@ import org.json.JSONObject;
  * <li>Shows users (/admin/users), GET</li>
  * <li>Shows a user (/admin/user/{userId}), GET</li>
  * <li>Updates a user (/admin/user/{userId}), POST</li>
+ * <li>Updates a user's email (/admin/user/{userId}/email), POST</li>
+ * <li>Updates a user's username (/admin/user/{userId}/username), POST</li>
  * <li>Shows articles (/admin/articles), GET</li>
  * <li>Shows an article (/admin/article/{articleId}), GET</li>
  * <li>Updates an article (/admin/article/{articleId}), POST</li>
@@ -77,7 +81,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Apr 14, 2015
+ * @version 1.3.0.0, Apr 30, 2015
  * @since 1.1.0
  */
 @RequestProcessor
@@ -287,6 +291,90 @@ public class AdminProcessor {
         userMgmtService.updateUser(userId, user);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Updates a user's email.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userId the specified user id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/user/{userId}/email", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = AdminCheck.class)
+    public void updateUserEmail(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                                final String userId) throws Exception {
+        final JSONObject user = userQueryService.getUser(userId);
+        final String oldEmail = user.optString(User.USER_EMAIL);
+        final String newEmail = request.getParameter(User.USER_EMAIL);
+        
+        if (oldEmail.equals(newEmail)) {
+            response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+            
+            return;
+        }
+        
+        user.put(User.USER_EMAIL, newEmail);
+
+        try {
+            userMgmtService.updateUserEmail(userId, user);
+        } catch (final ServiceException e) {
+            final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, e.getMessage());
+            filler.fillHeaderAndFooter(request, response, dataModel);
+            
+            return;
+        }
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+    }
+    
+     /**
+     * Updates a user's username.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userId the specified user id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/user/{userId}/username", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = AdminCheck.class)
+    public void updateUserName(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                                final String userId) throws Exception {
+        final JSONObject user = userQueryService.getUser(userId);
+        final String oldUserName = user.optString(User.USER_NAME);
+        final String newUserName = request.getParameter(User.USER_NAME);
+        
+        if (oldUserName.equals(newUserName)) {
+            response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+            
+            return;
+        }
+        
+        user.put(User.USER_NAME, newUserName);
+
+        try {
+            userMgmtService.updateUserName(userId, user);
+        } catch (final ServiceException e) {
+            final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, e.getMessage());
+            filler.fillHeaderAndFooter(request, response, dataModel);
+            
+            return;
+        }
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
     }
 
     /**
@@ -697,7 +785,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         JSONObject tag = tagQueryService.getTag(tagId);
-        
+
         final String oldTitle = tag.optString(Tag.TAG_TITLE);
 
         final Enumeration<String> parameterNames = request.getParameterNames();
@@ -707,9 +795,9 @@ public class AdminProcessor {
 
             tag.put(name, value);
         }
-        
+
         final String newTitle = tag.optString(Tag.TAG_TITLE);
-        
+
         if (oldTitle.equalsIgnoreCase(newTitle)) {
             tagMgmtService.updateTag(tagId, tag);
         }

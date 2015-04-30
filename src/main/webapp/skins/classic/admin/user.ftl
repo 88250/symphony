@@ -69,5 +69,30 @@
             </form>
         </div>
     </div>
+
+    <div class="module">
+        <div class="module-header">
+            <h2>${advancedUpdateLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/user/${user.oId}/email" method="POST">
+                <label for="userEmail">${userEmailLabel}</label>
+                <input type="text" id="userEmail" name="userEmail" value="${user.userEmail}" />
+
+                <br/><br/>
+                <button type="submit" class="green fn-right">${submitLabel}</button>
+            </form>
+            <br/>
+
+            <form action="/admin/user/${user.oId}/username" method="POST">
+                <label for="userName">${userNameLabel}</label>
+                <input type="text" id="userName" name="userName" value="${user.userName}" />
+
+                <br/><br/>
+                <button type="submit" class="green fn-right">${submitLabel}</button>
+            </form>
+        </div>
+
+    </div>
 </div>
 </@admin>

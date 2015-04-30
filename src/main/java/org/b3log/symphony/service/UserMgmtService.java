@@ -24,6 +24,9 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -31,17 +34,22 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Apr 3, 2015
+ * @version 1.2.1.0, Apr 30, 2015
  * @since 0.2.0
  */
 @Service
@@ -57,6 +65,18 @@ public class UserMgmtService {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
+
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Option repository.
@@ -422,6 +442,90 @@ public class UserMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Updates a user[id=" + userId + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Updates the specified user's email by the given user id.
+     *
+     * @param userId the given user id
+     * @param user the specified user, contains the new email
+     * @throws ServiceException service exception
+     */
+    public void updateUserEmail(final String userId, final JSONObject user) throws ServiceException {
+        final String newEmail = user.optString(User.USER_EMAIL);
+
+        final Transaction transaction = userRepository.beginTransaction();
+
+        try {
+            if (null != userRepository.getByEmail(newEmail)) {
+                throw new ServiceException(langPropsService.get("duplicatedEmailLabel") + " [" + newEmail + "]");
+            }
+
+            // Update relevent comments of the user
+            final Query commentQuery = new Query().setFilter(new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId));
+            final JSONObject commentResult = commentRepository.get(commentQuery);
+            final JSONArray comments = commentResult.optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < comments.length(); i++) {
+                final JSONObject comment = comments.optJSONObject(i);
+                comment.put(Comment.COMMENT_AUTHOR_EMAIL, newEmail);
+
+                commentRepository.update(comment.optString(Keys.OBJECT_ID), comment);
+            }
+
+            // Update relevent articles of the user
+            final Query articleQuery = new Query().setFilter(new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, userId));
+            final JSONObject articleResult = articleRepository.get(articleQuery);
+            final JSONArray articles = articleResult.optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < articles.length(); i++) {
+                final JSONObject article = articles.optJSONObject(i);
+                article.put(Article.ARTICLE_AUTHOR_EMAIL, newEmail);
+
+                articleRepository.update(article.optString(Keys.OBJECT_ID), article);
+            }
+
+            // Update the user
+            userRepository.update(userId, user);
+
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Updates email of the user[id=" + userId + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Updates the specified user's username by the given user id.
+     *
+     * @param userId the given user id
+     * @param user the specified user, contains the new username
+     * @throws ServiceException service exception
+     */
+    public void updateUserName(final String userId, final JSONObject user) throws ServiceException {
+        final String newUserName = user.optString(User.USER_NAME);
+
+        final Transaction transaction = userRepository.beginTransaction();
+
+        try {
+            if (null != userRepository.getByName(newUserName)) {
+                throw new ServiceException(langPropsService.get("duplicatedUserNameLabel") + " [" + newUserName + "]");
+            }
+
+            // Update the user
+            userRepository.update(userId, user);
+
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Updates username of the user[id=" + userId + "] failed", e);
             throw new ServiceException(e);
         }
     }
