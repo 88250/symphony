@@ -28,6 +28,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
@@ -40,6 +41,7 @@ import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.QueryResults;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -53,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Nov 11, 2013
+ * @version 1.1.0.1, May 12, 2015
  * @since 0.2.5
  */
 @RequestProcessor
@@ -305,5 +307,33 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Gets unread count of notifications.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/notification/unread/count", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = LoginCheck.class)
+    public void getUnreadNotificationCount(final HTTPRequestContext context, final HttpServletRequest request,
+                                      final HttpServletResponse response) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        ret.put(Notification.NOTIFICATION_T_UNREAD_COUNT, 0);
+        renderer.setJSONObject(ret);
+
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            return;
+        }
+
+        ret.put(Notification.NOTIFICATION_T_UNREAD_COUNT,
+                notificationQueryService.getUnreadNotificationCount(currentUser.optString(Keys.OBJECT_ID)));
     }
 }

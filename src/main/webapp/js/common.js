@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.6, Apr 17, 2015
+ * @version 1.3.2.6, May 12, 2015
  */
 
 /**
@@ -26,6 +26,26 @@
  * @static
  */
 var Util = {
+    /**
+     * @description 设置当前登录用户的未读提醒计数.
+     */
+    setUnreadNotificationCount: function () {
+        $.ajax({
+            url: "/notification/unread/count",
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                var count = result.unreadNotificationCount;
+                if (0 !== count) {
+                    $("#aNotifications").removeClass("no-msg").addClass("msg").text(count);
+                    document.title = "(" + count + ") " + Label.symphonyLabel + " - " + Label.visionLabel;
+                } else {
+                    $("#aNotifications").removeClass("msg").addClass("no-msg").text(count);
+                    document.title = Label.symphonyLabel + " - " + Label.visionLabel;
+                }
+            }
+        });
+    },
     /**
      * @description 关注
      * @param {BOM} it 触发事件的元素
@@ -178,6 +198,11 @@ var Util = {
                 $(".icon-up").hide();
             }
         });
+
+        // 定时获取并设置未读提醒计数
+        setInterval(function () {
+            Util.setUnreadNotificationCount();
+        }, 30000);
     },
     /**
      * @description 设置导航状态

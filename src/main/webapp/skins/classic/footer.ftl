@@ -46,6 +46,8 @@
         invalidPasswordLabel: "${invalidPasswordLabel}",
         loginNameErrorLabel: "${loginNameErrorLabel}",
         followLabel: "${followLabel}",
-        unfollowLabel: "${unfollowLabel}"
+        unfollowLabel: "${unfollowLabel}",
+        symphonyLabel: "${symphonyLabel}",
+        visionLabel: "${visionLabel}"
     };
 </script>
