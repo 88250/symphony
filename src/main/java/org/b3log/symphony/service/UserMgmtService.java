@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.0, Apr 30, 2015
+ * @version 1.2.1.1, May 12, 2015
  * @since 0.2.0
  */
 @Service
@@ -341,7 +341,7 @@ public class UserMgmtService {
                     transaction.rollback();
                 }
 
-                throw new ServiceException(langPropsService.get("duplicatedUserNameLabel"));
+                throw new ServiceException(langPropsService.get("duplicatedUserNameLabel") + "[" + userName + "]");
             }
 
             if (null != userRepository.getByEmail(userEmail)) {

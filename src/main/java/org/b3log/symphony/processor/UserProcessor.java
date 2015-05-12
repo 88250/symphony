@@ -698,7 +698,7 @@ public class UserProcessor {
 
                 ret.put(Keys.STATUS_CODE, true);
             } catch (final ServiceException e) {
-                LOGGER.log(Level.ERROR, "Sync add user[" + name + "] error", e);
+                LOGGER.log(Level.ERROR, "Sync add user[" + name + "] error:" + e.getMessage());
             }
 
             return;
