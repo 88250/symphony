@@ -341,7 +341,7 @@ public class UserMgmtService {
                     transaction.rollback();
                 }
 
-                throw new ServiceException(langPropsService.get("duplicatedUserNameLabel") + "[" + userName + "]");
+                throw new ServiceException(langPropsService.get("duplicatedUserNameLabel") + " [" + userName + "]");
             }
 
             if (null != userRepository.getByEmail(userEmail)) {
