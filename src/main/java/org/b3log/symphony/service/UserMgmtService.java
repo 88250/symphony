@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.1, May 12, 2015
+ * @version 1.2.2.1, May 13, 2015
  * @since 0.2.0
  */
 @Service
@@ -373,6 +373,8 @@ public class UserMgmtService {
             user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, "");
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, "");
             user.put(UserExt.USER_INTRO, "");
+            user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_GRAVATAR);
+            user.put(UserExt.USER_AVATAR_URL, "");
             user.put(UserExt.USER_QQ, "");
             user.put(UserExt.USER_ONLINE_FLAG, false);
             user.put(UserExt.USER_LATEST_ARTICLE_TIME, 0L);
