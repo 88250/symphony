@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Mar 13, 2013
+ * @version 1.1.0.9, May 12, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -59,6 +59,16 @@ public final class UserExt {
      * Key of user intro.
      */
     public static final String USER_INTRO = "userIntro";
+
+    /**
+     * Key of user avatar type.
+     */
+    public static final String USER_AVATAR_TYPE = "userAvatarType";
+
+    /**
+     * Key of user avatar URL.
+     */
+    public static final String USER_AVATAR_URL = "userAvatarURL";
 
     /**
      * Key of user B3log key.
@@ -138,7 +148,7 @@ public final class UserExt {
      */
     public static final String DEFAULT_ADMIN_NAME = "88250";
 
-    // Status constants
+    //// Status constants
     /**
      * User status - valid.
      */
@@ -148,7 +158,18 @@ public final class UserExt {
      * User status - invalid.
      */
     public static final int USER_STATUS_C_INVALID = 1;
+    
+    //// Avatar type constants
+    /**
+     * User avatar type - 0: Gravatar.
+     */
+    public static final int USER_AVATAR_TYPE_C_GRAVATAR = 0;
 
+    /**
+     * User avatar type - 1: External Link.
+     */
+    public static final int USER_AVATAR_TYPE_C_EXTERNAL_LINK = 1;
+    
     /**
      * Private constructor.
      */

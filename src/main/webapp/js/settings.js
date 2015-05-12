@@ -95,8 +95,12 @@ var Settings = {
             data.userURL = URLVal;
             data.userQQ = QQVal;
             data.userIntro = introVal;
+            data.userAvatarType = $("input[name='avatar']:checked").val();
+            data.userAvatarURL = $("#avatarURL").val();
+            
             return data;
-        } 
+        }
+        
         return false;
     },
     

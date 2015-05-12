@@ -196,7 +196,9 @@ public class UserMgmtService {
      *     "oId": "",
      *     "userURL": "",
      *     "userQQ": "",
-     *     "userIntro": ""
+     *     "userIntro": "",
+     *     "userAvatarType": int,
+     *     "userAvatarURL": ""
      * }
      * </pre>
      *
@@ -217,6 +219,8 @@ public class UserMgmtService {
             oldUser.put(User.USER_URL, requestJSONObject.optString(User.USER_URL));
             oldUser.put(UserExt.USER_QQ, requestJSONObject.optString(UserExt.USER_QQ));
             oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
+            oldUser.put(UserExt.USER_AVATAR_TYPE, requestJSONObject.optString(UserExt.USER_AVATAR_TYPE));
+            oldUser.put(UserExt.USER_AVATAR_URL, requestJSONObject.optString(UserExt.USER_AVATAR_URL));
 
             userRepository.update(oldUserId, oldUser);
             transaction.commit();

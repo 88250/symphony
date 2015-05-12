@@ -542,11 +542,15 @@ public class UserProcessor {
         final String userURL = requestJSONObject.optString(User.USER_URL);
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
+        final String userAvatarType = requestJSONObject.optString(UserExt.USER_AVATAR_TYPE);
+        final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
         final JSONObject user = userQueryService.getCurrentUser(request);
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
         user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
+        user.put(UserExt.USER_AVATAR_TYPE, userAvatarType);
+        user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
 
         try {
             userMgmtService.updateProfiles(user);

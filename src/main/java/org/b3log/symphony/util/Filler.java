@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.10, Nov 11, 2013
+ * @version 1.1.0.10, May 12, 2015
  * @since 0.2.0
  */
 @Service
@@ -123,7 +123,7 @@ public class Filler {
      */
     public void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                      articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
     }
 
     /**
@@ -165,7 +165,7 @@ public class Filler {
      * @throws Exception exception
      */
     public void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-                           final Map<String, Object> dataModel) throws Exception {
+            final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
 
@@ -197,7 +197,7 @@ public class Filler {
      * @throws Exception exception
      */
     public void fillHeaderAndFooter(final HttpServletRequest request, final HttpServletResponse response,
-                                    final Map<String, Object> dataModel) throws Exception {
+            final Map<String, Object> dataModel) throws Exception {
         fillHeader(request, response, dataModel);
         fillFooter(dataModel);
     }
@@ -210,7 +210,7 @@ public class Filler {
      * @param dataModel the specified data model
      */
     private void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
-                                 final Map<String, Object> dataModel) {
+            final Map<String, Object> dataModel) {
         dataModel.put(Common.IS_LOGGED_IN, false);
         dataModel.put(Common.IS_ADMIN_LOGGED_IN, false);
 
@@ -244,7 +244,7 @@ public class Filler {
         final String userRole = curUser.optString(User.USER_ROLE);
         dataModel.put(User.USER_ROLE, userRole);
         dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ADMIN_ROLE.equals(userRole));
-        
+
         fillUserThumbnailURL(curUser);
 
         dataModel.put(Common.CURRENT_USER, curUser);
@@ -277,9 +277,15 @@ public class Filler {
      * @param user the specified user
      */
     public void fillUserThumbnailURL(final JSONObject user) {
-        final String userEmail = user.optString(User.USER_EMAIL);
-        final String thumbnailURL = Thumbnails.getGravatarURL(userEmail, "140");
-        user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
+        final int avatarType = user.optInt(UserExt.USER_AVATAR_TYPE);
+
+        if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
+            final String userEmail = user.optString(User.USER_EMAIL);
+            final String thumbnailURL = Thumbnails.getGravatarURL(userEmail, "140");
+            user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
+        } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType) {
+            user.put(UserExt.USER_T_THUMBNAIL_URL, user.optString(UserExt.USER_AVATAR_URL));
+        }
     }
 
     /**

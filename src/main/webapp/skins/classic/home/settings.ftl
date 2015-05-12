@@ -18,12 +18,14 @@
 
             <label>${userIntroLabel}</label><br/>
             <textarea id="userIntro">${currentUser.userIntro}</textarea>
-            <span style="right:21px;top:225px;"></span><br/><br/>
+            <span style="right:21px;top:221px;"></span><br/>
 
-            <img class="avatar fn-left" src="${currentUser.userThumbnailURL}">
-            <strong>
-                <a rel="friend" target="_blank" href="http://gravatar.com">${changeAvatarLabel}</a>
-            </strong>
+            <label>${avatarLabel}</label><br/>
+            <div class="fn-clear"></div>
+            <input name="avatar" type="radio" value="0" <#if currentUser.userAvatarType == 0>checked</#if> />
+                   <a target="_blank" href="http://gravatar.com">Gravatar</a><br/>
+            <input name="avatar" type="radio" value="1" <#if currentUser.userAvatarType == 1>checked</#if>/>
+                   <input id="avatarURL" type="text" placeholder="${avatarURLLabel}" style="width: 97%;" value="${currentUser.userAvatarURL}">
 
             <br/><br/>
             <span id="profilesTip" style="right: 95px; top: 346px;"></span>
