@@ -70,7 +70,6 @@
         <#include "../footer.ftl">
         <script type="text/javascript" src="/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            Util.init();
             Label.followLabel = "${followLabel}";
             Label.unfollowLabel = "${unfollowLabel}";
             Label.invalidPasswordLabel = "${invalidPasswordLabel}";
