@@ -51,6 +51,7 @@ import org.b3log.symphony.processor.advice.UserBlockCheck;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
+import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
@@ -81,7 +82,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.8, Apr 17, 2015
+ * @version 1.2.2.8, May 12, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -668,6 +669,13 @@ public class UserProcessor {
         final String addArticleURL = clientHost + "/apis/symphony/article";
         final String updateArticleURL = clientHost + "/apis/symphony/article";
         final String addCommentURL = clientHost + "/apis/symphony/comment";
+        
+        if (UserRegisterValidation.invalidUserName(name)) {
+            LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the username is invalid",
+                       name, clientHost);
+
+            return;
+        }
 
         JSONObject user = userQueryService.getUserByEmail(email);
         if (null == user) {
