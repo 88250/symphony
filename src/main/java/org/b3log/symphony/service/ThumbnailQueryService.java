@@ -45,7 +45,7 @@ public class ThumbnailQueryService {
     /**
      * Gravatar address.
      */
-    public static final String GRAVATAR = "http://secure.gravatar.com/avatar/";
+    public static final String GRAVATAR = "http://gravatar.duoshuo.com/avatar/";
 
     /**
      * User repository.
