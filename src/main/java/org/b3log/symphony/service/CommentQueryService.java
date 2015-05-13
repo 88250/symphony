@@ -45,7 +45,6 @@ import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -89,6 +88,12 @@ public class CommentQueryService {
      */
     @Inject
     private UserQueryService userQueryService;
+
+    /**
+     * Thumbnail query service.
+     */
+    @Inject
+    private ThumbnailQueryService thumbnailQueryService;
 
     /**
      * Language service.
@@ -183,7 +188,7 @@ public class CommentQueryService {
                 final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
-                    thumbnailURL = Thumbnails.getGravatarURL(commenterEmail, "140");
+                    thumbnailURL = thumbnailQueryService.getAvatarURL(commenterEmail, "140");
                 }
                 commenter.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
 
@@ -235,7 +240,7 @@ public class CommentQueryService {
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, articleAuthorURL);
                 final String articleAuthorEmail = articleAuthor.optString(User.USER_EMAIL);
-                final String articleAuthorThumbnailURL = Thumbnails.getGravatarURL(articleAuthorEmail, "140");
+                final String articleAuthorThumbnailURL = thumbnailQueryService.getAvatarURL(articleAuthorEmail, "140");
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
 
                 processCommentContent(comment);
@@ -283,7 +288,7 @@ public class CommentQueryService {
 
                 String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
-                    thumbnailURL = Thumbnails.getGravatarURL(email, "140");
+                    thumbnailURL = thumbnailQueryService.getAvatarURL(email, "140");
                 }
 
                 final JSONObject participant = new JSONObject();
@@ -461,16 +466,19 @@ public class CommentQueryService {
     private void organizeComment(final JSONObject comment) throws RepositoryException {
         comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
 
-        final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
-        String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
-        if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
-            thumbnailURL = Thumbnails.getGravatarURL(email, "140");
-        }
-
-        comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
-
         final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
         final JSONObject author = userRepository.get(authorId);
+
+        final int avatarType = author.optInt(UserExt.USER_AVATAR_TYPE);
+
+        if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
+            final String userEmail = author.optString(User.USER_EMAIL);
+            final String thumbnailURL = thumbnailQueryService.getGravatarURL(userEmail, "140");
+            comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
+        } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType) {
+            comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, author.optString(UserExt.USER_AVATAR_URL));
+        }
+
         comment.put(Comment.COMMENT_T_COMMENTER, author);
         comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
         comment.put(Comment.COMMENT_T_AUTHOR_URL, author.optString(User.USER_URL));

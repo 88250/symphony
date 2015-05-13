@@ -44,7 +44,6 @@ import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
-import org.b3log.symphony.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -80,6 +79,12 @@ public class TagQueryService {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Thumbnail query service.
+     */
+    @Inject
+    private ThumbnailQueryService thumbnailQueryService;
 
     /**
      * Gets a tag by the specified tag title.
@@ -190,7 +195,7 @@ public class TagQueryService {
             final JSONObject creator = userRepository.get(creatorId);
 
             final String creatorEmail = creator.optString(User.USER_EMAIL);
-            final String thumbnailURL = Thumbnails.getGravatarURL(creatorEmail, "140");
+            final String thumbnailURL = thumbnailQueryService.getAvatarURL(creatorEmail, "140");
 
             final JSONObject ret = new JSONObject();
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
@@ -248,7 +253,7 @@ public class TagQueryService {
 
                 participant.put(Tag.TAG_T_PARTICIPANT_NAME, user.optString(User.USER_NAME));
 
-                final String thumbnailURL = Thumbnails.getGravatarURL(user.optString(User.USER_EMAIL), "140");
+                final String thumbnailURL = thumbnailQueryService.getAvatarURL(user.optString(User.USER_EMAIL), "140");
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
 
                 ret.add(participant);

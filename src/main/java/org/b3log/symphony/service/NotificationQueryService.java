@@ -41,7 +41,6 @@ import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -83,6 +82,12 @@ public class NotificationQueryService {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Thumbnail query service.
+     */
+    @Inject
+    private ThumbnailQueryService thumbnailQueryService;
 
     /**
      * Gets the count of unread notifications of a user specified with the given user id.
@@ -313,7 +318,7 @@ public class NotificationQueryService {
                     atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                     atNotification.put(Common.AUTHOR_NAME, articleAuthor.optString(User.USER_NAME));
                     atNotification.put(Common.CONTENT, "");
-                    final String thumbnailURL = Thumbnails.getGravatarURL(articleAuthor.optString(User.USER_EMAIL), "140");
+                    final String thumbnailURL = thumbnailQueryService.getAvatarURL(articleAuthor.optString(User.USER_EMAIL), "140");
                     atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                     atNotification.put(Common.ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
                     atNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
@@ -419,7 +424,7 @@ public class NotificationQueryService {
                 followingUserNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 followingUserNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 followingUserNotification.put(Common.CONTENT, "");
-                followingUserNotification.put(Common.THUMBNAIL_URL, Thumbnails.getGravatarURL(articleAuthorEmail, "140"));
+                followingUserNotification.put(Common.THUMBNAIL_URL, thumbnailQueryService.getAvatarURL(articleAuthorEmail, "140"));
                 followingUserNotification.put(Common.ARTICLE_TITLE, articleTitle);
                 followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                 followingUserNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));

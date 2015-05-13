@@ -53,7 +53,6 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -107,6 +106,12 @@ public class ArticleQueryService {
      */
     @Inject
     private UserQueryService userQueryService;
+
+    /**
+     * Thumbnail query service.
+     */
+    @Inject
+    private ThumbnailQueryService thumbnailQueryService;
 
     /**
      * Count to fetch article tags for relevant articles.
@@ -611,7 +616,7 @@ public class ArticleQueryService {
             return;
         }
 
-        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, Thumbnails.getGravatarURL(authorEmail, "140"));
+        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailQueryService.getAvatarURL(authorEmail, "140"));
 
         final JSONObject author = userRepository.getByEmail(authorEmail);
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));

@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.util;
 
+import org.b3log.symphony.service.ThumbnailQueryService;
 import java.util.Calendar;
 import java.util.Map;
 import javax.inject.Inject;
@@ -115,6 +116,12 @@ public class Filler {
     private NotificationQueryService notificationQueryService;
 
     /**
+     * Thumbnail query service.
+     */
+    @Inject
+    private ThumbnailQueryService thumbnailQueryService;
+
+    /**
      * Fills relevant articles.
      *
      * @param dataModel the specified data model
@@ -123,7 +130,7 @@ public class Filler {
      */
     public void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                      articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
     }
 
     /**
@@ -165,7 +172,7 @@ public class Filler {
      * @throws Exception exception
      */
     public void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) throws Exception {
+                           final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
 
@@ -197,7 +204,7 @@ public class Filler {
      * @throws Exception exception
      */
     public void fillHeaderAndFooter(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) throws Exception {
+                                    final Map<String, Object> dataModel) throws Exception {
         fillHeader(request, response, dataModel);
         fillFooter(dataModel);
     }
@@ -210,7 +217,7 @@ public class Filler {
      * @param dataModel the specified data model
      */
     private void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
-            final Map<String, Object> dataModel) {
+                                 final Map<String, Object> dataModel) {
         dataModel.put(Common.IS_LOGGED_IN, false);
         dataModel.put(Common.IS_ADMIN_LOGGED_IN, false);
 
@@ -281,7 +288,7 @@ public class Filler {
 
         if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
             final String userEmail = user.optString(User.USER_EMAIL);
-            final String thumbnailURL = Thumbnails.getGravatarURL(userEmail, "140");
+            final String thumbnailURL = thumbnailQueryService.getGravatarURL(userEmail, "140");
             user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
         } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType) {
             user.put(UserExt.USER_T_THUMBNAIL_URL, user.optString(UserExt.USER_AVATAR_URL));
