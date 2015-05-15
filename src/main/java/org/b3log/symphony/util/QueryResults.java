@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Query result utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 25, 2012
+ * @version 1.1.0.1, May 15, 2015
  * @since 0.2.0
  */
 public final class QueryResults {
@@ -41,6 +41,20 @@ public final class QueryResults {
      */
     public static JSONObject falseResult() {
         return new JSONObject().put(Keys.STATUS_CODE, false);
+    }
+
+    /**
+     * Constructs a default (true) result.
+     *
+     * @return a true result,
+     * <pre>
+     * {
+     *     "sc": true
+     * }
+     * </pre>
+     */
+    public static JSONObject trueResult() {
+        return new JSONObject().put(Keys.STATUS_CODE, true);
     }
 
     /**

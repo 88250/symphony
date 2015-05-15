@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
@@ -324,14 +325,12 @@ public class NotificationProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = QueryResults.trueResult();
         ret.put(Notification.NOTIFICATION_T_UNREAD_COUNT, 0);
         renderer.setJSONObject(ret);
 
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
-        if (null == currentUser) {
-            return;
-        }
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        
 
         ret.put(Notification.NOTIFICATION_T_UNREAD_COUNT,
                 notificationQueryService.getUnreadNotificationCount(currentUser.optString(Keys.OBJECT_ID)));
