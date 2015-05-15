@@ -82,7 +82,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.8, May 12, 2015
+ * @version 1.2.3.8, May 13, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -543,7 +543,11 @@ public class UserProcessor {
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         final String userAvatarType = requestJSONObject.optString(UserExt.USER_AVATAR_TYPE);
-        final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
+        String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
+        
+        if (!Strings.isURL(userAvatarURL)) {
+            userAvatarURL = "";
+        }
 
         final JSONObject user = userQueryService.getCurrentUser(request);
         user.put(User.USER_URL, userURL);

@@ -46,6 +46,12 @@
                 <label for="userIntro">${userIntroLabel}</label>
                 <input type="text" id="userIntro" name="userIntro" value="${user.userIntro}" />
 
+                <label for="userIntro">${avatarTypeLabel}</label>
+                <input type="text" id="userAvatarType" name="userAvatarType" value="${user.userAvatarType}" />
+
+                <label for="userIntro">${avatarLabel}${avatarURLLabel}</label>
+                <input type="text" id="userAvatarURL" name="userAvatarURL" value="${user.userAvatarURL}" />
+
                 <label for="userRole">${roleLabel}</label>
                 <input type="text" id="userRole" name="userRole" value="${user.userRole}" />
 
