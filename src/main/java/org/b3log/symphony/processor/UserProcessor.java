@@ -61,6 +61,8 @@ import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.QueryResults;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * User processor.
@@ -82,7 +84,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.8, May 13, 2015
+ * @version 1.2.4.8, May 15, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -544,8 +546,9 @@ public class UserProcessor {
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         final String userAvatarType = requestJSONObject.optString(UserExt.USER_AVATAR_TYPE);
         String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
-        
-        if (!Strings.isURL(userAvatarURL)) {
+
+        if (!Strings.isURL(userAvatarURL)
+            || !Jsoup.isValid("<img src=\"" + userAvatarURL + "\"/>", Whitelist.basicWithImages())) {
             userAvatarURL = "";
         }
 
@@ -677,7 +680,7 @@ public class UserProcessor {
         final String addArticleURL = clientHost + "/apis/symphony/article";
         final String updateArticleURL = clientHost + "/apis/symphony/article";
         final String addCommentURL = clientHost + "/apis/symphony/comment";
-        
+
         if (UserRegisterValidation.invalidUserName(name)) {
             LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the username is invalid",
                        name, clientHost);
