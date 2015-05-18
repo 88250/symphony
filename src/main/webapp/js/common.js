@@ -38,10 +38,10 @@ var Util = {
                 var count = result.unreadNotificationCount;
                 if (0 !== count) {
                     $("#aNotifications").removeClass("no-msg").addClass("msg").text(count);
-                    document.title = "(" + count + ") " + Label.symphonyLabel + " - " + Label.visionLabel;
+                    document.title = "(" + count + ") B3log " + Label.symphonyLabel + " - " + Label.visionLabel;
                 } else {
                     $("#aNotifications").removeClass("msg").addClass("no-msg").text(count);
-                    document.title = Label.symphonyLabel + " - " + Label.visionLabel;
+                    document.title = "B3log " + Label.symphonyLabel + " - " + Label.visionLabel;
                 }
             }
         });
