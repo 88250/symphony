@@ -41,6 +41,12 @@
                                     <span class="icon icon-edit"></span>
                                 </a>
                                 </#if>
+                                <#if isAdminLoggedIn>
+                                &nbsp;
+                                <a href="${servePath}/admin/article/${article.oId}" title="${adminLabel}">
+                                    <span class="icon icon-setting"></span>
+                                </a>
+                                </#if>
                             </div>
                         </div>
                         <h2 class="article-title">
