@@ -35,7 +35,7 @@
                     </div>
                     <label>${tagLabel}</label>
                     <div>
-                        <input id="articleTags" type="text" value="<#if article??>${article.articleTags}</#if>" />
+                        <input id="articleTags" type="text" value="<#if article??>${article.articleTags}</#if>" placeholder="${tagSeparatorTipLabel}"/>
                         <span style="right:2px;top:507px;"></span><br/><br/>
                     </div>
                     <div class="fn-clear">
