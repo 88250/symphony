@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log ${symphonyLabel} - ${tag.tagTitle}">
+        <@head title="${symphonyLabel} - ${tag.tagTitle}">
         <meta name="keywords" content="${tag.tagTitle},${tag.tagCreatorName}"/>
         <meta name="description" content="${tag.tagCreatorName},${tag.tagDescription}"/>
         </@head>
@@ -26,8 +26,8 @@
                                    href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                             </h1>
                             <#if isAdminLoggedIn>
-                            <a href="${servePath}/admin/tag/${tag.oId}" class="icon-edit-wrap" title="${editLabel}">
-                                <span class="icon icon-edit"></span>
+                            <a href="${servePath}/admin/tag/${tag.oId}" title="${adminLabel}">
+                                <span class="icon icon-setting"></span>
                             </a>
                             </#if>
                             <#if isLoggedIn> 

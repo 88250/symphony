@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log ${symphonyLabel} - ${tagLabel}">
+        <@head title="${symphonyLabel} - ${tagLabel}">
         <meta name="keywords" content="${trendTagsLabel},${coldTagsLabel}"/>
-        <meta name="description" content="B3log ${symphonyLabel} ${trendTagsLabel},B3log ${symphonyLabel} ${coldTagsLabel}"/>
+        <meta name="description" content="${symphonyLabel} ${trendTagsLabel},${symphonyLabel} ${coldTagsLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>

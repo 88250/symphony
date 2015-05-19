@@ -175,7 +175,7 @@ var Article = {
     share: function() {
         $(".share span").click(function() {
             var key = $(this).data("type");
-            var title = encodeURIComponent(Label.articleTitle + " - B3log " + Label.symphonyLabel),
+            var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
                     url = "http://symphony.b3log.org" + Label.articlePermalink,
                     pic = $(".content-reset img").attr("src");
             var urls = {};

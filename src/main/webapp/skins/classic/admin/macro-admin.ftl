@@ -4,22 +4,22 @@
 <html>
     <head>
         <#if type == "index">
-        <@head title="B3log ${symphonyLabel} - ${adminLabel}"></@head>
+        <@head title="${symphonyLabel} - ${adminLabel}"></@head>
         </#if>
         <#if type == "users">
-        <@head title="B3log ${symphonyLabel} - ${userAdminLabel}"></@head>
+        <@head title="${symphonyLabel} - ${userAdminLabel}"></@head>
         </#if>
         <#if type == "articles">
-        <@head title="B3log ${symphonyLabel} - ${articleAdminLabel}"></@head>
+        <@head title="${symphonyLabel} - ${articleAdminLabel}"></@head>
         </#if>
         <#if type == "comments">
-        <@head title="B3log ${symphonyLabel} - ${commentAdminLabel}"></@head>
+        <@head title="${symphonyLabel} - ${commentAdminLabel}"></@head>
         </#if>
         <#if type == "tags">
-        <@head title="B3log ${symphonyLabel} - ${tagAdminLabel}"></@head>
+        <@head title="${symphonyLabel} - ${tagAdminLabel}"></@head>
         </#if>
         <#if type == "misc">
-        <@head title="B3log ${symphonyLabel} - ${miscAdminLabel}">
+        <@head title="${symphonyLabel} - ${miscAdminLabel}">
         </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />

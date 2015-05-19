@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log ${symphonyLabel} - 403 Forbidden!">
+        <@head title="${symphonyLabel} - 403 Forbidden!">
         <meta name="robots" content="none" />
         </@head>
     </head>

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log ${symphonyLabel} - 500 Internal Server Error!">
+        <@head title="${symphonyLabel} - 500 Internal Server Error!">
         <meta name="robots" content="none" />
         </@head>
     </head>

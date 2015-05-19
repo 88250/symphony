@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log ${symphonyLabel} - 404 Not Found!">
+        <@head title="${symphonyLabel} - 404 Not Found!">
         <meta name="robots" content="none" />
         </@head>
     </head>

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${article.articleTitle} - B3log ${symphonyLabel}">
+        <@head title="${article.articleTitle} - ${symphonyLabel}">
         <meta name="keywords" content="${article.articleTags}"/>
         <meta name="description" content="${article.articleTitle}"/>
         </@head>
@@ -39,6 +39,12 @@
                                 &nbsp;
                                 <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}">
                                     <span class="icon icon-edit"></span>
+                                </a>
+                                </#if>
+                                <#if isAdminLoggedIn>
+                                &nbsp;
+                                <a href="${servePath}/admin/article/${article.oId}" title="${adminLabel}">
+                                    <span class="icon icon-setting"></span>
                                 </a>
                                 </#if>
                             </div>

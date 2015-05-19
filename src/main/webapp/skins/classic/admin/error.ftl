@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log ${symphonyLabel} - ${msg}">
+        <@head title="${symphonyLabel} - ${msg}">
         <meta name="robots" content="none" />
         </@head>
     </head>
