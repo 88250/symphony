@@ -45,7 +45,7 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
- * B3log Symphony servlet listener.
+ * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.2.1.2, Apr 3, 2015
@@ -54,7 +54,7 @@ import org.json.JSONObject;
 public final class SymphonyServletListener extends AbstractServletListener {
 
     /**
-     * B3log Symphony version.
+     * Symphony version.
      */
     public static final String VERSION = "1.0.0";
 

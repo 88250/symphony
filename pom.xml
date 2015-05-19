@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Description: B3log Symphony POM.
+    Description: Symphony POM.
     Version: 1.2.2.15, Apr 9, 2015
     Author: Liang Ding
 -->
@@ -12,7 +12,7 @@
     <artifactId>symphony</artifactId>
     <packaging>war</packaging>
     <version>1.1.0</version>
-    <name>B3log Symphony</name>
+    <name>Symphony</name>
     <url>https://github.com/b3log/b3log-symphony</url>
     <description>
         B3log Community: http://symphony.b3log.org/about
@@ -342,7 +342,7 @@
             </plugin>
         </plugins>
 
-        <finalName>b3log-symphony</finalName>
+        <finalName>symphony</finalName>
         <pluginManagement>
             <plugins>
                 <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
