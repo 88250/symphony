@@ -797,10 +797,12 @@ public class UserProcessor {
                 final HTTPRequest httpRequest = new HTTPRequest();
                 httpRequest.setURL(new URL(avatarURL));
                 httpRequest.setRequestMethod(HTTPRequestMethod.POST);
+                httpRequest.addHeader(new HTTPHeader("User-Agent", 
+                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36"));
 
                 final HTTPResponse httpResponse = urlFetchService.fetch(httpRequest);
                 final int responseCode = httpResponse.getResponseCode();
-                if (responseCode != HttpServletResponse.SC_OK) { // Invalid avatar URL
+                if (responseCode == HttpServletResponse.SC_UNAUTHORIZED) { // Invalid avatar URL
                     final JSONObject plainUser = userQueryService.getUser(userId);
 
                     plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
