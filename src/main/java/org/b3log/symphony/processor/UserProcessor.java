@@ -793,40 +793,44 @@ public class UserProcessor {
             final String userId = user.optString(Keys.OBJECT_ID);
             final String avatarURL = user.optString(UserExt.USER_AVATAR_URL);
 
-            final HTTPRequest httpRequest = new HTTPRequest();
-            httpRequest.setURL(new URL(avatarURL));
-            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
+            try {
+                final HTTPRequest httpRequest = new HTTPRequest();
+                httpRequest.setURL(new URL(avatarURL));
+                httpRequest.setRequestMethod(HTTPRequestMethod.POST);
 
-            final HTTPResponse httpResponse = urlFetchService.fetch(httpRequest);
-            final int responseCode = httpResponse.getResponseCode();
-            if (responseCode != HttpServletResponse.SC_OK) { // Invalid avatar URL
-                final JSONObject plainUser = userQueryService.getUser(userId);
+                final HTTPResponse httpResponse = urlFetchService.fetch(httpRequest);
+                final int responseCode = httpResponse.getResponseCode();
+                if (responseCode != HttpServletResponse.SC_OK) { // Invalid avatar URL
+                    final JSONObject plainUser = userQueryService.getUser(userId);
 
-                plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
-                userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
+                    plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                    userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
 
-                LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}] ",
-                        avatarURL, user.optString(User.USER_NAME));
+                    LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}], [SC={2}]",
+                            avatarURL, user.optString(User.USER_NAME), responseCode);
 
-                continue;
-            }
+                    continue;
+                }
 
-            final List<HTTPHeader> headers = httpResponse.getHeaders();
-            for (final HTTPHeader header : headers) {
-                if ("Content-Type".equalsIgnoreCase(header.getName())) {
-                    final String value = header.getValue();
-                    if (value.startsWith("image/")) { // Invalid avatar URL
-                        final JSONObject plainUser = userQueryService.getUser(userId);
+                final List<HTTPHeader> headers = httpResponse.getHeaders();
+                for (final HTTPHeader header : headers) {
+                    if ("Content-Type".equalsIgnoreCase(header.getName())) {
+                        final String value = header.getValue();
+                        if (value.startsWith("image/")) { // Invalid avatar URL
+                            final JSONObject plainUser = userQueryService.getUser(userId);
 
-                        plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
-                        userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
+                            plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
 
-                        LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}] ",
-                                avatarURL, user.optString(User.USER_NAME));
-                        
-                        break;
+                            LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}], [Content-Type={2}]",
+                                    avatarURL, user.optString(User.USER_NAME), value);
+
+                            break;
+                        }
                     }
                 }
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Check user[" + userId + "] error", e);
             }
         }
     }
