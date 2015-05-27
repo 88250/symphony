@@ -805,7 +805,8 @@ public class UserProcessor {
                 plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
                 userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
 
-                LOGGER.log(Level.WARN, "Updated insecure user[{0}]'s avatar", user.optString(User.USER_NAME));
+                LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}] ",
+                        avatarURL, user.optString(User.USER_NAME));
 
                 continue;
             }
@@ -820,7 +821,10 @@ public class UserProcessor {
                         plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
                         userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
 
-                        LOGGER.log(Level.WARN, "Updated insecure user[{0}]'s avatar", user.optString(User.USER_NAME));
+                        LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}] ",
+                                avatarURL, user.optString(User.USER_NAME));
+                        
+                        break;
                     }
                 }
             }
