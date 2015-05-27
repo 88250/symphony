@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.processor;
 
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,11 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import org.b3log.latke.urlfetch.HTTPHeader;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.HTTPResponse;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -60,6 +66,7 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.QueryResults;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -154,7 +161,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                         final String userName) throws Exception {
+            final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         String pageNumStr = request.getParameter("p");
@@ -227,7 +234,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                 final String userName) throws Exception {
+            final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -292,7 +299,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/following/users", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeFollowingUsers(final HTTPRequestContext context, final HttpServletRequest request,
-                                       final HttpServletResponse response, final String userName) throws Exception {
+            final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -364,7 +371,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/following/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeFollowingTags(final HTTPRequestContext context, final HttpServletRequest request,
-                                      final HttpServletResponse response, final String userName) throws Exception {
+            final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -436,7 +443,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/member/{userName}/followers", method = HTTPRequestMethod.GET)
     @Before(adviceClass = UserBlockCheck.class)
     public void showHomeFollowers(final HTTPRequestContext context, final HttpServletRequest request,
-                                  final HttpServletResponse response, final String userName) throws Exception {
+            final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -548,7 +555,7 @@ public class UserProcessor {
         String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
         if (!Strings.isURL(userAvatarURL)
-            || !Jsoup.isValid("<img src=\"" + userAvatarURL + "\"/>", Whitelist.basicWithImages())) {
+                || !Jsoup.isValid("<img src=\"" + userAvatarURL + "\"/>", Whitelist.basicWithImages())) {
             userAvatarURL = "";
         }
 
@@ -683,7 +690,7 @@ public class UserProcessor {
 
         if (UserRegisterValidation.invalidUserName(name)) {
             LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the username is invalid",
-                       name, clientHost);
+                    name, clientHost);
 
             return;
         }
@@ -717,7 +724,7 @@ public class UserProcessor {
 
         if (!user.optString(UserExt.USER_B3_KEY).equals(b3Key)) {
             LOGGER.log(Level.WARN, "Sync update user[name={0}, host={1}] B3Key dismatch [sym={2}, solo={3}]",
-                       name, clientHost, user.optString(UserExt.USER_B3_KEY), b3Key);
+                    name, clientHost, user.optString(UserExt.USER_B3_KEY), b3Key);
 
             return;
         }
@@ -739,6 +746,84 @@ public class UserProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Sync update user[name=" + name + ", host=" + clientHost + "] error", e);
+        }
+    }
+
+    /**
+     * Check users.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/users/check", method = HTTPRequestMethod.GET)
+    public void checkUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String key = Symphonys.get("keyOfSymphony");
+        if (!key.equals(request.getParameter("key"))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.trueResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
+        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, Integer.MAX_VALUE);
+        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, Integer.MAX_VALUE);
+
+        final JSONObject result = userQueryService.getUsers(requestJSONObject);
+        final JSONArray users = result.optJSONArray(User.USERS);
+
+        final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
+        for (int i = 0; i < users.length(); i++) {
+            final JSONObject user = users.optJSONObject(i);
+
+            if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK != user.optInt(UserExt.USER_AVATAR_TYPE)) {
+                continue;
+            }
+
+            final String userId = user.optString(Keys.OBJECT_ID);
+            final String avatarURL = user.optString(UserExt.USER_AVATAR_URL);
+
+            final HTTPRequest httpRequest = new HTTPRequest();
+            httpRequest.setURL(new URL(avatarURL));
+            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
+
+            final HTTPResponse httpResponse = urlFetchService.fetch(httpRequest);
+            final int responseCode = httpResponse.getResponseCode();
+            if (responseCode != HttpServletResponse.SC_OK) { // Invalid avatar URL
+                final JSONObject plainUser = userQueryService.getUser(userId);
+
+                plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
+
+                LOGGER.log(Level.WARN, "Updated insecure user[{0}]'s avatar", user.optString(User.USER_NAME));
+
+                continue;
+            }
+
+            final List<HTTPHeader> headers = httpResponse.getHeaders();
+            for (final HTTPHeader header : headers) {
+                if ("Content-Type".equalsIgnoreCase(header.getName())) {
+                    final String value = header.getValue();
+                    if (value.startsWith("image/")) { // Invalid avatar URL
+                        final JSONObject plainUser = userQueryService.getUser(userId);
+
+                        plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                        userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
+
+                        LOGGER.log(Level.WARN, "Updated insecure user[{0}]'s avatar", user.optString(User.USER_NAME));
+                    }
+                }
+            }
         }
     }
 }
