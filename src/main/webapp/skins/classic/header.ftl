@@ -25,7 +25,7 @@
                  <img class="avatar-small" 
                  title="${userName}" src="${currentUser.userThumbnailURL}" />
              </a>
-            <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications/commented" title="${messageLabel}">${unreadNotificationCount}</a>
+            <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
             <a href="/add-article" title="${addArticleLabel}" class="icon icon-addfile"></a>
             <#else>
             <a id="aRegister" href="javascript:Util.goRegister()" class="last icon icon-register" 

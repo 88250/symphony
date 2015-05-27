@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, May 12, 2015
+ * @version 1.2.0.1, May 27, 2015
  * @since 0.2.5
  */
 @RequestProcessor
@@ -98,6 +98,54 @@ public class NotificationProcessor {
     private Filler filler;
 
     /**
+     * Navigates notifications.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/notifications", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = LoginCheck.class)
+    public void navigateNotifications(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        final int unreadCommentedNotificationCnt
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
+        if (unreadCommentedNotificationCnt > 0) {
+            response.sendRedirect("/notifications/commented");
+
+            return;
+        }
+
+        final int unreadAtNotificationCnt
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
+        if (unreadAtNotificationCnt > 0) {
+            response.sendRedirect("/notifications/at");
+
+            return;
+        }
+
+        final int unreadFollowingUserNotificationCnt
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
+        if (unreadFollowingUserNotificationCnt > 0) {
+            response.sendRedirect("/notifications/following-user");
+
+            return;
+        }
+
+        response.sendRedirect("/notifications/commented");
+    }
+
+    /**
      * Shows [commented] notifications.
      *
      * @param context the specified context
@@ -108,7 +156,7 @@ public class NotificationProcessor {
     @RequestProcessing(value = "/notifications/commented", method = HTTPRequestMethod.GET)
     @Before(adviceClass = LoginCheck.class)
     public void showCommentedNotifications(final HTTPRequestContext context, final HttpServletRequest request,
-                                           final HttpServletResponse response) throws Exception {
+            final HttpServletResponse response) throws Exception {
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -139,14 +187,14 @@ public class NotificationProcessor {
         dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
 
         final int unreadCommentedNotificationCnt
-                  = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
         dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
         final int unreadAtNotificationCnt
-                  = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
         dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
 
         final int unreadFollowingUserNotificationCnt
-                  = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
         dataModel.put(Common.UNREAD_FOLLOWING_USER_NOTIFICATION_CNT, unreadFollowingUserNotificationCnt);
 
         notificationMgmtService.makeRead(commentedNotifications);
@@ -178,7 +226,7 @@ public class NotificationProcessor {
     @RequestProcessing(value = "/notifications/at", method = HTTPRequestMethod.GET)
     @Before(adviceClass = LoginCheck.class)
     public void showAtNotifications(final HTTPRequestContext context, final HttpServletRequest request,
-                                    final HttpServletResponse response) throws Exception {
+            final HttpServletResponse response) throws Exception {
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -210,14 +258,14 @@ public class NotificationProcessor {
         dataModel.put(Common.AT_NOTIFICATIONS, atNotifications);
 
         final int unreadCommentedNotificationCnt
-                  = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
         dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
         final int unreadAtNotificationCnt
-                  = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
         dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
 
         final int unreadFollowingUserNotificationCnt
-                  = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
         dataModel.put(Common.UNREAD_FOLLOWING_USER_NOTIFICATION_CNT, unreadFollowingUserNotificationCnt);
 
         notificationMgmtService.makeRead(atNotifications);
@@ -249,7 +297,7 @@ public class NotificationProcessor {
     @RequestProcessing(value = "/notifications/following-user", method = HTTPRequestMethod.GET)
     @Before(adviceClass = LoginCheck.class)
     public void showFollowingUserNotifications(final HTTPRequestContext context, final HttpServletRequest request,
-                                               final HttpServletResponse response) throws Exception {
+            final HttpServletResponse response) throws Exception {
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -281,15 +329,15 @@ public class NotificationProcessor {
         dataModel.put(Common.FOLLOWING_USER_NOTIFICATIONS, followingUserNotifications);
 
         final int unreadCommentedNotificationCnt
-                  = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
         dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
 
         final int unreadAtNotificationCnt
-                  = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
         dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
 
         final int unreadFollowingUserNotificationCnt
-                  = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
         dataModel.put(Common.UNREAD_FOLLOWING_USER_NOTIFICATION_CNT, unreadFollowingUserNotificationCnt);
 
         notificationMgmtService.makeRead(followingUserNotifications);
@@ -321,7 +369,7 @@ public class NotificationProcessor {
     @RequestProcessing(value = "/notification/unread/count", method = HTTPRequestMethod.GET)
     @Before(adviceClass = LoginCheck.class)
     public void getUnreadNotificationCount(final HTTPRequestContext context, final HttpServletRequest request,
-                                      final HttpServletResponse response) throws Exception {
+            final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -330,7 +378,6 @@ public class NotificationProcessor {
         renderer.setJSONObject(ret);
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
-        
 
         ret.put(Notification.NOTIFICATION_T_UNREAD_COUNT,
                 notificationQueryService.getUnreadNotificationCount(currentUser.optString(Keys.OBJECT_ID)));
