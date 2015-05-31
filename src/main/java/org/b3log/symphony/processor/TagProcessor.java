@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Oct 11, 2012
+ * @version 1.1.0.1, May 31, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -116,7 +116,7 @@ public class TagProcessor {
      */
     @RequestProcessing(value = "/tags/{tagTitle}", method = HTTPRequestMethod.GET)
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                final String tagTitle) throws Exception {
+            final String tagTitle) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -143,6 +143,9 @@ public class TagProcessor {
         dataModel.put(Tag.TAG, tag);
 
         final String tagId = tag.optString(Keys.OBJECT_ID);
+
+        final List<JSONObject> relatedTags = tagQueryService.getRelatedTags(tagId, Symphonys.getInt("tagRelatedTagsCnt"));
+        tag.put(Tag.TAG_T_RELATED_TAGS, (Object) relatedTags);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {

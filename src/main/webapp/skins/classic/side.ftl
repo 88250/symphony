@@ -20,7 +20,7 @@
                     <#if tag.tagIconPath!="">
                     <img src="${staticServePath}/images/tags/${tag.tagIconPath}" /></#if><a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                 </span>
-                <div <#if tag.tagDescription="2">style="width:auto;white-space: nowrap;"</#if>>
+                <div>
                     <div>${tag.tagDescription}</div>
                     <span class="fn-right">
                         <span class="ft-small">${referenceLabel}</span> 

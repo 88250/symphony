@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.2.2.1, May 12, 2015",
+    "version": "1.3.2.1, May 31, 2015",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
@@ -162,6 +162,30 @@
                 {
                     "name": "tagBadCnt",
                     "description": "Oppose count",
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "name": "tag_tag",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "tag1_oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "tag2_oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "weight",
                     "type": "int"
                 }
             ]

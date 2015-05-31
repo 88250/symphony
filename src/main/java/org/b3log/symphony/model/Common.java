@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.9, Apr 17, 2015
+ * @version 1.2.1.9, May 31, 2015
  * @since 0.2.0
  */
 public final class Common {
@@ -248,6 +248,11 @@ public final class Common {
      * Key of article comments page size.
      */
     public static final String ARTICLE_COMMENTS_PAGE_SIZE = "articleCommentsPageSize";
+
+    /**
+     * Key of weight.
+     */
+    public static final String WEIGHT = "weight";
 
     /**
      * Private constructor.

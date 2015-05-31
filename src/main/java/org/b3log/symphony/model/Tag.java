@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Apr 17, 2015
+ * @version 1.3.0.3, May 31, 2015
  * @since 0.2.0
  */
 public final class Tag {
@@ -38,6 +38,16 @@ public final class Tag {
      * Key of tag title.
      */
     public static final String TAG_TITLE = "tagTitle";
+
+    /**
+     * Key of tag icon path.
+     */
+    public static final String TAG_ICON_PATH = "tagIconPath";
+
+    /**
+     * Key of tag description.
+     */
+    public static final String TAG_DESCRIPTION = "tagDescription";
 
     /**
      * Key of tag reference count.
@@ -106,14 +116,9 @@ public final class Tag {
     public static final String TAG_T_PPARTICIPANT_URL = "tagParticipantURL";
 
     /**
-     * Key of tag icon path.
+     * Key of related tags.
      */
-    public static final String TAG_ICON_PATH = "tagIconPath";
-
-    /**
-     * Key of tag description.
-     */
-    public static final String TAG_DESCRIPTION = "tagDescription";
+    public static final String TAG_T_RELATED_TAGS = "tagRelatedTags";
 
     /**
      * Private constructor.

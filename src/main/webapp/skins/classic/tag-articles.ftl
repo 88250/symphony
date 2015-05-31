@@ -16,7 +16,7 @@
             <div class="wrapper fn-clear">
                 <div class="content">
                     <div class="fn-clear">
-                        <#if tag.tagIconPath!="">
+                        <#if tag.tagIconPath != "">
                         <img class="avatar tag-article-img" src="${staticServePath}/images/tags/${tag.tagIconPath}">
                         </#if>
                         <div>
@@ -43,6 +43,29 @@
                             </#if>
                         </div>
                         ${tag.tagDescription}
+                    </div>
+                    <div class="fn-clear">
+                        <br/>
+                        <ul class="tags">
+                            <#list tag.tagRelatedTags as relatedTag>
+                            <li>
+                                <span>
+                                    <#if relatedTag.tagIconPath != "">
+                                    <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" /></#if><a rel="tag" href="/tags/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
+                                </span>
+                                <div>
+                                    <div>${relatedTag.tagDescription}</div>
+                                    <span class="fn-right">
+                                        <span class="ft-small">${referenceLabel}</span> 
+                                        ${relatedTag.tagReferenceCount} &nbsp;
+                                        <span class="ft-small">${cmtLabel}</span>
+                                        ${relatedTag.tagCommentCount}&nbsp;
+                                    </span>
+
+                                </div>
+                            </li>
+                            </#list>
+                        </ul>
                     </div>
                     <div class="fn-clear">
                         <div class="fn-left">

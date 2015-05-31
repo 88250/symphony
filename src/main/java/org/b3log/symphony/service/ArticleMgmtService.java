@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Apr 21, 2015
+ * @version 1.2.1.6, May 31, 2015
  * @since 0.2.0
  */
 @Service
@@ -99,6 +99,12 @@ public class ArticleMgmtService {
      */
     @Inject
     private OptionRepository optionRepository;
+    
+    /**
+     * Tag management service.
+     */
+    @Inject
+    private TagMgmtService tagMgmtService;
 
     /**
      * Event manager.
@@ -248,6 +254,9 @@ public class ArticleMgmtService {
             articleRepository.add(article);
 
             transaction.commit();
+            
+            // Grows the tag graph
+            tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
             final JSONObject eventData = new JSONObject();
             eventData.put(Common.FROM_CLIENT, fromClient);

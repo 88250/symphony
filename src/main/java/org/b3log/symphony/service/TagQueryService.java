@@ -16,6 +16,7 @@
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +43,7 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.TagRepository;
+import org.b3log.symphony.repository.TagTagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
 import org.json.JSONArray;
@@ -51,7 +53,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.4, Apr 15, 2015
+ * @version 1.3.0.4, May 31, 2015
  * @since 0.2.0
  */
 @Service
@@ -73,6 +75,12 @@ public class TagQueryService {
      */
     @Inject
     private UserTagRepository userTagRepository;
+
+    /**
+     * Tag-Tag repository.
+     */
+    @Inject
+    private TagTagRepository tagTagRepository;
 
     /**
      * User repository.
@@ -167,8 +175,7 @@ public class TagQueryService {
      * Gets the creator of the specified tag of the given tag id.
      *
      * @param tagId the given tag id
-     * @return tag creator, for example,
-     * <pre>
+     * @return tag creator, for example,      <pre>
      * {
      *     "tagCreatorThumbnailURL": "",
      *     "tagCreatorName": ""
@@ -213,15 +220,14 @@ public class TagQueryService {
      *
      * @param tagId the given tag id
      * @param fetchSize the specified fetch size
-     * @return tag participants, for example,
-     * <pre>
+     * @return tag participants, for example,      <pre>
      * [
      *     {
      *         "tagParticipantName": "",
      *         "tagParticipantThumbnailURL": ""
      *     }, ....
      * ]
-     * </pre>, returns an empty list if not found returns an empty list if not found
+     * </pre>, returns an empty list if not found
      *
      * @throws ServiceException service exception
      */
@@ -267,10 +273,70 @@ public class TagQueryService {
     }
 
     /**
+     * Gets the related tags of the specified tag of the given tag id.
+     *
+     * @param tagId the given tag id
+     * @param fetchSize the specified fetch size
+     * @return related tags, for example,      <pre>
+     * [{
+     *     "oId": "",
+     *     "tagTitle": "",
+     *     "tagDescription": "",
+     *     ....
+     * }, ....]
+     * </pre>, returns an empty list if not found
+     *
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getRelatedTags(final String tagId, final int fetchSize) throws ServiceException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        final Set<String> tagIds = new HashSet<String>();
+
+        try {
+            JSONObject result = tagTagRepository.getByTag1Id(tagId, 1, fetchSize);
+            JSONArray relations = result.optJSONArray(Keys.RESULTS);
+
+            boolean full = false;
+
+            for (int i = 0; i < relations.length(); i++) {
+                tagIds.add(relations.optJSONObject(i).optString(Tag.TAG + "2_" + Keys.OBJECT_ID));
+
+                if (tagIds.size() >= fetchSize) {
+                    full = true;
+
+                    break;
+                }
+            }
+
+            if (!full) {
+                result = tagTagRepository.getByTag2Id(tagId, 1, fetchSize);
+                relations = result.optJSONArray(Keys.RESULTS);
+
+                for (int i = 0; i < relations.length(); i++) {
+                    tagIds.add(relations.optJSONObject(i).optString(Tag.TAG + "1_" + Keys.OBJECT_ID));
+
+                    if (tagIds.size() >= fetchSize) {
+                        break;
+                    }
+                }
+            }
+
+            final Map<String, JSONObject> tags = tagRepository.get(tagIds);
+            final Collection<JSONObject> values = tags.values();
+            ret.addAll(values);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets related tags failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets tags by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "tagTitle": "", // optional
      *     "paginationCurrentPageNum": 1,
@@ -281,8 +347,7 @@ public class TagQueryService {
      *
      * @param tagFields the specified tag fields to return
      *
-     * @return for example,
-     * <pre>
+     * @return for example,      <pre>
      * {
      *     "pagination": {
      *         "paginationPageCount": 100,
