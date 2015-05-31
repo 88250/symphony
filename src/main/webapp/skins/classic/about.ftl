@@ -26,17 +26,17 @@
                     <ul>
                         <li>
                             Solo 是<a href="http://www.iciba.com/solo">独奏</a>，
-                            <a href="https://github.com/b3log/b3log-solo">Solo</a> 
+                            <a href="https://github.com/b3log/solo">Solo</a> 
                             也是一个独立的个人博客系统，在音乐中相当于乐手各自所拿的乐器，使用它来演奏不同的声音。
                         </li>
                         <li>
                             Rhythm 是<a href="http://www.iciba.com/rhythm">节奏</a>，相当于音乐中节拍器控制的节奏。
-                            <a href="https://github.com/b3log/b3log-rhythm">Rhythm</a> 
+                            <a href="https://github.com/b3log/rhythm">Rhythm</a> 
                             用来处理不同博客和社区服务之间的同步，以避免在交响乐中乱了节奏。
                         </li>
                         <li>
                             Symphony 是<a href="http://www.iciba.com/symphony">交响乐</a>。
-                            <a href="https://github.com/b3log/b3log-symphony">Symphony</a> 
+                            <a href="https://github.com/b3log/symphony">Symphony</a> 
                             以论坛的方式交互，汇总个人博客，需要很多人协同参与才能奏出美妙的乐章。
                         </li>
                     </ul>
