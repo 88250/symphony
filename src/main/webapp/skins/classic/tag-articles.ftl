@@ -12,7 +12,7 @@
     </head>
     <body>
         <#include "header.ftl">
-        <div class="main">
+        <div class="main tag-articles">
             <div class="wrapper fn-clear">
                 <div class="content">
                     <div class="fn-clear">
@@ -53,7 +53,7 @@
                                     <#if relatedTag.tagIconPath != "">
                                     <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" /></#if><a rel="tag" href="/tags/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
                                 </span>
-                                <div>
+                                <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
                                     <div>${relatedTag.tagDescription}</div>
                                     <span class="fn-right">
                                         <span class="ft-small">${referenceLabel}</span> 
@@ -61,7 +61,6 @@
                                         <span class="ft-small">${cmtLabel}</span>
                                         ${relatedTag.tagCommentCount}&nbsp;
                                     </span>
-
                                 </div>
                             </li>
                             </#list>

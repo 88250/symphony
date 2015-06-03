@@ -626,17 +626,20 @@ a:hover .icon-edit {
     height: 48px;
     width: 48px;
     margin-right: 10px;
+    border-radius: 24px;
 }
 
 .avatar-small {
     height: 25px;
     width: 25px;
+    border-radius: 13px;
 }
 
 .avatar-big {
     border: 25px solid #EEEEEE;
     height: 210px;
     width: 210px;
+    border-radius: 130px;
 }
 /* end avatar */
 

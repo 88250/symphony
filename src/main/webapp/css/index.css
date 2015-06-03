@@ -206,13 +206,19 @@
     display: none;
     right: 0;
     margin-left: 3px;
-    padding: 3px 5px;
+    padding: 5px 10px;
     position: absolute;
     top: 27px;
     z-index: 2;
     opacity: 0.9;
     filter: alpha(opacity=90);
     width: 260px;
+    min-width: 130px;
+}
+
+.tag-articles .tags > li > div {
+    left: -3px;
+    border-radius: 0 3px 3px 3px;
 }
 /* end side tags */
 
