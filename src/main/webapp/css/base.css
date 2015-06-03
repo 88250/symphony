@@ -15,9 +15,9 @@
  */
 
 /**
- * base style
+ * Base style.
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.4.6, Apr 3, 2014
  */
 
@@ -348,6 +348,11 @@ button:active {
     background: -o-linear-gradient(#0770a0, #0ca6dd);
     background: -webkit-linear-gradient(#0770a0, #0ca6dd);
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#0770a0', endColorstr='#0ca6dd');
+}
+
+button.small {
+    padding: 1px 5px;
+    margin: -5px 0px 0 5px;
 }
 
 button.green {

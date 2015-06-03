@@ -42,10 +42,12 @@ import org.json.JSONObject;
  * <li>Unfollows a user (/follow/user), DELETE</li>
  * <li>Follows a tag (/follow/tag), POST</li>
  * <li>Unfollows a tag (/follow/tag), DELETE</li>
+ * <li>Follows an article (/follow/article), POST</li>
+ * <li>Unfollows an article (/follow/article), DELETE</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 11, 2013
+ * @version 1.1.0.0, Jun 3, 2015
  * @since 0.2.5
  */
 @RequestProcessor
@@ -82,7 +84,7 @@ public class FollowProcessor {
     @RequestProcessing(value = "/follow/user", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void followUser(final HTTPRequestContext context, final HttpServletRequest request,
-                           final HttpServletResponse response) throws Exception {
+            final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -120,7 +122,7 @@ public class FollowProcessor {
     @RequestProcessing(value = "/follow/user", method = HTTPRequestMethod.DELETE)
     @Before(adviceClass = LoginCheck.class)
     public void unfollowUser(final HTTPRequestContext context, final HttpServletRequest request,
-                             final HttpServletResponse response) throws Exception {
+            final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -158,7 +160,7 @@ public class FollowProcessor {
     @RequestProcessing(value = "/follow/tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void followTag(final HTTPRequestContext context, final HttpServletRequest request,
-                          final HttpServletResponse response) throws Exception {
+            final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -196,7 +198,7 @@ public class FollowProcessor {
     @RequestProcessing(value = "/follow/tag", method = HTTPRequestMethod.DELETE)
     @Before(adviceClass = LoginCheck.class)
     public void unfollowTag(final HTTPRequestContext context, final HttpServletRequest request,
-                            final HttpServletResponse response) throws Exception {
+            final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -210,6 +212,82 @@ public class FollowProcessor {
         final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
 
         followMgmtService.unfollowTag(followerUserId, followingTagId);
+
+        ret.put(Keys.STATUS_CODE, true);
+    }
+
+    /**
+     * Follows an article.
+     *
+     * <p>
+     * The request json object:
+     * <pre>
+     * {
+     *   "followingId": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/follow/article", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = LoginCheck.class)
+    public void followArticle(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
+
+        followMgmtService.followArticle(followerUserId, followingArticleId);
+
+        ret.put(Keys.STATUS_CODE, true);
+    }
+
+    /**
+     * Unfollows an article.
+     *
+     * <p>
+     * The request json object:
+     * <pre>
+     * {
+     *   "followingId": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/follow/article", method = HTTPRequestMethod.DELETE)
+    @Before(adviceClass = LoginCheck.class)
+    public void unfollowArticle(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String followerUserId = currentUser.optString(Keys.OBJECT_ID);
+
+        followMgmtService.unfollowArticle(followerUserId, followingArticleId);
 
         ret.put(Keys.STATUS_CODE, true);
     }

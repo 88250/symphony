@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Follow management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Apr 17, 2015
+ * @version 1.2.0.0, Jun 3, 2015
  * @since 0.2.5
  */
 @Service
@@ -94,18 +94,18 @@ public class FollowMgmtService {
     }
 
     /**
-     * The specified follower unfollows the specified following user.
+     * The specified follower follows the specified following article.
      *
      * @param followerId the specified follower id
-     * @param followingUserId the specified following user id
+     * @param followingArticleId the specified following article id
      * @throws ServiceException service exception
      */
     @Transactional
-    public void unfollowUser(final String followerId, final String followingUserId) throws ServiceException {
+    public void followArticle(final String followerId, final String followingArticleId) throws ServiceException {
         try {
-            unfollow(followerId, followingUserId, Follow.FOLLOWING_TYPE_C_USER);
+            follow(followerId, followingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
         } catch (final RepositoryException e) {
-            final String msg = "User[id=" + followerId + "] unfollows a user[id=" + followingUserId + "] failed";
+            final String msg = "User[id=" + followerId + "] follows an article[id=" + followingArticleId + "] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -125,6 +125,44 @@ public class FollowMgmtService {
             unfollow(followerId, followingTagId, Follow.FOLLOWING_TYPE_C_TAG);
         } catch (final RepositoryException e) {
             final String msg = "User[id=" + followerId + "] unfollows a tag[id=" + followingTagId + "] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
+     * The specified follower unfollows the specified following user.
+     *
+     * @param followerId the specified follower id
+     * @param followingUserId the specified following user id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void unfollowUser(final String followerId, final String followingUserId) throws ServiceException {
+        try {
+            unfollow(followerId, followingUserId, Follow.FOLLOWING_TYPE_C_USER);
+        } catch (final RepositoryException e) {
+            final String msg = "User[id=" + followerId + "] unfollows a user[id=" + followingUserId + "] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
+     * The specified follower unfollows the specified following article.
+     *
+     * @param followerId the specified follower id
+     * @param followingArticleId the specified following article id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void unfollowArticle(final String followerId, final String followingArticleId) throws ServiceException {
+        try {
+            unfollow(followerId, followingArticleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
+        } catch (final RepositoryException e) {
+            final String msg = "User[id=" + followerId + "] unfollows an article[id=" + followingArticleId + "] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);

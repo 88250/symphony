@@ -20,6 +20,10 @@
         <@head title="${user.userName} - ${followingTagsLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followingTagsLabel}"/>
         </@head>
+        <#elseif type == "followingArticles">
+        <@head title="${user.userName} - ${followingArticlesLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${followingArticlesLabel}"/>
+        </@head>
         <#elseif type == "followers">
         <@head title="${user.userName} - ${followersLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followersLabel}"/>
@@ -48,6 +52,9 @@
                         </li>
                         <li<#if type == "followingTags"> class="current"</#if>>
                             <a href="/member/${user.userName}/following/tags">${followingTagsLabel}</a>
+                        </li>
+                        <li<#if type == "followingArticles"> class="current"</#if>>
+                            <a href="/member/${user.userName}/following/articles">${followingArticlesLabel}</a>
                         </li>
                         <li<#if type == "followers"> class="current"</#if>>
                             <a href="/member/${user.userName}/followers">${followersLabel}</a>

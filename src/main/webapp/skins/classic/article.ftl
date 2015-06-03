@@ -49,11 +49,24 @@
                                 </#if>
                             </div>
                         </div>
-                        <h2 class="article-title">
-                            <a href="${article.articlePermalink}" rel="bookmark">
-                                ${article.articleTitle}
-                            </a>
-                        </h2>
+                        <div class="fn-clear">
+                            <h2 class="article-title fn-inline">
+                                <a href="${article.articlePermalink}" rel="bookmark">
+                                    ${article.articleTitle}
+                                </a>
+                            </h2> 
+                            <#if isLoggedIn> 
+                            <#if isFollowing>
+                            <button class="red small" onclick="Util.unfollow(this, '${article.oId}', 'article')"> 
+                                ${unfollowLabel}
+                            </button>
+                            <#else>
+                            <button class="green small" onclick="Util.follow(this, '${article.oId}', 'article')"> 
+                                ${followLabel}
+                            </button>
+                            </#if>
+                            </#if>
+                        </div>
                         <div class="content-reset">
                             ${article.articleContent}
                         </div>

@@ -16,7 +16,7 @@
 /**
  * @fileoverview util and every page should be used.
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.3.2.6, May 12, 2015
  */

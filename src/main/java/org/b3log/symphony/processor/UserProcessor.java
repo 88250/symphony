@@ -79,9 +79,10 @@ import org.jsoup.safety.Whitelist;
  * <ul>
  * <li>User articles (/member/{userName}), GET</li>
  * <li>User comments (/member/{userName}/comments), GET</li>
- * <li>User comments (/member/{userName}/following/users), GET</li>
- * <li>User comments (/member/{userName}/following/tags), GET</li>
- * <li>User comments (/member/{userName}/followers), GET</li>
+ * <li>User following users (/member/{userName}/following/users), GET</li>
+ * <li>User following tags (/member/{userName}/following/tags), GET</li>
+ * <li>User following articles (/member/{userName}/following/articles), GET</li>
+ * <li>User followers (/member/{userName}/followers), GET</li>
  * <li>Settings (/settings), GET</li>
  * <li>Profiles (/settings/profiles), POST</li>
  * <li>Sync (/settings/sync/b3), POST</li>
@@ -91,7 +92,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.8, May 15, 2015
+ * @version 1.3.4.8, Jun 3, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -419,6 +420,78 @@ public class UserProcessor {
 
         final int followingTagCnt = followingTagsResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil(followingTagCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+    }
+
+    /**
+     * Shows user home following articles page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userName the specified user name
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/member/{userName}/following/articles", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = UserBlockCheck.class)
+    public void showHomeFollowingArticles(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response, final String userName) throws Exception {
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/following-articles.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeaderAndFooter(request, response, dataModel);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
+        final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
+
+        dataModel.put(User.USER, user);
+
+        final String followingId = user.optString(Keys.OBJECT_ID);
+        dataModel.put(Follow.FOLLOWING_ID, followingId);
+        filler.fillUserThumbnailURL(user);
+
+        final JSONObject followingArticlesResult = followQueryService.getFollowingArticles(followingId, pageNum, pageSize);
+        final List<JSONObject> followingArticles = (List<JSONObject>) followingArticlesResult.opt(Keys.RESULTS);
+        dataModel.put(Common.USER_HOME_FOLLOWING_ARTICLES, followingArticles);
+
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        if (isLoggedIn) {
+            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final String followerId = currentUser.optString(Keys.OBJECT_ID);
+
+            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
+            dataModel.put(Common.IS_FOLLOWING, isFollowing);
+
+            for (final JSONObject followingArticle : followingArticles) {
+                final String homeUserFollowingArticleId = followingArticle.optString(Keys.OBJECT_ID);
+
+                followingArticle.put(Common.IS_FOLLOWING, followQueryService.isFollowing(followerId, homeUserFollowingArticleId));
+            }
+        }
+
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+
+        final int followingArticleCnt = followingArticlesResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil(followingArticleCnt / (double) pageSize);
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {
@@ -797,7 +870,7 @@ public class UserProcessor {
                 final HTTPRequest httpRequest = new HTTPRequest();
                 httpRequest.setURL(new URL(avatarURL));
                 httpRequest.setRequestMethod(HTTPRequestMethod.POST);
-                httpRequest.addHeader(new HTTPHeader("User-Agent", 
+                httpRequest.addHeader(new HTTPHeader("User-Agent",
                         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36"));
 
                 final HTTPResponse httpResponse = urlFetchService.fetch(httpRequest);

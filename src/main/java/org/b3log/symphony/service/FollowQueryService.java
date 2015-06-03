@@ -16,6 +16,7 @@
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
@@ -33,7 +34,9 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.FollowRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -44,7 +47,7 @@ import org.json.JSONObject;
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Apr 17, 2015
+ * @version 1.2.0.1, Jun 3, 2015
  * @since 0.2.5
  */
 @Service
@@ -74,6 +77,12 @@ public class FollowQueryService {
     private TagRepository tagRepository;
 
     /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
      * Filler.
      */
     @Inject
@@ -91,7 +100,7 @@ public class FollowQueryService {
             return followRepository.exists(followerId, followingId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Determines following failed[followerId=" + followerId + ", followingId="
-                                    + followingId + ']', e);
+                    + followingId + ']', e);
 
             return false;
         }
@@ -103,8 +112,7 @@ public class FollowQueryService {
      * @param followerId the specified follower id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return result json object, for example,
-     * <pre>
+     * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
@@ -156,8 +164,7 @@ public class FollowQueryService {
      * @param followerId the specified follower id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return result json object, for example,
-     * <pre>
+     * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
@@ -202,13 +209,66 @@ public class FollowQueryService {
     }
 
     /**
+     * Gets following articles of the specified follower.
+     *
+     * @param followerId the specified follower id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return result json object, for example,      <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         Article
+     *     }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    public JSONObject getFollowingArticles(final String followerId, final int currentPageNum, final int pageSize) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> records = new ArrayList<JSONObject>();
+
+        ret.put(Keys.RESULTS, (Object) records);
+        ret.put(Pagination.PAGINATION_RECORD_COUNT, 0);
+
+        try {
+            final JSONObject result = getFollowings(followerId, Follow.FOLLOWING_TYPE_C_ARTICLE, currentPageNum, pageSize);
+            @SuppressWarnings("unchecked")
+            final List<JSONObject> followings = (List<JSONObject>) result.opt(Keys.RESULTS);
+
+            for (final JSONObject follow : followings) {
+                final String followingId = follow.optString(Follow.FOLLOWING_ID);
+                final JSONObject article = articleRepository.get(followingId);
+
+                if (null == article) {
+                    LOGGER.log(Level.WARN, "Not found article[id=" + followingId + ']');
+
+                    continue;
+                }
+
+                article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
+                article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
+                article.put(Article.ARTICLE_LATEST_CMT_TIME, new Date(article.optLong(Article.ARTICLE_LATEST_CMT_TIME)));
+
+                records.add(article);
+            }
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT, result.optInt(Pagination.PAGINATION_RECORD_COUNT));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets following articles of follower[id=" + followerId + "] failed", e);
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets follower users of the specified following user.
      *
      * @param followingUserId the specified following user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return result json object, for example,
-     * <pre>
+     * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
@@ -263,8 +323,7 @@ public class FollowQueryService {
      * @param followingType the specified following type
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
-     * @return result json object, for example,
-     * <pre>
+     * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
@@ -306,8 +365,7 @@ public class FollowQueryService {
      * @param followingType the specified following type
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
-     * @return result json object, for example,
-     * <pre>
+     * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{

@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all follow model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 28, 2013
+ * @version 1.1.0.0, Jun 3, 2015
  * @since 0.2.5
  */
 public final class Follow {
@@ -59,6 +59,11 @@ public final class Follow {
      * Following type - tag.
      */
     public static final int FOLLOWING_TYPE_C_TAG = 1;
+    
+    /**
+     * Following type - article.
+     */
+    public static final int FOLLOWING_TYPE_C_ARTICLE = 2;
 
     /**
      * Private constructor.
