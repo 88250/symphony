@@ -244,6 +244,11 @@
     color: #85A980;
     display: inline;
 }
+
+.tags-trend .avatar {
+    border-radius: 0;
+    box-shadow: 0 0 0;
+}
 /* end tags.html */
 
 /* start tag-article.html */
@@ -252,6 +257,8 @@
     width: 60px;
     float: left;
     margin-top: 6px;
+    border-radius: 0;
+    box-shadow: 0 0 0;
 }
 
 .tag-artile-user {
