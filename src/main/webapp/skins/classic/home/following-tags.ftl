@@ -7,7 +7,7 @@
         <li<#if followingTag_index % 2 = 1> class="even"</#if>>
             <#if "" != followingTag.tagIconPath>
             <a href="/tags/${followingTag.tagTitle?url('utf-8')}">
-                <img title="${followingTag.tagTitle}" class="avatar tag-article-img" src="${staticServePath}/images/tags/${followingTag.tagIconPath}">
+                <img title="${followingTag.tagTitle}" class="tag-img" src="${staticServePath}/images/tags/${followingTag.tagIconPath}">
             </a>
             <#else>
             <a class="icon-edit-wrap" href="/tags/${followingTag.tagTitle?url('utf-8')}"><span class="icon icon-tags" style="font-size: 60px;"></span></a>
@@ -22,11 +22,11 @@
                 <br/>
                 <#if isLoggedIn> 
                 <#if followingTag.isFollowing>
-                <button class="red" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
+                <button class="red small" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
                     ${unfollowLabel}
                 </button>
                 <#else>
-                <button class="green" onclick="Util.follow(this, '${followingTag.oId}', 'tag')"> 
+                <button class="green small" onclick="Util.follow(this, '${followingTag.oId}', 'tag')"> 
                     ${followLabel}
                 </button>
                 </#if>

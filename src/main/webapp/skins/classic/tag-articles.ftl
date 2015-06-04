@@ -17,7 +17,7 @@
                 <div class="content">
                     <div class="fn-clear">
                         <#if tag.tagIconPath != "">
-                        <img class="avatar tag-article-img" src="${staticServePath}/images/tags/${tag.tagIconPath}">
+                        <img class="tag-img fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}">
                         </#if>
                         <div>
                             <h1 class="fn-inline">
@@ -26,9 +26,7 @@
                                    href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                             </h1>
                             <#if isAdminLoggedIn>
-                            <a href="${servePath}/admin/tag/${tag.oId}" title="${adminLabel}">
-                                <span class="icon icon-setting"></span>
-                            </a>
+                            <a class="ft-small icon icon-setting" href="${servePath}/admin/tag/${tag.oId}" title="${adminLabel}"></a>
                             </#if>
                             <#if isLoggedIn> 
                             <#if isFollowing>

@@ -56,6 +56,7 @@
                                 </a>
                             </h2> 
                             <#if isLoggedIn> 
+                            &nbsp;
                             <#if isFollowing>
                             <button class="red small" onclick="Util.unfollow(this, '${article.oId}', 'article')"> 
                                 ${unfollowLabel}
@@ -86,7 +87,7 @@
                                 <#list article.articleComments as comment>
                                 <li id="${comment.oId}">
                                     <div class="fn-clear">
-                                        <div class="fn-left avatar-wrapper">
+                                        <div class="fn-left">
                                             <img class="avatar" 
                                                  title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
                                         </div>
@@ -140,7 +141,7 @@
                     <div class="module">
                         <div class="module-header ad">
                             <div class="fn-clear">
-                                <div class="fn-left avatar-wrapper">
+                                <div class="fn-left">
                                     <img class="avatar" src="${article.articleAuthorThumbnailURL}" />
                                 </div>
                                 <div class="fn-left">

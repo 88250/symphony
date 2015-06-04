@@ -24,7 +24,7 @@
                                 <#list trendTags as tag>
                                 <li class="fn-clear<#if !tag_has_next> last</#if>"> 
                                     <#if tag.tagIconPath!="">
-                                    <img class="avatar fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}" />
+                                    <img class="tag-img fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}" />
                                     </#if>
                                     <h2><a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
                                     <span class="ft-small fn-right">
@@ -50,7 +50,7 @@
                                 <#list coldTags as tag>
                                 <li class="fn-clear<#if !tag_has_next> last</#if>">
                                     <#if tag.tagIconPath!="">
-                                    <img class="avatar fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}" />
+                                    <img class="tag-img fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}" />
                                     </#if>
                                     <h2><a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
                                     <span class="ft-small fn-right">

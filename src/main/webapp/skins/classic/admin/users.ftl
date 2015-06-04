@@ -12,7 +12,7 @@
         <li>
             <div class="fn-clear first">
                 <img class="avatar-small" title="${item.userName}" 
-                     src="${item.userThumbnailURL}">
+                     src="${item.userThumbnailURL}"> &nbsp;
                 <a href="/member/${item.userName}">${item.userName}</a>
                 <a href="/admin/user/${item.oId}" class="fn-right icon-edit-wrap" title="${editLabel}">
                     <span class="icon icon-edit"></span>

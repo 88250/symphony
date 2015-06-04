@@ -35,11 +35,6 @@
     padding-bottom: 15px;
 }
 
-.user-name > button {
-    font-size: 12px;
-    padding: 2px 10px;
-}
-
 .user-info {
     line-height: 25px;
     font-size: 12px;
@@ -186,7 +181,6 @@ h2.fn-inline {
     margin-right: 20px;
     padding-bottom: 20px;
     width: 335px;
-    height: 58px;
     list-style: none;
 }
 
@@ -199,24 +193,12 @@ h2.fn-inline {
     width: 240px;
 }
 
-.follow li h3 {
-    font-weight: normal;
-    margin-bottom: 4px;
-}
-
 .follow .user-online {
     left: 45px;
     top: 45px;
 }
 
-.follow img.avatar {
-    height: 60px;
-    width: 60px;
-}
-
 .follow button {
-    font-size: 12px;
-    padding: 2px 10px;
     margin-top: 5px;
 }
 /* end follow */

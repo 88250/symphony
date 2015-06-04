@@ -3,20 +3,17 @@
     <img class="user-online" title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
     <div>
         <div class="user-name">
-            <a href="/member/${user.userName}">${user.userName}</a>
             <#if isAdminLoggedIn>
-            <a href="${servePath}/admin/user/${user.oId}" title="${adminLabel}">
-                <span class="ft-small icon icon-setting"></span>
-            </a>
+            <a class="ft-small icon icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
             </#if>
-            <br/>
+            <a href="/member/${user.userName}">${user.userName}</a>
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>
-            <button class="red" onclick="Util.unfollow(this, '${followingId}', 'user')"> 
+            <button class="red small" onclick="Util.unfollow(this, '${followingId}', 'user')"> 
                 ${unfollowLabel}
             </button>
             <#else>
-            <button class="green" onclick="Util.follow(this, '${followingId}', 'user')"> 
+            <button class="green small" onclick="Util.follow(this, '${followingId}', 'user')"> 
                 ${followLabel}
             </button>
             </#if>

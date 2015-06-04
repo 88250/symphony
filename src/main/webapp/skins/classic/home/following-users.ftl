@@ -29,11 +29,11 @@
 
                 <#if isLoggedIn && (userName != followingUser.userName)> 
                 <#if followingUser.isFollowing>
-                <button class="red" onclick="Util.unfollow(this, '${followingUser.oId}', 'user')"> 
+                <button class="red small" onclick="Util.unfollow(this, '${followingUser.oId}', 'user')"> 
                     ${unfollowLabel}
                 </button>
                 <#else>
-                <button class="green" onclick="Util.follow(this, '${followingUser.oId}', 'user')"> 
+                <button class="green small" onclick="Util.follow(this, '${followingUser.oId}', 'user')"> 
                     ${followLabel}
                 </button>
                 </#if>
