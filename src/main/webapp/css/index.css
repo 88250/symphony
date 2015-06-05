@@ -104,23 +104,16 @@
     overflow: hidden;
 }
 
-.icon-tencent, 
-.icon-weibo, 
-.icon-twitter, 
-.icon-google {
+.share .icon {
     cursor: pointer;
     transition: all 0.2s ease-out 0s;
     display: inline-block;
     font-size: 16px;
-    color: #666;
 }
 
-.icon-tencent:hover, 
-.icon-weibo:hover, 
-.icon-twitter:hover, 
-.icon-google:hover {
+.share .icon:hover {
     transform: rotate(360deg);
-    color: #333;
+    color: #4183c4;
 }
 
 .grammar dl {
