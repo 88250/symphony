@@ -41,6 +41,7 @@ import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Emotions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -216,7 +217,7 @@ public class NotificationQueryService {
                 commentedNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
                 commentedNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
                                           comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
-                commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, articleTitle);
+                commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.convert(articleTitle));
                 commentedNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
                 commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
                 commentedNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));

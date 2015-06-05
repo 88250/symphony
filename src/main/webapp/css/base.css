@@ -1216,8 +1216,8 @@ a:hover .icon-edit {
 
 /* start emoji */
 .emoji {
-    width: 21px;
-    height: 21px;
+    width: 1.3em;
+    height: 1.3em;
     display: inline-block;
     margin-bottom: .25em;
     background-size: contain;

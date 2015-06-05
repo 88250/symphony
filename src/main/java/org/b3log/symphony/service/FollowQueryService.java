@@ -16,7 +16,6 @@
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
@@ -34,7 +33,6 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.FollowRepository;
@@ -47,7 +45,7 @@ import org.json.JSONObject;
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Jun 3, 2015
+ * @version 1.2.0.2, Jun 5, 2015
  * @since 0.2.5
  */
 @Service
@@ -87,6 +85,12 @@ public class FollowQueryService {
      */
     @Inject
     private Filler filler;
+    
+    /**
+     * Article query service.
+     */
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * Determines whether exists a follow relationship for the specified follower and the specified following entity.
@@ -246,10 +250,8 @@ public class FollowQueryService {
 
                     continue;
                 }
-
-                article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
-                article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
-                article.put(Article.ARTICLE_LATEST_CMT_TIME, new Date(article.optLong(Article.ARTICLE_LATEST_CMT_TIME)));
+                
+                articleQueryService.organizeArticle(article);
 
                 records.add(article);
             }

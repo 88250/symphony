@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.11, Apr 20, 2015
+ * @version 1.3.1.11, Jun 5, 2015
  * @since 0.2.0
  */
 @Service
@@ -560,7 +560,7 @@ public class ArticleQueryService {
      * @param articles the specified articles
      * @throws RepositoryException repository exception
      */
-    private void organizeArticles(final List<JSONObject> articles) throws RepositoryException {
+    public void organizeArticles(final List<JSONObject> articles) throws RepositoryException {
         for (final JSONObject article : articles) {
             organizeArticle(article);
         }
@@ -579,12 +579,14 @@ public class ArticleQueryService {
      * @param article the specified article
      * @throws RepositoryException repository exception
      */
-    private void organizeArticle(final JSONObject article) throws RepositoryException {
+    public void organizeArticle(final JSONObject article) throws RepositoryException {
         toArticleDate(article);
         genArticleAuthor(article);
 
         final String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
         article.put(Article.ARTICLE_TITLE, title);
+        
+        article.put("articleTitleEmoj", Emotions.convert(title));
 
         if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));

@@ -12,6 +12,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>commentable</word>
         <word>commenters</word>
         <word>desc</word>
+        <word>Emoji</word>
         <word>io</word>
         <word>json</word>
         <word>Markdowns</word>

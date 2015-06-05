@@ -170,7 +170,7 @@ public class CommentQueryService {
                 comment.put(Comment.COMMENT_CREATE_TIME, comment.optLong(Comment.COMMENT_CREATE_TIME));
                 final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
                 final JSONObject article = articleRepository.get(articleId);
-                comment.put(Comment.COMMENT_T_ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
+                comment.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
 
                 final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
@@ -227,7 +227,7 @@ public class CommentQueryService {
 
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
                             Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
-                            ? langPropsService.get("articleTitleBlockLabel") : article.optString(Article.ARTICLE_TITLE));
+                            ? langPropsService.get("articleTitleBlockLabel") : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
 
                 final JSONObject commenter = userRepository.get(userId);
@@ -409,7 +409,7 @@ public class CommentQueryService {
 
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
                             Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
-                            ? langPropsService.get("articleTitleBlockLabel") : article.optString(Article.ARTICLE_TITLE));
+                            ? langPropsService.get("articleTitleBlockLabel") : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
             }
         } catch (final RepositoryException e) {

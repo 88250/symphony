@@ -52,7 +52,7 @@
                         <div class="fn-clear">
                             <h2 class="article-title fn-inline">
                                 <a href="${article.articlePermalink}" rel="bookmark">
-                                    ${article.articleTitle}
+                                    ${article.articleTitleEmoj}
                                 </a>
                             </h2> 
                             <#if isLoggedIn> 

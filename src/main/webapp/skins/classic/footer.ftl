@@ -40,7 +40,6 @@
 <script type="text/javascript" src="${staticServePath}/js/lib/md5.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.linkify-1.0-min.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
-<script type="text/javascript" src="${staticServePath}/js/lib/emojify.js-1.0.2/js/emojify.min.js?${staticResourceVersion}"></script>
 <script>
     Util.init();
     var Label = {
@@ -51,15 +50,4 @@
         symphonyLabel: "${symphonyLabel}",
         visionLabel: "${visionLabel}"
     };
-
-    var blacklist = {
-        elements: ['script', 'textarea', 'pre', 'code'],
-        classes: ['no-emojify']
-    };
-    emojify.setConfig({
-        blacklist: blacklist,
-        img_dir: '${staticServePath}/js/lib/emojify.js-1.0.2/images/basic'
-    });
-
-    emojify.run();
 </script>
