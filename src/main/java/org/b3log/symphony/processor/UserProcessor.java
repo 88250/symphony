@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.processor;
 
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -37,11 +39,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
-import org.b3log.latke.urlfetch.HTTPHeader;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.HTTPResponse;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -92,7 +89,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.8, Jun 3, 2015
+ * @version 1.3.5.8, Jun 6, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -854,8 +851,6 @@ public class UserProcessor {
         final JSONObject result = userQueryService.getUsers(requestJSONObject);
         final JSONArray users = result.optJSONArray(User.USERS);
 
-        final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
-
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.optJSONObject(i);
 
@@ -864,45 +859,48 @@ public class UserProcessor {
             }
 
             final String userId = user.optString(Keys.OBJECT_ID);
-            final String avatarURL = user.optString(UserExt.USER_AVATAR_URL);
+            final String avatarURLStr = user.optString(UserExt.USER_AVATAR_URL);
+
+            if (StringUtils.equals(avatarURLStr, Symphonys.get("defaultThumbnailURL"))) {
+                continue;
+            }
 
             try {
-                final HTTPRequest httpRequest = new HTTPRequest();
-                httpRequest.setURL(new URL(avatarURL));
-                httpRequest.setRequestMethod(HTTPRequestMethod.POST);
-                httpRequest.addHeader(new HTTPHeader("User-Agent",
-                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36"));
+                final URL avatarURL = new URL(avatarURLStr);
+                final HttpURLConnection conn = (HttpURLConnection) avatarURL.openConnection();
+                conn.setReadTimeout(Integer.valueOf("5000"));
+                conn.setConnectTimeout(Integer.valueOf("5000"));
+                conn.setRequestProperty("User-Agent",
+                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36");
 
-                final HTTPResponse httpResponse = urlFetchService.fetch(httpRequest);
-                final int responseCode = httpResponse.getResponseCode();
-                if (responseCode == HttpServletResponse.SC_UNAUTHORIZED) { // Invalid avatar URL
+                final int responseCode = conn.getResponseCode();
+                final String value = conn.getHeaderField("Content-Type");
+
+                conn.disconnect();
+
+                if (responseCode == HttpServletResponse.SC_UNAUTHORIZED
+                        || responseCode == HttpServletResponse.SC_NOT_FOUND) { // Invalid avatar URL
                     final JSONObject plainUser = userQueryService.getUser(userId);
 
                     plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
                     userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
 
                     LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}], [SC={2}]",
-                            avatarURL, user.optString(User.USER_NAME), responseCode);
+                            avatarURLStr, user.optString(User.USER_NAME), responseCode);
 
                     continue;
                 }
 
-                final List<HTTPHeader> headers = httpResponse.getHeaders();
-                for (final HTTPHeader header : headers) {
-                    if ("Content-Type".equalsIgnoreCase(header.getName())) {
-                        final String value = header.getValue();
-                        if (value.startsWith("image/")) { // Invalid avatar URL
-                            final JSONObject plainUser = userQueryService.getUser(userId);
+                if (!StringUtils.startsWith(value, "image/")) { // Invalid avatar URL
+                    final JSONObject plainUser = userQueryService.getUser(userId);
 
-                            plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
-                            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
+                    plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+                    userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
 
-                            LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}], [Content-Type={2}]",
-                                    avatarURL, user.optString(User.USER_NAME), value);
+                    LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}], [Content-Type={2}]",
+                            avatarURLStr, user.optString(User.USER_NAME), value);
 
-                            break;
-                        }
-                    }
+                    break;
                 }
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Check user[" + userId + "] error", e);
