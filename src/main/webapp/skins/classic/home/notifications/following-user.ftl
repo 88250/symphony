@@ -15,7 +15,7 @@
                     <span class="icon icon-tags"></span>
                     <#list notification.articleTags?split(",") as articleTag>
                     <a rel="tag" href="/tags/${notification?url('UTF-8')}">
-                        ${articleTag}</a><#if notification_has_next>, </#if>
+                        ${articleTag}</a><#if articleTag_has_next>, </#if>
                     </#list> &nbsp;
                     <span class="icon icon-date"></span>
                     ${notification.createTime?string('yyyy-MM-dd HH:mm')}
