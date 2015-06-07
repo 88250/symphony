@@ -21,7 +21,7 @@ import org.b3log.latke.Latkes;
  * Emotions utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jun 5, 2015
+ * @version 1.1.1.0, Jun 7, 2015
  * @since 0.2.0
  */
 public final class Emotions {
@@ -929,7 +929,13 @@ public final class Emotions {
      * @return cleared content
      */
     public static String clear(final String content) {
-        return content.replaceAll("\\[em\\d+]", "");
+        String ret = content.replaceAll("\\[em\\d+]", "");
+        for (final String emojiCode : EMOJIS) {
+            final String emoji = ":" + emojiCode + ":";
+            ret = ret.replace(emoji, "");
+        }
+
+        return ret;
     }
 
     /**
@@ -961,7 +967,7 @@ public final class Emotions {
         for (final String emojiCode : EMOJIS) {
             final String emoji = ":" + emojiCode + ":";
             ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                    + Latkes.getStaticServePath() + "/js/lib/emojify.js-1.0.2/images/basic/" + emojiCode 
+                    + Latkes.getStaticServePath() + "/js/lib/emojify.js-1.0.2/images/basic/" + emojiCode
                     + ".png\" title=\"" + emoji + "\"></img>");
         }
 

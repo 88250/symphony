@@ -64,6 +64,8 @@ import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.QueryResults;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Article processor.
@@ -838,12 +840,14 @@ public class ArticleProcessor {
 
         final int length = Integer.valueOf("150");
         String content = article.optString(Article.ARTICLE_CONTENT);
+        content = Emotions.convert(content);
+        content = Markdowns.toHTML(content);
+
+        content = Jsoup.clean(content, Whitelist.none());
         if (content.length() >= length) {
             content = StringUtils.substring(content, 0, length)
                     + " ....";
         }
-        content = Emotions.convert(content);
-        content = Markdowns.toHTML(content);
 
         result.put("html", content);
     }

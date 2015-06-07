@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -54,7 +55,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.15, Apr 17, 2015
+ * @version 1.1.3.15, Jun 7, 2015
  * @since 0.2.0
  */
 @Service
@@ -170,20 +171,25 @@ public class CommentQueryService {
                 comment.put(Comment.COMMENT_CREATE_TIME, comment.optLong(Comment.COMMENT_CREATE_TIME));
                 final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
                 final JSONObject article = articleRepository.get(articleId);
-                comment.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
+                comment.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.clear(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
 
                 final String commenterId = comment.optString(Comment.COMMENT_AUTHOR_ID);
                 final JSONObject commenter = userRepository.get(commenterId);
 
                 if (UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)
-                    || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
+                        || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
                     comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
                 }
 
-                String content = Emotions.clear(comment.optString(Comment.COMMENT_CONTENT));
+                String content = comment.optString(Comment.COMMENT_CONTENT);
+                content = Emotions.clear(content);
                 content = Jsoup.clean(content, Whitelist.none());
-                comment.put(Comment.COMMENT_CONTENT, content);
+                if (StringUtils.isBlank(content)) {
+                    comment.put(Comment.COMMENT_CONTENT, "....");
+                } else {
+                    comment.put(Comment.COMMENT_CONTENT, content);
+                }
 
                 final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
@@ -226,8 +232,9 @@ public class CommentQueryService {
                 final JSONObject article = articleRepository.get(articleId);
 
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
-                            Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
-                            ? langPropsService.get("articleTitleBlockLabel") : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
+                        Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
+                                ? langPropsService.get("articleTitleBlockLabel")
+                                : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
 
                 final JSONObject commenter = userRepository.get(userId);
@@ -258,8 +265,7 @@ public class CommentQueryService {
      *
      * @param articleId the specified article id
      * @param fetchSize the specified fetch size
-     * @return article participants, for example,
-     * <pre>
+     * @return article participants, for example,      <pre>
      * [
      *     {
      *         "articleParticipantName": "",
@@ -337,8 +343,7 @@ public class CommentQueryService {
     /**
      * Gets comments by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "paginationCurrentPageNum": 1,
      *     "paginationPageSize": 20,
@@ -348,8 +353,7 @@ public class CommentQueryService {
      *
      * @param commentFields the specified article fields to return
      *
-     * @return for example,
-     * <pre>
+     * @return for example,      <pre>
      * {
      *     "pagination": {
      *         "paginationPageCount": 100,
@@ -367,7 +371,8 @@ public class CommentQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getComments(final JSONObject requestJSONObject, final Map<String, Class<?>> commentFields) throws ServiceException {
+    public JSONObject getComments(final JSONObject requestJSONObject, final Map<String, Class<?>> commentFields)
+            throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -408,8 +413,9 @@ public class CommentQueryService {
                 final JSONObject article = articleRepository.get(articleId);
 
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
-                            Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
-                            ? langPropsService.get("articleTitleBlockLabel") : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
+                        Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
+                                ? langPropsService.get("articleTitleBlockLabel")
+                                : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
             }
         } catch (final RepositoryException e) {
@@ -496,8 +502,7 @@ public class CommentQueryService {
      * <li>Generates emotion images</li>
      * </ul>
      *
-     * @param comment the specified comment, for example,
-     * <pre>
+     * @param comment the specified comment, for example,      <pre>
      * {
      *     "commentContent": "",
      *     ....,
@@ -509,7 +514,7 @@ public class CommentQueryService {
         final JSONObject commenter = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
 
         if (Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)
-            || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
+                || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
             comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
 
             return;
@@ -539,8 +544,8 @@ public class CommentQueryService {
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
             for (final String userName : userNames) {
                 commentContent = commentContent.replace('@' + userName,
-                                                        "@<a href='" + Latkes.getStaticServePath()
-                                                        + "/member/" + userName + "'>" + userName + "</a>");
+                        "@<a href='" + Latkes.getStaticServePath()
+                        + "/member/" + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);

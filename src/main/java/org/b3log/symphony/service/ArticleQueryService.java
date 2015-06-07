@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.11, Jun 5, 2015
+ * @version 1.3.1.12, Jun 7, 2015
  * @since 0.2.0
  */
 @Service
@@ -586,7 +586,7 @@ public class ArticleQueryService {
         final String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
         article.put(Article.ARTICLE_TITLE, title);
         
-        article.put("articleTitleEmoj", Emotions.convert(title));
+        article.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
 
         if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));

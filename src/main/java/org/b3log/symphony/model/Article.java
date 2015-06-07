@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Apr 24, 2013
+ * @version 1.1.0.9, Jun 7, 2015
  * @since 0.2.0
  */
 public final class Article {
@@ -189,6 +189,11 @@ public final class Article {
      * Key of is broadcast.
      */
     public static final String ARTICLE_T_IS_BROADCAST = "articleIsBroadcast";
+    
+    /**
+     * Key of article title with Emoj.
+     */
+    public static final String ARTICLE_T_TITLE_EMOJI = "articleTitleEmoj";
 
     // Status constants
     /**
