@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -57,6 +58,7 @@ import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.QueryResults;
@@ -81,7 +83,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.19, Jun 3, 2015
+ * @version 1.4.2.19, Jun 7, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -797,6 +799,53 @@ public class ArticleProcessor {
                 "</pre>");
 
         result.put("html", Markdowns.toHTML(markdownText));
+    }
+
+    /**
+     * Gets article preview content.
+     *
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "html": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @param articleId the specified article id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/article/{articleId}/preview", method = HTTPRequestMethod.GET)
+    public void getArticlePreviewContent(final HttpServletRequest request, final HttpServletResponse response,
+            final HTTPRequestContext context, final String articleId) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        final JSONObject result = QueryResults.trueResult();
+        renderer.setJSONObject(result);
+
+        result.put("html", "");
+
+        final JSONObject article = articleQueryService.getArticle(articleId);
+        if (null == article) {
+            result.put(Keys.STATUS_CODE, false);
+
+            return;
+        }
+
+        final int length = Integer.valueOf("150");
+        String content = article.optString(Article.ARTICLE_CONTENT);
+        if (content.length() >= length) {
+            content = StringUtils.substring(content, 0, length)
+                    + " ....";
+        }
+        content = Emotions.convert(content);
+        content = Markdowns.toHTML(content);
+
+        result.put("html", content);
     }
 
     /**

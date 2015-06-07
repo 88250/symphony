@@ -8,7 +8,7 @@
                    href="/member/${article.articleAuthorName}" 
                    title="${article.articleAuthorName}"><img class="avatar fn-left" src="${article.articleAuthorThumbnailURL}" /></a>
                 <div class="fn-left list-content">
-                    <h2><a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
+                    <h2><a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
                     <span class="ft-small">
                         <span class="icon icon-tags"></span>
                         <#list article.articleTags?split(",") as articleTag>

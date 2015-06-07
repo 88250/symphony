@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.4.6, Jun 5, 2015
+ * @version 1.2.4.6, Jun 7, 2015
  */
 
 /* start reset */
@@ -1125,6 +1125,44 @@ a:hover .icon-edit {
 
 .article-list li:hover .commenters {
     display: block;
+}
+
+.article-list .preview {
+    position: absolute;
+    left: 65px;
+    z-index: 1;
+    top: 40px;
+    background-color: #FFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px 3px 3px 3px;
+    padding: 5px 10px;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+    width: 360px;
+    min-width: 130px;
+}
+
+.article-list .preview .ico-arrow {
+    width: 0px;
+    height: 0px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgba(256, 256, 256, 0.9);
+    position: absolute;
+    top: -10px;
+    z-index: 1;
+    left: 11px;
+}
+
+.article-list .preview .ico-arrowborder {
+    width: 0px;
+    height: 0px;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-bottom: 11px solid #DDDDDD;
+    position: absolute;
+    top: -11px;
+    left: 10px;
 }
 /* end article list */
 

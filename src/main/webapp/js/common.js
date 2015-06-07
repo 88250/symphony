@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.6, May 12, 2015
+ * @version 1.4.2.6, Jun 7, 2015
  */
 
 /**
@@ -26,6 +26,35 @@
  * @static
  */
 var Util = {
+    /**
+     * @description 鼠标移动到文章列表标题上时，提示文章该文章内容
+     */
+    initArticlePreview: function () {
+        $(".article-list h2 > a").hover(function () {
+            var $li = $(this).closest("li"),
+                    previewHTML = '<div class="preview"><span class="ico-arrow"></span><span class="ico-arrowborder"></span>';
+            if ($li.find('.preview').length === 1) {
+                $li.find('.preview').show();
+                return false;
+            }
+            $.ajax({
+                url: "/article/" + $(this).data('id') + "/preview",
+                type: "GET",
+                cache: false,
+                success: function (result, textStatus) {
+                    if (!result.sc) {
+                        return false;
+                    }
+                    $(".article-list .preview").hide();
+                    $li.append(previewHTML + result.html + '</div>');
+                    $li.find('.preview').show();
+                }
+            });
+        }, function () {
+            var $li = $(this).closest("li");
+            $li.find('.preview').hide();
+        });
+    },
     /**
      * @description 设置当前登录用户的未读提醒计数.
      */
