@@ -85,7 +85,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.19, Jun 7, 2015
+ * @version 1.5.2.19, Jun 9, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -142,11 +142,13 @@ public class ArticleProcessor {
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+
     /**
      * Follow query service.
      */
     @Inject
     private FollowQueryService followQueryService;
+
     /**
      * Filler.
      */
@@ -257,6 +259,7 @@ public class ArticleProcessor {
 
         filler.fillRelevantArticles(dataModel, article);
         filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
     }
 
     /**

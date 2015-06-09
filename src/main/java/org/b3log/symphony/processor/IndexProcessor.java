@@ -40,7 +40,6 @@ import org.b3log.symphony.model.Option;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
@@ -56,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.8, Jan 22, 2014
+ * @version 1.1.1.8, Jun 9, 2014
  * @since 0.2.0
  */
 @RequestProcessor
@@ -72,12 +71,6 @@ public class IndexProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
-
-    /**
-     * Comment query service.
-     */
-    @Inject
-    private CommentQueryService commentQueryService;
 
     /**
      * Option query service.
@@ -143,6 +136,7 @@ public class IndexProcessor {
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
@@ -165,6 +159,7 @@ public class IndexProcessor {
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

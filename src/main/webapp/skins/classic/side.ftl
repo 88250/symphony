@@ -1,3 +1,4 @@
+<#--
 <#if isLoggedIn>
 <div class="module">
     <div class="module-header ad">
@@ -11,6 +12,7 @@
     </div> 
 </div>
 </#if>
+#-->
 <#if ADLabel!="">
 <div class="module">
     <div class="module-header ad">
@@ -43,6 +45,39 @@
                     </span>
 
                 </div>
+            </li>
+            </#list>
+        </ul>
+    </div>
+</div>
+</#if>
+<#if sideHotArticles?size!=0>
+<div class="module">
+    <div class="module-header">
+        <h2>
+            ${hotArticleLabel}
+        </h2>
+    </div>
+    <div class="module-panel">
+        <ul class="module-list">
+            <#list sideHotArticles as hotArticle>
+            <li<#if !hotArticle_has_next> class="last"</#if>>
+                <table cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td valign="top" width="25px">
+                            <a rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
+                               title="${hotArticle.articleAuthorName}"><img class="avatar-small" src="${hotArticle.articleAuthorThumbnailURL}" /></a>
+                        </td>
+                        <td valign="middle">
+                            <#assign length = hotArticle.articleTitle?length>
+                            <#if length gt 32>
+                            <#assign length = 32>
+                            </#if>
+                            <a rel="nofollow" style="margin-left: 5px;"
+                               title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitle?substring(0, length)}</a>
+                        </td>
+                    </tr>
+                </table>
             </li>
             </#list>
         </ul>

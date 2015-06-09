@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.12, Jun 7, 2015
+ * @version 1.4.1.12, Jun 9, 2015
  * @since 0.2.0
  */
 @Service
@@ -141,7 +141,7 @@ public class ArticleQueryService {
         final String[] tagTitles = tagsString.split(",");
         final int tagTitlesLength = tagTitles.length;
         final int subCnt = tagTitlesLength > RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT
-                           ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
+                ? RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT : tagTitlesLength;
 
         final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
         final int subFetchSize = fetchSize / subCnt;
@@ -279,7 +279,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesByTags(final int currentPageNum, final int pageSize,
-                                              final Map<String, Class<?>> articleFields, final JSONObject... tags) throws ServiceException {
+            final Map<String, Class<?>> articleFields, final JSONObject... tags) throws ServiceException {
         try {
             final List<Filter> filters = new ArrayList<Filter>();
             for (final JSONObject tag : tags) {
@@ -467,10 +467,34 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets the random articles with the specified fetch size.
+     * Gets hot articles with the specified fetch size.
      *
      * @param fetchSize the specified fetch size
      * @return recent articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getHotArticles(final int fetchSize) throws ServiceException {
+        try {
+            final Query query = new Query();
+            query.addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
+                    addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(fetchSize);
+
+            final JSONObject result = articleRepository.get(query);
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            organizeArticles(ret);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets hot articles failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the random articles with the specified fetch size.
+     *
+     * @param fetchSize the specified fetch size
+     * @return random articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
     public List<JSONObject> getRandomArticles(final int fetchSize) throws ServiceException {
@@ -585,7 +609,7 @@ public class ArticleQueryService {
 
         final String title = article.optString(Article.ARTICLE_TITLE).replace("<", "&lt;").replace(">", "&gt;");
         article.put(Article.ARTICLE_TITLE, title);
-        
+
         article.put(Article.ARTICLE_T_TITLE_EMOJI, Emotions.convert(title));
 
         if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
@@ -637,7 +661,7 @@ public class ArticleQueryService {
             final String participantThumbnailURL = "";
 
             final List<JSONObject> articleParticipants
-                                   = commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
+                    = commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
             article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
 
             article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
@@ -656,8 +680,7 @@ public class ArticleQueryService {
      * <li>Generates emotion images</li>
      * </ul>
      *
-     * @param article the specified article, for example,
-     * <pre>
+     * @param article the specified article, for example,      <pre>
      * {
      *     "articleTitle": "",
      *     ....,
@@ -670,7 +693,7 @@ public class ArticleQueryService {
     public void processArticleContent(final JSONObject article) throws ServiceException {
         final JSONObject author = article.optJSONObject(Article.ARTICLE_T_AUTHOR);
         if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
-            || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+                || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
             article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
 
@@ -683,7 +706,7 @@ public class ArticleQueryService {
             final Set<String> userNames = userQueryService.getUserNames(articleContent);
             for (final String userName : userNames) {
                 articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
-                                                                        + "/member/" + userName + "'>" + userName + "</a>");
+                        + "/member/" + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {
             final String errMsg = "Generates @username home URL for article content failed";
@@ -700,8 +723,7 @@ public class ArticleQueryService {
     /**
      * Gets articles by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "oId": "", // optional
      *     "paginationCurrentPageNum": 1,
@@ -712,8 +734,7 @@ public class ArticleQueryService {
      *
      * @param articleFields the specified article fields to return
      *
-     * @return for example,
-     * <pre>
+     * @return for example,      <pre>
      * {
      *     "pagination": {
      *         "paginationPageCount": 100,
