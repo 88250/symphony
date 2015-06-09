@@ -1,3 +1,16 @@
+<#if isLoggedIn>
+<div class="module">
+    <div class="module-header ad">
+        <a href="/member/${currentUser.userName}">${currentUser.userIntro}</a>
+        <ul>
+            <li><a href="/member/${currentUser.userName}/following/tags">${followingTagsLabel}</a></li>
+            <li><a href="/member/${currentUser.userName}/following/users">${followingUsersLabel}</a></li>
+            <li><a href="/member/${currentUser.userName}/following/articles">${followingArticlesLabel}</a></li>
+            <li><a href="/member/${currentUser.userName}/followers">${followersLabel}</a></li>
+        </ul>
+    </div> 
+</div>
+</#if>
 <#if ADLabel!="">
 <div class="module">
     <div class="module-header ad">

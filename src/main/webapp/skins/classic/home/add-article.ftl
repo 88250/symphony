@@ -13,9 +13,8 @@
         <div class="main">
             <div class="wrapper">
                 <div class="form">
-                    <label>${titleLabel}</label>
                     <div>
-                        <input type="text" id="articleTitle" value="<#if article??>${article.articleTitle}</#if>" />
+                        <input type="text" id="articleTitle" value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                         <span style="right:2px;top:41px;"></span>
                     </div>
                     <label class="article-content-label">
@@ -33,9 +32,8 @@
                             ${markdwonGrammarLabel}
                         </div>
                     </div>
-                    <label>${tagLabel}</label>
                     <div>
-                        <input id="articleTags" type="text" value="<#if article??>${article.articleTags}</#if>" placeholder="${tagSeparatorTipLabel}"/>
+                        <input id="articleTags" type="text" value="<#if article??>${article.articleTags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
                         <span style="right:2px;top:507px;"></span><br/><br/>
                     </div>
                     <div class="fn-clear">
