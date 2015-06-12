@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.6, May 31, 2015
+ * @version 1.2.1.7, Jun 12, 2015
  * @since 0.2.0
  */
 @Service
@@ -99,7 +99,7 @@ public class ArticleMgmtService {
      */
     @Inject
     private OptionRepository optionRepository;
-    
+
     /**
      * Tag management service.
      */
@@ -152,8 +152,7 @@ public class ArticleMgmtService {
     /**
      * Adds an article with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "articleTitle": "",
      *     "articleTags": "",
@@ -164,7 +163,8 @@ public class ArticleMgmtService {
      *     "articleCommentable": boolean, // optional, default to true
      *     "syncWithSymphonyClient": boolean, // optional
      *     "clientArticleId": "" // optional
-     *     "isBroadcast": boolean
+     *     "isBroadcast": boolean,
+     *     "articleType": int // optional, default to 0
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -214,8 +214,8 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             } else {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
-                            replace("<", "&lt;").replace(">", "&gt;")
-                            .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
+                        replace("<", "&lt;").replace(">", "&gt;")
+                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
 
             }
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
@@ -237,7 +237,9 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
             }
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-            article.put(Article.ARTICLE_STATUS, 0);
+            article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
+            article.put(Article.ARTICLE_TYPE, 
+                    requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
 
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
 
@@ -254,7 +256,7 @@ public class ArticleMgmtService {
             articleRepository.add(article);
 
             transaction.commit();
-            
+
             // Grows the tag graph
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
@@ -281,8 +283,7 @@ public class ArticleMgmtService {
     /**
      * Updates an article with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "oId": "",
      *     "articleTitle": "",
@@ -290,6 +291,7 @@ public class ArticleMgmtService {
      *     "articleContent": "",
      *     "articleEditorType": "",
      *     "articleCommentable": boolean, // optional, default to true
+     *     "articleType": int, // optional, default to 0
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -323,13 +325,15 @@ public class ArticleMgmtService {
             oldArticle.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
             oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
             oldArticle.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
+            oldArticle.put(Article.ARTICLE_TYPE, 
+                    requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
             if (fromClient) {
                 // The article content security has been processed by Rhythm
                 oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             } else {
                 oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
-                               replace("<", "&lt;").replace(">", "&gt;")
-                               .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
+                        replace("<", "&lt;").replace(">", "&gt;")
+                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
             }
 
             oldArticle.put(Article.ARTICLE_UPDATE_TIME, System.currentTimeMillis());
@@ -543,7 +547,7 @@ public class ArticleMgmtService {
 
             if (null == tag) {
                 LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
-                           new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                        new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
@@ -568,8 +572,8 @@ public class ArticleMgmtService {
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
-                           new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
-                                        article.optString(Article.ARTICLE_TITLE)});
+                        new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
+                            article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 tagTmp.put(Tag.TAG_TITLE, tag.optString(Tag.TAG_TITLE));

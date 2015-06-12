@@ -16,14 +16,17 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -85,7 +88,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.19, Jun 9, 2015
+ * @version 1.6.2.19, Jun 12, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -214,7 +217,7 @@ public class ArticleProcessor {
 
         article.put(Article.ARTICLE_T_AUTHOR, author);
 
-        articleQueryService.processArticleContent(article);
+        articleQueryService.processArticleContent(article, request);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
@@ -225,6 +228,20 @@ public class ArticleProcessor {
 
             final boolean isFollowing = followQueryService.isFollowing(currentUserId, articleId);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
+        }
+
+        if (!(Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
+            articleMgmtService.incArticleViewCount(articleId);
+        }
+
+        filler.fillRelevantArticles(dataModel, article);
+        filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
+
+        if (!article.optBoolean("viewable")) {
+            article.put(Article.ARTICLE_T_COMMENTS, (Object) Collections.emptyList());
+
+            return;
         }
 
         String pageNumStr = request.getParameter("p");
@@ -252,14 +269,6 @@ public class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Common.ARTICLE_COMMENTS_PAGE_SIZE, pageSize);
-
-        if (!(Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
-            articleMgmtService.incArticleViewCount(articleId);
-        }
-
-        filler.fillRelevantArticles(dataModel, article);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
     }
 
     /**
@@ -273,7 +282,8 @@ public class ArticleProcessor {
      *   "articleTags": "", // Tags spliting by ','
      *   "articleContent": "",
      *   "syncWithSymphonyClient": boolean,
-     *   "articleCommentable": boolean
+     *   "articleCommentable": boolean,
+     *   "articleType": int
      * }
      * </pre>
      * </p>
@@ -301,6 +311,7 @@ public class ArticleProcessor {
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
         final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
+        final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -309,6 +320,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
         article.put(Article.ARTICLE_COMMENTABLE, articleCommentable);
+        article.put(Article.ARTICLE_TYPE, articleType);
 
         try {
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -386,7 +398,8 @@ public class ArticleProcessor {
      *   "articleTags": "", // Tags spliting by ','
      *   "articleContent": "",
      *   "syncWithSymphonyClient": boolean,
-     *   "articleCommentable": boolean
+     *   "articleCommentable": boolean,
+     *   "articleType": int
      * }
      * </pre>
      * </p>
@@ -427,6 +440,7 @@ public class ArticleProcessor {
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
         final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
+        final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
 
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, id);
@@ -436,6 +450,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
         article.put(Article.ARTICLE_COMMENTABLE, articleCommentable);
+        article.put(Article.ARTICLE_TYPE, articleType);
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser
@@ -843,6 +858,35 @@ public class ArticleProcessor {
 
         final int length = Integer.valueOf("150");
         String content = article.optString(Article.ARTICLE_CONTENT);
+        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+        final JSONObject author = userQueryService.getUser(authorId);
+
+        final Set<String> userNames = userQueryService.getUserNames(content);
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final String currentUserName = currentUser.optString(User.USER_NAME);
+        final String authorName = author.optString(User.USER_NAME);
+        if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                 && !authorName.equals(currentUserName)) {
+            boolean invited = false;
+            for (final String userName : userNames) {
+                if (userName.equals(currentUser.optString(User.USER_NAME))) {
+                    invited = true;
+
+                    break;
+                }
+            }
+
+            if (!invited) {
+                String blockContent = langPropsService.get("articleDiscussionLabel");
+                blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getStaticServePath()
+                        + "/member/" + authorName + "'>" + authorName + "</a>");
+
+                result.put("html", blockContent);
+
+                return;
+            }
+        }
+
         content = Emotions.convert(content);
         content = Markdowns.toHTML(content);
 

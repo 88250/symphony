@@ -1,5 +1,5 @@
 <#macro pagination url>
-<#if paginationPageCount!=0 && paginationPageCount!=1>
+<#if paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1>
 <div class="pagination">
     <#if paginationFirstPageNum!=1>
     <a rel="prev" href="${url}"><<1</a>

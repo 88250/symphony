@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -60,7 +61,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.12, Jun 9, 2015
+ * @version 1.5.1.12, Jun 12, 2015
  * @since 0.2.0
  */
 @Service
@@ -688,9 +689,11 @@ public class ArticleQueryService {
      * }
      * </pre>
      *
+     * @param request the specified request
      * @throws ServiceException service exception
      */
-    public void processArticleContent(final JSONObject article) throws ServiceException {
+    public void processArticleContent(final JSONObject article, final HttpServletRequest request)
+            throws ServiceException {
         final JSONObject author = article.optJSONObject(Article.ARTICLE_T_AUTHOR);
         if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
                 || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
@@ -701,9 +704,36 @@ public class ArticleQueryService {
         }
 
         String articleContent = article.optString(Article.ARTICLE_CONTENT);
+        article.put("viewable", true);
+
         try {
-            // XXX: [Performance Issue] genArticleContentUserName
             final Set<String> userNames = userQueryService.getUserNames(articleContent);
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            final String currentUserName = currentUser.optString(User.USER_NAME);
+            final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE) 
+                    && !authorName.equals(currentUserName)) {
+                boolean invited = false;
+                for (final String userName : userNames) {
+                    if (userName.equals(currentUserName)) {
+                        invited = true;
+
+                        break;
+                    }
+                }
+
+                if (!invited) {
+                    String blockContent = langPropsService.get("articleDiscussionLabel");
+                    blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getStaticServePath()
+                            + "/member/" + authorName + "'>" + authorName + "</a>");
+
+                    article.put(Article.ARTICLE_CONTENT, blockContent);
+                    article.put("viewable", false);
+
+                    return;
+                }
+            }
+
             for (final String userName : userNames) {
                 articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
                         + "/member/" + userName + "'>" + userName + "</a>");

@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @fileoverview add-article.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Apr 3, 2015
+ * @version 1.2.1.0, Jun 12, 2015
  */
 
 /**
@@ -53,7 +54,8 @@ var AddArticle = {
                 articleContent: this.editor.getValue(),
                 articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked"),
-                articleCommentable: $("#articleCommentable").prop("checked")
+                articleCommentable: $("#articleCommentable").prop("checked"),
+                articleType: $("#articleType").prop("checked") ? 1 : 0
             },
             url = "/article", type = "POST";
 

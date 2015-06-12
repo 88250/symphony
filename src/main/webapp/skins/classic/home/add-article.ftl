@@ -45,6 +45,10 @@
                             <input<#if article??><#if article.articleCommentable> checked="checked"</#if><#else> checked="checked"</#if> type="checkbox" id="articleCommentable"/> 
                                 ${commentableLabel}
                         </div>
+                        <div class="fn-left" style="margin-left: 5px;">
+                            <input<#if article?? && 1 == article.articleType> checked="checked"</#if> type="checkbox" id="articleType"/> 
+                                ${discussionLabel}
+                        </div>
                         <div class="fn-right">
                             <button class="green<#if !article??> fn-none</#if>" onclick="AddArticle.preview()">${previewLabel}</button> &nbsp; &nbsp; 
                             <button class="red" onclick="AddArticle.add(<#if article??>'${article.oId}'</#if>)"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
@@ -62,10 +66,10 @@
         <script src="${staticServePath}/js/lib/codemirror/codemirror.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
-            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
-            Label.articleTagsErrorLabel = "${articleTagsErrorLabel}";
-            Label.userName = "${userName}";
+                                                Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
+                                                Label.articleContentErrorLabel = "${articleContentErrorLabel}";
+                                                Label.articleTagsErrorLabel = "${articleTagsErrorLabel}";
+                                                Label.userName = "${userName}";
         </script>
     </body>
 </html>
