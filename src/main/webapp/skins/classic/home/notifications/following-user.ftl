@@ -14,7 +14,7 @@
                 <p class="ft-small">
                     <span class="icon icon-tags"></span>
                     <#list notification.articleTags?split(",") as articleTag>
-                    <a rel="tag" href="/tags/${notification?url('UTF-8')}">
+                    <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
                         ${articleTag}</a><#if articleTag_has_next>, </#if>
                     </#list> &nbsp;
                     <span class="icon icon-date"></span>

@@ -465,7 +465,7 @@ a.icon:hover {
 
 .icon-search {
     color: #999999;
-    left: 176px;
+    left: 88px;
     position: absolute;
     top: 19px;
     z-index: 10;
@@ -979,7 +979,7 @@ a:hover .icon-edit {
     background-color: #FFF;
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
-    left: 170px;
+    left: 81px;
     padding: 3px 5px 3px 20px;
     position: absolute;
     top: 12px;
@@ -997,11 +997,11 @@ a:hover .icon-edit {
 }
 
 .nav .tags {
-    left: 220px;
+    left: 118px;
     position: absolute;
     top: 5px;
     white-space: normal;
-    width: 494px;
+    width: 580px;
     word-wrap: break-word;
 }
 

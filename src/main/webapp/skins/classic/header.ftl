@@ -1,6 +1,6 @@
 <div class="nav"> 
     <div class="wrapper fn-clear">
-        <h1 style="margin-top:4px"><a rel="nofollow" href="/">Symphony</a></h1>
+        <h1 style="margin-top:4px"><a rel="nofollow" href="/">Sym</a></h1>
         <form target="_blank" method="get" action="http://www.google.com/search">
             <span class="icon icon-search"></span>
             <input class="search" type="text" name="q" />
