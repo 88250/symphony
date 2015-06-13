@@ -213,6 +213,10 @@
     left: -3px;
     border-radius: 0 3px 3px 3px;
 }
+
+.tag-articles p.description {
+    text-indent: 60px;
+}
 /* end side tags */
 
 /* start tags.html */

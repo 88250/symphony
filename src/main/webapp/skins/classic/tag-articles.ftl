@@ -19,29 +19,29 @@
                         <#if tag.tagIconPath != "">
                         <img class="tag-img fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}">
                         </#if>
-                        <div>
-                            <h1 class="fn-inline">
-                                <a rel="tag" 
-                                   title="${tag.tagTitle?url('UTF-8')}" 
-                                   href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                            </h1>
-                            <#if isAdminLoggedIn>
-                            <a class="ft-small icon icon-setting" href="${servePath}/admin/tag/${tag.oId}" title="${adminLabel}"></a>
-                            </#if>
-                            <#if isLoggedIn> 
-                            <#if isFollowing>
-                            <button class="red fn-right" onclick="Util.unfollow(this, '${tag.oId}', 'tag')"> 
-                                ${unfollowLabel}
-                            </button>
-                            <#else>
-                            <button class="green fn-right" onclick="Util.follow(this, '${tag.oId}', 'tag')"> 
-                                ${followLabel}
-                            </button>
-                            </#if>
-                            </#if>
-                        </div>
-                        ${tag.tagDescription}
+                        <h1 class="fn-inline">
+                            <a rel="tag" 
+                               title="${tag.tagTitle?url('UTF-8')}" 
+                               href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                        </h1>
+                        <#if isAdminLoggedIn>
+                        <a class="ft-small icon icon-setting" href="${servePath}/admin/tag/${tag.oId}" title="${adminLabel}"></a>
+                        </#if>
+                        <#if isLoggedIn> 
+                        <#if isFollowing>
+                        <button class="red fn-right" onclick="Util.unfollow(this, '${tag.oId}', 'tag')"> 
+                            ${unfollowLabel}
+                        </button>
+                        <#else>
+                        <button class="green fn-right" onclick="Util.follow(this, '${tag.oId}', 'tag')"> 
+                            ${followLabel}
+                        </button>
+                        </#if>
+                        </#if>
                     </div>
+                    <p class="description">
+                        ${tag.tagDescription}
+                    </p>
                     <div class="fn-clear">
                         <br/>
                         <ul class="tags">
