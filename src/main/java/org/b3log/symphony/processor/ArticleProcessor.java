@@ -88,7 +88,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.2.19, Jun 12, 2015
+ * @version 1.6.2.20, Jun 13, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -238,7 +238,8 @@ public class ArticleProcessor {
         filler.fillRandomArticles(dataModel);
         filler.fillHotArticles(dataModel);
 
-        if (!article.optBoolean("viewable")) {
+        dataModel.put(Common.DISCUSSION_VIEWABLE, article.optBoolean(Common.DISCUSSION_VIEWABLE));
+        if (!article.optBoolean(Common.DISCUSSION_VIEWABLE)) {
             article.put(Article.ARTICLE_T_COMMENTS, (Object) Collections.emptyList());
 
             return;
@@ -863,13 +864,13 @@ public class ArticleProcessor {
 
         final Set<String> userNames = userQueryService.getUserNames(content);
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
-        final String currentUserName = currentUser.optString(User.USER_NAME);
+        final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
         final String authorName = author.optString(User.USER_NAME);
         if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
                  && !authorName.equals(currentUserName)) {
             boolean invited = false;
             for (final String userName : userNames) {
-                if (userName.equals(currentUser.optString(User.USER_NAME))) {
+                if (userName.equals(currentUserName)) {
                     invited = true;
 
                     break;

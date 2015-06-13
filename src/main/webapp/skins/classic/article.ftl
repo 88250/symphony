@@ -118,6 +118,7 @@
                         <@pagination url=article.articlePermalink/>
                     </div>
                     <#if isLoggedIn>
+                    <#if discussionViewable>
                     <div class="form fn-clear">
                         <textarea id="commentContent" rows="3"></textarea>
                         <span style="bottom: 4px; right: 75px;"></span>
@@ -131,6 +132,7 @@
                     <div class="grammar fn-none">
                         ${markdwonGrammarLabel}
                     </div>
+                    </#if>
                     <#else>
                     <div class="comment-login">
                         <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${pleaseLoginLabel}</a>

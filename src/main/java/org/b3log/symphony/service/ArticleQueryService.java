@@ -45,6 +45,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
@@ -61,7 +62,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.12, Jun 12, 2015
+ * @version 1.5.1.13, Jun 13, 2015
  * @since 0.2.0
  */
 @Service
@@ -704,14 +705,14 @@ public class ArticleQueryService {
         }
 
         String articleContent = article.optString(Article.ARTICLE_CONTENT);
-        article.put("viewable", true);
+        article.put(Common.DISCUSSION_VIEWABLE, true);
 
         try {
             final Set<String> userNames = userQueryService.getUserNames(articleContent);
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
-            final String currentUserName = currentUser.optString(User.USER_NAME);
+            final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
             final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
-            if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE) 
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
                     && !authorName.equals(currentUserName)) {
                 boolean invited = false;
                 for (final String userName : userNames) {
@@ -728,7 +729,7 @@ public class ArticleQueryService {
                             + "/member/" + authorName + "'>" + authorName + "</a>");
 
                     article.put(Article.ARTICLE_CONTENT, blockContent);
-                    article.put("viewable", false);
+                    article.put(Common.DISCUSSION_VIEWABLE, false);
 
                     return;
                 }
