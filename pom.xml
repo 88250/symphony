@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 1.4.2.15, May 31, 2015
+    Version: 1.4.2.16, Jun 18, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -21,7 +21,7 @@
 
     <!-- Properties -->
     <properties>
-        <org.b3log.latke.version>1.3.0</org.b3log.latke.version>
+        <org.b3log.latke.version>1.3.1</org.b3log.latke.version>
         
         <servlet.version>2.5</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
