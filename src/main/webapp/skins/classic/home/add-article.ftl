@@ -21,6 +21,7 @@
                         ${contentLabel}
                         <a href="javascript:AddArticle.grammar()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
+                        <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
                     </label>
 
                     <div class="fn-clear">

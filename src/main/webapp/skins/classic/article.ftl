@@ -124,6 +124,7 @@
                         <span style="bottom: 4px; right: 75px;"></span>
                         <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
+                        <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
                         <div class="fn-right">
                             <button class="green fn-none" onclick="Comment.preview()">预览</button> &nbsp; &nbsp; 
                             <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
