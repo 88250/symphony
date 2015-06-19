@@ -210,11 +210,6 @@ public final class Common {
     public static final String THUMBNAIL_URL = "thumbnailURL";
 
     /**
-     * Key of article title.
-     */
-    public static final String ARTICLE_TITLE = "articleTitle";
-
-    /**
      * Key of URL.
      */
     public static final String URL = "url";

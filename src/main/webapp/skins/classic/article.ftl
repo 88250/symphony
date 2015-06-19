@@ -83,7 +83,7 @@
                     <div class="fn-clear">
                         <div class="list" id="comments">
                             <h2>${article.articleCommentCount} ${cmtLabel}</h2>
-                            <ul>
+                            <ul id="commentList">
                                 <#list article.articleComments as comment>
                                 <li id="${comment.oId}">
                                     <div class="fn-clear">
@@ -213,6 +213,11 @@
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/websocket${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script>
+            Channel.init("ws://${serverHost}:${serverPort}/data-channel");
+        </script>
     </body>
 </html>

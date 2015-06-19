@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @fileoverview article page and add comment.
  *
@@ -51,7 +52,8 @@ var Comment = {
                 success: function(result, textStatus) {
                     $(".form button.green").removeAttr("disabled").css("opacity", "1");
                     if (result.sc) {
-                        window.location.reload();
+                        $("#commentContent").val('');
+                        // window.location.reload();
                     } else {
                         $("#commentContent").next().addClass("tip-error").text(result.msg);
                     }

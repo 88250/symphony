@@ -302,7 +302,7 @@ public class NotificationQueryService {
                     atNotification.put(Common.CONTENT, comment.optString(Comment.COMMENT_CONTENT));
                     atNotification.put(Common.THUMBNAIL_URL,
                                        comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
-                    atNotification.put(Common.ARTICLE_TITLE, articleTitle);
+                    atNotification.put(Article.ARTICLE_TITLE, articleTitle);
                     atNotification.put(Common.URL, comment.optString(Comment.COMMENT_SHARP_URL));
                     atNotification.put(Common.CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
                     atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
@@ -321,7 +321,7 @@ public class NotificationQueryService {
                     atNotification.put(Common.CONTENT, "");
                     final String thumbnailURL = thumbnailQueryService.getAvatarURL(articleAuthor.optString(User.USER_EMAIL), "140");
                     atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
-                    atNotification.put(Common.ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
+                    atNotification.put(Article.ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
                     atNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                     atNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                     atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
@@ -426,7 +426,7 @@ public class NotificationQueryService {
                 followingUserNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 followingUserNotification.put(Common.CONTENT, "");
                 followingUserNotification.put(Common.THUMBNAIL_URL, thumbnailQueryService.getAvatarURL(articleAuthorEmail, "140"));
-                followingUserNotification.put(Common.ARTICLE_TITLE, articleTitle);
+                followingUserNotification.put(Article.ARTICLE_TITLE, articleTitle);
                 followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                 followingUserNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                 followingUserNotification.put(Notification.NOTIFICATION_HAS_READ,
