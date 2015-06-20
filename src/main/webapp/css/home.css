@@ -43,6 +43,11 @@
 /* end home side */
 
 /* start add article */
+#articleContent {
+    height: 332px;
+    margin-bottom: 20px;
+}
+
 #tip {
     position: inherit;
     white-space: pre-wrap;
@@ -67,7 +72,6 @@
 }
 
 .CodeMirror {
-    background-color: #FAFAFA;
     border-radius: 3px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
     border: 1px solid #CCCCCC;

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.6, Jun 7, 2015
+ * @version 1.3.4.6, Jun 21, 2015
  */
 
 /* start reset */
@@ -1164,6 +1164,54 @@ a:hover .icon-edit {
     top: -11px;
     left: 10px;
 }
+
+.CodeMirror-scroll {
+    background-color: #FAFAFA;
+    font-family: '\5fae\8f6f\96c5\9ed1';
+}
+
+.form .CodeMirror-focused {
+    background-color: #FFF;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset, 0 0 5px rgba(81, 167, 232, 0.5);
+    border: 1px solid #51A7E8;
+}
+
+.CodeMirror,
+.CodeMirror-hints {
+    font-family: Consolas, 'Courier New', monospace;
+}
+
+.CodeMirror-hints .ico {
+    margin: -1px 2px 0 -1px;
+}
+
+.CodeMirror-focused .cm-matchhighlight {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVQI12NgYGBgkKzc8x9CMDAwAAAmhwSbidEoSQAAAABJRU5ErkJggg==);
+    background-position: bottom;
+    background-repeat: repeat-x;
+}
+
+.CodeMirror-hint {
+    padding-right: 18px;    
+    max-width: none;
+}
+
+.CodeMirror-hint:hover {
+    background: #08f;
+    color: white;
+}
+
+.CodeMirror div.CodeMirror-cursor {
+    border-left: 2px solid #333;
+}
+
+.CodeMirror-scrollbar-filler, 
+.CodeMirror-gutter-filler {
+    background-color: transparent;    
+}
+
+.CodeMirror-empty.CodeMirror-focused { outline: none; }
+.CodeMirror pre.CodeMirror-placeholder { color: #999; }
 /* end article list */
 
 /* start side module */

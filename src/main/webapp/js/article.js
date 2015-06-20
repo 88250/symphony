@@ -18,7 +18,8 @@
  * @fileoverview article page and add comment.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.2.2, Apr 3, 2014
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.2.2.2, Jun 20, 2015
  */
 
 /**
@@ -31,38 +32,71 @@ var Comment = {
             "type": 1000,
             "msg": Label.commentErrorLabel
         }],
+    editor: undefined,
+    init: function () {
+        Util.initCodeMirror();
+
+        Comment.editor = CodeMirror.fromTextArea(document.getElementById("commentContent"), {
+            mode: 'markdown',
+            extraKeys: {
+                "'@'": "autocompleteUserName",
+                "Ctrl-/": "autocompleteEmoji"
+            }
+        });
+
+        Comment.editor.on('changes', function (cm) {
+            if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
+                $(".form .green").show();
+            } else {
+                $(".form .green").hide();
+            }
+
+            $(".CodeMirror").next().removeClass("tip-error").text('');
+        });
+
+        Comment.editor.on('keypress', function (cm, evt) {
+            if (evt.ctrlKey && 10 === evt.charCode) {
+                Comment.add(Label.articleOId);
+
+                return;
+            }
+        });
+
+        $("#preview").dialog({
+            "modal": true,
+            "hideFooter": true
+        });
+    },
     /**
      * @description 添加评论
      */
     add: function (id) {
-        if (Validate.goValidate(this._validateData)) {
-            var requestJSONObject = {
-                articleId: id,
-                commentContent: $("#commentContent").val().replace(/(^\s*)|(\s*$)/g, "")
-            };
+        var requestJSONObject = {
+            articleId: id,
+            commentContent: Comment.editor.getValue().replace(/(^\s*)|(\s*$)/g, "")
+        };
 
-            $.ajax({
-                url: "/comment",
-                type: "POST",
-                cache: false,
-                data: JSON.stringify(requestJSONObject),
-                beforeSend: function () {
-                    $(".form button.green").attr("disabled", "disabled").css("opacity", "0.3");
-                },
-                success: function (result, textStatus) {
-                    $(".form button.green").removeAttr("disabled").css("opacity", "1");
-                    if (result.sc) {
-                        $("#commentContent").val('');
-                        // window.location.reload();
-                    } else {
-                        $("#commentContent").next().addClass("tip-error").text(result.msg);
-                    }
-                },
-                complete: function () {
-                    $(".form button.green").removeAttr("disabled").css("opacity", "1");
+        $.ajax({
+            url: "/comment",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            beforeSend: function () {
+                $(".form button.green").attr("disabled", "disabled").css("opacity", "0.3");
+            },
+            success: function (result, textStatus) {
+                $(".form button.green").removeAttr("disabled").css("opacity", "1");
+                if (result.sc) {
+                    Comment.editor.setValue('');
+                    // window.location.reload();
+                } else {
+                    $(".CodeMirror").next().addClass("tip-error").text(result.msg);
                 }
-            });
-        }
+            },
+            complete: function () {
+                $(".form button.green").removeAttr("disabled").css("opacity", "1");
+            }
+        });
     },
     /**
      * @description 预览文章
@@ -73,7 +107,7 @@ var Comment = {
             type: "POST",
             cache: false,
             data: {
-                markdownText: $("#commentContent").val()
+                markdownText: Comment.editor.getValue()
             },
             success: function (result, textStatus) {
                 $(".dialog-background").height($("body").height());
@@ -137,52 +171,12 @@ var Article = {
      * @description 初识化发文页面
      */
     init: function () {
-        $("#commentContent").val("").keyup(function (event) {
-            var $commentContent = $(this);
-            if (Validate.goValidate(Comment._validateData)) {
-                $commentContent.next().removeClass("tip-error").text("");
-                $commentContent.parent().find(".green").show();
-            } else {
-                $commentContent.next().addClass("tip-error").text(Label.commentErrorLabel);
-                $commentContent.parent().find(".green").hide();
-            }
-
-            if (event.keyCode === 13 && event.ctrlKey) {
-                Comment.add(Label.articleOId);
-            }
-
-            this.rows = this.value.split("\n").length;
-            while (this.scrollHeight
-                    - (parseInt($(this).css("padding-top")) + parseInt($(this).css("padding-bottom")))
-                    > $(this).height()) {
-                this.rows += 1;
-            }
-            this.rows += 1;
-
-            if (this.rows < 3) {
-                this.rows = 3;
-            }
-        });
-
         $("#preview").dialog({
             "modal": true,
             "hideFooter": true
         });
         this.share();
         this.parseLanguage();
-
-
-        var countries = [
-            {value: 'Andorra', data: 'AD'},
-            // ...
-            {value: 'Zimbabwe', data: 'ZZ'}
-        ];
-        $('#commentContent').autocomplete({
-            lookup: countries,
-            onSelect: function (suggestion) {
-                alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
-            }
-        });
     },
     /**
      * @description 分享按钮
@@ -221,3 +215,8 @@ var Article = {
 };
 
 Article.init();
+Comment.init();
+
+function startsWith(string, prefix) {
+    return (string.match("^" + prefix) == prefix);
+}
