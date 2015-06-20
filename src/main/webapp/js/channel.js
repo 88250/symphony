@@ -37,6 +37,8 @@ var Channel = {
      */
     init: function (channelServer) {
         Channel.ws = new ReconnectingWebSocket(channelServer);
+        Channel.ws.reconnectInterval = 10000;
+        Channel.ws.maxReconnectAttempts = 7;
 
         Channel.ws.onopen = function () {
         };
@@ -89,6 +91,7 @@ var Channel = {
         };
 
         Channel.ws.onclose = function () {
+            Channel.ws.close();
         };
 
         Channel.ws.onerror = function (err) {

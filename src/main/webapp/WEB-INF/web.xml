@@ -53,7 +53,7 @@
     <servlet>
         <servlet-name>DispatcherServlet</servlet-name>
         <servlet-class>org.b3log.latke.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>DispatcherServlet</servlet-name>

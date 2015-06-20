@@ -213,10 +213,13 @@
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
+            WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
             Channel.init("ws://${serverHost}:${serverPort}/data-channel");
         </script>
     </body>
