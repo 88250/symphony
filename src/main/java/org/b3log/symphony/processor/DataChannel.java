@@ -20,10 +20,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpSession;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.User;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -32,7 +30,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
-import org.json.JSONObject;
 
 /**
  * Data channel via WebSocket.
@@ -61,20 +58,6 @@ public class DataChannel {
      */
     @OnWebSocketConnect
     public void onConnect(final Session session) {
-        final HttpSession httpSession = (HttpSession) session.getUpgradeRequest().getSession();
-        if (null == httpSession) {
-            session.close();
-
-            return;
-        }
-
-        final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
-        if (null == user) {
-            session.close();
-
-            return;
-        }
-
         SESSIONS.add(session);
     }
 

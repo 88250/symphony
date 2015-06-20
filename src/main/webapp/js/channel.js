@@ -38,7 +38,6 @@ var Channel = {
     init: function (channelServer) {
         Channel.ws = new ReconnectingWebSocket(channelServer);
         Channel.ws.reconnectInterval = 10000;
-        Channel.ws.maxReconnectAttempts = 7;
 
         Channel.ws.onopen = function () {
         };
@@ -87,6 +86,9 @@ var Channel = {
             template = replaceAll(template, "${comment.commentCreateTime}", data.commentCreateTime);
 
             $("#commentList").append(template);
+            
+            Article.parseLanguage();
+            
             $("#" + data.commentId).fadeIn(2000);
         };
 

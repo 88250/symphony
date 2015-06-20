@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.15, Apr 21, 2015
+ * @version 1.2.2.15, Jun 20, 2015
  * @since 0.2.0
  */
 @Service
@@ -105,8 +105,7 @@ public class CommentMgmtService {
     /**
      * Adds a comment with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "commentContent": "",
      *     "commentAuthorId": "",
@@ -143,8 +142,8 @@ public class CommentMgmtService {
 
             final long currentTimeMillis = System.currentTimeMillis();
             if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
-                && !Role.ADMIN_ROLE.equals(commenter.optString(User.USER_ROLE))
-                && !UserExt.DEFAULT_CMTER_ROLE.equals(commenter.optString(User.USER_ROLE))) {
+                    && !Role.ADMIN_ROLE.equals(commenter.optString(User.USER_ROLE))
+                    && !UserExt.DEFAULT_CMTER_ROLE.equals(commenter.optString(User.USER_ROLE))) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
@@ -164,7 +163,8 @@ public class CommentMgmtService {
 
             String securedContent = requestJSONObject.optString(Comment.COMMENT_CONTENT)
                     .replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;")
-                    .replace("&lt;pre&gt;", "<pre>").replace("_esc_enter_88250_", "<br/>");
+                    .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>").
+                    replace("_esc_enter_88250_", "<br/>");
 
             comment.put(Comment.COMMENT_AUTHOR_EMAIL, requestJSONObject.optString(Comment.COMMENT_AUTHOR_EMAIL));
             comment.put(Comment.COMMENT_AUTHOR_ID, requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID));
