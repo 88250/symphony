@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 20, 2015
+ * @version 1.1.0.0, Jun 20, 2015
  */
 
 /**
@@ -52,7 +52,7 @@ var Channel = {
             var preIndex = $("#commentList li:last .icon-cmt").next().text();
             var preIndex = preIndex.indexOf("#") > -1 ? preIndex = preIndex.substring(1) : 0;
 
-            var template = "<li id=\"${comment.oId}\">" +
+            var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" +
                     "<div class=\"fn-clear\">" +
                     "<div class=\"fn-left\">" +
                     "<img class=\"avatar\"" +
@@ -85,6 +85,7 @@ var Channel = {
             template = replaceAll(template, "${comment.commentCreateTime}", data.commentCreateTime);
 
             $("#commentList").append(template);
+            $("#" + data.commentId).fadeIn(2000);
         };
 
         Channel.ws.onclose = function () {

@@ -21,14 +21,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Notification;
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.10, Jun 19, 2015
+ * @version 1.3.2.10, Jun 20, 2015
  * @since 0.2.0
  */
 @Named
@@ -73,11 +73,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
      */
     @Inject
     private ThumbnailQueryService thumbnailQueryService;
-
-    /**
-     * URL fetch service.
-     */
-    private URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
@@ -110,12 +105,22 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             String cc = Emotions.convert(commentContent);
             cc = Markdowns.toHTML(cc);
             cc = Markdowns.clean(cc, "");
+            try {
+                final Set<String> userNames = userQueryService.getUserNames(commentContent);
+                for (final String userName : userNames) {
+                    cc = cc.replace('@' + userName,
+                            "@<a href='" + Latkes.getStaticServePath()
+                            + "/member/" + userName + "'>" + userName + "</a>");
+                }
+            } catch (final ServiceException e) {
+                LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);
+            }
             chData.put(Comment.COMMENT_CONTENT, cc);
 
             DataChannel.broadcast(chData.toString());
 
+            // 1. 'Commented' Notification
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
-
             final Set<String> atUserNames = userQueryService.getUserNames(commentContent);
             final boolean commenterIsArticleAuthor = articleAuthorId.equals(originalComment.optString(Comment.COMMENT_AUTHOR_ID));
             if (commenterIsArticleAuthor && atUserNames.isEmpty()) {
@@ -124,7 +129,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             atUserNames.remove(commenterName); // Do not notify commenter itself
 
-            // 1. 'Commented' Notification
             if (!commenterIsArticleAuthor) {
                 final JSONObject requestJSONObject = new JSONObject();
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, articleAuthorId);
