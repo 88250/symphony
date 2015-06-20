@@ -34,7 +34,7 @@ var Comment = {
     /**
      * @description 添加评论
      */
-    add: function(id) {
+    add: function (id) {
         if (Validate.goValidate(this._validateData)) {
             var requestJSONObject = {
                 articleId: id,
@@ -46,10 +46,10 @@ var Comment = {
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                beforeSend: function() {
+                beforeSend: function () {
                     $(".form button.green").attr("disabled", "disabled").css("opacity", "0.3");
                 },
-                success: function(result, textStatus) {
+                success: function (result, textStatus) {
                     $(".form button.green").removeAttr("disabled").css("opacity", "1");
                     if (result.sc) {
                         $("#commentContent").val('');
@@ -58,7 +58,7 @@ var Comment = {
                         $("#commentContent").next().addClass("tip-error").text(result.msg);
                     }
                 },
-                complete: function() {
+                complete: function () {
                     $(".form button.green").removeAttr("disabled").css("opacity", "1");
                 }
             });
@@ -67,7 +67,7 @@ var Comment = {
     /**
      * @description 预览文章
      */
-    preview: function() {
+    preview: function () {
         $.ajax({
             url: "/markdown",
             type: "POST",
@@ -75,7 +75,7 @@ var Comment = {
             data: {
                 markdownText: $("#commentContent").val()
             },
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 $(".dialog-background").height($("body").height());
                 $("#preview").dialog("open");
                 $("#preview").html(result.html);
@@ -86,7 +86,7 @@ var Comment = {
      * @description 点击回复评论时，把当楼层的用户名带到评论框中
      * @param {String} userName 用户名称
      */
-    replay: function(userName) {
+    replay: function (userName) {
         $("#commentContent").focus();
         var textarea = $("#commentContent").get(0),
                 position = {},
@@ -136,8 +136,8 @@ var Article = {
     /**
      * @description 初识化发文页面
      */
-    init: function() {
-        $("#commentContent").val("").keyup(function(event) {
+    init: function () {
+        $("#commentContent").val("").keyup(function (event) {
             var $commentContent = $(this);
             if (Validate.goValidate(Comment._validateData)) {
                 $commentContent.next().removeClass("tip-error").text("");
@@ -170,12 +170,25 @@ var Article = {
         });
         this.share();
         this.parseLanguage();
+
+
+        var countries = [
+            {value: 'Andorra', data: 'AD'},
+            // ...
+            {value: 'Zimbabwe', data: 'ZZ'}
+        ];
+        $('#commentContent').autocomplete({
+            lookup: countries,
+            onSelect: function (suggestion) {
+                alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+            }
+        });
     },
     /**
      * @description 分享按钮
      */
-    share: function() {
-        $(".share span").click(function() {
+    share: function () {
+        $(".share span").click(function () {
             var key = $(this).data("type");
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
                     url = "http://symphony.b3log.org" + Label.articlePermalink,
@@ -193,10 +206,10 @@ var Article = {
     /*
      * @description 解析语法高亮
      */
-    parseLanguage: function() {
+    parseLanguage: function () {
         var isPrettify = false;
 
-        $(".content-reset pre, .content-reset > p > code").each(function() {
+        $(".content-reset pre, .content-reset > p > code").each(function () {
             this.className = "prettyprint";
             isPrettify = true;
         });

@@ -20,7 +20,7 @@
     Description: Cron job configurations. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.2.0.0, Jun 20, 2015
+    Version: 1.3.0.0, Jun 20, 2015
     Author: Liang Ding
 -->
 <cronentries>
@@ -31,8 +31,14 @@
     </cron>
     
     <cron>
+        <url>/users/load-names?key=dev_key</url>
+        <description>Loads usernames</description>
+        <schedule>every 30 minutes</schedule>
+    </cron>
+    
+    <cron>
         <url>/status?key=dev_key</url>
         <description>Checks running status</description>
-        <schedule>every 1 hours</schedule>
+        <schedule>every 2 hours</schedule>
     </cron>
 </cronentries>

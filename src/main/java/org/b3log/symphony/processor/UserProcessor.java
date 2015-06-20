@@ -85,11 +85,12 @@ import org.jsoup.safety.Whitelist;
  * <li>Sync (/settings/sync/b3), POST</li>
  * <li>Password (/settings/password), POST</li>
  * <li>SyncUser (/apis/user), POST</li>
+ * <li>Get usernames (/member/names), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.8, Jun 6, 2015
+ * @version 1.4.5.8, Jun 20, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -906,5 +907,60 @@ public class UserProcessor {
                 LOGGER.log(Level.WARN, "Check user[" + userId + "] error", e);
             }
         }
+    }
+
+    /**
+     * Loads usernames.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/users/names", method = HTTPRequestMethod.GET)
+    public void listNames(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        if (!userService.isUserLoggedIn(request)) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.trueResult();
+        renderer.setJSONObject(ret);
+
+        final String namePrefix = request.getParameter("name");
+        if (StringUtils.isBlank(namePrefix)) {
+            return;
+        }
+
+        final List<String> userNames = userQueryService.getUserNamesByPrefix(namePrefix);
+        ret.put(Common.USER_NAMES, userNames);
+    }
+
+    /**
+     * Loads usernames.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/users/load-names", method = HTTPRequestMethod.GET)
+    public void loadUserNames(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String key = Symphonys.get("keyOfSymphony");
+        if (!key.equals(request.getParameter("key"))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        userQueryService.loadUserNames();
+
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 }

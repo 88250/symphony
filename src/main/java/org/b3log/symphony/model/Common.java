@@ -268,6 +268,11 @@ public final class Common {
      * Key of viewable.
      */
     public static final String DISCUSSION_VIEWABLE = "discussionViewable";
+    
+    /**
+     * Key of usernames.
+     */
+    public static final String USER_NAMES = "userNames";
 
     /**
      * Private constructor.

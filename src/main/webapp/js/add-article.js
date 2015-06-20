@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.0, Jun 12, 2015
+ * @version 1.3.1.0, Jun 20, 2015
  */
 
 /**
@@ -96,18 +96,14 @@ var AddArticle = {
     init: function () {
         var it = this;
         it.editor = CodeMirror.fromTextArea(document.getElementById("articleContent"), {
-            mode: 'markdown',
-            lineNumbers: true,
-            onKeyEvent: function (editor, event) {
-                if (it.editor.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
-                    $(".form .green").show();
-                } else {
-                    $(".form .green").hide();
-                }
+            mode: 'markdown'
+        });
 
-                if (event.keyCode === 13 && event.ctrlKey) {
-                    AddArticle.add();
-                }
+        it.editor.on('changes', function (cm) {
+            if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
+                $(".form .green").show();
+            } else {
+                $(".form .green").hide();
             }
         });
 
@@ -116,7 +112,7 @@ var AddArticle = {
                 AddArticle.add();
             }
         });
-
+        
         $("#preview").dialog({
             "modal": true,
             "hideFooter": true

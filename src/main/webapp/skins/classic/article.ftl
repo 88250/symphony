@@ -213,6 +213,7 @@
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.autocomplete-1.2.21.min.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js?${staticResourceVersion}"></script>

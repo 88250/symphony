@@ -15,7 +15,9 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -75,6 +77,52 @@ public class UserQueryService {
     private UserRepository userRepository;
 
     /**
+     * All usernames.
+     */
+    private List<String> userNames = Collections.synchronizedList(new ArrayList<String>());
+
+    /**
+     * Loads all usernames from database.
+     */
+    public void loadUserNames() {
+        userNames.clear();
+
+        final Query query = new Query().setPageCount(1);
+        query.addProjection(User.USER_NAME, String.class);
+
+        try {
+            final JSONObject result = userRepository.get(query);
+            final JSONArray array = result.optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < array.length(); i++) {
+                userNames.add(array.optJSONObject(i).optString(User.USER_NAME));
+            }
+
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Loads usernames error", e);
+        }
+
+        Collections.sort(userNames);
+    }
+
+    /**
+     * Gets usernames by the specified name prefix.
+     *
+     * @param namePrefix the specified name prefix
+     * @return a list of usernames
+     */
+    public List<String> getUserNamesByPrefix(final String namePrefix) {
+        final List<String> ret = new ArrayList<String>();
+
+        for (final String userName : userNames) {
+            if (StringUtils.startsWithIgnoreCase(userName, namePrefix)) {
+                ret.add(userName);
+            }
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets the current user.
      *
      * @param request the specified request
@@ -106,10 +154,10 @@ public class UserQueryService {
             throw new ServiceException(e);
         }
     }
-    
+
     /**
      * Gets the super administrator.
-     * 
+     *
      * @return super administrator
      * @throws ServiceException service exception
      */
@@ -167,7 +215,7 @@ public class UserQueryService {
 
         String copy = text.trim();
         copy = copy.replaceAll("\\n", " ");
-        String[] userNames = StringUtils.substringsBetween(copy, "@", " ");
+        String[] uNames = StringUtils.substringsBetween(copy, "@", " ");
         String tail = StringUtils.substringAfterLast(copy, "@");
 
         if (tail.contains(" ")) {
@@ -175,21 +223,21 @@ public class UserQueryService {
         }
 
         if (null != tail) {
-            if (null == userNames) {
-                userNames = new String[1];
-                userNames[0] = tail;
+            if (null == uNames) {
+                uNames = new String[1];
+                uNames[0] = tail;
             } else {
-                userNames = Arrays.copyOf(userNames, userNames.length + 1);
-                userNames[userNames.length - 1] = tail;
+                uNames = Arrays.copyOf(uNames, uNames.length + 1);
+                uNames[uNames.length - 1] = tail;
             }
         }
 
-        if (null == userNames) {
+        if (null == uNames) {
             return ret;
         }
 
-        for (int i = 0; i < userNames.length; i++) {
-            final String maybeUserName = userNames[i];
+        for (int i = 0; i < uNames.length; i++) {
+            final String maybeUserName = uNames[i];
 
             if (!UserRegisterValidation.invalidUserName(maybeUserName)) { // A string match the user name pattern
                 if (null != getUserByName(maybeUserName)) { // Found a user
