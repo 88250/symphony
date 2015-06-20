@@ -250,9 +250,11 @@ public class ArticleQueryService {
                 articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
             }
 
+            final JSONObject sa = userQueryService.getSA();
+
             final List<Filter> subFilters = new ArrayList<Filter>();
             subFilters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
-            subFilters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, UserExt.DEFAULT_ADMIN_EMAIL));
+            subFilters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, sa.optString(User.USER_EMAIL)));
             query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, subFilters))
                     .addProjection(Article.ARTICLE_TITLE, String.class).addProjection(Article.ARTICLE_PERMALINK, String.class)
                     .addProjection(Article.ARTICLE_CREATE_TIME, Long.class).addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING);

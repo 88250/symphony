@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.repository;
 
+import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
@@ -23,7 +24,9 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -31,7 +34,7 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Aug 10, 2012
+ * @version 1.1.0.3, Jun 20, 2015
  * @since 0.2.0
  */
 @Repository
@@ -87,22 +90,19 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Gets the administrator user.
+     * Gets the administrators.
      *
-     * @return administrator user, returns {@code null} if not found or error
+     * @return administrators, returns an empty list if not found or error
      * @throws RepositoryException repository exception
      */
-    public JSONObject getAdmin() throws RepositoryException {
+    public List<JSONObject> getAdmins() throws RepositoryException {
         final Query query = new Query().setFilter(
-                new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)).setPageCount(1);
+                new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)).setPageCount(1)
+                .addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        if (0 == array.length()) {
-            return null;
-        }
-
-        return array.optJSONObject(0);
+        
+        return CollectionUtils.<JSONObject>jsonArrayToList(array);
     }
 
     /**

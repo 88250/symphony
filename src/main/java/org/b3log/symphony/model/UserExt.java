@@ -137,17 +137,6 @@ public final class UserExt {
      */
     public static final String DEFAULT_CMTER_ROLE = "defaultCommenterRole";
 
-    //// Admin constants
-    /**
-     * Default administrator email.
-     */
-    public static final String DEFAULT_ADMIN_EMAIL = "dl88250@gmail.com";
-
-    /**
-     * Default administrator name.
-     */
-    public static final String DEFAULT_ADMIN_NAME = "88250";
-
     //// Status constants
     /**
      * User status - valid.
@@ -158,7 +147,7 @@ public final class UserExt {
      * User status - invalid.
      */
     public static final int USER_STATUS_C_INVALID = 1;
-    
+
     //// Avatar type constants
     /**
      * User avatar type - 0: Gravatar.
@@ -169,7 +158,7 @@ public final class UserExt {
      * User avatar type - 1: External Link.
      */
     public static final int USER_AVATAR_TYPE_C_EXTERNAL_LINK = 1;
-    
+
     /**
      * Private constructor.
      */

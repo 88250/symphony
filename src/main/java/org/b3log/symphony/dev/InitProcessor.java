@@ -18,6 +18,7 @@ package org.b3log.symphony.dev;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import java.util.ResourceBundle;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -109,7 +110,7 @@ public class InitProcessor {
             final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
                 LOGGER.log(Level.INFO, "Creates table result[tableName={0}, isSuccess={1}]",
-                           new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
+                        new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
 
             final Transaction transaction = optionRepository.beginTransaction();
@@ -152,23 +153,29 @@ public class InitProcessor {
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
             optionRepository.add(option);
 
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_ADD_ARTICLE);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_ADD_COMMENT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+            optionRepository.add(option);
+
             transaction.commit();
 
             // Init admin
+            final ResourceBundle init = ResourceBundle.getBundle("init");
             final JSONObject admin = new JSONObject();
-            admin.put(User.USER_EMAIL, UserExt.DEFAULT_ADMIN_EMAIL);
-            admin.put(User.USER_NAME, UserExt.DEFAULT_ADMIN_NAME);
-            admin.put(User.USER_PASSWORD, MD5.hash("test"));
+            admin.put(User.USER_EMAIL, init.getString("admin.email"));
+            admin.put(User.USER_NAME, init.getString("admin.name"));
+            admin.put(User.USER_PASSWORD, MD5.hash(init.getString("admin.password")));
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             final String adminId = userMgmtService.addUser(admin);
             admin.put(Keys.OBJECT_ID, adminId);
-
-            // Init V 她说她要当 2 号会员，~_~
-            final JSONObject v = new JSONObject();
-            v.put(User.USER_EMAIL, "lly219@gmail.com");
-            v.put(User.USER_NAME, "Vanessa");
-            v.put(User.USER_PASSWORD, MD5.hash(String.valueOf(new Random().nextInt())));
-            userMgmtService.addUser(v);
 
             // Init default commenter (for sync comment from client)
             final JSONObject defaultCommenter = new JSONObject();
@@ -212,7 +219,7 @@ public class InitProcessor {
         }
 
         try {
-            final JSONObject admin = userQueryService.getAdmin();
+            final JSONObject admin = userQueryService.getSA();
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int start = articleCntOption.optInt(Option.OPTION_VALUE) + 1;
             final int end = start + ARTICLE_GENERATE_NUM;

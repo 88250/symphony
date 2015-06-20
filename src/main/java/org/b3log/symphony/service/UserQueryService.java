@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Oct 11, 2013
+ * @version 1.1.0.4, Jun 20, 2015
  * @since 0.2.0
  */
 @Service
@@ -93,18 +93,28 @@ public class UserQueryService {
     }
 
     /**
-     * Gets the administrator.
+     * Gets the administrators.
      *
-     * @return administrator, returns {@code null} if not found
+     * @return administrators, returns an empty list if not found or error
      * @throws ServiceException service exception
      */
-    public JSONObject getAdmin() throws ServiceException {
+    public List<JSONObject> getAdmins() throws ServiceException {
         try {
-            return userRepository.getAdmin();
+            return userRepository.getAdmins();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets admin failed", e);
+            LOGGER.log(Level.ERROR, "Gets admins failed", e);
             throw new ServiceException(e);
         }
+    }
+    
+    /**
+     * Gets the super administrator.
+     * 
+     * @return super administrator
+     * @throws ServiceException service exception
+     */
+    public JSONObject getSA() throws ServiceException {
+        return getAdmins().get(0);
     }
 
     /**
@@ -137,10 +147,9 @@ public class UserQueryService {
      * Gets user names from the specified text.
      *
      * <p>
-     * A user name is between &#64; and a punctuation, a blank or a line break
-     * (\n). For example, the specified text is
-     * <pre>&#64;88250 It is a nice day. &#64;Vanessa, we are on the way.</pre>
-     * There are two user names in the text, 88250 and Vanessa.
+     * A user name is between &#64; and a punctuation, a blank or a line break (\n). For example, the specified text is
+     * <pre>&#64;88250 It is a nice day. &#64;Vanessa, we are on the way.</pre> There are two user names in the text,
+     * 88250 and Vanessa.
      * </p>
      *
      * @param text the specified text
@@ -217,8 +226,7 @@ public class UserQueryService {
     /**
      * Gets users by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "userName": "", // optional
      *     "paginationCurrentPageNum": 1,
@@ -227,8 +235,7 @@ public class UserQueryService {
      * }, see {@link Pagination} for more details
      * </pre>
      *
-     * @return for example,      
-     * <pre>
+     * @return for example,      <pre>
      * {
      *     "pagination": {
      *         "paginationPageCount": 100,
@@ -256,7 +263,7 @@ public class UserQueryService {
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setCurrentPageNum(currentPageNum).setPageSize(pageSize);
-        
+
         if (requestJSONObject.has(User.USER_NAME)) {
             query.setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, requestJSONObject.optString(User.USER_NAME)));
         }
