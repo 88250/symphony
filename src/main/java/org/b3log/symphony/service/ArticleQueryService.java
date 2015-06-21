@@ -48,6 +48,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
@@ -62,7 +63,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.13, Jun 13, 2015
+ * @version 1.6.1.13, Jun 21, 2015
  * @since 0.2.0
  */
 @Service
@@ -583,6 +584,7 @@ public class ArticleQueryService {
      * <li>generates author thumbnail URL</li>
      * <li>generates author name</li>
      * <li>escapes article title &lt; and &gt;</li>
+     * <li>generates article heat</li>
      * </ul>
      *
      * @param articles the specified articles
@@ -592,6 +594,7 @@ public class ArticleQueryService {
         for (final JSONObject article : articles) {
             organizeArticle(article);
         }
+
     }
 
     /**
@@ -602,6 +605,7 @@ public class ArticleQueryService {
      * <li>generates author thumbnail URL</li>
      * <li>generates author name</li>
      * <li>escapes article title &lt; and &gt;</li>
+     * <li>generates article heat</li>
      * </ul>
      *
      * @param article the specified article
@@ -620,6 +624,14 @@ public class ArticleQueryService {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
             article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
         }
+        
+        final String articleId = article.optString(Keys.OBJECT_ID);
+        Integer viewingCnt = ArticleChannel.ARTICLE_VIEWS.get(articleId);
+        if (null == viewingCnt) {
+            viewingCnt = 0;
+        }
+        
+        article.put(Article.ARTICLE_T_HEAT, viewingCnt);
     }
 
     /**
