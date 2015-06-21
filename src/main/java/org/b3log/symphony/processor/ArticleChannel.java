@@ -32,19 +32,19 @@ import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 
 /**
- * Data channel via WebSocket.
+ * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 19, 2015
+ * @version 1.0.0.1, Jun 21, 2015
  * @since 1.3.0
  */
 @WebSocket
-public class DataChannel {
+public class ArticleChannel {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(DataChannel.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleChannel.class.getName());
 
     /**
      * Session set.
@@ -113,18 +113,18 @@ public class DataChannel {
     }
 
     /**
-     * Data channel WebSocket servlet.
+     * Article data channel WebSocket servlet.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.0.0, Jun 19, 2015
+     * @version 1.0.0.1, Jun 21, 2015
      * @since 1.3.0
      */
-    @WebServlet("/data-channel")
-    public static class DataChannelWebSocketServlet extends WebSocketServlet {
+    @WebServlet("/article-channel")
+    public static class ArticleChannelWebSocketServlet extends WebSocketServlet {
 
         @Override
         public void configure(final WebSocketServletFactory factory) {
-            factory.register(DataChannel.class);
+            factory.register(ArticleChannel.class);
         }
     }
 }

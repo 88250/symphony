@@ -81,7 +81,7 @@ public class StatusProcessor {
         renderer.setJSONObject(ret);
 
         ret.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
-        ret.put(Common.DATA_CHANNEL_CNT, DataChannel.SESSIONS.size());
+        ret.put(Common.ARTICLE_CHANNEL_CNT, ArticleChannel.SESSIONS.size());
 
         final JSONObject memory = new JSONObject();
         ret.put("memory", memory);

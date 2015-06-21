@@ -33,7 +33,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.DataChannel;
+import org.b3log.symphony.processor.ArticleChannel;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.ThumbnailQueryService;
 import org.b3log.symphony.service.UserQueryService;
@@ -117,7 +117,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
             chData.put(Comment.COMMENT_CONTENT, cc);
 
-            DataChannel.broadcast(chData.toString());
+            ArticleChannel.broadcast(chData.toString());
 
             // 1. 'Commented' Notification
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);

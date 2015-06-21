@@ -226,7 +226,7 @@
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
-            Channel.init("ws://${serverHost}:${serverPort}/data-channel");
+            Channel.init("ws://${serverHost}:${serverPort}/article-channel");
         </script>
     </body>
 </html>
