@@ -14,10 +14,13 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>desc</word>
         <word>emoj</word>
         <word>Emoji</word>
+        <word>ids</word>
         <word>io</word>
         <word>json</word>
         <word>Markdowns</word>
         <word>markdowns</word>
+        <word>Multicast</word>
+        <word>Multicasts</word>
         <word>permalink</word>
         <word>servlet</word>
         <word>Unfollows</word>

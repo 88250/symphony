@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -202,6 +203,11 @@ public class ArticleProcessor {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
+        }
+        
+        final HttpSession session = request.getSession(false);
+        if (null != session) {
+            session.setAttribute(Article.ARTICLE_T_ID, articleId);
         }
 
         filler.fillHeaderAndFooter(request, response, dataModel);

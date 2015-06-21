@@ -1,7 +1,10 @@
 <#macro list listData>
 <div class="article-list list">
     <ul>
+        <#assign articleIds = "">
         <#list listData as article>
+        <#assign articleIds = articleIds + article.oId>
+        <#if article_has_next><#assign articleIds = articleIds + ","></#if>
         <li>
             <div class="fn-clear">
                 <a rel="nofollow"
@@ -37,4 +40,15 @@
         </#list>
     </ul>
 </div>
+
+<script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
+<script>
+    WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
+    
+    // Init [Article List] channel
+    ArticleListChannel.init("ws://${serverHost}:${serverPort}/article-list-channel?articleIds=${articleIds}");
+</script>
 </#macro>

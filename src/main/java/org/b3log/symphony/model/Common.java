@@ -273,6 +273,11 @@ public final class Common {
      * Key of usernames.
      */
     public static final String USER_NAMES = "userNames";
+    
+    /**
+     * Key of viewing count.
+     */
+    public static final String VIEWING_CNT = "viewingCnt";
 
     /**
      * Private constructor.

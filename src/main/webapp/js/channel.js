@@ -18,14 +18,14 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jun 20, 2015
+ * @version 1.2.0.1, Jun 21, 2015
  */
 
 /**
- * @description Channel
+ * @description Article channel.
  * @static
  */
-var Channel = {
+var ArticleChannel = {
     /**
      * WebSocket instance.
      * 
@@ -36,13 +36,13 @@ var Channel = {
      * @description Initializes message channel
      */
     init: function (channelServer) {
-        Channel.ws = new ReconnectingWebSocket(channelServer);
-        Channel.ws.reconnectInterval = 10000;
+        ArticleChannel.ws = new ReconnectingWebSocket(channelServer);
+        ArticleChannel.ws.reconnectInterval = 10000;
 
-        Channel.ws.onopen = function () {
+        ArticleChannel.ws.onopen = function () {
         };
 
-        Channel.ws.onmessage = function (evt) {
+        ArticleChannel.ws.onmessage = function (evt) {
             var data = JSON.parse(evt.data);
             if (Label.articleOId !== data.articleId) { // It's not the current article
                 return;
@@ -92,11 +92,47 @@ var Channel = {
             $("#" + data.commentId).fadeIn(2000);
         };
 
-        Channel.ws.onclose = function () {
-            Channel.ws.close();
+        ArticleChannel.ws.onclose = function () {
+            ArticleChannel.ws.close();
         };
 
-        Channel.ws.onerror = function (err) {
+        ArticleChannel.ws.onerror = function (err) {
+            console.log("ERROR", err)
+        };
+    }
+};
+
+/**
+ * @description Article list channel.
+ * @static
+ */
+var ArticleListChannel = {
+    /**
+     * WebSocket instance.
+     * 
+     * @type WebSocket
+     */
+    ws: undefined,
+    /**
+     * @description Initializes message channel
+     */
+    init: function (channelServer) {
+        ArticleListChannel.ws = new ReconnectingWebSocket(channelServer);
+        ArticleListChannel.ws.reconnectInterval = 10000;
+
+        ArticleListChannel.ws.onopen = function () {
+        };
+
+        ArticleListChannel.ws.onmessage = function (evt) {
+            var data = JSON.parse(evt.data);
+            console.log(data);
+        };
+
+        ArticleListChannel.ws.onclose = function () {
+            ArticleListChannel.ws.close();
+        };
+
+        ArticleListChannel.ws.onerror = function (err) {
             console.log("ERROR", err)
         };
     }

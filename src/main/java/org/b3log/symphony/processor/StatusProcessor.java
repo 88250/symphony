@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.processor;
 
+import org.b3log.symphony.processor.channel.ArticleChannel;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
