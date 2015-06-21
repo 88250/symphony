@@ -49,7 +49,7 @@ var ArticleChannel = {
             }
 
             // Append comment
-            
+
             var preIndex = $("#commentList li:last .icon-cmt").next().text();
             var preIndex = preIndex.indexOf("#") > -1 ? preIndex = preIndex.substring(1) : 0;
 
@@ -86,9 +86,9 @@ var ArticleChannel = {
             template = replaceAll(template, "${comment.commentCreateTime}", data.commentCreateTime);
 
             $("#commentList").append(template);
-            
+
             Article.parseLanguage();
-            
+
             $("#" + data.commentId).fadeIn(2000);
         };
 
@@ -125,6 +125,22 @@ var ArticleListChannel = {
 
         ArticleListChannel.ws.onmessage = function (evt) {
             var data = JSON.parse(evt.data);
+            $(".list-content > h2 > a").each(function () {
+                var id = $(this).data('id').toString();
+                if (data.articleId === id) {
+                    var $li = $(this).closest("li"),
+                            $heat = $li.find('.heat'),
+                            heat = $heat.width();
+
+                    $li.append('<i class="point"></i>');
+
+                    setTimeout(function () {
+                        $heat.width(heat + 1*3);
+                        $li.find(".point").remove();
+                    }, 2000);
+                }
+            });
+
             console.log(data);
         };
 

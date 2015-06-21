@@ -36,6 +36,7 @@
                 </a>
                 </#list>
             </div>
+            <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </li>
         </#list>
     </ul>
