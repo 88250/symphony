@@ -139,7 +139,8 @@
     right: 0;
 }
 
-.point {
+.point,
+.point-remove {
     position: absolute;
     height: 5px;
     background-color: #4183C4;
@@ -153,6 +154,12 @@
     animation-fill-mode: both;
     -webkit-animation-name: slideInLeft;
     animation-name: slideInLeft;
+}
+
+.point-remove {
+    left: 0;
+    -webkit-animation-name: slideInRight;
+    animation-name: slideInRight;
 }
 
 @-webkit-keyframes slideInLeft {
@@ -172,6 +179,32 @@
     0% {
         -webkit-transform: translate3d(-690px, 0, 0);
         transform: translate3d(-690px, 0, 0);
+        visibility: visible;
+    }
+
+    100% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@-webkit-keyframes slideInRight {
+    0% {
+        -webkit-transform: translate3d(690px, 0, 0);
+        transform: translate3d(690px, 0, 0);
+        visibility: visible;
+    }
+
+    100% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        -webkit-transform: translate3d(690px, 0, 0);
+        transform: translate3d(690px, 0, 0);
         visibility: visible;
     }
 

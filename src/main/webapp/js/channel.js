@@ -131,13 +131,20 @@ var ArticleListChannel = {
                     var $li = $(this).closest("li"),
                             $heat = $li.find('.heat'),
                             heat = $heat.width();
+                    if (data.operation === "+") {
+                        $li.append('<i class="point"></i>');
+                        setTimeout(function () {
+                            $heat.width(heat + 1 * 3);
+                            $li.find(".point").remove();
+                        }, 2000);
+                    } else {
+                        $heat.width(heat - 1 * 3);
+                        $li.append('<i class="point-remove"></i>');
+                        setTimeout(function () {
+                            $li.find(".point").remove();
+                        }, 2000);
+                    }
 
-                    $li.append('<i class="point"></i>');
-
-                    setTimeout(function () {
-                        $heat.width(heat + 1*3);
-                        $li.find(".point").remove();
-                    }, 2000);
                 }
             });
 
