@@ -324,7 +324,7 @@ public class CommentQueryService {
      */
     public List<JSONObject> getArticleComments(final String articleId, final int currentPageNum, final int pageSize)
             throws ServiceException {
-        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.ASCENDING)
+        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
                 .setPageCount(1).setCurrentPageNum(currentPageNum).setPageSize(pageSize)
                 .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId));
         try {
