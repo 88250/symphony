@@ -468,7 +468,7 @@ a.icon:hover {
     left: 88px;
     position: absolute;
     top: 19px;
-    z-index: 10;
+    z-index: 2;
     cursor: pointer;
 }
 

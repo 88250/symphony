@@ -101,7 +101,10 @@ var AddArticle = {
             mode: 'markdown',
             extraKeys: {
                 "'@'": "autocompleteUserName",
-                "Ctrl-/": "autocompleteEmoji"
+                "Ctrl-/": "autocompleteEmoji",
+                "F11": function (cm) {
+                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                }
             }
         });
 

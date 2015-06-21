@@ -7,6 +7,7 @@
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/codemirror.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/display/fullscreen.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/hint/show-hint.css?${staticResourceVersion}" />
     </head>
     <body>
@@ -27,7 +28,7 @@
                         </label>
                     </div>
                     <div class="fn-clear article-content">
-                        <textarea id="articleContent" placeholder="Emoji: Ctrl-/"><#if article??>${article.articleContent}</#if></textarea>
+                        <textarea id="articleContent" placeholder="Emoji: Ctrl-/, F11: Full Screen"><#if article??>${article.articleContent}</#if></textarea>
                         <span id="articleContentTip" style="top: 304px; right: 5px;"></span>
                         <div class="fn-left grammar fn-none">
                             ${markdwonGrammarLabel}
@@ -67,6 +68,7 @@
         <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/placeholder.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/fullscreen.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/overwrite/codemirror/addon/hint/show-hint.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
