@@ -108,6 +108,25 @@ var AddArticle = {
             }
         });
 
+        it.editor.on('keydown', function (cm, evt) {
+            if (8 === evt.keyCode) { // Backspace
+                var cursor = cm.getCursor();
+                var token = cm.getTokenAt(cursor);
+
+                if (" " !== token.string) {
+                    return;
+                }
+
+                // delete the whole username
+                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch - 1);
+                token = cm.getTokenAt(preCursor);
+                if (startsWith(token.string, "@")) {
+                    cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
+                            CodeMirror.Pos(cursor.line, token.end));
+                }
+            }
+        });
+
         it.editor.on('changes', function (cm) {
             if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
                 $(".form .green").show();
@@ -117,7 +136,7 @@ var AddArticle = {
         });
 
         $("#articleTitle, #articleTags").keypress(function (event) {
-            if (event.keyCode === 13) {
+            if (13 === event.keyCode) {
                 AddArticle.add();
             }
         });
