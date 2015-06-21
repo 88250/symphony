@@ -141,7 +141,7 @@ var ArticleListChannel = {
                         $heat.width(heat - 1 * 3);
                         $li.append('<i class="point-remove"></i>');
                         setTimeout(function () {
-                            $li.find(".point").remove();
+                            $li.find(".point-remove").remove();
                         }, 2000);
                     }
 

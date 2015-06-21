@@ -104,20 +104,16 @@ public class ArticleListChannel {
     }
 
     /**
-     * Notifies the specified comment message to browsers.
+     * Notifies the specified article heat message to browsers.
      *
      * @param message the specified message, for example      <pre>
      * {
      *     "articleId": "",
-     *     "commentId": "",
-     *     "commentAuthorName": "",
-     *     "commentAuthorThumbnailURL": "",
-     *     "commentCreateTime": "", // yyyy-MM-dd HH:mm
-     *     "commentContent": ""
+     *     "operation": "" // "+"/"-"
      * }
      * </pre>
      */
-    public static void notifyComment(final JSONObject message) {
+    public static void notifyHeat(final JSONObject message) {
         final String articleId = message.optString(Article.ARTICLE_T_ID);
         final String msgStr = message.toString();
 

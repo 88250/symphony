@@ -31,6 +31,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ArticleChannel;
@@ -119,7 +120,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             chData.put(Comment.COMMENT_CONTENT, cc);
 
             ArticleChannel.notifyComment(chData);
-            ArticleListChannel.notifyComment(chData);
+            
+            // + Article Heat
+            final JSONObject articleHeat = new JSONObject();
+            articleHeat.put(Article.ARTICLE_T_ID, originalArticle.optString(Keys.OBJECT_ID));
+            articleHeat.put(Common.OPERATION, "+");
+            ArticleListChannel.notifyHeat(articleHeat);
 
             // 1. 'Commented' Notification
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);

@@ -89,9 +89,9 @@ public class ArticleChannel {
 
         final JSONObject message = new JSONObject();
         message.put(Article.ARTICLE_T_ID, articleId);
-        message.put(Common.VIEWING_CNT, ARTICLE_VIEWS.get(articleId));
+        message.put(Common.OPERATION, "+");
 
-        // ArticleListChannel.broadcast(message.toString());
+        ArticleListChannel.notifyHeat(message);
     }
 
     /**
@@ -124,12 +124,11 @@ public class ArticleChannel {
             }
         }
 
-        final int count = ARTICLE_VIEWS.get(articleId);
-
         final JSONObject message = new JSONObject();
         message.put(Article.ARTICLE_T_ID, articleId);
-        message.put(Common.VIEWING_CNT, count);
+        message.put(Common.OPERATION, "-");
 
+        ArticleListChannel.notifyHeat(message);
     }
 
     /**

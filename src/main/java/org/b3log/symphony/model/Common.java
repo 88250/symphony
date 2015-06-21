@@ -275,9 +275,9 @@ public final class Common {
     public static final String USER_NAMES = "userNames";
     
     /**
-     * Key of viewing count.
+     * Key of operation.
      */
-    public static final String VIEWING_CNT = "viewingCnt";
+    public static final String OPERATION = "operation";
 
     /**
      * Private constructor.
