@@ -49,10 +49,6 @@ var ArticleChannel = {
             }
 
             // Append comment
-
-            var preIndex = $("#commentList li:last .icon-cmt").next().text();
-            var preIndex = preIndex.indexOf("#") > -1 ? preIndex = preIndex.substring(1) : 0;
-
             var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" +
                     "<div class=\"fn-clear\">" +
                     "<div class=\"fn-left\">" +
@@ -69,7 +65,7 @@ var ArticleChannel = {
                     "</span>" +
                     "<span class=\"fn-right\">" +
                     "<span class=\"icon icon-cmt\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span>" +
-                    " <i>#" + (parseInt(preIndex) + 1) + "</i>" +
+                    " <i>#" + (parseInt($("#comments > h2").text()) + 1) + "</i>" +
                     "</span>" +
                     "</div>" +
                     "<div class=\"content-reset comment\">" +
@@ -85,7 +81,7 @@ var ArticleChannel = {
             template = replaceAll(template, "${comment.commentContent}", data.commentContent);
             template = replaceAll(template, "${comment.commentCreateTime}", data.commentCreateTime);
 
-            $("#commentList").append(template);
+            $("#commentList").prepend(template);
 
             Article.parseLanguage();
 

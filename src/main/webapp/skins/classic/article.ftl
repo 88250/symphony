@@ -82,6 +82,28 @@
                             </div>    
                         </div>
                     </div>
+                    <#if isLoggedIn>
+                    <#if discussionViewable>
+                    <div class="form fn-clear">
+                        <textarea id="commentContent" placeholder="Emoji: Ctrl-/, ${postLabel}: Ctrl-Enter"></textarea>
+                        <span style="bottom: 4px; right: 75px;"></span>
+                        <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
+                        <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
+                        <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
+                        <div class="fn-right">
+                            <button class="green fn-none" onclick="Comment.preview()">预览</button> &nbsp; &nbsp; 
+                            <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
+                        </div>
+                    </div>
+                    <div class="grammar fn-none">
+                        ${markdwonGrammarLabel}
+                    </div>
+                    </#if>
+                    <#else>
+                    <div class="comment-login">
+                        <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
+                    </div>
+                    </#if>
                     <div class="fn-clear">
                         <div class="list" id="comments">
                             <h2>${article.articleCommentCount} ${cmtLabel}</h2>
@@ -105,7 +127,7 @@
                                                     <#if isLoggedIn> 
                                                     <span class="icon icon-cmt" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
                                                     </#if>
-                                                    <i>#${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}</i>
+                                                    <i>#${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</i>
                                                 </span>    
                                             </div>
                                             <div class="content-reset comment">
@@ -119,28 +141,6 @@
                         </div>
                         <@pagination url=article.articlePermalink/>
                     </div>
-                    <#if isLoggedIn>
-                    <#if discussionViewable>
-                    <div class="form fn-clear">
-                        <textarea id="commentContent" placeholder="Emoji: Ctrl-/, ${postLabel}: Ctrl-Enter"></textarea>
-                        <span style="bottom: 4px; right: 75px;"></span>
-                        <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                        <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                        <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
-                        <div class="fn-right">
-                            <button class="green fn-none" onclick="Comment.preview()">预览</button> &nbsp; &nbsp; 
-                            <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
-                        </div>
-                    </div>
-                    <div class="grammar fn-none">
-                        ${markdwonGrammarLabel}
-                    </div>
-                    </#if>
-                    <#else>
-                    <div class="comment-login">
-                        <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
-                    </div>
-                    </#if>
                 </div>
                 <div class="side">
                     <div class="module">
@@ -226,7 +226,7 @@
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
-            
+
             // Init [Article] channel
             ArticleChannel.init("ws://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}");
         </script>
