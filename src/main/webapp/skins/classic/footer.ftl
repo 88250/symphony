@@ -48,6 +48,7 @@
         followLabel: "${followLabel}",
         unfollowLabel: "${unfollowLabel}",
         symphonyLabel: "${symphonyLabel}",
-        visionLabel: "${visionLabel}"
+        visionLabel: "${visionLabel}",
+        cmtLabel: "${cmtLabel}"
     };
 </script>

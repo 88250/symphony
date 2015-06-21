@@ -91,7 +91,7 @@
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
                         <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
                         <div class="fn-right">
-                            <button class="green fn-none" onclick="Comment.preview()">预览</button> &nbsp; &nbsp; 
+                            <button class="green fn-none" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 
                             <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                                                     <#if isLoggedIn> 
                                                     <span class="icon icon-cmt" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
                                                     </#if>
-                                                    <i>#${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</i>
+                                                    #<i>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</i>
                                                 </span>    
                                             </div>
                                             <div class="content-reset comment">

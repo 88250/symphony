@@ -47,6 +47,8 @@ var ArticleChannel = {
             if (Label.articleOId !== data.articleId) { // It's not the current article
                 return;
             }
+            
+            $("#comments > h2").text((parseInt($("#comments > h2").text()) + 1)+ Label.cmtLabel);
 
             // Append comment
             var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" +
@@ -65,7 +67,7 @@ var ArticleChannel = {
                     "</span>" +
                     "<span class=\"fn-right\">" +
                     "<span class=\"icon icon-cmt\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span>" +
-                    " <i>#" + (parseInt($("#comments > h2").text()) + 1) + "</i>" +
+                    " <i>#" + parseInt($("#comments > h2").text()) + "</i>" +
                     "</span>" +
                     "</div>" +
                     "<div class=\"content-reset comment\">" +
