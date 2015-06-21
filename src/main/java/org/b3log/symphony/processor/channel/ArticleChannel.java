@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jun 21, 2015
+ * @version 1.0.1.1, Jun 21, 2015
  * @since 1.3.0
  */
 @WebSocket
@@ -103,32 +103,7 @@ public class ArticleChannel {
      */
     @OnWebSocketClose
     public void onClose(final Session session, final int statusCode, final String reason) {
-        SESSIONS.remove(session);
-
-        final String articleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
-        if (StringUtils.isBlank(articleId)) {
-            return;
-        }
-
-        synchronized (ARTICLE_VIEWS) {
-            if (!ARTICLE_VIEWS.containsKey(articleId)) {
-                return;
-            }
-
-            final int count = ARTICLE_VIEWS.get(articleId);
-            final int newCount = count - 1;
-            if (newCount < 1) {
-                ARTICLE_VIEWS.remove(articleId);
-            } else {
-                ARTICLE_VIEWS.put(articleId, newCount);
-            }
-        }
-
-        final JSONObject message = new JSONObject();
-        message.put(Article.ARTICLE_T_ID, articleId);
-        message.put(Common.OPERATION, "-");
-
-        ArticleListChannel.notifyHeat(message);
+        removeSession(session);
     }
 
     /**
@@ -148,9 +123,7 @@ public class ArticleChannel {
      */
     @OnWebSocketError
     public void onError(final Session session, final Throwable error) {
-        LOGGER.log(Level.ERROR, "[Article] channel error", error);
-
-        SESSIONS.remove(session);
+        removeSession(session);
     }
 
     /**
@@ -201,5 +174,39 @@ public class ArticleChannel {
         public void configure(final WebSocketServletFactory factory) {
             factory.register(ArticleChannel.class);
         }
+    }
+
+    /**
+     * Removes the specified session.
+     *
+     * @param session the specified session
+     */
+    private void removeSession(final Session session) {
+        SESSIONS.remove(session);
+
+        final String articleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+        if (StringUtils.isBlank(articleId)) {
+            return;
+        }
+
+        synchronized (ARTICLE_VIEWS) {
+            if (!ARTICLE_VIEWS.containsKey(articleId)) {
+                return;
+            }
+
+            final int count = ARTICLE_VIEWS.get(articleId);
+            final int newCount = count - 1;
+            if (newCount < 1) {
+                ARTICLE_VIEWS.remove(articleId);
+            } else {
+                ARTICLE_VIEWS.put(articleId, newCount);
+            }
+        }
+
+        final JSONObject message = new JSONObject();
+        message.put(Article.ARTICLE_T_ID, articleId);
+        message.put(Common.OPERATION, "-");
+
+        ArticleListChannel.notifyHeat(message);
     }
 }

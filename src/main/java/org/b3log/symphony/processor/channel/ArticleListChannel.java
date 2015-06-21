@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Article list channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 20, 2015
+ * @version 1.0.0.1, Jun 21, 2015
  * @since 1.3.0
  */
 @WebSocket
@@ -98,8 +98,6 @@ public class ArticleListChannel {
      */
     @OnWebSocketError
     public void onError(final Session session, final Throwable error) {
-        LOGGER.log(Level.ERROR, "[Article List] channel error", error);
-
         SESSIONS.remove(session);
     }
 
