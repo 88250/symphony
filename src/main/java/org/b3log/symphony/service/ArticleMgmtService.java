@@ -171,7 +171,7 @@ public class ArticleMgmtService {
      * @return generated article id
      * @throws ServiceException service exception
      */
-    public String addArticle(final JSONObject requestJSONObject) throws ServiceException {
+    public synchronized String addArticle(final JSONObject requestJSONObject) throws ServiceException {
         try {
             // check if admin allow to add article
             final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_ARTICLE);
@@ -238,7 +238,7 @@ public class ArticleMgmtService {
             }
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
-            article.put(Article.ARTICLE_TYPE, 
+            article.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
 
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
@@ -297,7 +297,7 @@ public class ArticleMgmtService {
      *
      * @throws ServiceException service exception
      */
-    public void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
+    public synchronized void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
         try {
             // check if admin allow to add article
             final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_ARTICLE);
@@ -325,7 +325,7 @@ public class ArticleMgmtService {
             oldArticle.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
             oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
             oldArticle.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
-            oldArticle.put(Article.ARTICLE_TYPE, 
+            oldArticle.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
             if (fromClient) {
                 // The article content security has been processed by Rhythm

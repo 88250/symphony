@@ -190,8 +190,7 @@ public class UserMgmtService {
     /**
      * Updates a user's profiles by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object (user), for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object (user), for example,      <pre>
      * {
      *     "oId": "",
      *     "userURL": "",
@@ -237,8 +236,7 @@ public class UserMgmtService {
     /**
      * Updates a user's sync B3log settings by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object (user), for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object (user), for example,      <pre>
      * {
      *     "oId": "",
      *     "userB3Key": "",
@@ -282,8 +280,7 @@ public class UserMgmtService {
     /**
      * Updates a user's password by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object (user), for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object (user), for example,      <pre>
      * {
      *     "oId": "",
      *     "userPassword": "", // Hashed
@@ -321,8 +318,7 @@ public class UserMgmtService {
     /**
      * Adds a user with the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "userName": "",
      *     "userEmail": "",
@@ -334,7 +330,7 @@ public class UserMgmtService {
      * @return generated user id
      * @throws ServiceException if user name or email duplicated, or repository exception
      */
-    public String addUser(final JSONObject requestJSONObject) throws ServiceException {
+    public synchronized String addUser(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {

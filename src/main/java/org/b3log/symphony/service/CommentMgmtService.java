@@ -123,7 +123,7 @@ public class CommentMgmtService {
      * @return generated comment id
      * @throws ServiceException service exception
      */
-    public String addComment(final JSONObject requestJSONObject) throws ServiceException {
+    public synchronized String addComment(final JSONObject requestJSONObject) throws ServiceException {
         try {
             // check if admin allow to add comment
             final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_COMMENT);

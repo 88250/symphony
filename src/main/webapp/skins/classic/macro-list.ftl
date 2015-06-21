@@ -26,7 +26,6 @@
             <div class="ft-small cmts">
                 <span class="icon icon-cmts"></span>
                 ${article.articleCommentCount}
-                ${cmtLabel}
             </div>
             </#if>
             <div class="commenters">
