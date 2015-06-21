@@ -1,7 +1,7 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "home">
-<div class="<#if isMyArticle>article-list<#else>home</#if> list">
+<div class="home list">
     <ul> 
         <#list userHomeArticles as article>
         <li>
@@ -17,19 +17,20 @@
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
+            <#if isMyArticle>
+            <div class="cmts">
+                <a class="icon-edit-wrap" href="${servePath}/update-article?id=${article.oId}" title="${editLabel}">
+                    <span class="icon icon-edit"></span>
+                </a>
+            </div>
+            <#else>
             <#if article.articleCommentCount != 0>
             <div class="ft-small cmts">
-                 <span class="icon icon-cmts"></span>
+                <span class="icon icon-cmts"></span>
                 ${article.articleCommentCount}
                 ${cmtLabel}
             </div>
             </#if>
-            <#if isMyArticle>
-            <div class="commenters">
-                <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}">
-                    <span class="icon icon-edit"></span>
-                </a>
-            </div>
             </#if>
         </li>
         </#list>
