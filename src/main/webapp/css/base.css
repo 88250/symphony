@@ -1170,10 +1170,14 @@ a:hover .icon-edit {
     font-family: '\5fae\8f6f\96c5\9ed1';
 }
 
-.form .CodeMirror-focused {
+.form .cm-s-default.CodeMirror.CodeMirror-focused {
     background-color: #FFF;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset, 0 0 5px rgba(81, 167, 232, 0.5);
     border: 1px solid #51A7E8;
+}
+
+.cm-s-default.CodeMirror-fullscreen.CodeMirror {
+    margin: 0;
 }
 
 .CodeMirror,
