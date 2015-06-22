@@ -28,7 +28,10 @@
                         </label>
                     </div>
                     <div class="fn-clear article-content">
-                        <textarea id="articleContent" placeholder="Emoji: Ctrl-/, F11: Full Screen"><#if article??>${article.articleContent}</#if></textarea>
+                        <form style="display: none;" id="fileupload" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="file">
+                        </form>
+                        <textarea style="display: none;" id="articleContent" placeholder="Emoji: Ctrl-/, F11: Full Screen"><#if article??>${article.articleContent}</#if></textarea>
                         <span id="articleContentTip" style="top: 304px; right: 5px;"></span>
                         <div class="fn-left grammar fn-none">
                             ${markdwonGrammarLabel}
@@ -70,12 +73,38 @@
         <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/placeholder.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/fullscreen.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/overwrite/codemirror/addon/hint/show-hint.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
                                                 Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
                                                 Label.articleContentErrorLabel = "${articleContentErrorLabel}";
                                                 Label.articleTagsErrorLabel = "${articleTagsErrorLabel}";
                                                 Label.userName = "${userName}";
+                                                // jQuery File Upload
+                                                $('#fileupload').fileupload({
+                                        multipart: true,
+                                                pasteZone: $(".CodeMirror"),
+                                                dropZone: $(".CodeMirror"),
+                                                url: "http://upload.qiniu.com/",
+                                                formData: function(form) {
+                                                var data = form.serializeArray();
+                                                        var fh = this.files[0];
+                                                        data.push({name: 'token', value: '${qiniuUploadToken}'});
+                                                        return data;
+                                                },
+                                                done: function(e, data) {
+                                                var qiniuKey = data.result.key;
+                                                        if (!qiniuKey) {
+                                                alert("Upload error");
+                                                        return;
+                                                }
+
+                                                var cursor = AddArticle.editor.getCursor();
+                                                        AddArticle.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ', cursor, cursor);
+                                                }
+                                        });
         </script>
     </body>
 </html>

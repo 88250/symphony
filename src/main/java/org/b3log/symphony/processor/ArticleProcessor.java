@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.processor;
 
+import com.qiniu.util.Auth;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -89,7 +90,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.2.20, Jun 13, 2015
+ * @version 1.7.2.20, Jun 22, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -177,6 +178,12 @@ public class ArticleProcessor {
         renderer.setTemplateName("/home/add-article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        // Qiniu file upload authenticate
+        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
+        dataModel.put("qiniuUploadToken", uploadToken);
+        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
+
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
@@ -204,7 +211,7 @@ public class ArticleProcessor {
 
             return;
         }
-        
+
         final HttpSession session = request.getSession(false);
         if (null != session) {
             session.setAttribute(Article.ARTICLE_T_ID, articleId);
@@ -276,6 +283,12 @@ public class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Common.ARTICLE_COMMENTS_PAGE_SIZE, pageSize);
+
+        // Qiniu file upload authenticate
+        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
+        dataModel.put("qiniuUploadToken", uploadToken);
+        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
     }
 
     /**
@@ -392,6 +405,12 @@ public class ArticleProcessor {
         dataModel.put(Article.ARTICLE, article);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+
+        // Qiniu file upload authenticate
+        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
+        dataModel.put("qiniuUploadToken", uploadToken);
+        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
     }
 
     /**
@@ -873,7 +892,7 @@ public class ArticleProcessor {
         final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
         final String authorName = author.optString(User.USER_NAME);
         if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
-                 && !authorName.equals(currentUserName)) {
+                && !authorName.equals(currentUserName)) {
             boolean invited = false;
             for (final String userName : userNames) {
                 if (userName.equals(currentUserName)) {

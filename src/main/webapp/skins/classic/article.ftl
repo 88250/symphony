@@ -85,7 +85,10 @@
                     <#if isLoggedIn>
                     <#if discussionViewable>
                     <div class="form fn-clear">
-                        <textarea id="commentContent" placeholder="Emoji: Ctrl-/, ${postLabel}: Ctrl-Enter"></textarea>
+                        <form style="display: none;" id="fileupload" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="file">
+                        </form>
+                        <textarea id="commentContent" placeholder="Emoji: Ctrl-/, ${postLabel}: Ctrl-Enter" style="display: none;"></textarea>
                         <span style="bottom: 4px; right: 75px;"></span>
                         <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
@@ -222,6 +225,9 @@
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
@@ -229,6 +235,30 @@
 
             // Init [Article] channel
             ArticleChannel.init("ws://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}");
+
+            // jQuery File Upload
+            $('#fileupload').fileupload({
+                multipart: true,
+                pasteZone: $(".CodeMirror"),
+                dropZone: $(".CodeMirror"),
+                url: "http://upload.qiniu.com/",
+                formData: function (form) {
+                    var data = form.serializeArray();
+                    var fh = this.files[0];
+                    data.push({name: 'token', value: '${qiniuUploadToken}'});
+                    return data;
+                },
+                done: function (e, data) {
+                    var qiniuKey = data.result.key;
+                    if (!qiniuKey) {
+                        alert("Upload error");
+                        return;
+                    }
+
+                    var cursor = Comment.editor.getCursor();
+                    Comment.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ', cursor, cursor);
+                }
+            });
         </script>
     </body>
 </html>

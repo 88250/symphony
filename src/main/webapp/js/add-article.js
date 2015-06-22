@@ -27,6 +27,7 @@
  * @static
  */
 var AddArticle = {
+    editor: undefined,
     /**
      * @description 发布文章
      * @id [string] 文章 id ，如不为空则表示更新文章否则为添加文章
@@ -95,9 +96,8 @@ var AddArticle = {
      */
     init: function () {
         Util.initCodeMirror();
-        var it = this;
 
-        it.editor = CodeMirror.fromTextArea(document.getElementById("articleContent"), {
+        AddArticle.editor = CodeMirror.fromTextArea(document.getElementById("articleContent"), {
             mode: 'markdown',
             extraKeys: {
                 "'@'": "autocompleteUserName",
@@ -108,7 +108,7 @@ var AddArticle = {
             }
         });
 
-        it.editor.on('keydown', function (cm, evt) {
+        AddArticle.editor.on('keydown', function (cm, evt) {
             if (8 === evt.keyCode) { // Backspace
                 var cursor = cm.getCursor();
                 var token = cm.getTokenAt(cursor);
@@ -127,7 +127,7 @@ var AddArticle = {
             }
         });
 
-        it.editor.on('changes', function (cm) {
+        AddArticle.editor.on('changes', function (cm) {
             if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
                 $(".form .green").show();
             } else {
