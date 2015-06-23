@@ -55,7 +55,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.15, Jun 7, 2015
+ * @version 1.2.3.15, Jun 23, 2015
  * @since 0.2.0
  */
 @Service
@@ -180,6 +180,10 @@ public class CommentQueryService {
                 if (UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)
                         || Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
                     comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
+                }
+                
+                if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
+                    comment.put(Comment.COMMENT_CONTENT, "....");
                 }
 
                 String content = comment.optString(Comment.COMMENT_CONTENT);

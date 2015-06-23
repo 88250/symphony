@@ -24,7 +24,7 @@ import org.eclipse.jetty.websocket.api.Session;
  * Channel utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 21, 2015
+ * @version 1.0.1.0, Jun 23, 2015
  * @since 1.3.0
  */
 public final class Channels {
@@ -39,6 +39,10 @@ public final class Channels {
     public static String getHttpParameter(final Session session, final String parameterName) {
         final Map<String, List<String>> parameterMap = session.getUpgradeRequest().getParameterMap();
         for (final String key : parameterMap.keySet()) {
+            if (!key.equals(parameterName)) {
+                continue;
+            }
+            
             final List<String> values = parameterMap.get(key);
             if (null != values && !values.isEmpty()) {
                 return values.get(0);

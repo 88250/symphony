@@ -17,6 +17,7 @@ package org.b3log.symphony.util;
 
 import org.b3log.symphony.service.ThumbnailQueryService;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -140,7 +141,8 @@ public class Filler {
      * @throws Exception exception
      */
     public void fillLatestCmts(final Map<String, Object> dataModel) throws Exception {
-        dataModel.put(Common.SIDE_LATEST_CMTS, commentQueryService.getLatestComments(Symphonys.getInt("sizeLatestCmtsCnt")));
+        // dataModel.put(Common.SIDE_LATEST_CMTS, commentQueryService.getLatestComments(Symphonys.getInt("sizeLatestCmtsCnt")));
+        dataModel.put(Common.SIDE_LATEST_CMTS, (Object) Collections.emptyList());
     }
 
     /**
