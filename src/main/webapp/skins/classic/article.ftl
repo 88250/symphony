@@ -61,11 +61,11 @@
                             &nbsp;
                             <#if isFollowing>
                             <button class="red small" onclick="Util.unfollow(this, '${article.oId}', 'article')"> 
-                                ${unfollowLabel}
+                                ${uncollectLabel}
                             </button>
                             <#else>
                             <button class="green small" onclick="Util.follow(this, '${article.oId}', 'article')"> 
-                                ${followLabel}
+                                ${collectLabel}
                             </button>
                             </#if>
                             </#if>

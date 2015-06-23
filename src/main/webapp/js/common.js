@@ -207,8 +207,12 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeClass("disabled").removeClass("green").addClass("red")
-                            .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
-                            .text(Label.unfollowLabel);
+                            .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')");
+                    if ("article" == type) {
+                         $(it).text(Label.uncollectLabel);    
+                    } else {
+                        $(it).text(Label.unfollowLabel);
+                    }
                 }
             }
         });
@@ -236,8 +240,12 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeClass("disabled").removeClass("red").addClass("green")
-                            .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
-                            .text(Label.followLabel);
+                            .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')");
+                    if ("article" === type) {
+                         $(it).text(Label.collectLabel);    
+                    } else {
+                        $(it).text(Label.followLabel);
+                    }
                 }
             }
         });
