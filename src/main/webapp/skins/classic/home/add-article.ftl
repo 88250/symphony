@@ -94,7 +94,11 @@
                                                         data.push({name: 'token', value: '${qiniuUploadToken}'});
                                                         return data;
                                                 },
-                                                done: function(e, data) {
+                                                submit: function (e, data) {
+                                                var cursor = AddArticle.editor.getCursor();
+                                                        AddArticle.editor.replaceRange('${uploadingLabel}', cursor, cursor);
+                                                },
+                                                done: function (e, data) {
                                                 var qiniuKey = data.result.key;
                                                         if (!qiniuKey) {
                                                 alert("Upload error");
@@ -102,7 +106,8 @@
                                                 }
 
                                                 var cursor = AddArticle.editor.getCursor();
-                                                        AddArticle.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ', cursor, cursor);
+                                                        AddArticle.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ',
+                                                                CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
                                                 }
                                         });
         </script>

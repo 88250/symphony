@@ -248,6 +248,10 @@
                     data.push({name: 'token', value: '${qiniuUploadToken}'});
                     return data;
                 },
+                submit: function (e, data) {
+                    var cursor = Comment.editor.getCursor();
+                    Comment.editor.replaceRange('${uploadingLabel}', cursor, cursor);
+                },
                 done: function (e, data) {
                     var qiniuKey = data.result.key;
                     if (!qiniuKey) {
@@ -256,7 +260,8 @@
                     }
 
                     var cursor = Comment.editor.getCursor();
-                    Comment.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ', cursor, cursor);
+                    Comment.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ', 
+                    CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
                 }
             });
         </script>
