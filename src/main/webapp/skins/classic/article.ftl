@@ -260,8 +260,14 @@
                     }
 
                     var cursor = Comment.editor.getCursor();
-                    Comment.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ', 
-                    CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
+                    Comment.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ',
+                            CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
+                },
+                fail: function (e, data) {
+                    alert("Upload error: " + data.errorThrown);
+                    var cursor = Comment.editor.getCursor();
+                    Comment.editor.replaceRange('',
+                            CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
                 }
             });
         </script>

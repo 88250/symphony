@@ -99,7 +99,7 @@
                                                         AddArticle.editor.replaceRange('${uploadingLabel}', cursor, cursor);
                                                 },
                                                 done: function (e, data) {
-                                                var qiniuKey = data.result.key;
+                                                        var qiniuKey = data.result.key;
                                                         if (!qiniuKey) {
                                                 alert("Upload error");
                                                         return;
@@ -107,6 +107,12 @@
 
                                                 var cursor = AddArticle.editor.getCursor();
                                                         AddArticle.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ',
+                                                                CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
+                                                },
+                                                fail: function (e, data) {
+                                                alert("Upload error: " + data.errorThrown);
+                                                        var cursor = AddArticle.editor.getCursor();
+                                                        AddArticle.editor.replaceRange('',
                                                                 CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
                                                 }
                                         });
