@@ -40,6 +40,7 @@
 <script type="text/javascript" src="${staticServePath}/js/lib/md5.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.linkify-1.0-min.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.notification-1.0.5.js?${staticResourceVersion}"></script>
 <script>
     Util.init();
     var Label = {
@@ -51,6 +52,7 @@
         visionLabel: "${visionLabel}",
         cmtLabel: "${cmtLabel}",
         collectLabel: "${collectLabel}",
-        uncollectLabel: "${uncollectLabel}"
+        uncollectLabel: "${uncollectLabel}",
+        desktopNotificationTemplateLabel: "${desktopNotificationTemplateLabel}"
     };
 </script>

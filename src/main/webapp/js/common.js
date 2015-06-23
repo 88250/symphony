@@ -175,6 +175,22 @@ var Util = {
                 if (0 !== count) {
                     $("#aNotifications").removeClass("no-msg").addClass("msg").text(count);
                     document.title = "(" + count + ") " + Label.symphonyLabel + " - " + Label.visionLabel;
+                    
+                    // Webkit Desktop Notification
+                    var msg = Label.desktopNotificationTemplateLabel;
+                    msg = msg.replace("${count}", count);
+                    
+                    var options = {
+                        iconUrl: '',
+                        title: 'Sym 社区',
+                        body: msg,
+                        timeout: 3000,
+                        onclick: function () {
+                            console.log('Pewpew');
+                        }
+                    };
+                    
+                    $.notification(options);
                 } else {
                     $("#aNotifications").removeClass("msg").addClass("no-msg").text(count);
                     document.title = Label.symphonyLabel + " - " + Label.visionLabel;
@@ -347,7 +363,7 @@ var Util = {
             // 定时获取并设置未读提醒计数
             setInterval(function () {
                 Util.setUnreadNotificationCount();
-            }, 30000);
+            }, 60000);
         }
     },
     /**
