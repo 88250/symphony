@@ -31,7 +31,7 @@
                         <form style="display: none;" id="fileupload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
                         </form>
-                        <textarea style="display: none;" id="articleContent" placeholder="Emoji: Ctrl-/, F11: Full Screen"><#if article??>${article.articleContent}</#if></textarea>
+                        <textarea style="display: none;" id="articleContent" placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if></textarea>
                         <span id="articleContentTip" style="top: 304px; right: 5px;"></span>
                         <div class="fn-left grammar fn-none">
                             ${markdwonGrammarLabel}
@@ -76,6 +76,8 @@
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-process.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
                                                 Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
@@ -84,7 +86,9 @@
                                                 Label.userName = "${userName}";
                                                 // jQuery File Upload
                                                 $('#fileupload').fileupload({
-                                        multipart: true,
+                                                    acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
+                                        maxFileSize: 1024 * 1024, // 1M
+                                                multipart: true,
                                                 pasteZone: $(".CodeMirror"),
                                                 dropZone: $(".CodeMirror"),
                                                 url: "http://upload.qiniu.com/",
@@ -99,7 +103,7 @@
                                                         AddArticle.editor.replaceRange('${uploadingLabel}', cursor, cursor);
                                                 },
                                                 done: function (e, data) {
-                                                        var qiniuKey = data.result.key;
+                                                var qiniuKey = data.result.key;
                                                         if (!qiniuKey) {
                                                 alert("Upload error");
                                                         return;
@@ -115,6 +119,11 @@
                                                         AddArticle.editor.replaceRange('',
                                                                 CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
                                                 }
+                                        }).on('fileuploadprocessalways', function (e, data) {
+                                        var currentFile = data.files[data.index];
+                                                if (data.files.error && currentFile.error) {
+                                        alert(currentFile.error);
+                                        }
                                         });
         </script>
     </body>

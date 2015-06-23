@@ -88,7 +88,7 @@
                         <form style="display: none;" id="fileupload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
                         </form>
-                        <textarea id="commentContent" placeholder="Emoji: Ctrl-/, ${postLabel}: Ctrl-Enter" style="display: none;"></textarea>
+                        <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}" style="display: none;"></textarea>
                         <span style="bottom: 4px; right: 75px;"></span>
                         <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
@@ -238,6 +238,8 @@
 
             // jQuery File Upload
             $('#fileupload').fileupload({
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                maxFileSize: 1024 * 1024, // 1M
                 multipart: true,
                 pasteZone: $(".CodeMirror"),
                 dropZone: $(".CodeMirror"),
@@ -268,6 +270,11 @@
                     var cursor = Comment.editor.getCursor();
                     Comment.editor.replaceRange('',
                             CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
+                }
+            }).on('fileuploadprocessalways', function (e, data) {
+                var currentFile = data.files[data.index];
+                if (data.files.error && currentFile.error) {
+                    alert(currentFile.error);
                 }
             });
         </script>
