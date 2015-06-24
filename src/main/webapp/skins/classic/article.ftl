@@ -85,7 +85,7 @@
                     <#if isLoggedIn>
                     <#if discussionViewable>
                     <div class="form fn-clear">
-                        <form style="display: none;" id="fileupload" method="POST" enctype="multipart/form-data">
+                        <form class="fn-none" id="fileupload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
                         </form>
                         <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>

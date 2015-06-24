@@ -14,7 +14,7 @@
             <div class="wrapper fn-clear">
                 <div class="content content-reset about">
                     <h1>B3log 构思</h1>
-                    <i style="color: #999;">一个正在逐渐清晰、实践的创意</i>
+                    <i class="ft-small">一个正在逐渐清晰、实践的创意</i>
                     <br/><br/>
                     <h3>背景故事</h3>
                     <p>
@@ -127,7 +127,7 @@
                     </ul>
                     <br/>
                     <h3>计划中的特性</h3>
-                    <h4 style="color: #999;">Tag Forge</h4>
+                    <h4 class="ft-small">Tag Forge</h4>
                     <ul>
                         <li>每个用户可以创建自己的标签，形成个人标签图</li>
                         <li>用户的个人标签图将自动提交（Push）到社区，根据合并规则（重复关联计数、默认关联等）形成社区标签图</li>

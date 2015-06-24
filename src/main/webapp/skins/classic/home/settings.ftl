@@ -1,11 +1,12 @@
 <#include "macro-home.ftl">
 <@home "settings">
-<div class="content" style="margin-top: 10px;">
+<br/>
+<div class="content">
     <div class="module">
         <div class="module-header fn-clear">
             <a rel="nofollow" href="/member/${currentUser.userName}">${currentUser.userName}</a>
             <h2>${profilesLabel}</h2>
-            <span style="line-height:24px">(${currentUser.userEmail})</span>
+            <span>(${currentUser.userEmail})</span>
         </div>
         <div class="module-panel form fn-clear">
             <label>URL</label><br/>

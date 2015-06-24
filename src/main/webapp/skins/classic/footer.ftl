@@ -1,6 +1,6 @@
 <div class="footer">
     <div class="wrapper fn-clear">
-        <div class="fn-left" style="margin-top: 4px;">
+        <div class="fn-left">
             <a href="http://b3log.org" target="_blank"><img src="http://b3log.org/images/b3log.png" alt="b3log" width="48" /></a>
             &nbsp;
             <a href="https://wide.b3log.org" target="_blank"><img src="http://b3log.org/images/wide.png" alt="wide" width="48" /></a>

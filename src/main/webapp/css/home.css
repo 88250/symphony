@@ -221,6 +221,10 @@ h2.fn-inline {
 .follow button {
     margin-top: 5px;
 }
+
+.follow .icon-tags {
+    font-size: 60px;
+}
 /* end follow */
 
 /* start admin */

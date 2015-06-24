@@ -46,11 +46,11 @@
                             <input<#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked="checked"</#if></#if> type="checkbox" id="syncWithSymphonyClient"/> 
                                 ${syncWithSymphonyClientLabel}
                         </div>
-                        <div class="fn-left" style="margin-left: 5px;">
+                        <div class="fn-left"> &nbsp;
                             <input<#if article??><#if article.articleCommentable> checked="checked"</#if><#else> checked="checked"</#if> type="checkbox" id="articleCommentable"/> 
                                 ${commentableLabel}
                         </div>
-                        <div class="fn-left" style="margin-left: 5px;">
+                        <div class="fn-left"> &nbsp;
                             <input<#if article?? && 1 == article.articleType> checked="checked"</#if> type="checkbox" id="articleType"/> 
                                 ${discussionLabel}
                         </div>

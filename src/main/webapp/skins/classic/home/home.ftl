@@ -5,7 +5,7 @@
     <ul> 
         <#list userHomeArticles as article>
         <li>
-            <div style="width:606px">
+            <div>
                 <h2><a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
                 <span class="ft-small">
                     <span class="icon icon-tags"></span>
