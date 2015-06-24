@@ -1,21 +1,8 @@
-<#--
-<#if isLoggedIn>
-<div class="module">
-    <div class="module-header ad">
-        <a href="/member/${currentUser.userName}">${currentUser.userIntro}</a>
-        <ul>
-            <li><a href="/member/${currentUser.userName}/following/tags">${followingTagsLabel}</a></li>
-            <li><a href="/member/${currentUser.userName}/following/users">${followingUsersLabel}</a></li>
-            <li><a href="/member/${currentUser.userName}/following/articles">${followingArticlesLabel}</a></li>
-            <li><a href="/member/${currentUser.userName}/followers">${followersLabel}</a></li>
-        </ul>
-    </div> 
-</div>
-</#if>
-#-->
+<#include 'common/person-info.ftl'/>
+
 <#if ADLabel!="">
 <div class="module">
-    <div class="module-header ad">
+    <div class="module-header nopanel">
         ${ADLabel}
     </div> 
 </div>
@@ -72,8 +59,8 @@
                             <#assign length = hotArticle.articleTitle?length>
                             <#if length gt 32>
                             <#assign length = 32>
-                            </#if>
-                            <a rel="nofollow" style="margin-left: 5px;"
+                            </#if> &nbsp;
+                            <a rel="nofollow"
                                title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitle?substring(0, length)}</a>
                         </td>
                     </tr>

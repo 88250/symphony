@@ -147,8 +147,8 @@
                 </div>
                 <div class="side">
                     <div class="module">
-                        <div class="module-header ad">
-                            <div class="fn-clear">
+                        <div class="module-header nopanel">
+                            <div class="fn-clear person-info">
                                 <div class="fn-left">
                                     <img class="avatar" src="${article.articleAuthorThumbnailURL}" />
                                 </div>
@@ -166,6 +166,8 @@
                             </div>
                         </div> 
                     </div>
+                    
+                    <#include 'common/person-info.ftl'/>
 
                     <div class="module">
                         <div class="module-header">

@@ -670,7 +670,8 @@ a:hover .icon-edit {
 .status > li {
     float: left;
     overflow: hidden;
-    width: 86px;
+    width: 80px;
+    margin-bottom: 15px;
 }
 
 .status > li > strong {
@@ -1270,13 +1271,10 @@ a:hover .icon-edit {
     width: 210px;
 }
 
-.module-header.ad {
+.module-header.nopanel {
     border-bottom-width: 0;
     border-radius: 5px; 
-}
-
-.module-header.ad .fn-clear {
-    margin-top: 7px;
+    background-color: #FDFDFD;
 }
 
 .module-panel.form {
@@ -1315,5 +1313,13 @@ a:hover .icon-edit {
 }
 /* end emoji */
 
-/* start autocomplete */
-/* end autocomplete */
+/* start person info */
+.person-info {
+    line-height: 24px;
+    margin-bottom: 10px;
+}
+
+.nopanel .status {
+    padding-bottom: 0;
+}
+/* end person info */

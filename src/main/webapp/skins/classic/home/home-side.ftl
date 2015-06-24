@@ -3,10 +3,10 @@
     <img class="user-online" title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
     <div>
         <div class="user-name">
+            <a href="/member/${user.userName}">${user.userName}</a>
             <#if isAdminLoggedIn>
             <a class="ft-small icon icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
             </#if>
-            <a href="/member/${user.userName}">${user.userName}</a>
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>
             <button class="red small" onclick="Util.unfollow(this, '${followingId}', 'user')"> 
@@ -17,8 +17,11 @@
                 ${followLabel}
             </button>
             </#if>
+            <#else>
+            <a href="/add-article" title="${addArticleLabel}${articleLabel}" class="ft-small ft-red icon icon-addfile">${addArticleLabel}${articleLabel}</a>
             </#if>
         </div>
+
         <#if user.userIntro!="">
         <div>
             ${user.userIntro}
@@ -54,4 +57,7 @@
             </li>
         </ul>
     </div>
+    <#if currentUser?? && currentUser.userName != user.userName>
+    <#include '../common/person-info.ftl'/>
+    </#if>
 </div>

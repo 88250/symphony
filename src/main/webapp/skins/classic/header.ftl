@@ -1,6 +1,6 @@
 <div class="nav"> 
     <div class="wrapper fn-clear">
-        <h1 style="margin-top:4px"><a rel="nofollow" href="/">Sym</a></h1>
+        <h1><a rel="nofollow" href="/">Sym</a></h1>
         <form target="_blank" method="get" action="http://www.google.com/search">
             <span class="icon icon-search"></span>
             <input class="search" type="text" name="q" />
@@ -21,12 +21,7 @@
             <#if "adminRole" == userRole>
             <a href="/admin" title="${adminLabel}" class="icon icon-setting"></a>
             </#if>
-            <a href="/member/${userName}" style="padding-bottom: 10px;">
-                 <img class="avatar-small" 
-                 title="${userName}" src="${currentUser.userThumbnailURL}" />
-             </a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
-            <a href="/add-article" title="${addArticleLabel}" class="icon icon-addfile"></a>
             <#else>
             <a id="aRegister" href="javascript:Util.goRegister()" class="last icon icon-register" 
                title="${registerLabel}"></a>
@@ -55,7 +50,7 @@
                     </tr>
                     <tr>
                         <td colspan="3" align="right">
-                            <span id="loginTip" style="right: 82px; top: 128px;"></span>
+                            <span id="loginTip" style="right: 82px; top: 126px;"></span>
                             <button class="red" onclick="Util.login()">${loginLabel}</button>
                         </td>
                     </tr>

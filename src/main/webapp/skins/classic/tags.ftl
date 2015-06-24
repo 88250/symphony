@@ -31,7 +31,7 @@
                                         ${referenceLabel} ${tag.tagReferenceCount} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount} 
                                     </span>
-                                    <div>${tag.tagDescription}</div>
+                                    <div class="content-reset">${tag.tagDescription}</div>
                                 </li>
                                 </#list>
                             </ul>
@@ -39,6 +39,7 @@
                     </div>
                 </div>
                 <div class="side">
+                    <#include 'common/person-info.ftl'/>
                     <div class="module">
                         <div class="module-header">  
                             <h2>
@@ -57,7 +58,7 @@
                                         ${referenceLabel} ${tag.tagReferenceCount} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount} 
                                     </span>
-                                    <div>${tag.tagDescription}</div>
+                                    <div class="content-reset">${tag.tagDescription}</div>
                                 </li>
                                 </#list>
                             </ul>

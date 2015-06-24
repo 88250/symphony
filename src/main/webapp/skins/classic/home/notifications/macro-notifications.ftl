@@ -43,6 +43,8 @@
                             </a>
                         </li>
                     </ul>
+                    <br/>
+                    <#include '../../common/person-info.ftl'/>
                 </div>
             </div>
         </div>
