@@ -359,7 +359,7 @@ var Util = {
             }
         });
 
-        if (Cookie.readCookie("b3log-latke")) { // 如果登录了
+        if (isLoggedIn) { // 如果登录了
             // 定时获取并设置未读提醒计数
             setInterval(function () {
                 Util.setUnreadNotificationCount();

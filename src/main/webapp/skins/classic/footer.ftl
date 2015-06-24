@@ -35,6 +35,7 @@
     </div>
 </div>
 <div class="icon-up icon" onclick="Util.goTop()"></div>
+<script>var isLoggedIn = ${isLoggedIn?c};</script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/md5.js?${staticResourceVersion}"></script>
