@@ -36,11 +36,11 @@ import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Sessions;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
-import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.10, Jun 9, 2015
+ * @version 1.3.0.10, Jun 24, 2015
  * @since 0.2.0
  */
 @Service
@@ -73,18 +73,18 @@ public class Filler {
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+    
+    /**
+     * Follow query service.
+     */
+    @Inject
+    private FollowQueryService followQueryService;
 
     /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
-
-    /**
-     * Comment query service.
-     */
-    @Inject
-    private CommentQueryService commentQueryService;
 
     /**
      * Tag query service.
@@ -121,6 +121,7 @@ public class Filler {
      */
     @Inject
     private ThumbnailQueryService thumbnailQueryService;
+
 
     /**
      * Fills relevant articles.
@@ -264,7 +265,19 @@ public class Filler {
         dataModel.put(User.USER_ROLE, userRole);
         dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ADMIN_ROLE.equals(userRole));
 
-        fillUserThumbnailURL(curUser);
+        thumbnailQueryService.fillUserThumbnailURL(curUser);
+        
+        final String userId = curUser.optString(Keys.OBJECT_ID);
+        
+        final long followingArticleCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_ARTICLE);
+        final long followingTagCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_TAG);
+        final long followingUserCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_USER);
+        final long followerUserCnt = followQueryService.getFollowerCount(userId, Follow.FOLLOWING_TYPE_C_USER);
+        
+        curUser.put(Common.FOLLOWING_ARTICLE_CNT, followingArticleCnt);
+        curUser.put(Common.FOLLOWING_TAG_CNT, followingTagCnt);
+        curUser.put(Common.FOLLOWING_USER_CNT, followingUserCnt);
+        curUser.put(Common.FOLLOWER_USER_CNT, followerUserCnt);
 
         dataModel.put(Common.CURRENT_USER, curUser);
 
@@ -287,23 +300,6 @@ public class Filler {
                 break;
             default:
                 throw new AssertionError();
-        }
-    }
-
-    /**
-     * Fills the specified user thumbnail URL.
-     *
-     * @param user the specified user
-     */
-    public void fillUserThumbnailURL(final JSONObject user) {
-        final int avatarType = user.optInt(UserExt.USER_AVATAR_TYPE);
-
-        if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
-            final String userEmail = user.optString(User.USER_EMAIL);
-            final String thumbnailURL = thumbnailQueryService.getGravatarURL(userEmail, "140");
-            user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
-        } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType) {
-            user.put(UserExt.USER_T_THUMBNAIL_URL, user.optString(UserExt.USER_AVATAR_URL));
         }
     }
 

@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Jun 20, 2015
+ * @version 1.1.0.5, Jun 24, 2015
  * @since 0.2.0
  */
 @Service
@@ -75,6 +75,12 @@ public class UserQueryService {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Thumbnail query service.
+     */
+    @Inject
+    private ThumbnailQueryService thumbnailQueryService;
 
     /**
      * All usernames.
@@ -344,7 +350,7 @@ public class UserQueryService {
             final JSONObject user = users.optJSONObject(i);
             user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
 
-            filler.fillUserThumbnailURL(user);
+            thumbnailQueryService.fillUserThumbnailURL(user);
         }
 
         return ret;

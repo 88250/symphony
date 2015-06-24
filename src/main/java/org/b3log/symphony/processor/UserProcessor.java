@@ -58,6 +58,7 @@ import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
+import org.b3log.symphony.service.ThumbnailQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -149,6 +150,12 @@ public class UserProcessor {
     private Filler filler;
 
     /**
+     * Thumbnail query service.
+     */
+    @Inject
+    private ThumbnailQueryService thumbnailQueryService;
+
+    /**
      * Shows user home page.
      *
      * @param context the specified context
@@ -181,7 +188,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/home.ftl");
 
         dataModel.put(User.USER, user);
-        filler.fillUserThumbnailURL(user);
+        thumbnailQueryService.fillUserThumbnailURL(user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
@@ -253,7 +260,7 @@ public class UserProcessor {
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
 
         dataModel.put(User.USER, user);
-        filler.fillUserThumbnailURL(user);
+        thumbnailQueryService.fillUserThumbnailURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -321,7 +328,7 @@ public class UserProcessor {
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
-        filler.fillUserThumbnailURL(user);
+        thumbnailQueryService.fillUserThumbnailURL(user);
 
         final JSONObject followingUsersResult = followQueryService.getFollowingUsers(followingId, pageNum, pageSize);
         final List<JSONObject> followingUsers = (List<JSONObject>) followingUsersResult.opt(Keys.RESULTS);
@@ -393,7 +400,7 @@ public class UserProcessor {
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
-        filler.fillUserThumbnailURL(user);
+        thumbnailQueryService.fillUserThumbnailURL(user);
 
         final JSONObject followingTagsResult = followQueryService.getFollowingTags(followingId, pageNum, pageSize);
         final List<JSONObject> followingTags = (List<JSONObject>) followingTagsResult.opt(Keys.RESULTS);
@@ -465,7 +472,7 @@ public class UserProcessor {
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
-        filler.fillUserThumbnailURL(user);
+        thumbnailQueryService.fillUserThumbnailURL(user);
 
         final JSONObject followingArticlesResult = followQueryService.getFollowingArticles(followingId, pageNum, pageSize);
         final List<JSONObject> followingArticles = (List<JSONObject>) followingArticlesResult.opt(Keys.RESULTS);
@@ -541,7 +548,7 @@ public class UserProcessor {
         final JSONObject followerUsersResult = followQueryService.getFollowerUsers(followingId, pageNum, pageSize);
         final List<JSONObject> followerUsers = (List) followerUsersResult.opt(Keys.RESULTS);
         dataModel.put(Common.USER_HOME_FOLLOWER_USERS, followerUsers);
-        filler.fillUserThumbnailURL(user);
+        thumbnailQueryService.fillUserThumbnailURL(user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
@@ -594,7 +601,7 @@ public class UserProcessor {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
         dataModel.put(User.USER, user);
-        filler.fillUserThumbnailURL(user);
+        thumbnailQueryService.fillUserThumbnailURL(user);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }

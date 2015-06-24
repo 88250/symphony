@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.10, Jun 21, 2015
+ * @version 1.7.1.10, Jun 24, 2015
  * @since 0.2.0
  */
 public final class Common {
@@ -190,6 +190,26 @@ public final class Common {
     public static final String FOLLOWING_USER_NOTIFICATIONS = "followingUserNotifications";
 
     /**
+     * Key of follower user count.
+     */
+    public static final String FOLLOWER_USER_CNT = "followerUserCnt";
+
+    /**
+     * Key of following user count.
+     */
+    public static final String FOLLOWING_USER_CNT = "followingUserCnt";
+
+    /**
+     * Key of following article count.
+     */
+    public static final String FOLLOWING_ARTICLE_CNT = "followingArticleCnt";
+
+    /**
+     * Key of following tag count.
+     */
+    public static final String FOLLOWING_TAG_CNT = "followingTagCnt";
+
+    /**
      * Key of unread 'followingUser' notifications count.
      */
     public static final String UNREAD_FOLLOWING_USER_NOTIFICATION_CNT = "unreadFollowingUserNotificationCnt";
@@ -238,7 +258,7 @@ public final class Common {
      * Key of online visitor count.
      */
     public static final String ONLINE_VISITOR_CNT = "onlineVisitorCnt";
-    
+
     /**
      * Key of article channel count.
      */
@@ -263,17 +283,17 @@ public final class Common {
      * Key of weight.
      */
     public static final String WEIGHT = "weight";
-    
+
     /**
      * Key of viewable.
      */
     public static final String DISCUSSION_VIEWABLE = "discussionViewable";
-    
+
     /**
      * Key of usernames.
      */
     public static final String USER_NAMES = "userNames";
-    
+
     /**
      * Key of operation.
      */

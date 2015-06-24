@@ -38,14 +38,13 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.FollowRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.util.Filler;
 import org.json.JSONObject;
 
 /**
  * Follow query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.2, Jun 5, 2015
+ * @version 1.3.0.2, Jun 24, 2015
  * @since 0.2.5
  */
 @Service
@@ -81,16 +80,16 @@ public class FollowQueryService {
     private ArticleRepository articleRepository;
 
     /**
-     * Filler.
-     */
-    @Inject
-    private Filler filler;
-    
-    /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
+    /**
+     * Thumbnail query service.
+     */
+    @Inject
+    private ThumbnailQueryService thumbnailQueryService;
 
     /**
      * Determines whether exists a follow relationship for the specified follower and the specified following entity.
@@ -149,7 +148,7 @@ public class FollowQueryService {
                     continue;
                 }
 
-                filler.fillUserThumbnailURL(user);
+                thumbnailQueryService.fillUserThumbnailURL(user);
 
                 records.add(user);
             }
@@ -250,7 +249,7 @@ public class FollowQueryService {
 
                     continue;
                 }
-                
+
                 articleQueryService.organizeArticle(article);
 
                 records.add(article);
@@ -305,7 +304,7 @@ public class FollowQueryService {
                     continue;
                 }
 
-                filler.fillUserThumbnailURL(user);
+                thumbnailQueryService.fillUserThumbnailURL(user);
 
                 records.add(user);
             }
@@ -316,6 +315,52 @@ public class FollowQueryService {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the following count of a follower specified by the given follower id and following type.
+     *
+     * @param followerId the given follower id
+     * @param followingType the given following type
+     * @return count
+     */
+    public long getFollowingCount(final String followerId, final int followingType) {
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Follow.FOLLOWER_ID, FilterOperator.EQUAL, followerId));
+        filters.add(new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, followingType));
+
+        final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+        try {
+            return followRepository.count(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Counts following count error", e);
+
+            return 0;
+        }
+    }
+
+    /**
+     * Gets the follower count of a following specified by the given following id and following type.
+     *
+     * @param followingId the given following id
+     * @param followingType the given following type
+     * @return count
+     */
+    public long getFollowerCount(final String followingId, final int followingType) {
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Follow.FOLLOWING_ID, FilterOperator.EQUAL, followingId));
+        filters.add(new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, followingType));
+
+        final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+        try {
+            return followRepository.count(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Counts follower count error", e);
+
+            return 0;
+        }
     }
 
     /**

@@ -28,10 +28,10 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
- * Thumbnail utilities.
+ * Thumbnail query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, May 13, 2015
+ * @version 1.0.0.1, Jun 24, 2015
  * @since 0.3.0
  */
 @Service
@@ -52,6 +52,23 @@ public class ThumbnailQueryService {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Fills the specified user thumbnail URL.
+     *
+     * @param user the specified user
+     */
+    public void fillUserThumbnailURL(final JSONObject user) {
+        final int avatarType = user.optInt(UserExt.USER_AVATAR_TYPE);
+
+        if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
+            final String userEmail = user.optString(User.USER_EMAIL);
+            final String thumbnailURL = getGravatarURL(userEmail, "140");
+            user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
+        } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType) {
+            user.put(UserExt.USER_T_THUMBNAIL_URL, user.optString(UserExt.USER_AVATAR_URL));
+        }
+    }
 
     /**
      * Gets the avatar URL for the specified email with the specified size.
