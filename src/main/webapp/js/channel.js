@@ -40,9 +40,9 @@ var ArticleChannel = {
         ArticleChannel.ws.reconnectInterval = 10000;
 
         ArticleChannel.ws.onopen = function () {
-            setTimeout(function () {
+            setInterval(function () {
                 ArticleChannel.ws.send('-hb-');
-            }, 3000 * 60);
+            }, 1000 * 60 * 3);
         };
 
         ArticleChannel.ws.onmessage = function (evt) {
@@ -123,9 +123,9 @@ var ArticleListChannel = {
         ArticleListChannel.ws.reconnectInterval = 10000;
 
         ArticleListChannel.ws.onopen = function () {
-            setTimeout(function () {
+            setInterval(function () {
                 ArticleListChannel.ws.send('-hb-');
-            }, 3000 * 60);
+            }, 1000 * 60 * 3);
         };
 
         ArticleListChannel.ws.onmessage = function (evt) {
