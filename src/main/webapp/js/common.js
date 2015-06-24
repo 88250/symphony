@@ -140,6 +140,8 @@ var Util = {
         $(".article-list h2 > a").hover(function () {
             var $li = $(this).closest("li"),
                     previewHTML = '<div class="preview"><span class="ico-arrow"></span><span class="ico-arrowborder"></span>';
+            $(".article-list .preview").hide();
+            
             if ($li.find('.preview').length === 1) {
                 $li.find('.preview').show();
                 return false;
@@ -148,11 +150,11 @@ var Util = {
                 url: "/article/" + $(this).data('id') + "/preview",
                 type: "GET",
                 cache: false,
+                async: false,
                 success: function (result, textStatus) {
                     if (!result.sc) {
                         return false;
                     }
-                    $(".article-list .preview").hide();
                     $li.append(previewHTML + result.html + '</div>');
                     $li.find('.preview').show();
                 }
