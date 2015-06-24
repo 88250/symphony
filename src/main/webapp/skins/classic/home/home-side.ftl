@@ -57,7 +57,4 @@
             </li>
         </ul>
     </div>
-    <#if currentUser?? && currentUser.userName != user.userName>
-    <#include '../common/person-info.ftl'/>
-    </#if>
 </div>
