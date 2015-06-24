@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.13, Jun 21, 2015
+ * @version 1.7.1.13, Jun 24, 2015
  * @since 0.2.0
  */
 @Service
@@ -624,13 +624,13 @@ public class ArticleQueryService {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
             article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
         }
-        
+
         final String articleId = article.optString(Keys.OBJECT_ID);
         Integer viewingCnt = ArticleChannel.ARTICLE_VIEWS.get(articleId);
         if (null == viewingCnt) {
             viewingCnt = 0;
         }
-        
+
         article.put(Article.ARTICLE_T_HEAT, viewingCnt);
     }
 
@@ -694,6 +694,7 @@ public class ArticleQueryService {
      * <li>Generates secured article content</li>
      * <li>Blocks the article if need</li>
      * <li>Generates emotion images</li>
+     * <li>Generates article link with article id</li>
      * </ul>
      *
      * @param article the specified article, for example,      <pre>
@@ -753,8 +754,10 @@ public class ArticleQueryService {
                 articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
                         + "/member/" + userName + "'>" + userName + "</a>");
             }
-        } catch (final ServiceException e) {
-            final String errMsg = "Generates @username home URL for article content failed";
+
+            articleContent = commentQueryService.linkArticle(articleContent);
+        } catch (final Exception e) {
+            final String errMsg = "Process article content failed";
             LOGGER.log(Level.ERROR, errMsg, e);
             throw new ServiceException(errMsg);
         }

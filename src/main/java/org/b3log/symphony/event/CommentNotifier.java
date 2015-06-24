@@ -36,6 +36,7 @@ import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
+import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.ThumbnailQueryService;
 import org.b3log.symphony.service.UserQueryService;
@@ -76,6 +77,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     @Inject
     private ThumbnailQueryService thumbnailQueryService;
 
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
@@ -104,7 +111,8 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
             chData.put(Comment.COMMENT_CREATE_TIME,
                     DateFormatUtils.format(new Date(originalComment.optLong(Comment.COMMENT_CREATE_TIME)), "yyyy-MM-dd HH:mm"));
-            String cc = Emotions.convert(commentContent);
+            String cc = commentQueryService.linkArticle(commentContent);
+            cc = Emotions.convert(cc);
             cc = Markdowns.toHTML(cc);
             cc = Markdowns.clean(cc, "");
             try {
@@ -120,7 +128,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             chData.put(Comment.COMMENT_CONTENT, cc);
 
             ArticleChannel.notifyComment(chData);
-            
+
             // + Article Heat
             final JSONObject articleHeat = new JSONObject();
             articleHeat.put(Article.ARTICLE_T_ID, originalArticle.optString(Keys.OBJECT_ID));
