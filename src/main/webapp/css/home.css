@@ -46,6 +46,7 @@
 #articleContent {
     height: 332px;
     margin-bottom: 20px;
+    padding: 4px;
 }
 
 #tip {

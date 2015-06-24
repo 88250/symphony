@@ -1163,6 +1163,7 @@ a:hover .icon-edit {
 .CodeMirror-scroll {
     background-color: #FAFAFA;
     font-family: '\5fae\8f6f\96c5\9ed1';
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
 }
 
 .form .cm-s-default.CodeMirror.CodeMirror-focused {
