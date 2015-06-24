@@ -609,7 +609,7 @@ a:hover .icon-edit {
 
 .tip-succ {
     background-color: #D4F6FA;
-    border: 1px solid #78909B;
+    border-left-color: #1D2B3D;
     color: #1D2B3D;
 }
 
