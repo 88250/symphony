@@ -24,14 +24,14 @@ import org.eclipse.jetty.websocket.api.Session;
  * Channel utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Jun 23, 2015
+ * @version 1.0.1.1, Jun 24, 2015
  * @since 1.3.0
  */
 public final class Channels {
-    
+
     /**
      * Gets a parameter of the specified HTTP session by the given session.
-     * 
+     *
      * @param session the given session
      * @param parameterName the specified parameter name
      * @return parameter value, returns {@code null} if the parameter does not exist
@@ -42,13 +42,13 @@ public final class Channels {
             if (!key.equals(parameterName)) {
                 continue;
             }
-            
+
             final List<String> values = parameterMap.get(key);
             if (null != values && !values.isEmpty()) {
                 return values.get(0);
             }
         }
-        
+
         return null;
     }
 

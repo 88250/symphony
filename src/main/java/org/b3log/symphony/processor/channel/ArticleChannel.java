@@ -80,7 +80,7 @@ public class ArticleChannel {
         if (StringUtils.isBlank(articleId)) {
             return;
         }
-        
+
         SESSIONS.add(session);
 
         synchronized (ARTICLE_VIEWS) {
@@ -129,7 +129,7 @@ public class ArticleChannel {
     @OnWebSocketError
     public void onError(final Session session, final Throwable error) {
         LOGGER.log(Level.ERROR, "on error", error);
-        
+
         removeSession(session);
     }
 
@@ -158,7 +158,7 @@ public class ArticleChannel {
             final String viewingArticleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
             if (Strings.isEmptyOrNull(viewingArticleId)
                     || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
-                return;
+                continue;
             }
 
             final int articleType = Integer.valueOf(Channels.getHttpParameter(session, Article.ARTICLE_TYPE));
