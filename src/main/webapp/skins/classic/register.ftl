@@ -30,7 +30,7 @@
                                 </td>
                                 <td>
                                     <input type="text" id="userEmail" />
-                                    <span style="left:275px;top:69px;"></span>
+                                    <span style="left:275px;top:68px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -39,7 +39,7 @@
                                 </td>
                                 <td>
                                     <input id="userPassword"  type="password" />
-                                    <span style="left:275px;top:124px;"></span>
+                                    <span style="left:275px;top:121px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -48,7 +48,7 @@
                                 </td>
                                 <td>
                                     <input id="confirmPassword" type="password" />
-                                    <span style="left:275px;top:179px;"></span>
+                                    <span style="left:275px;top:174px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -57,13 +57,13 @@
                                 </td>
                                 <td>
                                     <input type="text" id="securityCode" />
-                                    <span style="top:234px;left:275px;"></span>
-                                    <img id="captcha" style="cursor:pointer" src="/captcha" onclick="this.src = '/captcha?' + (new Date()).getTime()" />
+                                    <span style="top:227px;left:275px;"></span>
+                                    <img id="captcha" class="fn-pointer" src="/captcha" onclick="this.src = '/captcha?' + (new Date()).getTime()" />
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <span id="registerTip" style="top: 279px; right: 71px;"></span>
+                                    <span id="registerTip" style="top: 268px; right: 71px;"></span>
                                     <button class="green" onclick="Register.register()">${registerLabel}</button>
                                 </td>
                             </tr>

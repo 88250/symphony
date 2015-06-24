@@ -39,7 +39,7 @@
                         </#if>
                         </#if>
                     </div>
-                    <p class="description">
+                    <p<#if tag.tagIconPath != ""> class="description" </#if>>
                         ${tag.tagDescription}
                     </p>
                     <div class="fn-clear">

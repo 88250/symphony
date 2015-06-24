@@ -1,24 +1,25 @@
 <#include "macro-home.ftl">
 <@home "settings">
-<div class="content" style="margin-top: 10px;">
+<br/>
+<div class="content">
     <div class="module">
         <div class="module-header fn-clear">
             <a rel="nofollow" href="/member/${currentUser.userName}">${currentUser.userName}</a>
             <h2>${profilesLabel}</h2>
-            <span style="line-height:24px">(${currentUser.userEmail})</span>
+            <span>(${currentUser.userEmail})</span>
         </div>
         <div class="module-panel form fn-clear">
             <label>URL</label><br/>
             <input id="userURL" type="text" value="${currentUser.userURL}"/>
-            <span style="top: 50px; right: 21px;"></span>
+            <span style="top: 50px; right: 24px;"></span>
 
             <label>QQ</label><br/>
             <input id="userQQ" type="text" value="${currentUser.userQQ}" />
-            <span style="right:21px;top:121px;"></span>
+            <span style="right:24px;top:118px;"></span>
 
             <label>${userIntroLabel}</label><br/>
             <textarea id="userIntro">${currentUser.userIntro}</textarea>
-            <span style="right:21px;top:221px;"></span><br/>
+            <span style="right:24px;top:205px;"></span><br/>
 
             <label>${avatarLabel}</label><br/>
             <div class="fn-clear"></div>
@@ -28,7 +29,7 @@
                    <input id="avatarURL" type="text" placeholder="${avatarURLLabel}" style="width: 97%;" value="${currentUser.userAvatarURL}">
 
             <br/><br/>
-            <span id="profilesTip" style="right: 95px; top: 346px;"></span>
+            <span id="profilesTip" style="right: 95px; top: 339px;"></span>
             <button class="green fn-right" onclick="Settings.update('profiles')">${saveLabel}</button>
         </div>
     </div>
@@ -44,17 +45,17 @@
 
             <label>${clientArticleLabel}</label>
             <input id="soloPostURL" type="text" value="${currentUser.userB3ClientAddArticleURL}" />
-            <span style="right:24px;top:121px;"></span><br/>
+            <span style="right:24px;top:118px;"></span><br/>
 
             <label>${clientUpdateArticleLabel}</label>
             <input id="soloUpdateURL" type="text" value="${currentUser.userB3ClientUpdateArticleURL}" />
-            <span style="right:24px;top:193px;"></span><br/>
+            <span style="right:24px;top:186px;"></span><br/>
 
             <label>${clientCmtLabel}</label>
             <input id="soloCmtURL" type="text" value="${currentUser.userB3ClientAddCommentURL}" /> 
-            <span style="right:24px;top:265px;"></span><br/><br/>
+            <span style="right:24px;top:255px;"></span><br/><br/>
 
-            <span id="syncb3Tip" style="right: 95px; top: 385px;"></span>
+            <span id="syncb3Tip" style="right: 95px; top: 305px;"></span>
             <button class="green fn-right" onclick="Settings.update('sync/b3')">${saveLabel}</button>
         </div>
     </div>
@@ -66,17 +67,17 @@
         <div class="module-panel form fn-clear">
             <label>${oldPasswordLabel}</label>
             <input id="pwdOld" type="password" />
-            <span style="right:21px;top:50px;"></span><br/>
+            <span style="right:24px;top:50px;"></span><br/>
 
             <label>${newPasswordLabel}</label>
             <input id="pwdNew" type="password" />
-            <span style="right:21px;top:138px;"></span><br/>
+            <span style="right:24px;top:118px;"></span><br/>
 
             <label>${confirmPasswordLabel}</label>
             <input id="pwdRepeat" type="password" /> 
-            <span style="right:21px;top:226px;"></span><br/><br/>
+            <span style="right:24px;top:187px;"></span><br/><br/>
 
-            <span id="passwordTip" style="right: 95px; top: 297px;"></span>
+            <span id="passwordTip" style="right: 95px; top: 237px;"></span>
             <button class="green fn-right" onclick="Settings.update('password')">${saveLabel}</button>
         </div>
     </div>

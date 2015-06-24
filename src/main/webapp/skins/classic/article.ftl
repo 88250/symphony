@@ -85,10 +85,10 @@
                     <#if isLoggedIn>
                     <#if discussionViewable>
                     <div class="form fn-clear">
-                        <form style="display: none;" id="fileupload" method="POST" enctype="multipart/form-data">
+                        <form class="fn-none" id="fileupload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
                         </form>
-                        <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}" style="display: none;"></textarea>
+                        <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
                         <span style="bottom: 4px; right: 75px;"></span>
                         <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>

@@ -46,6 +46,7 @@
 #articleContent {
     height: 332px;
     margin-bottom: 20px;
+    padding: 4px;
 }
 
 #tip {
@@ -219,6 +220,10 @@ h2.fn-inline {
 
 .follow button {
     margin-top: 5px;
+}
+
+.follow .icon-tags {
+    font-size: 60px;
 }
 /* end follow */
 

@@ -29,7 +29,7 @@
                 <input type="text" id="tagTitle" name="tagTitle" value="${tag.tagTitle}" />
 
                 <label for="tagDescription">${descriptionLabel}</label>
-                <textarea style="width: 100%" rows="5" id="tagDescription" name="tagDescription">${tag.tagDescription}</textarea>
+                <textarea rows="5" id="tagDescription" name="tagDescription">${tag.tagDescription}</textarea>
 
                 <label for="tagIconPath">${iconPathLabel}</label>
                 <input type="text" id="tagIconPath" name="tagIconPath" value="${tag.tagIconPath}" />

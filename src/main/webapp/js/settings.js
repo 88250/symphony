@@ -58,13 +58,9 @@ var Settings = {
             },
             success: function(result, textStatus){
                 if (result.sc) {
-                    $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-succ").text(Label.updateSuccLabel).css({
-                        "border-left": "1px solid #78909B",
-                    });
+                    $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-succ").text(Label.updateSuccLabel);
                 } else {
-                    $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-error").text(result.msg).css({
-                        "border-left": "1px solid #E2A0A0",
-                    });
+                    $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-error").text(result.msg);
                 }
             }
         });

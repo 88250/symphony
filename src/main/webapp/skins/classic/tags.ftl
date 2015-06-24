@@ -31,7 +31,7 @@
                                         ${referenceLabel} ${tag.tagReferenceCount} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount} 
                                     </span>
-                                    <div class="content-reset">${tag.tagDescription}</div>
+                                    <div>${tag.tagDescription}</div>
                                 </li>
                                 </#list>
                             </ul>
@@ -57,7 +57,7 @@
                                         ${referenceLabel} ${tag.tagReferenceCount} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount} 
                                     </span>
-                                    <div class="content-reset" style="width: 182px;">${tag.tagDescription}</div>
+                                    <div>${tag.tagDescription}</div>
                                 </li>
                                 </#list>
                             </ul>

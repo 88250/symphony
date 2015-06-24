@@ -68,7 +68,7 @@ var Register = {
                     if (result.sc) {
                         window.location = "http://symphony.b3log.org/article/1360294444788";
                     } else {
-                        $("#registerTip").text(result.msg).addClass("tip-error").css("border-left", "1px solid #E2A0A0");
+                        $("#registerTip").text(result.msg).addClass("tip-error");
                         $("#captcha").attr("src", "/captcha?code=" + Math.random());
                         $("#securityCode").val("");
                     }

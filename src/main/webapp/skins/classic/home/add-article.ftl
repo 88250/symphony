@@ -28,11 +28,11 @@
                         </label>
                     </div>
                     <div class="fn-clear article-content">
-                        <form style="display: none;" id="fileupload" method="POST" enctype="multipart/form-data">
+                        <form class="fn-none" id="fileupload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
                         </form>
-                        <textarea style="display: none;" id="articleContent" placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if></textarea>
-                        <span id="articleContentTip" style="top: 304px; right: 5px;"></span>
+                        <textarea id="articleContent" placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if></textarea>
+                        <span id="articleContentTip" style="top: 304px; right: 2px;"></span>
                         <div class="fn-left grammar fn-none">
                             ${markdwonGrammarLabel}
                         </div>
@@ -46,11 +46,11 @@
                             <input<#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked="checked"</#if></#if> type="checkbox" id="syncWithSymphonyClient"/> 
                                 ${syncWithSymphonyClientLabel}
                         </div>
-                        <div class="fn-left" style="margin-left: 5px;">
+                        <div class="fn-left"> &nbsp;
                             <input<#if article??><#if article.articleCommentable> checked="checked"</#if><#else> checked="checked"</#if> type="checkbox" id="articleCommentable"/> 
                                 ${commentableLabel}
                         </div>
-                        <div class="fn-left" style="margin-left: 5px;">
+                        <div class="fn-left"> &nbsp;
                             <input<#if article?? && 1 == article.articleType> checked="checked"</#if> type="checkbox" id="articleType"/> 
                                 ${discussionLabel}
                         </div>
