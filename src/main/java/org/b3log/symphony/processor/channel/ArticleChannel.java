@@ -76,12 +76,12 @@ public class ArticleChannel {
      */
     @OnWebSocketConnect
     public void onConnect(final Session session) {
-        SESSIONS.add(session);
-
         final String articleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
             return;
         }
+        
+        SESSIONS.add(session);
 
         synchronized (ARTICLE_VIEWS) {
             if (!ARTICLE_VIEWS.containsKey(articleId)) {
@@ -128,6 +128,8 @@ public class ArticleChannel {
      */
     @OnWebSocketError
     public void onError(final Session session, final Throwable error) {
+        LOGGER.log(Level.ERROR, "on error", error);
+        
         removeSession(session);
     }
 

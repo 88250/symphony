@@ -40,15 +40,20 @@ var ArticleChannel = {
         ArticleChannel.ws.reconnectInterval = 10000;
 
         ArticleChannel.ws.onopen = function () {
+            setTimeout(function () {
+                ArticleChannel.ws.send('-hb-');
+            }, 3000 * 60);
         };
 
         ArticleChannel.ws.onmessage = function (evt) {
             var data = JSON.parse(evt.data);
+            console.log(data);
+
             if (Label.articleOId !== data.articleId) { // It's not the current article
                 return;
             }
-            
-            $("#comments > h2").text((parseInt($("#comments > h2").text()) + 1)+ Label.cmtLabel);
+
+            $("#comments > h2").text((parseInt($("#comments > h2").text()) + 1) + Label.cmtLabel);
 
             // Append comment
             var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" +
@@ -91,11 +96,10 @@ var ArticleChannel = {
         };
 
         ArticleChannel.ws.onclose = function () {
-            ArticleChannel.ws.close();
         };
 
         ArticleChannel.ws.onerror = function (err) {
-            console.log("ERROR", err)
+            console.log(err);
         };
     }
 };
@@ -119,6 +123,9 @@ var ArticleListChannel = {
         ArticleListChannel.ws.reconnectInterval = 10000;
 
         ArticleListChannel.ws.onopen = function () {
+            setTimeout(function () {
+                ArticleListChannel.ws.send('-hb-');
+            }, 3000 * 60);
         };
 
         ArticleListChannel.ws.onmessage = function (evt) {
