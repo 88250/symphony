@@ -450,6 +450,10 @@ button.red:active {
     -moz-osx-font-smoothing: grayscale;
 }
 
+a.icon {
+    color: #333;
+}
+
 a.icon:hover {
     text-decoration: none;
     color: #4183c4;
@@ -538,18 +542,6 @@ a.icon:hover {
 
 .icon-edit:before {
     content: "\e60c";
-}
-
-a.icon-edit-wrap {
-    text-decoration: none;
-}
-
-a .icon-edit {
-    color: #666;
-}
-
-a:hover .icon-edit {
-    color: #4183C4;
 }
 
 .icon-tag:before {

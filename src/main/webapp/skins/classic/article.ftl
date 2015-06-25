@@ -37,21 +37,11 @@
                                     <span class="icon icon-view"></span>
                                     ${article.articleViewCount}
                                 </a>
-                                <#if article.isMyArticle>
-                                &nbsp;
-                                <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}">
-                                    <span class="icon icon-edit"></span>
-                                </a>
-                                </#if>
-                                <#if isAdminLoggedIn>
-                                &nbsp;
-                                <a href="${servePath}/admin/article/${article.oId}" title="${adminLabel}">
-                                    <span class="icon icon-setting"></span>
-                                </a>
-                                </#if>
                             </div>
                         </div>
                         <div class="fn-clear">
+                            <a rel="author" href="/member/${article.articleAuthorName}" 
+                               title="${article.articleAuthorName}"><img class="avatar-small" src="${article.articleAuthorThumbnailURL}" /></a>
                             <h2 class="article-title fn-inline">
                                 <a href="${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
@@ -68,6 +58,15 @@
                                 ${collectLabel}
                             </button>
                             </#if>
+                            </#if>
+
+                            <#if article.isMyArticle>
+                            &nbsp;
+                            <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}" class="icon icon-edit"></a>
+                            </#if>
+                            <#if isAdminLoggedIn>
+                            &nbsp;
+                            <a class="icon icon-setting" href="${servePath}/admin/article/${article.oId}" title="${adminLabel}"></a>
                             </#if>
                         </div>
                         <div class="content-reset">
@@ -146,27 +145,7 @@
                     </div>
                 </div>
                 <div class="side">
-                    <div class="module">
-                        <div class="module-header nopanel">
-                            <div class="fn-clear person-info">
-                                <div class="fn-left">
-                                    <img class="avatar" src="${article.articleAuthorThumbnailURL}" />
-                                </div>
-                                <div class="fn-left">
-                                    <a rel="author" href="/member/${article.articleAuthorName}" 
-                                       title="${article.articleAuthorName}">${article.articleAuthorName}</a>
-                                    <#if article.articleAuthorURL!="">
-                                    <br/>
-                                    <a target="_blank" rel="nofollow" href="${article.articleAuthorURL}">${article.articleAuthorURL}</a>
-                                    </#if>
-                                </div>
-                            </div>
-                            <div>
-                                ${article.articleAuthorIntro}
-                            </div>
-                        </div> 
-                    </div>
-                    
+
                     <#include 'common/person-info.ftl'/>
 
                     <div class="module">
