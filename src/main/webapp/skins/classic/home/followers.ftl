@@ -5,7 +5,9 @@
     <ol class="fn-clear">
         <#list userHomeFollowerUsers as follower>
         <li<#if follower_index % 2 = 1> class="even"</#if>>
-            <img class="avatar" src="${follower.userThumbnailURL}"/>
+            <a rel="nofollow" title="${follower.userName}" href="/member/${follower.userName}" >
+                <img class="avatar" src="${follower.userThumbnailURL}"/>
+            </a>
             <img class="user-online"
                  title="<#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>"
                  src="/images/<#if follower.userOnlineFlag>on<#else>off</#if>line.png" />

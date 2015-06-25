@@ -671,7 +671,7 @@ a:hover .icon-edit {
     float: left;
     overflow: hidden;
     width: 80px;
-    margin-bottom: 15px;
+    text-align: center;
 }
 
 .status > li > strong {
@@ -1316,6 +1316,10 @@ a:hover .icon-edit {
 /* start person info */
 .person-info {
     line-height: 24px;
+    padding: 0 15px;
+}
+
+.person-info .fn-clear {
     margin-bottom: 10px;
 }
 

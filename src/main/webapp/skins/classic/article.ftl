@@ -115,8 +115,10 @@
                                 <li id="${comment.oId}">
                                     <div class="fn-clear">
                                         <div class="fn-left">
-                                            <img class="avatar" 
-                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
+                                            <a rel="nofollow" href="/member/${comment.commentAuthorName}">
+                                                <img class="avatar" 
+                                                     title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
+                                            </a>
                                         </div>
                                         <div class="fn-left comment-content">
                                             <div class="fn-clear comment-info">
@@ -166,7 +168,7 @@
                             </div>
                         </div> 
                     </div>
-                    
+
                     <#include 'common/person-info.ftl'/>
 
                     <div class="module">

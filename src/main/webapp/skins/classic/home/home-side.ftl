@@ -17,8 +17,6 @@
                 ${followLabel}
             </button>
             </#if>
-            <#else>
-            <a href="/add-article" title="${addArticleLabel}${articleLabel}" class="ft-small ft-red icon icon-addfile">${addArticleLabel}${articleLabel}</a>
             </#if>
         </div>
 
