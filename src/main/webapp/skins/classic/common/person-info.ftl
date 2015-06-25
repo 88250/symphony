@@ -10,9 +10,9 @@
                     </a>
                 </div>
                 <div class="fn-left">
-                    Hi, <a href="/member/${currentUser.userName}">${userName}</a> <br/>
+                    Hi,&nbsp;<a href="/member/${currentUser.userName}">${userName}</a> <br/>
                     <a href="/add-article" title="${addArticleLabel}${articleLabel}" 
-                       class="ft-red icon icon-addfile"> ${addArticleLabel}${articleLabel}</a>
+                       class="ft-red"><span class="icon icon-addfile"> ${addArticleLabel}${articleLabel}</span></a>
                 </div>
             </div>
             <div>

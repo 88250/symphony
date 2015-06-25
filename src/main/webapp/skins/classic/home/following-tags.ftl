@@ -10,7 +10,7 @@
                 <img title="${followingTag.tagTitle}" class="tag-img" src="${staticServePath}/images/tags/${followingTag.tagIconPath}">
             </a>
             <#else>
-            <a class="icon-edit-wrap" href="/tags/${followingTag.tagTitle?url('utf-8')}"><span class="icon icon-tags"></span></a>
+            <a class="icon icon-tags" href="/tags/${followingTag.tagTitle?url('utf-8')}"></a>
             </#if>
             <div>
                 <h3>

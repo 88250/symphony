@@ -12,9 +12,7 @@
                 <#else>
                 <font class="ft-red ft-small">${banLabel}</font>
                 </#if>
-                <a href="/admin/comment/${item.oId}" class="fn-right icon-edit-wrap" title="${editLabel}">
-                    <span class="icon icon-edit"></span>
-                </a>
+                <a href="/admin/comment/${item.oId}" class="fn-right icon icon-edit" title="${editLabel}"></a>
             </div>
             <div class="fn-clear">
                 <img class="avatar" src="${item.commentAuthorThumbnailURL}">${item.commentAuthorName} &nbsp;

@@ -14,9 +14,7 @@
                 <img class="avatar-small" title="${item.userName}" 
                      src="${item.userThumbnailURL}"> &nbsp;
                 <a href="/member/${item.userName}">${item.userName}</a>
-                <a href="/admin/user/${item.oId}" class="fn-right icon-edit-wrap" title="${editLabel}">
-                    <span class="icon icon-edit"></span>
-                </a> &nbsp;
+                <a href="/admin/user/${item.oId}" class="fn-right icon icon-edit" title="${editLabel}"></a> &nbsp;
                 <#if item.userStatus == 0>
                 <span class="ft-small">${validLabel}</span>
                 <#else>

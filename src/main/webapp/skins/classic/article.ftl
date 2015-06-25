@@ -42,6 +42,7 @@
                         <div class="fn-clear">
                             <a rel="author" href="/member/${article.articleAuthorName}" 
                                title="${article.articleAuthorName}"><img class="avatar-small" src="${article.articleAuthorThumbnailURL}" /></a>
+                            &nbsp;
                             <h2 class="article-title fn-inline">
                                 <a href="${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
