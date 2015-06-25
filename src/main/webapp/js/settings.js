@@ -18,8 +18,10 @@
  * @fileoverview settings.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.5, Feb 17, 2014
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.1.0.5, Jun 25, 2015
  */
+
 /**
  * @description Settings function
  * @static
@@ -55,6 +57,8 @@ var Settings = {
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {
                 $("#" + type.replace(/\//g, "") + "Tip").removeClass("tip-succ").removeClass("tip-error").text("");
+                
+                alert(1);
             },
             success: function(result, textStatus){
                 if (result.sc) {

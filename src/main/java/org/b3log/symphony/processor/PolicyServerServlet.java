@@ -28,7 +28,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 
 /**
- * Data channel via WebSocket.
+ * Data channel via Flash WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Jun 20, 2015

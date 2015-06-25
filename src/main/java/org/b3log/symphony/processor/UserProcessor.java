@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.processor;
 
+import com.qiniu.util.Auth;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -91,7 +92,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.5.8, Jun 20, 2015
+ * @version 1.5.5.8, Jun 25, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -602,6 +603,12 @@ public class UserProcessor {
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
         dataModel.put(User.USER, user);
         thumbnailQueryService.fillUserThumbnailURL(user);
+
+        // Qiniu file upload authenticate
+        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
+        dataModel.put("qiniuUploadToken", uploadToken);
+        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }

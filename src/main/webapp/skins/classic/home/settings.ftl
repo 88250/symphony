@@ -23,10 +23,20 @@
 
             <label>${avatarLabel}</label><br/>
             <div class="fn-clear"></div>
-            <input name="avatar" type="radio" value="0" <#if currentUser.userAvatarType == 0>checked</#if> />
-                   <a target="_blank" href="http://gravatar.com">Gravatar</a><br/>
-            <input name="avatar" type="radio" value="1" <#if currentUser.userAvatarType == 1>checked</#if>/>
-                   <input id="avatarURL" type="text" placeholder="${avatarURLLabel}" style="width: 97%;" value="${currentUser.userAvatarURL}">
+            <div>
+                <form id="avatarUpload" method="POST" enctype="multipart/form-data">
+                    <input name="avatar" type="radio" value="2" <#if currentUser.userAvatarType == 2>checked</#if>/>
+                           <input type="file" name="file">
+                </form>
+            </div>
+            <div style="margin: 3px 0 0 0">
+                <input name="avatar" type="radio" value="0" <#if currentUser.userAvatarType == 0>checked</#if> />
+                       <a target="_blank" href="http://gravatar.com">Gravatar</a><br/>
+            </div>
+            <div style="margin: 3px 0 0 0">
+                <input name="avatar" type="radio" value="1" <#if currentUser.userAvatarType == 1>checked</#if>/>
+                       <input id="avatarURL" type="text" placeholder="${avatarURLLabel}" style="width: 97%;" value="${currentUser.userAvatarURL}">
+            </div>
 
             <br/><br/>
             <span id="profilesTip" style="right: 95px; top: 339px;"></span>
@@ -82,4 +92,43 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('#avatarUpload').fileupload({
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        maxFileSize: 1024 * 1024, // 1M
+        multipart: true,
+        pasteZone: null,
+        dropZone: null,
+        url: "http://upload.qiniu.com/",
+        formData: function (form) {
+            var data = form.serializeArray();
+            var fh = this.files[0];
+            data.push({name: 'token', value: '${qiniuUploadToken}'});
+            return data;
+        },
+        submit: function (e, data) {
+            console.log(data);
+        },
+        done: function (e, data) {
+            console.log(data);
+            
+            var qiniuKey = data.result.key;
+            if (!qiniuKey) {
+                alert("Upload error");
+                return;
+            }
+            
+            
+        },
+        fail: function (e, data) {
+            alert("Upload error: " + data.errorThrown);
+        }
+    }).on('fileuploadprocessalways', function (e, data) {
+        var currentFile = data.files[data.index];
+        if (data.files.error && currentFile.error) {
+            alert(currentFile.error);
+        }
+    });
+</script>
 </@home>
