@@ -23,23 +23,18 @@
 
             <label>${avatarLabel}</label><br/>
             <div class="fn-clear"></div>
+            <form class="fn-right" id="avatarUpload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file">
+            </form>
+            <div class="fn-clear"></div>
             <div>
-                <form id="avatarUpload" method="POST" enctype="multipart/form-data">
-                    <input name="avatar" type="radio" value="2" <#if currentUser.userAvatarType == 2>checked</#if>/>
-                           <input type="file" name="file">
-                </form>
+                <img class="avatar-big" id="avatarURL" src="${currentUser.userAvatarURL}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <img class="avatar-mid" id="avatarURLMid" src="${currentUser.userAvatarURL}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <img class="avatar" id="avatarURLNor" src="${currentUser.userAvatarURL}">
             </div>
-            <div style="margin: 3px 0 0 0">
-                <input name="avatar" type="radio" value="0" <#if currentUser.userAvatarType == 0>checked</#if> />
-                       <a target="_blank" href="http://gravatar.com">Gravatar</a><br/>
-            </div>
-            <div style="margin: 3px 0 0 0">
-                <input name="avatar" type="radio" value="1" <#if currentUser.userAvatarType == 1>checked</#if>/>
-                       <input id="avatarURL" type="text" placeholder="${avatarURLLabel}" style="width: 97%;" value="${currentUser.userAvatarURL}">
-            </div>
-
+            <span style="right:140px;top:265px;"></span><br/>
             <br/><br/>
-            <span id="profilesTip" style="right: 95px; top: 339px;"></span>
+            <span id="profilesTip" style="right: 95px; top: 603px;"></span>
             <button class="green fn-right" onclick="Settings.update('profiles')">${saveLabel}</button>
         </div>
     </div>
@@ -92,43 +87,46 @@
         </div>
     </div>
 </div>
-
-<script>
-    $('#avatarUpload').fileupload({
-        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-        maxFileSize: 1024 * 1024, // 1M
-        multipart: true,
-        pasteZone: null,
-        dropZone: null,
-        url: "http://upload.qiniu.com/",
-        formData: function (form) {
-            var data = form.serializeArray();
-            var fh = this.files[0];
-            data.push({name: 'token', value: '${qiniuUploadToken}'});
-            return data;
-        },
-        submit: function (e, data) {
-            console.log(data);
-        },
-        done: function (e, data) {
-            console.log(data);
-            
-            var qiniuKey = data.result.key;
-            if (!qiniuKey) {
-                alert("Upload error");
-                return;
-            }
-            
-            
-        },
-        fail: function (e, data) {
-            alert("Upload error: " + data.errorThrown);
-        }
-    }).on('fileuploadprocessalways', function (e, data) {
-        var currentFile = data.files[data.index];
-        if (data.files.error && currentFile.error) {
-            alert(currentFile.error);
-        }
-    });
-</script>
 </@home>
+
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-process.js?${staticResourceVersion}"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js?${staticResourceVersion}"></script>
+<script>
+                $('#avatarUpload').fileupload({
+                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                    maxFileSize: 1024 * 1024, // 1M
+                    multipart: true,
+                    pasteZone: null,
+                    dropZone: null,
+                    url: "http://upload.qiniu.com/",
+                    formData: function (form) {
+                        var data = form.serializeArray();
+                        data.push({name: 'token', value: '${qiniuUploadToken}'});
+                        return data;
+                    },
+                    submit: function (e, data) {
+                    },
+                    done: function (e, data) {
+                        var qiniuKey = data.result.key;
+                        if (!qiniuKey) {
+                            alert("Upload error");
+                            return;
+                        }
+
+                        $('#avatarURL').attr("src", '${qiniuDomain}/' + qiniuKey);
+                        $('#avatarURLMid').attr("src", '${qiniuDomain}/' + qiniuKey);
+                        $('#avatarURLNor').attr("src", '${qiniuDomain}/' + qiniuKey);
+                    },
+                    fail: function (e, data) {
+                        alert("Upload error: " + data.errorThrown);
+                    }
+                }).on('fileuploadprocessalways', function (e, data) {
+                    var currentFile = data.files[data.index];
+                    if (data.files.error && currentFile.error) {
+                        alert(currentFile.error);
+                    }
+                });
+</script>

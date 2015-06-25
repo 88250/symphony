@@ -45,11 +45,11 @@ var Settings = {
             default:
                 console.log("update settings has no type");
         }
-        
+
         if (!requestJSONObject) {
             return;
         }
-        
+
         $.ajax({
             url: "/settings/" + type,
             type: "POST",
@@ -57,80 +57,85 @@ var Settings = {
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {
                 $("#" + type.replace(/\//g, "") + "Tip").removeClass("tip-succ").removeClass("tip-error").text("");
-                
-                alert(1);
             },
-            success: function(result, textStatus){
+            success: function (result, textStatus) {
                 if (result.sc) {
                     $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-succ").text(Label.updateSuccLabel);
                 } else {
                     $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-error").text(result.msg);
                 }
+                $("#" + type.replace(/\//g, "") + "Tip").show();
+
+                setTimeout(function () {
+                    $("#" + type.replace(/\//g, "") + "Tip").hide();
+                }, 2000);
+
             }
         });
     },
-    
     /**
      * @description settings 页面 profiles 数据校验
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validateProfiles: function () {
-        var URLVal = $("#userURL").val().replace(/(^\s*)|(\s*$)/g,""),
-        QQVal = $("#userQQ").val().replace(/(^\s*)|(\s*$)/g,""),
-        introVal = $("#userIntro").val().replace(/(^\s*)|(\s*$)/g,"");
+        var URLVal = $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                QQVal = $("#userQQ").val().replace(/(^\s*)|(\s*$)/g, ""),
+                introVal = $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, "");
         if (Validate.goValidate([{
-            "id": "userURL",
-            "type": "url",
-            "msg": Label.invalidUserURLLabel
-        }, {
-            "id": "userQQ",
-            "type": "12",
-            "msg": Label.invalidUserQQLabel
-        }, {
-            "id": "userIntro",
-            "type": "255",
-            "msg": Label.invalidUserIntroLabel
-        }])) {
+                "id": "userURL",
+                "type": "url",
+                "msg": Label.invalidUserURLLabel
+            }, {
+                "id": "userQQ",
+                "type": "12",
+                "msg": Label.invalidUserQQLabel
+            }, {
+                "id": "userIntro",
+                "type": "255",
+                "msg": Label.invalidUserIntroLabel
+            }, {
+                "id": "avatarURL",
+                "type": "imgSrc",
+                "msg": Label.invalidUserURLLabel
+            }])) {
             var data = {};
             data.userURL = URLVal;
             data.userQQ = QQVal;
             data.userIntro = introVal;
-            data.userAvatarType = $("input[name='avatar']:checked").val();
-            data.userAvatarURL = $("#avatarURL").val();
-            
+            data.userAvatarURL = $("#avatarURL").attr("src");
+
             return data;
         }
-        
+
         return false;
     },
-    
     /**
      * @description settings 页面 solo 数据同步校验
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validateSyncB3: function () {
-        var keyVal = $("#soloKey").val().replace(/(^\s*)|(\s*$)/g,""),
-        postURLVal = $("#soloPostURL").val().replace(/(^\s*)|(\s*$)/g,""),
-        updateURLVal = $("#soloUpdateURL").val().replace(/(^\s*)|(\s*$)/g,""),
-        cmtURLVal = $("#soloCmtURL").val().replace(/(^\s*)|(\s*$)/g,"");
-        
+        var keyVal = $("#soloKey").val().replace(/(^\s*)|(\s*$)/g, ""),
+                postURLVal = $("#soloPostURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                updateURLVal = $("#soloUpdateURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                cmtURLVal = $("#soloCmtURL").val().replace(/(^\s*)|(\s*$)/g, "");
+
         if (Validate.goValidate([{
-            "id": "soloKey",
-            "type": "20",
-            "msg": Label.invalidUserB3KeyLabel
-        }, {
-            "id": "soloPostURL",
-            "type": "150",
-            "msg": Label.invalidUserB3ClientURLLabel
-        }, {
-            "id": "soloUpdateURL",
-            "type": "150",
-            "msg": Label.invalidUserB3ClientURLLabel
-        }, {
-            "id": "soloCmtURL",
-            "type": "150",
-            "msg": Label.invalidUserB3ClientURLLabel
-        }])) {
+                "id": "soloKey",
+                "type": "20",
+                "msg": Label.invalidUserB3KeyLabel
+            }, {
+                "id": "soloPostURL",
+                "type": "150",
+                "msg": Label.invalidUserB3ClientURLLabel
+            }, {
+                "id": "soloUpdateURL",
+                "type": "150",
+                "msg": Label.invalidUserB3ClientURLLabel
+            }, {
+                "id": "soloCmtURL",
+                "type": "150",
+                "msg": Label.invalidUserB3ClientURLLabel
+            }])) {
             var data = {};
             data.userB3Key = keyVal;
             data.userB3ClientAddArticleURL = postURLVal;
@@ -140,27 +145,26 @@ var Settings = {
         }
         return false;
     },
-    
     /**
      * @description settings 页面密码校验
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validatePassword: function () {
         var pwdVal = $("#pwdOld").val(),
-        newPwdVal = $("#pwdNew").val();
+                newPwdVal = $("#pwdNew").val();
         if (Validate.goValidate([{
-            "id": "pwdOld",
-            "type": "password",
-            "msg": Label.invalidPasswordLabel
-        }, {
-            "id": "pwdNew",
-            "type": "password",
-            "msg": Label.invalidPasswordLabel
-        }, {
-            "id": "pwdRepeat",
-            "type": "confirmPassword|pwdNew",
-            "msg": Label.confirmPwdErrorLabel
-        }])) {
+                "id": "pwdOld",
+                "type": "password",
+                "msg": Label.invalidPasswordLabel
+            }, {
+                "id": "pwdNew",
+                "type": "password",
+                "msg": Label.invalidPasswordLabel
+            }, {
+                "id": "pwdRepeat",
+                "type": "confirmPassword|pwdNew",
+                "msg": Label.confirmPwdErrorLabel
+            }])) {
             if (newPwdVal !== $("#pwdRepeat").val()) {
                 return false;
             }
@@ -171,7 +175,6 @@ var Settings = {
         }
         return false;
     },
-    
     /**
      * @description 初识化设置页面，回车提交表单
      */
@@ -181,19 +184,19 @@ var Settings = {
                 Settings.update('profiles');
             }
         });
-        
+
         $("#userIntro").keyup(function (event) {
             if (event.keyCode === 13 && event.ctrlKey) {
                 Settings.update('profiles');
             }
         });
-        
+
         $("#soloKey, #soloPostURL, , #soloUpdateURL, #soloCmtURL").keyup(function (event) {
             if (event.keyCode === 13) {
                 Settings.update('sync/b3');
             }
         });
-        
+
         $("#pwdOld, #pwdNew, #pwdRepeat").keyup(function (event) {
             if (event.keyCode === 13) {
                 Settings.update('password');

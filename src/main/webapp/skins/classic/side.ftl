@@ -49,55 +49,9 @@
         <ul class="module-list">
             <#list sideHotArticles as hotArticle>
             <li<#if !hotArticle_has_next> class="last"</#if>>
-                <table cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td valign="top" width="25px">
-                            <a rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
-                               title="${hotArticle.articleAuthorName}"><img class="avatar-small" src="${hotArticle.articleAuthorThumbnailURL}" /></a>
-                        </td>
-                        <td valign="middle">
-                            <#assign length = hotArticle.articleTitle?length>
-                            <#if length gt 32>
-                            <#assign length = 32>
-                            </#if> &nbsp;
-                            <a rel="nofollow"
-                               title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitle?substring(0, length)}</a>
-                        </td>
-                    </tr>
-                </table>
-            </li>
-            </#list>
-        </ul>
-    </div>
-</div>
-</#if>
-<#if sideLatestCmts?size!=0>
-<div class="module">
-    <div class="module-header">
-        <h2>
-            ${recentCommentLabel}
-        </h2>
-    </div>
-    <div class="module-panel">
-        <ul class="module-list">
-            <#list sideLatestCmts as cmt>
-            <li<#if !cmt_has_next> class="last"</#if>>
-                <table cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td valign="top" width="25px">
-                            <a rel="nofollow" href="/member/${cmt.commenter.userName}" 
-                               title="${cmt.commenter.userName}"><img class="avatar-small" src="${cmt.commenter.userThumbnailURL}" /></a>
-                        </td>
-                        <td valign="middle">
-                            <#assign length = cmt.commentContent?length>
-                            <#if length gt 32>
-                            <#assign length = 32>
-                            </#if>
-                            <a rel="nofollow" class="comment-content"
-                               title="${cmt.commentArticleTitle}" href="${cmt.commentSharpURL}">${cmt.commentContent?substring(0, length)}</a>
-                        </td>
-                    </tr>
-                </table>
+                <a rel="nofollow" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitle}</a>
+                <a class="ft-small" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
+                   title="${hotArticle.articleAuthorName}">${hotArticle.articleAuthorName}</a>
             </li>
             </#list>
         </ul>

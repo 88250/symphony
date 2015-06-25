@@ -18,6 +18,7 @@ package org.b3log.symphony.processor.advice.validate;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +46,7 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
     /**
      * Language service.
      */
+    @Inject
     private LangPropsService langPropsService;
 
     /**

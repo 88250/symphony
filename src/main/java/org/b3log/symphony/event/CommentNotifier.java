@@ -106,7 +106,8 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 final String userEmail = commenter.optString(User.USER_EMAIL);
                 final String thumbnailURL = thumbnailQueryService.getGravatarURL(userEmail, "140");
                 chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
-            } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType) {
+            } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
+                    || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {
                 chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, commenter.optString(UserExt.USER_AVATAR_URL));
             }
             chData.put(Comment.COMMENT_CREATE_TIME,

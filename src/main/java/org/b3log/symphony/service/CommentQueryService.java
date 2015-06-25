@@ -492,7 +492,8 @@ public class CommentQueryService {
             final String userEmail = author.optString(User.USER_EMAIL);
             final String thumbnailURL = thumbnailQueryService.getGravatarURL(userEmail, "140");
             comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
-        } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType) {
+        } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
+                || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {
             comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, author.optString(UserExt.USER_AVATAR_URL));
         }
 

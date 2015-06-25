@@ -6,7 +6,14 @@
         <#list userHomeFollowingArticles as article>
         <li>
             <div>
-                <h2><a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
+                <h2> 
+                    <a title="${article.articleAuthorName}"
+                        target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}">
+                        <img class="avatar-small fn-left" src="${article.articleAuthorThumbnailURL}"/>
+                    </a>
+                    &nbsp;
+                    <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                </h2>
                 <span class="ft-small">
                     <span class="icon icon-tags"></span>
                     <#list article.articleTags?split(",") as articleTag>
@@ -18,10 +25,9 @@
                 </span>
             </div>
             <#if article.articleCommentCount != 0>
-            <div class="ft-small cmts">
-                 <span class="icon icon-cmts"></span>
+            <div class="ft-small cmts" title="${cmtLabel}">
+                <span class="icon icon-cmts"></span>
                 ${article.articleCommentCount}
-                ${cmtLabel}
             </div>
             </#if>
         </li>

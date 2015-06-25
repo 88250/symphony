@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony.processor;
 
+import com.qiniu.common.QiniuException;
+import com.qiniu.storage.BucketManager;
 import com.qiniu.util.Auth;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -636,19 +638,40 @@ public class UserProcessor {
         final String userURL = requestJSONObject.optString(User.USER_URL);
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
-        final String userAvatarType = requestJSONObject.optString(UserExt.USER_AVATAR_TYPE);
         String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
         if (!Strings.isURL(userAvatarURL)
                 || !Jsoup.isValid("<img src=\"" + userAvatarURL + "\"/>", Whitelist.basicWithImages())) {
-            userAvatarURL = "";
+            userAvatarURL = Symphonys.get("defaultThumbnailURL");
         }
 
         final JSONObject user = userQueryService.getCurrentUser(request);
+
+        final String oldAvatarURL = user.optString(UserExt.USER_AVATAR_URL);
+        if (StringUtils.startsWith(oldAvatarURL, Symphonys.get("qiniu.domain"))) { // Old avatar stored in Qiniu
+            // Delete the old one
+
+            final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+            String key = "";
+            try {
+                final BucketManager qiniu = new BucketManager(auth);
+                key = StringUtils.substringAfterLast(oldAvatarURL, "/");
+                qiniu.delete(Symphonys.get("qiniu.bucket"), key);
+            } catch (final QiniuException e) {
+                final int errCode = e.code();
+                if (400 == errCode || 401 == errCode || 599 == errCode) {
+                    LOGGER.log(Level.ERROR, "Delete old resource [key=" + key + "] in Qiniu error [code=" + e.code() + "]");
+                    ret.put(Keys.MSG, langPropsService.get("retryLabel"));
+
+                    return;
+                }
+            }
+        }
+
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
         user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
-        user.put(UserExt.USER_AVATAR_TYPE, userAvatarType);
+        user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
         user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
 
         try {

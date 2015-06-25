@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, May 12, 2015
+ * @version 1.2.0.9, Jun 25, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -158,6 +158,11 @@ public final class UserExt {
      * User avatar type - 1: External Link.
      */
     public static final int USER_AVATAR_TYPE_C_EXTERNAL_LINK = 1;
+    
+    /**
+     * User avatar type - 2: Upload.
+     */
+    public static final int USER_AVATAR_TYPE_C_UPLOAD = 2;
 
     /**
      * Private constructor.

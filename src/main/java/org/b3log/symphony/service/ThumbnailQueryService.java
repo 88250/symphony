@@ -65,7 +65,8 @@ public class ThumbnailQueryService {
             final String userEmail = user.optString(User.USER_EMAIL);
             final String thumbnailURL = getGravatarURL(userEmail, "140");
             user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
-        } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType) {
+        } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
+                || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {
             user.put(UserExt.USER_T_THUMBNAIL_URL, user.optString(UserExt.USER_AVATAR_URL));
         }
     }
@@ -93,7 +94,8 @@ public class ThumbnailQueryService {
                 final String thumbnailURL = getGravatarURL(userEmail, "140");
 
                 ret = thumbnailURL;
-            } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType) {
+            } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
+                    || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {
                 ret = user.optString(UserExt.USER_AVATAR_URL);
             }
         } catch (final RepositoryException e) {

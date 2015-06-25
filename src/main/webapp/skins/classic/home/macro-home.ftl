@@ -83,6 +83,7 @@
             Label.loginNameErrorLabel = "${loginNameErrorLabel}";
             Label.updateSuccLabel = "${updateSuccLabel}";
             Label.invalidUserURLLabel = "${invalidUserURLLabel}";
+            Label.invalidUserURLLabel = "${invalidUserURLLabel}";
             Label.invalidUserQQLabel = "${invalidUserQQLabel}";
             Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
             Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
