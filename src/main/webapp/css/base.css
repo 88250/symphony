@@ -1052,6 +1052,7 @@ a.icon:hover {
 .list h2 {
     font-size: 16px;
     font-weight: normal;
+    margin-bottom: 9px;
 }
 
 .list > ul {
@@ -1079,83 +1080,15 @@ a.icon:hover {
 }
 
 .list .comment > p {
-    margin: 8px 0 0;
+    margin: 0;
 }
 /* end list */
 
-/* start article list */
-.article-list li h2 {
-    margin-bottom: 7px;
-}
-
-.cmts,
-.article-list li .commenters {
+/* start article */
+.cmts {
     position: absolute;
     right: 10px;
     top: 40%;
-}
-
-.article-list li .commenters {
-    display: none;
-    top: 32%;
-}
-
-.article-list li .commenters > a {
-    float: left;
-    margin-left: 4px;
-    width: 25px;
-    text-decoration: none;
-    color: #999;
-}
-
-.article-list li .commenters > a:hover {
-    color: #4183c4;
-}
-
-.article-list li:hover .cmts {
-    display: none;
-}
-
-.article-list li:hover .commenters {
-    display: block;
-}
-
-.article-list .preview {
-    position: absolute;
-    left: 65px;
-    z-index: 1;
-    top: 40px;
-    background-color: #FFF;
-    border: 1px solid #DDDDDD;
-    border-radius: 3px 3px 3px 3px;
-    padding: 5px 10px;
-    opacity: 0.9;
-    filter: alpha(opacity=90);
-    width: 360px;
-    min-width: 130px;
-}
-
-.article-list .preview .ico-arrow {
-    width: 0px;
-    height: 0px;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid rgba(256, 256, 256, 0.9);
-    position: absolute;
-    top: -10px;
-    z-index: 1;
-    left: 11px;
-}
-
-.article-list .preview .ico-arrowborder {
-    width: 0px;
-    height: 0px;
-    border-left: 11px solid transparent;
-    border-right: 11px solid transparent;
-    border-bottom: 11px solid #DDDDDD;
-    position: absolute;
-    top: -11px;
-    left: 10px;
 }
 
 .CodeMirror-scroll {
@@ -1210,7 +1143,7 @@ a.icon:hover {
 
 .CodeMirror-empty.CodeMirror-focused { outline: none; }
 .CodeMirror pre.CodeMirror-placeholder { color: #999; }
-/* end article list */
+/* end article */
 
 /* start side module */
 .module {

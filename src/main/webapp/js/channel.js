@@ -88,7 +88,7 @@ var ArticleChannel = {
             template = replaceAll(template, "${comment.commentContent}", data.commentContent);
             template = replaceAll(template, "${comment.commentCreateTime}", data.commentCreateTime);
 
-            $("#commentList").prepend(template);
+            $("#comments > ul").prepend(template);
 
             Article.parseLanguage();
 

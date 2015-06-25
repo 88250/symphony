@@ -40,10 +40,10 @@
                             </div>
                         </div>
                         <div class="fn-clear">
-                            <a rel="author" href="/member/${article.articleAuthorName}" 
-                               title="${article.articleAuthorName}"><img class="avatar-small" src="${article.articleAuthorThumbnailURL}" /></a>
-                            &nbsp;
-                            <h2 class="article-title fn-inline">
+                            <h2 class="article-title fn-inline"> 
+                                <a rel="author" href="/member/${article.articleAuthorName}" 
+                                   title="${article.articleAuthorName}"><img class="avatar-small" src="${article.articleAuthorThumbnailURL}" /></a>
+                                &nbsp;
                                 <a href="${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
                                 </a>
@@ -110,7 +110,7 @@
                     <div class="fn-clear">
                         <div class="list" id="comments">
                             <h2>${article.articleCommentCount} ${cmtLabel}</h2>
-                            <ul id="commentList">
+                            <ul>
                                 <#list article.articleComments as comment>
                                 <li id="${comment.oId}">
                                     <div class="fn-clear">

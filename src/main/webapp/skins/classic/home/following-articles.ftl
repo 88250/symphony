@@ -18,10 +18,9 @@
                 </span>
             </div>
             <#if article.articleCommentCount != 0>
-            <div class="ft-small cmts">
-                 <span class="icon icon-cmts"></span>
+            <div class="ft-small cmts" title="${cmtLabel}">
+                <span class="icon icon-cmts"></span>
                 ${article.articleCommentCount}
-                ${cmtLabel}
             </div>
             </#if>
         </li>
