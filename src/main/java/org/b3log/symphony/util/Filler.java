@@ -272,12 +272,10 @@ public class Filler {
         final long followingArticleCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_ARTICLE);
         final long followingTagCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_TAG);
         final long followingUserCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_USER);
-        final long followerUserCnt = followQueryService.getFollowerCount(userId, Follow.FOLLOWING_TYPE_C_USER);
         
         curUser.put(Common.FOLLOWING_ARTICLE_CNT, followingArticleCnt);
         curUser.put(Common.FOLLOWING_TAG_CNT, followingTagCnt);
         curUser.put(Common.FOLLOWING_USER_CNT, followingUserCnt);
-        curUser.put(Common.FOLLOWER_USER_CNT, followerUserCnt);
 
         dataModel.put(Common.CURRENT_USER, curUser);
 
