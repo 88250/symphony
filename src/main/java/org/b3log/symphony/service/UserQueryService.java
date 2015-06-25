@@ -32,6 +32,9 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.CompositeFilter;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -43,6 +46,7 @@ import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Paginator;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.UserRepository;
@@ -54,7 +58,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Jun 24, 2015
+ * @version 1.2.0.5, Jun 26, 2015
  * @since 0.2.0
  */
 @Service
@@ -282,7 +286,7 @@ public class UserQueryService {
      *
      * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
-     *     "userName": "", // optional
+     *     "userNameOrEmail": "", // optional
      *     "paginationCurrentPageNum": 1,
      *     "paginationPageSize": 20,
      *     "paginationWindowSize": 10,
@@ -318,8 +322,13 @@ public class UserQueryService {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setCurrentPageNum(currentPageNum).setPageSize(pageSize);
 
-        if (requestJSONObject.has(User.USER_NAME)) {
-            query.setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, requestJSONObject.optString(User.USER_NAME)));
+        if (requestJSONObject.has(Common.USER_NAME_OR_EMAIL)) {
+            final String nameOrEmail = requestJSONObject.optString(Common.USER_NAME_OR_EMAIL);
+
+            final List<Filter> filters = new ArrayList<Filter>();
+            filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, nameOrEmail));
+            filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, nameOrEmail));
+            query.setFilter(new CompositeFilter(CompositeFilterOperator.OR, filters));
         }
 
         JSONObject result = null;

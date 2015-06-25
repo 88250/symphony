@@ -40,8 +40,10 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AdminCheck;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -81,7 +83,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Apr 30, 2015
+ * @version 1.4.0.0, Jun 26, 2015
  * @since 1.1.0
  */
 @RequestProcessor
@@ -214,9 +216,9 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
-        final String userName = request.getParameter("name");
-        if (!Strings.isEmptyOrNull(userName)) {
-            requestJSONObject.put(User.USER_NAME, userName);
+        final String nameOrEmail = request.getParameter(Common.USER_NAME_OR_EMAIL);
+        if (!Strings.isEmptyOrNull(nameOrEmail)) {
+            requestJSONObject.put(Common.USER_NAME_OR_EMAIL, nameOrEmail);
         }
 
         final JSONObject result = userQueryService.getUsers(requestJSONObject);
@@ -247,7 +249,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = AdminCheck.class)
     public void showUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                         final String userId) throws Exception {
+            final String userId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/user.ftl");
@@ -271,7 +273,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = AdminCheck.class)
     public void updateUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                           final String userId) throws Exception {
+            final String userId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/user.ftl");
@@ -285,7 +287,11 @@ public class AdminProcessor {
             final String name = parameterNames.nextElement();
             final String value = request.getParameter(name);
 
-            user.put(name, value);
+            if (name.equals(UserExt.USER_POINT)) {
+                user.put(name, Integer.valueOf(value));
+            } else {
+                user.put(name, value);
+            }
         }
 
         userMgmtService.updateUser(userId, user);
@@ -305,17 +311,17 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/user/{userId}/email", method = HTTPRequestMethod.POST)
     @Before(adviceClass = AdminCheck.class)
     public void updateUserEmail(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                final String userId) throws Exception {
+            final String userId) throws Exception {
         final JSONObject user = userQueryService.getUser(userId);
         final String oldEmail = user.optString(User.USER_EMAIL);
         final String newEmail = request.getParameter(User.USER_EMAIL);
-        
+
         if (oldEmail.equals(newEmail)) {
             response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
-            
+
             return;
         }
-        
+
         user.put(User.USER_EMAIL, newEmail);
 
         try {
@@ -328,14 +334,14 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
-            
+
             return;
         }
 
         response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
     }
-    
-     /**
+
+    /**
      * Updates a user's username.
      *
      * @param context the specified context
@@ -347,17 +353,17 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/user/{userId}/username", method = HTTPRequestMethod.POST)
     @Before(adviceClass = AdminCheck.class)
     public void updateUserName(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                                final String userId) throws Exception {
+            final String userId) throws Exception {
         final JSONObject user = userQueryService.getUser(userId);
         final String oldUserName = user.optString(User.USER_NAME);
         final String newUserName = request.getParameter(User.USER_NAME);
-        
+
         if (oldUserName.equals(newUserName)) {
             response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
-            
+
             return;
         }
-        
+
         user.put(User.USER_NAME, newUserName);
 
         try {
@@ -370,7 +376,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
-            
+
             return;
         }
 
@@ -451,7 +457,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = AdminCheck.class)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                            final String articleId) throws Exception {
+            final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/article.ftl");
@@ -475,7 +481,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = AdminCheck.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String articleId) throws Exception {
+            final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/article.ftl");
@@ -566,7 +572,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = AdminCheck.class)
     public void showComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                            final String commentId) throws Exception {
+            final String commentId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/comment.ftl");
@@ -590,7 +596,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = AdminCheck.class)
     public void updateComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String commentId) throws Exception {
+            final String commentId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/comment.ftl");
@@ -754,7 +760,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = AdminCheck.class)
     public void showTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                        final String tagId) throws Exception {
+            final String tagId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/tag.ftl");
@@ -778,7 +784,7 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.POST)
     @Before(adviceClass = AdminCheck.class)
     public void updateTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                          final String tagId) throws Exception {
+            final String tagId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/tag.ftl");

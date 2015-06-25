@@ -3,7 +3,7 @@
 <@admin "users">
 <div class="list content admin">
     <form method="GET" action="users" class="form">
-        <input name="name" type="text" placeholder="${userNameLabel}"/>
+        <input name="userNameOrEmail" type="text" placeholder="${userNameLabel}/${userEmailLabel}"/>
         <button type="submit" class="green">${searchLabel}</button>
     </form>
 

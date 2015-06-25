@@ -58,6 +58,9 @@
                 <label for="userStatus">${userStatusLabel}</label>
                 <input type="text" id="userStatus" name="userStatus" value="${user.userStatus}" />
 
+                <label for="userPoint">${userPointLabel}</label>
+                <input type="text" id="userPoint" name="userPoint" value="${user.userPoint?c}" />
+
                 <label for="userB3Key">B3 Key</label>
                 <input type="text" id="userB3Key" name="userB3Key" value="${user.userB3Key}" />
 
