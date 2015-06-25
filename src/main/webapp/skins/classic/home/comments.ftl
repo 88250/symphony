@@ -7,7 +7,7 @@
         <li>
             <div class="fn-clear">
                 <a title="${comment.commentArticleAuthorName}"
-                   target="_blank" rel="nofollow" href="${comment.commentArticleAuthorURL}">
+                   target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}">
                     <img class="avatar-small fn-left" src="${comment.commentArticleAuthorThumbnailURL}"/>
                 </a>
                 &nbsp;
