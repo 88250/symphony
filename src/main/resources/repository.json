@@ -1,9 +1,54 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.4.2.1, Jun 12, 2015",
+    "version": "1.5.2.1, Jun 25, 2015",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
+        {
+            "name": "pointtransfer",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "fromId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "toId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "sum",
+                    "type": "int"
+                },
+                {
+                    "name": "fromBalance",
+                    "type": "int"
+                },
+                {
+                    "name": "toBalance",
+                    "type": "int"
+                },
+                {
+                    "name": "time",
+                    "type": "long"
+                },
+                {
+                    "name": "type",
+                    "type": "int"
+                },
+                {
+                    "name": "dataId",
+                    "type": "String",
+                    "length": 19
+                }
+            ]
+        },
         {
             "name": "notification",
             "keys": [
@@ -356,6 +401,10 @@
                     "name": "userStatus",
                     "type": "int",
                     "description": "0: valid, 1: invalid"
+                },
+                {
+                    "name": "userPoint",
+                    "type": "int"
                 },
                 {
                     "name": "userLatestArticleTime",

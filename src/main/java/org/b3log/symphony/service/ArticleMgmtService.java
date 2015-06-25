@@ -37,6 +37,7 @@ import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
@@ -53,7 +54,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.7, Jun 12, 2015
+ * @version 1.3.1.7, Jun 25, 2015
  * @since 0.2.0
  */
 @Service
@@ -117,6 +118,12 @@ public class ArticleMgmtService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Pointtransfer management service.
+     */
+    @Inject
+    private PointtransferMgmtService pointtransferMgmtService;
 
     /**
      * Increments the view count of the specified article by the given article id.
@@ -253,13 +260,18 @@ public class ArticleMgmtService {
             // Updates user article count (and new tag count), latest article time
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
-            articleRepository.add(article);
+            final String articleId = articleRepository.add(article);
 
             transaction.commit();
 
             // Grows the tag graph
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
+            // Point
+            pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
+                    Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE, articleId);
+
+            // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
@@ -342,6 +354,11 @@ public class ArticleMgmtService {
 
             transaction.commit();
 
+            // Point
+            pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
+                    Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE, articleId);
+
+            // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, oldArticle);

@@ -22,6 +22,8 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>Multicast</word>
         <word>Multicasts</word>
         <word>permalink</word>
+        <word>pointtransfer</word>
+        <word>Pointtransfers</word>
         <word>servlet</word>
         <word>Unfollows</word>
         <word>whitelist</word>

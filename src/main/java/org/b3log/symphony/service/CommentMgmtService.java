@@ -35,6 +35,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
@@ -49,7 +50,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.15, Jun 20, 2015
+ * @version 1.3.2.15, Jun 25, 2015
  * @since 0.2.0
  */
 @Service
@@ -101,6 +102,12 @@ public class CommentMgmtService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Pointtransfer management service.
+     */
+    @Inject
+    private PointtransferMgmtService pointtransferMgmtService;
 
     /**
      * Adds a comment with the specified request json object.
@@ -167,7 +174,8 @@ public class CommentMgmtService {
                     replace("_esc_enter_88250_", "<br/>");
 
             comment.put(Comment.COMMENT_AUTHOR_EMAIL, requestJSONObject.optString(Comment.COMMENT_AUTHOR_EMAIL));
-            comment.put(Comment.COMMENT_AUTHOR_ID, requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID));
+            final String commentAuthorId = requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID);
+            comment.put(Comment.COMMENT_AUTHOR_ID, commentAuthorId);
             comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
             final boolean fromClient = requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID);
             if (fromClient) {
@@ -206,10 +214,16 @@ public class CommentMgmtService {
             userRepository.update(commenter.optString(Keys.OBJECT_ID), commenter);
 
             // Adds the comment
-            commentRepository.add(comment);
+            final String commentId = commentRepository.add(comment);
 
             transaction.commit();
 
+            // Point
+            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            pointtransferMgmtService.transfer(commentAuthorId, articleAuthorId,
+                    Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, commentId);
+
+            // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Common.FROM_CLIENT, fromClient);
