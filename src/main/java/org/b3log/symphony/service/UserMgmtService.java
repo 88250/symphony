@@ -37,6 +37,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
@@ -49,7 +50,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.1, May 13, 2015
+ * @version 1.3.2.1, Jun 25, 2015
  * @since 0.2.0
  */
 @Service
@@ -89,6 +90,12 @@ public class UserMgmtService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Pointtransfer management service.
+     */
+    @Inject
+    private PointtransferMgmtService pointtransferMgmtService;
 
     /**
      * Tries to login with cookie.
@@ -376,19 +383,24 @@ public class UserMgmtService {
             user.put(UserExt.USER_LATEST_ARTICLE_TIME, 0L);
             user.put(UserExt.USER_LATEST_CMT_TIME, 0L);
             user.put(UserExt.USER_LATEST_LOGIN_TIME, 0L);
+            user.put(UserExt.USER_POINT, 0);
 
             final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
             int memberCount = memberCntOption.optInt(Option.OPTION_VALUE);
             ++memberCount;
             user.put(UserExt.USER_NO, memberCount);
 
-            userRepository.add(user);
+            final String userId = userRepository.add(user);
 
             // Updates stat. (member count +1)
             memberCntOption.put(Option.OPTION_VALUE, String.valueOf(memberCount));
             optionRepository.update(Option.ID_C_STATISTIC_MEMBER_COUNT, memberCntOption);
 
             transaction.commit();
+
+            // Point
+            pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
+                    Pointtransfer.TRANSFER_TYPE_C_INIT, userId);
 
             return user.optString(Keys.OBJECT_ID);
         } catch (final RepositoryException e) {
