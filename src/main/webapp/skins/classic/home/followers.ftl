@@ -6,7 +6,7 @@
         <#list userHomeFollowerUsers as follower>
         <li<#if follower_index % 2 = 1> class="even"</#if>>
             <a rel="nofollow" title="${follower.userName}" href="/member/${follower.userName}" >
-                <img class="avatar" src="${follower.userThumbnailURL}"/>
+                <img class="avatar" src="${follower.userAvatarURL}"/>
             </a>
             <img class="user-online"
                  title="<#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>"

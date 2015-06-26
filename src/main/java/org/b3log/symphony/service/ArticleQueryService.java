@@ -111,10 +111,10 @@ public class ArticleQueryService {
     private UserQueryService userQueryService;
 
     /**
-     * Thumbnail query service.
+     * Avatar query service.
      */
     @Inject
-    private ThumbnailQueryService thumbnailQueryService;
+    private AvatarQueryService avatarQueryService;
 
     /**
      * Count to fetch article tags for relevant articles.
@@ -658,7 +658,7 @@ public class ArticleQueryService {
             return;
         }
 
-        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, thumbnailQueryService.getAvatarURL(authorEmail, "140"));
+        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURL(authorEmail, "140"));
 
         final JSONObject author = userRepository.getByEmail(authorEmail);
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));

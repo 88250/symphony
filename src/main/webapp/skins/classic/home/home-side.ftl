@@ -1,5 +1,5 @@
 <div class="fn-relative">
-    <img class="avatar-big" title="${user.userName}" src="${user.userThumbnailURL}" />
+    <img class="avatar-big" title="${user.userName}" src="${user.userAvatarURL}" />
     <img class="user-online" title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
     <div>
         <div class="user-name">

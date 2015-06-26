@@ -6,7 +6,7 @@
                 <div class="fn-right">
                     <a href="/settings">
                         <img class="avatar" 
-                             title="${userName}" src="${currentUser.userThumbnailURL}" />
+                             title="${userName}" src="${currentUser.userAvatarURL}" />
                     </a>
                 </div>
                 <div class="fn-left">

@@ -32,6 +32,9 @@
                 <img class="avatar-mid" id="avatarURLMid" src="${currentUser.userAvatarURL}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <img class="avatar" id="avatarURLNor" src="${currentUser.userAvatarURL}">
             </div>
+            <div class="fn-right">
+                ${updateAvatarTipLabel}
+            </div>
             <span style="right:140px;top:265px;"></span><br/>
             <br/><br/>
             <span id="profilesTip" style="right: 95px; top: 603px;"></span>
@@ -105,20 +108,23 @@
                     formData: function (form) {
                         var data = form.serializeArray();
                         data.push({name: 'token', value: '${qiniuUploadToken}'});
+                        data.push({name: 'key', value: 'avatar/${currentUser.oId}'});
                         return data;
                     },
                     submit: function (e, data) {
                     },
                     done: function (e, data) {
+                        console.log(data.result)
                         var qiniuKey = data.result.key;
                         if (!qiniuKey) {
                             alert("Upload error");
                             return;
                         }
 
-                        $('#avatarURL').attr("src", '${qiniuDomain}/' + qiniuKey);
-                        $('#avatarURLMid').attr("src", '${qiniuDomain}/' + qiniuKey);
-                        $('#avatarURLNor').attr("src", '${qiniuDomain}/' + qiniuKey);
+                        var t = new Date().getTime();
+                        $('#avatarURL').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
+                        $('#avatarURLMid').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
+                        $('#avatarURLNor').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
                     },
                     fail: function (e, data) {
                         alert("Upload error: " + data.errorThrown);

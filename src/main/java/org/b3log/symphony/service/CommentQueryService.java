@@ -93,10 +93,10 @@ public class CommentQueryService {
     private UserQueryService userQueryService;
 
     /**
-     * Thumbnail query service.
+     * Avatar query service.
      */
     @Inject
-    private ThumbnailQueryService thumbnailQueryService;
+    private AvatarQueryService avatarQueryService;
 
     /**
      * Language service.
@@ -203,11 +203,11 @@ public class CommentQueryService {
                 }
 
                 final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
-                String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                String avatarURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
-                    thumbnailURL = thumbnailQueryService.getAvatarURL(commenterEmail, "140");
+                    avatarURL = avatarQueryService.getAvatarURL(commenterEmail, "140");
                 }
-                commenter.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
+                commenter.put(UserExt.USER_AVATAR_URL, avatarURL);
 
                 comment.put(Comment.COMMENT_T_COMMENTER, commenter);
             }
@@ -258,7 +258,7 @@ public class CommentQueryService {
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, articleAuthorURL);
                 final String articleAuthorEmail = articleAuthor.optString(User.USER_EMAIL);
-                final String articleAuthorThumbnailURL = thumbnailQueryService.getAvatarURL(articleAuthorEmail, "140");
+                final String articleAuthorThumbnailURL = avatarQueryService.getAvatarURL(articleAuthorEmail, "140");
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
 
                 processCommentContent(comment);
@@ -305,7 +305,7 @@ public class CommentQueryService {
 
                 String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
-                    thumbnailURL = thumbnailQueryService.getAvatarURL(email, "140");
+                    thumbnailURL = avatarQueryService.getAvatarURL(email, "140");
                 }
 
                 final JSONObject participant = new JSONObject();
@@ -490,7 +490,7 @@ public class CommentQueryService {
 
         if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
             final String userEmail = author.optString(User.USER_EMAIL);
-            final String thumbnailURL = thumbnailQueryService.getGravatarURL(userEmail, "140");
+            final String thumbnailURL = avatarQueryService.getGravatarURL(userEmail, "140");
             comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
         } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
                 || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {

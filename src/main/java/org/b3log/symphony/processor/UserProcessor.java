@@ -15,8 +15,6 @@
  */
 package org.b3log.symphony.processor;
 
-import com.qiniu.common.QiniuException;
-import com.qiniu.storage.BucketManager;
 import com.qiniu.util.Auth;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -61,7 +59,7 @@ import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
-import org.b3log.symphony.service.ThumbnailQueryService;
+import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -69,8 +67,6 @@ import org.b3log.symphony.util.QueryResults;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 /**
  * User processor.
@@ -153,10 +149,10 @@ public class UserProcessor {
     private Filler filler;
 
     /**
-     * Thumbnail query service.
+     * Avatar query service.
      */
     @Inject
-    private ThumbnailQueryService thumbnailQueryService;
+    private AvatarQueryService avatarQueryService;
 
     /**
      * Shows user home page.
@@ -191,7 +187,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/home.ftl");
 
         dataModel.put(User.USER, user);
-        thumbnailQueryService.fillUserThumbnailURL(user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
@@ -263,7 +259,7 @@ public class UserProcessor {
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
 
         dataModel.put(User.USER, user);
-        thumbnailQueryService.fillUserThumbnailURL(user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -331,7 +327,7 @@ public class UserProcessor {
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
-        thumbnailQueryService.fillUserThumbnailURL(user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final JSONObject followingUsersResult = followQueryService.getFollowingUsers(followingId, pageNum, pageSize);
         final List<JSONObject> followingUsers = (List<JSONObject>) followingUsersResult.opt(Keys.RESULTS);
@@ -403,7 +399,7 @@ public class UserProcessor {
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
-        thumbnailQueryService.fillUserThumbnailURL(user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final JSONObject followingTagsResult = followQueryService.getFollowingTags(followingId, pageNum, pageSize);
         final List<JSONObject> followingTags = (List<JSONObject>) followingTagsResult.opt(Keys.RESULTS);
@@ -475,7 +471,7 @@ public class UserProcessor {
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
-        thumbnailQueryService.fillUserThumbnailURL(user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final JSONObject followingArticlesResult = followQueryService.getFollowingArticles(followingId, pageNum, pageSize);
         final List<JSONObject> followingArticles = (List<JSONObject>) followingArticlesResult.opt(Keys.RESULTS);
@@ -551,7 +547,7 @@ public class UserProcessor {
         final JSONObject followerUsersResult = followQueryService.getFollowerUsers(followingId, pageNum, pageSize);
         final List<JSONObject> followerUsers = (List) followerUsersResult.opt(Keys.RESULTS);
         dataModel.put(Common.USER_HOME_FOLLOWER_USERS, followerUsers);
-        thumbnailQueryService.fillUserThumbnailURL(user);
+        avatarQueryService.fillUserAvatarURL(user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
@@ -603,12 +599,13 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+        final long t = new Date().getTime();
         dataModel.put(User.USER, user);
-        thumbnailQueryService.fillUserThumbnailURL(user);
 
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
+        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"),
+                "avatar/" + user.optString(Keys.OBJECT_ID));
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
@@ -638,41 +635,15 @@ public class UserProcessor {
         final String userURL = requestJSONObject.optString(User.USER_URL);
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
-        String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
-
-        if (!Strings.isURL(userAvatarURL)
-                || !Jsoup.isValid("<img src=\"" + userAvatarURL + "\"/>", Whitelist.basicWithImages())) {
-            userAvatarURL = Symphonys.get("defaultThumbnailURL");
-        }
 
         final JSONObject user = userQueryService.getCurrentUser(request);
-
-        final String oldAvatarURL = user.optString(UserExt.USER_AVATAR_URL);
-        if (StringUtils.startsWith(oldAvatarURL, Symphonys.get("qiniu.domain"))) { // Old avatar stored in Qiniu
-            // Delete the old one
-
-            final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-            String key = "";
-            try {
-                final BucketManager qiniu = new BucketManager(auth);
-                key = StringUtils.substringAfterLast(oldAvatarURL, "/");
-                qiniu.delete(Symphonys.get("qiniu.bucket"), key);
-            } catch (final QiniuException e) {
-                final int errCode = e.code();
-                if (400 == errCode || 401 == errCode || 599 == errCode) {
-                    LOGGER.log(Level.ERROR, "Delete old resource [key=" + key + "] in Qiniu error [code=" + e.code() + "]");
-                    ret.put(Keys.MSG, langPropsService.get("retryLabel"));
-
-                    return;
-                }
-            }
-        }
 
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
         user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
-        user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
+        user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + user.optString(Keys.OBJECT_ID)
+                + "?" + new Date().getTime());
 
         try {
             userMgmtService.updateProfiles(user);

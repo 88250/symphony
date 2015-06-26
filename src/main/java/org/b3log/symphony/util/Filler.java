@@ -15,7 +15,7 @@
  */
 package org.b3log.symphony.util;
 
-import org.b3log.symphony.service.ThumbnailQueryService;
+import org.b3log.symphony.service.AvatarQueryService;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Map;
@@ -117,10 +117,10 @@ public class Filler {
     private NotificationQueryService notificationQueryService;
 
     /**
-     * Thumbnail query service.
+     * Avatar query service.
      */
     @Inject
-    private ThumbnailQueryService thumbnailQueryService;
+    private AvatarQueryService avatarQueryService;
 
 
     /**
@@ -265,7 +265,7 @@ public class Filler {
         dataModel.put(User.USER_ROLE, userRole);
         dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ADMIN_ROLE.equals(userRole));
 
-        thumbnailQueryService.fillUserThumbnailURL(curUser);
+        avatarQueryService.fillUserAvatarURL(curUser);
         
         final String userId = curUser.optString(Keys.OBJECT_ID);
         

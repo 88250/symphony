@@ -85,10 +85,10 @@ public class NotificationQueryService {
     private UserRepository userRepository;
 
     /**
-     * Thumbnail query service.
+     * Avatar query service.
      */
     @Inject
-    private ThumbnailQueryService thumbnailQueryService;
+    private AvatarQueryService avatarQueryService;
 
     /**
      * Gets the count of unread notifications of a user specified with the given user id.
@@ -319,7 +319,7 @@ public class NotificationQueryService {
                     atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                     atNotification.put(Common.AUTHOR_NAME, articleAuthor.optString(User.USER_NAME));
                     atNotification.put(Common.CONTENT, "");
-                    final String thumbnailURL = thumbnailQueryService.getAvatarURL(articleAuthor.optString(User.USER_EMAIL), "140");
+                    final String thumbnailURL = avatarQueryService.getAvatarURL(articleAuthor.optString(User.USER_EMAIL), "140");
                     atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                     atNotification.put(Article.ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
                     atNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
@@ -425,7 +425,7 @@ public class NotificationQueryService {
                 followingUserNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 followingUserNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 followingUserNotification.put(Common.CONTENT, "");
-                followingUserNotification.put(Common.THUMBNAIL_URL, thumbnailQueryService.getAvatarURL(articleAuthorEmail, "140"));
+                followingUserNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURL(articleAuthorEmail, "140"));
                 followingUserNotification.put(Article.ARTICLE_TITLE, articleTitle);
                 followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                 followingUserNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));

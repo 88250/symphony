@@ -86,10 +86,10 @@ public class FollowQueryService {
     private ArticleQueryService articleQueryService;
 
     /**
-     * Thumbnail query service.
+     * Avatar query service.
      */
     @Inject
-    private ThumbnailQueryService thumbnailQueryService;
+    private AvatarQueryService avatarQueryService;
 
     /**
      * Determines whether exists a follow relationship for the specified follower and the specified following entity.
@@ -148,7 +148,7 @@ public class FollowQueryService {
                     continue;
                 }
 
-                thumbnailQueryService.fillUserThumbnailURL(user);
+                avatarQueryService.fillUserAvatarURL(user);
 
                 records.add(user);
             }
@@ -304,7 +304,7 @@ public class FollowQueryService {
                     continue;
                 }
 
-                thumbnailQueryService.fillUserThumbnailURL(user);
+                avatarQueryService.fillUserAvatarURL(user);
 
                 records.add(user);
             }

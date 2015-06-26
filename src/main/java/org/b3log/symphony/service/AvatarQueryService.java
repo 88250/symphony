@@ -28,19 +28,19 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
- * Thumbnail query service.
+ * User avatar query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jun 24, 2015
+ * @version 1.1.0.1, Jun 26, 2015
  * @since 0.3.0
  */
 @Service
-public class ThumbnailQueryService {
+public class AvatarQueryService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ThumbnailQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AvatarQueryService.class.getName());
 
     /**
      * Gravatar address.
@@ -58,16 +58,13 @@ public class ThumbnailQueryService {
      *
      * @param user the specified user
      */
-    public void fillUserThumbnailURL(final JSONObject user) {
+    public void fillUserAvatarURL(final JSONObject user) {
         final int avatarType = user.optInt(UserExt.USER_AVATAR_TYPE);
 
         if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
             final String userEmail = user.optString(User.USER_EMAIL);
-            final String thumbnailURL = getGravatarURL(userEmail, "140");
-            user.put(UserExt.USER_T_THUMBNAIL_URL, thumbnailURL);
-        } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
-                || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {
-            user.put(UserExt.USER_T_THUMBNAIL_URL, user.optString(UserExt.USER_AVATAR_URL));
+            final String avatarURL = getGravatarURL(userEmail, "140");
+            user.put(UserExt.USER_AVATAR_URL, avatarURL);
         }
     }
 
@@ -91,15 +88,15 @@ public class ThumbnailQueryService {
 
             if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
                 final String userEmail = user.optString(User.USER_EMAIL);
-                final String thumbnailURL = getGravatarURL(userEmail, "140");
+                final String avatarURL = getGravatarURL(userEmail, "140");
 
-                ret = thumbnailURL;
+                ret = avatarURL;
             } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
                     || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {
                 ret = user.optString(UserExt.USER_AVATAR_URL);
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "Gets thumbnail error", e);
+            LOGGER.log(Level.WARN, "Gets user avatar error", e);
         }
 
         return ret;

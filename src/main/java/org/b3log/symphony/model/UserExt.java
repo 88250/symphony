@@ -116,10 +116,6 @@ public final class UserExt {
     public static final String USER_LATEST_LOGIN_TIME = "userLatestLoginTime";
 
     //// Transient ////
-    /**
-     * Key of user thumbnail URL.
-     */
-    public static final String USER_T_THUMBNAIL_URL = "userThumbnailURL";
 
     /**
      * Key of user create time.

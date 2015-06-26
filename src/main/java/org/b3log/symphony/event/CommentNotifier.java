@@ -36,9 +36,9 @@ import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
+import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
-import org.b3log.symphony.service.ThumbnailQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
@@ -72,10 +72,10 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     private UserQueryService userQueryService;
 
     /**
-     * Thumbnail query service.
+     * Avatar query service.
      */
     @Inject
-    private ThumbnailQueryService thumbnailQueryService;
+    private AvatarQueryService avatarQueryService;
 
     /**
      * Comment query service.
@@ -104,7 +104,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final int avatarType = commenter.optInt(UserExt.USER_AVATAR_TYPE);
             if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
                 final String userEmail = commenter.optString(User.USER_EMAIL);
-                final String thumbnailURL = thumbnailQueryService.getGravatarURL(userEmail, "140");
+                final String thumbnailURL = avatarQueryService.getGravatarURL(userEmail, "140");
                 chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
             } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
                     || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {

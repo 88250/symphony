@@ -81,10 +81,10 @@ public class UserQueryService {
     private UserRepository userRepository;
 
     /**
-     * Thumbnail query service.
+     * Avatar query service.
      */
     @Inject
-    private ThumbnailQueryService thumbnailQueryService;
+    private AvatarQueryService avatarQueryService;
 
     /**
      * All usernames.
@@ -359,7 +359,7 @@ public class UserQueryService {
             final JSONObject user = users.optJSONObject(i);
             user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
 
-            thumbnailQueryService.fillUserThumbnailURL(user);
+            avatarQueryService.fillUserAvatarURL(user);
         }
 
         return ret;

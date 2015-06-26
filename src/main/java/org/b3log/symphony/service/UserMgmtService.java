@@ -20,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -376,8 +377,8 @@ public class UserMgmtService {
             user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, "");
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, "");
             user.put(UserExt.USER_INTRO, "");
-            user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_GRAVATAR);
-            user.put(UserExt.USER_AVATAR_URL, "");
+            user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
+            user.put(UserExt.USER_AVATAR_URL, Latkes.getStaticServePath() + "/user-thumbnail.png");
             user.put(UserExt.USER_QQ, "");
             user.put(UserExt.USER_ONLINE_FLAG, false);
             user.put(UserExt.USER_LATEST_ARTICLE_TIME, 0L);
