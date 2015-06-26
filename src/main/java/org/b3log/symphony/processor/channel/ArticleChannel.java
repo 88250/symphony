@@ -128,8 +128,6 @@ public class ArticleChannel {
      */
     @OnWebSocketError
     public void onError(final Session session, final Throwable error) {
-        LOGGER.log(Level.ERROR, "on error", error);
-
         removeSession(session);
     }
 
