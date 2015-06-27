@@ -48,6 +48,7 @@ import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -57,7 +58,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.15, Jun 24, 2015
+ * @version 1.3.3.16, Jun 27, 2015
  * @since 0.2.0
  */
 @Service
@@ -203,7 +204,7 @@ public class CommentQueryService {
                 }
 
                 final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
-                String avatarURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                String avatarURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
                     avatarURL = avatarQueryService.getAvatarURL(commenterEmail, "140");
                 }
@@ -303,7 +304,7 @@ public class CommentQueryService {
                 final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 final JSONObject commenter = userRepository.getByEmail(email);
 
-                String thumbnailURL = Latkes.getStaticServePath() + "/images/user-thumbnail.png";
+                String thumbnailURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
                     thumbnailURL = avatarQueryService.getAvatarURL(email, "140");
                 }
