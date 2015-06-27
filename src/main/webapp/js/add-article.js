@@ -153,7 +153,7 @@ var AddArticle = {
 
         // 初始化打赏区编辑器
         var readOnly = false;
-        if ("" !== $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")) {
+        if (0 < $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")) {
             readOnly = 'nocursor';
         }
         AddArticle.rewardEditor = CodeMirror.fromTextArea(document.getElementById("articleRewardContent"), {
