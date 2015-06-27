@@ -52,7 +52,7 @@
                 <label for="articleTitle">${titleLabel}</label>
                 <input type="text" id="articleTitle" name="articleTitle" value="${article.articleTitle}" />
 
-                <label for="articleContent">${contentLabel1}</label>
+                <label for="articleContent">${contentLabel}</label>
                 <textarea id="articleContent" name="articleContent">${article.articleContent}</textarea>
 
                 <label for="articleCommentable">${commentableLabel}</label>

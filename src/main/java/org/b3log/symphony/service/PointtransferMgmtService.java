@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Pointtransfer management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 25, 2015
+ * @version 1.1.0.0, Jun 27, 2015
  * @since 1.3.0
  */
 @Service
@@ -59,37 +59,18 @@ public class PointtransferMgmtService {
     private UserRepository userRepository;
 
     /**
-     * Transfers point from the specified from id to the specified to id with sum, type and data id.
+     * Transfers point from the specified from id to the specified to id with type, sum and data id.
      *
      * @param fromId the specified from id, may be system "sys"
      * @param toId the specified to id, may be system "sys"
      * @param type the specified type
+     * @param sum the specified sum
      * @param dataId the specified data id
      */
-    public synchronized void transfer(final String fromId, final String toId, final int type,
+    public synchronized void transfer(final String fromId, final String toId, final int type, final int sum,
             final String dataId) {
         if (StringUtils.equals(fromId, toId)) { // for example the commenter is the article author
             return;
-        }
-
-        int sum = 0;
-        switch (type) {
-            case Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT:
-                sum = Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT;
-                break;
-            case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE:
-                sum = Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE;
-                break;
-            case Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE:
-                sum = Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE;
-                break;
-            case Pointtransfer.TRANSFER_TYPE_C_INIT:
-                sum = Pointtransfer.TRANSFER_SUM_C_INIT;
-                break;
-            default:
-                LOGGER.log(Level.ERROR, "Invalid transfer type [fromId=" + fromId + ", toId=" + toId + ", sum=" + sum
-                        + ", type=" + type + ", dataId=" + dataId + "] error");
-                return;
         }
 
         final Transaction transaction = pointtransferRepository.beginTransaction();

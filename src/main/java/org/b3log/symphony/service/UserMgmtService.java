@@ -401,7 +401,7 @@ public class UserMgmtService {
 
             // Point
             pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
-                    Pointtransfer.TRANSFER_TYPE_C_INIT, userId);
+                    Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, userId);
 
             return user.optString(Keys.OBJECT_ID);
         } catch (final RepositoryException e) {

@@ -221,7 +221,7 @@ public class CommentMgmtService {
             // Point
             final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             pointtransferMgmtService.transfer(commentAuthorId, articleAuthorId,
-                    Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, commentId);
+                    Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT, commentId);
 
             // Event
             final JSONObject eventData = new JSONObject();

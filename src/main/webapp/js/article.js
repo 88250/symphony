@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.2, Jun 24, 2015
+ * @version 1.4.3.2, Jun 27, 2015
  */
 
 /**
@@ -193,6 +193,12 @@ var Article = {
         if (isPrettify) {
             prettyPrint();
         }
+    },
+    /**
+     * @description 打赏
+     */
+    reward: function (articleId) {
+        console.log(articleId);
     }
 };
 

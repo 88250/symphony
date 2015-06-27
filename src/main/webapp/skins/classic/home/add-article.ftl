@@ -21,9 +21,10 @@
                     </div>
                     <div class="fn-clear">
                         <label class="article-content-label">
-                            ${contentLabel}
+                            Markdown
                             <a href="javascript:AddArticle.grammar()">${baseGrammarLabel}</a>
                             <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
+                            |
                             <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
                         </label>
                     </div>
@@ -39,6 +40,17 @@
                     </div>
                     <div>
                         <input id="articleTags" type="text" value="<#if article??>${article.articleTags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
+                        <span style="right:2px;top:424px;"></span><br/><br/>
+                    </div>
+                    <div class="fn-clear article-reward-content">
+                        <form class="fn-none" id="rewardFileupload" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="file">
+                        </form>
+                        <textarea id="articleRewardContent" placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
+                        <span id="articleRewardContentTip" style="top: 304px; right: 2px;"></span>
+                    </div>
+                    <div>
+                        <input id="articleRewardPoint" type="text" value="<#if article??>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
                         <span style="right:2px;top:424px;"></span><br/><br/>
                     </div>
                     <div class="fn-clear">
@@ -86,8 +98,8 @@
                                                 Label.userName = "${userName}";
                                                 // jQuery File Upload
                                                 $('#fileupload').fileupload({
-                                                    acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
-                                        maxFileSize: 1024 * 1024, // 1M
+                                        acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
+                                                maxFileSize: 1024 * 1024, // 1M
                                                 multipart: true,
                                                 pasteZone: $(".CodeMirror"),
                                                 dropZone: $(".CodeMirror"),

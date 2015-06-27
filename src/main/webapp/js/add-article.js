@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.0, Jun 23, 2015
+ * @version 1.6.1.0, Jun 27, 2015
  */
 
 /**
@@ -28,6 +28,7 @@
  */
 var AddArticle = {
     editor: undefined,
+    rewardEditor: undefined,
     /**
      * @description 发布文章
      * @id [string] 文章 id ，如不为空则表示更新文章否则为添加文章
@@ -56,7 +57,9 @@ var AddArticle = {
                 articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked"),
                 articleCommentable: $("#articleCommentable").prop("checked"),
-                articleType: $("#articleType").prop("checked") ? 1 : 0
+                articleType: $("#articleType").prop("checked") ? 1 : 0,
+                articleRewardContent: this.rewardEditor.getValue(),
+                articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")
             },
             url = "/article", type = "POST";
 
@@ -97,6 +100,7 @@ var AddArticle = {
     init: function () {
         Util.initCodeMirror();
 
+        // 初始化文章编辑器
         AddArticle.editor = CodeMirror.fromTextArea(document.getElementById("articleContent"), {
             mode: 'markdown',
             dragDrop: false,
@@ -146,6 +150,25 @@ var AddArticle = {
             "modal": true,
             "hideFooter": true
         });
+
+        // 初始化打赏区编辑器
+        var readOnly = false;
+        if ("" !== $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")) {
+            readOnly = 'nocursor';
+        }
+        AddArticle.rewardEditor = CodeMirror.fromTextArea(document.getElementById("articleRewardContent"), {
+            mode: 'markdown',
+            dragDrop: false,
+            readOnly: readOnly,
+            extraKeys: {
+                "Ctrl-/": "autocompleteEmoji",
+                "F11": function (cm) {
+                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                }
+            }
+        });
+
+        $("#articleRewardContent").next().height(100);
     },
     /**
      * @description 预览文章

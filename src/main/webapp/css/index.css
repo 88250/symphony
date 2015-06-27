@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.4.3, Jun 4, 2015
+ * @version 1.2.4.3, Jun 27, 2015
  */
 /* start module */
 .index-module .index-module-list > li {
@@ -133,7 +133,11 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
     border: 1px solid #CCCCCC;
     margin: 20px 0;
-    height: 65px !important;
+    height: auto !important;
+}
+
+.CodeMirror-scroll {
+    min-height: 65px;
 }
 /* end article */
 

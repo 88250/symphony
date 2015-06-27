@@ -79,9 +79,14 @@
                                 <span class="icon icon-weibo" data-type="weibo"></span>
                                 <span class="icon icon-twitter" data-type="twitter"></span>
                                 <span class="icon icon-google" data-type="google"></span>
-                            </div>    
+                            </div>
                         </div>
                     </div>
+                    <#if 0 < article.articleRewardPoint>
+                    <hr>
+                    ${rewardTipLabel?replace("{articleId}", article.oId)?replace("{point}", article.articleRewardPoint)}
+                    <hr>
+                    </#if>
                     <#if isLoggedIn>
                     <#if discussionViewable>
                     <div class="form fn-clear">
@@ -90,8 +95,10 @@
                         </form>
                         <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
                         <span style="bottom: 4px; right: 75px;"></span>
+                        Markdown
                         <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
+                        |
                         <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
                         <div class="fn-right">
                             <button class="green fn-none" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 

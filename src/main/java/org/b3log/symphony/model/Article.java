@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.9, Jun 21, 2015
+ * @version 1.5.0.9, Jun 27, 2015
  * @since 0.2.0
  */
 public final class Article {
@@ -43,6 +43,16 @@ public final class Article {
      * Key of article content.
      */
     public static final String ARTICLE_CONTENT = "articleContent";
+
+    /**
+     * Key of article reward content.
+     */
+    public static final String ARTICLE_REWARD_CONTENT = "articleRewardContent";
+
+    /**
+     * Key of article reward point.
+     */
+    public static final String ARTICLE_REWARD_POINT = "articleRewardPoint";
 
     /**
      * Key of article tags.
@@ -108,7 +118,7 @@ public final class Article {
      * Key of client article id.
      */
     public static final String ARTICLE_CLIENT_ARTICLE_ID = "clientArticleId";
-    
+
     /**
      * Key of article editor type.
      */
@@ -118,7 +128,7 @@ public final class Article {
      * Key of article status.
      */
     public static final String ARTICLE_STATUS = "articleStatus";
-    
+
     /**
      * Key of article type.
      */
@@ -139,7 +149,7 @@ public final class Article {
      * Key of article id.
      */
     public static final String ARTICLE_T_ID = "articleId";
-    
+
     /**
      * Key of article ids.
      */
@@ -199,12 +209,12 @@ public final class Article {
      * Key of is broadcast.
      */
     public static final String ARTICLE_T_IS_BROADCAST = "articleIsBroadcast";
-    
+
     /**
      * Key of article title with Emoj.
      */
     public static final String ARTICLE_T_TITLE_EMOJI = "articleTitleEmoj";
-    
+
     /**
      * Key of article heat.
      */
@@ -220,13 +230,13 @@ public final class Article {
      * Article status - invalid.
      */
     public static final int ARTICLE_STATUS_C_INVALID = 1;
-    
+
     // Type constants
     /**
      * Article type - normal.
      */
     public static final int ARTICLE_TYPE_C_NORMAL = 0;
-    
+
     /**
      * Article type - discussion.
      */

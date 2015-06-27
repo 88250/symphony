@@ -90,7 +90,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.3.20, Jun 23, 2015
+ * @version 1.8.3.20, Jun 27, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -303,7 +303,9 @@ public class ArticleProcessor {
      *   "articleContent": "",
      *   "syncWithSymphonyClient": boolean,
      *   "articleCommentable": boolean,
-     *   "articleType": int
+     *   "articleType": int,
+     *   "articleRewardContent": "",
+     *   "articleRewardPoint": int
      * }
      * </pre>
      * </p>
@@ -332,6 +334,8 @@ public class ArticleProcessor {
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
         final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
+        final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
+        final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -341,6 +345,8 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
         article.put(Article.ARTICLE_COMMENTABLE, articleCommentable);
         article.put(Article.ARTICLE_TYPE, articleType);
+        article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
+        article.put(Article.ARTICLE_REWARD_POINT, articleRewardPoint);
 
         try {
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -923,6 +929,41 @@ public class ArticleProcessor {
         }
 
         result.put("html", content);
+    }
+
+    /**
+     * Article rewards.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/article/reward", method = HTTPRequestMethod.POST)
+    public void reward(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        final JSONObject result = new JSONObject();
+        renderer.setJSONObject(result);
+
+        result.put(Keys.STATUS_CODE, true);
+
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        if (Strings.isEmptyOrNull(articleId)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            
+            return;
+        }
+        
+        articleMgmtService.reward(articleId, currentUser.optString(Keys.OBJECT_ID));
     }
 
     /**

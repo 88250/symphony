@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.7, Jun 25, 2015
+ * @version 1.4.1.7, Jun 27, 2015
  * @since 0.2.0
  */
 @Service
@@ -171,7 +171,9 @@ public class ArticleMgmtService {
      *     "syncWithSymphonyClient": boolean, // optional
      *     "clientArticleId": "" // optional
      *     "isBroadcast": boolean,
-     *     "articleType": int // optional, default to 0
+     *     "articleType": int, // optional, default to 0
+     *     "articleRewardContent": "", // optional, default to ""
+     *     "articleRewardPoint": int // optional default to 0
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -188,6 +190,11 @@ public class ArticleMgmtService {
             }
         } catch (final RepositoryException e) {
             throw new ServiceException(e);
+        }
+
+        final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
+        if (rewardPoint < 1) {
+            throw new ServiceException(langPropsService.get("invalidRewardPointLabel"));
         }
 
         final Transaction transaction = articleRepository.beginTransaction();
@@ -247,6 +254,8 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
             article.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
+            article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
+            article.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
 
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
 
@@ -269,7 +278,11 @@ public class ArticleMgmtService {
 
             // Point
             pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                    Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE, articleId);
+                    Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE, articleId);
+            if (rewardPoint > 0) { // Enabed reward
+                pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
+                        Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
+            }
 
             // Event
             final JSONObject eventData = new JSONObject();
@@ -303,7 +316,7 @@ public class ArticleMgmtService {
      *     "articleContent": "",
      *     "articleEditorType": "",
      *     "articleCommentable": boolean, // optional, default to true
-     *     "articleType": int, // optional, default to 0
+     *     "articleType": int // optional, default to 0
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -356,7 +369,7 @@ public class ArticleMgmtService {
 
             // Point
             pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                    Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE, articleId);
+                    Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE, Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE, articleId);
 
             // Event
             final JSONObject eventData = new JSONObject();
@@ -400,6 +413,45 @@ public class ArticleMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Updates an article[id=" + articleId + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * A user specified by the given sender id rewards the author of an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @param senderId the given sender id
+     * @throws ServiceException service exception
+     */
+    public void reward(final String articleId, final String senderId) throws ServiceException {
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+
+            if (null == article) {
+                return;
+            }
+
+            final JSONObject sender = userRepository.get(senderId);
+            if (null == sender) {
+                return;
+            }
+
+            final String receiverId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject receiver = userRepository.get(receiverId);
+            if (null == receiver) {
+                return;
+            }
+
+            final int rewardPoint = article.optInt(Article.ARTICLE_REWARD_POINT);
+            if (rewardPoint < 1) {
+                return;
+            }
+
+            pointtransferMgmtService.transfer(senderId, receiverId,
+                    Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, articleId);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Rewards an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
     }
