@@ -38,6 +38,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
@@ -124,6 +125,18 @@ public class ArticleMgmtService {
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
+     * Reward management service.
+     */
+    @Inject
+    private RewardMgmtService rewardMgmtService;
+
+    /**
+     * Reward query service.
+     */
+    @Inject
+    private RewardQueryService rewardQueryService;
 
     /**
      * Increments the view count of the specified article by the given article id.
@@ -317,6 +330,8 @@ public class ArticleMgmtService {
      *     "articleEditorType": "",
      *     "articleCommentable": boolean, // optional, default to true
      *     "articleType": int // optional, default to 0
+     *     "articleRewardContent": "", // optional, default to ""
+     *     "articleRewardPoint": int // optional default to 0
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -352,6 +367,13 @@ public class ArticleMgmtService {
             oldArticle.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             oldArticle.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
+
+            final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
+            if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT) && 0 < rewardPoint) {
+                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
+                oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
+            }
+
             if (fromClient) {
                 // The article content security has been processed by Rhythm
                 oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
@@ -443,13 +465,28 @@ public class ArticleMgmtService {
                 return;
             }
 
+            if (receiverId.equals(senderId)) {
+                return;
+            }
+
             final int rewardPoint = article.optInt(Article.ARTICLE_REWARD_POINT);
             if (rewardPoint < 1) {
                 return;
             }
 
+            if (rewardQueryService.isRewarded(senderId, articleId, Reward.TYPE_C_ARTICLE)) {
+                return;
+            }
+
+            final JSONObject reward = new JSONObject();
+            reward.put(Reward.SENDER_ID, senderId);
+            reward.put(Reward.DATA_ID, articleId);
+            reward.put(Reward.TYPE, Reward.TYPE_C_ARTICLE);
+            rewardMgmtService.addReward(reward);
+
             pointtransferMgmtService.transfer(senderId, receiverId,
                     Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, articleId);
+
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Rewards an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);

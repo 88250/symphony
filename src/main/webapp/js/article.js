@@ -198,7 +198,19 @@ var Article = {
      * @description 打赏
      */
     reward: function (articleId) {
-        console.log(articleId);
+        $.ajax({
+            url: "/article/reward?articleId=" + articleId,
+            type: "POST",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    $("#articleRewardContent").html(result.articleRewardContent);
+                    return;
+                }
+                
+                alert(result.msg);
+            }
+        });
     }
 };
 

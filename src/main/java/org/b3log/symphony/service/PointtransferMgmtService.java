@@ -47,7 +47,7 @@ public class PointtransferMgmtService {
     private static final Logger LOGGER = Logger.getLogger(PointtransferMgmtService.class.getName());
 
     /**
-     * Article repository.
+     * Pointtransfer repository.
      */
     @Inject
     private PointtransferRepository pointtransferRepository;

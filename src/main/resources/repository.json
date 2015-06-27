@@ -5,6 +5,31 @@
     "since": "0.2.0",
     "repositories": [
         {
+            "name": "reward",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "senderId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "dataId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "type",
+                    "type": "int",
+                    "description": "0: article, 1: comment, 2: user"
+                }
+            ]
+        },
+        {
             "name": "pointtransfer",
             "keys": [
                 {

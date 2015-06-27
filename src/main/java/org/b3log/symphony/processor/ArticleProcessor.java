@@ -52,6 +52,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.validate.ArticleAddValidation;
@@ -62,6 +63,7 @@ import org.b3log.symphony.service.ClientMgmtService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
+import org.b3log.symphony.service.RewardQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Filler;
@@ -155,6 +157,12 @@ public class ArticleProcessor {
     private FollowQueryService followQueryService;
 
     /**
+     * Reward query service.
+     */
+    @Inject
+    private RewardQueryService rewardQueryService;
+
+    /**
      * Filler.
      */
     @Inject
@@ -227,8 +235,8 @@ public class ArticleProcessor {
         dataModel.put(Article.ARTICLE, article);
 
         article.put(Common.IS_MY_ARTICLE, false);
-
         article.put(Article.ARTICLE_T_AUTHOR, author);
+        article.put(Common.REWARDED, false);
 
         articleQueryService.processArticleContent(article, request);
 
@@ -241,6 +249,13 @@ public class ArticleProcessor {
 
             final boolean isFollowing = followQueryService.isFollowing(currentUserId, articleId);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
+
+            if (currentUserId.equals(author.optString(Keys.OBJECT_ID))) {
+                article.put(Common.REWARDED, true);
+            } else {
+                article.put(Common.REWARDED,
+                        rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_ARTICLE));
+            }
         }
 
         if (!(Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
@@ -431,7 +446,9 @@ public class ArticleProcessor {
      *   "articleContent": "",
      *   "syncWithSymphonyClient": boolean,
      *   "articleCommentable": boolean,
-     *   "articleType": int
+     *   "articleType": int,
+     *   "articleRewardContent": "",
+     *   "articleRewardPoint": int
      * }
      * </pre>
      * </p>
@@ -473,6 +490,8 @@ public class ArticleProcessor {
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
         final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
+        final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
+        final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
 
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, id);
@@ -483,6 +502,8 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
         article.put(Article.ARTICLE_COMMENTABLE, articleCommentable);
         article.put(Article.ARTICLE_TYPE, articleType);
+        article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
+        article.put(Article.ARTICLE_REWARD_POINT, articleRewardPoint);
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser
@@ -959,11 +980,15 @@ public class ArticleProcessor {
         final String articleId = request.getParameter(Article.ARTICLE_T_ID);
         if (Strings.isEmptyOrNull(articleId)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            
+
             return;
         }
-        
+
         articleMgmtService.reward(articleId, currentUser.optString(Keys.OBJECT_ID));
+        
+        
+        final JSONObject article = articleQueryService.getArticle(articleId);
+        result.put(Article.ARTICLE_REWARD_CONTENT, article.optString(Article.ARTICLE_REWARD_CONTENT));
     }
 
     /**

@@ -84,7 +84,13 @@
                     </div>
                     <#if 0 < article.articleRewardPoint>
                     <hr>
+                    <div id="articleRewardContent">
+                    <#if !article.rewarded>
                     ${rewardTipLabel?replace("{articleId}", article.oId)?replace("{point}", article.articleRewardPoint)}
+                    <#else>
+                    ${article.articleRewardContent}
+                    </#if>
+                    </div>
                     <hr>
                     </#if>
                     <#if isLoggedIn>

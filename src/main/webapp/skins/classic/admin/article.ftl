@@ -55,15 +55,21 @@
                 <label for="articleContent">${contentLabel}</label>
                 <textarea id="articleContent" name="articleContent">${article.articleContent}</textarea>
 
+                <label for="articleRewardContent">${rewardContentLabel}</label>
+                <textarea id="articleRewardContent" name="articleRewardContent">${article.articleRewardContent}</textarea>
+
+                <label for="articleRewardPoint">${rewardPointLabel}</label>
+                <input type="text" id="articleRewardPoint" name="articleRewardPoint" value="${article.articleRewardPoint}"/>
+
                 <label for="articleCommentable">${commentableLabel}</label>
                 <input type="text" id="articleCommentable" name="articleCommentable" value="${article.articleCommentable?c}" />
 
                 <label for="articleStatus">${articleStatusLabel}</label>
                 <input type="text" id="articleStatus" name="articleStatus" value="${article.articleStatus}" />
-                
+
                 <label for="articleGoodCnt">${goodCntLabel}</label>
                 <input type="text" id="articleGoodCnt" name="articleGoodCnt" value="${article.articleGoodCnt}" />
-                
+
                 <label for="articleBadCnt">${badCntLabel}</label>
                 <input type="text" id="articleBadCnt" name="articleBadCnt" value="${article.articleBadCnt}" />
 
