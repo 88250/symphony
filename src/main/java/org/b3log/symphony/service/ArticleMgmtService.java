@@ -36,6 +36,7 @@ import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Reward;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.7, Jun 27, 2015
+ * @version 1.5.1.7, Jun 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -139,6 +140,12 @@ public class ArticleMgmtService {
     private RewardQueryService rewardQueryService;
 
     /**
+     * Follow query service.
+     */
+    @Inject
+    private FollowQueryService followQueryService;
+
+    /**
      * Increments the view count of the specified article by the given article id.
      *
      * @param articleId the given article id
@@ -206,7 +213,7 @@ public class ArticleMgmtService {
         }
 
         final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
-        if (rewardPoint < 1) {
+        if (rewardPoint < 0) {
             throw new ServiceException(langPropsService.get("invalidRewardPointLabel"));
         }
 
@@ -290,8 +297,11 @@ public class ArticleMgmtService {
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
             // Point
+            final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
+            final int addition = (int) Math.round(Math.sqrt(followerCnt));
             pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                    Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE, articleId);
+                    Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE, 
+                    Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition, articleId);
             if (rewardPoint > 0) { // Enabed reward
                 pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                         Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
@@ -390,8 +400,13 @@ public class ArticleMgmtService {
             transaction.commit();
 
             // Point
+            final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
+            int addition = (int) Math.round(Math.sqrt(followerCnt));
+            final long collectCnt = followQueryService.getFollowerCount(articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
+            addition += collectCnt * 2;
             pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                    Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE, Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE, articleId);
+                    Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE, 
+                    Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition, articleId);
 
             // Event
             final JSONObject eventData = new JSONObject();
