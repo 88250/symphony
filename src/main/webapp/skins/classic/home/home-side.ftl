@@ -28,7 +28,11 @@
         <div class="user-info">
             <span class="ft-small">Symphony</span>
             ${user.userNo}
-            <span class="ft-small">${noVIPLabel}</span>
+            <span class="ft-small">${numVIPLabel}</span>
+        </div>
+        <div class="user-info">
+            <span class="ft-small">${pointLabel}</span>
+            0x${user.userPointHex}
         </div>
         <#if user.userURL!="">
         <div class="user-info">

@@ -10,9 +10,10 @@
                     </a>
                 </div>
                 <div class="fn-left">
-                    Hi,&nbsp;<a href="/member/${currentUser.userName}">${userName}</a> <br/>
+                    Hi~ <a href="/member/${currentUser.userName}">${userName}</a> <br/>
                     <a href="/add-article" title="${addArticleLabel}${articleLabel}" 
                        class="ft-red"><span class="icon icon-addfile"> ${addArticleLabel}${articleLabel}</span></a>
+                    <span class="ft-small">0x${currentUser.userPointHex}</span>
                 </div>
             </div>
             <div>

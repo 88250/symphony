@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.5, Jun 26, 2015
+ * @version 1.3.0.5, Jun 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -274,7 +274,15 @@ public class UserQueryService {
      */
     public JSONObject getUserByName(final String name) throws ServiceException {
         try {
-            return userRepository.getByName(name);
+            final JSONObject ret = userRepository.getByName(name);
+            if (null == ret) {
+                return null;
+            }
+
+            final int point = ret.optInt(UserExt.USER_POINT);
+            ret.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(point));
+            
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets user by name[" + name + "] failed", e);
             throw new ServiceException(e);

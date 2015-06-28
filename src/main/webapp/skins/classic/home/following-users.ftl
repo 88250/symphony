@@ -21,7 +21,7 @@
                 <#else>
                 <span class="ft-small">Symphony</span>
                 ${followingUser.userNo}
-                <span class="ft-small">${noVIPLabel}</span>
+                <span class="ft-small">${numVIPLabel}</span>
                 </#if>
                 <#else>
                 <span class="ft-small">${articleLabel}</span> ${followingUser.userArticleCount} &nbsp;

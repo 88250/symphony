@@ -29,6 +29,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
@@ -37,7 +38,7 @@ import org.json.JSONObject;
  * Login check. Gets user from request attribute named "user" if logged in.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, May 15, 2015
+ * @version 1.2.0.2, Jun 28, 2015
  * @since 0.2.5
  */
 @Named
@@ -76,6 +77,8 @@ public class LoginCheck extends BeforeRequestProcessAdvice {
             }
 
             currentUser = userQueryService.getCurrentUser(request);
+            final int point = currentUser.optInt(UserExt.USER_POINT);
+            currentUser.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(point));
 
             request.setAttribute(User.USER, currentUser);
         } catch (final ServiceException e) {

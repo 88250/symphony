@@ -39,6 +39,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationQueryService;
@@ -73,7 +74,7 @@ public class Filler {
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
-    
+
     /**
      * Follow query service.
      */
@@ -121,7 +122,6 @@ public class Filler {
      */
     @Inject
     private AvatarQueryService avatarQueryService;
-
 
     /**
      * Fills relevant articles.
@@ -266,16 +266,18 @@ public class Filler {
         dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ADMIN_ROLE.equals(userRole));
 
         avatarQueryService.fillUserAvatarURL(curUser);
-        
+
         final String userId = curUser.optString(Keys.OBJECT_ID);
-        
+
         final long followingArticleCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_ARTICLE);
         final long followingTagCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_TAG);
         final long followingUserCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_USER);
-        
+
         curUser.put(Common.FOLLOWING_ARTICLE_CNT, followingArticleCnt);
         curUser.put(Common.FOLLOWING_TAG_CNT, followingTagCnt);
         curUser.put(Common.FOLLOWING_USER_CNT, followingUserCnt);
+        final int point = curUser.optInt(UserExt.USER_POINT);
+        curUser.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(point));
 
         dataModel.put(Common.CURRENT_USER, curUser);
 

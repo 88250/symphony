@@ -90,7 +90,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.5.8, Jun 25, 2015
+ * @version 1.6.5.8, Jun 28, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -599,7 +599,6 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-        final long t = new Date().getTime();
         dataModel.put(User.USER, user);
 
         // Qiniu file upload authenticate

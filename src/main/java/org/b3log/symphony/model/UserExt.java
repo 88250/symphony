@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.9, Jun 25, 2015
+ * @version 1.4.0.9, Jun 28, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -121,6 +121,11 @@ public final class UserExt {
      * Key of user create time.
      */
     public static final String USER_T_CREATE_TIME = "userCreateTime";
+    
+    /**
+     * Key of user point in Hex.
+     */
+    public static final String USER_T_POINT_HEX = "userPointHex";
 
     //// Default Commenter constants
     /**
