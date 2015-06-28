@@ -250,7 +250,9 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
                         replace("<", "&lt;").replace(">", "&gt;")
                         .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
-
+                article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT).
+                        replace("<", "&lt;").replace(">", "&gt;")
+                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
             }
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
@@ -274,7 +276,6 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
             article.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
-            article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
             article.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
 
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
@@ -296,15 +297,17 @@ public class ArticleMgmtService {
             // Grows the tag graph
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
-            // Point
-            final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
-            final int addition = (int) Math.round(Math.sqrt(followerCnt));
-            pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                    Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE, 
-                    Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition, articleId);
-            if (rewardPoint > 0) { // Enabed reward
+            if (!fromClient) {
+                // Point
+                final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
+                final int addition = (int) Math.round(Math.sqrt(followerCnt));
                 pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                        Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
+                        Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE,
+                        Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition, articleId);
+                if (rewardPoint > 0) { // Enabed reward
+                    pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
+                }
             }
 
             // Event
@@ -391,6 +394,9 @@ public class ArticleMgmtService {
                 oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
                         replace("<", "&lt;").replace(">", "&gt;")
                         .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
+                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT).
+                        replace("<", "&lt;").replace(">", "&gt;")
+                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
             }
 
             oldArticle.put(Article.ARTICLE_UPDATE_TIME, System.currentTimeMillis());
@@ -399,15 +405,17 @@ public class ArticleMgmtService {
 
             transaction.commit();
 
-            // Point
-            final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
-            int addition = (int) Math.round(Math.sqrt(followerCnt));
-            final long collectCnt = followQueryService.getFollowerCount(articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
-            addition += collectCnt * 2;
-            pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                    Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE, 
-                    Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition, articleId);
-
+            if (!fromClient) {
+                // Point
+                final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
+                int addition = (int) Math.round(Math.sqrt(followerCnt));
+                final long collectCnt = followQueryService.getFollowerCount(articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
+                addition += collectCnt * 2;
+                pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
+                        Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
+                        Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition, articleId);
+            }
+            
             // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Common.FROM_CLIENT, fromClient);

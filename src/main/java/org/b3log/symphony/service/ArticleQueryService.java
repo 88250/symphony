@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.13, Jun 24, 2015
+ * @version 1.8.1.13, Jun 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -765,6 +765,12 @@ public class ArticleQueryService {
         articleContent = Emotions.convert(articleContent);
         article.put(Article.ARTICLE_CONTENT, articleContent);
 
+        if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
+            String articleRewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
+            articleRewardContent = Emotions.convert(articleRewardContent);
+            article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
+        }
+
         markdown(article);
     }
 
@@ -854,18 +860,24 @@ public class ArticleQueryService {
      * Markdowns the specified article content.
      *
      * <ul>
-     * <li>Markdowns article content</li>
-     * <li>Generates secured article content</li>
+     * <li>Markdowns article content/reward content</li>
+     * <li>Generates secured article content/reward content</li>
      * </ul>
      *
      * @param article the specified article content
      */
     private void markdown(final JSONObject article) {
         String content = article.optString(Article.ARTICLE_CONTENT);
-
         content = Markdowns.toHTML(content);
         content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-
         article.put(Article.ARTICLE_CONTENT, content);
+
+        if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
+            String rewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
+            rewardContent = Markdowns.toHTML(rewardContent);
+            rewardContent = Markdowns.clean(rewardContent,
+                    Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+            article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
+        }
     }
 }

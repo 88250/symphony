@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.15, Jun 25, 2015
+ * @version 1.3.3.15, Jun 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -218,10 +218,12 @@ public class CommentMgmtService {
 
             transaction.commit();
 
-            // Point
-            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-            pointtransferMgmtService.transfer(commentAuthorId, articleAuthorId,
-                    Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT, commentId);
+            if (!fromClient) {
+                // Point
+                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                pointtransferMgmtService.transfer(commentAuthorId, articleAuthorId,
+                        Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT, commentId);
+            }
 
             // Event
             final JSONObject eventData = new JSONObject();

@@ -58,7 +58,7 @@
                 <label for="userStatus">${userStatusLabel}</label>
                 <input type="text" id="userStatus" name="userStatus" value="${user.userStatus}" />
 
-                <label for="userPoint">${userPointLabel}</label>
+                <label for="userPoint">${pointLabel}</label>
                 <input type="text" id="userPoint" name="userPoint" value="${user.userPoint?c}" />
 
                 <label for="userB3Key">B3 Key</label>
