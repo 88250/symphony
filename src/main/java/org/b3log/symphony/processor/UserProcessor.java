@@ -801,8 +801,8 @@ public class UserProcessor {
         }
 
         if (!user.optString(UserExt.USER_B3_KEY).equals(b3Key)) {
-            LOGGER.log(Level.WARN, "Sync update user[name={0}, host={1}] B3Key dismatch [sym={2}, solo={3}]",
-                    name, clientHost, user.optString(UserExt.USER_B3_KEY), b3Key);
+            LOGGER.log(Level.WARN, "Sync update user[name={0}, email={1}, host={2}] B3Key dismatch [sym={3}, solo={4}]",
+                    name, email, clientHost, user.optString(UserExt.USER_B3_KEY), b3Key);
 
             return;
         }
