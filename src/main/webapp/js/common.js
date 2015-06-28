@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.2.6, Jun 21, 2015
+ * @version 1.6.3.6, Jun 28, 2015
  */
 
 /**
@@ -410,12 +410,14 @@ var Util = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        window.location.reload();
+                        if ("/register" === document.location.pathname) {
+                            window.location.href = "/";
+                        } else {
+                            window.location.reload();
+                        }
                     } else {
                         $("#loginTip").text(result.msg).addClass("tip-error");
                     }
-                },
-                complete: function (jqXHR, textStatus) {
                 }
             });
         }
