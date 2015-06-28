@@ -37,7 +37,7 @@
     Most Checks are configurable, be sure to consult the documentation.
     To completely disable a check, just comment it out or delete it from the file.
     Finally, it is worth reading the documentation.
-    Version: 1.0.1.6, Nov 14, 2012
+    Version: 1.0.2.6, Jun 28, 2015
     Author: Liang Ding
 -->
 <!DOCTYPE module PUBLIC
@@ -67,7 +67,7 @@
         <module name="JavadocMethod"/>
         <module name="JavadocType">
             <property name="authorFormat" value="\S"/>
-            <property name="versionFormat" value="\d\.\d\.\d\.\d+, [A-Z]+[a-z]{2,2} \d{1,2}, \d\d\d\d"/>
+            <property name="versionFormat" value="\d+\.\d+\.\d+\.\d+, [A-Z]+[a-z]{2,2} \d{1,2}, \d\d\d\d"/>
         </module>
         <module name="JavadocVariable"/>
         <module name="JavadocStyle">
