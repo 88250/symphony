@@ -21,6 +21,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.Filter;
@@ -72,6 +74,10 @@ public class PointInitProcessor {
     public void genInitPointtransferRecords(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
+        if (RuntimeMode.PRODUCTION == Latkes.getRuntimeMode()) {
+            return;
+        }
+
         final JSONObject result = userRepository.get(new Query());
         final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
