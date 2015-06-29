@@ -84,7 +84,7 @@ public final class Pointtransfer {
 
     // Transfer type and sum constants
     /**
-     * Transfer type - Initialization.
+     * Transfer type - Initialization Income.
      */
     public static final int TRANSFER_TYPE_C_INIT = 0;
 
@@ -94,7 +94,7 @@ public final class Pointtransfer {
     public static final int TRANSFER_SUM_C_INIT = Symphonys.getInt("pointInit");
 
     /**
-     * Transfer type - Add Article.
+     * Transfer type - Add Article Outcome.
      */
     public static final int TRANSFER_TYPE_C_ADD_ARTICLE = 1;
 
@@ -104,7 +104,7 @@ public final class Pointtransfer {
     public static final int TRANSFER_SUM_C_ADD_ARTICLE = Symphonys.getInt("pointAddArticle");
 
     /**
-     * Transfer type - Update Article.
+     * Transfer type - Update Article Outcome.
      */
     public static final int TRANSFER_TYPE_C_UPDATE_ARTICLE = 2;
 
@@ -114,7 +114,7 @@ public final class Pointtransfer {
     public static final int TRANSFER_SUM_C_UPDATE_ARTICLE = Symphonys.getInt("pointUpdateArticle");
 
     /**
-     * Transfer type - Add Comment.
+     * Transfer type - Add Comment Income/Outcome.
      */
     public static final int TRANSFER_TYPE_C_ADD_COMMENT = 3;
 
@@ -124,15 +124,15 @@ public final class Pointtransfer {
     public static final int TRANSFER_SUM_C_ADD_COMMENT = Symphonys.getInt("porintAddComment");
     
     /**
-     * Transfer type - Add Article Reward.
+     * Transfer type - Add Article Reward Outcome.
      */
     public static final int TRANSFER_TYPE_C_ADD_ARTICLE_REWARD = 4;
     
     /**
-     * Transfer type - Article Reward.
+     * Transfer type - Article Reward Outcome.
      */
     public static final int TRANSFER_TYPE_C_ARTICLE_REWARD = 5;
-
+    
     /**
      * Private constructor.
      */

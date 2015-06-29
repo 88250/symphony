@@ -77,11 +77,13 @@ public class OptionQueryService {
      * Online visitor expiration in 5 minutes.
      */
     private static final int ONLINE_VISITOR_EXPIRATION = 300000;
+
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+
     /**
      * Gets the online visitor count.
      *
@@ -187,10 +189,10 @@ public class OptionQueryService {
         try {
             final JSONObject result = optionRepository.get(query);
             final JSONArray options = result.optJSONArray(Keys.RESULTS);
-            
+
             for (int i = 0; i < options.length(); i++) {
                 final JSONObject option = options.optJSONObject(i);
-                
+
                 option.put("label", langPropsService.get(option.optString(Keys.OBJECT_ID) + "Label"));
             }
 
@@ -200,7 +202,7 @@ public class OptionQueryService {
             throw new ServiceException(e);
         }
     }
-    
+
     /**
      * Gets an option by the specified id.
      *

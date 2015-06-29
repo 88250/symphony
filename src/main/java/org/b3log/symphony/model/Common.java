@@ -165,6 +165,11 @@ public final class Common {
     public static final String USER_HOME_FOLLOWER_USERS = "userHomeFollowerUsers";
 
     /**
+     * Key of user home points.
+     */
+    public static final String USER_HOME_POINTS = "userHomePoints";
+
+    /**
      * Key of 'commented' notifications.
      */
     public static final String COMMENTED_NOTIFICATIONS = "commentedNotifications";
@@ -313,6 +318,21 @@ public final class Common {
      * Key of rewarded.
      */
     public static final String REWARDED = "rewarded";
+
+    /**
+     * Key of display type.
+     */
+    public static final String DISPLAY_TYPE = "displayType";
+
+    /**
+     * Key of description.
+     */
+    public static final String DESCRIPTION = "description";
+
+    /**
+     * Key of balance.
+     */
+    public static final String BALANCE = "balance";
 
     /**
      * Private constructor.

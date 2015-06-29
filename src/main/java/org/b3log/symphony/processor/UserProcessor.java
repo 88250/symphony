@@ -43,6 +43,7 @@ import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
@@ -60,6 +61,7 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
+import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -80,6 +82,7 @@ import org.json.JSONObject;
  * <li>User following tags (/member/{userName}/following/tags), GET</li>
  * <li>User following articles (/member/{userName}/following/articles), GET</li>
  * <li>User followers (/member/{userName}/followers), GET</li>
+ * <li>User points (/member/{userName}/points), GET</li>
  * <li>Settings (/settings), GET</li>
  * <li>Profiles (/settings/profiles), POST</li>
  * <li>Sync (/settings/sync/b3), POST</li>
@@ -90,7 +93,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.5.8, Jun 28, 2015
+ * @version 1.7.5.8, Jun 29, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -153,6 +156,12 @@ public class UserProcessor {
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
+    /**
+     * Pointtransfer query service.
+     */
+    @Inject
+    private PointtransferQueryService pointtransferQueryService;
 
     /**
      * Shows user home page.
@@ -568,6 +577,74 @@ public class UserProcessor {
 
         final int followerUserCnt = followerUsersResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil((double) followerUserCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+    }
+
+    /**
+     * Shows user home points page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userName the specified user name
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/member/{userName}/points", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = UserBlockCheck.class)
+    public void showHomePoints(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response, final String userName) throws Exception {
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/points.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeaderAndFooter(request, response, dataModel);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("userHomePointsCnt");
+        final int windowSize = Symphonys.getInt("userHomePointsWindowSize");
+
+        dataModel.put(User.USER, user);
+        avatarQueryService.fillUserAvatarURL(user);
+
+        final String followingId = user.optString(Keys.OBJECT_ID);
+        dataModel.put(Follow.FOLLOWING_ID, followingId);
+
+        final JSONObject userPointsResult
+                = pointtransferQueryService.getUserPoints(user.optString(Keys.OBJECT_ID), pageNum, pageSize);
+        final List<JSONObject> userPoints
+                = CollectionUtils.<JSONObject>jsonArrayToList(userPointsResult.optJSONArray(Keys.RESULTS));
+        dataModel.put(Common.USER_HOME_POINTS, userPoints);
+
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        if (isLoggedIn) {
+            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            final String followerId = currentUser.optString(Keys.OBJECT_ID);
+
+            final boolean isFollowing = followQueryService.isFollowing(followerId, user.optString(Keys.OBJECT_ID));
+            dataModel.put(Common.IS_FOLLOWING, isFollowing);
+        }
+
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+
+        final int pointsCnt = userPointsResult.optInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil((double) pointsCnt / (double) pageSize);
 
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
         if (!pageNums.isEmpty()) {

@@ -28,6 +28,10 @@
         <@head title="${user.userName} - ${followersLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followersLabel}"/>
         </@head>
+        <#elseif type == "pointtransfers">
+        <@head title="${user.userName} - ${pointLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${pointLabel}"/>
+        </@head>
         <#elseif type == "settings">
         <@head title="${user.userName} - ${settingsLabel}">
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
@@ -59,6 +63,11 @@
                         <li<#if type == "followers"> class="current"</#if>>
                             <a href="/member/${user.userName}/followers">${followersLabel}</a>
                         </li>
+                        <!--
+                        <li<#if type == "pointtransfer"> class="current"</#if>>
+                            <a href="/member/${user.userName}/points">${pointLabel}</a>
+                        </li>
+                        -->
                         <#if currentUser?? && currentUser.userName == user.userName>
                         <li<#if type == "settings"> class="current"</#if>>
                             <a href="/settings">${settingsLabel}</a>
