@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
@@ -56,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, May 27, 2015
+ * @version 1.2.1.1, Jun 29, 2015
  * @since 0.2.5
  */
 @RequestProcessor
@@ -367,17 +366,21 @@ public class NotificationProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/notification/unread/count", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = LoginCheck.class)
     public void getUnreadNotificationCount(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         final JSONObject ret = QueryResults.trueResult();
         ret.put(Notification.NOTIFICATION_T_UNREAD_COUNT, 0);
         renderer.setJSONObject(ret);
-
-        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
 
         ret.put(Notification.NOTIFICATION_T_UNREAD_COUNT,
                 notificationQueryService.getUnreadNotificationCount(currentUser.optString(Keys.OBJECT_ID)));
