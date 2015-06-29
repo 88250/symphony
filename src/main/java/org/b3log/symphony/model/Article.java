@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.9, Jun 27, 2015
+ * @version 1.6.0.9, Jun 29, 2015
  * @since 0.2.0
  */
 public final class Article {
@@ -145,6 +145,11 @@ public final class Article {
     public static final String ARTICLE_BAD_CNT = "articleBadCnt";
 
     //// Transient ////
+    /**
+     * Key of article view count display format.
+     */
+    public static final String ARTICLE_T_VIEW_CNT_DISPLAY_FORMAT = "articleViewCntDisplayFormat";
+
     /**
      * Key of article id.
      */

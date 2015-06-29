@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -63,7 +64,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.1.13, Jun 28, 2015
+ * @version 1.9.1.13, Jun 29, 2015
  * @since 0.2.0
  */
 @Service
@@ -585,6 +586,7 @@ public class ArticleQueryService {
      * <li>generates author name</li>
      * <li>escapes article title &lt; and &gt;</li>
      * <li>generates article heat</li>
+     * <li>generates article view count display format(1k+/1.5k+...)</li>
      * </ul>
      *
      * @param articles the specified articles
@@ -594,7 +596,6 @@ public class ArticleQueryService {
         for (final JSONObject article : articles) {
             organizeArticle(article);
         }
-
     }
 
     /**
@@ -606,6 +607,7 @@ public class ArticleQueryService {
      * <li>generates author name</li>
      * <li>escapes article title &lt; and &gt;</li>
      * <li>generates article heat</li>
+     * <li>generates article view count display format(1k+/1.5k+...)</li>
      * </ul>
      *
      * @param article the specified article
@@ -632,6 +634,13 @@ public class ArticleQueryService {
         }
 
         article.put(Article.ARTICLE_T_HEAT, viewingCnt);
+
+        final int viewCnt = article.optInt(Article.ARTICLE_VIEW_CNT);
+        final double views = (double) viewCnt / 1000;
+        if (views >= 1) {
+            final DecimalFormat df = new DecimalFormat("#.#");
+            article.put(Article.ARTICLE_T_VIEW_CNT_DISPLAY_FORMAT, df.format(views) + "K");
+        }
     }
 
     /**

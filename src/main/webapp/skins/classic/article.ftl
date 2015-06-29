@@ -35,7 +35,11 @@
                                 </a> &nbsp;
                                 <a title="${viewLabel}" rel="nofollow" href="#"> 
                                     <span class="icon icon-view"></span>
+                                    <#if article.articleViewCount < 1000>
                                     ${article.articleViewCount}
+                                    <#else>
+                                    ${article.articleViewCntDisplayFormat}
+                                    </#if>
                                 </a>
                             </div>
                         </div>
