@@ -250,10 +250,12 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
                         replace("<", "&lt;").replace(">", "&gt;")
                         .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
-                article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT).
-                        replace("<", "&lt;").replace(">", "&gt;")
-                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
             }
+
+            article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT).
+                    replace("<", "&lt;").replace(">", "&gt;")
+                    .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
+
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, fromClient ? true : requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT));
@@ -394,10 +396,11 @@ public class ArticleMgmtService {
                 oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
                         replace("<", "&lt;").replace(">", "&gt;")
                         .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
-                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT).
-                        replace("<", "&lt;").replace(">", "&gt;")
-                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
             }
+
+            oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT).
+                    replace("<", "&lt;").replace(">", "&gt;")
+                    .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
 
             oldArticle.put(Article.ARTICLE_UPDATE_TIME, System.currentTimeMillis());
 
@@ -415,7 +418,7 @@ public class ArticleMgmtService {
                         Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
                         Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition, articleId);
             }
-            
+
             // Event
             final JSONObject eventData = new JSONObject();
             eventData.put(Common.FROM_CLIENT, fromClient);
