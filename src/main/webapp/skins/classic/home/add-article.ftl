@@ -50,7 +50,7 @@
                         <span id="articleRewardContentTip" style="top: 304px; right: 2px;"></span>
                     </div>
                     <div>
-                        <input id="articleRewardPoint" type="text" value="<#if article??>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
+                        <input id="articleRewardPoint" type="text" value="<#if article?? && 0 != article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
                         <span style="right:2px;top:424px;"></span><br/><br/>
                     </div>
                     <div class="fn-clear">
