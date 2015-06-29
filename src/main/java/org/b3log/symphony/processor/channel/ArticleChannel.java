@@ -152,51 +152,53 @@ public class ArticleChannel {
         final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
 
-        for (final Session session : SESSIONS) {
-            final String viewingArticleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
-            if (Strings.isEmptyOrNull(viewingArticleId)
-                    || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
-                continue;
-            }
+        synchronized (SESSIONS) {
+            for (final Session session : SESSIONS) {
+                final String viewingArticleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
+                if (Strings.isEmptyOrNull(viewingArticleId)
+                        || !viewingArticleId.equals(message.optString(Article.ARTICLE_T_ID))) {
+                    continue;
+                }
 
-            final int articleType = Integer.valueOf(Channels.getHttpParameter(session, Article.ARTICLE_TYPE));
+                final int articleType = Integer.valueOf(Channels.getHttpParameter(session, Article.ARTICLE_TYPE));
 
-            try {
-                if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType) {
-                    final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
-                    if (null == user) {
-                        continue;
-                    }
-
-                    final String userName = user.optString(User.USER_NAME);
-                    final String userId = user.optString(Keys.OBJECT_ID);
-
-                    final JSONObject article = articleRepository.get(viewingArticleId);
-                    final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                    if (!userId.equals(articleAuthorId)) {
-                        final String articleContent = article.optString(Article.ARTICLE_CONTENT);
-                        final Set<String> userNames = userQueryService.getUserNames(articleContent);
-
-                        boolean invited = false;
-                        for (final String inviteUserName : userNames) {
-                            if (inviteUserName.equals(userName)) {
-                                invited = true;
-
-                                break;
-                            }
-                        }
-
-                        if (!invited) {
+                try {
+                    if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType) {
+                        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
+                        if (null == user) {
                             continue;
                         }
-                    }
-                }
 
-                if (session.isOpen()) {
-                    session.getRemote().sendString(msgStr);
+                        final String userName = user.optString(User.USER_NAME);
+                        final String userId = user.optString(Keys.OBJECT_ID);
+
+                        final JSONObject article = articleRepository.get(viewingArticleId);
+                        final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                        if (!userId.equals(articleAuthorId)) {
+                            final String articleContent = article.optString(Article.ARTICLE_CONTENT);
+                            final Set<String> userNames = userQueryService.getUserNames(articleContent);
+
+                            boolean invited = false;
+                            for (final String inviteUserName : userNames) {
+                                if (inviteUserName.equals(userName)) {
+                                    invited = true;
+
+                                    break;
+                                }
+                            }
+
+                            if (!invited) {
+                                continue;
+                            }
+                        }
+                    }
+
+                    if (session.isOpen()) {
+                        session.getRemote().sendString(msgStr);
+                    }
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Notify comment error", e);
                 }
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Notify comment error", e);
             }
         }
     }

@@ -115,20 +115,22 @@ public class ArticleListChannel {
         final String articleId = message.optString(Article.ARTICLE_T_ID);
         final String msgStr = message.toString();
 
-        for (final Map.Entry<Session, String> entry : SESSIONS.entrySet()) {
-            final Session session = entry.getKey();
-            final String articleIds = entry.getValue();
+        synchronized (SESSIONS) {
+            for (final Map.Entry<Session, String> entry : SESSIONS.entrySet()) {
+                final Session session = entry.getKey();
+                final String articleIds = entry.getValue();
 
-            if (!StringUtils.contains(articleIds, articleId)) {
-                continue;
-            }
-
-            try {
-                if (session.isOpen()) {
-                    session.getRemote().sendString(msgStr);
+                if (!StringUtils.contains(articleIds, articleId)) {
+                    continue;
                 }
-            } catch (final IOException e) {
-                LOGGER.log(Level.ERROR, "Notify comment error", e);
+
+                try {
+                    if (session.isOpen()) {
+                        session.getRemote().sendString(msgStr);
+                    }
+                } catch (final IOException e) {
+                    LOGGER.log(Level.ERROR, "Notify comment error", e);
+                }
             }
         }
     }
