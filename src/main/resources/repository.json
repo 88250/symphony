@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.5.3.1, Jun 27, 2015",
+    "version": "2.5.3.1, Jun 30, 2015",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
@@ -442,6 +442,10 @@
                 {
                     "name": "userLatestLoginTime",
                     "type": "long"
+                },
+                {
+                    "name": "userAppRole",
+                    "type": "int"
                 }
             ]
         },

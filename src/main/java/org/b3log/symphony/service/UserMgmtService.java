@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.2, Jun 27, 2015
+ * @version 1.4.2.2, Jun 30, 2015
  * @since 0.2.0
  */
 @Service
@@ -330,6 +330,7 @@ public class UserMgmtService {
      * {
      *     "userName": "",
      *     "userEmail": "",
+     *     "userAppRole": int,
      *     "userPassword": "", // Hashed
      *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead, if not speciffied
      * }
@@ -362,8 +363,9 @@ public class UserMgmtService {
 
             final JSONObject user = new JSONObject();
 
-            user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
+            user.put(User.USER_EMAIL, userEmail);
+            user.put(UserExt.USER_APP_ROLE, requestJSONObject.optInt(UserExt.USER_APP_ROLE));
             user.put(User.USER_PASSWORD, requestJSONObject.optString(User.USER_PASSWORD));
             user.put(User.USER_ROLE, requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE));
 

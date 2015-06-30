@@ -29,6 +29,7 @@ import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.CaptchaProcessor;
 import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, Apr 9, 2015
+ * @version 1.2.0.6, Jun 30, 2015
  */
 @Named
 @Singleton
@@ -104,12 +105,15 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
+        final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
         final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
         checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
         checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");
         checkField(!Strings.isEmail(email), "registerFailLabel", "invalidEmailLabel");
+        checkField(UserExt.USER_APP_ROLE_C_HACKER != appRole
+                && UserExt.USER_APP_ROLE_C_PAINTER != appRole, "registerFailLabel", "invalidAppRoleLabel");
         checkField(invalidUserPassword(password), "registerFailLabel", "invalidPasswordLabel");
     }
 
@@ -196,7 +200,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
             throws RequestProcessAdviceException {
         if (invalid) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get(failLabel)
-                                                                                   + " - " + langPropsService.get(fieldLabel)));
+                    + " - " + langPropsService.get(fieldLabel)));
         }
     }
 }

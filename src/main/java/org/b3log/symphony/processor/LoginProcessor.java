@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Apr 20, 2015
+ * @version 1.1.0.8, Jun 20, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -146,11 +146,13 @@ public class LoginProcessor {
 
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
+        final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
 
         final JSONObject user = new JSONObject();
         user.put(User.USER_NAME, name);
         user.put(User.USER_EMAIL, email);
+        user.put(UserExt.USER_APP_ROLE, appRole);
         user.put(User.USER_PASSWORD, password);
 
         try {

@@ -35,11 +35,20 @@
                             </tr>
                             <tr>
                                 <td>
+                                    <label for"userAppRole">${roleLabel}</label>
+                                </td>
+                                <td>
+                                    <label><input name="userAppRole" type="radio" value="0" checked="checked" />&nbsp;&nbsp;${hackerLabel}</label>
+                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;<input name="userAppRole" type="radio" value="1" />&nbsp;&nbsp;${painterLabel}</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <label for="userPassword">${passwordLabel}</label>
                                 </td>
                                 <td>
                                     <input id="userPassword"  type="password" />
-                                    <span style="left:275px;top:121px;"></span>
+                                    <span style="left:275px;top:157px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -48,7 +57,7 @@
                                 </td>
                                 <td>
                                     <input id="confirmPassword" type="password" />
-                                    <span style="left:275px;top:174px;"></span>
+                                    <span style="left:275px;top:209px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -57,13 +66,13 @@
                                 </td>
                                 <td>
                                     <input type="text" id="securityCode" />
-                                    <span style="top:227px;left:275px;"></span>
+                                    <span style="top:262px;left:275px;"></span>
                                     <img id="captcha" class="fn-pointer" src="/captcha" onclick="this.src = '/captcha?' + (new Date()).getTime()" />
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <span id="registerTip" style="top: 268px; right: 71px;"></span>
+                                    <span id="registerTip" style="top: 305px; right: 71px;"></span>
                                     <button class="green" onclick="Register.register()">${registerLabel}</button>
                                 </td>
                             </tr>

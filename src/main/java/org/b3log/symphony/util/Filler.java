@@ -277,7 +277,12 @@ public class Filler {
         curUser.put(Common.FOLLOWING_TAG_CNT, followingTagCnt);
         curUser.put(Common.FOLLOWING_USER_CNT, followingUserCnt);
         final int point = curUser.optInt(UserExt.USER_POINT);
-        curUser.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(point));
+        final int appRole = curUser.optInt(UserExt.USER_APP_ROLE);
+        if (UserExt.USER_APP_ROLE_C_HACKER == appRole) {
+            curUser.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(point));
+        } else {
+            curUser.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(point));
+        }
 
         dataModel.put(Common.CURRENT_USER, curUser);
 

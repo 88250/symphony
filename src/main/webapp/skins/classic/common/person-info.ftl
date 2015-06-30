@@ -13,7 +13,7 @@
                     Hi~ <a href="/member/${currentUser.userName}">${userName}</a> <br/>
                     <a href="/add-article" title="${addArticleLabel}${articleLabel}" 
                        class="ft-red"><span class="icon icon-addfile"> ${addArticleLabel}${articleLabel}</span></a>
-                    <a href="/member/${currentUser.userName}/points" class="ft-small" title="${pointLabel} ${currentUser.userPoint?c}">0x${currentUser.userPointHex}</a>
+                    <a href="/member/${currentUser.userName}/points" class="ft-small" title="${pointLabel} ${currentUser.userPoint?c}"><#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="" style="width: 30px; height: 10px; display: inline-block; background-color: #${currentUser.userPointCC}"></div></#if></a>
                 </div>
             </div>
             <div>

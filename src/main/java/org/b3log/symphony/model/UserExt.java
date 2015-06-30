@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.9, Jun 28, 2015
+ * @version 2.5.0.9, Jul 1, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -44,7 +44,7 @@ public final class UserExt {
      * Key of user status.
      */
     public static final String USER_STATUS = "userStatus";
-    
+
     /**
      * Key of user point.
      */
@@ -115,17 +115,26 @@ public final class UserExt {
      */
     public static final String USER_LATEST_LOGIN_TIME = "userLatestLoginTime";
 
-    //// Transient ////
+    /**
+     * Key of app role.
+     */
+    public static final String USER_APP_ROLE = "userAppRole";
 
+    //// Transient ////
     /**
      * Key of user create time.
      */
     public static final String USER_T_CREATE_TIME = "userCreateTime";
-    
+
     /**
      * Key of user point in Hex.
      */
     public static final String USER_T_POINT_HEX = "userPointHex";
+
+    /**
+     * Key of user point in Color Code.
+     */
+    public static final String USER_T_POINT_CC = "userPointCC";
 
     //// Default Commenter constants
     /**
@@ -156,19 +165,84 @@ public final class UserExt {
 
     //// Avatar type constants
     /**
-     * User avatar type - 0: Gravatar.
+     * User avatar type - Gravatar.
      */
     public static final int USER_AVATAR_TYPE_C_GRAVATAR = 0;
 
     /**
-     * User avatar type - 1: External Link.
+     * User avatar type - External Link.
      */
     public static final int USER_AVATAR_TYPE_C_EXTERNAL_LINK = 1;
-    
+
     /**
-     * User avatar type - 2: Upload.
+     * User avatar type - Upload.
      */
     public static final int USER_AVATAR_TYPE_C_UPLOAD = 2;
+
+    //// App role constants
+    /**
+     * User app role - Hacker.
+     */
+    public static final int USER_APP_ROLE_C_HACKER = 0;
+
+    /**
+     * User app role - Painter.
+     */
+    public static final int USER_APP_ROLE_C_PAINTER = 1;
+
+    /**
+     * Gets color code of the specified point.
+     *
+     * @param point the specified point
+     * @return color code
+     */
+    public static String toCCString(final int point) {
+        final String hex = Integer.toHexString(point);
+
+        if (1 == hex.length()) {
+            return hex + hex + hex + hex + hex + hex;
+        }
+
+        if (2 == hex.length()) {
+            final String a1 = hex.substring(0, 1);
+            final String a2 = hex.substring(1);
+
+            return a1 + a1 + a1 + a2 + a2 + a2;
+        }
+
+        if (3 == hex.length()) {
+            final String a1 = hex.substring(0, 1);
+            final String a2 = hex.substring(1, 2);
+            final String a3 = hex.substring(2);
+
+            return a1 + a1 + a2 + a2 + a3 + a3;
+        }
+
+        if (4 == hex.length()) {
+            final String a1 = hex.substring(0, 1);
+            final String a2 = hex.substring(1, 2);
+            final String a3 = hex.substring(2, 3);
+            final String a4 = hex.substring(3);
+
+            return a1 + a2 + a3 + a4 + a3 + a4;
+        }
+
+        if (5 == hex.length()) {
+            final String a1 = hex.substring(0, 1);
+            final String a2 = hex.substring(1, 2);
+            final String a3 = hex.substring(2, 3);
+            final String a4 = hex.substring(3, 4);
+            final String a5 = hex.substring(4);
+
+            return a1 + a2 + a3 + a4 + a5 + a5;
+        }
+
+        if (6 == hex.length()) {
+            return hex;
+        }
+
+        return hex.substring(0, 6);
+    }
 
     /**
      * Private constructor.

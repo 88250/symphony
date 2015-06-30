@@ -49,11 +49,14 @@
                 <label for="userIntro">${avatarTypeLabel}</label>
                 <input type="text" id="userAvatarType" name="userAvatarType" value="${user.userAvatarType}" />
 
-                <label for="userIntro">${avatarLabel}${avatarURLLabel}</label>
+                <label for="userIntro">${avatarURLLabel}</label>
                 <input type="text" id="userAvatarURL" name="userAvatarURL" value="${user.userAvatarURL}" />
 
                 <label for="userRole">${roleLabel}</label>
                 <input type="text" id="userRole" name="userRole" value="${user.userRole}" />
+                
+                <label for="userAppRole">${appRoleLabel}</label>
+                <input type="text" id="userAppRole" name="userAppRole" value="${user.userAppRole}" />
 
                 <label for="userStatus">${userStatusLabel}</label>
                 <input type="text" id="userStatus" name="userStatus" value="${user.userStatus}" />
