@@ -222,7 +222,8 @@ textarea {
 
 .content-reset ul,
 .content-reset ol {
-    margin: 5px 0 5px 20px;
+    margin: 1em 0;
+    padding-left: 40px;
 }
 
 .content-reset h1, 

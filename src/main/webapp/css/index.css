@@ -59,11 +59,18 @@
 /* start article */
 .article-title {
     margin: 10px 0;
+}
+
+.article-title h2 {
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
 }
 
+.article-title .info {
+    margin-top: 1px;
+    float: left;
+}
 .article-info > .fn-right a {
     text-decoration: none;
 }
