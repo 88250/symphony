@@ -99,7 +99,7 @@ var Util = {
                 var displayText = emojis[i];
                 var text = emojis[i];
 
-                if (startsWith(text, input)) {
+                if (Util.startsWith(text, input)) {
                     autocompleteHints.push({
                         displayText: "<span>" + displayText +
                                 "&nbsp;<img style='width: 16px' src='/js/lib/emojify.js-1.0.2/images/basic/" + text + ".png'></span>",
@@ -421,6 +421,9 @@ var Util = {
                 }
             });
         }
+    },
+    startsWith: function(string, prefix) {
+        return (string.match("^" + prefix) == prefix);
     }
 };
 /**

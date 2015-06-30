@@ -75,7 +75,7 @@ var Comment = {
                 // delete the whole username
                 var preCursor = CodeMirror.Pos(cursor.line, cursor.ch - 1);
                 token = cm.getTokenAt(preCursor);
-                if (startsWith(token.string, "@")) {
+                if (Util.startsWith(token.string, "@")) {
                     cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
                             CodeMirror.Pos(cursor.line, token.end));
                 }

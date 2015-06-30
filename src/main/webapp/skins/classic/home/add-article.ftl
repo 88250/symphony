@@ -51,7 +51,7 @@
                     </div>
                     <div>
                         <input id="articleRewardPoint" type="text" value="<#if article?? && 0 != article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
-                        <span style="right:2px;top:424px;"></span><br/><br/>
+                               <span style="right:2px;top:424px;"></span><br/><br/>
                     </div>
                     <div class="fn-clear">
                         <div class="fn-left">

@@ -125,7 +125,7 @@ var AddArticle = {
                 // delete the whole username
                 var preCursor = CodeMirror.Pos(cursor.line, cursor.ch - 1);
                 token = cm.getTokenAt(preCursor);
-                if (startsWith(token.string, "@")) {
+                if (Util.startsWith(token.string, "@")) {
                     cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
                             CodeMirror.Pos(cursor.line, token.end));
                 }
@@ -140,7 +140,7 @@ var AddArticle = {
             }
         });
 
-        $("#articleTitle, #articleTags").keypress(function (event) {
+        $("#articleTitle, #articleTags, #articleRewardPoint").keypress(function (event) {
             if (13 === event.keyCode) {
                 AddArticle.add();
             }
@@ -161,6 +161,7 @@ var AddArticle = {
             dragDrop: false,
             readOnly: readOnly,
             extraKeys: {
+                "'@'": "autocompleteUserName",
                 "Ctrl-/": "autocompleteEmoji",
                 "F11": function (cm) {
                     cm.setOption("fullScreen", !cm.getOption("fullScreen"));
@@ -168,7 +169,72 @@ var AddArticle = {
             }
         });
 
+        AddArticle.rewardEditor.on('keydown', function (cm, evt) {
+            if (8 === evt.keyCode) { // Backspace
+                var cursor = cm.getCursor();
+                var token = cm.getTokenAt(cursor);
+
+                if (" " !== token.string) {
+                    return;
+                }
+
+                // delete the whole username
+                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch - 1);
+                token = cm.getTokenAt(preCursor);
+                if (Util.startsWith(token.string, "@")) {
+                    cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
+                            CodeMirror.Pos(cursor.line, token.end));
+                }
+            }
+        });
+
         $("#articleRewardContent").next().height(100);
+    },
+    /**
+     * @description 初始化上传
+     */
+    _initFileUpload: function () {
+
+        // jQuery File Upload
+        $('#fileupload').fileupload({
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            maxFileSize: 1024 * 1024, // 1M
+            multipart: true,
+            pasteZone: $(".CodeMirror"),
+            dropZone: $(".CodeMirror"),
+            url: "http://upload.qiniu.com/",
+            formData: function (form) {
+                var data = form.serializeArray();
+                data.push({name: 'token', value: '${qiniuUploadToken}'});
+                return data;
+            },
+            submit: function (e, data) {
+                var cursor = AddArticle.editor.getCursor();
+                AddArticle.editor.replaceRange('${uploadingLabel}', cursor, cursor);
+            },
+            done: function (e, data) {
+                var qiniuKey = data.result.key;
+                if (!qiniuKey) {
+                    alert("Upload error");
+                    return;
+                }
+
+                var cursor = AddArticle.editor.getCursor();
+                AddArticle.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ',
+                        CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
+            },
+            fail: function (e, data) {
+                alert("Upload error: " + data.errorThrown);
+                var cursor = AddArticle.editor.getCursor();
+                AddArticle.editor.replaceRange('',
+                        CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
+            }
+        }).on('fileuploadprocessalways', function (e, data) {
+            var currentFile = data.files[data.index];
+            if (data.files.error && currentFile.error) {
+                alert(currentFile.error);
+            }
+        });
     },
     /**
      * @description 预览文章
@@ -210,7 +276,3 @@ var AddArticle = {
 };
 
 AddArticle.init();
-
-function startsWith(string, prefix) {
-    return (string.match("^" + prefix) == prefix);
-}
