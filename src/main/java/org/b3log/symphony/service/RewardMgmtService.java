@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Reward management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 27, 2015
+ * @version 1.1.0.0, Jun 30, 2015
  * @since 1.3.0
  */
 @Service
@@ -56,13 +56,13 @@ public class RewardMgmtService {
      *     "type": int
      * }
      * </pre>
-     *
+     * @return reward id
      * @throws ServiceException service exception
      */
     @Transactional
-    public void addReward(final JSONObject requestJSONObject) throws ServiceException {
+    public String addReward(final JSONObject requestJSONObject) throws ServiceException {
         try {
-            rewardRepository.add(requestJSONObject);
+            return rewardRepository.add(requestJSONObject);
         } catch (final RepositoryException e) {
             final String msg = "Adds reward failed";
             LOGGER.log(Level.ERROR, msg, e);

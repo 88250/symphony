@@ -104,7 +104,7 @@ public class PointInitProcessor {
                 pointtransfer.put(Pointtransfer.TO_BALANCE, Pointtransfer.TRANSFER_SUM_C_INIT);
                 pointtransfer.put(Pointtransfer.TIME, Long.valueOf(userId));
                 pointtransfer.put(Pointtransfer.TYPE, Pointtransfer.TRANSFER_TYPE_C_INIT);
-                pointtransfer.put(Pointtransfer.DATE_ID, userId);
+                pointtransfer.put(Pointtransfer.DATA_ID, userId);
 
                 pointtransferRepository.add(pointtransfer);
             }

@@ -74,7 +74,7 @@ public final class Pointtransfer {
     /**
      * Key of data id.
      */
-    public static final String DATE_ID = "dataId";
+    public static final String DATA_ID = "dataId";
 
     // Id constants
     /**

@@ -1,8 +1,9 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
-<@home "pointtransfers">
+<@home "points">
+<b>TODO: Style</b>
 <div class="list">
-    <table border="1">
+    <table>
         <thead>
             <tr>
                 <th>${timeLabel}</th><th>${typeLabel}</th><th>${sumLabel}</th><th>${balanceLabel}</th><th>${descriptionLabel}</th>
@@ -11,11 +12,11 @@
         <tbody>
             <#list userHomePoints as point>
             <tr>
-                <th>${point.createTime?string('yyyy-MM-dd HH:mm')}</th>
-                <th>${point.displayType}</th>
-                <th>${point.sum?c}</th>
-                <th>${point.fromBalance?c}</th>
-                <th>${point.fromId} -> ${point.toId}</th>
+                <td>${point.createTime?string('yyyy-MM-dd HH:mm')}</td>
+                <td>${point.displayType}</td>
+                <td>${point.sum?c}</td>
+                <td>${point.fromBalance?c}</td>
+                <td>${point.description}</td>
             </tr>
             </#list>
         </tbody>

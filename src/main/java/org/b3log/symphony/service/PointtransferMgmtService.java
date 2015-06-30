@@ -101,7 +101,7 @@ public class PointtransferMgmtService {
             pointtransfer.put(Pointtransfer.TO_BALANCE, toBalance);
             pointtransfer.put(Pointtransfer.TIME, new Date().getTime());
             pointtransfer.put(Pointtransfer.TYPE, type);
-            pointtransfer.put(Pointtransfer.DATE_ID, dataId);
+            pointtransfer.put(Pointtransfer.DATA_ID, dataId);
 
             pointtransferRepository.add(pointtransfer);
 

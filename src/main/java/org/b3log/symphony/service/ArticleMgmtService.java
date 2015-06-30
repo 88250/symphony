@@ -306,7 +306,7 @@ public class ArticleMgmtService {
                 pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                         Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE,
                         Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition, articleId);
-                if (rewardPoint > 0) { // Enabed reward
+                if (rewardPoint > 0) { // Enabe reward
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
                 }
@@ -384,9 +384,11 @@ public class ArticleMgmtService {
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
 
             final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
-            if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT) && 0 < rewardPoint) {
+            if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT) && 0 < rewardPoint) { // Enable reward
                 oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
                 oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
+                pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
             }
 
             if (fromClient) {
@@ -508,10 +510,10 @@ public class ArticleMgmtService {
             reward.put(Reward.SENDER_ID, senderId);
             reward.put(Reward.DATA_ID, articleId);
             reward.put(Reward.TYPE, Reward.TYPE_C_ARTICLE);
-            rewardMgmtService.addReward(reward);
+            final String rewardId = rewardMgmtService.addReward(reward);
 
             pointtransferMgmtService.transfer(senderId, receiverId,
-                    Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, articleId);
+                    Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, rewardId);
 
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Rewards an article[id=" + articleId + "] failed", e);

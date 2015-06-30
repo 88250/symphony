@@ -323,7 +323,7 @@ public final class Common {
      * Key of display type.
      */
     public static final String DISPLAY_TYPE = "displayType";
-
+    
     /**
      * Key of description.
      */
