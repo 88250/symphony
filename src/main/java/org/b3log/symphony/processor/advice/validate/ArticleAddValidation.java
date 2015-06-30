@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Validates for article adding locally, removes the duplicated tags.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Apr 18, 2013
+ * @version 1.0.0.5, Jun 30, 2015
  * @since 0.2.0
  */
 @Named
@@ -68,6 +68,16 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
      * Min article content length.
      */
     public static final int MIN_ARTICLE_CONTENT_LENGTH = 4;
+
+    /**
+     * Max article reward content length.
+     */
+    public static final int MAX_ARTICLE_REWARD_CONTENT_LENGTH = 1048576;
+
+    /**
+     * Min article reward content length.
+     */
+    public static final int MIN_ARTICLE_REWARD_CONTENT_LENGTH = 4;
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
@@ -122,7 +132,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
             // XXX: configured
             if ("B3log Broadcast".equals(tagTitle)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
-                                                                                       + " [B3log Broadcast]"));
+                        + " [B3log Broadcast]"));
             }
 
             tagBuilder.append(tagTitle).append(",");
@@ -133,8 +143,23 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         if (Strings.isEmptyOrNull(articleContent) || articleContent.length() > MAX_ARTICLE_CONTENT_LENGTH
-            || articleContent.length() < MIN_ARTICLE_CONTENT_LENGTH) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleContentErrorLabel")));
+                || articleContent.length() < MIN_ARTICLE_CONTENT_LENGTH) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
+                    langPropsService.get("articleContentErrorLabel")));
+        }
+
+        final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
+        if (rewardPoint < 0) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "invalidRewardPointLabel"));
+        }
+
+        if (rewardPoint > 0) {
+            final String articleRewardContnt = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
+            if (Strings.isEmptyOrNull(articleRewardContnt) || articleRewardContnt.length() > MAX_ARTICLE_CONTENT_LENGTH
+                    || articleRewardContnt.length() < MIN_ARTICLE_CONTENT_LENGTH) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
+                        langPropsService.get("articleRewardContentErrorLabel")));
+            }
         }
     }
 }

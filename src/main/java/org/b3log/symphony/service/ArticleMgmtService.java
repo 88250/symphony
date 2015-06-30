@@ -383,14 +383,6 @@ public class ArticleMgmtService {
             oldArticle.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
 
-            final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
-            if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT) && 0 < rewardPoint) { // Enable reward
-                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
-                oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
-                pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
-            }
-
             if (fromClient) {
                 // The article content security has been processed by Rhythm
                 oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
@@ -409,6 +401,14 @@ public class ArticleMgmtService {
             articleRepository.update(articleId, oldArticle);
 
             transaction.commit();
+
+            final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
+            if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT) && 0 < rewardPoint) { // Enable reward
+                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
+                oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
+                pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
+                        Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
+            }
 
             if (!fromClient) {
                 // Point
