@@ -139,11 +139,13 @@ public class PointtransferQueryService {
                 if ("3".equals(typeStr) && userId.equals(toId)) {
                     typeStr += "In";
                 }
-                
+
                 if (fromId.equals(userId)) {
                     record.put(Common.BALANCE, record.optInt(Pointtransfer.FROM_BALANCE));
+                    record.put(Common.OPERATION, "-");
                 } else {
                     record.put(Common.BALANCE, record.optInt(Pointtransfer.TO_BALANCE));
+                    record.put(Common.OPERATION, "+");
                 }
 
                 record.put(Common.DISPLAY_TYPE, langPropsService.get("pointType" + typeStr + "Label"));

@@ -333,6 +333,11 @@ public final class Common {
      * Key of balance.
      */
     public static final String BALANCE = "balance";
+    
+    /**
+     * Key of plus.
+     */
+    public static final String PLAUS = "plus";
 
     /**
      * Private constructor.
