@@ -136,7 +136,7 @@ public class PointtransferQueryService {
                 final String fromId = record.optString(Pointtransfer.FROM_ID);
 
                 String typeStr = record.optString(Pointtransfer.TYPE);
-                if ("3".equals(typeStr) && userId.equals(toId)) {
+                if (("3".equals(typeStr) && userId.equals(toId)) || ("5".equals(typeStr) && userId.equals(fromId))) {
                     typeStr += "In";
                 }
 
@@ -204,7 +204,10 @@ public class PointtransferQueryService {
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD:
                         final JSONObject reward = rewardRepository.get(dataId);
-                        final String senderId = reward.optString(Reward.SENDER_ID);
+                        String senderId = reward.optString(Reward.SENDER_ID);
+                        if ("5In".equals(typeStr)) {
+                            senderId = toId;
+                        }
                         final String rewardAArticleId = reward.optString(Reward.DATA_ID);
 
                         final JSONObject sender = userRepository.get(senderId);
