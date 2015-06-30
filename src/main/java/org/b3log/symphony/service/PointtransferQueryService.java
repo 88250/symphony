@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 29, 2015
+ * @version 1.1.0.0, Jun 30, 2015
  * @since 1.3.0
  */
 @Service
@@ -138,6 +138,12 @@ public class PointtransferQueryService {
                 String typeStr = record.optString(Pointtransfer.TYPE);
                 if ("3".equals(typeStr) && userId.equals(toId)) {
                     typeStr += "In";
+                }
+                
+                if (fromId.equals(userId)) {
+                    record.put(Common.BALANCE, record.optInt(Pointtransfer.FROM_BALANCE));
+                } else {
+                    record.put(Common.BALANCE, record.optInt(Pointtransfer.TO_BALANCE));
                 }
 
                 record.put(Common.DISPLAY_TYPE, langPropsService.get("pointType" + typeStr + "Label"));

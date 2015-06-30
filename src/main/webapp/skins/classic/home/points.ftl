@@ -15,7 +15,7 @@
                 <td>${point.createTime?string('yyyy-MM-dd HH:mm')}</td>
                 <td>${point.displayType}</td>
                 <td>${point.sum?c}</td>
-                <td>${point.fromBalance?c}</td>
+                <td>${point.balance?c}</td>
                 <td>${point.description}</td>
             </tr>
             </#list>
