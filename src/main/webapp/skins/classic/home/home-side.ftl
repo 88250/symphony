@@ -32,7 +32,7 @@
         </div>
         <div class="user-info">
             <span class="ft-small">${pointLabel}</span>
-            <span title="${user.userPoint?c}">0x${user.userPointHex}</span>
+            <a href="/member/${user.userName}/points" title="${user.userPoint?c}">0x${user.userPointHex}</a>
         </div>
         <#if user.userURL!="">
         <div class="user-info">

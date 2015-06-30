@@ -13,7 +13,7 @@
                     Hi~ <a href="/member/${currentUser.userName}">${userName}</a> <br/>
                     <a href="/add-article" title="${addArticleLabel}${articleLabel}" 
                        class="ft-red"><span class="icon icon-addfile"> ${addArticleLabel}${articleLabel}</span></a>
-                    <span class="ft-small" title="${pointLabel} ${currentUser.userPoint?c}">0x${currentUser.userPointHex}</span>
+                    <a href="/member/${currentUser.userName}/points" class="ft-small" title="${pointLabel} ${currentUser.userPoint?c}">0x${currentUser.userPointHex}</a>
                 </div>
             </div>
             <div>

@@ -1,26 +1,19 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "points">
-<b>TODO: Style</b>
-<div class="list">
-    <table>
-        <thead>
-            <tr>
-                <th>${timeLabel}</th><th>${typeLabel}</th><th>${sumLabel}</th><th>${balanceLabel}</th><th>${descriptionLabel}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <#list userHomePoints as point>
-            <tr>
-                <td>${point.createTime?string('yyyy-MM-dd HH:mm')}</td>
-                <td>${point.displayType}</td>
-                <td>${point.sum?c}</td>
-                <td>${point.balance?c}</td>
-                <td>${point.description}</td>
-            </tr>
-            </#list>
-        </tbody>
-    </table>
-</div>
+<table class="points">
+    <#list userHomePoints as point>
+    <tr<#if point_index % 2 == 1> class="even"</#if>>
+        <td class="date">
+            ${point.createTime?string('yyyy-MM-dd')} 
+            <span class="ft-small">${point.createTime?string('HH:mm')}</span>
+        </td>
+        <td class="name">${point.description}</td>
+        <td class="sum<#if point_index % 2 == 1> plus</#if>">${point.sum?c}</td>
+        <td class="type">${point.displayType}</td>
+        <td class="balance">${point.balance?c}</td>
+    </tr>
+    </#list>
+</table>
 <@pagination url="/member/${user.userName}/points"/>
 </@home>

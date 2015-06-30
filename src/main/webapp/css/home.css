@@ -259,3 +259,51 @@ h2.fn-inline {
     margin-bottom: 6px;
 }
 /* end admin */
+
+/* start points */
+.points {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.points td {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.points .even {
+    background-color: #F7F7F7;
+}
+
+.points .date {
+    width: 75px;
+    padding: 10px;
+}
+
+.points .name {
+    padding: 10px;
+    word-break: break-all;
+}
+
+.points .type {
+    width: 60px;
+    padding: 0 10px;
+}
+
+.points .sum {
+    text-align: center;
+    width: 35px;
+    padding: 0 10px;
+    color: #f37800;
+    font-weight: 700;
+}
+
+.points .sum.plus {
+    color: #53a000;
+}
+
+.points .balance {
+    width: 40px;
+    padding: 0 10px;
+}
+/* end points */
