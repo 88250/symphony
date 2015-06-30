@@ -15,6 +15,9 @@
  */
 package org.b3log.symphony;
 
+import java.util.List;
+import java.util.Random;
+import java.util.ResourceBundle;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
@@ -27,9 +30,13 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Stopwatchs;
@@ -39,8 +46,14 @@ import org.b3log.symphony.event.CommentNotifier;
 import org.b3log.symphony.event.solo.ArticleSender;
 import org.b3log.symphony.event.solo.ArticleUpdater;
 import org.b3log.symphony.event.solo.CommentSender;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.OptionRepository;
+import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -48,7 +61,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.2, Apr 3, 2015
+ * @version 1.3.1.2, Jun 30, 2015
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -76,6 +89,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         final String skinDirName = Symphonys.get("skinDirName");
         Latkes.loadSkin(skinDirName);
+
+        // Init database if need
+        initDB();
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
 
@@ -145,8 +161,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
             LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
-                       new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
-                                    session.isNew()});
+                    new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
+                        session.isNew()});
             // Online visitor count
             OptionQueryService.onlineVisitorCount(httpServletRequest);
         }
@@ -156,5 +172,123 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         super.requestDestroyed(servletRequestEvent);
         Stopwatchs.release();
+    }
+
+    /**
+     * Initializes database if need.
+     */
+    private static void initDB() {
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+
+        try {
+            final List<JSONObject> admins = userQueryService.getAdmins();
+            if (null != admins && !admins.isEmpty()) { // Initialized already
+                return;
+            }
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.ERROR, "Check init error", e);
+        }
+
+        final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
+        final ArticleMgmtService articleMgmtService = beanManager.getReference(ArticleMgmtService.class);
+        final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
+
+        try {
+            LOGGER.log(Level.INFO, "Database [{0}], creates all tables", Latkes.getRuntimeDatabase());
+
+            final List<JdbcRepositories.CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
+            for (final JdbcRepositories.CreateTableResult createTableResult : createTableResults) {
+                LOGGER.log(Level.INFO, "Creates table result[tableName={0}, isSuccess={1}]",
+                        new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
+            }
+
+            final Transaction transaction = optionRepository.beginTransaction();
+
+            // Init statistic
+            JSONObject option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_MEMBER_COUNT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_CMT_COUNT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_ARTICLE_COUNT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_TAG_COUNT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(option);
+
+            // Init misc
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_REGISTER);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_ADD_ARTICLE);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_ADD_COMMENT);
+            option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+            optionRepository.add(option);
+
+            transaction.commit();
+
+            // Init admin
+            final ResourceBundle init = ResourceBundle.getBundle("init");
+            final JSONObject admin = new JSONObject();
+            admin.put(User.USER_EMAIL, init.getString("admin.email"));
+            admin.put(User.USER_NAME, init.getString("admin.name"));
+            admin.put(User.USER_PASSWORD, MD5.hash(init.getString("admin.password")));
+            admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+            final String adminId = userMgmtService.addUser(admin);
+            admin.put(Keys.OBJECT_ID, adminId);
+
+            // Init default commenter (for sync comment from client)
+            final JSONObject defaultCommenter = new JSONObject();
+            defaultCommenter.put(User.USER_EMAIL, UserExt.DEFAULT_CMTER_EMAIL);
+            defaultCommenter.put(User.USER_NAME, UserExt.DEFAULT_CMTER_NAME);
+            defaultCommenter.put(User.USER_PASSWORD, MD5.hash(String.valueOf(new Random().nextInt())));
+            defaultCommenter.put(User.USER_ROLE, UserExt.DEFAULT_CMTER_ROLE);
+            userMgmtService.addUser(defaultCommenter);
+
+            // Hello World!
+            final JSONObject article = new JSONObject();
+            article.put(Article.ARTICLE_TITLE, init.getString("helloWorld.title"));
+            article.put(Article.ARTICLE_TAGS, init.getString("helloWorld.tags"));
+            article.put(Article.ARTICLE_CONTENT, init.getString("helloWorld.content"));
+            article.put(Article.ARTICLE_EDITOR_TYPE, 0);
+            article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.optString(User.USER_EMAIL));
+            article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
+            article.put(Article.ARTICLE_T_IS_BROADCAST, false);
+            articleMgmtService.addArticle(article);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Creates database tables failed", e);
+
+            System.exit(0);
+        }
     }
 }
