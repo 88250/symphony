@@ -21,9 +21,8 @@
             </span> 
         </div>
         <#if notification.articleCommentCount != 0>
-        <div class="ft-small cmts" title="${cmtLabel}">
-            <span class="icon icon-cmts"></span>
-            ${notification.articleCommentCount}
+        <div class="cmts" title="${cmtLabel}">
+            <a class="count ft-small" href="${notification.url}">${notification.articleCommentCount}</a>
         </div>
         </#if>
     </li>

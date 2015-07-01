@@ -25,9 +25,8 @@
                 </span>
             </div>
             <#if article.articleCommentCount != 0>
-            <div class="ft-small cmts" title="${cmtLabel}">
-                <span class="icon icon-cmts"></span>
-                ${article.articleCommentCount}
+            <div class="cmts" title="${cmtLabel}">
+                <a class="count ft-small" href="${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
         </li>
