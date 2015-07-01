@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Apr 4, 2015
+ * @version 1.1.0.7, Jul 1, 2015
  */
 
 /**
@@ -57,7 +57,8 @@ var Register = {
                 userEmail: $("#userEmail").val().replace(/(^\s*)|(\s*$)/g,""),
                 userAppRole: $("input[name=userAppRole]:checked").val(),
                 userPassword: calcMD5($("#userPassword").val()),
-                captcha: $("#securityCode").val()
+                captcha: $("#securityCode").val(),
+                referral: $("#referral").val()
             };
             
             $.ajax({

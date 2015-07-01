@@ -338,6 +338,11 @@ public final class Common {
      * Key of plus.
      */
     public static final String PLAUS = "plus";
+    
+    /**
+     * Key of referral.
+     */
+    public static final String REFERRAL = "referral";
 
     /**
      * Private constructor.

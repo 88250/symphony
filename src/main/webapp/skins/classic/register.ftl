@@ -74,6 +74,7 @@
                                 <td colspan="2" align="right">
                                     <span id="registerTip" style="top: 305px; right: 71px;"></span>
                                     <button class="green" onclick="Register.register()">${registerLabel}</button>
+                                    <input id="referral" type="hidden" value="${referral}">
                                 </td>
                             </tr>
                         </tbody>
@@ -88,11 +89,11 @@
         <script type="text/javascript" src="/js/register${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="/js/lib/md5.js?${staticResourceVersion}"></script>
         <script>
-                                                Register.init();
-                                                Label.userNameErrorLabel = "${userNameErrorLabel}";
-                                                Label.invalidEmailLabel = "${invalidEmailLabel}";
-                                                Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
-                                                Label.captchaErrorLabel = "${captchaErrorLabel}";
+                                        Register.init();
+                                        Label.userNameErrorLabel = "${userNameErrorLabel}";
+                                        Label.invalidEmailLabel = "${invalidEmailLabel}";
+                                        Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
+                                        Label.captchaErrorLabel = "${captchaErrorLabel}";
         </script>
     </body>
 </html>

@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jun 30, 2015
+ * @version 1.2.0.0, Jul 1, 2015
  * @since 1.3.0
  */
 @Service
@@ -220,6 +220,20 @@ public class PointtransferQueryService {
                                 + articleReward.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + articleReward.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleRewardLink);
+
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER:
+                        final JSONObject newUser = userRepository.get(dataId);
+                        final String newUserLink = "<a href=\"/member/" + newUser.optString(User.USER_NAME) + "\">"
+                                + newUser.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", newUserLink);
+
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_INVITED_REGISTER:
+                        final JSONObject referralUser = userRepository.get(dataId);
+                        final String referralUserLink = "<a href=\"/member/" + referralUser.optString(User.USER_NAME) + "\">"
+                                + referralUser.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", referralUserLink);
 
                         break;
                     default:

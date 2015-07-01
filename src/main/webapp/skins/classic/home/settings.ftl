@@ -41,6 +41,17 @@
             <button class="green fn-right" onclick="Settings.update('profiles')">${saveLabel}</button>
         </div>
     </div>
+    
+    <div class="module">
+        <div class="module-header">
+            <h2>${inviteLabel}</h2>
+        </div>
+        
+        <div class="module-panel form fn-clear">
+            ${inviteTipLabel}<br><br>
+            <input type="text" value="${servePath}/register?r=${currentUser.userName}" onclick="this.select()"/>
+        </div>
+    </div>
 
     <div class="module">
         <div class="module-header">

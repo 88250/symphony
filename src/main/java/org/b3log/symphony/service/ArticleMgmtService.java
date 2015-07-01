@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.7, Jun 28, 2015
+ * @version 1.5.2.7, Jul 1, 2015
  * @since 0.2.0
  */
 @Service
@@ -243,15 +243,9 @@ public class ArticleMgmtService {
 
             article.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
-            if (fromClient) {
-                // The article content security has been processed by Rhythm
-                article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
-            } else {
-                article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
-                        replace("<", "&lt;").replace(">", "&gt;")
-                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
-            }
-
+            article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
+                    replace("<", "&lt;").replace(">", "&gt;")
+                    .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
             article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT).
                     replace("<", "&lt;").replace(">", "&gt;")
                     .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
@@ -382,16 +376,9 @@ public class ArticleMgmtService {
             oldArticle.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             oldArticle.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
-
-            if (fromClient) {
-                // The article content security has been processed by Rhythm
-                oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
-            } else {
-                oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
-                        replace("<", "&lt;").replace(">", "&gt;")
-                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
-            }
-
+            oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
+                    replace("<", "&lt;").replace(">", "&gt;")
+                    .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
             oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT).
                     replace("<", "&lt;").replace(">", "&gt;")
                     .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));

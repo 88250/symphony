@@ -50,6 +50,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.UserBlockCheck;
@@ -686,6 +687,10 @@ public class UserProcessor {
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        
+        String inviteTipLabel = (String) dataModel.get("inviteTipLabel");
+        inviteTipLabel = inviteTipLabel.replace("{point}", String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER));
+        dataModel.put("inviteTipLabel", inviteTipLabel);
     }
 
     /**

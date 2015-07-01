@@ -39,8 +39,10 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
+import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -49,7 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Login processor.
+ * Login/Register processor.
  *
  * <p>
  * For user
@@ -61,7 +63,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.8, Jun 20, 2015
+ * @version 1.2.0.8, Jul 1, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -91,6 +93,12 @@ public class LoginProcessor {
     private LangPropsService langPropsService;
 
     /**
+     * Pointtransfer management service.
+     */
+    @Inject
+    private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
      * Filler.
      */
     @Inject
@@ -113,6 +121,9 @@ public class LoginProcessor {
         renderer.setTemplateName("register.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final String referral = request.getParameter("r");
+        dataModel.put("referral", referral);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
@@ -148,6 +159,7 @@ public class LoginProcessor {
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
+        final String referral = requestJSONObject.optString(Common.REFERRAL);
 
         final JSONObject user = new JSONObject();
         user.put(User.USER_NAME, name);
@@ -156,10 +168,24 @@ public class LoginProcessor {
         user.put(User.USER_PASSWORD, password);
 
         try {
-            userMgmtService.addUser(user);
+            final String newUserId = userMgmtService.addUser(user);
 
             Sessions.login(request, response, user);
             userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
+
+            if (!Strings.isEmptyOrNull(referral)) {
+                final JSONObject referralUser = userQueryService.getUserByName(referral);
+                if (null != referralUser) {
+                    final String referralId = referralUser.optString(Keys.OBJECT_ID);
+                    // Point
+                    pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, newUserId,
+                            Pointtransfer.TRANSFER_TYPE_C_INVITED_REGISTER,
+                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, referralId);
+                    pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, referralId,
+                            Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER,
+                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, newUserId);
+                }
+            }
 
             ret.put(Keys.STATUS_CODE, true);
 
