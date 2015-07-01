@@ -15,5 +15,9 @@
     </tr>
     </#list>
 </table>
+
+<div class="fn-left" style="margin: 25px 0 10px">
+    <a href="/top/balance">${pointLabel}${balanceLabel}${rankingLabel}</a>
+</div>
 <@pagination url="/member/${user.userName}/points"/>
 </@home>

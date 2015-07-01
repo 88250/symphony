@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.5, Jun 28, 2015
+ * @version 1.4.0.5, Jun 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -225,6 +225,7 @@ public class UserQueryService {
 
         String copy = text.trim();
         copy = copy.replaceAll("\\n", " ");
+        copy = copy.replaceAll("(?=\\pP)[^@]" , " ");
         String[] uNames = StringUtils.substringsBetween(copy, "@", " ");
         String tail = StringUtils.substringAfterLast(copy, "@");
 
