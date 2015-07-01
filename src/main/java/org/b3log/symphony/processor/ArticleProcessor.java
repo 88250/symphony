@@ -985,9 +985,9 @@ public class ArticleProcessor {
         }
 
         articleMgmtService.reward(articleId, currentUser.optString(Keys.OBJECT_ID));
-        
-        
+
         final JSONObject article = articleQueryService.getArticle(articleId);
+        articleQueryService.processArticleContent(article, request);
         result.put(Article.ARTICLE_REWARD_CONTENT, article.optString(Article.ARTICLE_REWARD_CONTENT));
     }
 

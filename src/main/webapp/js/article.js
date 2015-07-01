@@ -204,7 +204,7 @@ var Article = {
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $("#articleRewardContent").html(result.articleRewardContent);
+                    $("#articleRewardContent").removeClass("reward").html(result.articleRewardContent);
                     return;
                 }
 

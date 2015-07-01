@@ -720,7 +720,7 @@ public class ArticleQueryService {
     public void processArticleContent(final JSONObject article, final HttpServletRequest request)
             throws ServiceException {
         final JSONObject author = article.optJSONObject(Article.ARTICLE_T_AUTHOR);
-        if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
+        if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
                 || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
             article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
@@ -731,51 +731,53 @@ public class ArticleQueryService {
         String articleContent = article.optString(Article.ARTICLE_CONTENT);
         article.put(Common.DISCUSSION_VIEWABLE, true);
 
-        try {
-            final Set<String> userNames = userQueryService.getUserNames(articleContent);
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
-            final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
-            final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
-            if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
-                    && !authorName.equals(currentUserName)) {
-                boolean invited = false;
-                for (final String userName : userNames) {
-                    if (userName.equals(currentUserName)) {
-                        invited = true;
-
-                        break;
-                    }
-                }
-
-                if (!invited) {
-                    String blockContent = langPropsService.get("articleDiscussionLabel");
-                    blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getStaticServePath()
-                            + "/member/" + authorName + "'>" + authorName + "</a>");
-
-                    article.put(Article.ARTICLE_CONTENT, blockContent);
-                    article.put(Common.DISCUSSION_VIEWABLE, false);
-
-                    return;
-                }
-            }
-
+        final Set<String> userNames = userQueryService.getUserNames(articleContent);
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
+        final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
+        if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                && !authorName.equals(currentUserName)) {
+            boolean invited = false;
             for (final String userName : userNames) {
-                articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
-                        + "/member/" + userName + "'>" + userName + "</a>");
+                if (userName.equals(currentUserName)) {
+                    invited = true;
+
+                    break;
+                }
             }
 
-            articleContent = commentQueryService.linkArticle(articleContent);
-        } catch (final Exception e) {
-            final String errMsg = "Process article content failed";
-            LOGGER.log(Level.ERROR, errMsg, e);
-            throw new ServiceException(errMsg);
+            if (!invited) {
+                String blockContent = langPropsService.get("articleDiscussionLabel");
+                blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getStaticServePath()
+                        + "/member/" + authorName + "'>" + authorName + "</a>");
+
+                article.put(Article.ARTICLE_CONTENT, blockContent);
+                article.put(Common.DISCUSSION_VIEWABLE, false);
+
+                return;
+            }
         }
+
+        for (final String userName : userNames) {
+            articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
+                    + "/member/" + userName + "'>" + userName + "</a>");
+        }
+
+        articleContent = commentQueryService.linkArticle(articleContent);
 
         articleContent = Emotions.convert(articleContent);
         article.put(Article.ARTICLE_CONTENT, articleContent);
 
         if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
             String articleRewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
+
+            final Set<String> rewordContentUserNames = userQueryService.getUserNames(articleRewardContent);
+
+            for (final String userName : rewordContentUserNames) {
+                articleRewardContent = articleRewardContent.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
+                        + "/member/" + userName + "'>" + userName + "</a>");
+            }
+
             articleRewardContent = Emotions.convert(articleRewardContent);
             article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
         }
