@@ -49,7 +49,7 @@
         
         <div class="module-panel form fn-clear">
             ${inviteTipLabel}<br><br>
-            <input type="text" value="${servePath}/register?r=${currentUser.userName}" onclick="this.select()"/>
+            <input type="text" value="${serverScheme}://${serverHost}/register?r=${currentUser.userName}" onclick="this.select()"/>
         </div>
     </div>
 
