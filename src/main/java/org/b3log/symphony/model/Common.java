@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.1.10, Jun 28, 2015
+ * @version 1.11.1.10, Jul 1, 2015
  * @since 0.2.0
  */
 public final class Common {
@@ -343,6 +343,11 @@ public final class Common {
      * Key of referral.
      */
     public static final String REFERRAL = "referral";
+    
+    /**
+     * Key of top balance users.
+     */
+    public static final String TOP_BALANCE_USERS = "topBalanceUsers";
 
     /**
      * Private constructor.

@@ -56,9 +56,9 @@ import org.json.JSONObject;
  * <p>
  * For user
  * <ul>
- * <li>Registration</li>
- * <li>Login</li>
- * <li>Logout</li>
+ * <li>Registration (/register), GET</li>
+ * <li>Login (/login), GET/POST</li>
+ * <li>Logout (/logout), GET</li>
  * </ul>
  * </p>
  *

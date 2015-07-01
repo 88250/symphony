@@ -35,11 +35,13 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Reward;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.PointtransferRepository;
@@ -98,6 +100,29 @@ public class PointtransferQueryService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Gets the top balance users with the specified fetch size.
+     *
+     * @param fetchSize the specified fetch size
+     * @return users, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getTopBalanceUsers(final int fetchSize) throws ServiceException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
+                .setPageSize(fetchSize);
+        try {
+            final JSONObject result = userRepository.get(query);
+            
+            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets top balance users error", e);
+        }
+
+        return ret;
+    }
 
     /**
      * Gets the user points with the specified user id, page number and page size.
