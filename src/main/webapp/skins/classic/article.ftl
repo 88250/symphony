@@ -46,16 +46,13 @@
                         <div class="fn-clear article-title">
                             <a class="fn-left" rel="author" href="/member/${article.articleAuthorName}" 
                                title="${article.articleAuthorName}"><img class="avatar-small" src="${article.articleAuthorThumbnailURL}" /></a>
-                            <h2 class="fn-left"> 
-                                &nbsp;
+                            <h2>
                                 <a href="${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
                                 </a>
-                                &nbsp;
                             </h2> 
                             <span class="info">
                                 <#if isLoggedIn> 
-                                &nbsp;
                                 <#if isFollowing>
                                 <button class="red small" onclick="Util.unfollow(this, '${article.oId}', 'article')"> 
                                     ${uncollectLabel}
@@ -65,14 +62,14 @@
                                     ${collectLabel}
                                 </button>
                                 </#if>
+                                &nbsp;
                                 </#if>
 
                                 <#if article.isMyArticle>
-                                &nbsp;
                                 <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}" class="icon icon-edit"></a>
+                                &nbsp;
                                 </#if>
                                 <#if isAdminLoggedIn>
-                                &nbsp;
                                 <a class="icon icon-setting" href="${servePath}/admin/article/${article.oId}" title="${adminLabel}"></a>
                                 </#if>
                             </span>
@@ -90,15 +87,15 @@
                         </div>
                     </div>
                     <#if 0 < article.articleRewardPoint>
-                    <hr>
-                    <div id="articleRewardContent">
-                        <#if !article.rewarded>
-                        ${rewardTipLabel?replace("{articleId}", article.oId)?replace("{point}", article.articleRewardPoint)}
+                    <div id="articleRewardContent"<#if !article.rewarded> class="reward"</#if>>
+                         <#if !article.rewarded>
+                         <span>
+                            ${rewardTipLabel?replace("{articleId}", article.oId)?replace("{point}", article.articleRewardPoint)}
+                        </span>
                         <#else>
                         ${article.articleRewardContent}
                         </#if>
                     </div>
-                    <hr>
                     </#if>
                     <#if isLoggedIn>
                     <#if discussionViewable>

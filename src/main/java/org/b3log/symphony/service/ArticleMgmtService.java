@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.7, Jul 1, 2015
+ * @version 1.5.3.7, Jul 1, 2015
  * @since 0.2.0
  */
 @Service
@@ -394,14 +394,19 @@ public class ArticleMgmtService {
 
             oldArticle.put(Article.ARTICLE_UPDATE_TIME, System.currentTimeMillis());
 
+            final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
+            boolean enableReward = false;
+            if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT) && 0 < rewardPoint) { // Enable reward
+                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
+                oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
+                enableReward = true;
+            }
+
             articleRepository.update(articleId, oldArticle);
 
             transaction.commit();
 
-            final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
-            if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT) && 0 < rewardPoint) { // Enable reward
-                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
-                oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
+            if (enableReward) {
                 pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                         Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
             }

@@ -1271,4 +1271,17 @@ a.icon:hover {
 .nopanel .status {
     padding-bottom: 0;
 }
+
+.painter-point {
+    height: 17px;
+    width: 38px;
+    display: inline-block;
+    vertical-align: sub;
+}
 /* end person info */
+
+/* start top */
+.top .list-content {
+    line-height: 21px;
+}
+/* end top */

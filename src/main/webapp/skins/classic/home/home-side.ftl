@@ -32,7 +32,13 @@
         </div>
         <div class="user-info">
             <span class="ft-small">${pointLabel}</span>
-            <a href="/member/${user.userName}/points" title="${user.userPoint?c}"><#if 0 == user.userAppRole>0x${user.userPointHex}<#else><div class="" style="width: 30px; height: 10px; display: inline-block; background-color: #${user.userPointCC}"></div></#if></a>
+            <a href="/member/${user.userName}/points" title="${user.userPoint?c}">
+                <#if 0 == user.userAppRole>
+                0x${user.userPointHex}
+                <#else>
+                <div class="painter-point" style="background-color: #${user.userPointCC}"></div>
+                </#if>
+            </a>
         </div>
         <#if user.userURL!="">
         <div class="user-info">

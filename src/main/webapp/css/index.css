@@ -65,12 +65,16 @@
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
+    width: 558px;
+    float: left;
+    margin: 0 10px;
 }
 
 .article-title .info {
-    margin-top: 1px;
-    float: left;
+    margin-top: 3px;
+    float: right;
 }
+
 .article-info > .fn-right a {
     text-decoration: none;
 }
@@ -107,6 +111,23 @@
     text-align: center; 
     display: block; 
     padding: 21px 0px 21px;
+}
+
+#articleRewardContent {
+    margin-top: 20px;
+    padding: 10px;
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
+    background-color: #f5f5f5;
+    background-size: 45px 45px;
+}
+
+#articleRewardContent.reward {
+    text-align: center;
+}
+
+#articleRewardContent.reward > span {
+    margin: 20px;
+    display: inline-block;
 }
 
 #commentContent {

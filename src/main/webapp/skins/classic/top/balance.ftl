@@ -1,12 +1,47 @@
 <#include "macro-top.ftl">
 <@top "balance">
-<table class="points">
-    <#list topBalanceUsers as user>
-    <tr<#if user_index % 2 == 1> class="even"</#if>>
-        <td>${user_index + 1}</td>
-        <td class="name">${user.userName}</td>
-        <td class="balance"><a href="/member/${user.userName}/points" title="${user.userPoint?c}"><#if 0 == user.userAppRole>0x${user.userPointHex}<#else><div class="" style="width: 30px; height: 10px; display: inline-block; background-color: #${user.userPointCC}"></div></#if></a></td>
-    </tr>
-    </#list>
-</table>
+<div class="list top">
+    <ul>
+        <#list topBalanceUsers as user>
+        <li>
+            <div class="fn-clear">
+                <a rel="nofollow"
+                   href="/member/${user.userName}" 
+                   title="${user.userName}"><img class="avatar fn-left" src="${user.userAvatarURL}" /></a>
+                <div class="fn-left list-content">
+                    <h2>
+                        ${user_index + 1}.
+                        <a rel="bookmark" href="/member/${user.userName}">${user.userName}</a>
+                    </h2>
+                    <div class="ft-small">
+                        <#if user.userIntro!="">
+                        <div>
+                            ${user.userIntro}
+                        </div>
+                        </#if>
+                        <#if user.userURL!="">
+                        <div>
+                            <a target="_blank" rel="friend" href="${user.userURL?html}">${user.userURL?html}</a>
+                        </div>
+                        </#if>
+                        <div>
+                            Symphony ${user.userNo} ${numVIPLabel}, 
+                            <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
+                        </div>
+                    </div>
+                    <div class="cmts" title="${cmtLabel}">
+                        <a href="/member/${user.userName}/points" title="${user.userPoint?c}">
+                            <#if 0 == user.userAppRole>
+                            0x${user.userPointHex}
+                            <#else>
+                            <div class="painter-point" style="background-color: #${user.userPointCC}"></div>
+                            </#if>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </li>
+        </#list>
+    </ul>
+</div>
 </@top>
