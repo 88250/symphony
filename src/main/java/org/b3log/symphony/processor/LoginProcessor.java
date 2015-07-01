@@ -122,8 +122,11 @@ public class LoginProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        dataModel.put(Common.REFERRAL, "88250");
         final String referral = request.getParameter("r");
-        dataModel.put("referral", referral);
+        if (!Strings.isEmptyOrNull(referral)) {
+            dataModel.put(Common.REFERRAL, referral);
+        }
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
