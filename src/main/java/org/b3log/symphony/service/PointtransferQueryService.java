@@ -109,14 +109,23 @@ public class PointtransferQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getTopBalanceUsers(final int fetchSize) throws ServiceException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        List<JSONObject> ret = new ArrayList<JSONObject>();
 
         final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
                 .setPageSize(fetchSize);
         try {
             final JSONObject result = userRepository.get(query);
-            
-            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            for (final JSONObject user : ret) {
+                if (UserExt.USER_APP_ROLE_C_HACKER == user.optInt(UserExt.USER_APP_ROLE)) {
+                    user.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(user.optInt(UserExt.USER_POINT)));
+                } else {
+                    user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
+                }
+            }
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets top balance users error", e);
         }
