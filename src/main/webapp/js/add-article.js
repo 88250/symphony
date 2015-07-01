@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.0, Jun 27, 2015
+ * @version 1.6.1.0, July 1, 2015
  */
 
 /**
@@ -189,52 +189,6 @@ var AddArticle = {
         });
 
         $("#articleRewardContent").next().height(100);
-    },
-    /**
-     * @description 初始化上传
-     */
-    _initFileUpload: function () {
-
-        // jQuery File Upload
-        $('#fileupload').fileupload({
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            maxFileSize: 1024 * 1024, // 1M
-            multipart: true,
-            pasteZone: $(".CodeMirror"),
-            dropZone: $(".CodeMirror"),
-            url: "http://upload.qiniu.com/",
-            formData: function (form) {
-                var data = form.serializeArray();
-                data.push({name: 'token', value: '${qiniuUploadToken}'});
-                return data;
-            },
-            submit: function (e, data) {
-                var cursor = AddArticle.editor.getCursor();
-                AddArticle.editor.replaceRange('${uploadingLabel}', cursor, cursor);
-            },
-            done: function (e, data) {
-                var qiniuKey = data.result.key;
-                if (!qiniuKey) {
-                    alert("Upload error");
-                    return;
-                }
-
-                var cursor = AddArticle.editor.getCursor();
-                AddArticle.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ',
-                        CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
-            },
-            fail: function (e, data) {
-                alert("Upload error: " + data.errorThrown);
-                var cursor = AddArticle.editor.getCursor();
-                AddArticle.editor.replaceRange('',
-                        CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
-            }
-        }).on('fileuploadprocessalways', function (e, data) {
-            var currentFile = data.files[data.index];
-            if (data.files.error && currentFile.error) {
-                alert(currentFile.error);
-            }
-        });
     },
     /**
      * @description 预览文章

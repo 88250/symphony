@@ -243,45 +243,13 @@
             ArticleChannel.init("ws://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
 
             // jQuery File Upload
-            $('#fileupload').fileupload({
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 1024 * 1024, // 1M
-                multipart: true,
-                pasteZone: $(".CodeMirror"),
-                dropZone: $(".CodeMirror"),
-                url: "http://upload.qiniu.com/",
-                formData: function (form) {
-                    var data = form.serializeArray();
-                    var fh = this.files[0];
-                    data.push({name: 'token', value: '${qiniuUploadToken}'});
-                    return data;
-                },
-                submit: function (e, data) {
-                    var cursor = Comment.editor.getCursor();
-                    Comment.editor.replaceRange('${uploadingLabel}', cursor, cursor);
-                },
-                done: function (e, data) {
-                    var qiniuKey = data.result.key;
-                    if (!qiniuKey) {
-                        alert("Upload error");
-                        return;
-                    }
-
-                    var cursor = Comment.editor.getCursor();
-                    Comment.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ',
-                            CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
-                },
-                fail: function (e, data) {
-                    alert("Upload error: " + data.errorThrown);
-                    var cursor = Comment.editor.getCursor();
-                    Comment.editor.replaceRange('',
-                            CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
-                }
-            }).on('fileuploadprocessalways', function (e, data) {
-                var currentFile = data.files[data.index];
-                if (data.files.error && currentFile.error) {
-                    alert(currentFile.error);
-                }
+            Util.uploadFile({
+                "id": "fileupload",
+                "pasteZone": $(".CodeMirror"),
+                "qiniuUploadToken": "${qiniuUploadToken}",
+                "editor": Comment.editor,
+                "uploadingLabel": "${uploadingLabel}",
+                "qiniuDomain": "${qiniuDomain}"
             });
         </script>
     </body>

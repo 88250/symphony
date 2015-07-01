@@ -96,47 +96,22 @@
                                                 Label.articleContentErrorLabel = "${articleContentErrorLabel}";
                                                 Label.articleTagsErrorLabel = "${articleTagsErrorLabel}";
                                                 Label.userName = "${userName}";
-                                                // jQuery File Upload
-                                                $('#fileupload').fileupload({
-                                        acceptFileTypes:  /(\.|\/)(gif|jpe?g|png)$/i,
-                                                maxFileSize: 1024 * 1024, // 1M
-                                                multipart: true,
-                                                pasteZone: $(".CodeMirror"),
-                                                dropZone: $(".CodeMirror"),
-                                                url: "http://upload.qiniu.com/",
-                                                formData: function(form) {
-                                                var data = form.serializeArray();
-                                                        var fh = this.files[0];
-                                                        data.push({name: 'token', value: '${qiniuUploadToken}'});
-                                                        return data;
-                                                },
-                                                submit: function (e, data) {
-                                                var cursor = AddArticle.editor.getCursor();
-                                                        AddArticle.editor.replaceRange('${uploadingLabel}', cursor, cursor);
-                                                },
-                                                done: function (e, data) {
-                                                var qiniuKey = data.result.key;
-                                                        if (!qiniuKey) {
-                                                alert("Upload error");
-                                                        return;
-                                                }
-
-                                                var cursor = AddArticle.editor.getCursor();
-                                                        AddArticle.editor.replaceRange('![ ](${qiniuDomain}/' + qiniuKey + ') ',
-                                                                CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
-                                                },
-                                                fail: function (e, data) {
-                                                alert("Upload error: " + data.errorThrown);
-                                                        var cursor = AddArticle.editor.getCursor();
-                                                        AddArticle.editor.replaceRange('',
-                                                                CodeMirror.Pos(cursor.line, cursor.ch - '${uploadingLabel}'.length), cursor);
-                                                }
-                                        }).on('fileuploadprocessalways', function (e, data) {
-                                        var currentFile = data.files[data.index];
-                                                if (data.files.error && currentFile.error) {
-                                        alert(currentFile.error);
-                                        }
-                                        });
+                                                Util.uploadFile({
+                                                        "id": "fileupload",
+                                                        "pasteZone": $("#articleContent").next(),
+                                                        "qiniuUploadToken": "${qiniuUploadToken}",
+                                                        "editor": AddArticle.editor,
+                                                        "uploadingLabel": "${uploadingLabel}",
+                                                        "qiniuDomain": "${qiniuDomain}"
+                                                });
+                                                Util.uploadFile({
+                                                        "id": "rewardFileupload",
+                                                        "pasteZone": $("#articleRewardContent").next(),
+                                                        "qiniuUploadToken": "${qiniuUploadToken}",
+                                                        "editor": AddArticle.rewardEditor,
+                                                        "uploadingLabel": "${uploadingLabel}",
+                                                        "qiniuDomain": "${qiniuDomain}"
+                                                });
         </script>
     </body>
 </html>

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.3.2, Jun 27, 2015
+ * @version 1.4.3.3, July 1, 2015
  */
 
 /**
@@ -207,7 +207,7 @@ var Article = {
                     $("#articleRewardContent").html(result.articleRewardContent);
                     return;
                 }
-                
+
                 alert(result.msg);
             }
         });
@@ -216,7 +216,3 @@ var Article = {
 
 Article.init();
 Comment.init();
-
-function startsWith(string, prefix) {
-    return (string.match("^" + prefix) == prefix);
-}
