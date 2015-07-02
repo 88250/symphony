@@ -307,3 +307,10 @@ h2.fn-inline {
     padding: 0 10px;
 }
 /* end points */
+
+/* start settings */
+#avatarUpload input {
+    width: 1px;
+    opacity: 0.001;
+}
+/* end settings */

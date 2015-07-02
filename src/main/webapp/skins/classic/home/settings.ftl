@@ -24,7 +24,9 @@
             <label>${avatarLabel}</label><br/>
             <div class="fn-clear"></div>
             <form class="fn-right" id="avatarUpload" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file">
+                <label class="btn">
+                   ${uploadLabel}${avatarLabel}<input type="file" name="file">
+                </label>
             </form>
             <div class="fn-clear"></div>
             <div>
@@ -42,12 +44,12 @@
             <button class="green fn-right" onclick="Settings.update('profiles')">${saveLabel}</button>
         </div>
     </div>
-    
+
     <div class="module">
         <div class="module-header">
             <h2>${inviteLabel}</h2>
         </div>
-        
+
         <div class="module-panel form fn-clear">
             ${inviteTipLabel}<br><br>
             <input type="text" value="${serverScheme}://${serverHost}/register?r=${currentUser.userName}" onclick="this.select()"/>
