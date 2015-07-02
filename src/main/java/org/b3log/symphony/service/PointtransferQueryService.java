@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Jul 1, 2015
+ * @version 1.3.0.0, Jul 2, 2015
  * @since 1.3.0
  */
 @Service
@@ -102,13 +102,41 @@ public class PointtransferQueryService {
     private LangPropsService langPropsService;
 
     /**
+     * Gets the latest pointtransfers with the specified user id, type and fetch size.
+     *
+     * @param userId the specified user id
+     * @param type the specified type
+     * @param fetchSize the specified fetch size
+     * @return pointtransfers, returns an empty list if not found
+     */
+    public List<JSONObject> getLatestPointtransfers(final String userId, final int type, final int fetchSize) {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Pointtransfer.TO_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, type));
+
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(1)
+                .setPageSize(fetchSize).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+        try {
+            final JSONObject result = pointtransferRepository.get(query);
+
+            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets latest pointtransfers error", e);
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets the top balance users with the specified fetch size.
      *
      * @param fetchSize the specified fetch size
      * @return users, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getTopBalanceUsers(final int fetchSize) throws ServiceException {
+    public List<JSONObject> getTopBalanceUsers(final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
         final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
@@ -274,6 +302,8 @@ public class PointtransferQueryService {
                                 + referralUser.optString(User.USER_NAME) + "</a>";
                         desTemplate = desTemplate.replace("{user}", referralUserLink);
 
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN:
                         break;
                     default:
                         LOGGER.warn("Invalid point type [" + type + "]");

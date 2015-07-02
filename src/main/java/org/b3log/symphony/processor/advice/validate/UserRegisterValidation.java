@@ -39,7 +39,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.6, Jun 30, 2015
+ * @version 1.3.0.6, Jul 2, 2015
  */
 @Named
 @Singleton
@@ -60,7 +60,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
     /**
      * Max user name length.
      */
-    public static final int MAX_USER_NAME_LENGTH = 20;
+    public static final int MAX_USER_NAME_LENGTH = 10;
 
     /**
      * Min user name length.

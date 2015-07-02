@@ -16,8 +16,6 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +66,6 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.QueryResults;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -687,7 +684,7 @@ public class UserProcessor {
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
-        
+
         String inviteTipLabel = (String) dataModel.get("inviteTipLabel");
         inviteTipLabel = inviteTipLabel.replace("{point}", String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER));
         dataModel.put("inviteTipLabel", inviteTipLabel);
@@ -716,6 +713,7 @@ public class UserProcessor {
         final String userURL = requestJSONObject.optString(User.USER_URL);
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
+        final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
         final JSONObject user = userQueryService.getCurrentUser(request);
 
@@ -723,8 +721,12 @@ public class UserProcessor {
         user.put(UserExt.USER_QQ, userQQ);
         user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
-        user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + user.optString(Keys.OBJECT_ID)
-                + "?" + new Date().getTime());
+        if (!StringUtils.startsWith(userAvatarURL, Symphonys.get("qiniu.domain"))) {
+            user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+        } else {
+            user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + user.optString(Keys.OBJECT_ID)
+                    + "?" + new Date().getTime());
+        }
 
         try {
             userMgmtService.updateProfiles(user);
@@ -932,70 +934,6 @@ public class UserProcessor {
 
         final JSONObject ret = QueryResults.trueResult();
         renderer.setJSONObject(ret);
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
-        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, Integer.MAX_VALUE);
-        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, Integer.MAX_VALUE);
-
-        final JSONObject result = userQueryService.getUsers(requestJSONObject);
-        final JSONArray users = result.optJSONArray(User.USERS);
-
-        for (int i = 0; i < users.length(); i++) {
-            final JSONObject user = users.optJSONObject(i);
-
-            if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK != user.optInt(UserExt.USER_AVATAR_TYPE)) {
-                continue;
-            }
-
-            final String userId = user.optString(Keys.OBJECT_ID);
-            final String avatarURLStr = user.optString(UserExt.USER_AVATAR_URL);
-
-            if (StringUtils.equals(avatarURLStr, Symphonys.get("defaultThumbnailURL"))) {
-                continue;
-            }
-
-            try {
-                final URL avatarURL = new URL(avatarURLStr);
-                final HttpURLConnection conn = (HttpURLConnection) avatarURL.openConnection();
-                conn.setReadTimeout(Integer.valueOf("5000"));
-                conn.setConnectTimeout(Integer.valueOf("5000"));
-                conn.setRequestProperty("User-Agent",
-                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36");
-
-                final int responseCode = conn.getResponseCode();
-                final String value = conn.getHeaderField("Content-Type");
-
-                conn.disconnect();
-
-                if (responseCode == HttpServletResponse.SC_UNAUTHORIZED
-                        || responseCode == HttpServletResponse.SC_NOT_FOUND) { // Invalid avatar URL
-                    final JSONObject plainUser = userQueryService.getUser(userId);
-
-                    plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
-                    userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
-
-                    LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}], [SC={2}]",
-                            avatarURLStr, user.optString(User.USER_NAME), responseCode);
-
-                    continue;
-                }
-
-                if (!StringUtils.startsWith(value, "image/")) { // Invalid avatar URL
-                    final JSONObject plainUser = userQueryService.getUser(userId);
-
-                    plainUser.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
-                    userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), plainUser);
-
-                    LOGGER.log(Level.WARN, "Updated insecure avatar URL[{0}] of user[{1}], [Content-Type={2}]",
-                            avatarURLStr, user.optString(User.USER_NAME), value);
-
-                    break;
-                }
-            } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Check user[" + userId + "] error", e);
-            }
-        }
     }
 
     /**

@@ -17,6 +17,7 @@
                     <#nested>
                 </div>
                 <div class="side">
+                    <#include '../../common/person-info.ftl'/>
                     <ul class="note-list">
                         <li<#if type == "commented"> class="current"</#if>>
                             <a href="/notifications/commented">
@@ -43,8 +44,6 @@
                             </a>
                         </li>
                     </ul>
-                    <br/>
-                    <#include '../../common/person-info.ftl'/>
                 </div>
             </div>
         </div>

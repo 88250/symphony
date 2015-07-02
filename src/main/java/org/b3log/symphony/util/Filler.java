@@ -40,6 +40,7 @@ import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationQueryService;
@@ -122,6 +123,12 @@ public class Filler {
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+    
+    /**
+     * Activity query service.
+     */
+    @Inject
+    private ActivityQueryService activityQueryService;
 
     /**
      * Fills relevant articles.
@@ -288,6 +295,8 @@ public class Filler {
 
         final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
         dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);
+        
+        dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedin(userId));
     }
 
     /**

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.4.7, Jul 2, 2015
+ * @version 1.5.4.7, Jul 2, 2015
  */
 
 /* start reset */
@@ -299,6 +299,11 @@ textarea {
     word-wrap: normal;
 }
 
+.fn-hr5 {
+    display: block;
+    height: 5px;
+}
+
 .ft-small,
 .ft-small a {
     color: #999;
@@ -335,6 +340,7 @@ button,
 
 button:hover,
 .btn:hover {
+    text-decoration: none;
     border-color: #ccc;
     background-color: #0ca6dd;
     background: linear-gradient(#eee, #ddd);
@@ -348,7 +354,8 @@ button:active,
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset;
 }
 
-button.small {
+button.small,
+.btn.small {
     padding: 1px 5px;
     vertical-align: baseline;
     font-size: 12px;
@@ -1226,6 +1233,13 @@ a.icon:hover {
 
 .person-info .fn-clear {
     margin-bottom: 10px;
+}
+
+.person-info .avatar {
+    margin-right: 0;
+    height: 53px;
+    width: 53px;
+    border-radius: 27px;
 }
 
 .nopanel .status {

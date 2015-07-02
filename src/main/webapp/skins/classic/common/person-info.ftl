@@ -10,7 +10,11 @@
                     </a>
                 </div>
                 <div class="fn-left">
-                    Hi~ <a href="/member/${currentUser.userName}">${userName}</a> <br/>
+                    <a href="/member/${currentUser.userName}">${userName}</a> 
+                    <#if !isDailyCheckin> &nbsp;
+                    <a class="btn small" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
+                    </#if>
+                    <div class="fn-hr5"></div>
                     <a href="/add-article" title="${addArticleLabel}${articleLabel}" 
                        class="ft-red"><span class="icon icon-addfile"> ${addArticleLabel}${articleLabel}</span></a>
                     <a href="/member/${currentUser.userName}/points" class="ft-small" title="${pointLabel} ${currentUser.userPoint?c}">

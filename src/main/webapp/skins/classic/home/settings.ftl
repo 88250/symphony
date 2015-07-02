@@ -25,7 +25,7 @@
             <div class="fn-clear"></div>
             <form class="fn-right" id="avatarUpload" method="POST" enctype="multipart/form-data">
                 <label class="btn">
-                   ${uploadLabel}<input type="file" name="file">
+                    ${uploadLabel}<input type="file" name="file">
                 </label>
             </form>
             <div class="fn-clear"></div>
@@ -105,7 +105,6 @@
     </div>
 </div>
 </@home>
-
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js?${staticResourceVersion}"></script>
