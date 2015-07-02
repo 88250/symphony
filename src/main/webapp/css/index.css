@@ -244,7 +244,7 @@
     height: 5px;
     background-color: #4183C4;
     z-index: 1;
-    top: 66px;
+    bottom: -3px;
     right: 0;
 }
 
@@ -254,7 +254,7 @@
     height: 5px;
     background-color: #4183C4;
     z-index: 1;
-    top: 66px;
+    bottom: -3px;
     right: 0px;
     width: 5px;
     -webkit-animation-duration: 2s;
