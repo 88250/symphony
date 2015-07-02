@@ -25,7 +25,7 @@
             <div class="fn-clear"></div>
             <form class="fn-right" id="avatarUpload" method="POST" enctype="multipart/form-data">
                 <label class="btn">
-                   ${uploadLabel}${avatarLabel}<input type="file" name="file">
+                   ${uploadLabel}<input type="file" name="file">
                 </label>
             </form>
             <div class="fn-clear"></div>
