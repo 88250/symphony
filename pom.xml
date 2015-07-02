@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 1.5.2.17, Jun 22, 2015
+    Version: 1.6.2.17, Jul 2, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -29,6 +29,7 @@
         <jsoup.version>1.7.1</jsoup.version>
         <markdownpapers-core.version>1.4.2</markdownpapers-core.version>
         <qiniu.version>7.0.3</qiniu.version>
+        <httpcomponents.version>4.5</httpcomponents.version>
 
         <!-- maven plugin -->
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
@@ -189,6 +190,17 @@
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
             <version>${qiniu.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpcomponents.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpcomponents.version}</version>
         </dependency>
 
     </dependencies>
