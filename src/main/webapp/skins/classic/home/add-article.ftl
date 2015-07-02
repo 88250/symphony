@@ -71,8 +71,7 @@
                             <button class="red" onclick="AddArticle.add(<#if article??>'${article.oId}'</#if>)"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>
-                    <div id="addArticleTip">
-                    </div>
+                    <div id="addArticleTip" style="bottom: 70px;right: 137px;"></div>
                     ${postGuideLabel}
                 </div>
             </div>
