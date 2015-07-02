@@ -168,10 +168,8 @@ public class CommentMgmtService {
             final JSONObject comment = new JSONObject();
             comment.put(Keys.OBJECT_ID, ret);
 
-            String securedContent = requestJSONObject.optString(Comment.COMMENT_CONTENT)
-                    .replace("<", "&lt;").replace(ret, ret).replace(">", "&gt;")
-                    .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>").
-                    replace("_esc_enter_88250_", "<br/>");
+            String content = requestJSONObject.optString(Comment.COMMENT_CONTENT).
+                    replace("_esc_enter_88250_", "<br/>"); // Solo client escape
 
             comment.put(Comment.COMMENT_AUTHOR_EMAIL, requestJSONObject.optString(Comment.COMMENT_AUTHOR_EMAIL));
             final String commentAuthorId = requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID);
@@ -183,10 +181,10 @@ public class CommentMgmtService {
 
                 // Appends original commenter name
                 final String authorName = requestJSONObject.optString(Comment.COMMENT_T_AUTHOR_NAME);
-                securedContent += " <i class='ft-small'>by " + authorName + "</i>";
+                content += " <i class='ft-small'>by " + authorName + "</i>";
             }
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
-            comment.put(Comment.COMMENT_CONTENT, securedContent);
+            comment.put(Comment.COMMENT_CONTENT, content);
 
             comment.put(Comment.COMMENT_CREATE_TIME, System.currentTimeMillis());
             comment.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "#" + ret);
