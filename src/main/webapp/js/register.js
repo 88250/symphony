@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Jul 1, 2015
+ * @version 2.1.0.7, Jul 4, 2015
  */
 
 /**
@@ -28,48 +28,39 @@
  */
 var Register = {
     /**
-     * @description 注册
+     * @description Register Step 1
      */
     register: function () {
         if (Validate.goValidate([{
-            "id": "userName",
-            "msg": Label.userNameErrorLabel,
-            "type": 20
-        }, {
-            "id": "userEmail",
-            "msg": Label.invalidEmailLabel,
-            "type": "email"
-        }, {
-            "id": "userPassword",
-            "msg": Label.invalidPasswordLabel,
-            "type": "password"
-        }, {
-            "id": "confirmPassword",
-            "msg": Label.confirmPwdErrorLabel,
-            "type": "confirmPassword|userPassword"
-        }, {
-            "id": "securityCode",
-            "msg": Label.captchaErrorLabel,
-            "type": 4
-        }])) {
+                "id": "userName",
+                "msg": Label.userNameErrorLabel,
+                "type": 20
+            }, {
+                "id": "userEmail",
+                "msg": Label.invalidEmailLabel,
+                "type": "email"
+            }, {
+                "id": "securityCode",
+                "msg": Label.captchaErrorLabel,
+                "type": 4
+            }])) {
             var requestJSONObject = {
-                userName: $("#userName").val().replace(/(^\s*)|(\s*$)/g,""),
-                userEmail: $("#userEmail").val().replace(/(^\s*)|(\s*$)/g,""),
-                userAppRole: $("input[name=userAppRole]:checked").val(),
-                userPassword: calcMD5($("#userPassword").val()),
+                userName: $("#userName").val().replace(/(^\s*)|(\s*$)/g, ""),
+                userEmail: $("#userEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
                 captcha: $("#securityCode").val(),
                 referral: $("#referral").val()
             };
-            
+
             $.ajax({
                 url: "/register",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus){
+                success: function (result, textStatus) {
                     if (result.sc) {
-                        window.location = "http://symphony.b3log.org/article/1360294444788";
+                        $("#registerTip").text(result.msg).addClass("tip-succ");
                     } else {
+                        $("#registerTip").removeClass("tip-succ");
                         $("#registerTip").text(result.msg).addClass("tip-error");
                         $("#captcha").attr("src", "/captcha?code=" + Math.random());
                         $("#securityCode").val("");
@@ -78,20 +69,69 @@ var Register = {
             });
         }
     },
-    
+    /**
+     * @description Register Step 2
+     */
+    register2: function () {
+        if (Validate.goValidate([{
+                "id": "userPassword",
+                "msg": Label.invalidPasswordLabel,
+                "type": "password"
+            }, {
+                "id": "confirmPassword",
+                "msg": Label.confirmPwdErrorLabel,
+                "type": "confirmPassword|userPassword"
+            }])) {
+            var requestJSONObject = {
+                userAppRole: $("input[name=userAppRole]:checked").val(),
+                userPassword: calcMD5($("#userPassword").val()),
+                referral: $("#referral").val(),
+                userId: $("#userId").val()
+            };
+
+            $.ajax({
+                url: "/register2",
+                type: "POST",
+                cache: false,
+                data: JSON.stringify(requestJSONObject),
+                success: function (result, textStatus) {
+                    if (result.sc) {
+                        window.location = "http://symphony.b3log.org/article/1360294444788";
+                    } else {
+                        $("#registerTip").text(result.msg).addClass("tip-error");
+                    }
+                }
+            });
+        }
+    },
     init: function () {
         // 注册回车事件
         $("#securityCode").keyup(function (event) {
             if (event.keyCode === 13) {
                 Register.register();
-            } 
+            }
         });
-        
+
         // 表单错误状态
         $("input[type=text], input[type=password], textarea").blur(function () {
             $(this).removeClass("input-error");
         });
-        
+
         $("#userName").focus();
+    },
+    init2: function () {
+        // 注册回车事件
+        $("#confirmPassword").keyup(function (event) {
+            if (event.keyCode === 13) {
+                Register.register();
+            }
+        });
+
+        // 表单错误状态
+        $("input[type=text], input[type=password], textarea").blur(function () {
+            $(this).removeClass("input-error");
+        });
+
+        $("#userPassword").focus();
     }
 };

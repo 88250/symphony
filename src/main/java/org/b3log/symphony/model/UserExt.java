@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.5.0.9, Jul 1, 2015
+ * @version 2.6.0.9, Jul 3, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -162,15 +162,24 @@ public final class UserExt {
      * User status - invalid.
      */
     public static final int USER_STATUS_C_INVALID = 1;
+    
+    /**
+     * User status - registered but not verified.
+     */
+    public static final int USER_STATUS_C_NOT_VERIFIED = 2;
 
     //// Avatar type constants
     /**
      * User avatar type - Gravatar.
+     * 
+     * @deprecated only upload allowed since 1.3.0
      */
     public static final int USER_AVATAR_TYPE_C_GRAVATAR = 0;
 
     /**
      * User avatar type - External Link.
+     * 
+     * @deprecated only upload allowed since 1.3.0
      */
     public static final int USER_AVATAR_TYPE_C_EXTERNAL_LINK = 1;
 

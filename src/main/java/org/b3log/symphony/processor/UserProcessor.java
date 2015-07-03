@@ -867,6 +867,7 @@ public class UserProcessor {
             user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
             user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
+            user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
 
             try {
                 final String id = userMgmtService.addUser(user);

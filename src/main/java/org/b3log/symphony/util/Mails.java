@@ -31,6 +31,8 @@ import org.apache.http.util.EntityUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.eclipse.jetty.http.HttpStatus;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Mail utilities.
@@ -69,12 +71,12 @@ public final class Mails {
 
     /**
      * Sends mail.
-     * 
-     * @param toMail to mail
-     * @param subject subject 
+     *
+     * @param toMails to mails
+     * @param subject subject
      * @param variables template variables
      */
-    public static void send(final String toMail, final String subject, final Map<String, String> variables) {
+    public static void send(final String subject, final List<String> toMails, final Map<String, List<String>> variables) {
         try {
             final String url = "http://sendcloud.sohu.com/webapi/mail.send_template.json";
             final HttpPost httpost = new HttpPost(url);
@@ -87,46 +89,57 @@ public final class Mails {
             params.add(new BasicNameValuePair("fromname", FROM_NAME));
             params.add(new BasicNameValuePair("subject", subject));
             params.add(new BasicNameValuePair("template_invoke_name", "sym_register"));
-            params.add(new BasicNameValuePair("substitution_vars", "{\"to\": [\"" + toMail + "\"],"
-                    + "\"sub\":{\"%1%\": [\"" + variables.get("1") + "\"],\"%2%\":[\"" + variables.get(2) + "\"]}}"));
+
+            final JSONObject args = new JSONObject();
+            args.put("to", new JSONArray(toMails));
+            final JSONObject sub = new JSONObject();
+            args.put("sub", sub);
+            for (final Map.Entry<String, List<String>> var : variables.entrySet()) {
+                final JSONArray value = new JSONArray(var.getValue());
+                sub.put(var.getKey(), value);
+            }
+            params.add(new BasicNameValuePair("substitution_vars", args.toString()));
             params.add(new BasicNameValuePair("resp_email_id", "true"));
 
             httpost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-
             final HttpResponse response = httpclient.execute(httpost);
 
-            // response
-            if (response.getStatusLine().getStatusCode() == HttpStatus.OK_200) {
-                System.out.println(EntityUtils.toString(response.getEntity()));
-            } else {
-                System.err.println("error");
+            if (HttpStatus.OK_200 != response.getStatusLine().getStatusCode()) {
+                LOGGER.log(Level.ERROR, "Send mail return error", EntityUtils.toString(response.getEntity()));
             }
-            httpost.releaseConnection();
 
+            httpost.releaseConnection();
             httpclient.close();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Send mail error", e);
         }
     }
 
-    /** Test.
-     * 
+    /**
+     * Test.
+     *
      * @param args args
      * @throws IOException exception
      */
     public static void main(final String[] args) throws IOException {
-        final String var1 = "88250";
-        final String var2 = "http://symphony.b3log.org";
+        final List<String> var1 = new ArrayList<String>();
+        var1.add("88250");
+        final List<String> var2 = new ArrayList<String>();
+        var2.add("http://symphony.b3log.org");
 
-        final Map<String, String> vars = new HashMap<String, String>();
-        vars.put("1", var1);
-        vars.put("2", var2);
+        final Map<String, List<String>> vars = new HashMap<String, List<String>>();
+        vars.put("%1%", var1);
+        vars.put("%2%", var2);
 
-        send("845765@qq.com", "Sym 社区注册验证码", vars);
+        final List<String> toMails = new ArrayList<String>();
+        toMails.add("dl88250@gmail.com");
+        
+        send("测试邮件", toMails, vars);
     }
-    
+
     /**
      * Private constructor.
      */
-    private Mails() {}
+    private Mails() {
+    }
 }

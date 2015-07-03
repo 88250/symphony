@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.2, Jun 30, 2015
+ * @version 1.4.1.2, Jul 3, 2015
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -264,6 +264,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             admin.put(User.USER_NAME, init.getString("admin.name"));
             admin.put(User.USER_PASSWORD, MD5.hash(init.getString("admin.password")));
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+            admin.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             final String adminId = userMgmtService.addUser(admin);
             admin.put(Keys.OBJECT_ID, adminId);
 
@@ -273,6 +274,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             defaultCommenter.put(User.USER_NAME, UserExt.DEFAULT_CMTER_NAME);
             defaultCommenter.put(User.USER_PASSWORD, MD5.hash(String.valueOf(new Random().nextInt())));
             defaultCommenter.put(User.USER_ROLE, UserExt.DEFAULT_CMTER_ROLE);
+            defaultCommenter.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
             userMgmtService.addUser(defaultCommenter);
 
             // Hello World!

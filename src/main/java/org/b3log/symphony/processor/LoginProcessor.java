@@ -16,11 +16,15 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -41,10 +45,14 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.Verifycode;
+import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.service.VerifycodeMgmtService;
+import org.b3log.symphony.service.VerifycodeQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.QueryResults;
 import org.json.JSONException;
@@ -63,7 +71,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.8, Jul 1, 2015
+ * @version 1.3.0.8, Jul 3, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -105,6 +113,18 @@ public class LoginProcessor {
     private Filler filler;
 
     /**
+     * Verifycode management service.
+     */
+    @Inject
+    private VerifycodeMgmtService verifycodeMgmtService;
+
+    /**
+     * Verifycode query service.
+     */
+    @Inject
+    private VerifycodeQueryService verifycodeQueryService;
+
+    /**
      * Shows registration page.
      *
      * @param context the specified context
@@ -117,22 +137,40 @@ public class LoginProcessor {
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
-
-        renderer.setTemplateName("register.ftl");
-
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-        dataModel.put(Common.REFERRAL, "88250");
-        final String referral = request.getParameter("r");
+        dataModel.put(Common.REFERRAL, "88250"); // HeHe~
+        String referral = request.getParameter("r");
         if (!Strings.isEmptyOrNull(referral)) {
             dataModel.put(Common.REFERRAL, referral);
+        }
+
+        final String code = request.getParameter("code");
+        if (Strings.isEmptyOrNull(code)) { // Register Step 1
+            renderer.setTemplateName("register.ftl");
+        } else { // Register Step 2
+            final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
+            if (null == verifycode) {
+                dataModel.put(Keys.MSG, langPropsService.get("verifycodeExpiredLabel"));
+                renderer.setTemplateName("/error/custom.ftl");
+            } else {
+                renderer.setTemplateName("register2.ftl");
+
+                final String userId = verifycode.optString(Verifycode.USER_ID);
+                final JSONObject user = userQueryService.getUser(userId);
+                dataModel.put(User.USER, user);
+
+                referral = StringUtils.substringAfter(code, "r=");
+                if (!Strings.isEmptyOrNull(referral)) {
+                    dataModel.put(Common.REFERRAL, referral);
+                }
+            }
         }
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
     /**
-     * Registers user.
+     * Register Step 1.
      *
      * @param context the specified context
      * @param request the specified request
@@ -160,18 +198,92 @@ public class LoginProcessor {
 
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
-        final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
-        final String password = requestJSONObject.optString(User.USER_PASSWORD);
         final String referral = requestJSONObject.optString(Common.REFERRAL);
 
         final JSONObject user = new JSONObject();
         user.put(User.USER_NAME, name);
         user.put(User.USER_EMAIL, email);
-        user.put(UserExt.USER_APP_ROLE, appRole);
-        user.put(User.USER_PASSWORD, password);
+        user.put(User.USER_PASSWORD, "");
 
         try {
             final String newUserId = userMgmtService.addUser(user);
+
+            final JSONObject verifycode = new JSONObject();
+            verifycode.put(Verifycode.BIZ_TYPE, Verifycode.BIZ_TYPE_C_REGISTER);
+            String code = RandomStringUtils.randomNumeric(6);
+            if (!Strings.isEmptyOrNull(referral)) {
+                code += "r=" + referral;
+            }
+            verifycode.put(Verifycode.CODE, code);
+            verifycode.put(Verifycode.EXPIRED, DateUtils.addDays(new Date(), 1).getTime());
+            verifycode.put(Verifycode.RECEIVER, email);
+            verifycode.put(Verifycode.STATUS, Verifycode.STATUS_C_UNSENT);
+            verifycode.put(Verifycode.TYPE, Verifycode.TYPE_C_EMAIL);
+            verifycode.put(Verifycode.USER_ID, newUserId);
+            verifycodeMgmtService.addVerifycode(verifycode);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("verifycodeSentLabel"));
+
+            LOGGER.log(Level.INFO, "Created a user [name={0}, email={1}]", name, email);
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
+
+            ret.put(Keys.MSG, msg);
+        }
+    }
+
+    /**
+     * Register Step 2.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws ServletException servlet exception
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/register2", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = UserRegister2Validation.class)
+    public void register2(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws ServletException, IOException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = new JSONObject((String) request.getParameterMap().keySet().iterator().next());
+        } catch (final JSONException e1) {
+            LOGGER.log(Level.ERROR, e1.getMessage(), e1);
+            requestJSONObject = new JSONObject();
+        }
+
+        final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
+        final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
+        final String referral = requestJSONObject.optString(Common.REFERRAL);
+        final String userId = requestJSONObject.optString(Common.USER_ID);
+
+        String name = null;
+        String email = null;
+        try {
+            final JSONObject user = userQueryService.getUser(userId);
+            if (null == user) {
+                ret.put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + "User Not Found");
+
+                return;
+            }
+
+            name = user.optString(User.USER_NAME);
+            email = user.optString(User.USER_EMAIL);
+            
+            user.put(UserExt.USER_APP_ROLE, appRole);
+            user.put(User.USER_PASSWORD, password);
+            user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
+
+            userMgmtService.addUser(user);
 
             Sessions.login(request, response, user);
             userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
@@ -181,18 +293,18 @@ public class LoginProcessor {
                 if (null != referralUser) {
                     final String referralId = referralUser.optString(Keys.OBJECT_ID);
                     // Point
-                    pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, newUserId,
+                    pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITED_REGISTER,
                             Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, referralId);
                     pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, referralId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER,
-                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, newUserId);
+                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, userId);
                 }
             }
 
             ret.put(Keys.STATUS_CODE, true);
 
-            LOGGER.log(Level.INFO, "Created a user [name={0}, email={1}]", name, email);
+            LOGGER.log(Level.INFO, "Registered a user [name={0}, email={1}]", name, email);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);

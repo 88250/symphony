@@ -20,30 +20,27 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.CaptchaProcessor;
 import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
 
 /**
- * UserRegisterValidation for validate {@link org.b3log.symphony.processor.LoginProcessor} register(Type POST) method.
+ * UserRegister2Validation for validate {@link org.b3log.symphony.processor.LoginProcessor} register2(Type POST) method.
  *
- * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.6, Jul 2, 2015
+ * @version 1.0.0.0, Jul 3, 2015
+ * @since 1.3.0
  */
 @Named
 @Singleton
-public class UserRegisterValidation extends BeforeRequestProcessAdvice {
+public class UserRegister2Validation extends BeforeRequestProcessAdvice {
 
     /**
      * Language service.
@@ -58,16 +55,6 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
     private OptionQueryService optionQueryService;
 
     /**
-     * Max user name length.
-     */
-    public static final int MAX_USER_NAME_LENGTH = 10;
-
-    /**
-     * Min user name length.
-     */
-    public static final int MIN_USER_NAME_LENGTH = 1;
-
-    /**
      * Max password length.
      *
      * <p>
@@ -80,11 +67,6 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
      * Min password length.
      */
     private static final int MIN_PWD_LENGTH = 1;
-
-    /**
-     * Captcha length.
-     */
-    private static final int CAPTCHA_LENGTH = 4;
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
@@ -104,52 +86,11 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        final String name = requestJSONObject.optString(User.USER_NAME);
-        final String email = requestJSONObject.optString(User.USER_EMAIL);
         final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
-        //final String password = requestJSONObject.optString(User.USER_PASSWORD);
-        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-
-        checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
-        checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");
-        checkField(!Strings.isEmail(email), "registerFailLabel", "invalidEmailLabel");
+        final String password = requestJSONObject.optString(User.USER_PASSWORD);
         checkField(UserExt.USER_APP_ROLE_C_HACKER != appRole
                 && UserExt.USER_APP_ROLE_C_PAINTER != appRole, "registerFailLabel", "invalidAppRoleLabel");
-        //checkField(invalidUserPassword(password), "registerFailLabel", "invalidPasswordLabel");
-    }
-
-    /**
-     * Checks whether the specified name is invalid.
-     *
-     * <p>
-     * A valid user name:
-     * <ul>
-     * <li>length [1, 20]</li>
-     * <li>content {a-z, A-Z, 0-9, _}</li>
-     * </ul>
-     * </p>
-     *
-     * @param name the specified name
-     * @return {@code true} if it is invalid, returns {@code false} otherwise
-     */
-    public static boolean invalidUserName(final String name) {
-        final int length = name.length();
-        if (length < MIN_USER_NAME_LENGTH || length > MAX_USER_NAME_LENGTH) {
-            return true;
-        }
-
-        char c;
-        for (int i = 0; i < length; i++) {
-            c = name.charAt(i);
-
-            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || '0' <= c && c <= '9' || '_' == c) {
-                continue;
-            }
-
-            return true;
-        }
-
-        return false;
+        checkField(invalidUserPassword(password), "registerFailLabel", "invalidPasswordLabel");
     }
 
     /**
@@ -160,33 +101,6 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
      */
     public static boolean invalidUserPassword(final String password) {
         return password.length() < MIN_PWD_LENGTH || password.length() > MAX_PWD_LENGTH;
-    }
-
-    /**
-     * Checks whether the specified captcha is invalid.
-     *
-     * @param captcha the specified captcha
-     * @param request the specified request
-     * @return {@code true} if it is invalid, returns {@code false} otherwise
-     */
-    public static boolean invalidCaptcha(final String captcha, final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
-        if (null == session) {
-            return true;
-        }
-
-        if (Strings.isEmptyOrNull(captcha) || captcha.length() != CAPTCHA_LENGTH) {
-            return true;
-        }
-
-        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-        if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
-            return true;
-        }
-
-        session.removeAttribute(CaptchaProcessor.CAPTCHA);
-
-        return false;
     }
 
     /**

@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.2, Jun 30, 2015
+ * @version 1.5.2.2, Jul 3, 2015
  * @since 0.2.0
  */
 @Service
@@ -332,7 +332,8 @@ public class UserMgmtService {
      *     "userEmail": "",
      *     "userAppRole": int,
      *     "userPassword": "", // Hashed
-     *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead, if not speciffied
+     *     "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not speciffied
+     *     "userStatus": int // optional, uses {@value UserExt#USER_STATUS_C_NOT_VERIFIED} instead if not specified
      * }
      * </pre>,see {@link User} for more details
      *
@@ -345,7 +346,8 @@ public class UserMgmtService {
         try {
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL).trim().toLowerCase();
             final String userName = requestJSONObject.optString(User.USER_NAME);
-            if (null != userRepository.getByName(userName)) {
+            JSONObject user = userRepository.getByName(userName);
+            if (null != user && UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
@@ -353,22 +355,28 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedUserNameLabel") + " [" + userName + "]");
             }
 
-            if (null != userRepository.getByEmail(userEmail)) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
+            boolean toUpdate = false;
+            String ret = null;
+            user = userRepository.getByEmail(userEmail);
+            if (null != user) {
+                if (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+
+                    throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
                 }
 
-                throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
+                toUpdate = true;
+                ret = user.optString(Keys.OBJECT_ID);
             }
 
-            final JSONObject user = new JSONObject();
-
+            user = new JSONObject();
             user.put(User.USER_NAME, userName);
             user.put(User.USER_EMAIL, userEmail);
             user.put(UserExt.USER_APP_ROLE, requestJSONObject.optInt(UserExt.USER_APP_ROLE));
             user.put(User.USER_PASSWORD, requestJSONObject.optString(User.USER_PASSWORD));
             user.put(User.USER_ROLE, requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE));
-
             user.put(User.USER_URL, "");
             user.put(UserExt.USER_ARTICLE_COUNT, 0);
             user.put(UserExt.USER_COMMENT_COUNT, 0);
@@ -387,25 +395,31 @@ public class UserMgmtService {
             user.put(UserExt.USER_LATEST_CMT_TIME, 0L);
             user.put(UserExt.USER_LATEST_LOGIN_TIME, 0L);
             user.put(UserExt.USER_POINT, 0);
-
+            final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
+            user.put(UserExt.USER_STATUS, status);
             final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
             int memberCount = memberCntOption.optInt(Option.OPTION_VALUE);
-            ++memberCount;
-            user.put(UserExt.USER_NO, memberCount);
 
-            final String userId = userRepository.add(user);
+            if (toUpdate) {
+                user.put(UserExt.USER_NO, memberCount);
+                userRepository.update(ret, user);
+            } else {
+                user.put(UserExt.USER_NO, ++memberCount);
 
-            // Updates stat. (member count +1)
-            memberCntOption.put(Option.OPTION_VALUE, String.valueOf(memberCount));
-            optionRepository.update(Option.ID_C_STATISTIC_MEMBER_COUNT, memberCntOption);
+                ret = userRepository.add(user);
+
+                // Updates stat. (member count +1)
+                memberCntOption.put(Option.OPTION_VALUE, String.valueOf(memberCount));
+                optionRepository.update(Option.ID_C_STATISTIC_MEMBER_COUNT, memberCntOption);
+            }
 
             transaction.commit();
 
             // Point
-            pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
-                    Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, userId);
+            pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, ret,
+                    Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret);
 
-            return user.optString(Keys.OBJECT_ID);
+            return ret;
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();

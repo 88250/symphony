@@ -29,6 +29,9 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>servlet</word>
         <word>Unfollows</word>
         <word>unrewarded</word>
+        <word>verifycode</word>
+        <word>verifycodes</word>
+        <word>Verifycodes</word>
         <word>whitelist</word>
     </spellchecker-wordlist>
 </project-shared-configuration>
