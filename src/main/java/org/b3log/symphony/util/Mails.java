@@ -32,6 +32,7 @@ import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -67,8 +68,12 @@ public final class Mails {
      * @param variables template variables
      */
     public static void send(final String subject, final List<String> toMails, final Map<String, List<String>> variables) {
+        if (null == toMails || toMails.isEmpty()) {
+            return;
+        }
+
         final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
 
         try {
             final String url = "http://sendcloud.sohu.com/webapi/mail.send_template.json";
