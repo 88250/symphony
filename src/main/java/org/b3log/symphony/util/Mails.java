@@ -30,7 +30,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.eclipse.jetty.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,7 +37,7 @@ import org.json.JSONObject;
  * Mail utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 2, 2015
+ * @version 1.0.1.0, Jul 4, 2015
  * @since 1.3.0
  */
 public final class Mails {
@@ -103,10 +102,8 @@ public final class Mails {
 
             httpost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             final HttpResponse response = httpclient.execute(httpost);
-
-            if (HttpStatus.OK_200 != response.getStatusLine().getStatusCode()) {
-                LOGGER.log(Level.ERROR, "Send mail return error", EntityUtils.toString(response.getEntity()));
-            }
+            
+            LOGGER.log(Level.INFO, EntityUtils.toString(response.getEntity()));
 
             httpost.releaseConnection();
             httpclient.close();
@@ -133,7 +130,7 @@ public final class Mails {
 
         final List<String> toMails = new ArrayList<String>();
         toMails.add("dl88250@gmail.com");
-        
+
         send("测试邮件", toMails, vars);
     }
 

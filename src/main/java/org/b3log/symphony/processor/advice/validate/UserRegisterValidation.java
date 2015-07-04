@@ -60,7 +60,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
     /**
      * Max user name length.
      */
-    public static final int MAX_USER_NAME_LENGTH = 10;
+    public static final int MAX_USER_NAME_LENGTH = 20;
 
     /**
      * Min user name length.
