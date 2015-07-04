@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -28,8 +27,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.service.LangPropsService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -58,17 +60,6 @@ public final class Mails {
     private static final String API_KEY = Symphonys.get("apiKey");
 
     /**
-     * Mail from name.
-     */
-    private static final String FROM_NAME;
-
-    static {
-        final ResourceBundle lang = ResourceBundle.getBundle("lang");
-
-        FROM_NAME = lang.getString("symphonyLabel") + " - " + lang.getString("visionLabel");
-    }
-
-    /**
      * Sends mail.
      *
      * @param toMails to mails
@@ -76,6 +67,9 @@ public final class Mails {
      * @param variables template variables
      */
     public static void send(final String subject, final List<String> toMails, final Map<String, List<String>> variables) {
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
+
         try {
             final String url = "http://sendcloud.sohu.com/webapi/mail.send_template.json";
             final HttpPost httpost = new HttpPost(url);
@@ -85,7 +79,8 @@ public final class Mails {
             params.add(new BasicNameValuePair("api_user", API_USER));
             params.add(new BasicNameValuePair("api_key", API_KEY));
             params.add(new BasicNameValuePair("from", "sym@b3log.org"));
-            params.add(new BasicNameValuePair("fromname", FROM_NAME));
+            params.add(new BasicNameValuePair("fromname", langPropsService.get("symphonyLabel") + " - "
+                    + langPropsService.get("visionLabel")));
             params.add(new BasicNameValuePair("subject", subject));
             params.add(new BasicNameValuePair("template_invoke_name", "sym_register"));
 
@@ -102,7 +97,7 @@ public final class Mails {
 
             httpost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             final HttpResponse response = httpclient.execute(httpost);
-            
+
             LOGGER.log(Level.INFO, EntityUtils.toString(response.getEntity()));
 
             httpost.releaseConnection();
