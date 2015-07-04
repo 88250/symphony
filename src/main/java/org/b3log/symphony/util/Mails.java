@@ -70,7 +70,7 @@ public final class Mails {
 
             formData.put("api_user", API_USER);
             formData.put("api_key", API_KEY);
-            formData.put("from", "sym@b3log.org");
+            formData.put("from", "Hacker.Painter@symphony.b3log.org");
             formData.put("fromname", "Sym - 黑客与画家的社区");
             formData.put("subject", subject);
             formData.put("template_invoke_name", templateName);
