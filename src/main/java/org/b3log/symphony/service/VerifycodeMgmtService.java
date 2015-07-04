@@ -172,9 +172,7 @@ public class VerifycodeMgmtService {
                 verifycodeRepository.update(verifycode.optString(Keys.OBJECT_ID), verifycode);
             }
 
-            if (0 != verifycodes.length()) {
-                Mails.send(langPropsService.get("verifycodeEmailRegisterSubjectLabel"), toMails, vars);
-            }
+            Mails.send(langPropsService.get("verifycodeEmailRegisterSubjectLabel"), toMails, vars);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Sends verifycode failed", e);
         }
