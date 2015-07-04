@@ -29,7 +29,7 @@
         <jsoup.version>1.7.1</jsoup.version>
         <markdownpapers-core.version>1.4.2</markdownpapers-core.version>
         <qiniu.version>7.0.3</qiniu.version>
-        <httpcomponents.version>4.5</httpcomponents.version>
+        <jodd.version>3.6.6</jodd.version>
 
         <!-- maven plugin -->
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
@@ -184,6 +184,7 @@
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-server</artifactId>
             <version>${jetty.version}</version>
+            <scope>provided</scope>
         </dependency>
         
         <dependency>
@@ -193,14 +194,9 @@
         </dependency>
         
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${httpcomponents.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>${httpcomponents.version}</version>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-http</artifactId>
+            <version>${jodd.version}</version>
         </dependency>
 
     </dependencies>

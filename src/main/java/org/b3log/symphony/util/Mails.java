@@ -20,19 +20,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.LatkeBeanManagerImpl;
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.LangPropsServiceImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -64,30 +55,25 @@ public final class Mails {
      * Sends mail.
      *
      * @param toMails to mails
+     * @param templateName template name
      * @param subject subject
      * @param variables template variables
      */
-    public static void send(final String subject, final List<String> toMails, final Map<String, List<String>> variables) {
+    public static void send(final String subject, final String templateName,
+            final List<String> toMails, final Map<String, List<String>> variables) {
         if (null == toMails || toMails.isEmpty()) {
             return;
         }
 
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
-
         try {
-            final String url = "http://sendcloud.sohu.com/webapi/mail.send_template.json";
-            final HttpPost httpost = new HttpPost(url);
-            final CloseableHttpClient httpclient = HttpClientBuilder.create().build();
+            final Map<String, Object> formData = new HashMap<String, Object>();
 
-            final List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
-            params.add(new BasicNameValuePair("api_user", API_USER));
-            params.add(new BasicNameValuePair("api_key", API_KEY));
-            params.add(new BasicNameValuePair("from", "sym@b3log.org"));
-            params.add(new BasicNameValuePair("fromname", langPropsService.get("symphonyLabel") + " - "
-                    + langPropsService.get("visionLabel")));
-            params.add(new BasicNameValuePair("subject", subject));
-            params.add(new BasicNameValuePair("template_invoke_name", "sym_register"));
+            formData.put("api_user", API_USER);
+            formData.put("api_key", API_KEY);
+            formData.put("from", "sym@b3log.org");
+            formData.put("fromname", "Sym - 黑客与画家的社区");
+            formData.put("subject", subject);
+            formData.put("template_invoke_name", templateName);
 
             final JSONObject args = new JSONObject();
             args.put("to", new JSONArray(toMails));
@@ -97,16 +83,13 @@ public final class Mails {
                 final JSONArray value = new JSONArray(var.getValue());
                 sub.put(var.getKey(), value);
             }
-            params.add(new BasicNameValuePair("substitution_vars", args.toString()));
-            params.add(new BasicNameValuePair("resp_email_id", "true"));
+            formData.put("substitution_vars", args.toString());
+            formData.put("resp_email_id", "true");
 
-            httpost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-            final HttpResponse response = httpclient.execute(httpost);
+            final HttpResponse response = HttpRequest.post("http://sendcloud.sohu.com/webapi/mail.send_template.json")
+                    .form(formData).send();
 
-            LOGGER.log(Level.INFO, EntityUtils.toString(response.getEntity()));
-
-            httpost.releaseConnection();
-            httpclient.close();
+            LOGGER.log(Level.INFO, response.bodyText());
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Send mail error", e);
         }
@@ -131,7 +114,7 @@ public final class Mails {
         final List<String> toMails = new ArrayList<String>();
         toMails.add("dl88250@gmail.com");
 
-        send("测试邮件", toMails, vars);
+        send("测试邮件", "sym_register", toMails, vars);
     }
 
     /**
