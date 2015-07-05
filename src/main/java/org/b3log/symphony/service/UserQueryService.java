@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.5, Jun 28, 2015
+ * @version 1.4.1.5, Jul 5, 2015
  * @since 0.2.0
  */
 @Service
@@ -182,7 +182,11 @@ public class UserQueryService {
      * @throws ServiceException service exception
      */
     public JSONObject getDefaultCommenter() throws ServiceException {
-        return getUserByName(UserExt.DEFAULT_CMTER_NAME);
+        final JSONObject ret = getUserByName(UserExt.DEFAULT_CMTER_NAME);
+        ret.remove(UserExt.USER_T_POINT_HEX);
+        ret.remove(UserExt.USER_T_POINT_CC);
+        
+        return ret;
     }
 
     /**

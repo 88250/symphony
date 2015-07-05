@@ -19,6 +19,8 @@ import com.qiniu.util.Auth;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -91,7 +93,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.5.8, Jun 29, 2015
+ * @version 1.8.5.8, Jul 5, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -857,6 +859,14 @@ public class UserProcessor {
             return;
         }
 
+        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
+        if (isIPv4(maybeIP)) {
+            LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the client host is invalid",
+                    name, clientHost);
+
+            return;
+        }
+
         JSONObject user = userQueryService.getUserByEmail(email);
         if (null == user) {
             user = new JSONObject();
@@ -990,5 +1000,23 @@ public class UserProcessor {
         userQueryService.loadUserNames();
 
         response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    /**
+     * Is IPv4.
+     *
+     * @param ip ip
+     * @return {@code true} if it is, returns {@code false} otherwise
+     */
+    public static boolean isIPv4(final String ip) {
+        final String regex = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
+                + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+                + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
+                + "(00?\\d|1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
+
+        final Pattern pattern = Pattern.compile(regex);
+        final Matcher matcher = pattern.matcher(ip);
+
+        return matcher.matches();
     }
 }
