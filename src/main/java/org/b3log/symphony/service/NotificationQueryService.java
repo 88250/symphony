@@ -156,8 +156,7 @@ public class NotificationQueryService {
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return result json object, for example,
-     * <pre>
+     * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
@@ -206,7 +205,7 @@ public class NotificationQueryService {
 
                 final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
-                                                     comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
+                                        comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                 final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                 final JSONObject article = rlts.optJSONObject(0);
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
@@ -216,7 +215,7 @@ public class NotificationQueryService {
                 commentedNotification.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
                 commentedNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
                 commentedNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
-                                          comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                        comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.convert(articleTitle));
                 commentedNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
                 commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
@@ -238,8 +237,7 @@ public class NotificationQueryService {
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return result json object, for example,
-     * <pre>
+     * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
@@ -291,7 +289,7 @@ public class NotificationQueryService {
                 if (null != comment) {
                     final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
                             setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
-                                                         comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
+                                            comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                     final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                     final JSONObject article = rlts.optJSONObject(0);
                     final String articleTitle = article.optString(Article.ARTICLE_TITLE);
@@ -301,7 +299,7 @@ public class NotificationQueryService {
                     atNotification.put(Common.AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
                     atNotification.put(Common.CONTENT, comment.optString(Comment.COMMENT_CONTENT));
                     atNotification.put(Common.THUMBNAIL_URL,
-                                       comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                            comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                     atNotification.put(Article.ARTICLE_TITLE, articleTitle);
                     atNotification.put(Common.URL, comment.optString(Comment.COMMENT_SHARP_URL));
                     atNotification.put(Common.CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
@@ -346,8 +344,7 @@ public class NotificationQueryService {
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
-     * @return result json object, for example,
-     * <pre>
+     * @return result json object, for example,      <pre>
      * {
      *     "paginationRecordCount": int,
      *     "rslts": java.util.List[{
@@ -430,7 +427,7 @@ public class NotificationQueryService {
                 followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                 followingUserNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                 followingUserNotification.put(Notification.NOTIFICATION_HAS_READ,
-                                              notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
+                        notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                 followingUserNotification.put(Common.TYPE, Article.ARTICLE);
                 followingUserNotification.put(Article.ARTICLE_TAGS, article.optString(Article.ARTICLE_TAGS));
                 followingUserNotification.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));

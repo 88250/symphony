@@ -56,6 +56,7 @@ public class RewardMgmtService {
      *     "type": int
      * }
      * </pre>
+     *
      * @return reward id
      * @throws ServiceException service exception
      */

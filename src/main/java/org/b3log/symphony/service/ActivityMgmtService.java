@@ -47,7 +47,7 @@ public class ActivityMgmtService {
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
-    
+
     /**
      * Activity query service.
      */

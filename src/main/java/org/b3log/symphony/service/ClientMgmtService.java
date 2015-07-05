@@ -57,8 +57,7 @@ public class ClientMgmtService {
     /**
      * Adds a client by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object (client), for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object (client), for example,      <pre>
      * {
      *     "oId": "",
      *     "clientName": "",
@@ -98,8 +97,7 @@ public class ClientMgmtService {
     /**
      * Updates a client by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object (client), for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object (client), for example,      <pre>
      * {
      *     "oId": "",
      *     "clientName": "",

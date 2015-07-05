@@ -185,7 +185,7 @@ public class UserQueryService {
         final JSONObject ret = getUserByName(UserExt.DEFAULT_CMTER_NAME);
         ret.remove(UserExt.USER_T_POINT_HEX);
         ret.remove(UserExt.USER_T_POINT_CC);
-        
+
         return ret;
     }
 
@@ -229,7 +229,7 @@ public class UserQueryService {
 
         String copy = text.trim();
         copy = copy.replaceAll("\\n", " ");
-        copy = copy.replaceAll("(?=\\pP)[^@]" , " ");
+        copy = copy.replaceAll("(?=\\pP)[^@]", " ");
         String[] uNames = StringUtils.substringsBetween(copy, "@", " ");
         String tail = StringUtils.substringAfterLast(copy, "@");
 

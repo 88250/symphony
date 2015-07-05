@@ -73,7 +73,7 @@ public class ActivityProcessor {
         final String userId = user.optString(Keys.OBJECT_ID);
 
         activityMgmtService.dailyCheckin(userId);
-        
+
         response.sendRedirect("/member/" + user.optString(User.USER_NAME) + "/points");
     }
 }
