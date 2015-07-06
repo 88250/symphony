@@ -74,7 +74,7 @@
                                 </#if>
                             </span>
                         </div>
-                        <div class="content-reset">
+                        <div class="content-reset article-content">
                             ${article.articleContent}
                         </div>
                         <div class="fn-clear">
@@ -115,7 +115,7 @@
                             <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
                         </div>
                     </div>
-                    <div class="grammar fn-none">
+                    <div class="grammar fn-none fn-clear">
                         ${markdwonGrammarLabel}
                     </div>
                     </#if>

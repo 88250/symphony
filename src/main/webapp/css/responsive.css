@@ -25,7 +25,7 @@
     .nav .tags,
     .article-list .avatar,
     .icon-up,
-    #comments .avatar-wrapper,
+    #comments .avatar,
     .tag-artile-user,
     .notification .avatar {
         display: none;
@@ -36,32 +36,33 @@
     .side,
     .module .comment-content,
     .list .list-content,
-    #comments .comment-content,
+    .content #comments .comment-content,
     .article-list li > div:first-child,
     .follow li,
     .footer > div > .fn-right,
-    .footer .info {
-        width: 100% !important;
+    .footer .info,
+    .notification li > div.content-reset {
+        width: 100%;
     }
 
     .follow li > div,
     .register .intro,
     .nav .user-nav,
-    h2.fn-inline {
+    h2.fn-inline,
+    .article-title h2 {
         width: auto;
     }
 
-    .nav {
-        height: auto;
-    }
-
     .footer .fn-clear > .fn-right,
-    .content > div > .ft-small > .fn-left,
     .footer > div > .fn-left,
-    .content > div > .ft-small > .fn-right,
     .article-content,
     .form label.article-content-label,
-    .home-comments li > span.fn-right {
+    .home-comments li > span.fn-right,
+    .article-info > .fn-left, 
+    .article-info > .fn-right,
+    .content .notification li > div.content-reset,
+    .content .article-title .info,
+    .content .article-title h2 {
         float: none;
     }
 
@@ -90,24 +91,18 @@
     }
 
     .nav .form {
-        left: 0;
-    }
-
-    .nav .user-nav {
-        position: inherit;
+        right: 0;
     }
 
     .nav h1 {
         margin-left: 10px;
     }
 
-    .comment-login {
+    .comment-login,
+    .main,
+    #comments .content-reset {
         margin: 0px auto;
         padding: 0;
-    }
-
-    .content > div > .ft-small > .fn-right {
-        margin-left: -4px;
     }
 
     .register .intro {
@@ -121,12 +116,25 @@
         right: 140px;
         top: 270px;
     }
-
-    .side .avatar-big {
-        margin-top: 50px;
+    
+    .side,
+    .article-info {
+         margin-top: 30px;
     }
 
     .CodeMirror {
-        width: 98%;
+        width: 99.5%;
+    }
+    
+    .pagination,
+    .article-info,
+    .content .article-title,
+    .content-reset.article-content {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+    
+    .article-title h2 {
+        display: inline;
     }
 }
