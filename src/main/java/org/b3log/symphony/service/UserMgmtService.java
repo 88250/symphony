@@ -415,9 +415,11 @@ public class UserMgmtService {
 
             transaction.commit();
 
-            // Point
-            pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, ret,
-                    Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret);
+            if (toUpdate) {
+                // Point
+                pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, ret,
+                        Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret);
+            }
 
             return ret;
         } catch (final RepositoryException e) {
