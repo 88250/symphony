@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.2, Jul 3, 2015
+ * @version 1.5.3.2, Jul 7, 2015
  * @since 0.2.0
  */
 @Service
@@ -415,7 +415,7 @@ public class UserMgmtService {
 
             transaction.commit();
 
-            if (toUpdate) {
+            if (UserExt.USER_STATUS_C_VALID == status) {
                 // Point
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, ret,
                         Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret);
