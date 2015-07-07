@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.3.3, Jul 1, 2015
+ * @version 1.5.3.3, Jul 7, 2015
  */
 
 /**
@@ -39,6 +39,7 @@ var Comment = {
         Comment.editor = CodeMirror.fromTextArea(document.getElementById("commentContent"), {
             mode: 'markdown',
             dragDrop: false,
+            lineWrapping: true,
             extraKeys: {
                 "'@'": "autocompleteUserName",
                 "Ctrl-/": "autocompleteEmoji"

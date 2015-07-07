@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.2.0, Jul 2, 2015
+ * @version 1.7.2.0, Jul 7, 2015
  */
 
 /**
@@ -100,6 +100,7 @@ var AddArticle = {
         AddArticle.editor = CodeMirror.fromTextArea(document.getElementById("articleContent"), {
             mode: 'markdown',
             dragDrop: false,
+            lineWrapping: true,
             extraKeys: {
                 "'@'": "autocompleteUserName",
                 "Ctrl-/": "autocompleteEmoji",
@@ -155,6 +156,7 @@ var AddArticle = {
         AddArticle.rewardEditor = CodeMirror.fromTextArea(document.getElementById("articleRewardContent"), {
             mode: 'markdown',
             dragDrop: false,
+            lineWrapping: true,
             readOnly: readOnly,
             extraKeys: {
                 "'@'": "autocompleteUserName",
