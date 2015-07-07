@@ -98,7 +98,7 @@
                     </div>
                     </#if>
                     <#if isLoggedIn>
-                    <#if discussionViewable>
+                    <#if discussionViewable && article.articleCommentable>
                     <div class="form fn-clear">
                         <form class="fn-none" id="fileupload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
