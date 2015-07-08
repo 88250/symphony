@@ -265,6 +265,9 @@ textarea {
     position: relative;
     margin: 13px 0 13px 10px;
     padding: 15px 15px 15px 15px;
+    background-color: #ddd;
+    border-radius: 5px;
+    color: #777;
 }
 
 .content-reset blockquote:before {
