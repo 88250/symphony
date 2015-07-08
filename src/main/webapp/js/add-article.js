@@ -114,8 +114,8 @@ var AddArticle = {
             }
         });
         
-        if (window.localStorage && "" !== window.localStorage.articleContent && AddArticle.editor.getValue()
-                && "" !== AddArticle.editor.getValue().replace(/(^\s*)|(\s*$)/g, "")) {
+        if (window.localStorage && window.localStorage.articleContent && "" === AddArticle.editor.getValue()
+                && "" !== window.localStorage.articleContent.replace(/(^\s*)|(\s*$)/g, "")) {
             AddArticle.editor.setValue(window.localStorage.articleContent);
         }
 
