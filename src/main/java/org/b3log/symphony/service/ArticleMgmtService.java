@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.3.7, Jul 1, 2015
+ * @version 1.5.3.8, Jul 8, 2015
  * @since 0.2.0
  */
 @Service
@@ -391,7 +391,9 @@ public class ArticleMgmtService {
             oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
             oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
 
-            oldArticle.put(Article.ARTICLE_UPDATE_TIME, System.currentTimeMillis());
+            final long currentTimeMillis = System.currentTimeMillis();
+            final long oldUpdateTime = oldArticle.optLong(Article.ARTICLE_UPDATE_TIME);
+            oldArticle.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
 
             final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
             boolean enableReward = false;
@@ -405,12 +407,7 @@ public class ArticleMgmtService {
 
             transaction.commit();
 
-            if (enableReward) {
-                pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                        Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
-            }
-
-            if (!fromClient) {
+            if (!fromClient && currentTimeMillis - oldUpdateTime > 1000 * 60 * 5) {
                 // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 int addition = (int) Math.round(Math.sqrt(followerCnt));
@@ -419,6 +416,11 @@ public class ArticleMgmtService {
                 pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                         Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
                         Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition, articleId);
+
+                if (enableReward) {
+                    pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
+                }
             }
 
             // Event
