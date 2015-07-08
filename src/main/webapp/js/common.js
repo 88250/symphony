@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.3.7, Jul 2, 2015
+ * @version 1.8.3.7, Jul 8, 2015
  */
 
 /**
@@ -334,11 +334,16 @@ var Util = {
                 $(".icon-up").hide();
             }
         });
+        
         if (isLoggedIn) { // 如果登录了
             // 定时获取并设置未读提醒计数
             setInterval(function () {
                 Util.setUnreadNotificationCount();
             }, 60000);
+            
+            $("#logout").click(function () { // Register logout click event handler
+                Util.logout();
+            });    
         }
     },
     /**
@@ -393,6 +398,16 @@ var Util = {
                     }
                 }
             });
+        }
+    },
+    /**
+     * @description 登出
+     */
+    logout: function() {
+        if (window.localStorage) {
+            // Clear localStorage
+            window.localStorage.articleContent = "";
+            window.localStorage.commentContent = "";
         }
     },
     /**

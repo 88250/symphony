@@ -17,7 +17,7 @@
         </span>
         <div class="fn-clear user-nav">
             <#if isLoggedIn>
-            <a href="${logoutURL}" title="${logoutLabel}" class="last icon icon-logout"></a>
+            <a id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon icon-logout"></a>
             <#if "adminRole" == userRole>
             <a href="/admin" title="${adminLabel}" class="icon icon-setting"></a>
             </#if>

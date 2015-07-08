@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.2.0, Jul 7, 2015
+ * @version 1.8.2.0, Jul 8, 2015
  */
 
 /**
@@ -80,6 +80,10 @@ var AddArticle = {
                     $(".form button.red").removeAttr("disabled").css("opacity", "1");
                     if (result.sc) {
                         window.location = "/member/" + Label.userName;
+                        
+                        if (window.localStorage) {
+                            window.localStorage.articleContent = "";
+                        }
                     } else {
                         $("#addArticleTip").addClass("tip-error").text(result.msg);
                     }
@@ -109,6 +113,10 @@ var AddArticle = {
                 }
             }
         });
+        
+        if (window.localStorage && "" !== window.localStorage.articleContent && "" === AddArticle.editor.getValue()) {
+            AddArticle.editor.setValue(window.localStorage.articleContent);
+        }
 
         AddArticle.editor.on('keydown', function (cm, evt) {
             if (8 === evt.keyCode) { // Backspace
@@ -134,6 +142,10 @@ var AddArticle = {
                 $(".form .green").show();
             } else {
                 $(".form .green").hide();
+            }
+            
+            if (window.localStorage) {
+                window.localStorage.articleContent = cm.getValue();
             }
         });
 

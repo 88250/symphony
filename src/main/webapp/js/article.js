@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.3.3, Jul 7, 2015
+ * @version 1.6.3.3, Jul 8, 2015
  */
 
 /**
@@ -46,6 +46,10 @@ var Comment = {
             }
         });
 
+        if (window.localStorage && "" !== window.localStorage.commentContent) {
+            Comment.editor.setValue(window.localStorage.commentContent);
+        }
+
         Comment.editor.on('changes', function (cm) {
             if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
                 $(".form .green").show();
@@ -54,6 +58,10 @@ var Comment = {
             }
 
             $(".CodeMirror").next().removeClass("tip-error").text('');
+
+            if (window.localStorage) {
+                window.localStorage.commentContent = cm.getValue();
+            }
         });
 
         Comment.editor.on('keypress', function (cm, evt) {
@@ -110,6 +118,10 @@ var Comment = {
                 if (result.sc) {
                     Comment.editor.setValue('');
                     // window.location.reload();
+
+                    if (window.localStorage) {
+                        window.localStorage.commentContent = "";
+                    }
                 } else {
                     $(".CodeMirror").next().addClass("tip-error").text(result.msg);
                 }
