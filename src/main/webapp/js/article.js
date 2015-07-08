@@ -47,11 +47,11 @@ var Comment = {
         });
 
         if (window.localStorage && "" !== window.localStorage.commentContent) {
-            Comment.editor.setValue(window.localStorage.commentContent);
+            Comment.editor.doc.setValue(window.localStorage.commentContent);
         }
 
         Comment.editor.on('changes', function (cm) {
-            if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
+            if (cm.doc.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
                 $(".form .green").show();
             } else {
                 $(".form .green").hide();
@@ -60,7 +60,7 @@ var Comment = {
             $(".CodeMirror").next().removeClass("tip-error").text('');
 
             if (window.localStorage) {
-                window.localStorage.commentContent = cm.getValue();
+                window.localStorage.commentContent = cm.doc.getValue();
             }
         });
 
@@ -102,7 +102,7 @@ var Comment = {
     add: function (id) {
         var requestJSONObject = {
             articleId: id,
-            commentContent: Comment.editor.getValue().replace(/(^\s*)|(\s*$)/g, "")
+            commentContent: Comment.editor.doc.getValue().replace(/(^\s*)|(\s*$)/g, "")
         };
 
         $.ajax({
@@ -116,7 +116,7 @@ var Comment = {
             success: function (result, textStatus) {
                 $(".form button.green").removeAttr("disabled").css("opacity", "1");
                 if (result.sc) {
-                    Comment.editor.setValue('');
+                    Comment.editor.doc.setValue('');
                     // window.location.reload();
 
                     if (window.localStorage) {
@@ -140,7 +140,7 @@ var Comment = {
             type: "POST",
             cache: false,
             data: {
-                markdownText: Comment.editor.getValue()
+                markdownText: Comment.editor.doc.getValue()
             },
             success: function (result, textStatus) {
                 $(".dialog-background").height($("body").height());

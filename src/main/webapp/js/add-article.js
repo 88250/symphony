@@ -35,7 +35,7 @@ var AddArticle = {
      */
     add: function (id) {
         var isError = false;
-        if (this.editor.getValue().length < 4 || this.editor.getValue().length > 1048576) {
+        if (this.editor.doc.getValue().length < 4 || this.editor.doc.getValue().length > 1048576) {
             $("#articleContentTip").addClass("tip-error").text(Label.articleContentErrorLabel);
         } else {
             isError = true;
@@ -53,12 +53,12 @@ var AddArticle = {
             }]) && isError) {
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g, ""),
-                articleContent: this.editor.getValue(),
+                articleContent: this.editor.doc.getValue(),
                 articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked"),
                 articleCommentable: $("#articleCommentable").prop("checked"),
                 articleType: $("#articleType").prop("checked") ? 1 : 0,
-                articleRewardContent: this.rewardEditor.getValue(),
+                articleRewardContent: this.rewardEditor.doc.getValue(),
                 articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")
             },
             url = "/article", type = "POST";
@@ -114,8 +114,8 @@ var AddArticle = {
             }
         });
         
-        if (window.localStorage && "" !== window.localStorage.articleContent && "" === AddArticle.editor.getValue()) {
-            AddArticle.editor.setValue(window.localStorage.articleContent);
+        if (window.localStorage && "" !== window.localStorage.articleContent && "" === AddArticle.editor.doc.getValue()) {
+            AddArticle.editor.doc.setValue(window.localStorage.articleContent);
         }
 
         AddArticle.editor.on('keydown', function (cm, evt) {
@@ -138,14 +138,14 @@ var AddArticle = {
         });
 
         AddArticle.editor.on('changes', function (cm) {
-            if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
+            if (cm.doc.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
                 $(".form .green").show();
             } else {
                 $(".form .green").hide();
             }
             
             if (window.localStorage) {
-                window.localStorage.articleContent = cm.getValue();
+                window.localStorage.articleContent = cm.doc.getValue();
             }
         });
 
@@ -210,7 +210,7 @@ var AddArticle = {
             type: "POST",
             cache: false,
             data: {
-                markdownText: it.editor.getValue()
+                markdownText: it.editor.doc.getValue()
             },
             success: function (result, textStatus) {
                 $("#preview").dialog("open");
