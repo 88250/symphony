@@ -9,9 +9,6 @@
             <label for="oId">Id</label>
             <input type="text" id="oId" name="oId" value="${article.oId}" readonly="readonly" />
 
-            <label for="articleTags">${tagLabel}</label>
-            <input type="text" id="articleTags" name="articleTags" value="${article.articleTags}" readonly="readonly" />
-
             <label for="articleAuthorEmail">${authorEmailLabel}</label>
             <input type="text" id="articleAuthorEmail" name="articleAuthorEmail" value="${article.articleAuthorEmail}" readonly="readonly" />
 
@@ -51,6 +48,9 @@
             <form action="/admin/article/${article.oId}" method="POST">
                 <label for="articleTitle">${titleLabel}</label>
                 <input type="text" id="articleTitle" name="articleTitle" value="${article.articleTitle}" />
+
+                <label for="articleTags">${tagLabel}</label>
+                <input type="text" id="articleTags" name="articleTags" value="${article.articleTags}" />
 
                 <label for="articleContent">${contentLabel}</label>
                 <textarea id="articleContent" name="articleContent">${article.articleContent}</textarea>

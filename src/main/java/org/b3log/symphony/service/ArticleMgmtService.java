@@ -456,10 +456,17 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_COMMENTABLE, Boolean.valueOf(article.optBoolean(Article.ARTICLE_COMMENTABLE)));
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.valueOf(article.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)));
 
+            final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject author = userRepository.get(authorId);
+            final JSONObject oldArticle = articleRepository.get(articleId);
+            
+            processTagsForArticleUpdate(oldArticle, article, author);
+            
+            userRepository.update(author.optString(Keys.OBJECT_ID), author);
             articleRepository.update(articleId, article);
 
             transaction.commit();
-        } catch (final RepositoryException e) {
+        } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
@@ -537,8 +544,8 @@ public class ArticleMgmtService {
      * @param author the specified author
      * @throws Exception exception
      */
-    private void processTagsForArticleUpdate(final JSONObject oldArticle, final JSONObject newArticle, final JSONObject author)
-            throws Exception {
+    private synchronized void processTagsForArticleUpdate(final JSONObject oldArticle, final JSONObject newArticle,
+            final JSONObject author) throws Exception {
         final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
         final List<JSONObject> oldTags = tagRepository.getByArticleId(oldArticleId);
         final String tagsString = newArticle.getString(Article.ARTICLE_TAGS);
@@ -673,7 +680,8 @@ public class ArticleMgmtService {
      * @param author the specified author
      * @throws RepositoryException repository exception
      */
-    private void tag(final String[] tagTitles, final JSONObject article, final JSONObject author) throws RepositoryException {
+    private synchronized void tag(final String[] tagTitles, final JSONObject article, final JSONObject author) 
+            throws RepositoryException {
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
             JSONObject tag = tagRepository.getByTitle(tagTitle);
@@ -740,5 +748,29 @@ public class ArticleMgmtService {
             userTagRelation.put(Common.TYPE, userTagType);
             userTagRepository.add(userTagRelation);
         }
+    }
+    
+    /**
+     * Formats the specified article tags.
+     *
+     * <p>
+     * Trims every tag.
+     * </p>
+     *
+     * @param articleTags the specified article tags
+     * @return formatted tags string
+     */
+    public String formatArticleTags(final String articleTags) {
+        final String articleTags1 = articleTags.replaceAll("，", ",").replaceAll("、", ",");
+        final String[] tagTitles = articleTags1.split(",");
+        final StringBuilder tagsBuilder = new StringBuilder();
+        for (final String tagTitle : tagTitles) {
+            tagsBuilder.append(tagTitle.trim()).append(",");
+        }
+        if (tagsBuilder.length() > 0) {
+            tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
+        }
+
+        return tagsBuilder.toString();
     }
 }

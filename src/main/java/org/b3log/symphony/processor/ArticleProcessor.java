@@ -92,7 +92,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.20, Jun 27, 2015
+ * @version 1.8.3.21, Jul 8, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -344,7 +344,7 @@ public class ArticleProcessor {
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
-        final String articleTags = formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
+        final String articleTags = articleMgmtService.formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
         final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
@@ -485,7 +485,7 @@ public class ArticleProcessor {
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
-        final String articleTags = formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
+        final String articleTags = articleMgmtService.formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
         final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
@@ -605,7 +605,7 @@ public class ArticleProcessor {
         final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
 
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
-        final String articleTags = formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
+        final String articleTags = articleMgmtService.formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
         final JSONObject article = new JSONObject();
@@ -760,7 +760,7 @@ public class ArticleProcessor {
         final JSONObject originalArticle = requestJSONObject.getJSONObject(Article.ARTICLE);
 
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
-        final String articleTags = formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
+        final String articleTags = articleMgmtService.formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
         final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);
@@ -989,29 +989,5 @@ public class ArticleProcessor {
         final JSONObject article = articleQueryService.getArticle(articleId);
         articleQueryService.processArticleContent(article, request);
         result.put(Article.ARTICLE_REWARD_CONTENT, article.optString(Article.ARTICLE_REWARD_CONTENT));
-    }
-
-    /**
-     * Formats the specified article tags.
-     *
-     * <p>
-     * Trims every tag.
-     * </p>
-     *
-     * @param articleTags the specified article tags
-     * @return formatted tags string
-     */
-    private String formatArticleTags(final String articleTags) {
-        final String articleTags1 = articleTags.replaceAll("，", ",").replaceAll("、", ",");
-        final String[] tagTitles = articleTags1.split(",");
-        final StringBuilder tagsBuilder = new StringBuilder();
-        for (final String tagTitle : tagTitles) {
-            tagsBuilder.append(tagTitle.trim()).append(",");
-        }
-        if (tagsBuilder.length() > 0) {
-            tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
-        }
-
-        return tagsBuilder.toString();
     }
 }

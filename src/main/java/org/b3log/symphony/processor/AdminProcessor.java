@@ -83,7 +83,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Jun 26, 2015
+ * @version 1.4.0.1, Jul 8, 2015
  * @since 1.1.0
  */
 @RequestProcessor
@@ -496,6 +496,9 @@ public class AdminProcessor {
 
             article.put(name, value);
         }
+        
+        final String articleTags = articleMgmtService.formatArticleTags(article.optString(Article.ARTICLE_TAGS));
+        article.put(Article.ARTICLE_TAGS, articleTags);
 
         articleMgmtService.updateArticle(articleId, article);
 
