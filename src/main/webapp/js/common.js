@@ -393,6 +393,16 @@ var Util = {
                         } else {
                             window.location.reload();
                         }
+                        
+                        if (window.localStorage) {
+                            if (!window.localStorage.articleContent) {
+                                window.localStorage.articleContent = "";
+                            }
+                            
+                            if (!window.localStorage.commentContent) {
+                                window.localStorage.commentContent = "";
+                            }
+                        }
                     } else {
                         $("#loginTip").text(result.msg).addClass("tip-error");
                     }
