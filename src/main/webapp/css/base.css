@@ -261,32 +261,28 @@ textarea {
 }
 
 .content-reset blockquote {
-    background-color: #ccc;
-    padding: 15px 20px;
     z-index: 1;
     position: relative;
     margin: 13px 0 13px 10px;
-    color: #666;
+    padding: 15px 15px 15px 15px;
 }
 
 .content-reset blockquote:before {
     content: "“";
-    font-size: 3rem;
+    font-size: 2rem;
     line-height: 1;
-    color: #fff;
     position: absolute;
-    left: -24px;
+    left: -15px;
     top: 0;
     z-index: -1;
 }
 
 .content-reset blockquote:after {
     content: "”";
-    font-size: 3rem;
+    font-size: 2rem;
     line-height: 0;
-    color: #fff;
     position: absolute;
-    right: -25px;
+    right: -15px;
     bottom: 0;
     z-index: -1;
 }
