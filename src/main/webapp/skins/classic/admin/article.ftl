@@ -16,10 +16,10 @@
             <input type="text" id="articleAuthorId" name="articleAuthorId" value="${article.articleAuthorId}" readonly="readonly" />
 
             <label for="articleCommentCount">${commentCountLabel}</label>
-            <input type="text" id="articleCommentCount" name="articleCommentCount" value="${article.articleCommentCount}" readonly="readonly" />
+            <input type="text" id="articleCommentCount" name="articleCommentCount" value="${article.articleCommentCount?c}" readonly="readonly" />
 
             <label for="articleViewCount">${viewCountLabel}</label>
-            <input type="text" id="articleViewCount" name="articleViewCount" value="${article.articleViewCount}" readonly="readonly" />
+            <input type="text" id="articleViewCount" name="articleViewCount" value="${article.articleViewCount?c}" readonly="readonly" />
 
             <label for="articlePermalink">${permalinkLabel}</label>
             <input type="text" id="articlePermalink" name="articlePermalink" value="${article.articlePermalink}" />
