@@ -46,7 +46,8 @@ var Comment = {
             }
         });
 
-        if (window.localStorage && "" !== window.localStorage.commentContent) {
+        if (window.localStorage && window.localStorage.commentContent 
+                && "" !== window.localStorage.commentContent.replace(/(^\s*)|(\s*$)/g, "")) {
             Comment.editor.setValue(window.localStorage.commentContent);
         }
 
