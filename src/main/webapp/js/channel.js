@@ -47,7 +47,7 @@ var ArticleChannel = {
 
         ArticleChannel.ws.onmessage = function (evt) {
             var data = JSON.parse(evt.data);
-            console.log(data);
+            // console.log(data);
 
             if (Label.articleOId !== data.articleId) { // It's not the current article
                 return;
@@ -155,7 +155,7 @@ var ArticleListChannel = {
                 }
             });
 
-            console.log(data);
+            // console.log(data);
         };
 
         ArticleListChannel.ws.onclose = function () {

@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.7, Jul 8, 2015
+ * @version 1.8.4.7, Jul 9, 2015
  */
 
 /**
@@ -159,25 +159,38 @@ var Util = {
             cache: false,
             success: function (result, textStatus) {
                 var count = result.unreadNotificationCount;
-                if (0 !== count) {
+                
+                if (0 < count) {
                     $("#aNotifications").removeClass("no-msg").addClass("msg").text(count);
                     document.title = "(" + count + ") " + Label.symphonyLabel + " - " + Label.visionLabel;
-                    // Webkit Desktop Notification
-                    var msg = Label.desktopNotificationTemplateLabel;
-                    msg = msg.replace("${count}", count);
-                    var options = {
-                        iconUrl: '',
-                        title: 'Sym 社区',
-                        body: msg,
-                        timeout: 3000,
-                        onclick: function () {
-                            console.log('Pewpew');
+                    
+                    if (window.localStorage) {
+                        if (count !== Number(window.localStorage.unreadNotificationCount)) {
+                            // Webkit Desktop Notification
+                            var msg = Label.desktopNotificationTemplateLabel;
+                            msg = msg.replace("${count}", count);
+                            var options = {
+                                iconUrl: '',
+                                title: 'Sym 社区',
+                                body: msg,
+                                timeout: 5000,
+                                onclick: function () {
+                                    console.log('Pewpew');
+                                }
+                            };
+
+                            $.notification(options);
+
+                            window.localStorage.unreadNotificationCount = count;
                         }
-                    };
-                    $.notification(options);
+                    }
                 } else {
                     $("#aNotifications").removeClass("msg").addClass("no-msg").text(count);
                     document.title = Label.symphonyLabel + " - " + Label.visionLabel;
+                    
+                    if (window.localStorage) {
+                        window.localStorage.unreadNotificationCount = 0;
+                    }
                 }
             }
         });
@@ -402,6 +415,10 @@ var Util = {
                             if (!window.localStorage.commentContent) {
                                 window.localStorage.commentContent = "";
                             }
+                            
+                            if (!window.localStorage.unreadNotificationCount) {
+                                window.localStorage.unreadNotificationCount = 0;
+                            }
                         }
                     } else {
                         $("#loginTip").text(result.msg).addClass("tip-error");
@@ -418,6 +435,7 @@ var Util = {
             // Clear localStorage
             window.localStorage.articleContent = "";
             window.localStorage.commentContent = "";
+            window.localStorage.unreadNotificationCount = 0;
         }
     },
     /**
