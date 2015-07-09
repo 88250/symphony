@@ -101,7 +101,7 @@
                     <#if discussionViewable && article.articleCommentable>
                     <div class="form fn-clear">
                         <form class="fn-none" id="fileupload" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="file">
+                            <input type="file" name="file" accept="image/*">
                         </form>
                         <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
                         <span style="bottom: 4px; right: 75px;"></span>

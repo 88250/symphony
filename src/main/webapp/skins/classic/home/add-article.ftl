@@ -30,7 +30,7 @@
                     </div>
                     <div class="fn-clear article-content">
                         <form class="fn-none" id="fileupload" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="file">
+                            <input type="file" name="file" accept="image/*">
                         </form>
                         <textarea id="articleContent" placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if></textarea>
                         <span id="articleContentTip" style="top: 304px; right: 2px;"></span>
