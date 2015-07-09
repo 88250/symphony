@@ -19,10 +19,20 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.1.10, Jul 2, 2015
+ * @version 1.13.1.10, Jul 9, 2015
  * @since 0.2.0
  */
 public final class Common {
+    
+    /**
+     * Key of to user.
+     */
+    public static final String TO_USER = "toUser";
+    
+    /**
+     * Key of amount.
+     */
+    public static final String AMOUNT = "amount";
     
     /**
      * Key of is daily checkin.

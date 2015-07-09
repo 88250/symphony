@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Jul 2, 2015
+ * @version 1.4.0.0, Jul 9, 2015
  * @since 1.3.0
  */
 @Service
@@ -203,7 +203,8 @@ public class PointtransferQueryService {
                 final String fromId = record.optString(Pointtransfer.FROM_ID);
 
                 String typeStr = record.optString(Pointtransfer.TYPE);
-                if (("3".equals(typeStr) && userId.equals(toId)) || ("5".equals(typeStr) && userId.equals(fromId))) {
+                if (("3".equals(typeStr) && userId.equals(toId)) || ("5".equals(typeStr) && userId.equals(fromId))
+                        || "9".equals(typeStr) && userId.equals(toId)) {
                     typeStr += "In";
                 }
 
@@ -304,6 +305,19 @@ public class PointtransferQueryService {
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN:
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_ACOUNT2ACOUNT:
+                        JSONObject user;
+                        if ("9In".equals(typeStr)) {
+                            user = userRepository.get(fromId);
+                        } else {
+                            user = userRepository.get(toId);
+                        }
+
+                        final String userLink = "<a href=\"/member/" + user.optString(User.USER_NAME) + "\">"
+                                + user.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", userLink);
+
                         break;
                     default:
                         LOGGER.warn("Invalid point type [" + type + "]");

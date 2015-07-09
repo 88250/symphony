@@ -37,7 +37,7 @@
     Most Checks are configurable, be sure to consult the documentation.
     To completely disable a check, just comment it out or delete it from the file.
     Finally, it is worth reading the documentation.
-    Version: 1.0.2.6, Jun 28, 2015
+    Version: 1.0.2.7, Jul 9, 2015
     Author: Liang Ding
 -->
 <!DOCTYPE module PUBLIC
@@ -118,7 +118,9 @@
         <module name="LineLength">
             <property name="max" value="140"/>
         </module>
-        <module name="MethodLength"/>
+        <module name="MethodLength">
+            <property name="max" value="500"/>
+        </module>
         <module name="ParameterNumber"/>
 
         <!-- Checks for whitespace                               -->

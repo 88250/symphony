@@ -162,6 +162,11 @@ public final class Pointtransfer {
      * Transfer sum - Activity - Daily Checkin Max.
      */
     public static final int TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX = Symphonys.getInt("pointActivityCheckinMax");
+    
+    /**
+     * Transfer type - User Account to User Account.
+     */
+    public static final int TRANSFER_TYPE_C_ACOUNT2ACOUNT = 9;
 
     /**
      * Private constructor.

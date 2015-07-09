@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Jun 25, 2015
+ * @version 1.2.0.5, Jul 9, 2015
  */
 
 /**
@@ -27,6 +27,38 @@
  * @static
  */
 var Settings = {
+    /**
+     * @description 积分转账
+     */
+    pointTransfer: function () {
+        var requestJSONObject = {
+            "userName": $("#pointTransferUserName").val(),
+            "amount": $("#pointTransferAmount").val()
+        };
+
+        $.ajax({
+            url: "/point/transfer",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            beforeSend: function () {
+                $("#pointTransferTip").removeClass("tip-succ").removeClass("tip-error").text("");
+            },
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    $("#pointTransferTip").addClass("tip-succ").text(Label.transferSuccLabel);
+                } else {
+                    $("#pointTransferTip").addClass("tip-error").text(result.msg);
+                }
+                
+                $("#pointTransferTip").show();
+
+                setTimeout(function () {
+                    $("#pointTransferTip").hide();
+                }, 2000);
+            }
+        });
+    },
     /**
      * @description 更新 settings 页面数据。
      */

@@ -54,6 +54,7 @@ import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.UserBlockCheck;
+import org.b3log.symphony.processor.advice.validate.PointTransferValidation;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
@@ -62,6 +63,7 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
+import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -162,6 +164,12 @@ public class UserProcessor {
      */
     @Inject
     private PointtransferQueryService pointtransferQueryService;
+
+    /**
+     * Pointtransfer management service.
+     */
+    @Inject
+    private PointtransferMgmtService pointtransferMgmtService;
 
     /**
      * Shows user home page.
@@ -690,6 +698,10 @@ public class UserProcessor {
         String inviteTipLabel = (String) dataModel.get("inviteTipLabel");
         inviteTipLabel = inviteTipLabel.replace("{point}", String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER));
         dataModel.put("inviteTipLabel", inviteTipLabel);
+
+        String pointTransferTipLabel = (String) dataModel.get("pointTransferTipLabel");
+        pointTransferTipLabel = pointTransferTipLabel.replace("{point}", Symphonys.get("pointTransferMin"));
+        dataModel.put("pointTransferTipLabel", pointTransferTipLabel);
     }
 
     /**
@@ -735,6 +747,41 @@ public class UserProcessor {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             ret.put(Keys.MSG, e.getMessage());
+        }
+    }
+
+    /**
+     * Point transfer.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/point/transfer", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, PointTransferValidation.class})
+    public void pointTransfer(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = QueryResults.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+
+        final int amount = requestJSONObject.optInt(Common.AMOUNT);
+        final JSONObject toUser = (JSONObject) request.getAttribute(Common.TO_USER);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+
+        final String fromId = currentUser.optString(Keys.OBJECT_ID);
+        final String toId = toUser.optString(Keys.OBJECT_ID);
+
+        final boolean succ = pointtransferMgmtService.transfer(fromId, toId,
+                Pointtransfer.TRANSFER_TYPE_C_ACOUNT2ACOUNT, amount, toId);
+        ret.put(Keys.STATUS_CODE, succ);
+        if (!succ) {
+            ret.put(Keys.MSG, langPropsService.get("transferFailLabel"));
         }
     }
 

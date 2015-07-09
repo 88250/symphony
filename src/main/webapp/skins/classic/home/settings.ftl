@@ -58,6 +58,23 @@
 
     <div class="module">
         <div class="module-header">
+            <h2>${pointTransferLabel}</h2>
+        </div>
+
+        <div class="module-panel form fn-clear">
+            ${pointTransferTipLabel}<br><br>
+            <input id="pointTransferUserName" type="text" placeholder="${userNameLabel}"/>
+            <span style="right:24px;top:49px;"></span><br/><br/>
+            <input id="pointTransferAmount" type="text" placeholder="${amountLabel}"/>
+            <span style="right:24px;top:49px;"></span><br/><br/>
+
+            <span id="pointTransferTip" style="right: 95px; top: 149px;"></span>
+            <button class="green fn-right" onclick="Settings.pointTransfer()">${saveLabel}</button>
+        </div>
+    </div>
+
+    <div class="module">
+        <div class="module-header">
             <h2>${syncLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">

@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Pointtransfer management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jun 27, 2015
+ * @version 1.1.1.0, Jul 9, 2015
  * @since 1.3.0
  */
 @Service
@@ -66,11 +66,12 @@ public class PointtransferMgmtService {
      * @param type the specified type
      * @param sum the specified sum
      * @param dataId the specified data id
+     * @return {@code true} if transfer successfully, returns {@code false} otherwise
      */
-    public synchronized void transfer(final String fromId, final String toId, final int type, final int sum,
+    public synchronized boolean transfer(final String fromId, final String toId, final int type, final int sum,
             final String dataId) {
         if (StringUtils.equals(fromId, toId)) { // for example the commenter is the article author
-            return;
+            return false;
         }
 
         final Transaction transaction = pointtransferRepository.beginTransaction();
@@ -79,6 +80,10 @@ public class PointtransferMgmtService {
             if (!Pointtransfer.ID_C_SYS.equals(fromId)) {
                 final JSONObject fromUser = userRepository.get(fromId);
                 fromBalance = fromUser.optInt(UserExt.USER_POINT) - sum;
+                if (fromBalance < 0) {
+                    throw new Exception("Insufficient balance");
+                }
+
                 fromUser.put(UserExt.USER_POINT, fromBalance);
 
                 userRepository.update(fromId, fromUser);
@@ -106,6 +111,8 @@ public class PointtransferMgmtService {
             pointtransferRepository.add(pointtransfer);
 
             transaction.commit();
+
+            return true;
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -113,6 +120,8 @@ public class PointtransferMgmtService {
 
             LOGGER.log(Level.ERROR, "Transfer [fromId=" + fromId + ", toId=" + toId + ", sum=" + sum + ", type=" + type
                     + ", dataId=" + dataId + "] error", e);
+
+            return false;
         }
     }
 
