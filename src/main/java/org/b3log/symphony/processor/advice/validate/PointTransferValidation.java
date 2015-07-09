@@ -111,7 +111,7 @@ public class PointTransferValidation extends BeforeRequestProcessAdvice {
 
         final int balanceMinLimit = Symphonys.getInt("pointTransferMin");
         final int balance = currentUser.optInt(UserExt.USER_POINT);
-        if (balance <= balanceMinLimit || balance - amount < 0) {
+        if (balance - amount < balanceMinLimit) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("insufficientBalanceLabel")));
         }
     }

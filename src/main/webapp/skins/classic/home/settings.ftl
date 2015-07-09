@@ -68,8 +68,8 @@
             <input id="pointTransferAmount" type="text" placeholder="${amountLabel}"/>
             <span style="right:24px;top:49px;"></span><br/><br/>
 
-            <span id="pointTransferTip" style="right: 95px; top: 149px;"></span>
-            <button class="green fn-right" onclick="Settings.pointTransfer()">${saveLabel}</button>
+            <span id="pointTransferTip" style="right: 110px; top: 149px;"></span>
+            <button class="red fn-right" onclick="Settings.pointTransfer()">${confirmTransferLabel}</button>
         </div>
     </div>
 
