@@ -18,6 +18,7 @@ package org.b3log.symphony.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -58,7 +59,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.5, Jul 5, 2015
+ * @version 1.5.1.5, Jul 10, 2015
  * @since 0.2.0
  */
 @Service
@@ -107,11 +108,21 @@ public class UserQueryService {
                 userNames.add(array.optJSONObject(i).optString(User.USER_NAME));
             }
 
+            final Comparator<String> c = new Comparator<String>() {
+                @Override
+                public int compare(final String str1, final String str2) {
+                    if (StringUtils.startsWithIgnoreCase(str1, str2)) {
+                        return 0;
+                    }
+
+                    return str1.compareToIgnoreCase(str2);
+                }
+            };
+
+            Collections.sort(userNames, c);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Loads usernames error", e);
         }
-
-        Collections.sort(userNames);
     }
 
     /**
@@ -123,9 +134,23 @@ public class UserQueryService {
     public List<String> getUserNamesByPrefix(final String namePrefix) {
         final List<String> ret = new ArrayList<String>();
 
-        for (final String userName : userNames) {
-            if (StringUtils.startsWithIgnoreCase(userName, namePrefix)) {
-                ret.add(userName);
+        final Comparator<String> c = new Comparator<String>() {
+            @Override
+            public int compare(final String str1, final String str2) {
+                if (StringUtils.startsWithIgnoreCase(str1, str2)) {
+                    return 0;
+                }
+
+                return str1.compareToIgnoreCase(str2);
+            }
+        };
+
+        final int index = Collections.binarySearch(userNames, namePrefix, c);
+        if (index >= 0) {
+            final int max = index + 5 <= userNames.size() - 1 ? index + 5 : userNames.size() - 1;
+
+            for (int i = index; i < max; i++) {
+                ret.add(userNames.get(i));
             }
         }
 
