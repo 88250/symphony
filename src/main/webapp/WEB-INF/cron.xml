@@ -20,15 +20,10 @@
     Description: Cron job configurations. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.4.0.0, Jul 3, 2015
+    Version: 1.4.0.1, Jul 11, 2015
     Author: Liang Ding
 -->
 <cronentries>
-    <cron>
-        <url>/users/check?key=dev_key</url>
-        <description>Checks accessibility of users</description>
-        <schedule>every 1 hours</schedule>
-    </cron>
     
     <cron>
         <url>/users/load-names?key=dev_key</url>

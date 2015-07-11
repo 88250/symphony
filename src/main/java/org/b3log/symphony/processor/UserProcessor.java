@@ -970,7 +970,7 @@ public class UserProcessor {
     }
 
     /**
-     * Check users.
+     * Check users. XXX: not used.
      *
      * @param context the specified context
      * @param request the specified request

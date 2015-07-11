@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "2.6.3.1, Jul 3, 2015",
+    "version": "2.7.3.1, Jul 11, 2015",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
@@ -16,24 +16,24 @@
                     "name": "userId",
                     "type": "String",
                     "length": 19
-                },{
+                }, {
                     "name": "type",
                     "type": "int"
-                },{
+                }, {
                     "name": "bizType",
                     "type": "int"
-                },{
+                }, {
                     "name": "receiver",
                     "type": "String",
                     "length": 64
-                },{
+                }, {
                     "name": "code",
                     "type": "String",
                     "length": 64
-                },{
+                }, {
                     "name": "status",
                     "type": "int"
-                },{
+                }, {
                     "name": "expired",
                     "type": "long"
                 }
@@ -480,6 +480,22 @@
                 },
                 {
                     "name": "userAppRole",
+                    "type": "int"
+                },
+                {
+                    "name": "userLongestCheckinStreakStart",
+                    "type": "int"
+                },
+                {
+                    "name": "userLongestCheckinStreakEnd",
+                    "type": "int"
+                },
+                {
+                    "name": "userCurrentCheckinStreakStart",
+                    "type": "int"
+                },
+                {
+                    "name": "userCurrentCheckinStreakEnd",
                     "type": "int"
                 }
             ]

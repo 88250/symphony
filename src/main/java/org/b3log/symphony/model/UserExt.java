@@ -19,11 +19,31 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.0.9, Jul 3, 2015
+ * @version 2.7.0.9, Jul 11, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+
+    /**
+     * Key of user longest checkin streak start.
+     */
+    public static final String USER_LONGEST_CHECKIN_STREAK_START = "userLongestCheckinStreakStart";
+
+    /**
+     * Key of user longest checkin streak end.
+     */
+    public static final String USER_LONGEST_CHECKIN_STREAK_END = "userLongestCheckinStreakEnd";
+
+    /**
+     * Key of user current checkin streak start.
+     */
+    public static final String USER_CURRENT_CHECKIN_STREAK_START = "userCurrentCheckinStreakStart";
+
+    /**
+     * Key of user current checkin streak start end.
+     */
+    public static final String USER_CURRENT_CHECKIN_STREAK_END = "userCurrentCheckinStreakEnd";
 
     /**
      * Key of user article count.
@@ -162,7 +182,7 @@ public final class UserExt {
      * User status - invalid.
      */
     public static final int USER_STATUS_C_INVALID = 1;
-    
+
     /**
      * User status - registered but not verified.
      */
@@ -171,14 +191,14 @@ public final class UserExt {
     //// Avatar type constants
     /**
      * User avatar type - Gravatar.
-     * 
+     *
      * @deprecated only upload allowed since 1.3.0
      */
     public static final int USER_AVATAR_TYPE_C_GRAVATAR = 0;
 
     /**
      * User avatar type - External Link.
-     * 
+     *
      * @deprecated only upload allowed since 1.3.0
      */
     public static final int USER_AVATAR_TYPE_C_EXTERNAL_LINK = 1;
