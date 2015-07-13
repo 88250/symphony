@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.ArrayUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -30,13 +31,14 @@ import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
- * Validates for article adding locally, removes the duplicated tags.
+ * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Jun 30, 2015
+ * @version 1.0.0.6, Jul 13, 2015
  * @since 0.2.0
  */
 @Named
@@ -129,16 +131,16 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
             }
 
-            // XXX: configured
-            if ("B3log Broadcast".equals(tagTitle)) {
+            if (ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
-                        + " [B3log Broadcast]"));
+                        + " [" + tagTitle + "]"));
             }
 
             tagBuilder.append(tagTitle).append(",");
         }
-
-        tagBuilder.deleteCharAt(tagBuilder.length() - 1);
+        if (tagBuilder.length() > 0) {
+            tagBuilder.deleteCharAt(tagBuilder.length() - 1);
+        }
         requestJSONObject.put(Article.ARTICLE_TAGS, tagBuilder.toString());
 
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);

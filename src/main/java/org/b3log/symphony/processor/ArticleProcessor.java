@@ -32,6 +32,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -92,7 +93,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.21, Jul 8, 2015
+ * @version 1.8.4.21, Jul 13, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -344,7 +345,7 @@ public class ArticleProcessor {
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
-        final String articleTags = articleMgmtService.formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
+        String articleTags = articleMgmtService.formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
         final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
@@ -354,7 +355,6 @@ public class ArticleProcessor {
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
-        article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
@@ -370,6 +370,16 @@ public class ArticleProcessor {
 
             final String authorEmail = currentUser.optString(User.USER_EMAIL);
             article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
+
+            if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+                articleTags = articleMgmtService.filterReservedTags(articleTags);
+            }
+
+            if (Strings.isEmptyOrNull(articleTags)) {
+                throw new ServiceException(langPropsService.get("articleTagReservedLabel"));
+            }
+
+            article.put(Article.ARTICLE_TAGS, articleTags);
 
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
 
@@ -485,7 +495,7 @@ public class ArticleProcessor {
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
-        final String articleTags = articleMgmtService.formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
+        String articleTags = articleMgmtService.formatArticleTags(requestJSONObject.optString(Article.ARTICLE_TAGS));
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
         final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
         final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
@@ -496,7 +506,6 @@ public class ArticleProcessor {
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, id);
         article.put(Article.ARTICLE_TITLE, articleTitle);
-        article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
@@ -518,7 +527,17 @@ public class ArticleProcessor {
         final String authorEmail = currentUser.optString(User.USER_EMAIL);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
 
+        if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+            articleTags = articleMgmtService.filterReservedTags(articleTags);
+        }
+
         try {
+            if (Strings.isEmptyOrNull(articleTags)) {
+                throw new ServiceException(langPropsService.get("articleTagReservedLabel"));
+            }
+
+            article.put(Article.ARTICLE_TAGS, articleTags);
+
             articleMgmtService.updateArticle(article);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
@@ -605,16 +624,14 @@ public class ArticleProcessor {
         final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
 
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
-        final String articleTags = articleMgmtService.formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
+        String articleTags = articleMgmtService.formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
-        article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
         article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
-
         article.put(Article.ARTICLE_AUTHOR_ID, authorId);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
 
@@ -646,7 +663,17 @@ public class ArticleProcessor {
 
         article.put(Article.ARTICLE_CONTENT, articleContent);
 
+        if (!Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE))) {
+            articleTags = articleMgmtService.filterReservedTags(articleTags);
+        }
+
         try {
+            if (Strings.isEmptyOrNull(articleTags)) {
+                throw new ServiceException(langPropsService.get("articleTagReservedLabel"));
+            }
+
+            article.put(Article.ARTICLE_TAGS, articleTags);
+
             if (toAdd) {
                 articleMgmtService.addArticle(article);
             } else {
@@ -760,7 +787,7 @@ public class ArticleProcessor {
         final JSONObject originalArticle = requestJSONObject.getJSONObject(Article.ARTICLE);
 
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
-        final String articleTags = articleMgmtService.formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
+        String articleTags = articleMgmtService.formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
         final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);
@@ -780,18 +807,25 @@ public class ArticleProcessor {
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, oldArticle.optString(Keys.OBJECT_ID));
         article.put(Article.ARTICLE_TITLE, articleTitle);
-        article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
         article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
         article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
-
         article.put(Article.ARTICLE_AUTHOR_ID, authorId);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
-
         article.put(Article.ARTICLE_T_IS_BROADCAST, false);
 
+        if (!Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE))) {
+            articleTags = articleMgmtService.filterReservedTags(articleTags);
+        }
+
         try {
+            if (Strings.isEmptyOrNull(articleTags)) {
+                throw new ServiceException(langPropsService.get("articleTagReservedLabel"));
+            }
+
+            article.put(Article.ARTICLE_TAGS, articleTags);
+
             articleMgmtService.updateArticle(article);
 
             ret.put(Keys.STATUS_CODE, true);

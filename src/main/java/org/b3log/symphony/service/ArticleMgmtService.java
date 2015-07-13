@@ -18,7 +18,9 @@ package org.b3log.symphony.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
+import org.apache.commons.lang.ArrayUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -32,7 +34,9 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
@@ -56,7 +60,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.3.8, Jul 8, 2015
+ * @version 1.5.4.8, Jul 13, 2015
  * @since 0.2.0
  */
 @Service
@@ -459,9 +463,9 @@ public class ArticleMgmtService {
             final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userRepository.get(authorId);
             final JSONObject oldArticle = articleRepository.get(articleId);
-            
+
             processTagsForArticleUpdate(oldArticle, article, author);
-            
+
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
             articleRepository.update(articleId, article);
 
@@ -680,7 +684,7 @@ public class ArticleMgmtService {
      * @param author the specified author
      * @throws RepositoryException repository exception
      */
-    private synchronized void tag(final String[] tagTitles, final JSONObject article, final JSONObject author) 
+    private synchronized void tag(final String[] tagTitles, final JSONObject article, final JSONObject author)
             throws RepositoryException {
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
@@ -749,20 +753,26 @@ public class ArticleMgmtService {
             userTagRepository.add(userTagRelation);
         }
     }
-    
+
     /**
      * Formats the specified article tags.
      *
-     * <p>
-     * Trims every tag.
-     * </p>
+     * <ul>
+     * <li>Trims every tag</li>
+     * <li>Deduplication</li>
+     * </ul>
      *
      * @param articleTags the specified article tags
      * @return formatted tags string
      */
     public String formatArticleTags(final String articleTags) {
         final String articleTags1 = articleTags.replaceAll("，", ",").replaceAll("、", ",");
-        final String[] tagTitles = articleTags1.split(",");
+        String[] tagTitles = articleTags1.split(",");
+       
+        tagTitles = Strings.trimAll(tagTitles);
+        final Set<String> titles = CollectionUtils.arrayToSet(tagTitles); // deduplication
+        tagTitles = titles.toArray(new String[0]);
+        
         final StringBuilder tagsBuilder = new StringBuilder();
         for (final String tagTitle : tagTitles) {
             tagsBuilder.append(tagTitle.trim()).append(",");
@@ -771,6 +781,31 @@ public class ArticleMgmtService {
             tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
         }
 
+        
+        
         return tagsBuilder.toString();
+    }
+
+    /**
+     * Filters the specified article tags.
+     *
+     * @param articleTags the specified article tags
+     * @return filtered tags string
+     */
+    public String filterReservedTags(final String articleTags) {
+        final String[] tags = articleTags.split(",");
+
+        final StringBuilder retBuilder = new StringBuilder();
+
+        for (final String tag : tags) {
+            if (!ArrayUtils.contains(Symphonys.RESERVED_TAGS, tag)) {
+                retBuilder.append(tag).append(",");
+            }
+        }
+        if (retBuilder.length() > 0) {
+            retBuilder.deleteCharAt(retBuilder.length() - 1);
+        }
+
+        return retBuilder.toString();
     }
 }

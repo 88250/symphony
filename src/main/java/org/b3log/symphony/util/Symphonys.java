@@ -23,7 +23,7 @@ import org.b3log.latke.RuntimeMode;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Aug 6, 2012
+ * @version 1.1.0.3, Jul 13, 2015
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -32,6 +32,23 @@ public final class Symphonys {
      * Configurations.
      */
     private static final ResourceBundle CFG = ResourceBundle.getBundle("symphony");
+    
+    /**
+     * Reserved tags.
+     */
+    public static final String[] RESERVED_TAGS;
+    
+    static {
+        final String reservedTags = CFG.getString("reservedTags");
+        final String[] tags = reservedTags.split(",");
+        RESERVED_TAGS = new String[tags.length];
+        
+        for (int i = 0; i < tags.length; i++) {
+            final String tag = tags[i];
+            
+            RESERVED_TAGS[i] = tag.trim();
+        }
+    }
 
     /**
      * Does Symphony runs on development environment?
