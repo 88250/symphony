@@ -39,7 +39,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.6, Jul 2, 2015
+ * @version 1.3.0.6, Jul 13, 2015
  */
 @Named
 @Singleton
@@ -125,7 +125,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
      * A valid user name:
      * <ul>
      * <li>length [1, 20]</li>
-     * <li>content {a-z, A-Z, 0-9, _}</li>
+     * <li>content {a-z, A-Z, 0-9}</li>
      * </ul>
      * </p>
      *
@@ -142,7 +142,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
         for (int i = 0; i < length; i++) {
             c = name.charAt(i);
 
-            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || '0' <= c && c <= '9' || '_' == c) {
+            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || '0' <= c && c <= '9') {
                 continue;
             }
 
