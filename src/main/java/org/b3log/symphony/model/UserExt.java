@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.0.9, Jul 11, 2015
+ * @version 2.8.0.9, Jul 13, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -134,6 +134,11 @@ public final class UserExt {
      * Key of latest login time.
      */
     public static final String USER_LATEST_LOGIN_TIME = "userLatestLoginTime";
+    
+    /**
+     * Key of latest login IP.
+     */
+    public static final String USER_LATEST_LOGIN_IP = "userLatestLoginIP";
 
     /**
      * Key of app role.

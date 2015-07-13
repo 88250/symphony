@@ -32,6 +32,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
@@ -51,7 +52,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.3.2, Jul 7, 2015
+ * @version 1.6.3.2, Jul 13, 2015
  * @since 0.2.0
  */
 @Service
@@ -129,10 +130,12 @@ public class UserMgmtService {
                     break;
                 }
 
+                final String ip = Requests.getRemoteAddr(request);
+
                 if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
                     Sessions.logout(request, response);
 
-                    updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
+                    updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, false);
 
                     return false;
                 }
@@ -141,7 +144,7 @@ public class UserMgmtService {
                 final String password = cookieJSONObject.optString(User.USER_PASSWORD);
                 if (userPassword.equals(password)) {
                     Sessions.login(request, response, user);
-                    updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
+                    updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
                     LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userEmail);
 
                     return true;
@@ -161,13 +164,14 @@ public class UserMgmtService {
     }
 
     /**
-     * Updates a user's online status and saves the login time.
+     * Updates a user's online status and saves the login time and IP.
      *
      * @param userId the specified user id
+     * @param ip the specified IP, could be "" if the {@code onlineFlag} is {@code false}
      * @param onlineFlag the specified online flag
      * @throws ServiceException service exception
      */
-    public void updateOnlineStatus(final String userId, final boolean onlineFlag) throws ServiceException {
+    public void updateOnlineStatus(final String userId, final String ip, final boolean onlineFlag) throws ServiceException {
         Transaction transaction = null;
 
         try {
@@ -180,6 +184,10 @@ public class UserMgmtService {
 
             user.put(UserExt.USER_ONLINE_FLAG, onlineFlag);
             user.put(UserExt.USER_LATEST_LOGIN_TIME, System.currentTimeMillis());
+
+            if (onlineFlag) {
+                user.put(UserExt.USER_LATEST_LOGIN_IP, ip);
+            }
 
             userRepository.update(userId, user);
 

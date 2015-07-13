@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.8, Jul 3, 2015
+ * @version 1.4.0.8, Jul 13, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -278,7 +278,7 @@ public class LoginProcessor {
 
             name = user.optString(User.USER_NAME);
             email = user.optString(User.USER_EMAIL);
-            
+
             user.put(UserExt.USER_APP_ROLE, appRole);
             user.put(User.USER_PASSWORD, password);
             user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
@@ -286,7 +286,9 @@ public class LoginProcessor {
             userMgmtService.addUser(user);
 
             Sessions.login(request, response, user);
-            userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
+
+            final String ip = Requests.getRemoteAddr(request);
+            userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
 
             if (!Strings.isEmptyOrNull(referral)) {
                 final JSONObject referralUser = userQueryService.getUserByName(referral);
@@ -348,7 +350,7 @@ public class LoginProcessor {
             }
 
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
-                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), false);
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
                 ret.put(Keys.MSG, langPropsService.get("userBlockLabel"));
 
                 return;
@@ -357,7 +359,9 @@ public class LoginProcessor {
             final String userPassword = user.optString(User.USER_PASSWORD);
             if (userPassword.equals(requestJSONObject.optString(User.USER_PASSWORD))) {
                 Sessions.login(request, response, user);
-                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), true);
+                
+                final String ip = Requests.getRemoteAddr(request);
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
 
                 ret.put(Keys.MSG, "");
                 ret.put(Keys.STATUS_CODE, true);
