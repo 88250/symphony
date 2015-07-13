@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.15, Jun 28, 2015
+ * @version 1.4.3.15, Jul 13, 2015
  * @since 0.2.0
  */
 @Service
@@ -219,8 +219,15 @@ public class CommentMgmtService {
             if (!fromClient) {
                 // Point
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                pointtransferMgmtService.transfer(commentAuthorId, articleAuthorId,
-                        Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT, commentId);
+                if (articleAuthorId.equals(commentAuthorId)) {
+                    pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT,
+                            commentId);
+                } else {
+                    pointtransferMgmtService.transfer(commentAuthorId, articleAuthorId,
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT,
+                            commentId);
+                }
             }
 
             // Event

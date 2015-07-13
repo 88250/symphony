@@ -21,7 +21,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines all pointtransfer model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Jul 2, 2015
+ * @version 1.4.0.0, Jul 13, 2015
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -122,6 +122,11 @@ public final class Pointtransfer {
      * Transfer sum - Add Comment.
      */
     public static final int TRANSFER_SUM_C_ADD_COMMENT = Symphonys.getInt("porintAddComment");
+    
+    /**
+     * Transfer sum - Add Self Article Comment.
+     */
+    public static final int TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT = Symphonys.getInt("pointAddSelfArticleComment");
 
     /**
      * Transfer type - Add Article Reward Outcome.
