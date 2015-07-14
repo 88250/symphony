@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.4.2, Jul 14, 2015
+ * @version 1.6.5.2, Jul 14, 2015
  * @since 0.2.0
  */
 @Service
@@ -403,6 +403,10 @@ public class UserMgmtService {
             user.put(UserExt.USER_LATEST_CMT_TIME, 0L);
             user.put(UserExt.USER_LATEST_LOGIN_TIME, 0L);
             user.put(UserExt.USER_LATEST_LOGIN_IP, "");
+            user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_START, 0);
+            user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_END, 0);
+            user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_START, 0);
+            user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_END, 0);
             user.put(UserExt.USER_POINT, 0);
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
