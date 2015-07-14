@@ -50,7 +50,11 @@
             <span class="ft-small">${joinTimeLabel}</span> ${user.userCreateTime?string('yyyy-MM-dd HH:mm:ss')}
         </div>
         <div class="user-info">
-            <span class="ft-small">${checkinStreakPart0Label}</span> ${user.userLongestCheckinStreakEnd - user.userLongestCheckinStreakStart} <span class="ft-small">${checkinStreakPart1Label}</span> ${user.userCurrentCheckinStreakEnd - user.userCurrentCheckinStreakStart} <span class="ft-small">${checkinStreakPart2Label}</span>
+            <span class="ft-small">${checkinStreakPart0Label}</span>
+            ${user.userLongestCheckinStreakEnd - user.userLongestCheckinStreakStart} 
+            <span class="ft-small">${checkinStreakPart1Label}</span> 
+            ${user.userCurrentCheckinStreakEnd - user.userCurrentCheckinStreakStart}
+            <span class="ft-small">${checkinStreakPart2Label}</span>
         </div>
 
         <ul class="status fn-clear">

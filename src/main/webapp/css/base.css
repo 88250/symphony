@@ -395,6 +395,7 @@ button.small,
     vertical-align: baseline;
     font-size: 12px;
     font-weight: normal;
+    text-shadow: 0 0 0;
 }
 
 button.green {
@@ -420,11 +421,13 @@ button.green:active {
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
 }
 
-button.red {
+button.red,
+.btn.red {
     color: #900;
 }
 
-button.red:hover {
+button.red:hover,
+.btn.red:hover {
     color: #FFF;
     background-color: #b33630;
     background-image: linear-gradient(#dc5f59, #b33630);
@@ -432,7 +435,8 @@ button.red:hover {
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#dc5f59', endColorstr='#b33630');
 }
 
-button.red:active {
+button.red:active,
+.btn.red:active {
     background-color: #b33630;
     background-image: none;
     border-color: #9f312c;
@@ -1263,7 +1267,7 @@ a.icon:hover {
 /* start person info */
 .person-info {
     line-height: 24px;
-    padding: 0 15px;
+    padding: 0 10px;
 }
 
 .person-info .fn-clear {

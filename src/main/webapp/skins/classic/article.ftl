@@ -167,7 +167,7 @@
                 <div class="side">
 
                     <#include 'common/person-info.ftl'/>
-
+                    
                     <div class="module">
                         <div class="module-header">
                             <h2>

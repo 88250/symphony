@@ -10,20 +10,26 @@
                     </a>
                 </div>
                 <div class="fn-left">
-                    <a href="/member/${currentUser.userName}">${userName}</a> 
-                    <#if !isDailyCheckin> &nbsp;
-                    <a class="btn small" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
-                    </#if>
                     <div class="fn-hr5"></div>
-                    <a href="/add-article" title="${addArticleLabel}${articleLabel}" 
-                       class="ft-red"><span class="icon icon-addfile"> ${addArticleLabel}${articleLabel}</span></a>
+                    <a href="/member/${currentUser.userName}">${userName}</a>  &nbsp;
                     <a href="/member/${currentUser.userName}/points" class="ft-small" title="${pointLabel} ${currentUser.userPoint?c}">
                         <#if 0 == currentUser.userAppRole>
                         0x${currentUser.userPointHex}
                         <#else>
                         <div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div>
                         </#if>
-                    </a>
+                    </a><br/>
+                    <#if !isDailyCheckin>
+                    <a class="btn small red" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
+                    <#else>
+                    <span class="ft-small">
+                        ${checkinStreakPart0Label}
+                        ${currentUser.userLongestCheckinStreakEnd - currentUser.userLongestCheckinStreakStart}
+                        ${checkinStreakPart1Label}
+                        ${currentUser.userCurrentCheckinStreakEnd - currentUser.userCurrentCheckinStreakStart}
+                        ${checkinStreakPart2Label}
+                    </span>
+                    </#if>
                 </div>
             </div>
             <div>
