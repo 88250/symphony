@@ -99,7 +99,7 @@
                     </#if>
                     <#if isLoggedIn>
                     <#if discussionViewable && article.articleCommentable>
-                    <div class="form fn-clear">
+                    <div class="form fn-clear comment-wrap">
                         <form class="fn-none" id="fileupload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file" accept="image/*">
                         </form>

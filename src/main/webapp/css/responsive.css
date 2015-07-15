@@ -124,9 +124,12 @@
         top: 270px;
     }
 
-    .side,
+    .side {
+        margin-top: 2rem;
+    }
+
     .article-info {
-        margin-top: 30px;
+        margin-top: 1rem;
     }
 
     .CodeMirror {
@@ -136,12 +139,21 @@
     .pagination,
     .article-info,
     .content .article-title,
-    .content-reset.article-content {
+    .content-reset.article-content,
+    .share,
+    .main .comment-login,
+    .main #articleRewardContent {
         margin-left: 0.5rem;
         margin-right: 0.5rem;
     }
 
     .article-title h2 {
         display: inline;
+    }
+    
+    .list#comments h2,
+    .comment-wrap {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
     }
 }
