@@ -56,7 +56,6 @@
     .footer > div > .fn-left,
     .article-content,
     .form label.article-content-label,
-    .home-comments li > span.fn-right,
     .article-info > .fn-left, 
     .article-info > .fn-right,
     .content .notification li > div.content-reset,
@@ -71,8 +70,7 @@
         float: left;
     }
 
-    .form label.article-content-label, 
-    .home-comments h2 {
+    .form label.article-content-label {
         display: block;
     }
 
@@ -128,7 +126,10 @@
         margin-top: 2rem;
     }
 
-    .article-info {
+    .article-info,
+    .tag-articles .title,
+    #articleTitle,
+    .about {
         margin-top: 1rem;
     }
 
@@ -142,7 +143,8 @@
     .content-reset.article-content,
     .share,
     .main .comment-login,
-    .main #articleRewardContent {
+    .main #articleRewardContent,
+    .tag-articles .title {
         margin-left: 0.5rem;
         margin-right: 0.5rem;
     }
@@ -150,10 +152,16 @@
     .article-title h2 {
         display: inline;
     }
-    
+
     .list#comments h2,
-    .comment-wrap {
+    .comment-wrap,
+    .about,
+    .tag-articles .content > p {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
+    }
+
+    .about {
+        box-sizing: border-box;
     }
 }

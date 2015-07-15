@@ -6,12 +6,14 @@
         <#list userHomeComments as comment>
         <li>
             <div class="fn-clear">
-                <a title="${comment.commentArticleAuthorName}"
-                   target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}">
-                    <img class="avatar-small fn-left" src="${comment.commentArticleAuthorThumbnailURL}"/>
-                </a>
-                &nbsp;
-                <h2 class="fn-inline"><a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a></h2>
+                <h2 class="fn-inline">
+                    <a title="${comment.commentArticleAuthorName}"
+                       target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}">
+                        <img class="avatar-small fn-left" src="${comment.commentArticleAuthorThumbnailURL}"/>
+                    </a>
+                    &nbsp;
+                    <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
+                </h2>
                 <span class="fn-right ft-small">
                     <span class="icon icon-date"></span>
                     ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  

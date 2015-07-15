@@ -15,7 +15,7 @@
         <div class="main tag-articles">
             <div class="wrapper fn-clear">
                 <div class="content">
-                    <div class="fn-clear">
+                    <div class="fn-clear title">
                         <#if tag.tagIconPath != "">
                         <img class="tag-img fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}">
                         </#if>
