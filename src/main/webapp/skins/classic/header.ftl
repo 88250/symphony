@@ -35,7 +35,7 @@
                             <label for="nameOrEmail">${accountLabel}</label>
                         </td>
                         <td>
-                            <input id="nameOrEmail" type="text"/>
+                            <input id="nameOrEmail" type="text" placeholder="${nameOrEmailLabel}" />
                             <span style="top: 28px; left: 246px;"></span>
                         </td>
                         <td>&nbsp;</td>
