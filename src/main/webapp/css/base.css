@@ -389,15 +389,6 @@ button:active,
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset;
 }
 
-button.small,
-.btn.small {
-    padding: 1px 5px;
-    vertical-align: baseline;
-    font-size: 12px;
-    font-weight: normal;
-    text-shadow: 0 0 0;
-}
-
 button.green {
     color: #fff;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
@@ -405,7 +396,6 @@ button.green {
     background-image: linear-gradient(#8add6d, #60b044);
     border-color: #5ca941;
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#8ADD6D', endColorstr='#60B044');
-    text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
 }
 
 button.green:hover {
@@ -440,6 +430,15 @@ button.red:active,
     background-color: #b33630;
     background-image: none;
     border-color: #9f312c;
+}
+
+button.small,
+.btn.small {
+    padding: 1px 5px;
+    vertical-align: baseline;
+    font-size: 12px;
+    font-weight: lighter;
+    text-shadow: 0 0 0;
 }
 /* end button */
 

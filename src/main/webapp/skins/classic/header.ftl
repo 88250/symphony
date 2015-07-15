@@ -23,7 +23,7 @@
             </#if>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
             <a href="/add-article" title="${addArticleLabel}${articleLabel}" 
-                       class="icon icon-addfile"></a>
+               class="icon icon-addfile"></a>
             <#else>
             <a id="aRegister" href="javascript:Util.goRegister()" class="last icon icon-register" 
                title="${registerLabel}"></a>

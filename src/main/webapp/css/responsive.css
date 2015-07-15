@@ -46,7 +46,6 @@
     }
 
     .follow li > div,
-    .register .intro,
     .nav .user-nav,
     h2.fn-inline,
     .article-title h2 {
@@ -105,27 +104,35 @@
         padding: 0;
     }
 
-    .register .intro {
-        border-top: 1px dashed #C0C0C0 !important;
-        border-left-width: 0 !important;
-        margin: 50px 0 0 !important;
-        padding: 20px 0 0 !important;
+    .main .register .intro {
+        width: auto;
+        border-left-width: 0;
+        padding: 0.5rem;
+        margin: 2rem 0;
+        border-top: 1px dashed #C0C0C0; 
+    }
+
+    .register .form {
+        margin: 0 auto;
+        width: 271px;
+        float: none;
+        margin-top: 2rem;
     }
 
     .user-online {
         right: 140px;
         top: 270px;
     }
-    
+
     .side,
     .article-info {
-         margin-top: 30px;
+        margin-top: 30px;
     }
 
     .CodeMirror {
         width: 99.5%;
     }
-    
+
     .pagination,
     .article-info,
     .content .article-title,
@@ -133,7 +140,7 @@
         margin-left: 0.5rem;
         margin-right: 0.5rem;
     }
-    
+
     .article-title h2 {
         display: inline;
     }
