@@ -46,7 +46,7 @@ var Comment = {
             }
         });
 
-        if (window.localStorage && window.localStorage.commentContent 
+        if (window.localStorage && window.localStorage.commentContent
                 && "" !== window.localStorage.commentContent.replace(/(^\s*)|(\s*$)/g, "")) {
             Comment.editor.setValue(window.localStorage.commentContent);
         }
@@ -95,6 +95,10 @@ var Comment = {
         $("#preview").dialog({
             "modal": true,
             "hideFooter": true
+        });
+
+        $("#comments").on('dblclick', 'img', function () {
+            window.open($(this).attr('src'));
         });
     },
     /**
@@ -167,10 +171,6 @@ var Article = {
      * @description 初识化发文页面
      */
     init: function () {
-        $("#preview").dialog({
-            "modal": true,
-            "hideFooter": true
-        });
         this.share();
         this.parseLanguage();
     },
