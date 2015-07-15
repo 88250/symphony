@@ -1,14 +1,12 @@
 <div class="nav"> 
     <div class="wrapper fn-clear">
         <h1><a rel="nofollow" href="/">Sym</a></h1>
-        <form target="_blank" method="get" action="http://www.google.com/search">
+        <form target="_blank" action="http://search.b3log.org/cse/search">
             <span class="icon icon-search"></span>
-            <input class="search" type="text" name="q" />
-            <input class="fn-none" type="submit" name="btnG" value=""/>
-            <input type="hidden" name="oe" value="UTF-8" />
-            <input type="hidden" name="ie" value="UTF-8" />
-            <input type="hidden" name="newwindow" value="0" />
-            <input type="hidden" name="sitesearch" value="symphony.b3log.org" />
+            <input class="search" type="text" name="q">
+            <input type="hidden" value="10365148342193520062" name="s">
+            <input type="hidden" name="cc" value="symphony.b3log.org">
+            <input type="submit" class="fn-none" value="">
         </form>
         <span class="tags">
             <#list navTrendTags as trendTag>
