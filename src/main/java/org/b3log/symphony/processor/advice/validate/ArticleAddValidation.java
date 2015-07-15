@@ -24,6 +24,8 @@ import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.ArrayUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
@@ -38,7 +40,7 @@ import org.json.JSONObject;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Jul 13, 2015
+ * @version 1.0.1.6, Jul 15, 2015
  * @since 0.2.0
  */
 @Named
@@ -93,16 +95,18 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        validateArticleFields(requestJSONObject);
+        validateArticleFields(request, requestJSONObject);
     }
 
     /**
      * Validates article fields.
      *
+     * @param request the specified HTTP servlet request
      * @param requestJSONObject the specified request object
      * @throws RequestProcessAdviceException if validate failed
      */
-    public static void validateArticleFields(final JSONObject requestJSONObject) throws RequestProcessAdviceException {
+    public static void validateArticleFields(final HttpServletRequest request,
+            final JSONObject requestJSONObject) throws RequestProcessAdviceException {
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         if (Strings.isEmptyOrNull(articleTitle) || articleTitle.length() > MAX_ARTICLE_TITLE_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
@@ -131,7 +135,9 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
             }
 
-            if (ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
+            final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+            if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+                    && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
                         + " [" + tagTitle + "]"));
             }

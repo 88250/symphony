@@ -48,6 +48,6 @@ public class ArticleUpdateValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        ArticleAddValidation.validateArticleFields(requestJSONObject);
+        ArticleAddValidation.validateArticleFields(request, requestJSONObject);
     }
 }
