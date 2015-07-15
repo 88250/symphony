@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.3.3, Jul 8, 2015
+ * @version 1.6.4.3, Jul 15, 2015
  */
 
 /**
@@ -34,8 +34,15 @@ var Comment = {
         }],
     editor: undefined,
     init: function () {
-        Util.initCodeMirror();
+         $("#comments").on('dblclick', 'img', function () {
+            window.open($(this).attr('src'));
+        });
+        
+        if (isLoggedIn) {
+            return false;
+        }
 
+        Util.initCodeMirror();
         Comment.editor = CodeMirror.fromTextArea(document.getElementById("commentContent"), {
             mode: 'markdown',
             dragDrop: false,
@@ -95,10 +102,6 @@ var Comment = {
         $("#preview").dialog({
             "modal": true,
             "hideFooter": true
-        });
-
-        $("#comments").on('dblclick', 'img', function () {
-            window.open($(this).attr('src'));
         });
     },
     /**
