@@ -8,6 +8,7 @@
         <meta name="description" content="${article.articleTitle}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/js/lib/google-code-prettify/prettify.css?${staticResourceVersion}">
+        <link type="text/css" rel="stylesheet" href="/js/lib/highlight.js-8.6/styles/github.css?${staticResourceVersion}">
         <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/codemirror.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/hint/show-hint.css?${staticResourceVersion}" />
@@ -223,6 +224,7 @@
         <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/placeholder.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/overwrite/codemirror/addon/hint/show-hint.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/google-code-prettify/prettify.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js?${staticResourceVersion}"></script>

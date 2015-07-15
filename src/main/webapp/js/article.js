@@ -202,13 +202,16 @@ var Article = {
     parseLanguage: function () {
         var isPrettify = false;
 
-        $(".content-reset pre, .content-reset > p > code").each(function () {
-            this.className = "prettyprint";
-            isPrettify = true;
+        $(".content-reset pre").each(function () {
+            if (this.className === "prettyprint") {
+                isPrettify = true;
+            }
         });
 
         if (isPrettify) {
             prettyPrint();
+        } else {
+            hljs.initHighlightingOnLoad();
         }
     },
     /**
