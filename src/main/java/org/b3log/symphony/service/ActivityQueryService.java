@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * Activity query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 2, 2015
+ * @version 1.1.0.0, Jul 16, 2015
  * @since 1.3.0
  */
 @Service
@@ -53,7 +53,7 @@ public class ActivityQueryService {
      * @param userId the specified user id
      * @return {@code true} if checkin succeeded, returns {@code false} otherwise
      */
-    public synchronized boolean isCheckedin(final String userId) {
+    public synchronized boolean isCheckedinToday(final String userId) {
         final Calendar calendar = Calendar.getInstance();
         final int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour < Symphonys.getInt("activityDailyCheckinTimeMin")
@@ -65,6 +65,27 @@ public class ActivityQueryService {
 
         final List<JSONObject> records = pointtransferQueryService.getLatestPointtransfers(userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN, 1);
+        if (records.isEmpty()) {
+            return false;
+        }
+
+        final JSONObject maybeToday = records.get(0);
+        final long time = maybeToday.optLong(Pointtransfer.TIME);
+
+        return DateUtils.isSameDay(now, new Date(time));
+    }
+
+    /**
+     * Does participate 1A0001 today?
+     *
+     * @param userId the specified user id
+     * @return {@code true} if participated, returns {@code false} otherwise
+     */
+    public synchronized boolean is1A0001Today(final String userId) {
+        final Date now = new Date();
+
+        final List<JSONObject> records = pointtransferQueryService.getLatestPointtransfers(userId,
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001, 1);
         if (records.isEmpty()) {
             return false;
         }

@@ -69,7 +69,7 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.QueryResults;
+import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -339,7 +339,7 @@ public class ArticleProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
@@ -489,7 +489,7 @@ public class ArticleProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
@@ -592,7 +592,7 @@ public class ArticleProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
@@ -757,7 +757,7 @@ public class ArticleProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
@@ -931,7 +931,7 @@ public class ArticleProcessor {
             final HTTPRequestContext context, final String articleId) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-        final JSONObject result = QueryResults.trueResult();
+        final JSONObject result = Results.trueResult();
         renderer.setJSONObject(result);
 
         result.put("html", "");

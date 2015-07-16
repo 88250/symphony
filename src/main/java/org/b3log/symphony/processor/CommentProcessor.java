@@ -43,7 +43,7 @@ import org.b3log.symphony.service.ClientMgmtService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.QueryResults;
+import org.b3log.symphony.util.Results;
 import org.json.JSONObject;
 
 /**
@@ -133,7 +133,7 @@ public class CommentProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);

@@ -112,8 +112,12 @@ public class PointtransferQueryService {
     public List<JSONObject> getLatestPointtransfers(final String userId, final int type, final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
+        final List<Filter> userFilters = new ArrayList<Filter>();
+        userFilters.add(new PropertyFilter(Pointtransfer.FROM_ID, FilterOperator.EQUAL, userId));
+        userFilters.add(new PropertyFilter(Pointtransfer.TO_ID, FilterOperator.EQUAL, userId));
+        
         final List<Filter> filters = new ArrayList<Filter>();
-        filters.add(new PropertyFilter(Pointtransfer.TO_ID, FilterOperator.EQUAL, userId));
+        filters.add(new CompositeFilter(CompositeFilterOperator.OR, userFilters));
         filters.add(new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, type));
 
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(1)
@@ -203,8 +207,9 @@ public class PointtransferQueryService {
                 final String fromId = record.optString(Pointtransfer.FROM_ID);
 
                 String typeStr = record.optString(Pointtransfer.TYPE);
-                if (("3".equals(typeStr) && userId.equals(toId)) || ("5".equals(typeStr) && userId.equals(fromId))
-                        || "9".equals(typeStr) && userId.equals(toId)) {
+                if (("3".equals(typeStr) && userId.equals(toId))
+                        || ("5".equals(typeStr) && userId.equals(fromId))
+                        || ("9".equals(typeStr) && userId.equals(toId))) {
                     typeStr += "In";
                 }
 
@@ -305,6 +310,7 @@ public class PointtransferQueryService {
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN:
+                    case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001:
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACOUNT2ACOUNT:
                         JSONObject user;

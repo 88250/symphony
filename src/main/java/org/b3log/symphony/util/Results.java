@@ -21,13 +21,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Query result utilities.
+ * Result utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, May 15, 2015
+ * @version 2.1.0.1, Jul 16, 2015
  * @since 0.2.0
  */
-public final class QueryResults {
+public final class Results {
 
     /**
      * Constructs a default (false) result.
@@ -85,6 +85,6 @@ public final class QueryResults {
     /**
      * Private constructor.
      */
-    private QueryResults() {
+    private Results() {
     }
 }

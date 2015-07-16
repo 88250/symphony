@@ -166,7 +166,7 @@ public class IndexProcessor {
     }
     
     /**
-     * Shows about.
+     * Shows search header.
      *
      * @param context the specified context
      * @param request the specified request

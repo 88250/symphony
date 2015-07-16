@@ -41,7 +41,7 @@ import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
-import org.b3log.symphony.util.QueryResults;
+import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -378,7 +378,7 @@ public class NotificationProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.trueResult();
+        final JSONObject ret = Results.trueResult();
         ret.put(Notification.NOTIFICATION_T_UNREAD_COUNT, 0);
         renderer.setJSONObject(ret);
 

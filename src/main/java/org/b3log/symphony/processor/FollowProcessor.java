@@ -31,7 +31,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.service.FollowMgmtService;
-import org.b3log.symphony.util.QueryResults;
+import org.b3log.symphony.util.Results;
 import org.json.JSONObject;
 
 /**
@@ -88,7 +88,7 @@ public class FollowProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -126,7 +126,7 @@ public class FollowProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -164,7 +164,7 @@ public class FollowProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -202,7 +202,7 @@ public class FollowProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -240,7 +240,7 @@ public class FollowProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -278,7 +278,7 @@ public class FollowProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());

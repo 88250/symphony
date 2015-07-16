@@ -20,11 +20,14 @@ import java.util.Random;
 import javax.inject.Inject;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.util.Results;
 import org.json.JSONObject;
 
 /**
@@ -73,13 +76,19 @@ public class ActivityMgmtService {
     private UserQueryService userQueryService;
 
     /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
      * Daily checkin.
      *
      * @param userId the specified user id
      * @return {@code true} if checkin succeeded, returns {@code false} otherwise
      */
     public synchronized boolean dailyCheckin(final String userId) {
-        if (activityQueryService.isCheckedin(userId)) {
+        if (activityQueryService.isCheckedinToday(userId)) {
             return false;
         }
 
@@ -128,7 +137,7 @@ public class ActivityMgmtService {
             currentStreakEnd = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_END);
             final int longestStreakStart = user.optInt(UserExt.USER_LONGEST_CHECKIN_STREAK_START);
             final int longestStreakEnd = user.optInt(UserExt.USER_LONGEST_CHECKIN_STREAK_END);
-            
+
             if (longestStreakEnd - longestStreakStart < currentStreakEnd - currentStreakStart) {
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_START, currentStreakStart);
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_END, currentStreakEnd);
@@ -142,5 +151,36 @@ public class ActivityMgmtService {
 
             return false;
         }
+    }
+
+    /**
+     * Bet 1A0001.
+     *
+     * @param userId the specified user id
+     * @param amount the specified amount
+     * @param smallOrLarge the specified small or large
+     * @return result
+     */
+    public synchronized JSONObject bet1A0001(final String userId, final int amount, final int smallOrLarge) {
+        final JSONObject ret = Results.falseResult();
+
+        if (activityQueryService.is1A0001Today(userId)) {
+            ret.put(Keys.MSG, langPropsService.get("activityParticipatedLabel"));
+
+            return ret;
+        }
+
+        final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");
+
+        final boolean succ = pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001, amount, date + "-" + smallOrLarge);
+
+        ret.put(Keys.STATUS_CODE, succ);
+
+        final String msg = succ
+                ? langPropsService.get("activityBetSuccLabel") : langPropsService.get("activityBetFailLabel");
+        ret.put(Keys.MSG, msg);
+
+        return ret;
     }
 }

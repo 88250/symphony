@@ -68,7 +68,7 @@ import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
-import org.b3log.symphony.util.QueryResults;
+import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -719,7 +719,7 @@ public class UserProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
@@ -765,7 +765,7 @@ public class UserProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
@@ -800,7 +800,7 @@ public class UserProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
@@ -842,7 +842,7 @@ public class UserProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
@@ -885,7 +885,7 @@ public class UserProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
@@ -990,7 +990,7 @@ public class UserProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.trueResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
     }
 
@@ -1014,7 +1014,7 @@ public class UserProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.trueResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         final String namePrefix = request.getParameter("name");

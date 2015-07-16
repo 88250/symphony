@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="B3log - ${aboutLabel}">
+        <@head title="${symphonyLabel} - ${aboutLabel}">
         <meta name="keywords" content="B3log,${aboutLabel}"/>
         <meta name="description" content="${aboutLabel} B3log,一个正在逐渐清晰、实践的创意"/>
         </@head>

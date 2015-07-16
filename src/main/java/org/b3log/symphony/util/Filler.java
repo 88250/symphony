@@ -296,7 +296,7 @@ public class Filler {
         final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
         dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);
         
-        dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedin(userId));
+        dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedinToday(userId));
     }
 
     /**

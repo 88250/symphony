@@ -54,7 +54,7 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.service.VerifycodeMgmtService;
 import org.b3log.symphony.service.VerifycodeQueryService;
 import org.b3log.symphony.util.Filler;
-import org.b3log.symphony.util.QueryResults;
+import org.b3log.symphony.util.Results;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -185,7 +185,7 @@ public class LoginProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         JSONObject requestJSONObject;
@@ -250,7 +250,7 @@ public class LoginProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         JSONObject requestJSONObject;
@@ -330,7 +330,7 @@ public class LoginProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = QueryResults.falseResult();
+        final JSONObject ret = Results.falseResult();
         renderer.setJSONObject(ret);
 
         ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));

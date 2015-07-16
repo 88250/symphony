@@ -59,8 +59,8 @@ public final class Markdowns {
         outputSettings.prettyPrint(false);
 
         final String tmp = Jsoup.clean(content, baseURI, Whitelist.relaxed().
-                                       addAttributes(":all", "id", "target", "class", "style").
-                                       addTags("span", "hr").addAttributes("iframe", "src", "width", "height"), outputSettings);
+                addAttributes(":all", "id", "target", "class", "style").
+                addTags("span", "hr").addAttributes("iframe", "src", "width", "height"), outputSettings);
         final Document doc = Jsoup.parse(tmp, baseURI, Parser.xmlParser());
         final Elements iframes = doc.getElementsByTag("iframe");
 
@@ -78,10 +78,14 @@ public final class Markdowns {
      * Converts the specified markdown text to HTML.
      *
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}, returns 'markdownErrorLabel' if
-     * exception
+     * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}, returns
+     * 'markdownErrorLabel' if exception
      */
     public static String toHTML(final String markdownText) {
+        if (markdownText.contains("<p>")) {
+            return markdownText;
+        }
+
         if (Strings.isEmptyOrNull(markdownText)) {
             return null;
         }
