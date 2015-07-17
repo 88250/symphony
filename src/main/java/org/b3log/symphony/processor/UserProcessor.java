@@ -90,7 +90,7 @@ import org.json.JSONObject;
  * <li>Sync (/settings/sync/b3), POST</li>
  * <li>Password (/settings/password), POST</li>
  * <li>SyncUser (/apis/user), POST</li>
- * <li>Get usernames (/member/names), GET</li>
+ * <li>Lists usernames (/users/names), GET</li>
  * </ul>
  * </p>
  *
@@ -1014,7 +1014,7 @@ public class UserProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = Results.trueResult();
         renderer.setJSONObject(ret);
 
         final String namePrefix = request.getParameter("name");

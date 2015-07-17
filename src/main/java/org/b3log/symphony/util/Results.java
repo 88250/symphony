@@ -16,8 +16,6 @@
 package org.b3log.symphony.util;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.model.Pagination;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -32,8 +30,7 @@ public final class Results {
     /**
      * Constructs a default (false) result.
      *
-     * @return a false result,
-     * <pre>
+     * @return a false result,      <pre>
      * {
      *     "sc": false
      * }
@@ -46,8 +43,7 @@ public final class Results {
     /**
      * Constructs a default (true) result.
      *
-     * @return a true result,
-     * <pre>
+     * @return a true result,      <pre>
      * {
      *     "sc": true
      * }
@@ -55,31 +51,6 @@ public final class Results {
      */
     public static JSONObject trueResult() {
         return new JSONObject().put(Keys.STATUS_CODE, true);
-    }
-
-    /**
-     * Constructs a default query results.
-     *
-     * @return a default query results,
-     * <pre>
-     * {
-     *     "pagination": {
-     *       "paginationPageCount": 0
-     *     },
-     *     "rslts": []
-     * }
-     * </pre>
-     */
-    public static JSONObject defaultResults() {
-        final JSONObject ret = new JSONObject();
-        final JSONObject pagination = new JSONObject();
-        ret.put(Pagination.PAGINATION, pagination);
-        pagination.put(Pagination.PAGINATION_PAGE_COUNT, 0);
-
-        final JSONArray results = new JSONArray();
-        ret.put(Keys.RESULTS, results);
-
-        return ret;
     }
 
     /**
