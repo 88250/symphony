@@ -15,14 +15,17 @@
  */
 package org.b3log.symphony.util;
 
+import java.io.FileReader;
+import java.net.URL;
 import junit.framework.Assert;
+import org.apache.commons.io.IOUtils;
 import org.testng.annotations.Test;
 
 /**
  * Markdown utilities test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 17, 2015
+ * @version 2.0.0.0, Jul 17, 2015
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
@@ -41,7 +44,7 @@ public class MarkdownsTestCase {
     }
 
     /**
-     * Tests {@link Markdowns#toHTML(java.lang.String)}..
+     * Tests {@link Markdowns#toHTML(java.lang.String)}.
      */
     @Test
     public void toHTML() {
@@ -52,5 +55,18 @@ public class MarkdownsTestCase {
         md = "[b3log](b3log.org)";
         html = Markdowns.toHTML(md);
         Assert.assertTrue(html.contains("href"));
+    }
+    
+    /**
+     * Tests {@link Markdowns#toHTML(java.lang.String)}.
+     * @throws java.lang.Exception exception
+     */
+    @Test
+    public void toHtml0() throws Exception {
+        final URL mdResource = MarkdownsTestCase.class.getResource("/markdown_syntax.text");
+        final String md = IOUtils.toString(new FileReader(mdResource.getPath()));
+        final String html = Markdowns.toHTML(md);
+        
+        System.out.println(html);
     }
 }
