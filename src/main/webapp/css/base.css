@@ -434,11 +434,11 @@ button.red:active,
 
 button.small,
 .btn.small {
-    padding: 1px 5px;
+    padding: 0 5px 2px;
     vertical-align: baseline;
     font-size: 12px;
-    font-weight: lighter;
-    text-shadow: 0 0 0;
+    font-weight: normal;
+    text-shadow: initial;
 }
 /* end button */
 
