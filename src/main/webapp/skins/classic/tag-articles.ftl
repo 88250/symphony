@@ -5,7 +5,6 @@
 <html>
     <head>
         <@head title="${symphonyLabel} - ${tag.tagTitle}">
-        <meta name="keywords" content="${tag.tagTitle},${tag.tagCreatorName}"/>
         <meta name="description" content="${tag.tagCreatorName},${tag.tagDescription}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />

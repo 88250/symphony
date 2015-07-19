@@ -4,8 +4,6 @@
 <html>
     <head>
         <@head title="${symphonyLabel} - ${visionLabel}">
-        <meta name="keywords" content="${visionLabel},${symphonyLabel}"/>
-        <meta name="description" content="${symphonyLabel}${b3logDescriptionLabel}"/>
         </@head>
     </head>
     <body style="background-color: #FFF;">

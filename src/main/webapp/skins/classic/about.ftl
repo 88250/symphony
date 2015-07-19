@@ -3,8 +3,6 @@
 <html>
     <head>
         <@head title="${symphonyLabel} - ${aboutLabel}">
-        <meta name="keywords" content="B3log,${aboutLabel}"/>
-        <meta name="description" content="${aboutLabel} B3log,一个正在逐渐清晰、实践的创意"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>

@@ -3,7 +3,6 @@
 <html>
     <head>
         <@head title="${symphonyLabel} - ${registerLabel}">
-        <meta name="keywords" content="${registerLabel},${symphonyLabel}"/>
         <meta name="description" content="${registerLabel} ${symphonyLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />

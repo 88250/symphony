@@ -5,7 +5,6 @@
     <head>
         <#if type == "home">
         <@head title="${user.userName} - ${articleLabel}">
-        <meta name="keywords" content="${user.userName},${articleLabel}"/>
         <meta name="description" content="<#list userHomeArticles as article><#if article_index<3>${article.articleTitle},</#if></#list>"/>
         </@head>
         <#elseif type == "comments">

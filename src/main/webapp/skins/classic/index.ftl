@@ -5,7 +5,6 @@
 <html>
     <head>
         <@head title="${symphonyLabel} - ${visionLabel}">
-        <meta name="keywords" content="${visionLabel},${symphonyLabel}"/>
         <meta name="description" content="${symphonyLabel}${b3logDescriptionLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />

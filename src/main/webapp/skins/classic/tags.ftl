@@ -3,7 +3,6 @@
 <html>
     <head>
         <@head title="${symphonyLabel} - ${tagLabel}">
-        <meta name="keywords" content="${trendTagsLabel},${coldTagsLabel}"/>
         <meta name="description" content="${symphonyLabel} ${trendTagsLabel},${symphonyLabel} ${coldTagsLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />

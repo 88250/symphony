@@ -5,7 +5,6 @@
     <head>
         <#if type == "balance">
         <@head title="${symphonyLabel} - ${pointLabel}${balanceLabel}${rankingLabel}">
-        <meta name="keywords" content="${pointLabel}${balanceLabel}${rankingLabel}"/>
         </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
