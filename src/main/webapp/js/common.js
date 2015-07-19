@@ -315,6 +315,8 @@ var Util = {
         this._kill();
         // 导航
         this._initNav();
+        // 自动添加链接
+        $('.content-reset').linkify();
         // 登录密码输入框回车事件
         $("#loginPassword").keyup(function (event) {
             if (event.keyCode === 13) {

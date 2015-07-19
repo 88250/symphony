@@ -92,6 +92,7 @@ var ArticleChannel = {
 
             $("#comments > ul").prepend(template);
 
+            $("#comments > ul > li:first").linkify();
             Article.parseLanguage();
 
             $("#" + data.commentId).fadeIn(2000);

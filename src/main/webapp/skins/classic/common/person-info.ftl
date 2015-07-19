@@ -35,7 +35,6 @@
             </div>
         </div>
 
-
         <ul class="status fn-clear">
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/tags'">
                 <strong>${currentUser.followingTagCnt}</strong>
