@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.4.7, Jul 9, 2015
+ * @version 1.8.5.7, Jul 19, 2015
  */
 
 /**
@@ -539,12 +539,19 @@ var Validate = {
                     data[i].val = $it.val();
                     if (data[i].type === 'imgSrc') {
                         data[i].val = $it.attr('src');
+                    } else if (data[i].id === 'commentContent') {
+                        data[i].val = Comment.editor.getValue().replace(/(^\s*)|(\s*$)/g, "");
                     }
 
+
+                    var $error = $it.next();
+                    if (data[i].$error) {
+                        $error = data[i].$error;
+                    }
                     if (Validate.validate(data[i].type, data[i].val)) {
-                        $it.next().removeClass("tip-error").text("");
+                        $error.removeClass("tip-error").text("");
                     } else {
-                        $it.next().addClass("tip-error").text(data[i].msg);
+                        $error.addClass("tip-error").text(data[i].msg);
                     }
                     break;
                 }
@@ -552,7 +559,11 @@ var Validate = {
         }
 
         for (var j = 0; j < data.length; j++) {
-            if ($("#" + data[j].id).next().text() !== "") {
+            var $error = $("#" + data[j].id).next();
+            if (data[j].$error) {
+                $error = data[j].$error;
+            }
+            if ($error.text() !== "") {
                 return false;
             }
         }

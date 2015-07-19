@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.5.3, Jul 16, 2015
+ * @version 1.7.6.3, Jul 19, 2015
  */
 
 /**
@@ -30,7 +30,8 @@ var Comment = {
     _validateData: [{
             "id": "commentContent",
             "type": 1000,
-            "msg": Label.commentErrorLabel
+            "msg": Label.commentErrorLabel,
+            "$error": $("#commentContent").next()
         }],
     editor: undefined,
     init: function () {
@@ -108,6 +109,9 @@ var Comment = {
      * @description 添加评论
      */
     add: function (id) {
+        if (!Validate.goValidate(Comment._validateData)) {
+            return false;
+        }
         var requestJSONObject = {
             articleId: id,
             commentContent: Comment.editor.getValue().replace(/(^\s*)|(\s*$)/g, "")
@@ -119,10 +123,11 @@ var Comment = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {
-                $(".form button.green").attr("disabled", "disabled").css("opacity", "0.3");
+                $(".form button.red").attr("disabled", "disabled").css("opacity", "0.3");
+                Comment.editor.setOption("readOnly", "nocursor");
             },
             success: function (result, textStatus) {
-                $(".form button.green").removeAttr("disabled").css("opacity", "1");
+                $(".form button.red").removeAttr("disabled").css("opacity", "1");
                 if (result.sc) {
                     Comment.editor.setValue('');
                     // window.location.reload();
@@ -135,7 +140,8 @@ var Comment = {
                 }
             },
             complete: function () {
-                $(".form button.green").removeAttr("disabled").css("opacity", "1");
+                $(".form button.red").removeAttr("disabled").css("opacity", "1");
+                Comment.editor.setOption("readOnly", false);
             }
         });
     },
@@ -204,7 +210,7 @@ var Article = {
             $(this).wrapInner('<code></code>');
             $(this).removeAttr('class');
         });
-        
+
         hljs.initHighlightingOnLoad();
     },
     /**
