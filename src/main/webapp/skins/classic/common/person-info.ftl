@@ -23,10 +23,8 @@
                     <a class="btn small red" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
                     <#else>
                     <span class="ft-small">
-                        ${checkinStreakPart0Label}
-                        ${currentUser.userLongestCheckinStreak}
-                        ${checkinStreakPart1Label}
-                        ${currentUser.userCurrentCheckinStreak}
+                        ${checkinStreakLabel}
+                        ${currentUser.userCurrentCheckinStreak}/<span class="ft-red">${currentUser.userLongestCheckinStreak}</span>
                         ${checkinStreakPart2Label}
                     </span>
                     </#if>
