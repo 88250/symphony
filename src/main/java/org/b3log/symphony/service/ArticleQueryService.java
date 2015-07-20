@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.1.13, Jun 29, 2015
+ * @version 1.9.1.14, Jul 20, 2015
  * @since 0.2.0
  */
 @Service
@@ -118,15 +118,21 @@ public class ArticleQueryService {
     private AvatarQueryService avatarQueryService;
 
     /**
-     * Count to fetch article tags for relevant articles.
+     * Short link query service.
      */
-    private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
+    @Inject
+    private ShortLinkQueryService shortLinkQueryService;
 
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Count to fetch article tags for relevant articles.
+     */
+    private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
 
     /**
      * Gets the relevant articles of the specified article with the specified fetch size.
@@ -763,7 +769,8 @@ public class ArticleQueryService {
                     + "/member/" + userName + "'>" + userName + "</a>");
         }
 
-        articleContent = commentQueryService.linkArticle(articleContent);
+        articleContent = shortLinkQueryService.linkArticle(articleContent);
+        articleContent = shortLinkQueryService.linkTag(articleContent);
 
         articleContent = Emotions.convert(articleContent);
         article.put(Article.ARTICLE_CONTENT, articleContent);

@@ -20,8 +20,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -58,7 +56,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.16, Jun 27, 2015
+ * @version 1.3.3.17, Jul 20, 2015
  * @since 0.2.0
  */
 @Service
@@ -106,9 +104,10 @@ public class CommentQueryService {
     private LangPropsService langPropsService;
 
     /**
-     * Article id pattern.
+     * Short link query service.
      */
-    public static final Pattern ARTICLE_ID_PATTERN = Pattern.compile("\\[\\d{13,15}\\]");
+    @Inject
+    private ShortLinkQueryService shortLinkQueryService;
 
     /**
      * Gets a comment with {@link #organizeComment(org.json.JSONObject)} by the specified comment id.
@@ -538,7 +537,8 @@ public class CommentQueryService {
 
         String commentContent = comment.optString(Comment.COMMENT_CONTENT);
 
-        commentContent = linkArticle(commentContent);
+        commentContent = shortLinkQueryService.linkArticle(commentContent);
+        commentContent = shortLinkQueryService.linkTag(commentContent);
         commentContent = Emotions.convert(commentContent);
         commentContent = Markdowns.toHTML(commentContent);
         commentContent = Markdowns.clean(commentContent, "");
@@ -566,41 +566,5 @@ public class CommentQueryService {
         }
 
         comment.put(Comment.COMMENT_CONTENT, commentContent);
-    }
-
-    /**
-     * Processes article short link (article id).
-     *
-     * @param content the specified content
-     * @return processed content
-     */
-    public String linkArticle(final String content) {
-        final Matcher matcher = ARTICLE_ID_PATTERN.matcher(content);
-        final StringBuffer contentBuilder = new StringBuffer();
-
-        try {
-            while (matcher.find()) {
-                final String linkId = StringUtils.substringBetween(matcher.group(), "[", "]");
-
-                final Query query = new Query().addProjection(Article.ARTICLE_TITLE, String.class)
-                        .setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, linkId));
-                final JSONArray results = articleRepository.get(query).optJSONArray(Keys.RESULTS);
-                if (0 == results.length()) {
-                    continue;
-                }
-
-                final JSONObject linkArticle = results.optJSONObject(0);
-
-                final String linkTitle = linkArticle.optString(Article.ARTICLE_TITLE);
-                final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/article/" + linkId + ") ";
-
-                matcher.appendReplacement(contentBuilder, link);
-            }
-            matcher.appendTail(contentBuilder);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Generates article link error", e);
-        }
-
-        return contentBuilder.toString();
     }
 }

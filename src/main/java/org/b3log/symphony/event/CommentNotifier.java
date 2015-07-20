@@ -37,8 +37,8 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.service.AvatarQueryService;
-import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.10, Jun 20, 2015
+ * @version 1.3.2.11, Jul 20, 2015
  * @since 0.2.0
  */
 @Named
@@ -78,10 +78,10 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     private AvatarQueryService avatarQueryService;
 
     /**
-     * Comment query service.
+     * Short link query service.
      */
     @Inject
-    private CommentQueryService commentQueryService;
+    private ShortLinkQueryService shortLinkQueryService;
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
@@ -112,7 +112,8 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
             chData.put(Comment.COMMENT_CREATE_TIME,
                     DateFormatUtils.format(new Date(originalComment.optLong(Comment.COMMENT_CREATE_TIME)), "yyyy-MM-dd HH:mm"));
-            String cc = commentQueryService.linkArticle(commentContent);
+            String cc = shortLinkQueryService.linkArticle(commentContent);
+            cc = shortLinkQueryService.linkTag(cc);
             cc = Emotions.convert(cc);
             cc = Markdowns.toHTML(cc);
             cc = Markdowns.clean(cc, "");

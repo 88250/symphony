@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.4, May 31, 2015
+ * @version 1.4.0.4, Jul 20, 2015
  * @since 0.2.0
  */
 @Service
