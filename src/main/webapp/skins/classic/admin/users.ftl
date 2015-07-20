@@ -17,6 +17,8 @@
                 <a href="/admin/user/${item.oId}" class="fn-right icon icon-edit" title="${editLabel}"></a> &nbsp;
                 <#if item.userStatus == 0>
                 <span class="ft-small">${validLabel}</span>
+                <#elseif item.userStatus == 2>
+                <span class="ft-red ft-small">${notVerifiedLabel}</span>
                 <#else>
                 <font class="ft-red ft-small">${banLabel}</font>
                 </#if>
