@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.5.2, Jul 14, 2015
+ * @version 1.8.5.2, Jul 20, 2015
  * @since 0.2.0
  */
 @Service
@@ -424,6 +424,31 @@ public class UserMgmtService {
             if (toUpdate) {
                 user.put(UserExt.USER_NO, memberCount);
                 userRepository.update(ret, user);
+
+                // Occupy the username, defeat others
+                try {
+                    final Query query = new Query();
+                    final List<Filter> filters = new ArrayList<Filter>();
+                    filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, userName));
+                    filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.NOT_EQUAL, userEmail));
+                    filters.add(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL,
+                            UserExt.USER_STATUS_C_NOT_VERIFIED));
+                    query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+                    final JSONArray others = userRepository.get(query).optJSONArray(Keys.RESULTS);
+                    for (int i = 0; i < others.length(); i++) {
+                        final JSONObject u = others.optJSONObject(i);
+                        final String id = u.optString(Keys.OBJECT_ID);
+                        u.put(User.USER_NAME, UserExt.NULL_USER_NAME);
+
+                        userRepository.update(id, u);
+
+                        LOGGER.log(Level.INFO, "Defeated a user [email=" + u.optString(User.USER_EMAIL) + "]");
+                    }
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Defeat others error", e);
+                }
+
             } else {
                 user.put(UserExt.USER_NO, ++memberCount);
 
@@ -566,7 +591,7 @@ public class UserMgmtService {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
-            if (null != userRepository.getByName(newUserName)) {
+            if (!UserExt.NULL_USER_NAME.equals(newUserName) && null != userRepository.getByName(newUserName)) {
                 throw new ServiceException(langPropsService.get("duplicatedUserNameLabel") + " [" + newUserName + "]");
             }
 
@@ -591,11 +616,11 @@ public class UserMgmtService {
     public void resetUnverifiedUsers() {
         final Date now = new Date();
         final long yesterdayTime = DateUtils.addDays(now, -1).getTime();
-        
+
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_NOT_VERIFIED));
         filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, yesterdayTime));
-        filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.NOT_EQUAL, "_"));
+        filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.NOT_EQUAL, UserExt.NULL_USER_NAME));
 
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
@@ -606,9 +631,9 @@ public class UserMgmtService {
             for (int i = 0; i < users.length(); i++) {
                 final JSONObject user = users.optJSONObject(i);
                 final String id = user.optString(Keys.OBJECT_ID);
-                
-                user.put(User.USER_NAME, "_");
-                
+
+                user.put(User.USER_NAME, UserExt.NULL_USER_NAME);
+
                 userRepository.update(id, user);
 
                 LOGGER.log(Level.INFO, "Reset unverified user [email=" + user.optString(User.USER_EMAIL));

@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.0.9, Jul 19, 2015
+ * @version 2.10.0.9, Jul 20, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -186,6 +186,12 @@ public final class UserExt {
      * Default commenter role.
      */
     public static final String DEFAULT_CMTER_ROLE = "defaultCommenterRole";
+    
+    //// Null user.
+    /**
+     * Null user name.
+     */
+    public static final String NULL_USER_NAME = "_";
 
     //// Status constants
     /**
@@ -233,7 +239,7 @@ public final class UserExt {
      * User app role - Painter.
      */
     public static final int USER_APP_ROLE_C_PAINTER = 1;
-
+    
     /**
      * Gets color code of the specified point.
      *
