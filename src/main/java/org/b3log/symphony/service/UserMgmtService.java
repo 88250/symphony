@@ -15,20 +15,28 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.CompositeFilter;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -575,4 +583,39 @@ public class UserMgmtService {
             throw new ServiceException(e);
         }
     }
+
+    /**
+     * Resets unverified users.
+     */
+    @Transactional
+    public void resetUnverifiedUsers() {
+        final Date now = new Date();
+        final long yesterdayTime = DateUtils.addDays(now, -1).getTime();
+        
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_NOT_VERIFIED));
+        filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, yesterdayTime));
+        filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.NOT_EQUAL, "_"));
+
+        final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+        try {
+            final JSONObject result = userRepository.get(query);
+            final JSONArray users = result.optJSONArray(Keys.RESULTS);
+
+            for (int i = 0; i < users.length(); i++) {
+                final JSONObject user = users.optJSONObject(i);
+                final String id = user.optString(Keys.OBJECT_ID);
+                
+                user.put(User.USER_NAME, "_");
+                
+                userRepository.update(id, user);
+
+                LOGGER.log(Level.INFO, "Reset unverified user [email=" + user.optString(User.USER_EMAIL));
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Reset unverified users failed", e);
+        }
+    }
+
 }

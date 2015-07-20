@@ -978,16 +978,16 @@ public class UserProcessor {
     }
 
     /**
-     * Check users. XXX: not used.
+     * Resets unverified users..
      *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/users/check", method = HTTPRequestMethod.GET)
-    public void checkUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    @RequestProcessing(value = "/users/reset-unverified", method = HTTPRequestMethod.GET)
+    public void resetUnverifiedUsers(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String key = Symphonys.get("keyOfSymphony");
         if (!key.equals(request.getParameter("key"))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -998,8 +998,10 @@ public class UserProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = Results.trueResult();
         renderer.setJSONObject(ret);
+
+        userMgmtService.resetUnverifiedUsers();
     }
 
     /**

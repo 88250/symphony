@@ -20,7 +20,7 @@
     Description: Cron job configurations. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.4.0.1, Jul 11, 2015
+    Version: 1.5.0.1, Jul 20, 2015
     Author: Liang Ding
 -->
 <cronentries>
@@ -47,5 +47,11 @@
         <url>/verifycode/remove-expired?key=dev_key</url>
         <description>Removes expired verifycodes</description>
         <schedule>every 1 hours</schedule>
+    </cron>
+    
+    <cron>
+        <url>/users/reset-unverified?key=dev_key</url>
+        <description>Resets unverified users</description>
+        <schedule>every 24 hours</schedule>
     </cron>
 </cronentries>

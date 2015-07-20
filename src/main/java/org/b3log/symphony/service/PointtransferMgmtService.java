@@ -79,6 +79,10 @@ public class PointtransferMgmtService {
             int fromBalance = 0;
             if (!Pointtransfer.ID_C_SYS.equals(fromId)) {
                 final JSONObject fromUser = userRepository.get(fromId);
+                if (UserExt.USER_STATUS_C_VALID != fromUser.optInt(UserExt.USER_STATUS)) {
+                    throw new Exception("Invalid from user [id=" + fromId + "]");
+                }
+
                 fromBalance = fromUser.optInt(UserExt.USER_POINT) - sum;
                 if (fromBalance < 0) {
                     throw new Exception("Insufficient balance");
@@ -92,6 +96,10 @@ public class PointtransferMgmtService {
             int toBalance = 0;
             if (!Pointtransfer.ID_C_SYS.equals(toId)) {
                 final JSONObject toUser = userRepository.get(toId);
+                if (UserExt.USER_STATUS_C_VALID != toUser.optInt(UserExt.USER_STATUS)) {
+                    throw new Exception("Invalid to user [id=" + toId + "]");
+                }
+                
                 toBalance = toUser.optInt(UserExt.USER_POINT) + sum;
                 toUser.put(UserExt.USER_POINT, toBalance);
 
