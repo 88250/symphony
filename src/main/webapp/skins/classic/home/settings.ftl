@@ -39,7 +39,7 @@
         </div>
         <span style="right:140px;top:265px;"></span><br/>
         <br/><br/>
-        <span id="profilesTip" style="right: 95px; top: 603px;"></span>
+        <span id="profilesTip" style="right: 95px; top: 635px;"></span>
         <button class="green fn-right" onclick="Settings.update('profiles')">${saveLabel}</button>
     </div>
 </div>
