@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Short link query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 20, 2015
+ * @version 1.0.1.0, Jul 21, 2015
  * @since 1.3.0
  */
 @Service
@@ -58,7 +58,7 @@ public class ShortLinkQueryService {
     /**
      * Tag title pattern.
      */
-    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("\\[.+]");
+    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("\\[.+](?!\\(.+\\))");
 
     /**
      * Article repository.

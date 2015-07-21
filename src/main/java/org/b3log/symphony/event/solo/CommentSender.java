@@ -17,6 +17,8 @@ package org.b3log.symphony.event.solo;
 
 import java.net.URL;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -36,13 +38,14 @@ import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Networks;
 import org.json.JSONObject;
 
 /**
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Nov 23, 2012
+ * @version 1.0.1.3, Jul 21, 2015
  * @since 0.2.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -61,7 +64,14 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(), data, CommentSender.class.getName()});
+                new Object[]{event.getType(), data, CommentSender.class.getName()});
+
+        if (Latkes.getServePath().contains("localhost") || Networks.isIPv4(Latkes.getServerHost())
+                || RuntimeMode.DEVELOPMENT == Latkes.getRuntimeMode()) {
+            LOGGER.log(Level.DEBUG, "Do not sync in DEV env");
+            return;
+        }
+
         try {
             if (data.optBoolean(Common.FROM_CLIENT)) {
                 return;
