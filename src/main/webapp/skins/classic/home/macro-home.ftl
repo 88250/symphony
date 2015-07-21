@@ -90,7 +90,7 @@
             Label.updateSuccLabel = "${updateSuccLabel}";
             Label.transferSuccLabel = "${transferSuccLabel}";
             Label.invalidUserURLLabel = "${invalidUserURLLabel}";
-            Label.invalidUserURLLabel = "${invalidUserURLLabel}";
+            Label.invalidAvatarURLLabel = "${invalidAvatarURLLabel}";
             Label.invalidUserQQLabel = "${invalidUserQQLabel}";
             Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
             Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";

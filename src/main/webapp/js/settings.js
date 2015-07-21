@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.5, Jul 9, 2015
+ * @version 1.2.1.5, Jul 21, 2015
  */
 
 /**
@@ -128,7 +128,7 @@ var Settings = {
             }, {
                 "id": "avatarURL",
                 "type": "imgSrc",
-                "msg": Label.invalidUserURLLabel
+                "msg": Label.invalidAvatarURLLabel
             }])) {
             var data = {};
             data.userURL = URLVal;
