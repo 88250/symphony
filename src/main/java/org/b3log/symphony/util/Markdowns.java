@@ -37,7 +37,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.7, Apr 20, 2015
+ * @version 1.2.1.7, Jul 21, 2015
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -69,6 +69,11 @@ public final class Markdowns {
             if (!src.startsWith("https://wide.b3log.org")) {
                 iframe.remove();
             }
+        }
+        
+        final Elements ps = doc.getElementsByTag("p");
+        for (final Element p : ps) {
+            p.removeAttr("style");
         }
 
         return doc.html();
