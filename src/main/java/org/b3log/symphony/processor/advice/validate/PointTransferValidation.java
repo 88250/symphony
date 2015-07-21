@@ -70,7 +70,8 @@ public class PointTransferValidation extends BeforeRequestProcessAdvice {
         }
 
         final String userName = requestJSONObject.optString(User.USER_NAME);
-        if (Strings.isEmptyOrNull(userName)) {
+        if (Strings.isEmptyOrNull(userName)
+                || UserExt.DEFAULT_CMTER_NAME.equals(userName) || UserExt.NULL_USER_NAME.equals(userName)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notFoundUserLabel")));
         }
 
