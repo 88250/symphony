@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Jul 9, 2015
+ * @version 1.5.0.0, Jul 19, 2015
  * @since 1.3.0
  */
 @Service
@@ -115,7 +115,7 @@ public class PointtransferQueryService {
         final List<Filter> userFilters = new ArrayList<Filter>();
         userFilters.add(new PropertyFilter(Pointtransfer.FROM_ID, FilterOperator.EQUAL, userId));
         userFilters.add(new PropertyFilter(Pointtransfer.TO_ID, FilterOperator.EQUAL, userId));
-        
+
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, userFilters));
         filters.add(new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, type));
@@ -324,6 +324,10 @@ public class PointtransferQueryService {
                                 + user.optString(User.USER_NAME) + "</a>";
                         desTemplate = desTemplate.replace("{user}", userLink);
 
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN_STREAK:
+                        desTemplate = desTemplate.replace("{point}", 
+                                String.valueOf(Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK));
                         break;
                     default:
                         LOGGER.warn("Invalid point type [" + type + "]");

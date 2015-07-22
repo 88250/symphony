@@ -59,6 +59,7 @@ import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
+import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
@@ -95,7 +96,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.5.8, Jul 5, 2015
+ * @version 1.9.5.8, Jul 19, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -172,6 +173,12 @@ public class UserProcessor {
     private PointtransferMgmtService pointtransferMgmtService;
 
     /**
+     * Activity management service.
+     */
+    @Inject
+    private ActivityMgmtService activityMgmtService;
+
+    /**
      * Shows user home page.
      *
      * @param context the specified context
@@ -204,6 +211,7 @@ public class UserProcessor {
         renderer.setTemplateName("/home/home.ftl");
 
         dataModel.put(User.USER, user);
+        fillHomeUser(dataModel, user);
         avatarQueryService.fillUserAvatarURL(user);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
@@ -275,7 +283,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeCmtsCnt");
         final int windowSize = Symphonys.getInt("userHomeCmtsWindowSize");
 
-        dataModel.put(User.USER, user);
+        fillHomeUser(dataModel, user);
         avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
@@ -340,7 +348,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeFollowingUsersCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingUsersWindowSize");
 
-        dataModel.put(User.USER, user);
+        fillHomeUser(dataModel, user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -412,7 +420,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeFollowingTagsCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingTagsWindowSize");
 
-        dataModel.put(User.USER, user);
+        fillHomeUser(dataModel, user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -484,7 +492,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeFollowingArticlesCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowingArticlesWindowSize");
 
-        dataModel.put(User.USER, user);
+        fillHomeUser(dataModel, user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -556,7 +564,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomeFollowersCnt");
         final int windowSize = Symphonys.getInt("userHomeFollowersWindowSize");
 
-        dataModel.put(User.USER, user);
+        fillHomeUser(dataModel, user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -628,7 +636,7 @@ public class UserProcessor {
         final int pageSize = Symphonys.getInt("userHomePointsCnt");
         final int windowSize = Symphonys.getInt("userHomePointsWindowSize");
 
-        dataModel.put(User.USER, user);
+        fillHomeUser(dataModel, user);
         avatarQueryService.fillUserAvatarURL(user);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
@@ -684,7 +692,7 @@ public class UserProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-        dataModel.put(User.USER, user);
+        fillHomeUser(dataModel, user);
 
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
@@ -1065,5 +1073,16 @@ public class UserProcessor {
         final Matcher matcher = pattern.matcher(ip);
 
         return matcher.matches();
+    }
+
+    /**
+     * Fills home user.
+     *
+     * @param dataModel the specified data model
+     * @param user the specified user
+     */
+    private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
+        dataModel.put(User.USER, user);
+        activityMgmtService.fillCheckinStreak(user);
     }
 }

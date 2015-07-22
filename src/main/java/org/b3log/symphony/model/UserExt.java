@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.8.0.9, Jul 13, 2015
+ * @version 2.9.0.9, Jul 19, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -146,6 +146,16 @@ public final class UserExt {
     public static final String USER_APP_ROLE = "userAppRole";
 
     //// Transient ////
+    /**
+     * Key of user longest checkin streak.
+     */
+    public static final String USER_T_LONGEST_CHECKIN_STREAK = "userLongestCheckinStreak";
+    
+    /**
+     * Key of user current checkin streak.
+     */
+    public static final String USER_T_CURRENT_CHECKIN_STREAK = "userCurrentCheckinStreak";
+    
     /**
      * Key of user create time.
      */

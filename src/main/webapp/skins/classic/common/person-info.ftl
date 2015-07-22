@@ -24,9 +24,9 @@
                     <#else>
                     <span class="ft-small">
                         ${checkinStreakPart0Label}
-                        ${currentUser.userLongestCheckinStreakEnd - currentUser.userLongestCheckinStreakStart}
+                        ${currentUser.userLongestCheckinStreak}
                         ${checkinStreakPart1Label}
-                        ${currentUser.userCurrentCheckinStreakEnd - currentUser.userCurrentCheckinStreakStart}
+                        ${currentUser.userCurrentCheckinStreak}
                         ${checkinStreakPart2Label}
                     </span>
                     </#if>

@@ -51,9 +51,9 @@
         </div>
         <div class="user-info">
             <span class="ft-small">${checkinStreakPart0Label}</span>
-            ${user.userLongestCheckinStreakEnd - user.userLongestCheckinStreakStart} 
+            ${user.userLongestCheckinStreak} 
             <span class="ft-small">${checkinStreakPart1Label}</span> 
-            ${user.userCurrentCheckinStreakEnd - user.userCurrentCheckinStreakStart}
+            ${user.userCurrentCheckinStreak}
             <span class="ft-small">${checkinStreakPart2Label}</span>
         </div>
 

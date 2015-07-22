@@ -40,6 +40,7 @@ import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowQueryService;
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.10, Jun 24, 2015
+ * @version 1.4.0.10, Jul 19, 2015
  * @since 0.2.0
  */
 @Service
@@ -123,12 +124,18 @@ public class Filler {
      */
     @Inject
     private AvatarQueryService avatarQueryService;
-    
+
     /**
      * Activity query service.
      */
     @Inject
     private ActivityQueryService activityQueryService;
+    
+    /**
+     * Activity management service.
+     */
+    @Inject
+    private ActivityMgmtService activityMgmtService;
 
     /**
      * Fills relevant articles.
@@ -295,8 +302,10 @@ public class Filler {
 
         final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
         dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);
-        
+
         dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedinToday(userId));
+
+        activityMgmtService.fillCheckinStreak(curUser);
     }
 
     /**
