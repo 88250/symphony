@@ -55,8 +55,8 @@
                                     <label for"userAppRole">${roleLabel}</label>
                                 </td>
                                 <td>
-                                    <label><input name="userAppRole" type="radio" value="0" checked="checked" />&nbsp;&nbsp;${hackerLabel}</label>
-                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;<input name="userAppRole" type="radio" value="1" />&nbsp;&nbsp;${painterLabel}</label>
+                                    <label><input name="userAppRole" type="radio" value="0" checked="checked" />&nbsp;&nbsp;${programmerLabel}</label>
+                                    <label>&nbsp;&nbsp;&nbsp;&nbsp;<input name="userAppRole" type="radio" value="1" />&nbsp;&nbsp;${designerLabel}</label>
                                 </td>
                             </tr>
                             <tr>
