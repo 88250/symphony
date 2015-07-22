@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.8, Jul 13, 2015
+ * @version 1.5.4.9, Jul 22, 2015
  * @since 0.2.0
  */
 @Service
@@ -766,7 +766,8 @@ public class ArticleMgmtService {
      * @return formatted tags string
      */
     public String formatArticleTags(final String articleTags) {
-        final String articleTags1 = articleTags.replaceAll("，", ",").replaceAll("、", ",");
+        final String articleTags1 = articleTags.replaceAll("，", ",").replaceAll("、", ",").replaceAll("；", ",")
+                .replaceAll(";", ",");
         String[] tagTitles = articleTags1.split(",");
        
         tagTitles = Strings.trimAll(tagTitles);

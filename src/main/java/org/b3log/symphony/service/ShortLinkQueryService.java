@@ -53,12 +53,12 @@ public class ShortLinkQueryService {
     /**
      * Id pattern.
      */
-    public static final Pattern ID_PATTERN = Pattern.compile("\\[\\d{13,15}\\]");
+    public static final Pattern ID_PATTERN = Pattern.compile(" \\[\\d{13,15}\\] ");
     
     /**
      * Tag title pattern.
      */
-    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("\\[.+](?!\\(.+\\))");
+    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile(" \\[.+](?!\\(.+\\)) ");
 
     /**
      * Article repository.
