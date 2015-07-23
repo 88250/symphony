@@ -14,22 +14,35 @@
                     ${activity1A0001TitleLabel}
                     ${activity1A0001GuideLabel}
 
-                    <div>
-                        ${activity1A0001BetSelectTipLabel}
-                        <label><input name="smallOrLarge" type="radio" value="1" checked="checked" /> ${activity1A0001BetLargeLabel}</label>
-                        <label><input name="smallOrLarge" type="radio" value="0" /> ${activity1A0001BetSmallLabel}</label>
-                    </div>
+                    <#if !closed && !closed1A0001 && !end && !collected && !participated>
+                    <div id="betDiv">
+                        <div>
+                            ${activity1A0001BetSelectLabel}
+                            <label><input name="smallOrLarge" type="radio" value="1" checked="checked" /> ${activity1A0001BetLargeLabel}</label>
+                            <label><input name="smallOrLarge" type="radio" value="0" /> ${activity1A0001BetSmallLabel}</label>
+                        </div>
 
-                    <div>
-                        ${activity1A0001BetAmountLabel}
-                        <label><input name="amount" type="radio" value="200" checked="checked" /> 200</label>
-                        <label><input name="amount" type="radio" value="300" /> 300</label>
-                        <label><input name="amount" type="radio" value="400" /> 400</label>
-                        <label><input name="amount" type="radio" value="500" /> 500</label>
+                        <div>
+                            ${activity1A0001BetAmountLabel}
+                            <label><input name="amount" type="radio" value="200" checked="checked" /> 200</label>
+                            <label><input name="amount" type="radio" value="300" /> 300</label>
+                            <label><input name="amount" type="radio" value="400" /> 400</label>
+                            <label><input name="amount" type="radio" value="500" /> 500</label>
+                        </div>
                     </div>
-
-                    <span id="betTip" style="right: 550px; top: 322px;"></span>
-                    <button class="red fn-right" onclick="Activity.bet1A0001()">${activityBetLabel}</button>
+                    </#if>
+                    <#if closed || closed1A0001 || collected>
+                    <span id="tip" style="top: 287px;" class="tip-succ">${msg}</span>
+                    <#elseif participated>
+                    <span id="tip" style="top: 287px;" class="tip-succ">${msg}</span>
+                    <#if hour gt 15>
+                    <span id="tip" style="right: 550px; top: 305px;"></span>
+                    <button id="collectBtn" class="red fn-right" onclick="Activity.collect1A0001()">${activityCollectLabel}</button>
+                    </#if>
+                    <#else>
+                    <span id="tip" style="top: 287px;"></span>
+                    <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001()">${activityBetLabel}</button>
+                    </#if>
                 </div>
                 <div class="side">
                     <#include "../side.ftl">

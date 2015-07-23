@@ -19,26 +19,56 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.1.10, Jul 16, 2015
+ * @version 1.15.1.10, Jul 23, 2015
  * @since 0.2.0
  */
 public final class Common {
     
     /**
+     * Key of closed 1A0001.
+     */
+    public static final String CLOSED_1A0001 = "closed1A0001";
+
+    /**
+     * Key of closed.
+     */
+    public static final String CLOSED = "closed";
+    
+    /**
+     * Key of end.
+     */
+    public static final String END = "end";
+
+    /**
+     * Key of hour.
+     */
+    public static final String HOUR = "hour";
+
+    /**
+     * Key of collected.
+     */
+    public static final String COLLECTED = "collected";
+
+    /**
+     * Key of participated.
+     */
+    public static final String PARTICIPATED = "participated";
+
+    /**
      * Key of to user.
      */
     public static final String TO_USER = "toUser";
-    
+
     /**
      * Key of amount.
      */
     public static final String AMOUNT = "amount";
-    
+
     /**
      * Key of small or large.
      */
     public static final String SMALL_OR_LARGE = "smallOrLarge";
-    
+
     /**
      * Key of is daily checkin.
      */
@@ -343,7 +373,7 @@ public final class Common {
      * Key of display type.
      */
     public static final String DISPLAY_TYPE = "displayType";
-    
+
     /**
      * Key of description.
      */
@@ -353,17 +383,17 @@ public final class Common {
      * Key of balance.
      */
     public static final String BALANCE = "balance";
-    
+
     /**
      * Key of plus.
      */
     public static final String PLAUS = "plus";
-    
+
     /**
      * Key of referral.
      */
     public static final String REFERRAL = "referral";
-    
+
     /**
      * Key of top balance users.
      */

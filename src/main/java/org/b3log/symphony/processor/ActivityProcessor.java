@@ -15,13 +15,17 @@
  */
 package org.b3log.symphony.processor;
 
+import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
@@ -31,10 +35,15 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.processor.advice.LoginCheck;
+import org.b3log.symphony.processor.advice.validate.Activity1A0001CollectValidation;
 import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
 import org.b3log.symphony.service.ActivityMgmtService;
+import org.b3log.symphony.service.ActivityQueryService;
+import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
@@ -43,11 +52,14 @@ import org.json.JSONObject;
  * <p>
  * <ul>
  * <li>Daily checkin (/activity/daily-checkin), GET</li>
+ * <li>Shows 1A0001 (/activity/1A0001), GET</li>
+ * <li>Bets 1A0001 (/activity/1A0001/bet), POST</li>
+ * <li>Collects 1A0001 (/activity/1A0001/collect), POST</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jul 16, 2015
+ * @version 1.2.0.0, Jul 23, 2015
  * @since 1.3.0
  */
 @RequestProcessor
@@ -65,10 +77,28 @@ public class ActivityProcessor {
     private ActivityMgmtService activityMgmtService;
 
     /**
+     * Activity query service.
+     */
+    @Inject
+    private ActivityQueryService activityQueryService;
+
+    /**
+     * Pointtransfer query service.
+     */
+    @Inject
+    private PointtransferQueryService pointtransferQueryService;
+
+    /**
      * Filler.
      */
     @Inject
     private Filler filler;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Shows activity page.
@@ -131,6 +161,72 @@ public class ActivityProcessor {
         renderer.setTemplateName("/activity/1A0001.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        final boolean closed = Symphonys.getBoolean("activity1A0001Closed");
+        dataModel.put(Common.CLOSED, closed);
+
+        final Calendar calendar = Calendar.getInstance();
+        final int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        final boolean closed1A0001 = dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY;
+        dataModel.put(Common.CLOSED_1A0001, closed1A0001);
+
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int minute = calendar.get(Calendar.MINUTE);
+        final boolean end = hour > 14 || (hour == 14 && minute > 55);
+        dataModel.put(Common.END, end);
+
+        final boolean collected = activityQueryService.isCollected1A0001Today(userId);
+        dataModel.put(Common.COLLECTED, collected);
+
+        final boolean participated = activityQueryService.is1A0001Today(userId);
+        dataModel.put(Common.PARTICIPATED, participated);
+
+        while (true) {
+            if (closed) {
+                dataModel.put(Keys.MSG, langPropsService.get("activityClosedLabel"));
+                break;
+            }
+
+            if (closed1A0001) {
+                dataModel.put(Keys.MSG, langPropsService.get("activity1A0001CloseLabel"));
+                break;
+            }
+
+            if (collected) {
+                dataModel.put(Keys.MSG, langPropsService.get("activityParticipatedLabel"));
+                break;
+            }
+
+            if (participated) {
+                dataModel.put(Common.HOUR, hour);
+
+                final List<JSONObject> records = pointtransferQueryService.getLatestPointtransfers(userId,
+                        Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001, 1);
+                final JSONObject pointtransfer = records.get(0);
+                final String data = pointtransfer.optString(Pointtransfer.DATA_ID);
+                final String smallOrLarge = data.split("-")[1];
+                final int sum = pointtransfer.optInt(Pointtransfer.SUM);
+                String msg = langPropsService.get("activity1A0001BetedLabel");
+                final String small = langPropsService.get("activity1A0001BetSmallLabel");
+                final String large = langPropsService.get("activity1A0001BetLargeLabel");
+                msg = msg.replace("{smallOrLarge}", StringUtils.equals(smallOrLarge, "0") ? small : large);
+                msg = msg.replace("{point}", String.valueOf(sum));
+
+                dataModel.put(Keys.MSG, msg);
+
+                break;
+            }
+
+            if (end) {
+                dataModel.put(Keys.MSG, langPropsService.get("activityEndLabel"));
+                break;
+            }
+
+            break;
+        }
+
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillHotArticles(dataModel);
@@ -139,17 +235,17 @@ public class ActivityProcessor {
     }
 
     /**
-     * Bet.
+     * Bets 1A0001.
      *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/activity/1A0001", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/activity/1A0001/bet", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, Activity1A0001Validation.class})
-    public void bet(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void bet1A0001(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -162,6 +258,39 @@ public class ActivityProcessor {
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
 
         final JSONObject ret = activityMgmtService.bet1A0001(fromId, amount, smallOrLarge);
+
+        if (ret.optBoolean(Keys.STATUS_CODE)) {
+            String msg = langPropsService.get("activity1A0001BetedLabel");
+            final String small = langPropsService.get("activity1A0001BetSmallLabel");
+            final String large = langPropsService.get("activity1A0001BetLargeLabel");
+            msg = msg.replace("{smallOrLarge}", smallOrLarge == 0 ? small : large);
+            msg = msg.replace("{point}", String.valueOf(amount));
+
+            ret.put(Keys.MSG, msg);
+        }
+
+        renderer.setJSONObject(ret);
+    }
+
+    /**
+     * Collects 1A0001.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/activity/1A0001/collect", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, Activity1A0001CollectValidation.class})
+    public void collect1A0001(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        final JSONObject ret = activityMgmtService.collect1A0001(userId);
         renderer.setJSONObject(ret);
     }
 }

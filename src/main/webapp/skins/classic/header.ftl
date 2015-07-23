@@ -19,6 +19,7 @@
             <#if "adminRole" == userRole>
             <a href="/admin" title="${adminLabel}" class="icon icon-setting"></a>
             </#if>
+            <a href="/activities" title="${activityLabel}" class="icon icon-setting"></a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
             <a href="/add-article" title="${addArticleLabel}${articleLabel}" 
                class="icon icon-addfile"></a>

@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.0, Jul 19, 2015
+ * @version 1.5.0.1, Jul 23, 2015
  * @since 1.3.0
  */
 @Service
@@ -311,6 +311,7 @@ public class PointtransferQueryService {
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN:
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001:
+                    case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT:
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACOUNT2ACOUNT:
                         JSONObject user;

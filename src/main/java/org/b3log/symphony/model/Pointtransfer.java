@@ -21,7 +21,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines all pointtransfer model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.0, Jul 19, 2015
+ * @version 1.7.0.0, Jul 23, 2015
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -187,6 +187,11 @@ public final class Pointtransfer {
      * Transfer sum - Activity - Daily Checkin Streak.
      */
     public static final int TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK = Symphonys.getInt("pointActivityCheckinStreak");
+    
+    /**
+     * Transfer type - Activity - 1A0001 Income.
+     */
+    public static final int TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT = 12;
 
     /**
      * Private constructor.

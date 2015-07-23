@@ -15,9 +15,12 @@
  */
 package org.b3log.symphony.service;
 
+import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import javax.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -25,10 +28,13 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Results;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 /**
  * Activity management service.
@@ -214,7 +220,7 @@ public class ActivityMgmtService {
     }
 
     /**
-     * Bet 1A0001.
+     * Bets 1A0001.
      *
      * @param userId the specified user id
      * @param amount the specified amount
@@ -240,6 +246,84 @@ public class ActivityMgmtService {
         final String msg = succ
                 ? langPropsService.get("activityBetSuccLabel") : langPropsService.get("activityBetFailLabel");
         ret.put(Keys.MSG, msg);
+
+        return ret;
+    }
+
+    /**
+     * Collects 1A0001.
+     *
+     * @param userId the specified user id
+     * @return result
+     */
+    public synchronized JSONObject collect1A0001(final String userId) {
+        final JSONObject ret = Results.falseResult();
+
+        if (!activityQueryService.is1A0001Today(userId)) {
+            ret.put(Keys.MSG, langPropsService.get("activityNotParticipatedLabel"));
+
+            return ret;
+        }
+
+        if (activityQueryService.isCollected1A0001Today(userId)) {
+            ret.put(Keys.MSG, langPropsService.get("activityParticipatedLabel"));
+
+            return ret;
+        }
+
+        final List<JSONObject> records = pointtransferQueryService.getLatestPointtransfers(userId,
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001, 1);
+        final JSONObject pointtransfer = records.get(0);
+        final String data = pointtransfer.optString(Pointtransfer.DATA_ID);
+        final String smallOrLarge = data.split("-")[1];
+        final int sum = pointtransfer.optInt(Pointtransfer.SUM);
+
+        String smallOrLargeResult = null;
+        try {
+            final Document doc = Jsoup.parse(new URL("http://stockpage.10jqka.com.cn/1A0001/quote/header/"), 5000);
+            final JSONObject result = new JSONObject(doc.text());
+            final String price = result.optJSONObject("data").optJSONObject("1A0001").optString("10");
+            final String end = price.substring(price.length() - 1);
+            final int endInt = Integer.valueOf(end);
+
+            if (0 <= endInt && endInt <= 4) {
+                smallOrLargeResult = "0";
+            } else if (5 <= endInt && endInt <= 9) {
+                smallOrLargeResult = "1";
+            } else {
+                LOGGER.error("Activity 1A0001 collect result [" + endInt + "]");
+            }
+        } catch (final Exception e) {
+            ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFail"));
+
+            return ret;
+        }
+
+        if (Strings.isEmptyOrNull(smallOrLarge)) {
+            ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFail"));
+
+            return ret;
+        }
+
+        ret.put(Keys.STATUS_CODE, true);
+        if (StringUtils.equals(smallOrLarge, smallOrLargeResult)) {
+            final int amount = sum * 2;
+
+            final boolean succ = pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
+                    Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT, amount,
+                    DateFormatUtils.format(new Date(), "yyyyMMdd") + "-" + smallOrLargeResult);
+
+            if (succ) {
+                String msg = langPropsService.get("activity1A0001CollectSucc1");
+                msg = msg.replace("{point}", String.valueOf(amount));
+
+                ret.put(Keys.MSG, msg);
+            } else {
+                ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFail"));
+            }
+        } else {
+            ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectSucc0"));
+        }
 
         return ret;
     }

@@ -11,8 +11,10 @@
         <div class="main">
             <div class="wrapper fn-clear">
                 <div class="content content-reset">
-                    <a href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
-                    <a href="/activity/1A0001">${activity1A0001Label}</a>
+                    <ul>
+                        <li><a href="/activity/daily-checkin">${activityDailyCheckinLabel}</a></li>
+                        <li><a href="/activity/1A0001">${activity1A0001Label}</a></li>
+                    </ul>
                 </div>
                 <div class="side">
                     <#include "../side.ftl">

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.0, Jul 16, 2015
+ * @version 1.1.0.0, Jul 23, 2015
  */
 
 /**
@@ -37,22 +37,50 @@ var Activity = {
         };
 
         $.ajax({
-            url: "/activity/1A0001",
+            url: "/activity/1A0001/bet",
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
+                $("#betDiv").remove();
                 if (result.sc) {
-                    $("#betTip").addClass("tip-succ").text(result.msg);
+                    $("#betBtn").remove();
+                    $("#tip").addClass("tip-succ").text(result.msg);
                 } else {
-                    $("#betTip").addClass("tip-error").text(result.msg);
+                    $("#tip").addClass("tip-error").text(result.msg);
                 }
 
-                $("#betTip").show();
+                $("#tip").show();
 
                 setTimeout(function () {
-                    $("#betTip").hide();
+                    $("#tip").hide();
                 }, 3000);
+            }
+        });
+    },
+    /**
+     * @description 上证指数博彩活动兑奖
+     */
+    collect1A0001: function () {
+        var requestJSONObject = {
+        };
+
+        $.ajax({
+            url: "/activity/1A0001/collect",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+                $("#tip").show();
+                if (result.sc) {
+                    $("#tip").addClass("tip-succ").text(result.msg);
+                    $("#collectBtn").remove();
+                } else {
+                    $("#tip").addClass("tip-error").text(result.msg);
+                    setTimeout(function () {
+                        $("#tip").hide();
+                    }, 3000);
+                }
             }
         });
     },
