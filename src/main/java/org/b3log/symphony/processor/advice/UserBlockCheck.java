@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * User block check. Gets user from request attribute named "user".
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Jul 20, 2015
+ * @version 1.1.1.1, Jul 24, 2015
  * @since 0.2.5
  */
 @Named
@@ -76,6 +76,11 @@ public class UserBlockCheck extends BeforeRequestProcessAdvice {
             user = userQueryService.getUserByName(userName);
             if (null == user) {
                 exception.put(Keys.MSG, "Not found user [" + userName + ", requestURI=" + request.getRequestURI() + "]");
+                throw new RequestProcessAdviceException(exception);
+            }
+
+            if (UserExt.USER_STATUS_C_NOT_VERIFIED == user.optInt(UserExt.USER_STATUS)) {
+                exception.put(Keys.MSG, "Unverified User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
                 throw new RequestProcessAdviceException(exception);
             }
 
