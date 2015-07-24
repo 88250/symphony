@@ -32,15 +32,14 @@
                     </div>
                     </#if>
                     <#if closed || closed1A0001 || collected>
-                    <span id="tip" style="top: 287px;" class="tip-succ">${msg}</span>
+                    <span id="tip" style="top: 307px;" class="tip-succ">${msg}</span>
                     <#elseif participated>
-                    <span id="tip" style="top: 287px;" class="tip-succ">${msg}</span>
+                    <span id="tip" style="top: 307px;" class="tip-succ">${msg}</span>
                     <#if hour gt 15>
-                    <span id="tip" style="right: 550px; top: 305px;"></span>
                     <button id="collectBtn" class="red fn-right" onclick="Activity.collect1A0001()">${activityCollectLabel}</button>
                     </#if>
                     <#else>
-                    <span id="tip" style="top: 287px;"></span>
+                    <span id="tip" style="top: 307px;"></span>
                     <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001()">${activityBetLabel}</button>
                     </#if>
                 </div>
