@@ -17,10 +17,10 @@
             <#if isLoggedIn>
             <a id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon icon-logout"></a>
             <#if "adminRole" == userRole>
-            <a href="/admin" title="${adminLabel}" class="icon icon-setting"></a>
+            <a href="/admin" title="${adminLabel}" class="icon icon-userrole"></a>
             </#if>
-            <a href="/activities" title="${activityLabel}" class="icon icon-setting"></a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
+            <a href="/activities" title="${activityLabel}" class="icon icon-setting"></a>
             <a href="/add-article" title="${addArticleLabel}${articleLabel}" 
                class="icon icon-addfile"></a>
             <#else>

@@ -10,7 +10,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper fn-clear">
-                <div class="content content-reset">
+                <div class="content content-reset responsive-content">
                     ${activity1A0001TitleLabel}
                     ${activity1A0001GuideLabel}
 
@@ -32,15 +32,19 @@
                     </div>
                     </#if>
                     <#if closed || closed1A0001 || collected>
-                    <span id="tip" style="top: 307px;" class="tip-succ">${msg}</span>
-                    <#elseif participated>
-                    <span id="tip" style="top: 307px;" class="tip-succ">${msg}</span>
                     <#if hour gt 15>
-                    <button id="collectBtn" class="red fn-right" onclick="Activity.collect1A0001()">${activityCollectLabel}</button>
+                    <div class="fn-clear">
+                        <button id="collectBtn" class="red fn-right" onclick="Activity.collect1A0001()">${activityCollectLabel}</button>
+                    </div>
                     </#if>
+                    <span id="tip" class="tip-succ" style="top: 307px;">${msg}</span>
+                    <#elseif participated>
+                    <span id="tip" class="tip-succ" style="top: 307px;">${msg}</span>
                     <#else>
+                    <div class="fn-clear">
+                        <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001()">${activityBetLabel}</button>
+                    </div>
                     <span id="tip" style="top: 307px;"></span>
-                    <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001()">${activityBetLabel}</button>
                     </#if>
                 </div>
                 <div class="side">

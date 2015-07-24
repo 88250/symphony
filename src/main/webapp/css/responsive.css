@@ -156,12 +156,21 @@
     .list#comments h2,
     .comment-wrap,
     .about,
-    .tag-articles .content > p {
+    .tag-articles .content > p,
+    .responsive-content {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
     }
 
-    .about {
+    .about,
+    .responsive-content {
         box-sizing: border-box;
+    }
+    
+    .responsive-content #tip {
+        white-space: inherit;
+        position: inherit;
+        margin: 20px 0;
+        display: block;
     }
 }
