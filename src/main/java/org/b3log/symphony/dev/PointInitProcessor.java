@@ -108,13 +108,13 @@ public class PointInitProcessor {
 
                 pointtransferRepository.add(pointtransfer);
             }
-            
+
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            
+
             throw e;
         }
 

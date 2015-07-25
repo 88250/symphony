@@ -49,8 +49,7 @@ public class UserTagRepository extends AbstractRepository {
      * @param userId the specified user id
      * @param currentPageNum the specified current page number, MUST greater then {@code 0}
      * @param pageSize the specified page size(count of a page contains objects), MUST greater then {@code 0}
-     * @return for example
-     * <pre>
+     * @return for example      <pre>
      * {
      *     "pagination": {
      *       "paginationPageCount": 88250
@@ -79,8 +78,7 @@ public class UserTagRepository extends AbstractRepository {
      * @param tagId the specified tag id
      * @param currentPageNum the specified current page number, MUST greater then {@code 0}
      * @param pageSize the specified page size(count of a page contains objects), MUST greater then {@code 0}
-     * @return for example
-     * <pre>
+     * @return for example      <pre>
      * {
      *     "pagination": {
      *       "paginationPageCount": 88250

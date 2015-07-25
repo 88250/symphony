@@ -130,7 +130,7 @@ public class Filler {
      */
     @Inject
     private ActivityQueryService activityQueryService;
-    
+
     /**
      * Activity management service.
      */

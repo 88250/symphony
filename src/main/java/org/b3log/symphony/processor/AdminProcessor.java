@@ -496,7 +496,7 @@ public class AdminProcessor {
 
             article.put(name, value);
         }
-        
+
         final String articleTags = articleMgmtService.formatArticleTags(article.optString(Article.ARTICLE_TAGS));
         article.put(Article.ARTICLE_TAGS, articleTags);
 

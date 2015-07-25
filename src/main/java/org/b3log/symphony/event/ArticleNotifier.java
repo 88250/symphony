@@ -78,7 +78,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(), data, ArticleNotifier.class.getName()});
+                new Object[]{event.getType(), data, ArticleNotifier.class.getName()});
 
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);

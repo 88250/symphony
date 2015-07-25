@@ -327,7 +327,7 @@ public class PointtransferQueryService {
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN_STREAK:
-                        desTemplate = desTemplate.replace("{point}", 
+                        desTemplate = desTemplate.replace("{point}",
                                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK));
                         break;
                     default:

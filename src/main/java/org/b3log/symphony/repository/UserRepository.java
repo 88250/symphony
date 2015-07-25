@@ -101,7 +101,7 @@ public class UserRepository extends AbstractRepository {
                 .addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        
+
         return CollectionUtils.<JSONObject>jsonArrayToList(array);
     }
 
@@ -109,8 +109,7 @@ public class UserRepository extends AbstractRepository {
      * Determine whether the specified email is administrator's.
      *
      * @param email the specified email
-     * @return {@code true} if it is administrator's email, {@code false}
-     * otherwise
+     * @return {@code true} if it is administrator's email, {@code false} otherwise
      * @throws RepositoryException repository exception
      */
     public boolean isAdminEmail(final String email) throws RepositoryException {

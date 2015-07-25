@@ -69,7 +69,7 @@ public class ErrorProcessor {
      */
     @RequestProcessing(value = "/error/{statusCode}", method = HTTPRequestMethod.GET)
     public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String statusCode) throws Exception {
+            final String statusCode) throws Exception {
         final String requestURI = request.getRequestURI();
         final String templateName = statusCode + ".ftl";
         LOGGER.log(Level.DEBUG, "Shows error page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});

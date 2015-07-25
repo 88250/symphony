@@ -769,11 +769,11 @@ public class ArticleMgmtService {
         final String articleTags1 = articleTags.replaceAll("，", ",").replaceAll("、", ",").replaceAll("；", ",")
                 .replaceAll(";", ",");
         String[] tagTitles = articleTags1.split(",");
-       
+
         tagTitles = Strings.trimAll(tagTitles);
         final Set<String> titles = CollectionUtils.arrayToSet(tagTitles); // deduplication
         tagTitles = titles.toArray(new String[0]);
-        
+
         final StringBuilder tagsBuilder = new StringBuilder();
         for (final String tagTitle : tagTitles) {
             tagsBuilder.append(tagTitle.trim()).append(",");
@@ -782,8 +782,6 @@ public class ArticleMgmtService {
             tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
         }
 
-        
-        
         return tagsBuilder.toString();
     }
 

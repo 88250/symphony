@@ -123,7 +123,7 @@ public class ClientCommentAddValidation extends BeforeRequestProcessAdvice {
 
             if (!author.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Wrong B3 key [client=" + userB3Key + ", sym="
-                                                                                       + author.optString(UserExt.USER_B3_KEY) + "]"));
+                        + author.optString(UserExt.USER_B3_KEY) + "]"));
             }
         } catch (final ServiceException e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Unknown Error"));
@@ -171,7 +171,7 @@ public class ClientCommentAddValidation extends BeforeRequestProcessAdvice {
 
         try {
             final JSONObject article
-                             = articleQueryService.getArticleByClientArticleId(author.optString(Keys.OBJECT_ID), commentClientArticleId);
+                    = articleQueryService.getArticleByClientArticleId(author.optString(Keys.OBJECT_ID), commentClientArticleId);
             if (null == article) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Article not found, do not sync comment"));
             }

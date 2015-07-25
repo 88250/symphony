@@ -164,7 +164,7 @@ public class IndexProcessor {
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
-    
+
     /**
      * Shows search header.
      *

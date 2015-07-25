@@ -123,7 +123,7 @@ public class ArticleProcessor {
         articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
 
         final List<JSONObject> articles = articleQueryService.getArticlesByTags(pageNum, pageSize,
-                                                                                articleFields, tagList.toArray(new JSONObject[0]));
+                articleFields, tagList.toArray(new JSONObject[0]));
         for (final JSONObject article : articles) {
             article.remove(Article.ARTICLE_T_PARTICIPANTS);
             article.remove(Article.ARTICLE_T_PARTICIPANT_NAME);

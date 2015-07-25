@@ -134,7 +134,7 @@ public final class UserExt {
      * Key of latest login time.
      */
     public static final String USER_LATEST_LOGIN_TIME = "userLatestLoginTime";
-    
+
     /**
      * Key of latest login IP.
      */
@@ -150,12 +150,12 @@ public final class UserExt {
      * Key of user longest checkin streak.
      */
     public static final String USER_T_LONGEST_CHECKIN_STREAK = "userLongestCheckinStreak";
-    
+
     /**
      * Key of user current checkin streak.
      */
     public static final String USER_T_CURRENT_CHECKIN_STREAK = "userCurrentCheckinStreak";
-    
+
     /**
      * Key of user create time.
      */
@@ -186,7 +186,7 @@ public final class UserExt {
      * Default commenter role.
      */
     public static final String DEFAULT_CMTER_ROLE = "defaultCommenterRole";
-    
+
     //// Null user.
     /**
      * Null user name.
@@ -239,7 +239,7 @@ public final class UserExt {
      * User app role - Painter.
      */
     public static final int USER_APP_ROLE_C_PAINTER = 1;
-    
+
     /**
      * Gets color code of the specified point.
      *

@@ -149,7 +149,7 @@ public class CommentProcessor {
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
             if (null == currentUser) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                
+
                 return;
             }
 
@@ -174,7 +174,7 @@ public class CommentProcessor {
 
                 if (!invited) {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                    
+
                     return;
                 }
             }

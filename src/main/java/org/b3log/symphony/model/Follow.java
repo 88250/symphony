@@ -59,7 +59,7 @@ public final class Follow {
      * Following type - tag.
      */
     public static final int FOLLOWING_TYPE_C_TAG = 1;
-    
+
     /**
      * Following type - article.
      */

@@ -187,7 +187,7 @@ public final class Pointtransfer {
      * Transfer sum - Activity - Daily Checkin Streak.
      */
     public static final int TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK = Symphonys.getInt("pointActivityCheckinStreak");
-    
+
     /**
      * Transfer type - Activity - 1A0001 Income.
      */

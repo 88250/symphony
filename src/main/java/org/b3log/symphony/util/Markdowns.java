@@ -70,7 +70,7 @@ public final class Markdowns {
                 iframe.remove();
             }
         }
-        
+
         final Elements ps = doc.getElementsByTag("p");
         for (final Element p : ps) {
             p.removeAttr("style");

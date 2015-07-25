@@ -32,20 +32,20 @@ public final class Symphonys {
      * Configurations.
      */
     private static final ResourceBundle CFG = ResourceBundle.getBundle("symphony");
-    
+
     /**
      * Reserved tags.
      */
     public static final String[] RESERVED_TAGS;
-    
+
     static {
         final String reservedTags = CFG.getString("reservedTags");
         final String[] tags = reservedTags.split(",");
         RESERVED_TAGS = new String[tags.length];
-        
+
         for (int i = 0; i < tags.length; i++) {
             final String tag = tags[i];
-            
+
             RESERVED_TAGS[i] = tag.trim();
         }
     }

@@ -99,7 +99,7 @@ public class PointtransferMgmtService {
                 if (UserExt.USER_STATUS_C_VALID != toUser.optInt(UserExt.USER_STATUS)) {
                     throw new Exception("Invalid to user [id=" + toId + "]");
                 }
-                
+
                 toBalance = toUser.optInt(UserExt.USER_POINT) + sum;
                 toUser.put(UserExt.USER_POINT, toBalance);
 

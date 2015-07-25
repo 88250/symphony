@@ -23,7 +23,7 @@ package org.b3log.symphony.model;
  * @since 0.2.0
  */
 public final class Common {
-    
+
     /**
      * Key of closed 1A0001.
      */
@@ -33,7 +33,7 @@ public final class Common {
      * Key of closed.
      */
     public static final String CLOSED = "closed";
-    
+
     /**
      * Key of end.
      */
