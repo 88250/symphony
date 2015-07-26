@@ -69,6 +69,7 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Networks;
 import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -93,7 +94,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.4.21, Jul 13, 2015
+ * @version 1.8.5.21, Jul 26, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -606,6 +607,13 @@ public class ArticleProcessor {
         final String clientHost = requestJSONObject.getString(Client.CLIENT_HOST);
         final String clientRuntimeEnv = requestJSONObject.getString(Client.CLIENT_RUNTIME_ENV);
 
+        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
+        if (Networks.isIPv4(maybeIP)) {
+            LOGGER.log(Level.WARN, "Sync add article error, caused by the client host [{0}] is invalid", clientHost);
+
+            return;
+        }
+
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
             LOGGER.log(Level.WARN, "The user[email={0}] not found in community", clientAdminEmail);
@@ -770,6 +778,13 @@ public class ArticleProcessor {
         final String clientVersion = requestJSONObject.getString(Client.CLIENT_VERSION);
         final String clientHost = requestJSONObject.getString(Client.CLIENT_HOST);
         final String clientRuntimeEnv = requestJSONObject.getString(Client.CLIENT_RUNTIME_ENV);
+
+        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
+        if (Networks.isIPv4(maybeIP)) {
+            LOGGER.log(Level.WARN, "Sync update article error, caused by the client host [{0}] is invalid", clientHost);
+
+            return;
+        }
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
