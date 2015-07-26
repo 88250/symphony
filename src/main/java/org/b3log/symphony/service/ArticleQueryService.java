@@ -552,11 +552,11 @@ public class ArticleQueryService {
      * @return recent articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getLatestCmtArticles(final int currentPageNum, final int fetchSize) throws ServiceException {
+    public List<JSONObject> getRecentArticles(final int currentPageNum, final int fetchSize) throws ServiceException {
         final Query query = new Query()
                 .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
                 .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
-                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
+                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
 
         try {
@@ -573,12 +573,50 @@ public class ArticleQueryService {
                 }
             }
 
-            final Integer participantsCnt = Symphonys.getInt("latestCmtArticleParticipantsCnt");
+            final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
             genParticipants(ret, participantsCnt);
 
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets latest comment articles failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the index articles with the specified fetch size.
+     *
+     * @param fetchSize the specified fetch size
+     * @return recent articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getIndexArticles(final int fetchSize) throws ServiceException {
+        final Query query = new Query()
+                .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
+                .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
+                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
+                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(1);
+
+        try {
+            final JSONObject result = articleRepository.get(query);
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            organizeArticles(ret);
+
+            for (final JSONObject article : ret) {
+                final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                final JSONObject author = userRepository.get(authorId);
+                if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
+                    article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+                }
+            }
+
+            final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
+            genParticipants(ret, participantsCnt);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets index articles failed", e);
             throw new ServiceException(e);
         }
     }

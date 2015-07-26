@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.1.10, Jul 23, 2015
+ * @version 1.16.1.10, Jul 26, 2015
  * @since 0.2.0
  */
 public final class Common {
@@ -175,9 +175,14 @@ public final class Common {
     public static final String SIDE_LATEST_CMTS = "sideLatestCmts";
 
     /**
-     * Key of latest comment articles.
+     * Key of latest articles.
      */
-    public static final String LATEST_CMT_ARTICLES = "latestCmtArticles";
+    public static final String LATEST_ARTICLES = "latestArticles";
+    
+    /**
+     * Key of index articles.
+     */
+    public static final String INDEX_ARTICLES = "indexArticles";
 
     /**
      * Key of user id.

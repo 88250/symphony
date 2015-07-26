@@ -9,6 +9,7 @@ Without this configuration present, some functionality in the IDE may be limited
     <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
         <word>admin</word>
         <word>app</word>
+        <word>Baidu</word>
         <word>captcha</word>
         <word>checkin</word>
         <word>commentable</word>

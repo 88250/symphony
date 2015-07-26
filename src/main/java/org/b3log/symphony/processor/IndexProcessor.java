@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -33,10 +32,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Option;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -51,12 +47,13 @@ import org.json.JSONObject;
  * <ul>
  * <li>Shows index (/), GET</li>
  * <li>Shows about (/about), GET</li>
+ * <li>Shows Baidu search header (/search-header), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.1.8, Jul 15, 2015
+ * @version 1.2.1.9, Jul 26, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -109,31 +106,10 @@ public class IndexProcessor {
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
-        }
-
-        final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Symphonys.getInt("latestCmtArticlesCnt");
-        final int windowSize = Symphonys.getInt("latestCmtArticlesWindowSize");
-
-        final List<JSONObject> latestCmtArticles = articleQueryService.getLatestCmtArticles(pageNum, pageSize);
-        dataModel.put(Common.LATEST_CMT_ARTICLES, latestCmtArticles);
-
-        final JSONObject articleCntOption = optionQueryService.getStatistic();
-        final int articleCnt = articleCntOption.optInt(Option.ID_C_STATISTIC_ARTICLE_COUNT);
-        final int pageCount = (int) Math.ceil((double) articleCnt / (double) pageSize);
-
-        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
-        if (!pageNums.isEmpty()) {
-            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
-            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
-        }
-
-        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
-        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        final int pageSize = Symphonys.getInt("indexArticlesCnt");
+        
+        final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
+        dataModel.put(Common.INDEX_ARTICLES, indexArticles);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);

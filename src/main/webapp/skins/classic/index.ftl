@@ -1,6 +1,5 @@
 <#include "macro-head.ftl">
 <#include "macro-list.ftl">
-<#include "macro-pagination.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,8 +13,12 @@
         <div class="main">
             <div class="wrapper fn-clear">
                 <div class="content fn-clear">
-                    <@list listData=latestCmtArticles/>
-                    <@pagination url="/"/>
+                    <@list listData=indexArticles/>
+
+                    <div>
+                        <br/>
+                        <span class="ft-small"><a href="/recent">更多新文章</a></span>
+                    </div>
                 </div>
                 <div class="side">
                     <#include "side.ftl">

@@ -59,7 +59,7 @@
                 <textarea id="articleRewardContent" name="articleRewardContent">${article.articleRewardContent}</textarea>
 
                 <label for="articleRewardPoint">${rewardPointLabel}</label>
-                <input type="text" id="articleRewardPoint" name="articleRewardPoint" value="${article.articleRewardPoint}"/>
+                <input type="text" id="articleRewardPoint" name="articleRewardPoint" value="${article.articleRewardPoint?c}"/>
 
                 <label for="articleCommentable">${commentableLabel}</label>
                 <input type="text" id="articleCommentable" name="articleCommentable" value="${article.articleCommentable?c}" />
