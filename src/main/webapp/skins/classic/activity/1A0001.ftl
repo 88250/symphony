@@ -32,7 +32,7 @@
                     </div>
                     </#if>
                     <#if closed || closed1A0001 || collected>
-                    <#if hour gt 15>
+                    <#if hour?? && hour gt 15>
                     <div class="fn-clear">
                         <button id="collectBtn" class="red fn-right" onclick="Activity.collect1A0001()">${activityCollectLabel}</button>
                     </div>
