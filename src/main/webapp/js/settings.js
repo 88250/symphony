@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.5, Jul 21, 2015
+ * @version 1.3.1.5, Jul 26, 2015
  */
 
 /**
@@ -50,7 +50,7 @@ var Settings = {
                 } else {
                     $("#pointTransferTip").addClass("tip-error").text(result.msg);
                 }
-                
+
                 $("#pointTransferTip").show();
 
                 setTimeout(function () {
@@ -110,10 +110,15 @@ var Settings = {
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validateProfiles: function () {
-        var URLVal = $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+        var tagsVal = $("#userTags").val().replace(/(^\s*)|(\s*$)/g, ""),
+                URLVal = $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                 QQVal = $("#userQQ").val().replace(/(^\s*)|(\s*$)/g, ""),
                 introVal = $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, "");
         if (Validate.goValidate([{
+                "id": "userTags",
+                "type": "tags",
+                "msg": Label.articleTagsErrorLabel
+            }, {
                 "id": "userURL",
                 "type": "url",
                 "msg": Label.invalidUserURLLabel
@@ -131,6 +136,7 @@ var Settings = {
                 "msg": Label.invalidAvatarURLLabel
             }])) {
             var data = {};
+            data.userTags = tagsVal;
             data.userURL = URLVal;
             data.userQQ = QQVal;
             data.userIntro = introVal;

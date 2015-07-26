@@ -8,17 +8,21 @@
         <span>(${currentUser.userEmail})</span>
     </div>
     <div class="module-panel form fn-clear">
+        <label>${selfTagLabel}</label><br/>
+        <input id="userTags" type="text" value="${currentUser.userTags}" placeholder="${selfDescriptionLabel}"/>
+        <span style="top: 50px; right: 24px;"></span>
+        
         <label>URL</label><br/>
         <input id="userURL" type="text" value="${currentUser.userURL}"/>
-        <span style="top: 50px; right: 24px;"></span>
+        <span style="top: 118px; right: 24px;"></span>
 
         <label>QQ</label><br/>
         <input id="userQQ" type="text" value="${currentUser.userQQ}" />
-        <span style="right:24px;top:118px;"></span>
+        <span style="top: 186px; right:24px;"></span>
 
         <label>${userIntroLabel}</label><br/>
         <textarea id="userIntro">${currentUser.userIntro}</textarea>
-        <span style="right:24px;top:205px;"></span><br/>
+        <span style="top:255px; right:24px;"></span><br/>
 
         <label>${avatarLabel}</label><br/>
         <div class="fn-clear"></div>
@@ -39,7 +43,7 @@
         </div>
         <span style="right:140px;top:265px;"></span><br/>
         <br/><br/>
-        <span id="profilesTip" style="right: 95px; top: 635px;"></span>
+        <span id="profilesTip" style="right: 95px; top: 703px;"></span>
         <button class="green fn-right" onclick="Settings.update('profiles')">${saveLabel}</button>
     </div>
 </div>

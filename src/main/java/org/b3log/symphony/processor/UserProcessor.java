@@ -19,6 +19,8 @@ import com.qiniu.util.Auth;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -731,13 +733,17 @@ public class UserProcessor {
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
+        String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
         final String userURL = requestJSONObject.optString(User.USER_URL);
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
 
+        userTags = formatTags(userTags);
+
         final JSONObject user = userQueryService.getCurrentUser(request);
 
+        user.put(UserExt.USER_TAGS, userTags);
         user.put(User.USER_URL, userURL);
         user.put(UserExt.USER_QQ, userQQ);
         user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
@@ -1067,5 +1073,37 @@ public class UserProcessor {
     private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
         dataModel.put(User.USER, user);
         activityMgmtService.fillCheckinStreak(user);
+    }
+
+    /**
+     * Formats the specified tags.
+     *
+     * <ul>
+     * <li>Trims every tag</li>
+     * <li>Deduplication</li>
+     * </ul>
+     *
+     * @param tags the specified tags
+     * @return formatted tags string
+     */
+    private String formatTags(final String tags) {
+        final String tags1 = tags.replaceAll("，", ",").replaceAll("、", ",").replaceAll("；", ",")
+                .replaceAll(";", ",");
+        String[] tagTitles = tags1.split(",");
+
+        tagTitles = Strings.trimAll(tagTitles);
+
+        final Set<String> titles = new TreeSet<String>(CollectionUtils.arrayToSet(tagTitles)); // deduplication
+        tagTitles = titles.toArray(new String[0]);
+
+        final StringBuilder tagsBuilder = new StringBuilder();
+        for (final String tagTitle : tagTitles) {
+            tagsBuilder.append(tagTitle.trim()).append(",");
+        }
+        if (tagsBuilder.length() > 0) {
+            tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
+        }
+
+        return tagsBuilder.toString();
     }
 }

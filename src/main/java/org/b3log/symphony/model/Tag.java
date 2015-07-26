@@ -120,6 +120,22 @@ public final class Tag {
      */
     public static final String TAG_T_RELATED_TAGS = "tagRelatedTags";
 
+    //// Tag type constants
+    /**
+     * Tag type - creator.
+     */
+    public static final int TAG_TYPE_C_CREATOR = 0;
+
+    /**
+     * Tag type - article.
+     */
+    public static final int TAG_TYPE_C_ARTICLE = 1;
+
+    /**
+     * Tag type - user self.
+     */
+    public static final int TAG_TYPE_C_USER_SELF = 2;
+
     /**
      * Private constructor.
      */

@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.10.0.9, Jul 20, 2015
+ * @version 2.11.0.9, Jul 26, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -69,6 +69,11 @@ public final class UserExt {
      * Key of user point.
      */
     public static final String USER_POINT = "userPoint";
+    
+    /**
+     * Key of user tags.
+     */
+    public static final String USER_TAGS = "userTags";
 
     /**
      * Key of user QQ.
@@ -187,7 +192,7 @@ public final class UserExt {
      */
     public static final String DEFAULT_CMTER_ROLE = "defaultCommenterRole";
 
-    //// Null user.
+    //// Null user
     /**
      * Null user name.
      */

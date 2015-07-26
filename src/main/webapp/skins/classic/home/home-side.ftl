@@ -30,6 +30,11 @@
             ${user.userNo}
             <span class="ft-small">${numVIPLabel}</span>, <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
         </div>
+        <#if "" != user.userTags>
+        <div class="user-info">
+            <span class="ft-small">${selfTagLabel}</span> <#list user.userTags?split(',') as tag> ${tag?html}<#if tag_has_next>,</#if></#list>
+        </div>
+        </#if>
         <div class="user-info">
             <span class="ft-small">${pointLabel}</span>
             <a href="/member/${user.userName}/points" title="${user.userPoint?c}">

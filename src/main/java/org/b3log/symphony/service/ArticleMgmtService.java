@@ -715,7 +715,7 @@ public class ArticleMgmtService {
 
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
-                userTagType = 0; // Creator
+                userTagType = Tag.TAG_TYPE_C_CREATOR;
 
                 final JSONObject tagCntOption = optionRepository.get(Option.ID_C_STATISTIC_TAG_COUNT);
                 final int tagCnt = tagCntOption.optInt(Option.OPTION_VALUE);
@@ -742,7 +742,7 @@ public class ArticleMgmtService {
 
                 tagRepository.update(tagId, tagTmp);
 
-                userTagType = 1; // Article
+                userTagType = Tag.TAG_TYPE_C_ARTICLE;
             }
 
             // Tag-Article relation

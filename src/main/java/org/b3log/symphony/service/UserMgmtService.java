@@ -45,13 +45,17 @@ import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.OptionRepository;
+import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.repository.UserTagRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -94,6 +98,18 @@ public class UserMgmtService {
      */
     @Inject
     private OptionRepository optionRepository;
+
+    /**
+     * Tag repository.
+     */
+    @Inject
+    private TagRepository tagRepository;
+
+    /**
+     * User-Tag repository.
+     */
+    @Inject
+    private UserTagRepository userTagRepository;
 
     /**
      * Language service.
@@ -217,6 +233,7 @@ public class UserMgmtService {
      * @param requestJSONObject the specified request json object (user), for example,      <pre>
      * {
      *     "oId": "",
+     *     "userTags": "",
      *     "userURL": "",
      *     "userQQ": "",
      *     "userIntro": "",
@@ -238,7 +255,14 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("updateFailLabel"));
             }
 
+            // Tag
+            final String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
+            oldUser.put(UserExt.USER_TAGS, userTags);
+
+            tag(oldUser);
+
             // Update
+            oldUser.put(UserExt.USER_TAGS, userTags);
             oldUser.put(User.USER_URL, requestJSONObject.optString(User.USER_URL));
             oldUser.put(UserExt.USER_QQ, requestJSONObject.optString(UserExt.USER_QQ));
             oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
@@ -246,6 +270,7 @@ public class UserMgmtService {
             oldUser.put(UserExt.USER_AVATAR_URL, requestJSONObject.optString(UserExt.USER_AVATAR_URL));
 
             userRepository.update(oldUserId, oldUser);
+
             transaction.commit();
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
@@ -643,4 +668,72 @@ public class UserMgmtService {
         }
     }
 
+    /**
+     * Tags the specified user with the specified tag titles.
+     *
+     * @param user the specified article
+     * @throws RepositoryException repository exception
+     */
+    private synchronized void tag(final JSONObject user) throws RepositoryException {
+        // Clear
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(User.USER + '_' + Keys.OBJECT_ID, 
+                FilterOperator.EQUAL, user.optString(Keys.OBJECT_ID)));
+        filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_USER_SELF));
+
+        final Query query = new Query();
+        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+        final JSONArray results = userTagRepository.get(query).optJSONArray(Keys.RESULTS);
+        for (int i = 0; i < results.length(); i++) {
+            final JSONObject rel = results.optJSONObject(i);
+            final String id = rel.optString(Keys.OBJECT_ID);
+
+            userTagRepository.remove(id);
+        }
+
+        // Add
+        final String[] tagTitles = user.optString(UserExt.USER_TAGS).split(",");
+
+        for (final String title : tagTitles) {
+            final String tagTitle = title.trim();
+            JSONObject tag = tagRepository.getByTitle(tagTitle);
+            String tagId;
+
+            if (null == tag) {
+                LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in user [name={1}]",
+                        new Object[]{tagTitle, user.optString(User.USER_NAME)});
+                tag = new JSONObject();
+                tag.put(Tag.TAG_TITLE, tagTitle);
+                tag.put(Tag.TAG_REFERENCE_CNT, 0);
+                tag.put(Tag.TAG_COMMENT_CNT, 0);
+                tag.put(Tag.TAG_FOLLOWER_CNT, 0);
+                tag.put(Tag.TAG_DESCRIPTION, "");
+                tag.put(Tag.TAG_ICON_PATH, "");
+                tag.put(Tag.TAG_STATUS, 0);
+                tag.put(Tag.TAG_GOOD_CNT, 0);
+                tag.put(Tag.TAG_BAD_CNT, 0);
+
+                tagId = tagRepository.add(tag);
+
+                final JSONObject tagCntOption = optionRepository.get(Option.ID_C_STATISTIC_TAG_COUNT);
+                final int tagCnt = tagCntOption.optInt(Option.OPTION_VALUE);
+                tagCntOption.put(Option.OPTION_VALUE, tagCnt + 1);
+                optionRepository.update(Option.ID_C_STATISTIC_TAG_COUNT, tagCntOption);
+            } else {
+                tagId = tag.optString(Keys.OBJECT_ID);
+                LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in user[name={2}]",
+                        new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
+                            user.optString(User.USER_NAME)});
+            }
+
+            // User-Tag relation
+            final JSONObject userTagRelation = new JSONObject();
+            userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
+            userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
+            userTagRelation.put(Common.TYPE, Tag.TAG_TYPE_C_USER_SELF);
+
+            userTagRepository.add(userTagRelation);
+        }
+    }
 }
