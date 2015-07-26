@@ -212,6 +212,7 @@
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
+            Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
             Label.articleOId = "${article.oId}";
             Label.articleTitle = "${article.articleTitle}";
             Label.articlePermalink = "${article.articlePermalink}";

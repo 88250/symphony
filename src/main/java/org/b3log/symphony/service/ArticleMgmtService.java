@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.9, Jul 22, 2015
+ * @version 1.5.5.9, Jul 26, 2015
  * @since 0.2.0
  */
 @Service
@@ -519,15 +519,21 @@ public class ArticleMgmtService {
                 return;
             }
 
+            final String rewardId = Ids.genTimeMillisId();
+            final boolean succ = pointtransferMgmtService.transfer(senderId, receiverId,
+                    Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, rewardId);
+
+            if (!succ) {
+                throw new ServiceException();
+            }
+
             final JSONObject reward = new JSONObject();
+            reward.put(Keys.OBJECT_ID, rewardId);
             reward.put(Reward.SENDER_ID, senderId);
             reward.put(Reward.DATA_ID, articleId);
             reward.put(Reward.TYPE, Reward.TYPE_C_ARTICLE);
-            final String rewardId = rewardMgmtService.addReward(reward);
-
-            pointtransferMgmtService.transfer(senderId, receiverId,
-                    Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, rewardId);
-
+            
+            rewardMgmtService.addReward(reward);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Rewards an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);

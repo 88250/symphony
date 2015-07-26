@@ -1012,13 +1012,6 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article/reward", method = HTTPRequestMethod.POST)
     public void reward(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-        final JSONObject result = new JSONObject();
-        renderer.setJSONObject(result);
-
-        result.put(Keys.STATUS_CODE, true);
-
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -1033,7 +1026,20 @@ public class ArticleProcessor {
             return;
         }
 
-        articleMgmtService.reward(articleId, currentUser.optString(Keys.OBJECT_ID));
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        final JSONObject result = Results.falseResult();
+        renderer.setJSONObject(result);
+
+        try {
+            articleMgmtService.reward(articleId, currentUser.optString(Keys.OBJECT_ID));
+        } catch (final ServiceException e) {
+            result.put(Keys.MSG, langPropsService.get("transferFailLabel"));
+            
+            return;
+        }
+
+        result.put(Keys.STATUS_CODE, true);
 
         final JSONObject article = articleQueryService.getArticle(articleId);
         articleQueryService.processArticleContent(article, request);
