@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.6.4, Jul 26, 2015
+ * @version 1.7.7.4, Jul 27, 2015
  */
 
 /**
@@ -112,9 +112,10 @@ var Comment = {
         if (!Validate.goValidate(Comment._validateData)) {
             return false;
         }
+        
         var requestJSONObject = {
             articleId: id,
-            commentContent: Comment.editor.getValue().replace(/(^\s*)|(\s*$)/g, "")
+            commentContent: Comment.editor.getValue() // 实际提交时不去除空格，因为直接贴代码时需要空格
         };
 
         $.ajax({
