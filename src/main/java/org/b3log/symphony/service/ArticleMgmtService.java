@@ -17,6 +17,7 @@ package org.b3log.symphony.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
@@ -34,7 +35,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.EventTypes;
@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.7.9, Jul 27, 2015
+ * @version 1.5.8.9, Jul 27, 2015
  * @since 0.2.0
  */
 @Service
@@ -784,7 +784,7 @@ public class ArticleMgmtService {
         String[] tagTitles = articleTags1.split(",");
 
         tagTitles = Strings.trimAll(tagTitles);
-        final Set<String> titles = CollectionUtils.arrayToSet(tagTitles); // deduplication
+        final Set<String> titles = new LinkedHashSet<String>(Arrays.asList(tagTitles)); // deduplication
         tagTitles = titles.toArray(new String[0]);
 
         final StringBuilder tagsBuilder = new StringBuilder();

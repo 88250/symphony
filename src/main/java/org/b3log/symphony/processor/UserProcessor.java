@@ -16,11 +16,12 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,7 +98,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.5.9, Jul 21, 2015
+ * @version 1.9.6.9, Jul 27, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1092,8 +1093,8 @@ public class UserProcessor {
         String[] tagTitles = tags1.split(",");
 
         tagTitles = Strings.trimAll(tagTitles);
-
-        final Set<String> titles = new TreeSet<String>(CollectionUtils.arrayToSet(tagTitles)); // deduplication
+        
+        final Set<String> titles = new LinkedHashSet<String>(Arrays.asList(tagTitles)); // deduplication
         tagTitles = titles.toArray(new String[0]);
 
         final StringBuilder tagsBuilder = new StringBuilder();
