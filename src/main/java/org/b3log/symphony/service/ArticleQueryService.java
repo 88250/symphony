@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.2.14, Jul 27, 2015
+ * @version 1.9.3.14, Jul 27, 2015
  * @since 0.2.0
  */
 @Service
@@ -780,6 +780,9 @@ public class ArticleQueryService {
 
                 article.put(Article.ARTICLE_CONTENT, blockContent);
                 article.put(Common.DISCUSSION_VIEWABLE, false);
+
+                article.put(Article.ARTICLE_REWARD_CONTENT, "");
+                article.put(Article.ARTICLE_REWARD_POINT, 0);
 
                 return;
             }
