@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.9, Jul 27, 2015
+ * @version 1.5.7.9, Jul 27, 2015
  * @since 0.2.0
  */
 @Service
@@ -393,7 +393,6 @@ public class ArticleMgmtService {
 //            }
 
             oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
-            oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
 
             final long currentTimeMillis = System.currentTimeMillis();
             final long oldUpdateTime = oldArticle.optLong(Article.ARTICLE_UPDATE_TIME);
