@@ -94,7 +94,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.5.21, Jul 26, 2015
+ * @version 1.9.5.21, Jul 27, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -963,6 +963,13 @@ public class ArticleProcessor {
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
         final JSONObject author = userQueryService.getUser(authorId);
 
+        if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
+                || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+             result.put("html", langPropsService.get("articleContentBlockLabel"));
+
+            return;
+        }
+
         final Set<String> userNames = userQueryService.getUserNames(content);
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
@@ -1035,7 +1042,7 @@ public class ArticleProcessor {
             articleMgmtService.reward(articleId, currentUser.optString(Keys.OBJECT_ID));
         } catch (final ServiceException e) {
             result.put(Keys.MSG, langPropsService.get("transferFailLabel"));
-            
+
             return;
         }
 

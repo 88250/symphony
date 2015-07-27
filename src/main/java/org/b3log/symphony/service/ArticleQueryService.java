@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.1.14, Jul 20, 2015
+ * @version 1.9.2.14, Jul 27, 2015
  * @since 0.2.0
  */
 @Service
@@ -524,29 +524,6 @@ public class ArticleQueryService {
     /**
      * Gets the recent (sort by create time) articles with the specified fetch size.
      *
-     * @param fetchSize the specified fetch size
-     * @return recent articles, returns an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getRecentArticles(final int fetchSize) throws ServiceException {
-        final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(fetchSize);
-
-        try {
-            final JSONObject result = articleRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-            organizeArticles(ret);
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets recent articles failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * Gets the latest comment articles with the specified fetch size.
-     *
      * @param currentPageNum the specified current page number
      * @param fetchSize the specified fetch size
      * @return recent articles, returns an empty list if not found
@@ -554,6 +531,7 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getRecentArticles(final int currentPageNum, final int fetchSize) throws ServiceException {
         final Query query = new Query()
+                .addSort(Article.ARTICLE_STATUS, SortDirection.ASCENDING)
                 .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
                 .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
@@ -592,6 +570,7 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getIndexArticles(final int fetchSize) throws ServiceException {
         final Query query = new Query()
+                .addSort(Article.ARTICLE_STATUS, SortDirection.ASCENDING)
                 .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
                 .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
                 .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
@@ -668,6 +647,7 @@ public class ArticleQueryService {
 
         if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+            article.put(Article.ARTICLE_T_TITLE_EMOJI, langPropsService.get("articleTitleBlockLabel"));
             article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
         }
 
@@ -768,6 +748,9 @@ public class ArticleQueryService {
                 || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
             article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
             article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
+
+            article.put(Article.ARTICLE_REWARD_CONTENT, "");
+            article.put(Article.ARTICLE_REWARD_POINT, 0);
 
             return;
         }

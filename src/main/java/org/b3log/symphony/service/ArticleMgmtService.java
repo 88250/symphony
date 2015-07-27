@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.5.9, Jul 26, 2015
+ * @version 1.5.6.9, Jul 27, 2015
  * @since 0.2.0
  */
 @Service
@@ -495,6 +495,10 @@ public class ArticleMgmtService {
                 return;
             }
 
+            if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+                return;
+            }
+
             final JSONObject sender = userRepository.get(senderId);
             if (null == sender) {
                 return;
@@ -503,6 +507,10 @@ public class ArticleMgmtService {
             final String receiverId = article.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject receiver = userRepository.get(receiverId);
             if (null == receiver) {
+                return;
+            }
+
+            if (UserExt.USER_STATUS_C_VALID != receiver.optInt(UserExt.USER_STATUS)) {
                 return;
             }
 
@@ -532,7 +540,7 @@ public class ArticleMgmtService {
             reward.put(Reward.SENDER_ID, senderId);
             reward.put(Reward.DATA_ID, articleId);
             reward.put(Reward.TYPE, Reward.TYPE_C_ARTICLE);
-            
+
             rewardMgmtService.addReward(reward);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Rewards an article[id=" + articleId + "] failed", e);
