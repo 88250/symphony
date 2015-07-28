@@ -18,7 +18,7 @@
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.2, Apr 3, 2014
+ * @version 1.0.1.3, Jul 28, 2014
  */
 @media (max-width: 460px) {
     .nav form,
@@ -29,6 +29,12 @@
     .tag-artile-user,
     .notification .avatar {
         display: none;
+    }
+    
+    body .wrapper {
+        min-width: inherit;
+        display: block;
+        overflow: hidden;
     }
 
     .wrapper,
@@ -86,6 +92,10 @@
     .footer .info {
         white-space: normal;
     }
+    
+    .nav {
+        height: auto;
+    }
 
     .nav .form {
         right: 0;
@@ -97,7 +107,8 @@
 
     .comment-login,
     .main,
-    #comments .content-reset {
+    #comments .content-reset,
+    .footer > div > .fn-right{
         margin: 0px auto;
         padding: 0;
     }

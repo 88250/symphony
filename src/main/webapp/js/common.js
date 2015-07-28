@@ -282,7 +282,7 @@ var Util = {
      * @description 禁止 IE7 以下浏览器访问
      */
     _kill: function () {
-        if ($.browser.msie && parseInt($.browser.version) < 8) {
+        if ($.browser.msie && parseInt($.browser.version) < 10) {
             $.ajax({
                 url: "/kill-browser",
                 type: "GET",
