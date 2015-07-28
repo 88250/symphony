@@ -299,10 +299,12 @@ textarea {
 /* start function */
 .fn-flex {
     display: flex;
+    display: -webkit-box;
 }
 
 .fn-flex-1 {
     flex: 1;
+    -webkit-box-flex: 1; 
 }
 
 .fn-pointer {
@@ -686,9 +688,9 @@ a.icon:hover {
 }
 
 .status > li {
-    float: left;
     overflow: hidden;
     flex: 1;
+    -webkit-box-flex: 1;  
     text-align: center;
 }
 
@@ -717,6 +719,7 @@ a.icon:hover {
 .form {
     position: relative;
     flex: 1;
+    -webkit-box-flex: 1;
 }
 
 .form table {
@@ -861,6 +864,7 @@ a.icon:hover {
     width: 80%;
     margin: 0 auto;
     display: flex;
+    display: -webkit-box;
     min-width: 1000px;
 }
 
@@ -870,14 +874,16 @@ a.icon:hover {
 }
 
 .side {
-    float: left;
     flex: 1;
+    -webkit-box-flex: 1; 
+    width: 25%;
 }
 
 .content {
-    float: left;
     margin-right: 50px;
     flex: 2.65;
+    -webkit-box-flex: 2.65; 
+    width: 75%;
 }
 /* end framework */
 
@@ -1053,11 +1059,6 @@ a.icon:hover {
     font-size: 11px;
     white-space: nowrap;
     word-wrap: normal;
-}
-
-.footer > div > .fn-right {
-    flex: 1;
-    margin-left: 50px;
 }
 
 .footer-nav a {

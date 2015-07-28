@@ -447,6 +447,7 @@
     margin-left: 20px;
     margin-top: 35px;
     flex: 3;
+    -webkit-box-flex: 3;
 }
 /* end tag-article.html */
 
