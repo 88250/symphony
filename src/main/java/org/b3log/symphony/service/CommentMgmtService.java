@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.3.15, Jul 13, 2015
+ * @version 1.4.4.15, Jul 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -131,12 +131,43 @@ public class CommentMgmtService {
      * @throws ServiceException service exception
      */
     public synchronized String addComment(final JSONObject requestJSONObject) throws ServiceException {
+        final long currentTimeMillis = System.currentTimeMillis();
+        final JSONObject commenter = requestJSONObject.optJSONObject(Comment.COMMENT_T_COMMENTER);
+        final String commentAuthorId = requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID);
+        final boolean fromClient = requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID);
+        final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
+
+        if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
+                && !Role.ADMIN_ROLE.equals(commenter.optString(User.USER_ROLE))
+                && !UserExt.DEFAULT_CMTER_ROLE.equals(commenter.optString(User.USER_ROLE))) {
+            LOGGER.log(Level.WARN, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
+            throw new ServiceException(langPropsService.get("tooFrequentCmtLabel"));
+        }
+
+        int pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT;
+        JSONObject article = null;
         try {
             // check if admin allow to add comment
             final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_COMMENT);
 
             if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
                 throw new ServiceException(langPropsService.get("notAllowAddCommentLabel"));
+            }
+
+            article = articleRepository.get(articleId);
+
+            if (!fromClient) {
+                // Point
+                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                if (articleAuthorId.equals(commentAuthorId)) {
+                    pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT;
+                }
+
+                final int balance = commenter.optInt(UserExt.USER_POINT);
+
+                if (balance - pointSum < 0) {
+                    throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
+                }
             }
         } catch (final RepositoryException e) {
             throw new ServiceException(e);
@@ -145,22 +176,6 @@ public class CommentMgmtService {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
-            final JSONObject commenter = requestJSONObject.optJSONObject(Comment.COMMENT_T_COMMENTER);
-
-            final long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
-                    && !Role.ADMIN_ROLE.equals(commenter.optString(User.USER_ROLE))
-                    && !UserExt.DEFAULT_CMTER_ROLE.equals(commenter.optString(User.USER_ROLE))) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                LOGGER.log(Level.WARN, "Adds comment too frequent [userName={0}]", commenter.optString(User.USER_NAME));
-                throw new ServiceException(langPropsService.get("tooFrequentCmtLabel"));
-            }
-
-            final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
-            final JSONObject article = articleRepository.get(articleId);
             article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) + 1);
             article.put(Article.ARTICLE_LATEST_CMT_TIME, System.currentTimeMillis());
 
@@ -172,10 +187,8 @@ public class CommentMgmtService {
                     replace("_esc_enter_88250_", "<br/>"); // Solo client escape
 
             comment.put(Comment.COMMENT_AUTHOR_EMAIL, requestJSONObject.optString(Comment.COMMENT_AUTHOR_EMAIL));
-            final String commentAuthorId = requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID);
             comment.put(Comment.COMMENT_AUTHOR_ID, commentAuthorId);
             comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
-            final boolean fromClient = requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID);
             if (fromClient) {
                 comment.put(Comment.COMMENT_CLIENT_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
 
@@ -218,16 +231,8 @@ public class CommentMgmtService {
 
             if (!fromClient) {
                 // Point
-                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                if (articleAuthorId.equals(commentAuthorId)) {
-                    pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
-                            Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT,
-                            commentId);
-                } else {
-                    pointtransferMgmtService.transfer(commentAuthorId, articleAuthorId,
-                            Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT,
-                            commentId);
-                }
+                pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
+                        Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, pointSum, commentId);
             }
 
             // Event

@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.8.9, Jul 27, 2015
+ * @version 1.5.9.9, Jul 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -205,6 +205,16 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public synchronized String addArticle(final JSONObject requestJSONObject) throws ServiceException {
+        final long currentTimeMillis = System.currentTimeMillis();
+        final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
+        final String authorId = requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID);
+        JSONObject author = null;
+
+        final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
+        if (rewardPoint < 0) {
+            throw new ServiceException(langPropsService.get("invalidRewardPointLabel"));
+        }
+
         try {
             // check if admin allow to add article
             final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_ARTICLE);
@@ -212,13 +222,31 @@ public class ArticleMgmtService {
             if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
                 throw new ServiceException(langPropsService.get("notAllowAddArticleLabel"));
             }
+
+            author = userRepository.get(authorId);
+
+            if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")
+                    && !Role.ADMIN_ROLE.equals(author.optString(User.USER_ROLE))) {
+
+                LOGGER.log(Level.WARN, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
+                throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
+            }
+
+            if (!fromClient) {
+                // Point
+                final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
+                final int addition = (int) Math.round(Math.sqrt(followerCnt));
+
+                final int sum = Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition + rewardPoint;
+                final int balance = author.optInt(UserExt.USER_POINT);
+
+                if (balance - sum < 0) {
+                    throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
+                }
+            }
+
         } catch (final RepositoryException e) {
             throw new ServiceException(e);
-        }
-
-        final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
-        if (rewardPoint < 0) {
-            throw new ServiceException(langPropsService.get("invalidRewardPointLabel"));
         }
 
         final Transaction transaction = articleRepository.beginTransaction();
@@ -228,21 +256,7 @@ public class ArticleMgmtService {
             final JSONObject article = new JSONObject();
             article.put(Keys.OBJECT_ID, ret);
 
-            final String authorId = requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID);
-            final JSONObject author = userRepository.get(authorId);
-            final long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - author.optLong(UserExt.USER_LATEST_ARTICLE_TIME) < Symphonys.getLong("minStepArticleTime")
-                    && !Role.ADMIN_ROLE.equals(author.optString(User.USER_ROLE))) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                LOGGER.log(Level.WARN, "Adds article too frequent [userName={0}]", author.optString(User.USER_NAME));
-                throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
-            }
-
             final String clientArticleId = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
-            final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
             final boolean isBroadcast = requestJSONObject.optBoolean(Article.ARTICLE_T_IS_BROADCAST);
 
             article.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
@@ -305,9 +319,11 @@ public class ArticleMgmtService {
                 // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 final int addition = (int) Math.round(Math.sqrt(followerCnt));
+
                 pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                         Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE,
                         Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition, articleId);
+
                 if (rewardPoint > 0) { // Enabe reward
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
