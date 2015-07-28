@@ -597,6 +597,10 @@ a.icon:hover {
 .icon-email:before {
     content: "\e614";
 }
+
+.icon-flag:before {
+    content: "\e615";
+}
 /* end icon */
 
 /* start tip */
@@ -1111,13 +1115,13 @@ a.icon:hover {
 
 .cmts a.count {
     color: #FFF;
-    background-color: #ccc;
+    background-color: #aaa;
     padding: 0px 5px;
     border-radius: 3px;
 }
 
 .cmts a.count:visited {
-    background-color: #eaeaea;
+    background-color: #ddd;
 }
 
 .CodeMirror-scroll {
