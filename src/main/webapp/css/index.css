@@ -446,10 +446,9 @@
 
 /* start tag-article.html */
 .tag-artile-user {
-    float: left;
     margin-left: 20px;
     margin-top: 35px;
-    width: 498px;
+    flex: 1;
 }
 /* end tag-article.html */
 

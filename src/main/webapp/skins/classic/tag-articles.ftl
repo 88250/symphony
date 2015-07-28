@@ -63,19 +63,21 @@
                         </#list>
                     </ul>
                 </div>
-                <div class="fn-clear">
-                    <div class="fn-left">
-                        <ul class="status fn-clear">
-                            <li>
-                                <strong>${tag.tagReferenceCount}</strong>
-                                <span class="ft-small">${referenceLabel}</span>
-                            </li>
-                            <li>
-                                <strong>${tag.tagCommentCount}</strong>
-                                <span class="ft-small">${cmtLabel}</span>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="fn-flex">
+                    <ul class="status fn-clear">
+                        <li>
+                            <strong>${tag.tagReferenceCount}</strong>
+                            <span class="ft-small">${referenceLabel}</span>
+                        </li>
+                        <li>
+                            <strong>${tag.tagCommentCount}</strong>
+                            <span class="ft-small">${cmtLabel}</span>
+                        </li>
+                        <li>
+                            <strong>${tag.tagFollowerCount}</strong>
+                            <span class="ft-small">${followLabel}</span>
+                        </li>
+                    </ul>
                     <div class="tag-artile-user">
                         <a rel="nofollow" class="fn-left" title="${creatorLabel}:${tag.tagCreatorName}" 
                            href="/member/${tag.tagCreatorName}">

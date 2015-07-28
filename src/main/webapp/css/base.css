@@ -297,6 +297,10 @@ textarea {
 /* end reset */
 
 /* start function */
+.fn-flex {
+    display: flex;
+}
+
 .fn-pointer {
     cursor: pointer;
 }
