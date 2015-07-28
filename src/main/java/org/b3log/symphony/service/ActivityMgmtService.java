@@ -40,7 +40,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.0, Jul 19, 2015
+ * @version 1.2.3.0, Jul 28, 2015
  * @since 1.3.0
  */
 @Service
@@ -148,7 +148,7 @@ public class ActivityMgmtService {
         }
 
         try {
-            final JSONObject user = userQueryService.getUser(userId);
+            JSONObject user = userQueryService.getUser(userId);
 
             int currentStreakStart = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_START);
             int currentStreakEnd = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_END);
@@ -207,6 +207,9 @@ public class ActivityMgmtService {
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                         Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN_STREAK,
                         Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK, userId);
+                
+                // Reload user to refresh user balance
+                user = userQueryService.getUser(userId);
             }
 
             userMgmtService.updateUser(userId, user);
