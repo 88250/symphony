@@ -1,5 +1,5 @@
 <div class="nav"> 
-    <div class="wrapper fn-clear">
+    <div class="wrapper">
         <h1><a rel="nofollow" href="/">Sym</a></h1>
         <form target="_blank" action="http://search.b3log.org/cse/search">
             <span class="icon icon-search"></span>
@@ -8,11 +8,12 @@
             <input type="hidden" name="cc" value="symphony.b3log.org">
             <input type="submit" class="fn-none" value="">
         </form>
-        <span class="tags">
+        <div class="fn-flex-1 tags">
             <#list navTrendTags as trendTag>
             <a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
             </#list>
-        </span>
+        </div>
+
         <div class="fn-clear user-nav">
             <#if isLoggedIn>
             <a id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon icon-logout"></a>

@@ -20,7 +20,7 @@
                 <a href="/admin/tag/${item.oId}" class="fn-right icon icon-edit" title="${editLabel}"></a>
             </div>
             <div class="fn-clear">
-                <img class="avatar" src="${staticServePath}/images/tags/${item.tagIconPath}" onerror="this.src=''">
+                <img class="avatar" src="${staticServePath}/images/tags/${item.tagIconPath}" onerror="$(this).remove()">
                 <span class="tags">${item.tagDescription}</span>
                 <span class="fn-right ft-small">
                     <span class="icon icon-view" title="${refCountLabel}"></span>

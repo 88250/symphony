@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <ul class="status fn-clear">
+        <ul class="status fn-flex">
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/tags'">
                 <strong>${currentUser.followingTagCnt}</strong>
                 <span class="ft-small">${followingTagsLabel}</span>

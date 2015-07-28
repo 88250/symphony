@@ -62,7 +62,7 @@
             <span class="ft-small">${checkinStreakPart2Label}</span>
         </div>
 
-        <ul class="status fn-clear">
+        <ul class="status fn-flex">
             <li>
                 <strong>${user.userTagCount}</strong>
                 <span class="ft-small">${tagLabel}</span>

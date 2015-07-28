@@ -6,11 +6,11 @@
         <#assign articleIds = articleIds + article.oId>
         <#if article_has_next><#assign articleIds = articleIds + ","></#if>
         <li>
-            <div class="fn-clear">
+            <div class="fn-flex">
                 <a rel="nofollow"
                    href="/member/${article.articleAuthorName}" 
-                   title="${article.articleAuthorName}"><img class="avatar fn-left" src="${article.articleAuthorThumbnailURL}" /></a>
-                <div class="fn-left list-content">
+                   title="${article.articleAuthorName}"><img class="avatar" src="${article.articleAuthorThumbnailURL}" /></a>
+                <div class="fn-flex-1 has-view">
                     <h2><a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
                     <span class="ft-small">
                         <span class="icon icon-tags"></span>

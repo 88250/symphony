@@ -64,7 +64,7 @@
                     </ul>
                 </div>
                 <div class="fn-flex">
-                    <ul class="status fn-clear">
+                    <ul class="status fn-flex fn-flex-1">
                         <li>
                             <strong>${tag.tagReferenceCount}</strong>
                             <span class="ft-small">${referenceLabel}</span>

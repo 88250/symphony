@@ -5,16 +5,15 @@
     <ul class="home-comments">
         <#list userHomeComments as comment>
         <li>
-            <div class="fn-clear">
-                <h2 class="fn-inline">
-                    <a title="${comment.commentArticleAuthorName}"
-                       target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}">
-                        <img class="avatar-small fn-left" src="${comment.commentArticleAuthorThumbnailURL}"/>
-                    </a>
-                    &nbsp;
+            <div class="fn-flex">
+                <a title="${comment.commentArticleAuthorName}"
+                   target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}">
+                    <img class="avatar-small" src="${comment.commentArticleAuthorThumbnailURL}"/>&nbsp;
+                </a>
+                <h2 class="fn-flex-1">
                     <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                 </h2>
-                <span class="fn-right ft-small">
+                <span class="ft-small">
                     <span class="icon icon-date"></span>
                     ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
                 </span>    

@@ -14,7 +14,6 @@
             <div class="wrapper fn-clear">
                 <div class="content fn-clear">
                     <@list listData=indexArticles/>
-
                     <div>
                         <br/>
                         <span class="ft-small"><a href="/recent">更多新文章</a></span>

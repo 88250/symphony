@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.7, Jul 2, 2015
+ * @version 1.5.4.8, Jul 28, 2015
  */
 
 /* start reset */
@@ -299,6 +299,10 @@ textarea {
 /* start function */
 .fn-flex {
     display: flex;
+}
+
+.fn-flex-1 {
+    flex: 1;
 }
 
 .fn-pointer {
@@ -680,7 +684,7 @@ a.icon:hover {
 .status > li {
     float: left;
     overflow: hidden;
-    width: 80px;
+    flex: 1;
     text-align: center;
 }
 
@@ -708,6 +712,7 @@ a.icon:hover {
 /* start form */
 .form {
     position: relative;
+    flex: 1;
 }
 
 .form table {
@@ -849,8 +854,10 @@ a.icon:hover {
 
 /* start framework */
 .wrapper {
-    width: 1000px;
+    width: 80%;
     margin: 0 auto;
+    display: flex;
+    min-width: 1000px;
 }
 
 .main {
@@ -860,18 +867,19 @@ a.icon:hover {
 
 .side {
     float: left;
-    width: 260px;
+    flex: 1;
 }
 
 .content {
     float: left;
     margin-right: 50px;
-    width: 690px;
+    flex: 2.65;
 }
 /* end framework */
 
 /* start header */
 .nav {
+    height: 35px;
     width: 100%;
     padding: 10px 0;
     z-index: 99;
@@ -897,13 +905,6 @@ a.icon:hover {
 
 .nav a:hover {
     color: #4183C4;
-}
-
-.nav .user-nav {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 260px;
 }
 
 .nav .user-nav > a {
@@ -1005,16 +1006,13 @@ a.icon:hover {
     padding-left: 25px;
     border-color: #51A7E8;
     box-shadow: 0 0 3px rgba(81, 167, 232, 0.5), 0 1px 1px rgba(0, 0, 0, 0.2) inset;
-    width: 494px;
+    width: 70%;
 }
 
 .nav .tags {
-    left: 118px;
-    position: absolute;
-    top: 0px;
     white-space: normal;
-    width: 580px;
     word-wrap: break-word;
+    margin: 0 20px 0 70px;
 }
 
 .nav .tags a {
@@ -1054,7 +1052,8 @@ a.icon:hover {
 }
 
 .footer > div > .fn-right {
-    width: 800px;
+    flex: 1;
+    margin-left: 50px;
 }
 
 .footer-nav a {
@@ -1094,12 +1093,12 @@ a.icon:hover {
     border-bottom-width: 0;
 }
 
-.list .list-content {
-    width: 548px;
-}
-
 .list .comment > p {
     margin: 0;
+}
+
+.has-view {
+    margin-right: 40px;
 }
 /* end list */
 
@@ -1302,7 +1301,7 @@ a.icon:hover {
 /* end person info */
 
 /* start top */
-.top .list-content {
+.top .has-view {
     line-height: 21px;
 }
 /* end top */

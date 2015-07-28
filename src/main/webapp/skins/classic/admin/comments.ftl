@@ -5,7 +5,8 @@
     <ul>
         <#list comments as item>
         <li>
-            <div class="fn-clear first">
+            <div class="fn-clear">
+                <img class="avatar" src="${item.commentAuthorThumbnailURL}" title="${item.commentAuthorName}">
                 <a href="${item.commentSharpURL}">${item.commentArticleTitle}</a> &nbsp;
                 <#if item.commentStatus == 0>
                 <span class="ft-small">${validLabel}</span>
@@ -13,17 +14,10 @@
                 <font class="ft-red ft-small">${banLabel}</font>
                 </#if>
                 <a href="/admin/comment/${item.oId}" class="fn-right icon icon-edit" title="${editLabel}"></a>
+                <span class="icon icon-date fn-right ft-small" title="${createTimeLabel}"> ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;</span>
             </div>
-            <div class="fn-clear">
-                <img class="avatar" src="${item.commentAuthorThumbnailURL}">${item.commentAuthorName} &nbsp;
-                <span class="icon icon-cmts" title="${cmtLabel}"></span>
-                <span class="tags">
-                    ${item.commentContent}
-                </span>
-                <span class="fn-right ft-small">
-                    <span class="icon icon-date" title="${createTimeLabel}"></span>
-                    ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')}
-                </span>
+            <div class="content-reset">
+                 ${item.commentContent}
             </div>
         </li>
         </#list>
