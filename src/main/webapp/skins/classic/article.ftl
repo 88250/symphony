@@ -129,14 +129,14 @@
                             <ul>
                                 <#list article.articleComments as comment>
                                 <li id="${comment.oId}">
-                                    <div class="fn-clear">
-                                        <div class="fn-left">
+                                    <div class="fn-flex">
+                                        <div>
                                             <a rel="nofollow" href="/member/${comment.commentAuthorName}">
                                                 <img class="avatar" 
                                                      title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
                                             </a>
                                         </div>
-                                        <div class="fn-left comment-content">
+                                        <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
