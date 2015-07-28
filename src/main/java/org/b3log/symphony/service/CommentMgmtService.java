@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.4.15, Jul 28, 2015
+ * @version 1.4.5.15, Jul 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -144,7 +144,6 @@ public class CommentMgmtService {
             throw new ServiceException(langPropsService.get("tooFrequentCmtLabel"));
         }
 
-        int pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT;
         JSONObject article = null;
         try {
             // check if admin allow to add comment
@@ -157,6 +156,8 @@ public class CommentMgmtService {
             article = articleRepository.get(articleId);
 
             if (!fromClient) {
+                int pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT;
+
                 // Point
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                 if (articleAuthorId.equals(commentAuthorId)) {
@@ -231,8 +232,16 @@ public class CommentMgmtService {
 
             if (!fromClient) {
                 // Point
-                pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
-                        Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, pointSum, commentId);
+                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                if (articleAuthorId.equals(commentAuthorId)) {
+                    pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT,
+                            commentId);
+                } else {
+                    pointtransferMgmtService.transfer(commentAuthorId, articleAuthorId,
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT,
+                            commentId);
+                }
             }
 
             // Event
