@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.1, Jun 28, 2015
+ * @version 1.2.2.2, Jul 28, 2015
  */
 
 /**
@@ -57,14 +57,14 @@ var ArticleChannel = {
 
             // Append comment
             var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" +
-                    "<div class=\"fn-clear\">" +
-                    "<div class=\"fn-left\">" +
+                    "<div class=\"fn-flex\">" +
+                    "<div>" +
                     "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\">" +
                     "<img class=\"avatar\"" +
                     "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}\" />" +
                     "</a>" +
                     "</div>" +
-                    "<div class=\"fn-left comment-content\">" +
+                    "<div class=\"fn-flex-1 comment-content\">" +
                     "<div class=\"fn-clear comment-info\">" +
                     "<span class=\"fn-left\">" +
                     "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\"" +
