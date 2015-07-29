@@ -715,6 +715,8 @@ public class ArticleMgmtService {
      */
     private synchronized void tag(final String[] tagTitles, final JSONObject article, final JSONObject author)
             throws RepositoryException {
+        String articleTags = article.optString(Article.ARTICLE_TAGS);
+
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
             JSONObject tag = tagRepository.getByTitle(tagTitle);
@@ -753,7 +755,10 @@ public class ArticleMgmtService {
                             article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
-                tagTmp.put(Tag.TAG_TITLE, tag.optString(Tag.TAG_TITLE));
+                final String title = tag.optString(Tag.TAG_TITLE);
+                articleTags = articleTags.replaceAll("(?i)" + tagTitle, title);
+                
+                tagTmp.put(Tag.TAG_TITLE, title);
                 tagTmp.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + articleCmtCnt);
                 tagTmp.put(Tag.TAG_STATUS, tag.optInt(Tag.TAG_STATUS));
                 tagTmp.put(Tag.TAG_REFERENCE_CNT, tag.optInt(Tag.TAG_REFERENCE_CNT) + 1);
@@ -767,6 +772,8 @@ public class ArticleMgmtService {
 
                 userTagType = Tag.TAG_TYPE_C_ARTICLE;
             }
+            
+            article.put(Article.ARTICLE_TAGS, articleTags);
 
             // Tag-Article relation
             final JSONObject tagArticleRelation = new JSONObject();

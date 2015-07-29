@@ -262,7 +262,6 @@ public class UserMgmtService {
             tag(oldUser);
 
             // Update
-            oldUser.put(UserExt.USER_TAGS, userTags);
             oldUser.put(User.USER_URL, requestJSONObject.optString(User.USER_URL));
             oldUser.put(UserExt.USER_QQ, requestJSONObject.optString(UserExt.USER_QQ));
             oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
@@ -678,7 +677,7 @@ public class UserMgmtService {
     private synchronized void tag(final JSONObject user) throws RepositoryException {
         // Clear
         final List<Filter> filters = new ArrayList<Filter>();
-        filters.add(new PropertyFilter(User.USER + '_' + Keys.OBJECT_ID, 
+        filters.add(new PropertyFilter(User.USER + '_' + Keys.OBJECT_ID,
                 FilterOperator.EQUAL, user.optString(Keys.OBJECT_ID)));
         filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_USER_SELF));
 
@@ -694,7 +693,8 @@ public class UserMgmtService {
         }
 
         // Add
-        final String[] tagTitles = user.optString(UserExt.USER_TAGS).split(",");
+        String tagTitleStr = user.optString(UserExt.USER_TAGS);
+        final String[] tagTitles = tagTitleStr.split(",");
 
         for (final String title : tagTitles) {
             final String tagTitle = title.trim();
@@ -726,6 +726,8 @@ public class UserMgmtService {
                 LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in user[name={2}]",
                         new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
                             user.optString(User.USER_NAME)});
+
+                tagTitleStr = tagTitleStr.replaceAll("(?i)" + tagTitle, tag.optString(Tag.TAG_TITLE));
             }
 
             // User-Tag relation
@@ -736,5 +738,7 @@ public class UserMgmtService {
 
             userTagRepository.add(userTagRelation);
         }
+        
+        user.put(UserExt.USER_TAGS, tagTitleStr);
     }
 }
