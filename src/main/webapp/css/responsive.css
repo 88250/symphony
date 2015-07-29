@@ -35,6 +35,7 @@
 
     .wrapper .user-online {
         top: 162px;
+        right: 42%;
     }
 }
 
@@ -57,11 +58,11 @@
         width: 100%;
         min-width: 410px;
     }
-    
-     .content, 
-     .side {
-         width: 97%;
-     }
+
+    .content, 
+    .side {
+        width: 97%;
+    }
 
     .content, 
     .side,
@@ -110,12 +111,12 @@
         margin: 0 0.5rem;
         float: left;
     }
-    
+
     .nav .user-nav {
         margin-left: 40px;
         float: left;
     }
-    
+
     .wrapper .tag-artile-user {
         margin-left: 1px;
         margin-bottom: 1rem;
