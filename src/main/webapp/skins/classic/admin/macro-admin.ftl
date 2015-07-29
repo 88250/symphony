@@ -27,7 +27,7 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear">
+            <div class="wrapper">
                 <#nested>
                 <div class="side">
                     <ul class="note-list">

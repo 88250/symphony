@@ -12,7 +12,7 @@
     <body>
         <#include "../../header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear">
+            <div class="wrapper">
                 <div class="list content">
                     <#nested>
                 </div>

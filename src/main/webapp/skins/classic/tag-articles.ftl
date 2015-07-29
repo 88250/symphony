@@ -12,7 +12,7 @@
     <body>
         <#include "header.ftl">
         <div class="main tag-articles">
-            <div class="wrapper fn-clear">
+            <div class="wrapper">
                 <div class="content">
                     <div class="fn-clear title">
                         <#if tag.tagIconPath != "">

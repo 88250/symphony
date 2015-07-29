@@ -1,5 +1,5 @@
 <div class="footer">
-    <div class="wrapper fn-clear">
+    <div class="wrapper">
         <div>
             <a href="http://b3log.org" target="_blank"><img src="http://b3log.org/images/b3log.png" alt="b3log" width="48" /></a>
             &nbsp;
@@ -7,11 +7,13 @@
             &nbsp; &nbsp; &nbsp; &nbsp;
         </div>
         <div class="fn-flex-1">
-            <div class="footer-nav">
+            <div class="footer-nav fn-clear">
                 <a rel="help" href="/about">${aboutLabel}</a> 
                 <a rel="help" href="/tags/系统公告">${symAnnouncementLabel}</a>
                 <a rel="help" href="/tags/Q%26A">${qnaLabel}</a>
                 <a href="/tags" class="last">${tagLabel}</a>
+                
+                <span class="fn-right">${visionLabel}</span>
             </div>
             <div class="fn-clear">
                 <div class="fn-left info">
@@ -23,7 +25,6 @@
                     <span class="ft-small">${cmtLabel}</span> ${statistic.statisticCmtCount?c}
                 </div>
                 <div class="fn-right">
-                    ${visionLabel}
                     <span class="ft-small">&COPY; ${year} </span>
                     <a rel="copyright" href="http://b3log.org" target="_blank">B3LOG.ORG</a>
                     <span class="ft-small">${version}</span>

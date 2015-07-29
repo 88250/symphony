@@ -9,7 +9,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear">
+            <div class="wrapper">
                 <div class="content content-reset about">
                     <h1>B3log 构思</h1>
                     <i class="ft-small">一个正在逐渐清晰、实践的创意</i>

@@ -41,7 +41,7 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear">
+            <div class="wrapper">
                 <div class="content">
                     <ul class="tab fn-clear">
                         <li<#if type == "home"> class="current"</#if>>

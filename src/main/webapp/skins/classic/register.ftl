@@ -10,7 +10,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear register content-reset">
+            <div class="wrapper register content-reset">
                 <div class="form fn-left">
                     <table cellpadding="0" cellspacing="0">
                         <tbody>

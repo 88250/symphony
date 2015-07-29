@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.2, Jul 28, 2015
+ * @version 1.2.3.2, Jul 29, 2015
  */
 
 /**
@@ -133,7 +133,7 @@ var ArticleListChannel = {
 
         ArticleListChannel.ws.onmessage = function (evt) {
             var data = JSON.parse(evt.data);
-            $(".list-content > h2 > a").each(function () {
+            $(".article-list .has-view h2 > a").each(function () {
                 var id = $(this).data('id').toString();
                 if (data.articleId === id) {
                     var $li = $(this).closest("li"),

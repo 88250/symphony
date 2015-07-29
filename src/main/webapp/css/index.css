@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.4, Jul 28, 2015
+ * @version 1.2.4.5, Jul 29, 2015
  */
 /* start module */
 .index-module .index-module-list > li {
@@ -65,14 +65,7 @@
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
-    width: 530px;
-    float: left;
     margin: 0 10px;
-}
-
-.article-title .info {
-    margin-top: 3px;
-    float: right;
 }
 
 .article-info > .fn-right a {

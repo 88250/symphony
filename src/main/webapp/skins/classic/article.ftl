@@ -14,7 +14,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear">
+            <div class="wrapper">
                 <div class="content">
                     <div>
                         <div class="ft-small fn-clear article-info">
@@ -42,15 +42,15 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="fn-clear article-title">
-                            <a class="fn-left" rel="author" href="/member/${article.articleAuthorName}" 
+                        <div class="article-title fn-flex">
+                            <a rel="author" href="/member/${article.articleAuthorName}" 
                                title="${article.articleAuthorName}"><img class="avatar-small" src="${article.articleAuthorThumbnailURL}" /></a>
-                            <h2>
+                            <h2 class="fn-flex-1">
                                 <a href="${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
                                 </a>
                             </h2> 
-                            <span class="info">
+                            <span>
                                 <#if isLoggedIn> 
                                 <#if isFollowing>
                                 <button class="red small" onclick="Util.unfollow(this, '${article.oId}', 'article')"> 

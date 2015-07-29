@@ -8,7 +8,7 @@
     </head>
     <body style="background-color: #FFF;">
         <div class="nav"> 
-            <div class="wrapper fn-clear" style="margin-left: 66px">
+            <div class="wrapper" style="margin-left: 66px">
                 <h1><a target="_blank" rel="nofollow" href="/">Sym</a></h1>
                 <span class="tags">
                     <#list navTrendTags as trendTag>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="footer" style="margin-top: 54px;border-top-width: 0;border-bottom: 1px solid #e0e0e0;padding-bottom: 54px;">
-            <div class="wrapper fn-clear" style="margin-left: 66px">
+            <div class="wrapper" style="margin-left: 66px">
                 <div class="fn-left">
                     <a target="_blank" href="http://b3log.org" target="_blank"><img src="http://b3log.org/images/b3log.png" alt="b3log" width="48" /></a>
                     &nbsp;

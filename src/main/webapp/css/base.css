@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.8, Jul 28, 2015
+ * @version 1.5.4.9, Jul 29, 2015
  */
 
 /* start reset */
@@ -861,11 +861,11 @@ a.icon:hover {
 
 /* start framework */
 .wrapper {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     display: flex;
     display: -webkit-box;
-    min-width: 1000px;
+    min-width: 720px;
 }
 
 .main {
@@ -876,19 +876,20 @@ a.icon:hover {
 .side {
     flex: 1;
     -webkit-box-flex: 1; 
-    width: 25%;
+    width: 30%;
 }
 
 .content {
     margin-right: 50px;
-    flex: 2.65;
-    -webkit-box-flex: 2.65; 
-    width: 75%;
+    flex: 2.3;
+    -webkit-box-flex: 2.3; 
+    width: 70%;
 }
 /* end framework */
 
 /* start header */
 .nav {
+    overflow: hidden;
     height: 35px;
     width: 100%;
     padding: 10px 0;
@@ -1023,6 +1024,8 @@ a.icon:hover {
     white-space: normal;
     word-wrap: break-word;
     margin: 0 20px 0 70px;
+    height: 36px;
+    overflow: hidden;
 }
 
 .nav .tags a {

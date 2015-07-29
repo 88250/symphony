@@ -9,7 +9,7 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper fn-clear">
+            <div class="wrapper">
                 <div class="content content-reset">
                     <ul>
                         <li><a href="/activity/daily-checkin">${activityDailyCheckinLabel}</a></li>
