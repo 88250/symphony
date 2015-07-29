@@ -8,12 +8,11 @@
             <input type="hidden" name="cc" value="symphony.b3log.org">
             <input type="submit" class="fn-none" value="">
         </form>
-        <div class="fn-flex-1 tags">
+        <div class="fn-flex-1 tags responsive-hide">
             <#list navTrendTags as trendTag>
             <a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
             </#list>
         </div>
-
         <div class="fn-clear user-nav">
             <#if isLoggedIn>
             <a id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon icon-logout"></a>

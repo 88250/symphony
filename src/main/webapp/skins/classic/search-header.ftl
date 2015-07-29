@@ -64,17 +64,19 @@
         </div>
         <div class="footer" style="margin-top: 54px;border-top-width: 0;border-bottom: 1px solid #e0e0e0;padding-bottom: 54px;">
             <div class="wrapper" style="margin-left: 66px">
-                <div class="fn-left">
+                <div>
                     <a target="_blank" href="http://b3log.org" target="_blank"><img src="http://b3log.org/images/b3log.png" alt="b3log" width="48" /></a>
                     &nbsp;
                     <a target="_blank" href="https://wide.b3log.org" target="_blank"><img src="http://b3log.org/images/wide.png" alt="wide" width="48" /></a>
+                    &nbsp; &nbsp; &nbsp; &nbsp;
                 </div>
-                <div class="fn-right">
-                    <div class="footer-nav">
+                <div class="fn-flex-1">
+                    <div class="footer-nav fn-clear">
                         <a target="_blank" rel="help" href="/about">${aboutLabel}</a> 
                         <a target="_blank" rel="help" href="/tags/系统公告">${symAnnouncementLabel}</a>
                         <a target="_blank" rel="help" href="/tags/Q%26A">${qnaLabel}</a>
                         <a target="_blank" href="/tags" class="last">${tagLabel}</a>
+                        <span class="fn-right">${visionLabel}</span>
                     </div>
                     <div class="fn-clear">
                         <div class="fn-left info">
@@ -86,9 +88,8 @@
                             <span class="ft-small">${cmtLabel}</span> ${statistic.statisticCmtCount?c}
                         </div>
                         <div class="fn-right">
-                            ${visionLabel}
                             <span class="ft-small">&COPY; ${year} </span>
-                            <a target="_blank" rel="copyright" href="http://b3log.org" target="_blank">B3LOG.ORG</a>
+                            <a rel="copyright" href="http://b3log.org" target="_blank">B3LOG.ORG</a>
                             <span class="ft-small">${version}</span>
                             <span class="fn-none">
                                 ${siteVisitStatCode}
@@ -98,7 +99,6 @@
                 </div>
             </div>
         </div>
-        <div class="icon-up icon" onclick="Util.goTop()"></div>
         <script>var isLoggedIn = ${isLoggedIn?c};</script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>

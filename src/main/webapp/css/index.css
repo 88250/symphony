@@ -65,7 +65,11 @@
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
-    margin: 0 10px;
+}
+
+.article-title > span {
+    margin-top: 4px;
+    display: block;
 }
 
 .article-info > .fn-right a {
@@ -319,7 +323,6 @@
 /* start register */
 .register .intro {
     border-left: 1px dashed #C0C0C0;
-    float: right;
     margin-left: 50px;
     min-height: 200px;
     padding-left: 30px;
@@ -465,3 +468,9 @@ code .atn { color: initial; } /* html/xml attribute name  - khaki */
 code .atv { color: initial; } /* html/xml attribute value - green */
 code .dec { color: initial; } /* decimal - blue */
 /* end overwrite prettify.css */
+
+/* start activity */
+.activity {
+    min-height: 300px;
+}
+/* end activity */

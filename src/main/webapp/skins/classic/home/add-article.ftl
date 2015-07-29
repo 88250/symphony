@@ -13,7 +13,7 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper">
+            <div class="wrapper post">
                 <div class="form">
                     <div>
                         <input type="text" id="articleTitle" value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />

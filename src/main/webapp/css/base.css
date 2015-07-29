@@ -495,7 +495,7 @@ a.icon:hover {
     color: #999999;
     left: 88px;
     position: absolute;
-    top: 12px;
+    top: 14px;
     z-index: 2;
     cursor: pointer;
 }
@@ -718,8 +718,6 @@ a.icon:hover {
 /* start form */
 .form {
     position: relative;
-    flex: 1;
-    -webkit-box-flex: 1;
 }
 
 .form table {
@@ -861,11 +859,12 @@ a.icon:hover {
 
 /* start framework */
 .wrapper {
-    width: 90%;
+    width: 80%;
     margin: 0 auto;
     display: flex;
     display: -webkit-box;
     min-width: 720px;
+    flex-wrap: wrap;
 }
 
 .main {
@@ -889,7 +888,6 @@ a.icon:hover {
 
 /* start header */
 .nav {
-    overflow: hidden;
     height: 35px;
     width: 100%;
     padding: 10px 0;
@@ -1005,7 +1003,7 @@ a.icon:hover {
     left: 81px;
     padding: 3px 5px 3px 20px;
     position: absolute;
-    top: 5px;
+    top: 8px;
     width: 0;
     z-index: 1;
     -moz-transition: width 0.4s ease, background 0.4s ease;
@@ -1060,8 +1058,6 @@ a.icon:hover {
 .tags > li > div > .fn-right {
     color: #666;
     font-size: 11px;
-    white-space: nowrap;
-    word-wrap: normal;
 }
 
 .footer-nav a {
@@ -1313,3 +1309,13 @@ a.icon:hover {
     line-height: 21px;
 }
 /* end top */
+
+/* start responsive */
+.responsive-show {
+    display: none;
+}
+
+.responsive-hide {
+    display: inherit;
+}
+/* end responsive */

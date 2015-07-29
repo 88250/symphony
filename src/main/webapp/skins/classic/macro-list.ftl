@@ -7,11 +7,17 @@
         <#if article_has_next><#assign articleIds = articleIds + ","></#if>
         <li>
             <div class="fn-flex">
-                <a rel="nofollow"
+                <a rel="nofollow" class="ft-small"
                    href="/member/${article.articleAuthorName}" 
-                   title="${article.articleAuthorName}"><img class="avatar" src="${article.articleAuthorThumbnailURL}" /></a>
+                   title="${article.articleAuthorName}"><img class="avatar responsive-hide" src="${article.articleAuthorThumbnailURL}" /></a>
                 <div class="fn-flex-1 has-view">
-                    <h2><a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
+                    <h2>
+                        <a rel="nofollow" class="ft-small"
+                           href="/member/${article.articleAuthorName}" 
+                           title="${article.articleAuthorName}">
+                            <img class="avatar-small responsive-show" src="${article.articleAuthorThumbnailURL}" />
+                        </a>
+                        <a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
                     <span class="ft-small">
                         <span class="icon icon-tags"></span>
                         <#list article.articleTags?split(",") as articleTag>
@@ -46,7 +52,7 @@
 <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
-    
+
     // Init [Article List] channel
     ArticleListChannel.init("ws://${serverHost}:${serverPort}/article-list-channel?articleIds=${articleIds}");
 </script>

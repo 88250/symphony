@@ -32,173 +32,92 @@
         width: 80px;
         border-width: 7px;
     }
-    
+
     .wrapper .user-online {
         top: 162px;
     }
 }
 
 @media (max-width: 720px) {
-    .nav .tags,
-    .article-list .avatar,
-    .icon-up,
-    #comments .avatar,
-    .tag-artile-user,
-    .notification .avatar {
+    .fn-flex {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .fn-flex-1 {
+        flex-basis: 100%;
+    }
+
+    .main {
+        padding: 0.5rem 0;
+    }
+
+    .wrapper {
+        display: block;
+        width: 100%;
+        min-width: 410px;
+    }
+    
+     .content, 
+     .side {
+         width: 97%;
+     }
+
+    .content, 
+    .side,
+    .footer,
+    .register .form,
+    .post .form {
+        flex-basis: 100%;
+        margin: 0 0.5rem;
+    }
+
+    .footer .fn-right,
+    .article-info .fn-right {
+        float: none;
+    }
+
+    .footer-nav,
+    .side {
+        margin-top: 0.5rem;
+    }
+
+    .responsive-user-avatar {
         display: none;
     }
 
-    body .wrapper {
-        min-width: inherit;
-        display: block;
-        overflow: hidden;
-    }
-
-    .wrapper,
-    .content,
-    .side,
-    .module .comment-content,
-    .list .list-content,
-    .content #comments .comment-content,
-    .article-list li > div:first-child,
-    .follow li,
-    .footer > div > .fn-right,
-    .footer .info,
-    .notification li > div.content-reset {
-        width: 100%;
-    }
-
-    .follow li > div,
-    .nav .user-nav,
-    h2.fn-inline,
-    .article-title h2 {
-        width: auto;
-    }
-
-    .footer .fn-clear > .fn-right,
-    .footer > div > .fn-left,
-    .article-content,
-    .form label.article-content-label,
-    .article-info > .fn-left, 
-    .article-info > .fn-right,
-    .content .notification li > div.content-reset,
-    .content .article-title .info,
-    .content .article-title h2 {
-        float: none;
-    }
-
-    .follow img.avatar,
-    .follow li > div,
-    .nav .user-nav {
-        float: left;
-    }
-
-    .form label.article-content-label {
-        display: block;
-    }
-
-    .module {
-        border-width: 0;
-    }
-
-    .footer > div > .fn-right,
-    .footer > div > .fn-left {
-        text-align: center;
-    }
-
-    .footer .info {
-        white-space: normal;
-    }
-
-    .nav {
-        height: auto;
-    }
-
-    .nav .form {
-        right: 0;
-    }
-
-    .nav h1 {
-        margin-left: 10px;
-    }
-
-    .comment-login,
-    .main,
-    #comments .content-reset,
-    .footer > div > .fn-right{
-        margin: 0px auto;
+    .wrapper.register .intro {
+        border-left-width: 0;
+        margin: 0 0.5rem;
         padding: 0;
     }
 
-    .main .register .intro {
-        width: auto;
-        border-left-width: 0;
-        padding: 0.5rem;
-        margin: 2rem 0;
-        border-top: 1px dashed #C0C0C0; 
+    .responsive-show {
+        display: inherit;
     }
 
-    .register .form {
-        margin: 0 auto;
-        width: 271px;
+    .responsive-hide {
+        display: none;
+    }
+
+    .wrapper .follow li,
+    .wrapper .follow li.even {
+        margin: 20px auto;
         float: none;
-        margin-top: 2rem;
     }
 
-    .user-online {
-        right: 140px;
-        top: 270px;
+    .nav h1 {
+        margin: 0 0.5rem;
+        float: left;
     }
-
-    .side {
-        margin-top: 2rem;
+    
+    .nav .user-nav {
+        margin-left: 40px;
+        float: left;
     }
-
-    .article-info,
-    .tag-articles .title,
-    #articleTitle,
-    .about {
-        margin-top: 1rem;
-    }
-
-    .CodeMirror {
-        width: 99.5%;
-    }
-
-    .pagination,
-    .article-info,
-    .content .article-title,
-    .content-reset.article-content,
-    .share,
-    .main .comment-login,
-    .main #articleRewardContent,
-    .tag-articles .title {
-        margin-left: 0.5rem;
-        margin-right: 0.5rem;
-    }
-
-    .article-title h2 {
-        display: inline;
-    }
-
-    .list#comments h2,
-    .comment-wrap,
-    .about,
-    .tag-articles .content > p,
-    .responsive-content {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-    }
-
-    .about,
-    .responsive-content {
-        box-sizing: border-box;
-    }
-
-    .responsive-content #tip {
-        white-space: inherit;
-        position: inherit;
-        margin: 20px 0;
-        display: block;
+    
+    .wrapper .tag-artile-user {
+        margin-left: 1px;
+        margin-bottom: 1rem;
     }
 }

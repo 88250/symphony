@@ -25,6 +25,7 @@
                                     ${articleTag}</a><#if articleTag_has_next>, </#if>
                                 </#list>
                             </div>
+                            <br class="responsive-show">
                             <div class="fn-right">
                                 <span class="icon icon-date"></span>
                                 ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;
@@ -43,12 +44,14 @@
                             </div>
                         </div>
                         <div class="article-title fn-flex">
-                            <a rel="author" href="/member/${article.articleAuthorName}" 
-                               title="${article.articleAuthorName}"><img class="avatar-small" src="${article.articleAuthorThumbnailURL}" /></a>
                             <h2 class="fn-flex-1">
+                                <a rel="author" href="/member/${article.articleAuthorName}" class="ft-small"
+                                   title="${article.articleAuthorName}">
+                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}" />
+                                </a> &nbsp;
                                 <a href="${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
-                                </a>
+                                </a> &nbsp;
                             </h2> 
                             <span>
                                 <#if isLoggedIn> 
@@ -130,12 +133,10 @@
                                 <#list article.articleComments as comment>
                                 <li id="${comment.oId}">
                                     <div class="fn-flex">
-                                        <div>
-                                            <a rel="nofollow" href="/member/${comment.commentAuthorName}">
-                                                <img class="avatar" 
-                                                     title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
-                                            </a>
-                                        </div>
+                                        <a class="responsive-hide" rel="nofollow" href="/member/${comment.commentAuthorName}">
+                                            <img class="avatar" 
+                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
+                                        </a>
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
@@ -166,7 +167,7 @@
                 <div class="side">
 
                     <#include 'common/person-info.ftl'/>
-                    
+
                     <div class="module">
                         <div class="module-header">
                             <h2>
@@ -210,13 +211,12 @@
         <#include "footer.ftl">
         <div id="preview" class="content-reset"></div>
         <script>
-            Label.commentErrorLabel = "${commentErrorLabel}";
-            Label.symphonyLabel = "${symphonyLabel}";
-            Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
-            Label.articleOId = "${article.oId}";
-            Label.articleTitle = "${article.articleTitle}";
-            Label.articlePermalink = "${article.articlePermalink}";
-        </script>
+                    Label.commentErrorLabel = "${commentErrorLabel}";
+                    Label.symphonyLabel = "${symphonyLabel}";
+                    Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
+                    Label.articleOId = "${article.oId}";
+                    Label.articleTitle = "${article.articleTitle}";
+                    Label.articlePermalink = "${article.articlePermalink}";</script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js?${staticResourceVersion}"></script>
@@ -234,20 +234,18 @@
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
-
-            // Init [Article] channel
-            ArticleChannel.init("ws://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
-
-            // jQuery File Upload
-            Util.uploadFile({
-                "id": "fileupload",
-                "pasteZone": $(".CodeMirror"),
-                "qiniuUploadToken": "${qiniuUploadToken}",
-                "editor": Comment.editor,
-                "uploadingLabel": "${uploadingLabel}",
-                "qiniuDomain": "${qiniuDomain}"
-            });
+                    WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
+                    // Init [Article] channel
+                    ArticleChannel.init("ws://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
+                    // jQuery File Upload
+                    Util.uploadFile({
+                    "id": "fileupload",
+                            "pasteZone": $(".CodeMirror"),
+                            "qiniuUploadToken": "${qiniuUploadToken}",
+                            "editor": Comment.editor,
+                            "uploadingLabel": "${uploadingLabel}",
+                            "qiniuDomain": "${qiniuDomain}"
+                    });
         </script>
     </body>
 </html>

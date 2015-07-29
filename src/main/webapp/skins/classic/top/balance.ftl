@@ -5,7 +5,7 @@
         <#list topBalanceUsers as user>
         <li>
             <div class="fn-flex">
-                <a rel="nofollow"
+                <a rel="nofollow" class="responsive-hide"
                    href="/member/${user.userName}" 
                    title="${user.userName}"><img class="avatar" src="${user.userAvatarURL}" /></a>
                 <div class="has-view fn-flex-1">

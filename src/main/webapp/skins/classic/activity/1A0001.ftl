@@ -10,7 +10,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content content-reset responsive-content">
+                <div class="content content-reset activity">
                     ${activity1A0001TitleLabel}
                     ${activity1A0001GuideLabel}
 

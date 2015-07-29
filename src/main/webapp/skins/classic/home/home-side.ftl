@@ -1,4 +1,4 @@
-<div class="fn-relative">
+<div class="fn-relative ft-center">
     <img class="avatar-big" title="${user.userName}" src="${user.userAvatarURL}" />
     <img class="user-online" title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
     <div>

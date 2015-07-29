@@ -11,7 +11,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper register content-reset">
-                <div class="form fn-left">
+                <div class="form">
                     <table cellpadding="0" cellspacing="0">
                         <tbody>
                             <tr>
@@ -70,7 +70,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="intro">
+                <div class="intro fn-flex-1">
                     ${introLabel}
                 </div>
             </div>

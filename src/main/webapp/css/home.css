@@ -196,7 +196,6 @@
 
 .follow li {
     position: relative;
-    float: left;
     border-bottom: 1px solid #EEEEEE;
     float: left;
     margin: 20px 10px;
@@ -307,5 +306,9 @@
 #avatarUpload input {
     width: 1px;
     opacity: 0.001;
+}
+
+#avatarUpload {
+    overflow: hidden;
 }
 /* end settings */

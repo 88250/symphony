@@ -5,14 +5,19 @@
     <#list atNotifications as notification>
     <li class="fn-flex<#if notification.hasRead> read</#if>">
         <a target="_blank" rel="nofollow" href="/member/${notification.authorName}" 
-           title="${notification.authorName}">
+           title="${notification.authorName}" class="responsive-hide">
             <img class="avatar" src="${notification.thumbnailURL}"/>
         </a>
 
         <#if !notification.atInArticle>
         <div class="fn-flex-1">
             <div class="fn-flex">
-                <h2 class="fn-flex-1"><a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
+                <h2 class="fn-flex-1">
+                    <a target="_blank" rel="nofollow" href="/member/${notification.authorName}" 
+                       title="${notification.authorName}">
+                        <img class="avatar-small responsive-show" src="${notification.thumbnailURL}"/>
+                    </a>
+                    <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
                 <span class="ft-small">    
                     <span class="icon icon-date"></span>
                     ${notification.createTime?string('yyyy-MM-dd HH:mm')}
@@ -24,7 +29,12 @@
         </div>
         <#else>
         <div class="fn-flex-1 has-view">
-            <h2><a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
+            <h2>
+                <a target="_blank" rel="nofollow" href="/member/${notification.authorName}" 
+                   title="${notification.authorName}">
+                    <img class="avatar-small responsive-show" src="${notification.thumbnailURL}"/>
+                </a>
+                <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
             <div class="comment">
                 <p class="ft-small">
                     <span class="icon icon-tags"></span>

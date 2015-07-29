@@ -6,11 +6,11 @@
         <#list userHomeComments as comment>
         <li>
             <div class="fn-flex">
-                <a title="${comment.commentArticleAuthorName}"
-                   target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}">
-                    <img class="avatar-small" src="${comment.commentArticleAuthorThumbnailURL}"/>&nbsp;
-                </a>
                 <h2 class="fn-flex-1">
+                    <a title="${comment.commentArticleAuthorName}" class="ft-small"
+                       target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}">
+                        <img class="avatar-small" src="${comment.commentArticleAuthorThumbnailURL}"/>
+                    </a>
                     <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                 </h2>
                 <span class="ft-small">
