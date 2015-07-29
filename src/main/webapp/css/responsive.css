@@ -32,11 +32,6 @@
         width: 80px;
         border-width: 7px;
     }
-
-    .wrapper .user-online {
-        top: 162px;
-        right: 42%;
-    }
 }
 
 @media (max-width: 720px) {
@@ -83,10 +78,6 @@
         margin-top: 0.5rem;
     }
 
-    .responsive-user-avatar {
-        display: none;
-    }
-
     .wrapper.register .intro {
         border-left-width: 0;
         margin: 0 0.5rem;
@@ -97,7 +88,8 @@
         display: inherit;
     }
 
-    .responsive-hide {
+    .responsive-hide,
+    .nav .tags.responsive-hide {
         display: none;
     }
 

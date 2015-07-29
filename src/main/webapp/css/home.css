@@ -22,12 +22,6 @@
  * @version 1.1.3.3, Jul 29, 2015
  */
 /* start home side */
-.user-online {
-    position: absolute;
-    right: 24px;
-    top: 220px;
-}
-
 .user-name {
     border-bottom: 1px dotted #CCCCCC;
     font-size: 25px;
@@ -214,6 +208,7 @@
 }
 
 .follow .user-online {
+    position: absolute;
     left: 45px;
     top: 45px;
 }

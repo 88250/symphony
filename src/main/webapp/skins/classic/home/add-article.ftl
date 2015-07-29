@@ -14,7 +14,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper post">
-                <div class="form">
+                <div class="form fn-flex-1">
                     <div>
                         <input type="text" id="articleTitle" value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                         <span style="right:2px;top:4px;"></span>

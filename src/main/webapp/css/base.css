@@ -1024,12 +1024,14 @@ a.icon:hover {
     margin: 0 20px 0 70px;
     height: 36px;
     overflow: hidden;
+    display: inline;
 }
 
 .nav .tags a {
     color: #333333;
     font-weight: normal;
     padding: 0 5px;
+    word-break: break-all;
 }
 
 .nav .tags a:hover {

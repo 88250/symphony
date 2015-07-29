@@ -1,9 +1,9 @@
 <div class="fn-relative ft-center">
     <img class="avatar-big" title="${user.userName}" src="${user.userAvatarURL}" />
-    <img class="user-online" title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
     <div>
         <div class="user-name">
             <a href="/member/${user.userName}">${user.userName}</a>
+            <img title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
             <#if isAdminLoggedIn>
             <a class="ft-small icon icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
             </#if>
