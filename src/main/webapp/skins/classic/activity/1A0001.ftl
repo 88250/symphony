@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     </#if>
-                    <#if closed || closed1A0001 || collected>
+                    <#if closed || closed1A0001 || collected || end>
                     <span id="tip" class="tip-succ" style="top: 307px;">${msg}</span>
                     <#elseif participated>
                     <span id="tip" class="tip-succ" style="top: 307px;">${msg}</span>
