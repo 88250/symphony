@@ -6,10 +6,10 @@
         <@head title="${article.articleTitle} - ${symphonyLabel}">
         <meta name="description" content="${article.articleTitle}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/js/lib/highlight.js-8.6/styles/github.css?${staticResourceVersion}">
+        <link type="text/css" rel="stylesheet" href="/js/lib/highlight.js-8.6/styles/github.css">
         <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/codemirror.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/hint/show-hint.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/codemirror.css" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/hint/show-hint.css" />
     </head>
     <body>
         <#include "header.ftl">
@@ -217,20 +217,20 @@
                     Label.articleOId = "${article.oId}";
                     Label.articleTitle = "${article.articleTitle}";
                     Label.articlePermalink = "${article.articlePermalink}";</script>
-        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/placeholder.js?${staticResourceVersion}"></script>
-        <script src="${staticServePath}/js/overwrite/codemirror/addon/hint/show-hint.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-process.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
+        <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js"></script>
+        <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js"></script>
+        <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/placeholder.js"></script>
+        <script src="${staticServePath}/js/overwrite/codemirror/addon/hint/show-hint.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-process.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
