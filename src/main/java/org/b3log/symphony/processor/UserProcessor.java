@@ -98,7 +98,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.6.9, Jul 27, 2015
+ * @version 1.9.6.10, Jul 30, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -950,7 +950,7 @@ public class UserProcessor {
 
                 ret.put(Keys.STATUS_CODE, true);
             } catch (final ServiceException e) {
-                LOGGER.log(Level.ERROR, "Sync add user[" + name + "] error: " + e.getMessage());
+                LOGGER.log(Level.ERROR, "Sync add user[name={0}, host={1}] error: " + e.getMessage(), name, clientHost);
             }
 
             return;
