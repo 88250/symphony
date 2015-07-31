@@ -94,7 +94,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.6.21, Jul 28, 2015
+ * @version 1.9.7.21, Jul 31, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -395,7 +395,7 @@ public class ArticleProcessor {
     }
 
     /**
-     * Shows add article.
+     * Shows update article.
      *
      * @param context the specified context
      * @param request the specified request
@@ -616,13 +616,21 @@ public class ArticleProcessor {
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
-            LOGGER.log(Level.WARN, "The user[email={0}] not found in community", clientAdminEmail);
+            LOGGER.log(Level.WARN, "The user[email={0}, host={1}] not found in community", clientAdminEmail, clientHost);
 
             return;
         }
 
+        final String userName = user.optString(User.USER_NAME);
+
         if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-            LOGGER.log(Level.WARN, "B3 key not match, ignored add article");
+            LOGGER.log(Level.WARN, "B3 key not match, ignored add article [name={0}, host={1}]", userName, clientHost);
+
+            return;
+        }
+
+        if (UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)) {
+            LOGGER.log(Level.WARN, "The user[name={0}, host={1}] has been forbidden", userName, clientHost);
 
             return;
         }
@@ -788,13 +796,21 @@ public class ArticleProcessor {
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
-            LOGGER.log(Level.WARN, "The user[email={0}] not found in community", clientAdminEmail);
+            LOGGER.log(Level.WARN, "The user[email={0}, host={1}] not found in community", clientAdminEmail, clientHost);
 
             return;
         }
 
+        final String userName = user.optString(User.USER_NAME);
+
         if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-            LOGGER.log(Level.WARN, "B3 key not match, ignored add article");
+            LOGGER.log(Level.WARN, "B3 key not match, ignored update article [name={0}, host={1}]", userName, clientHost);
+
+            return;
+        }
+
+        if (UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)) {
+            LOGGER.log(Level.WARN, "The user[name={0}, host={1}] has been forbidden", userName, clientHost);
 
             return;
         }
