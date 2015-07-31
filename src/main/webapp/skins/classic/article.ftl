@@ -140,6 +140,9 @@
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
+                                                    <#if "adminRole" == comment.commenter.userRole>
+                                                    <span class="icon icon-userrole" title="${administratorLabel}"></span>
+                                                    </#if>
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                                     &nbsp;<span class="icon icon-date ft-small"></span>
