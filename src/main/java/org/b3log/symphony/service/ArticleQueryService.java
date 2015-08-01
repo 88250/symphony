@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.4.14, Aug 1, 2015
+ * @version 1.10.5.14, Aug 1, 2015
  * @since 0.2.0
  */
 @Service
@@ -763,6 +763,7 @@ public class ArticleQueryService {
         final Set<String> userNames = userQueryService.getUserNames(articleContent);
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
+        final String currentRole = null == currentUser ? "" : currentUser.optString(User.USER_ROLE);
         final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
         if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
                 && !authorName.equals(currentUserName)) {
@@ -774,8 +775,8 @@ public class ArticleQueryService {
                     break;
                 }
             }
-            
-            if (Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+
+            if (Role.ADMIN_ROLE.equals(currentRole)) {
                 invited = true;
             }
 
