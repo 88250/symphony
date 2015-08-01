@@ -149,6 +149,9 @@
                                                     <span class="ft-small">${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span> 
                                                 </span>
                                                 <span class="fn-right">
+                                                    <#if isAdminLoggedIn>
+                                                    <a class="icon icon-setting" href="${servePath}/admin/comment/${comment.oId}" title="${adminLabel}"></a>
+                                                    </#if>
                                                     <#if isLoggedIn> 
                                                     <span class="icon icon-cmt" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
                                                     </#if>
