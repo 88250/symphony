@@ -30,6 +30,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
@@ -64,7 +65,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.4.14, Jul 27, 2015
+ * @version 1.10.4.14, Aug 1, 2015
  * @since 0.2.0
  */
 @Service
@@ -772,6 +773,10 @@ public class ArticleQueryService {
 
                     break;
                 }
+            }
+            
+            if (Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+                invited = true;
             }
 
             if (!invited) {
