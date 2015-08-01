@@ -40,7 +40,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.0, Jul 28, 2015
+ * @version 1.2.4.0, Aug 1, 2015
  * @since 1.3.0
  */
 @Service
@@ -113,10 +113,9 @@ public class ActivityMgmtService {
                         = DateUtils.parseDate(String.valueOf(longestStreakEnd), new String[]{"yyyyMMdd"});
 
                 currentStreakDays
-                        = (int) ((currentStreakEndDate.getTime() - currentStreakStartDate.getTime()) / 86400000);
+                        = (int) ((currentStreakEndDate.getTime() - currentStreakStartDate.getTime()) / 86400000) + 1;
                 longestStreakDays
-                        = (int) ((longestStreakEndDate.getTime() - longestStreakStartDate.getTime()) / 86400000);
-
+                        = (int) ((longestStreakEndDate.getTime() - longestStreakStartDate.getTime()) / 86400000) + 1;
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Parses checkin streak error", e);
             }
@@ -148,7 +147,7 @@ public class ActivityMgmtService {
         }
 
         try {
-            JSONObject user = userQueryService.getUser(userId);
+            final JSONObject user = userQueryService.getUser(userId);
 
             int currentStreakStart = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_START);
             int currentStreakEnd = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_END);
@@ -193,26 +192,23 @@ public class ActivityMgmtService {
                     = DateUtils.parseDate(String.valueOf(longestStreakEnd), new String[]{"yyyyMMdd"});
 
             final int currentStreakDays
-                    = (int) ((currentStreakEndDate.getTime() - currentStreakStartDate.getTime()) / 86400000);
+                    = (int) ((currentStreakEndDate.getTime() - currentStreakStartDate.getTime()) / 86400000) + 1;
             final int longestStreakDays
-                    = (int) ((longestStreakEndDate.getTime() - longestStreakStartDate.getTime()) / 86400000);
+                    = (int) ((longestStreakEndDate.getTime() - longestStreakStartDate.getTime()) / 86400000) + 1;
 
             if (longestStreakDays < currentStreakDays) {
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_START, currentStreakStart);
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_END, currentStreakEnd);
             }
 
+            userMgmtService.updateUser(userId, user);
+
             if (currentStreakDays > 0 && 0 == currentStreakDays % 10) {
                 // Additional Point
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                         Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN_STREAK,
                         Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK, userId);
-                
-                // Reload user to refresh user balance
-                user = userQueryService.getUser(userId);
             }
-
-            userMgmtService.updateUser(userId, user);
 
             return true;
         } catch (final Exception e) {
