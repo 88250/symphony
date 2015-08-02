@@ -205,7 +205,7 @@ public class CommentQueryService {
                 final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 String avatarURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
-                    avatarURL = avatarQueryService.getAvatarURL(commenterEmail, "140");
+                    avatarURL = avatarQueryService.getAvatarURL(commenterEmail);
                 }
                 commenter.put(UserExt.USER_AVATAR_URL, avatarURL);
 
@@ -258,7 +258,7 @@ public class CommentQueryService {
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, articleAuthorURL);
                 final String articleAuthorEmail = articleAuthor.optString(User.USER_EMAIL);
-                final String articleAuthorThumbnailURL = avatarQueryService.getAvatarURL(articleAuthorEmail, "140");
+                final String articleAuthorThumbnailURL = avatarQueryService.getAvatarURL(articleAuthorEmail);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
 
                 processCommentContent(comment);
@@ -305,7 +305,7 @@ public class CommentQueryService {
 
                 String thumbnailURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
-                    thumbnailURL = avatarQueryService.getAvatarURL(email, "140");
+                    thumbnailURL = avatarQueryService.getAvatarURL(email);
                 }
 
                 final JSONObject participant = new JSONObject();
@@ -486,16 +486,9 @@ public class CommentQueryService {
         final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
         final JSONObject author = userRepository.get(authorId);
 
-        final int avatarType = author.optInt(UserExt.USER_AVATAR_TYPE);
-
-        if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
-            final String userEmail = author.optString(User.USER_EMAIL);
-            final String thumbnailURL = avatarQueryService.getGravatarURL(userEmail, "140");
-            comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
-        } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
-                || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {
-            comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, author.optString(UserExt.USER_AVATAR_URL));
-        }
+        final String userEmail = author.optString(User.USER_EMAIL);
+        final String thumbnailURL = avatarQueryService.getAvatarURL(userEmail);
+        comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
         comment.put(Comment.COMMENT_T_COMMENTER, author);
         comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));

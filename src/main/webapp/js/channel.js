@@ -61,7 +61,7 @@ var ArticleChannel = {
                     "<div>" +
                     "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\">" +
                     "<img class=\"avatar\"" +
-                    "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}\" />" +
+                    "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}-64\" />" +
                     "</a>" +
                     "</div>" +
                     "<div class=\"fn-flex-1 comment-content\">" +

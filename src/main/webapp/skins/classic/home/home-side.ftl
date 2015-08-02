@@ -1,5 +1,5 @@
 <div class="fn-relative ft-center">
-    <img class="avatar-big" title="${user.userName}" src="${user.userAvatarURL}" />
+    <img class="avatar-big" title="${user.userName}" src="${user.userAvatarURL}-260" />
     <div>
         <div class="user-name">
             <a href="/member/${user.userName}">${user.userName}</a>

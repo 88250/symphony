@@ -33,7 +33,6 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.service.AvatarQueryService;
@@ -101,15 +100,10 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             chData.put(Article.ARTICLE_T_ID, originalArticle.optString(Keys.OBJECT_ID));
             chData.put(Comment.COMMENT_T_ID, originalComment.optString(Keys.OBJECT_ID));
             chData.put(Comment.COMMENT_T_AUTHOR_NAME, commenterName);
-            final int avatarType = commenter.optInt(UserExt.USER_AVATAR_TYPE);
-            if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
-                final String userEmail = commenter.optString(User.USER_EMAIL);
-                final String thumbnailURL = avatarQueryService.getGravatarURL(userEmail, "140");
-                chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
-            } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
-                    || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {
-                chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, commenter.optString(UserExt.USER_AVATAR_URL));
-            }
+
+            final String userEmail = commenter.optString(User.USER_EMAIL);
+            chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURL(userEmail));
+            
             chData.put(Comment.COMMENT_CREATE_TIME,
                     DateFormatUtils.format(new Date(originalComment.optLong(Comment.COMMENT_CREATE_TIME)), "yyyy-MM-dd HH:mm"));
             String cc = shortLinkQueryService.linkArticle(commentContent);

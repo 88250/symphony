@@ -693,7 +693,7 @@ public class ArticleQueryService {
             return;
         }
 
-        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURL(authorEmail, "140"));
+        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURL(authorEmail));
 
         final JSONObject author = userRepository.getByEmail(authorEmail);
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
