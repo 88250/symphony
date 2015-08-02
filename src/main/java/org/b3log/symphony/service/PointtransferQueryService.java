@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.1, Jul 23, 2015
+ * @version 1.5.1.1, Aug 2, 2015
  * @since 1.3.0
  */
 @Service
@@ -100,6 +100,12 @@ public class PointtransferQueryService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Avatar query service.
+     */
+    @Inject
+    private AvatarQueryService avatarQueryService;
 
     /**
      * Gets the latest pointtransfers with the specified user id, type and fetch size.
@@ -150,16 +156,13 @@ public class PointtransferQueryService {
             final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             for (final JSONObject user : users) {
-                if (user.optInt(UserExt.USER_POINT)
-                        <= Pointtransfer.TRANSFER_SUM_C_INIT + Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER) {
-                    continue;
-                }
-
                 if (UserExt.USER_APP_ROLE_C_HACKER == user.optInt(UserExt.USER_APP_ROLE)) {
                     user.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(user.optInt(UserExt.USER_POINT)));
                 } else {
                     user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
                 }
+
+                avatarQueryService.fillUserAvatarURL(user);
 
                 ret.add(user);
             }
