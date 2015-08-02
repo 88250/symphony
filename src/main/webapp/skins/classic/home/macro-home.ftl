@@ -4,35 +4,35 @@
 <html>
     <head>
         <#if type == "home">
-        <@head title="${user.userName} - ${articleLabel}">
+        <@head title="${symphonyLabel} - ${user.userName} - ${articleLabel}">
         <meta name="description" content="<#list userHomeArticles as article><#if article_index<3>${article.articleTitle},</#if></#list>"/>
         </@head>
         <#elseif type == "comments">
-        <@head title="${user.userName} - ${cmtLabel}">
+        <@head title="${symphonyLabel} - ${user.userName} - ${cmtLabel}">
         <meta name="description" content="${user.userName}${deLabel}${cmtLabel}"/>
         </@head>
         <#elseif type == "followingUsers">
-        <@head title="${user.userName} - ${followingUsersLabel}">
+        <@head title="${symphonyLabel} - ${user.userName} - ${followingUsersLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followingUsersLabel}"/>
         </@head>
         <#elseif type == "followingTags">
-        <@head title="${user.userName} - ${followingTagsLabel}">
+        <@head title="${symphonyLabel} - ${user.userName} - ${followingTagsLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followingTagsLabel}"/>
         </@head>
         <#elseif type == "followingArticles">
-        <@head title="${user.userName} - ${followingArticlesLabel}">
+        <@head title="${symphonyLabel} - ${user.userName} - ${followingArticlesLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followingArticlesLabel}"/>
         </@head>
         <#elseif type == "followers">
-        <@head title="${user.userName} - ${followersLabel}">
+        <@head title="${symphonyLabel} - ${user.userName} - ${followersLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followersLabel}"/>
         </@head>
         <#elseif type == "points">
-        <@head title="${user.userName} - ${pointLabel}">
+        <@head title="${symphonyLabel} - ${user.userName} - ${pointLabel}">
         <meta name="description" content="${user.userName}${deLabel}${pointLabel}"/>
         </@head>
         <#elseif type == "settings">
-        <@head title="${user.userName} - ${settingsLabel}">
+        <@head title="${symphonyLabel} - ${user.userName} - ${settingsLabel}">
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
         </#if>

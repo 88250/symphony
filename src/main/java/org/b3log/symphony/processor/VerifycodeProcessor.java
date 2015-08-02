@@ -18,7 +18,6 @@ package org.b3log.symphony.processor;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -26,6 +25,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.symphony.service.VerifycodeMgmtService;
+import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -78,10 +78,8 @@ public class VerifycodeProcessor {
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-        final JSONObject ret = new JSONObject();
+        final JSONObject ret = Results.trueResult();
         renderer.setJSONObject(ret);
-
-        ret.put(Keys.STATUS_CODE, true);
     }
 
     /**
@@ -106,9 +104,7 @@ public class VerifycodeProcessor {
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-        final JSONObject ret = new JSONObject();
+        final JSONObject ret = Results.trueResult();
         renderer.setJSONObject(ret);
-
-        ret.put(Keys.STATUS_CODE, true);
     }
 }
