@@ -96,7 +96,7 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        window.location = "http://symphony.b3log.org/article/1360294444788";
+                        window.location = "http://hacpai.com/article/1360294444788";
                     } else {
                         $("#registerTip").text(result.msg).addClass("tip-error");
                     }

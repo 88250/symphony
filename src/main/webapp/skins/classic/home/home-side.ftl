@@ -8,7 +8,7 @@
             <span class="icon icon-userrole" title="${administratorLabel}"></span>
             </#if>
             <#if isAdminLoggedIn>
-            <a class="ft-small icon icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
+            <a class="ft-small icon icon-setting" href="/admin/user/${user.oId}" title="${adminLabel}"></a>
             </#if>
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>

@@ -68,11 +68,11 @@
                                 </#if>
 
                                 <#if article.isMyArticle>
-                                <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}" class="icon icon-edit"></a>
+                                <a href="/update-article?id=${article.oId}" title="${editLabel}" class="icon icon-edit"></a>
                                 &nbsp;
                                 </#if>
                                 <#if isAdminLoggedIn>
-                                <a class="icon icon-setting" href="${servePath}/admin/article/${article.oId}" title="${adminLabel}"></a>
+                                <a class="icon icon-setting" href="/admin/article/${article.oId}" title="${adminLabel}"></a>
                                 </#if>
                             </span>
                         </div>
@@ -150,7 +150,7 @@
                                                 </span>
                                                 <span class="fn-right">
                                                     <#if isAdminLoggedIn>
-                                                    <a class="icon icon-setting" href="${servePath}/admin/comment/${comment.oId}" title="${adminLabel}"></a>
+                                                    <a class="icon icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
                                                     </#if>
                                                     <#if isLoggedIn> 
                                                     <span class="icon icon-cmt" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>

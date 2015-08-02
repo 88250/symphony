@@ -35,7 +35,7 @@
                         </#if>
                         </#if>
                         <#if isAdminLoggedIn> &nbsp;
-                        <a class="ft-small icon icon-setting" href="${servePath}/admin/tag/${tag.oId}" title="${adminLabel}"></a>
+                        <a class="ft-small icon icon-setting" href="/admin/tag/${tag.oId}" title="${adminLabel}"></a>
                         </#if>
                     </div>
                     <p<#if tag.tagIconPath != ""> class="description" </#if>>
