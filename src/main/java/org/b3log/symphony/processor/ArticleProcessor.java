@@ -38,6 +38,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -56,6 +57,8 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.LoginCheck;
+import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ArticleAddValidation;
 import org.b3log.symphony.processor.advice.validate.ArticleUpdateValidation;
 import org.b3log.symphony.service.ArticleMgmtService;
@@ -94,7 +97,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.7.21, Jul 31, 2015
+ * @version 1.10.7.21, Aug 2, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -179,7 +182,8 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/add-article", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -207,6 +211,8 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -334,7 +340,8 @@ public class ArticleProcessor {
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, ArticleAddValidation.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, ArticleAddValidation.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
         final JSONRenderer renderer = new JSONRenderer();
@@ -403,7 +410,8 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/update-article", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showUpdateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String articleId = request.getParameter("id");
@@ -471,7 +479,8 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
-    @Before(adviceClass = {LoginCheck.class, ArticleUpdateValidation.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, ArticleUpdateValidation.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String id) throws Exception {
         if (Strings.isEmptyOrNull(id)) {
@@ -588,6 +597,8 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/rhythm/article", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void addArticleFromRhythm(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -768,6 +779,8 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/rhythm/article", method = HTTPRequestMethod.PUT)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void updateArticleFromRhythm(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -910,6 +923,8 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/markdown", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -958,6 +973,8 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{articleId}/preview", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void getArticlePreviewContent(final HttpServletRequest request, final HttpServletResponse response,
             final HTTPRequestContext context, final String articleId) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -1033,6 +1050,8 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/reward", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void reward(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         final JSONObject currentUser = userQueryService.getCurrentUser(request);

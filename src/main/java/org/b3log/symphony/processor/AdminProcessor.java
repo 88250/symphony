@@ -31,6 +31,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -45,6 +46,8 @@ import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AdminCheck;
+import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
@@ -83,7 +86,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.1, Jul 8, 2015
+ * @version 1.5.0.1, Aug 2, 2015
  * @since 1.1.0
  */
 @RequestProcessor
@@ -174,7 +177,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -194,7 +198,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/users", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -247,7 +252,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -271,7 +277,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void updateUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -309,7 +316,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/email", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void updateUserEmail(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userId) throws Exception {
         final JSONObject user = userQueryService.getUser(userId);
@@ -351,7 +359,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/user/{userId}/username", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void updateUserName(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userId) throws Exception {
         final JSONObject user = userQueryService.getUser(userId);
@@ -392,7 +401,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/articles", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -455,7 +465,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -479,7 +490,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/article/{articleId}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -517,7 +529,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/comments", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -573,7 +586,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String commentId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -597,7 +611,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/comment/{commentId}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void updateComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String commentId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -632,7 +647,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -655,7 +671,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/misc", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void updateMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -697,7 +714,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/tags", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -761,7 +779,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String tagId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -785,7 +804,8 @@ public class AdminProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/admin/tag/{tagId}", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = AdminCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void updateTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String tagId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();

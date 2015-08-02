@@ -35,6 +35,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -55,6 +56,8 @@ import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.UserBlockCheck;
+import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.PointTransferValidation;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
@@ -190,7 +193,8 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = UserBlockCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showHome(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
@@ -264,7 +268,8 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/comments", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = UserBlockCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showHomeComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
@@ -329,7 +334,8 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/following/users", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = UserBlockCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showHomeFollowingUsers(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
@@ -401,7 +407,8 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/following/tags", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = UserBlockCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showHomeFollowingTags(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
@@ -473,7 +480,8 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/following/articles", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = UserBlockCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showHomeFollowingArticles(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
@@ -545,7 +553,8 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/followers", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = UserBlockCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showHomeFollowers(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
@@ -617,7 +626,8 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/member/{userName}/points", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = UserBlockCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showHomePoints(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String userName) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
@@ -684,7 +694,8 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -1093,7 +1104,7 @@ public class UserProcessor {
         String[] tagTitles = tags1.split(",");
 
         tagTitles = Strings.trimAll(tagTitles);
-        
+
         final Set<String> titles = new LinkedHashSet<String>(Arrays.asList(tagTitles)); // deduplication
         tagTitles = titles.toArray(new String[0]);
 

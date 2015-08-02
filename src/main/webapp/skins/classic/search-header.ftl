@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - ${visionLabel}">
+        <@head title="${symphonyLabel} - ${searchLabel}">
         </@head>
     </head>
     <body style="background-color: #FFF;">
@@ -22,7 +22,7 @@
                     <a target="_blank" href="/admin" title="${adminLabel}" class="icon icon-setting"></a>
                     </#if>
                     <a target="_blank" id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
-                    <a target="_blank" href="/add-article" title="${addArticleLabel}${articleLabel}" 
+                    <a target="_blank" href="/add-article" title="${addArticleLabel}" 
                        class="icon icon-addfile"></a>
                     <#else>
                     <a target="_blank" href="/register" class="last icon icon-register" 
@@ -89,8 +89,8 @@
                         </div>
                         <div class="fn-right">
                             <span class="ft-small">&COPY; ${year} </span>
-                            <a rel="copyright" href="http://b3log.org" target="_blank">B3LOG.ORG</a>
-                            <span class="ft-small">${version}</span>
+                            <a rel="copyright" href="http://hacpai.com" target="_blank">hacpai.com</a>
+                            <span class="ft-small">${version} · ${elapsed?c}ms</span>
                             <span class="fn-none">
                                 ${siteVisitStatCode}
                             </span>

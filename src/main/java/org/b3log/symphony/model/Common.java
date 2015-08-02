@@ -25,6 +25,11 @@ package org.b3log.symphony.model;
 public final class Common {
 
     /**
+     * Key of elapsed.
+     */
+    public static final String ELAPSED = "elapsed";
+
+    /**
      * Key of closed 1A0001.
      */
     public static final String CLOSED_1A0001 = "closed1A0001";
@@ -178,7 +183,7 @@ public final class Common {
      * Key of latest articles.
      */
     public static final String LATEST_ARTICLES = "latestArticles";
-    
+
     /**
      * Key of index articles.
      */

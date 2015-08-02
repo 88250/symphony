@@ -19,6 +19,7 @@ import org.b3log.symphony.processor.channel.ArticleChannel;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -97,5 +98,6 @@ public class StatusProcessor {
         memory.put("max", runtime.maxMemory() / mb);
 
         LOGGER.info(ret.toString(SymphonyServletListener.JSON_PRINT_INDENT_FACTOR));
+        ret.put(Keys.STATUS_CODE, true);
     }
 }

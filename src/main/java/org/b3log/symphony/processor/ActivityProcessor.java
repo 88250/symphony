@@ -28,6 +28,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -37,6 +38,8 @@ import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.processor.advice.LoginCheck;
+import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
+import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.Activity1A0001CollectValidation;
 import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
 import org.b3log.symphony.service.ActivityMgmtService;
@@ -59,7 +62,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Jul 23, 2015
+ * @version 1.3.0.0, Aug 2, 2015
  * @since 1.3.0
  */
 @RequestProcessor
@@ -109,7 +112,8 @@ public class ActivityProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/activities", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showActivities(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -133,7 +137,8 @@ public class ActivityProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/activity/daily-checkin", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void dailyCheckin(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
@@ -153,7 +158,8 @@ public class ActivityProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/activity/1A0001", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = LoginCheck.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void show1A0001(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -243,7 +249,8 @@ public class ActivityProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/activity/1A0001/bet", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, Activity1A0001Validation.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, Activity1A0001Validation.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void bet1A0001(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -281,7 +288,8 @@ public class ActivityProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/activity/1A0001/collect", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, Activity1A0001CollectValidation.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, Activity1A0001CollectValidation.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void collect1A0001(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();

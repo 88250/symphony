@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - ${visionLabel}">
+        <@head title="${symphonyLabel} - ${recentArticleLabel}">
         <meta name="description" content="${symphonyLabel}${b3logDescriptionLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />

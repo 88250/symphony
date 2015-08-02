@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${userName} - block">
+        <@head title="${symphonyLabel} - ${userName} - Block">
         <meta name="robots" content="none" />
         </@head>
         <link type="text/css" rel="stylesheet" href="/css/home${miniPostfix}.css?${staticResourceVersion}" />

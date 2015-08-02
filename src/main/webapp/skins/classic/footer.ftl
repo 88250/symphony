@@ -26,8 +26,8 @@
                 </div>
                 <div class="fn-right">
                     <span class="ft-small">&COPY; ${year} </span>
-                    <a rel="copyright" href="http://b3log.org" target="_blank">B3LOG.ORG</a>
-                    <span class="ft-small">${version}</span>
+                    <a rel="copyright" href="http://hacpai.com" target="_blank">hacpai.com</a>
+                    <span class="ft-small">${version} · ${elapsed?c}ms</span>
                     <span class="fn-none">
                         ${siteVisitStatCode}
                     </span>

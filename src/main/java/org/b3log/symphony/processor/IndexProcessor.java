@@ -107,7 +107,7 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final int pageSize = Symphonys.getInt("indexArticlesCnt");
-        
+
         final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
 
@@ -127,6 +127,8 @@ public class IndexProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/about", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showAbout(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -150,6 +152,8 @@ public class IndexProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/search-header", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showSearchHeader(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
@@ -172,6 +176,8 @@ public class IndexProcessor {
      * @param response the specified HTTP servlet response
      */
     @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
     public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         renderer.setTemplateName("kill-browser.ftl");
