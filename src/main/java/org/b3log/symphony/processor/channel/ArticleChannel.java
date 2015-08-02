@@ -27,6 +27,7 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
@@ -47,7 +48,7 @@ import org.json.JSONObject;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Jun 23, 2015
+ * @version 1.1.2.1, Aug 2, 2015
  * @since 1.3.0
  */
 @WebSocket
@@ -171,6 +172,7 @@ public class ArticleChannel {
 
                         final String userName = user.optString(User.USER_NAME);
                         final String userId = user.optString(Keys.OBJECT_ID);
+                        final String userRole = user.optString(User.USER_ROLE);
 
                         final JSONObject article = articleRepository.get(viewingArticleId);
                         final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
@@ -187,8 +189,12 @@ public class ArticleChannel {
                                 }
                             }
 
+                            if (Role.ADMIN_ROLE.equals(userRole)) {
+                                invited = true;
+                            }
+
                             if (!invited) {
-                                continue;
+                                continue; // next session
                             }
                         }
                     }

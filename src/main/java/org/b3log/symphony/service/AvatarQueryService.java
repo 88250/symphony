@@ -16,12 +16,11 @@
 package org.b3log.symphony.service;
 
 import javax.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.MD5;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
@@ -43,15 +42,15 @@ public class AvatarQueryService {
     private static final Logger LOGGER = Logger.getLogger(AvatarQueryService.class.getName());
 
     /**
-     * Gravatar address.
-     */
-    public static final String GRAVATAR = "http://gravatar.duoshuo.com/avatar/";
-
-    /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Default avatar URL.
+     */
+    private static final String DEFAULT_AVATAR_URL = Symphonys.get("defaultThumbnailURL");
 
     /**
      * Fills the specified user thumbnail URL.
@@ -59,57 +58,39 @@ public class AvatarQueryService {
      * @param user the specified user
      */
     public void fillUserAvatarURL(final JSONObject user) {
-        final int avatarType = user.optInt(UserExt.USER_AVATAR_TYPE);
-
-        if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
-            final String userEmail = user.optString(User.USER_EMAIL);
-            final String avatarURL = getGravatarURL(userEmail, "140");
-            user.put(UserExt.USER_AVATAR_URL, avatarURL);
+        final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
+        if (!StringUtils.startsWith(originalURL, Symphonys.get("qiniu.domain"))) {
+            user.put(UserExt.USER_AVATAR_URL, DEFAULT_AVATAR_URL);
+            
+            return;
         }
+
+        user.put(UserExt.USER_AVATAR_URL, StringUtils.substringBeforeLast(originalURL, "?"));
     }
 
     /**
      * Gets the avatar URL for the specified email with the specified size.
      *
      * @param email the specified email
-     * @param size the specified size
      * @return the avatar URL
      */
-    public String getAvatarURL(final String email, final String size) {
-        String ret = Symphonys.get("defaultThumbnailURL");
-
+    public String getAvatarURL(final String email) {
         try {
             final JSONObject user = userRepository.getByEmail(email);
             if (null == user) {
-                return ret;
+                return DEFAULT_AVATAR_URL;
             }
 
-            final int avatarType = user.optInt(UserExt.USER_AVATAR_TYPE);
-
-            if (UserExt.USER_AVATAR_TYPE_C_GRAVATAR == avatarType) {
-                final String userEmail = user.optString(User.USER_EMAIL);
-                final String avatarURL = getGravatarURL(userEmail, "140");
-
-                ret = avatarURL;
-            } else if (UserExt.USER_AVATAR_TYPE_C_EXTERNAL_LINK == avatarType
-                    || UserExt.USER_AVATAR_TYPE_C_UPLOAD == avatarType) {
-                ret = user.optString(UserExt.USER_AVATAR_URL);
+            final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
+            if (!StringUtils.startsWith(originalURL, Symphonys.get("qiniu.domain"))) {
+                return DEFAULT_AVATAR_URL;
             }
+
+            return StringUtils.substringBeforeLast(originalURL, "?");
         } catch (final RepositoryException e) {
             LOGGER.log(Level.WARN, "Gets user avatar error", e);
+
+            return DEFAULT_AVATAR_URL;
         }
-
-        return ret;
-    }
-
-    /**
-     * Gets the Gravatar URL for the specified email with the specified size.
-     *
-     * @param email the specified email
-     * @param size the specified size
-     * @return the Gravatar URL
-     */
-    public String getGravatarURL(final String email, final String size) {
-        return GRAVATAR + MD5.hash(email) + "?s=" + size + "&d=" + Symphonys.get("defaultThumbnailURL");
     }
 }

@@ -18,16 +18,23 @@ package org.b3log.symphony.processor.channel;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 
 /**
  * Channel utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Jun 24, 2015
+ * @version 1.0.2.1, Aug 2, 2015
  * @since 1.3.0
  */
 public final class Channels {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Channels.class.getName());
 
     /**
      * Gets a parameter of the specified HTTP session by the given session.
@@ -65,7 +72,13 @@ public final class Channels {
             return null;
         }
 
-        return httpSession.getAttribute(attributeName);
+        try {
+            return httpSession.getAttribute(attributeName);
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Get HTTP session attribute error", e);
+            
+            return null;
+        }
     }
 
     /**

@@ -1,5 +1,5 @@
 <div class="fn-relative ft-center">
-    <img class="avatar-big" title="${user.userName}" src="${user.userAvatarURL}" />
+    <img class="avatar-big" title="${user.userName}" src="${user.userAvatarURL}-260" />
     <div>
         <div class="user-name">
             <a href="/member/${user.userName}">${user.userName}</a>
@@ -8,7 +8,7 @@
             <span class="icon icon-userrole" title="${administratorLabel}"></span>
             </#if>
             <#if isAdminLoggedIn>
-            <a class="ft-small icon icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
+            <a class="ft-small icon icon-setting" href="/admin/user/${user.oId}" title="${adminLabel}"></a>
             </#if>
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>

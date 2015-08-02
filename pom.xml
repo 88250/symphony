@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 1.6.2.17, Jul 2, 2015
+    Version: 2.6.2.17, Aug 2, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -15,7 +15,7 @@
     <name>Symphony</name>
     <url>https://github.com/b3log/symphony</url>
     <description>
-        B3log Community: http://symphony.b3log.org/about
+        Sym Community: http://hacpai.com/about
     </description>
     <inceptionYear>2012</inceptionYear>
 

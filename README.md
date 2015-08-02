@@ -2,7 +2,7 @@
 
 ## Intro
 
-Symphony is a simple community forum written by Java, see [here](http://symphony.b3log.org/about) for the originality.
+Symphony is a simple community forum written by Java, see [here](http://hacpai.com/about) for the originality.
 
 ## Project
 

@@ -19,7 +19,7 @@
             </div>
             <#if isMyArticle>
             <div class="cmts">
-                <a class="icon icon-edit" href="${servePath}/update-article?id=${article.oId}" title="${editLabel}"></a>
+                <a class="icon icon-edit" href="/update-article?id=${article.oId}" title="${editLabel}"></a>
             </div>
             <#else>
             <#if article.articleCommentCount != 0>

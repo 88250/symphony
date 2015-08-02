@@ -47,7 +47,7 @@
                             <h2 class="fn-flex-1">
                                 <a rel="author" href="/member/${article.articleAuthorName}" class="ft-small"
                                    title="${article.articleAuthorName}">
-                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}" />
+                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64" />
                                 </a> &nbsp;
                                 <a href="${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
@@ -68,11 +68,11 @@
                                 </#if>
 
                                 <#if article.isMyArticle>
-                                <a href="${servePath}/update-article?id=${article.oId}" title="${editLabel}" class="icon icon-edit"></a>
+                                <a href="/update-article?id=${article.oId}" title="${editLabel}" class="icon icon-edit"></a>
                                 &nbsp;
                                 </#if>
                                 <#if isAdminLoggedIn>
-                                <a class="icon icon-setting" href="${servePath}/admin/article/${article.oId}" title="${adminLabel}"></a>
+                                <a class="icon icon-setting" href="/admin/article/${article.oId}" title="${adminLabel}"></a>
                                 </#if>
                             </span>
                         </div>
@@ -135,7 +135,7 @@
                                     <div class="fn-flex">
                                         <a class="responsive-hide" rel="nofollow" href="/member/${comment.commentAuthorName}">
                                             <img class="avatar" 
-                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}" />
+                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}-64" />
                                         </a>
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
@@ -150,7 +150,7 @@
                                                 </span>
                                                 <span class="fn-right">
                                                     <#if isAdminLoggedIn>
-                                                    <a class="icon icon-setting" href="${servePath}/admin/comment/${comment.oId}" title="${adminLabel}"></a>
+                                                    <a class="icon icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
                                                     </#if>
                                                     <#if isLoggedIn> 
                                                     <span class="icon icon-cmt" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>

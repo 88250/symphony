@@ -70,8 +70,8 @@ public final class Mails {
 
             formData.put("api_user", API_USER);
             formData.put("api_key", API_KEY);
-            formData.put("from", "Hacker.Painter@symphony.b3log.org");
-            formData.put("fromname", "Sym - 黑客与画家的社区");
+            formData.put("from", "d@hacpai.com");
+            formData.put("fromname", "黑客派");
             formData.put("subject", subject);
             formData.put("template_invoke_name", templateName);
 
@@ -105,14 +105,14 @@ public final class Mails {
         final List<String> var1 = new ArrayList<String>();
         var1.add("88250");
         final List<String> var2 = new ArrayList<String>();
-        var2.add("http://symphony.b3log.org");
+        var2.add("http://hacpai.com");
 
         final Map<String, List<String>> vars = new HashMap<String, List<String>>();
         vars.put("%1%", var1);
         vars.put("%2%", var2);
 
         final List<String> toMails = new ArrayList<String>();
-        toMails.add("dl88250@gmail.com");
+        toMails.add("845765@qq.com");
 
         send("测试邮件", "sym_register", toMails, vars);
     }
