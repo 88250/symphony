@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -59,6 +60,7 @@ import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -561,7 +563,8 @@ public class ArticleQueryService {
             throw new ServiceException(e);
         }
     }
-
+    
+    
     /**
      * Gets the index articles with the specified fetch size.
      *
@@ -598,6 +601,61 @@ public class ArticleQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets index articles failed", e);
             throw new ServiceException(e);
+        }
+    }
+    
+
+    /**
+     * Gets the index articles with the specified fetch size.
+     *
+     * @param currentPageNum the specified current page number
+     * @param fetchSize the specified fetch size
+     * @return recent articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getTopArticlesWithComments(final int currentPageNum, final int fetchSize) throws ServiceException {
+        final Query query = new Query()
+                .addSort(Article.ARTICLE_STATUS, SortDirection.ASCENDING)
+                .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
+                .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
+                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
+                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+
+        try {
+            final JSONObject result = articleRepository.get(query);
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            organizeArticles(ret);
+            final List<JSONObject> stories = new ArrayList<JSONObject>();
+
+            for (final JSONObject article : ret) {
+                final JSONObject story = new JSONObject();
+                final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                final JSONObject author = userRepository.get(authorId);
+                if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
+                    story.put("title", langPropsService.get("articleTitleBlockLabel"));
+                } else {
+                    story.put("title", article.optString(Article.ARTICLE_TITLE));
+                }
+                story.put("id", article.optString(Article.ARTICLE_T_ID));
+                story.put("url", "http://192.168.1.101:8084" + article.optString(Article.ARTICLE_PERMALINK));
+                story.put("user_display_name", author.optString(UserExt.DEFAULT_CMTER_EMAIL));
+                story.put("user_job", author.optString(UserExt.USER_APP_ROLE));
+                story.put("comment_count", article.optString(Article.ARTICLE_COMMENT_CNT));
+                story.put("vote_count", article.optString(Article.ARTICLE_BAD_CNT));
+                story.put("created_at", DateFormatUtils.format(((Date) article.get(Article.ARTICLE_CREATE_TIME)).getTime(), "yyyy-MM-dd") 
+                        + "T" + DateFormatUtils.format(((Date) article.get(Article.ARTICLE_CREATE_TIME)).getTime(), "HH:mm:ss") + "Z");
+                story.put("user_portrait_url", article.optString(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL));
+                stories.add(story);
+            }
+            final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
+            genParticipants(stories, participantsCnt);
+            return stories;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets index articles failed", e);
+            throw new ServiceException(e);
+        } catch (final JSONException ex) {
+            LOGGER.log(Level.ERROR, "Gets index articles failed", ex);
+            throw new ServiceException(ex);
         }
     }
 

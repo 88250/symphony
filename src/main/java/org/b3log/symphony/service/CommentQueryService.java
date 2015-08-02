@@ -272,7 +272,7 @@ public class CommentQueryService {
     }
 
     /**
-     * Gets the article participants (commenters) with the specified article article id and fetch size.
+     * Gets the article participants (commenters) with the specified article id and fetch size.
      *
      * @param articleId the specified article id
      * @param fetchSize the specified fetch size
