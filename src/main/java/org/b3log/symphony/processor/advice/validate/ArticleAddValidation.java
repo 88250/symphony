@@ -16,14 +16,16 @@
 package org.b3log.symphony.processor.advice.validate;
 
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.TreeSet;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.ArrayUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -33,6 +35,8 @@ import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -57,11 +61,6 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
      * Max article title length.
      */
     public static final int MAX_ARTICLE_TITLE_LENGTH = 255;
-
-    /**
-     * Max tag title length.
-     */
-    public static final int MAX_TAG_TITLE_LENGTH = 50;
 
     /**
      * Max article content length.
@@ -112,27 +111,37 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
         }
 
-        final String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
+        String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
         if (Strings.isEmptyOrNull(articleTags)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
         }
+        
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final ArticleMgmtService articleMgmtService = beanManager.getReference(ArticleMgmtService.class);
+
+        articleTags = articleMgmtService.formatArticleTags(articleTags);
 
         String[] tagTitles = articleTags.split(",");
         if (null == tagTitles || 0 == tagTitles.length) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
         }
 
-        tagTitles = new TreeSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
+        tagTitles = new LinkedHashSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
 
         final StringBuilder tagBuilder = new StringBuilder();
         for (int i = 0; i < tagTitles.length; i++) {
             final String tagTitle = tagTitles[i].trim();
+
             if (Strings.isEmptyOrNull(tagTitle)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
             }
 
-            if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagsErrorLabel")));
+            if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+            }
+
+            if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
             }
 
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);

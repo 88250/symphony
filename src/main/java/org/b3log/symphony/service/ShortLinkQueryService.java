@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Short link query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Jul 21, 2015
+ * @version 1.0.2.0, Aug 3, 2015
  * @since 1.3.0
  */
 @Service
@@ -53,12 +53,12 @@ public class ShortLinkQueryService {
     /**
      * Id pattern.
      */
-    public static final Pattern ID_PATTERN = Pattern.compile(" \\[\\d{13,15}\\] ");
+    private static final Pattern ID_PATTERN = Pattern.compile(" \\[\\d{13,15}\\] ");
 
     /**
      * Tag title pattern.
      */
-    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile(" \\[.+](?!\\(.+\\)) ");
+    private static final Pattern TAG_TITLE_PATTERN = Pattern.compile(" \\[\\w+](?!\\(.+\\)) ");
 
     /**
      * Article repository.

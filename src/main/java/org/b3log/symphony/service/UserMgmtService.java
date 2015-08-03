@@ -16,8 +16,11 @@
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -668,6 +671,37 @@ public class UserMgmtService {
     }
 
     /**
+     * Formats the specified user tags.
+     *
+     * <ul>
+     * <li>Trims every tag</li>
+     * <li>Deduplication</li>
+     * </ul>
+     *
+     * @param userTags the specified article tags
+     * @return formatted tags string
+     */
+    public String formatUserTags(final String userTags) {
+        final String articleTags1 = userTags.replaceAll("，", ",").replaceAll("、", ",").replaceAll("；", ",")
+                .replaceAll(";", ",");
+        String[] tagTitles = articleTags1.split(",");
+
+        tagTitles = Strings.trimAll(tagTitles);
+        final Set<String> titles = new LinkedHashSet<String>(Arrays.asList(tagTitles)); // deduplication
+        tagTitles = titles.toArray(new String[0]);
+
+        final StringBuilder tagsBuilder = new StringBuilder();
+        for (final String tagTitle : tagTitles) {
+            tagsBuilder.append(tagTitle.trim()).append(",");
+        }
+        if (tagsBuilder.length() > 0) {
+            tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
+        }
+
+        return tagsBuilder.toString();
+    }
+
+    /**
      * Tags the specified user with the specified tag titles.
      *
      * @param user the specified article
@@ -737,7 +771,7 @@ public class UserMgmtService {
 
             userTagRepository.add(userTagRelation);
         }
-        
+
         user.put(UserExt.USER_TAGS, tagTitleStr);
     }
 }

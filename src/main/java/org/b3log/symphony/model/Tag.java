@@ -15,11 +15,13 @@
  */
 package org.b3log.symphony.model;
 
+import java.util.regex.Pattern;
+
 /**
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, May 31, 2015
+ * @version 1.4.0.3, Aug 3, 2015
  * @since 0.2.0
  */
 public final class Tag {
@@ -135,6 +137,17 @@ public final class Tag {
      * Tag type - user self.
      */
     public static final int TAG_TYPE_C_USER_SELF = 2;
+
+    /// Validation
+    /**
+     * Max tag title length.
+     */
+    public static final int MAX_TAG_TITLE_LENGTH = 50;
+
+    /**
+     * Tag title pattern.
+     */
+    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5,\\w]+");
 
     /**
      * Private constructor.
