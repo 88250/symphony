@@ -38,6 +38,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
@@ -86,7 +87,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.1, Aug 2, 2015
+ * @version 1.6.0.1, Aug 3, 2015
  * @since 1.1.0
  */
 @RequestProcessor
@@ -296,6 +297,11 @@ public class AdminProcessor {
 
             if (name.equals(UserExt.USER_POINT)) {
                 user.put(name, Integer.valueOf(value));
+            } else if (name.equals(User.USER_PASSWORD)) {
+                final String oldPwd = (String) user.getString(name);
+                if (!oldPwd.equals(value) && !Strings.isEmptyOrNull(value)) {
+                    user.put(name, MD5.hash(value));
+                }
             } else {
                 user.put(name, value);
             }
