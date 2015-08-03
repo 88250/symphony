@@ -147,7 +147,7 @@ public final class Tag {
     /**
      * Tag title pattern.
      */
-    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5,\\w]+");
+    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5,\\w,\\s]+");
 
     /**
      * Private constructor.
