@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.7, Jul 4, 2015
+ * @version 2.1.1.7, Aug 3, 2015
  */
 
 /**
@@ -96,7 +96,7 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        window.location = "http://hacpai.com/article/1360294444788";
+                        window.location = "http://symphony.b3log.org/article/1360294444788";
                     } else {
                         $("#registerTip").text(result.msg).addClass("tip-error");
                     }
