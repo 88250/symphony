@@ -49,7 +49,7 @@ var AddArticle = {
             }, {
                 "id": "articleTags",
                 "type": "tags",
-                "msg": Label.articleTagsErrorLabel
+                "msg": Label.tagsErrorLabel
             }]) && isError) {
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g, ""),

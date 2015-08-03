@@ -117,7 +117,7 @@ var Settings = {
         if (Validate.goValidate([{
                 "id": "userTags",
                 "type": "tags",
-                "msg": Label.articleTagsErrorLabel
+                "msg": Label.tagsErrorLabel
             }, {
                 "id": "userURL",
                 "type": "url",

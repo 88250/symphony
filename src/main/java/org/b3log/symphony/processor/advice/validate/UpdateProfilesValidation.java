@@ -17,12 +17,18 @@ package org.b3log.symphony.processor.advice.validate;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.ArrayUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -30,14 +36,18 @@ import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
  * Validates for user profiles update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Nov 26, 2012
+ * @version 2.0.0.3, Aug 3, 2015
  */
 @Named
 @Singleton
@@ -90,6 +100,52 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
         if (!Strings.isEmptyOrNull(userIntro) && userIntro.length() > MAX_USER_INTRO_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserIntroLabel")));
         }
+
+        String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
+        if (Strings.isEmptyOrNull(userTags)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+        }
+
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
+
+        userTags = userMgmtService.formatUserTags(userTags);
+        String[] tagTitles = userTags.split(",");
+        if (null == tagTitles || 0 == tagTitles.length) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+        }
+
+        tagTitles = new LinkedHashSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
+
+        final StringBuilder tagBuilder = new StringBuilder();
+        for (int i = 0; i < tagTitles.length; i++) {
+            final String tagTitle = tagTitles[i].trim();
+
+            if (Strings.isEmptyOrNull(tagTitle)) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+            }
+
+            if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+            }
+
+            if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+            }
+
+            final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+            if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+                    && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
+                        + " [" + tagTitle + "]"));
+            }
+
+            tagBuilder.append(tagTitle).append(",");
+        }
+        if (tagBuilder.length() > 0) {
+            tagBuilder.deleteCharAt(tagBuilder.length() - 1);
+        }
+        requestJSONObject.put(Article.ARTICLE_TAGS, tagBuilder.toString());
     }
 
     /**

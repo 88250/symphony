@@ -93,7 +93,7 @@
         <script>
                                                 Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
                                                 Label.articleContentErrorLabel = "${articleContentErrorLabel}";
-                                                Label.articleTagsErrorLabel = "${articleTagsErrorLabel}";
+                                                Label.tagsErrorLabel = "${tagsErrorLabel}";
                                                 Label.userName = "${userName}";
                                                 Util.uploadFile({
                                                         "id": "fileupload",

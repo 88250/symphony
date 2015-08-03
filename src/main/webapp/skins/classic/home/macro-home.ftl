@@ -91,7 +91,7 @@
             Label.transferSuccLabel = "${transferSuccLabel}";
             Label.invalidUserURLLabel = "${invalidUserURLLabel}";
             Label.invalidAvatarURLLabel = "${invalidAvatarURLLabel}";
-            Label.articleTagsErrorLabel = "${articleTagsErrorLabel}";
+            Label.tagsErrorLabel = "${tagsErrorLabel}";
             Label.invalidUserQQLabel = "${invalidUserQQLabel}";
             Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
             Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
