@@ -48,6 +48,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
@@ -636,15 +637,16 @@ public class ArticleQueryService {
                 } else {
                     story.put("title", article.optString(Article.ARTICLE_TITLE));
                 }
-                story.put("id", article.optString(Article.ARTICLE_T_ID));
-                story.put("url", "http://192.168.1.101:8084" + article.optString(Article.ARTICLE_PERMALINK));
-                story.put("user_display_name", author.optString(UserExt.DEFAULT_CMTER_EMAIL));
-                story.put("user_job", author.optString(UserExt.USER_APP_ROLE));
-                story.put("comment_count", article.optString(Article.ARTICLE_COMMENT_CNT));
-                story.put("vote_count", article.optString(Article.ARTICLE_BAD_CNT));
+                story.put("id", article.optString("oId"));
+                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+                story.put("user_display_name", article.optString(Article.ARTICLE_T_AUTHOR_NAME));
+                story.put("user_job", author.optString(UserExt.USER_INTRO));
+                story.put("comment_count", article.optInt(Article.ARTICLE_COMMENT_CNT));
+                story.put("vote_count", article.optInt(Article.ARTICLE_VIEW_CNT));
                 story.put("created_at", DateFormatUtils.format(((Date) article.get(Article.ARTICLE_CREATE_TIME)).getTime(), "yyyy-MM-dd") 
                         + "T" + DateFormatUtils.format(((Date) article.get(Article.ARTICLE_CREATE_TIME)).getTime(), "HH:mm:ss") + "Z");
                 story.put("user_portrait_url", article.optString(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL));
+                story.put("comments", getAllComments(article.optString("oId")));
                 stories.add(story);
             }
             final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
@@ -657,6 +659,34 @@ public class ArticleQueryService {
             LOGGER.log(Level.ERROR, "Gets index articles failed", ex);
             throw new ServiceException(ex);
         }
+    }
+    
+    
+    /**
+     * Gets the article comments with the specified article id.
+     * 
+     * @param articleId the specified article id
+     * @return comments, return an empty list if not found 
+     * @throws ServiceException  service exception
+     * @throws JSONException json exception
+     */
+    private List<JSONObject> getAllComments(final String articleId) throws ServiceException, JSONException{
+        final List<JSONObject> commments = new ArrayList<JSONObject>();
+        final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, 1, Integer.MAX_VALUE);
+        for(final JSONObject ac : articleComments){
+            final JSONObject comment = new JSONObject();
+            comment.put("id", ac.optString("oId"));
+            comment.put("body_html", ac.optString(Comment.COMMENT_CONTENT));
+            comment.put("depth", 0);
+            comment.put("user_display_name", ac.optString(Comment.COMMENT_T_AUTHOR_NAME));
+            comment.put("user_job", "");
+            comment.put("vote_count", 0);
+            comment.put("created_at", DateFormatUtils.format(((Date) ac.get(Comment.COMMENT_CREATE_TIME)).getTime(), "yyyy-MM-dd") 
+                        + "T" + DateFormatUtils.format(((Date) ac.get(Comment.COMMENT_CREATE_TIME)).getTime(), "HH:mm:ss") + "Z");
+            comment.put("user_portrait_url", ac.optString(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL));
+            commments.add(comment);
+        }
+        return commments;
     }
 
     /**
