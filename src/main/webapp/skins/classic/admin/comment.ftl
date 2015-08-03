@@ -29,7 +29,7 @@
                 <input type="text" id="commentStatus" name="commentStatus" value="${comment.commentStatus}" />
 
                 <label for="commentContent">${commentContentLabel}</label>
-                <textarea id="commentContent" name="commentContent">${comment.commentContent}</textarea>
+                <textarea id="commentContent" name="commentContent" rows="10">${comment.commentContent}</textarea>
 
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
