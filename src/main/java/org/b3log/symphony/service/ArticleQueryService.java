@@ -637,7 +637,7 @@ public class ArticleQueryService {
                 } else {
                     story.put("title", article.optString(Article.ARTICLE_TITLE));
                 }
-                story.put("id", article.optString("oId"));
+                story.put("id", article.optLong("oId"));
 //                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
                 story.put("url", "http://192.168.1.101:8084" + article.optString(Article.ARTICLE_PERMALINK));
                 story.put("user_display_name", article.optString(Article.ARTICLE_T_AUTHOR_NAME));
@@ -675,7 +675,7 @@ public class ArticleQueryService {
         final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, 1, Integer.MAX_VALUE);
         for(final JSONObject ac : articleComments){
             final JSONObject comment = new JSONObject();
-            comment.put("id", ac.optString("oId"));
+            comment.put("id", ac.optLong("oId"));
             comment.put("body_html", ac.optString(Comment.COMMENT_CONTENT));
             comment.put("depth", 0);
             comment.put("user_display_name", ac.optString(Comment.COMMENT_T_AUTHOR_NAME));
