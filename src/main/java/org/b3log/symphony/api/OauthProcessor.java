@@ -78,7 +78,7 @@ public class OauthProcessor {
     public void mobileLogin(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException, JSONException {
         final String error = "invalid grant";
-        final String error_description = "The provided authorization grant is invalid, expired, revoked, does not match";
+        final String errorDescription = "The provided authorization grant is invalid, expired, revoked, does not match";
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -96,14 +96,14 @@ public class OauthProcessor {
 
             if (null == user || null == password) {
                 ret.put("error", error);
-                ret.put("error_description", error_description);
+                ret.put("error_description", errorDescription);
                 return;
             }
 
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
                 ret.put("error", error);
-                ret.put("error_description", error_description);
+                ret.put("error_description", errorDescription);
                 return;
             }
 
@@ -119,7 +119,7 @@ public class OauthProcessor {
             }
         } catch (final ServiceException e) {
                 ret.put("error", error);
-                ret.put("error_description", error_description);
+                ret.put("error_description", errorDescription);
         }
     }
     
