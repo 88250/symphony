@@ -669,17 +669,19 @@ public class ArticleQueryService {
      * @return comments, return an empty list if not found 
      * @throws ServiceException  service exception
      * @throws JSONException json exception
+     * @throws RepositoryException repository exception
      */
-    private List<JSONObject> getAllComments(final String articleId) throws ServiceException, JSONException{
+    private List<JSONObject> getAllComments(final String articleId) throws ServiceException, JSONException, RepositoryException{
         final List<JSONObject> commments = new ArrayList<JSONObject>();
         final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, 1, Integer.MAX_VALUE);
         for(final JSONObject ac : articleComments){
             final JSONObject comment = new JSONObject();
+            final JSONObject author = userRepository.get(ac.optString(Comment.COMMENT_AUTHOR_ID));
             comment.put("id", ac.optLong("oId"));
             comment.put("body_html", ac.optString(Comment.COMMENT_CONTENT));
             comment.put("depth", 0);
             comment.put("user_display_name", ac.optString(Comment.COMMENT_T_AUTHOR_NAME));
-            comment.put("user_job", "");
+            comment.put("user_job", author.optString(UserExt.USER_INTRO));
             comment.put("vote_count", 0);
             comment.put("created_at", formatDate(ac.get(Comment.COMMENT_CREATE_TIME)));
             comment.put("user_portrait_url", ac.optString(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL));
