@@ -638,13 +638,13 @@ public class ArticleQueryService {
                     story.put("title", article.optString(Article.ARTICLE_TITLE));
                 }
                 story.put("id", article.optString("oId"));
-                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+//                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+                story.put("url", "http://192.168.1.101:8084" + article.optString(Article.ARTICLE_PERMALINK));
                 story.put("user_display_name", article.optString(Article.ARTICLE_T_AUTHOR_NAME));
                 story.put("user_job", author.optString(UserExt.USER_INTRO));
                 story.put("comment_count", article.optInt(Article.ARTICLE_COMMENT_CNT));
                 story.put("vote_count", article.optInt(Article.ARTICLE_VIEW_CNT));
-                story.put("created_at", DateFormatUtils.format(((Date) article.get(Article.ARTICLE_CREATE_TIME)).getTime(), "yyyy-MM-dd") 
-                        + "T" + DateFormatUtils.format(((Date) article.get(Article.ARTICLE_CREATE_TIME)).getTime(), "HH:mm:ss") + "Z");
+                story.put("created_at", formatDate(article.get(Article.ARTICLE_CREATE_TIME)));
                 story.put("user_portrait_url", article.optString(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL));
                 story.put("comments", getAllComments(article.optString("oId")));
                 stories.add(story);
@@ -681,12 +681,22 @@ public class ArticleQueryService {
             comment.put("user_display_name", ac.optString(Comment.COMMENT_T_AUTHOR_NAME));
             comment.put("user_job", "");
             comment.put("vote_count", 0);
-            comment.put("created_at", DateFormatUtils.format(((Date) ac.get(Comment.COMMENT_CREATE_TIME)).getTime(), "yyyy-MM-dd") 
-                        + "T" + DateFormatUtils.format(((Date) ac.get(Comment.COMMENT_CREATE_TIME)).getTime(), "HH:mm:ss") + "Z");
+            comment.put("created_at", formatDate(ac.get(Comment.COMMENT_CREATE_TIME)));
             comment.put("user_portrait_url", ac.optString(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL));
             commments.add(comment);
         }
         return commments;
+    }
+    
+    /**
+     * The demand format date.
+     * 
+     * @param date the original date
+     * @return the format date like "2015-08-03T07:26:57Z"
+     */
+    private String formatDate(final Object date){
+        return DateFormatUtils.format(((Date) date).getTime(), "yyyy-MM-dd") 
+                        + "T" + DateFormatUtils.format(((Date) date).getTime(), "HH:mm:ss") + "Z";
     }
 
     /**
