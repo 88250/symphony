@@ -31,7 +31,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
@@ -168,7 +167,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/notifications/commented.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -239,7 +238,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/notifications/at.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -311,7 +310,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/notifications/following-user.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
