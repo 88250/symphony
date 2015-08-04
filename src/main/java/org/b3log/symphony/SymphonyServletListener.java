@@ -153,6 +153,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
 
+        httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
+        
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
@@ -314,8 +316,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
             final JSONObject user = userQueryService.getCurrentUser(httpServletRequest);
             if (null == user) {
-                httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, "classic");
-
                 return;
             }
 
