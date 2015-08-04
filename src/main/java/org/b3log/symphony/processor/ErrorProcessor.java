@@ -30,7 +30,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.util.Filler;
@@ -80,7 +79,7 @@ public class ErrorProcessor {
         final String templateName = statusCode + ".ftl";
         LOGGER.log(Level.DEBUG, "Shows error page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
 
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         renderer.setTemplateName("error/" + templateName);
         context.setRenderer(renderer);
 

@@ -30,8 +30,8 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.SkinRenderer;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
@@ -84,7 +84,7 @@ public class UserBlockCheck extends BeforeRequestProcessAdvice {
                 throw new RequestProcessAdviceException(exception);
             }
 
-            final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
 
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {

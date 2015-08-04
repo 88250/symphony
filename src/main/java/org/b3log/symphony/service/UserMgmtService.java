@@ -59,6 +59,7 @@ import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -443,6 +444,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_END, 0);
             user.put(UserExt.USER_POINT, 0);
             user.put(UserExt.USER_TAGS, "");
+            user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName")); // TODO: set default skin by app role
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
             final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);

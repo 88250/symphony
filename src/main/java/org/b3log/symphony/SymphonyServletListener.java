@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.2, Jul 13, 2015
+ * @version 1.6.1.2, Aug 4, 2015
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -81,19 +81,25 @@ public final class SymphonyServletListener extends AbstractServletListener {
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
 
+    /**
+     * Bean manager.
+     */
+    private LatkeBeanManager beanManager;
+
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Stopwatchs.start("Context Initialized");
 
         super.contextInitialized(servletContextEvent);
 
+        // del this after done TODO: https://github.com/b3log/symphony/issues/98
         final String skinDirName = Symphonys.get("skinDirName");
         Latkes.loadSkin(skinDirName);
 
+        beanManager = Lifecycle.getBeanManager();
+
         // Init database if need
         initDB();
-
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
 
         // Register event listeners
         final EventManager eventManager = beanManager.getReference(EventManager.class);
@@ -133,7 +139,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
         if (null != userObj) { // User logout
             final JSONObject user = (JSONObject) userObj;
 
-            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
 
             try {
@@ -151,21 +156,26 @@ public final class SymphonyServletListener extends AbstractServletListener {
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
-        } else {
-            httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, false);
 
-            if (StaticResources.isStatic(httpServletRequest)) {
-                return;
-            }
-
-            // Gets the session of this request
-            final HttpSession session = httpServletRequest.getSession();
-            LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
-                    new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
-                        session.isNew()});
-            // Online visitor count
-            OptionQueryService.onlineVisitorCount(httpServletRequest);
+            return;
         }
+
+        httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, false);
+
+        if (StaticResources.isStatic(httpServletRequest)) {
+            return;
+        }
+
+        // Gets the session of this request
+        final HttpSession session = httpServletRequest.getSession();
+        LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
+                new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
+                    session.isNew()});
+        
+        // Online visitor count
+        OptionQueryService.onlineVisitorCount(httpServletRequest);
+        
+        resolveSkinDir(httpServletRequest);
     }
 
     @Override
@@ -177,8 +187,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     /**
      * Initializes database if need.
      */
-    private static void initDB() {
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+    private void initDB() {
         final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
 
         try {
@@ -291,6 +300,28 @@ public final class SymphonyServletListener extends AbstractServletListener {
             LOGGER.log(Level.ERROR, "Creates database tables failed", e);
 
             System.exit(0);
+        }
+    }
+
+    /**
+     * Resolve skin (template) for the specified HTTP servlet request.
+     *
+     * @param httpServletRequest the specified HTTP servlet request
+     */
+    private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
+        try {
+            final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+
+            final JSONObject user = userQueryService.getCurrentUser(httpServletRequest);
+            if (null == user) {
+                httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, "classic");
+
+                return;
+            }
+
+            httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, user.optString(UserExt.USER_SKIN));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Resolves skin failed", e);
         }
     }
 }

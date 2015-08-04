@@ -34,7 +34,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.processor.advice.LoginCheck;
@@ -116,7 +115,7 @@ public class ActivityProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showActivities(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/activities.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -162,7 +161,7 @@ public class ActivityProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void show1A0001(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/1A0001.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();

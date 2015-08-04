@@ -29,7 +29,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
@@ -96,7 +95,7 @@ public class TagProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTagsWall(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("tags.ftl");
@@ -125,7 +124,7 @@ public class TagProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String tagTitle) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("tag-articles.ftl");

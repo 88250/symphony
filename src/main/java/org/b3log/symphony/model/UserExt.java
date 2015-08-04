@@ -19,11 +19,16 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.0.9, Jul 26, 2015
+ * @version 2.12.0.9, Aug 4, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+    
+    /**
+     * Key of user skin.
+     */
+    public static final String USER_SKIN = "userSkin";
 
     /**
      * Key of user longest checkin streak start.

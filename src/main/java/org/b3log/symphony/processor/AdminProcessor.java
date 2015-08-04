@@ -36,7 +36,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
@@ -182,7 +181,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -203,7 +202,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showUsers(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/users.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -257,7 +256,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userId) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/user.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -282,7 +281,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String userId) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/user.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -341,7 +340,7 @@ public class AdminProcessor {
         try {
             userMgmtService.updateUserEmail(userId, user);
         } catch (final ServiceException e) {
-            final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
             renderer.setTemplateName("admin/error.ftl");
             final Map<String, Object> dataModel = renderer.getDataModel();
@@ -384,7 +383,7 @@ public class AdminProcessor {
         try {
             userMgmtService.updateUserName(userId, user);
         } catch (final ServiceException e) {
-            final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
             renderer.setTemplateName("admin/error.ftl");
             final Map<String, Object> dataModel = renderer.getDataModel();
@@ -411,7 +410,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -475,7 +474,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String articleId) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -500,7 +499,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String articleId) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -539,7 +538,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -596,7 +595,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String commentId) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/comment.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -621,7 +620,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String commentId) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/comment.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -657,7 +656,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/misc.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -681,7 +680,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/misc.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -724,7 +723,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/tags.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -789,7 +788,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String tagId) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/tag.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -814,7 +813,7 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String tagId) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin/tag.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
