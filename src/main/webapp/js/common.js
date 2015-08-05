@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.5.8, Jul 28, 2015
+ * @version 1.8.6.8, Aug 5, 2015
  */
 
 /**
@@ -497,7 +497,7 @@ var Util = {
                 }
 
                 var cursor = obj.editor.getCursor();
-                obj.editor.replaceRange('![ ](' + obj.qiniuDomain + '/' + qiniuKey + ') ',
+                obj.editor.replaceRange('![ ](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
                         CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
             },
             fail: function (e, data) {
