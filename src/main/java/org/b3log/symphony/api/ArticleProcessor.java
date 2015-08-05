@@ -162,4 +162,43 @@ public class ArticleProcessor {
         ret.put("stories", this.articleQueryService.getTopArticlesWithComments(currentPage, pageSize));
         renderer.setJSONObject(ret);
     }
+    
+    /**
+     * Gets articles.with the specified tags.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/api/v1/stories/recent", method = HTTPRequestMethod.GET)
+    public void getRecentArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        int currentPage = 1;
+        final int pageSize = 25;
+        final String page = request.getParameter("page");
+        if (Strings.isNumeric(page)) {
+            currentPage = Integer.parseInt(page);
+        }
+        
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        final JSONObject ret = new JSONObject();
+        ret.put("stories", this.articleQueryService.getRecentArticlesWithComments(currentPage, pageSize));
+        renderer.setJSONObject(ret);
+    }
+    
+    /**
+     * Gets articles.with the specified query.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/api/v1/stories/search", method = HTTPRequestMethod.GET)
+    public void searchArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        getRecentArticles(context, request, response);
+    }
 }

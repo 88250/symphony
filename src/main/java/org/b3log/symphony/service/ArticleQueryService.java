@@ -607,6 +607,24 @@ public class ArticleQueryService {
     
 
     /**
+     * Gets the recent articles with the specified fetch size.
+     *
+     * @param currentPageNum the specified current page number
+     * @param fetchSize the specified fetch size
+     * @return recent articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getRecentArticlesWithComments(final int currentPageNum, final int fetchSize) throws ServiceException {
+        final Query query = new Query()
+                .addSort(Article.ARTICLE_STATUS, SortDirection.ASCENDING)
+                .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
+                .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
+                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+        return getArticles(query);
+    }
+
+    /**
      * Gets the index articles with the specified fetch size.
      *
      * @param currentPageNum the specified current page number
@@ -621,7 +639,17 @@ public class ArticleQueryService {
                 .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
                 .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+        return getArticles(query);
+    }
 
+    /**
+     * The specific articles.
+     * 
+     * @param query conditions
+     * @return articles
+     * @throws ServiceException 
+     */
+    private List<JSONObject> getArticles(final Query query) throws ServiceException {
         try {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
