@@ -113,7 +113,7 @@
                         |
                         <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
                         <div class="fn-right">
-                            <button class="green fn-none" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 
+                            <button class="green" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 
                             <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
                         </div>
                     </div>

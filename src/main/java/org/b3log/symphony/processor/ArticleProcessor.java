@@ -96,7 +96,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.7.21, Aug 2, 2015
+ * @version 1.10.8.21, Aug 6, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -947,10 +947,10 @@ public class ArticleProcessor {
             return;
         }
 
-        markdownText = markdownText.replace("<", "&lt;").replace(">", "&gt;").replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;",
-                "</pre>");
+        markdownText = Markdowns.toHTML(markdownText);
+        markdownText = Markdowns.clean(markdownText, "");
 
-        result.put("html", Markdowns.toHTML(markdownText));
+        result.put("html", markdownText);
     }
 
     /**
