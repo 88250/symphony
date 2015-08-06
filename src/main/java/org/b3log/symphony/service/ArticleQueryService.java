@@ -670,11 +670,13 @@ public class ArticleQueryService {
                 story.put("url", "http://192.168.1.101:8084" + article.optString(Article.ARTICLE_PERMALINK));
                 story.put("user_display_name", article.optString(Article.ARTICLE_T_AUTHOR_NAME));
                 story.put("user_job", author.optString(UserExt.USER_INTRO));
+                story.put("comment_html", article.optString(Article.ARTICLE_CONTENT));
                 story.put("comment_count", article.optInt(Article.ARTICLE_COMMENT_CNT));
                 story.put("vote_count", article.optInt(Article.ARTICLE_VIEW_CNT));
                 story.put("created_at", formatDate(article.get(Article.ARTICLE_CREATE_TIME)));
                 story.put("user_portrait_url", article.optString(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL));
                 story.put("comments", getAllComments(article.optString("oId")));
+                story.put("badge", "mysql");
                 stories.add(story);
             }
             final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");

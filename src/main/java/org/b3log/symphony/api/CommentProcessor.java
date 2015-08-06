@@ -46,7 +46,6 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Results;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -105,8 +104,7 @@ public class CommentProcessor {
     public void reply(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String id) throws ServletException, JSONException, IOException, ServiceException {
         final JSONObject comment = commentQueryService.getCommentById(id);
-        final Long articleId = comment.optLong(Comment.COMMENT_ON_ARTICLE_ID);
-        comment(context, request, response, String.valueOf(articleId));
+        comment(context, request, response, comment.optString(Comment.COMMENT_ON_ARTICLE_ID));
     }
     
     /**
@@ -135,7 +133,7 @@ public class CommentProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = Results.falseResult();
+        final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
         final JSONObject comment = new JSONObject();
@@ -181,9 +179,9 @@ public class CommentProcessor {
 
             comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
 
-            commentMgmtService.addComment(comment);
+            final String newId = commentMgmtService.addComment(comment);
             final JSONObject commentObj = new JSONObject();
-            commentObj.put("id", comment.optLong("oId")); //FIXME need the comment id.
+            commentObj.put("id", Long.valueOf(newId)); //FIXME need the comment id.
             commentObj.put("body_html", content);
             commentObj.put("depth", 0);
             commentObj.put("user_display_name", currentUser.optString(User.USER_NAME));
