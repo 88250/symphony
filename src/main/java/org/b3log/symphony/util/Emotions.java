@@ -923,7 +923,7 @@ public final class Emotions {
     };
 
     /**
-     * Clears the emotions ({@literal [em00]}) with specified content.
+     * Clears the emotions ({@literal [em00], :heart:}) with specified content.
      *
      * @param content the specified content
      * @return cleared content

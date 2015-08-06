@@ -67,6 +67,7 @@ import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.RewardQueryService;
+import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Filler;
@@ -106,6 +107,12 @@ public class ArticleProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class.getName());
+
+    /**
+     * Short link query service.
+     */
+    @Inject
+    private ShortLinkQueryService shortLinkQueryService;
 
     /**
      * Article management service.
@@ -947,6 +954,14 @@ public class ArticleProcessor {
             return;
         }
 
+        final Set<String> userNames = userQueryService.getUserNames(markdownText);
+        for (final String userName : userNames) {
+            markdownText = markdownText.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
+                    + "/member/" + userName + "'>" + userName + "</a>");
+        }
+        markdownText = shortLinkQueryService.linkArticle(markdownText);
+        markdownText = shortLinkQueryService.linkTag(markdownText);
+        markdownText = Emotions.convert(markdownText);
         markdownText = Markdowns.toHTML(markdownText);
         markdownText = Markdowns.clean(markdownText, "");
 
