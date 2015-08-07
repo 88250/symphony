@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.1, Aug 2, 2015
+ * @version 1.6.1.1, Aug 7, 2015
  * @since 1.3.0
  */
 @Service
@@ -332,6 +332,11 @@ public class PointtransferQueryService {
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN_STREAK:
                         desTemplate = desTemplate.replace("{point}",
                                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK));
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_CHARGE:
+                        final String yuan = dataId.split("-")[0];
+                        
+                        desTemplate = desTemplate.replace("{yuan}", yuan);
                         break;
                     default:
                         LOGGER.warn("Invalid point type [" + type + "]");

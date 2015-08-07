@@ -9,7 +9,7 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/codemirror.css" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/display/fullscreen.css" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/hint/show-hint.css" />
-        <link type="text/css" rel="stylesheet" href="/js/lib/highlight.js-8.6/styles/github.css">
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
     </head>
     <body>
         <#include "../header.ftl">

@@ -6,8 +6,8 @@
         <@head title="${article.articleTitle} - ${symphonyLabel}">
         <meta name="description" content="${article.articleTitle}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/js/lib/highlight.js-8.6/styles/github.css">
-        <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/codemirror.css" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/hint/show-hint.css" />
     </head>
