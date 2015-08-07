@@ -81,7 +81,7 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script type="text/javascript" src="/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Label.followLabel = "${followLabel}";
             Label.unfollowLabel = "${unfollowLabel}";

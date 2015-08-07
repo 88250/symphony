@@ -27,7 +27,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.symphony.processor.advice.AdminCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.util.Filler;
@@ -66,7 +65,7 @@ public class ChargeProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/charge/point", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showChargePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {

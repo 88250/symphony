@@ -10,7 +10,7 @@
             </a>
             <img class="user-online"
                  title="<#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>"
-                 src="/images/<#if follower.userOnlineFlag>on<#else>off</#if>line.png" />
+                 src="${staticServePath}/images/<#if follower.userOnlineFlag>on<#else>off</#if>line.png" />
             <div>
                 <h3>
                     <a rel="nofollow" href="/member/${follower.userName}" >${follower.userName}</a>
