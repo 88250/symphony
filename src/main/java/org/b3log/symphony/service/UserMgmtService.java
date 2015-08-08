@@ -15,12 +15,17 @@
  */
 package org.b3log.symphony.service;
 
+import com.qiniu.storage.UploadManager;
+import com.qiniu.util.Auth;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +48,7 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
@@ -67,7 +73,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.6.2, Jul 27, 2015
+ * @version 1.8.6.3, Aug 8, 2015
  * @since 0.2.0
  */
 @Service
@@ -125,6 +131,12 @@ public class UserMgmtService {
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
+     * Avatar query service.
+     */
+    @Inject
+    private AvatarQueryService avatarQueryService;
 
     /**
      * Tries to login with cookie.
@@ -452,6 +464,27 @@ public class UserMgmtService {
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, memberCount);
+
+                try {
+                    final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+                    final UploadManager uploadManager = new UploadManager();
+
+                    final BufferedImage img = avatarQueryService.createAvatar(MD5.hash(ret), 512);
+                    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ImageIO.write(img, "jpg", baos);
+                    baos.flush();
+                    final byte[] bytes = baos.toByteArray();
+                    baos.close();
+
+                    uploadManager.put(bytes, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                            null, "image/jpeg", false);
+                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
+                            + new Date().getTime());
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Generates avatar error", e);
+
+                }
+
                 userRepository.update(ret, user);
 
                 // Occupy the username, defeat others
