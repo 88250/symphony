@@ -48,6 +48,7 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
@@ -73,7 +74,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.6.3, Aug 8, 2015
+ * @version 1.8.7.3, Aug 9, 2015
  * @since 0.2.0
  */
 @Service
@@ -443,7 +444,6 @@ public class UserMgmtService {
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, "");
             user.put(UserExt.USER_INTRO, "");
             user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
-            user.put(UserExt.USER_AVATAR_URL, "");
             user.put(UserExt.USER_QQ, "");
             user.put(UserExt.USER_ONLINE_FLAG, false);
             user.put(UserExt.USER_LATEST_ARTICLE_TIME, 0L);
@@ -464,26 +464,8 @@ public class UserMgmtService {
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, memberCount);
-
-                try {
-                    final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-                    final UploadManager uploadManager = new UploadManager();
-
-                    final BufferedImage img = avatarQueryService.createAvatar(MD5.hash(ret), 512);
-                    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ImageIO.write(img, "jpg", baos);
-                    baos.flush();
-                    final byte[] bytes = baos.toByteArray();
-                    baos.close();
-
-                    uploadManager.put(bytes, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
-                            null, "image/jpeg", false);
-                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
-                            + new Date().getTime());
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Generates avatar error", e);
-
-                }
+                user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
+                        + new Date().getTime());
 
                 userRepository.update(ret, user);
 
@@ -512,9 +494,33 @@ public class UserMgmtService {
                 }
 
             } else {
+                ret = Ids.genTimeMillisId();
+                user.put(Keys.OBJECT_ID, ret);
+
+                try {
+                    final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+                    final UploadManager uploadManager = new UploadManager();
+
+                    final BufferedImage img = avatarQueryService.createAvatar(MD5.hash(ret), 512);
+                    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ImageIO.write(img, "jpg", baos);
+                    baos.flush();
+                    final byte[] bytes = baos.toByteArray();
+                    baos.close();
+
+                    uploadManager.put(bytes, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                            null, "image/jpeg", false);
+                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
+                            + new Date().getTime());
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Generates avatar error", e);
+
+                    user.put(UserExt.USER_AVATAR_URL, "");
+                }
+
                 user.put(UserExt.USER_NO, ++memberCount);
 
-                ret = userRepository.add(user);
+                userRepository.add(user);
 
                 // Updates stat. (member count +1)
                 memberCntOption.put(Option.OPTION_VALUE, String.valueOf(memberCount));

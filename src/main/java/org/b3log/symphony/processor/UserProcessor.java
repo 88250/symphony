@@ -97,7 +97,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.6.10, Jul 30, 2015
+ * @version 1.9.6.11, Aug 9, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -944,7 +944,7 @@ public class UserProcessor {
             user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
             user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
-            user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
+            user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID); // One Move
 
             try {
                 final String id = userMgmtService.addUser(user);
