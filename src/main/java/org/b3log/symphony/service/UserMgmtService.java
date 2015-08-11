@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -74,7 +75,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.7.3, Aug 9, 2015
+ * @version 1.8.7.4, Aug 11, 2015
  * @since 0.2.0
  */
 @Service
@@ -723,8 +724,8 @@ public class UserMgmtService {
      * @return formatted tags string
      */
     public String formatUserTags(final String userTags) {
-        final String articleTags1 = userTags.replaceAll("，", ",").replaceAll("、", ",").replaceAll("；", ",")
-                .replaceAll(";", ",");
+        final String articleTags1 = userTags.replaceAll("\\s+", ",").replaceAll("，", ",").replaceAll("、", ",").
+                replaceAll("；", ",").replaceAll(";", ",");
         String[] tagTitles = articleTags1.split(",");
 
         tagTitles = Strings.trimAll(tagTitles);
@@ -733,6 +734,10 @@ public class UserMgmtService {
 
         final StringBuilder tagsBuilder = new StringBuilder();
         for (final String tagTitle : tagTitles) {
+            if (StringUtils.isBlank(tagTitle.trim())) {
+                continue;
+            }
+
             tagsBuilder.append(tagTitle.trim()).append(",");
         }
         if (tagsBuilder.length() > 0) {

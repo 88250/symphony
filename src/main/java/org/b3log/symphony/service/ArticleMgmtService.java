@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -812,6 +813,10 @@ public class ArticleMgmtService {
 
         final StringBuilder tagsBuilder = new StringBuilder();
         for (final String tagTitle : tagTitles) {
+            if (StringUtils.isBlank(tagTitle.trim())) {
+                continue;
+            }
+            
             tagsBuilder.append(tagTitle.trim()).append(",");
         }
         if (tagsBuilder.length() > 0) {
