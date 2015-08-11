@@ -75,7 +75,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.7.4, Aug 11, 2015
+ * @version 1.8.8.4, Aug 11, 2015
  * @since 0.2.0
  */
 @Service
@@ -415,6 +415,7 @@ public class UserMgmtService {
             boolean toUpdate = false;
             String ret = null;
             user = userRepository.getByEmail(userEmail);
+            int userNo = 0;
             if (null != user) {
                 if (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)) {
                     if (transaction.isActive()) {
@@ -426,6 +427,7 @@ public class UserMgmtService {
 
                 toUpdate = true;
                 ret = user.optString(Keys.OBJECT_ID);
+                userNo = user.optInt(UserExt.USER_NO);
             }
 
             user = new JSONObject();
@@ -460,11 +462,9 @@ public class UserMgmtService {
             user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName")); // TODO: set default skin by app role
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
-            final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
-            int memberCount = memberCntOption.optInt(Option.OPTION_VALUE);
 
             if (toUpdate) {
-                user.put(UserExt.USER_NO, memberCount);
+                user.put(UserExt.USER_NO, userNo);
                 user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
                         + new Date().getTime());
 
@@ -519,11 +519,13 @@ public class UserMgmtService {
                     user.put(UserExt.USER_AVATAR_URL, "");
                 }
 
-                user.put(UserExt.USER_NO, ++memberCount);
+                final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
+                final int memberCount = memberCntOption.optInt(Option.OPTION_VALUE) + 1; // Updates stat. (member count +1)
+
+                user.put(UserExt.USER_NO, memberCount);
 
                 userRepository.add(user);
 
-                // Updates stat. (member count +1)
                 memberCntOption.put(Option.OPTION_VALUE, String.valueOf(memberCount));
                 optionRepository.update(Option.ID_C_STATISTIC_MEMBER_COUNT, memberCntOption);
             }
