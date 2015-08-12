@@ -22,8 +22,10 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.FollowRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.json.JSONObject;
@@ -32,7 +34,7 @@ import org.json.JSONObject;
  * Follow management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Jun 3, 2015
+ * @version 1.2.0.1, Aug 12, 2015
  * @since 0.2.5
  */
 @Service
@@ -54,6 +56,12 @@ public class FollowMgmtService {
      */
     @Inject
     private TagRepository tagRepository;
+
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * The specified follower follows the specified following tag.
@@ -193,6 +201,17 @@ public class FollowMgmtService {
             tag.put(Tag.TAG_FOLLOWER_CNT, tag.optInt(Tag.TAG_FOLLOWER_CNT) + 1);
 
             tagRepository.update(followingId, tag);
+        } else if (Follow.FOLLOWING_TYPE_C_ARTICLE == followingType) {
+            final JSONObject article = articleRepository.get(followingId);
+            if (null == article) {
+                LOGGER.log(Level.ERROR, "Not found article [id={0}] to follow", followingId);
+
+                return;
+            }
+
+            article.put(Article.ARTICLE_COLLECT_CNT, article.optInt(Article.ARTICLE_COLLECT_CNT) + 1);
+
+            articleRepository.update(followingId, article);
         }
 
         final JSONObject follow = new JSONObject();
@@ -217,7 +236,7 @@ public class FollowMgmtService {
         if (Follow.FOLLOWING_TYPE_C_TAG == followingType) {
             final JSONObject tag = tagRepository.get(followingId);
             if (null == tag) {
-                LOGGER.log(Level.ERROR, "Not found tag [id={0}] to follow", followingId);
+                LOGGER.log(Level.ERROR, "Not found tag [id={0}] to unfollow", followingId);
 
                 return;
             }
@@ -225,6 +244,17 @@ public class FollowMgmtService {
             tag.put(Tag.TAG_FOLLOWER_CNT, tag.optInt(Tag.TAG_FOLLOWER_CNT) - 1);
 
             tagRepository.update(followingId, tag);
+        } else if (Follow.FOLLOWING_TYPE_C_ARTICLE == followingType) {
+            final JSONObject article = articleRepository.get(followingId);
+            if (null == article) {
+                LOGGER.log(Level.ERROR, "Not found article [id={0}] to unfollow", followingId);
+
+                return;
+            }
+
+            article.put(Article.ARTICLE_COLLECT_CNT, article.optInt(Article.ARTICLE_COLLECT_CNT) - 1);
+
+            articleRepository.update(followingId, article);
         }
     }
 }

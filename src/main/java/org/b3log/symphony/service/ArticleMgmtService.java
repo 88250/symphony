@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.9.9, Jul 28, 2015
+ * @version 1.5.9.10, Aug 12, 2015
  * @since 0.2.0
  */
 @Service
@@ -281,6 +281,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_VIEW_CNT, 0);
             article.put(Article.ARTICLE_GOOD_CNT, 0);
             article.put(Article.ARTICLE_BAD_CNT, 0);
+            article.put(Article.ARTICLE_COLLECT_CNT, 0);
             article.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             article.put(Article.ARTICLE_CREATE_TIME, currentTimeMillis);
             article.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
