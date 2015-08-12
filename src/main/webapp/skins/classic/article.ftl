@@ -33,14 +33,21 @@
                                     <span class="icon icon-cmts"></span>
                                     ${article.articleCommentCount}
                                 </a> &nbsp;
-                                <a title="${viewLabel}" rel="nofollow" href="#"> 
+                                <span title="${viewLabel}"> 
                                     <span class="icon icon-view"></span>
                                     <#if article.articleViewCount < 1000>
                                     ${article.articleViewCount}
                                     <#else>
                                     ${article.articleViewCntDisplayFormat}
                                     </#if>
-                                </a>
+                                </span>
+                                <#if 0 < article.articleCollectCnt>
+                                &nbsp;
+                                <span title="${collectLabel}">
+                                    <span class="icon icon-star"></span>
+                                    ${article.articleCollectCnt}
+                                </span>
+                                </#if>
                             </div>
                         </div>
                         <div class="article-title fn-flex">
