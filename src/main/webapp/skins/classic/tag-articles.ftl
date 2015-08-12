@@ -7,7 +7,7 @@
         <@head title="${symphonyLabel} - ${tag.tagTitle}">
         <meta name="description" content="${tag.tagCreatorName},${tag.tagDescription}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
@@ -79,14 +79,14 @@
                         </li>
                     </ul>
                     <div class="tag-artile-user">
-                        <a rel="nofollow" class="fn-left" title="${creatorLabel}:${tag.tagCreatorName}" 
+                        <a rel="nofollow" class="fn-left" title="${creatorLabel} ${tag.tagCreatorName}" 
                            href="/member/${tag.tagCreatorName}">
                             <img class="avatar" src="${tag.tagCreatorThumbnailURL}-64">
                         </a>
                         <div class="fn-right">
                             <#list tag.tagParticipants as commenter>
                             <a rel="nofollow" class="fn-left" 
-                               title="${contributorLabel}:${commenter.tagParticipantName}"
+                               title="${contributorLabel} ${commenter.tagParticipantName}"
                                href="/member/${commenter.tagParticipantName}">
                                 <img class="avatar" src="${commenter.tagParticipantThumbnailURL}-64">
                             </a>

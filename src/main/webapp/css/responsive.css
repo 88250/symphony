@@ -51,12 +51,12 @@
     .wrapper {
         display: block;
         width: 100%;
-        min-width: 410px;
+        min-width: 310px;
     }
 
     .content, 
     .side {
-        width: 97%;
+        width: 95%;
     }
 
     .content, 

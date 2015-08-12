@@ -3,7 +3,7 @@
     <div>
         <div class="user-name">
             <a href="/member/${user.userName}">${user.userName}</a>
-            <img title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
+            <img title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
             <#if "adminRole" == user.userRole>
             <span class="icon icon-userrole" title="${administratorLabel}"></span>
             </#if>

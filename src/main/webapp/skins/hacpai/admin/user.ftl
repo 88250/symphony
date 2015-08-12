@@ -6,26 +6,29 @@
             <h2>${unmodifiableLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            <label for="oId">Id</label>
-            <input type="text" id="oId" value="${user.oId}" readonly="readonly" />
+            <label>Id</label>
+            <input type="text" value="${user.oId}" readonly="readonly" />
 
-            <label for="userName">${userNameLabel}</label>
-            <input type="text" id="userName" name="userName" value="${user.userName}" readonly="readonly" />
+            <label>${userNameLabel}</label>
+            <input type="text" value="${user.userName}" readonly="readonly" />
 
-            <label for="userNo">${userNoLabel}</label>
-            <input type="text" id="userNo" name="userNo" value="${user.userNo}" readonly="readonly" />
+            <label>${userNoLabel}</label>
+            <input type="text" value="${user.userNo}" readonly="readonly" />
 
-            <label for="userEmail">${userEmailLabel}</label>
-            <input type="text" id="userEmail" name="userEmail" value="${user.userEmail}" readonly="readonly" />
+            <label>${userEmailLabel}</label>
+            <input type="text" value="${user.userEmail}" readonly="readonly" />
 
-            <label for="userArticleCount">${articleCountLabel}</label>
-            <input type="text" id="userArticleCount" name="userArticleCount" value="${user.userArticleCount}" readonly="readonly" />
+            <label>${articleCountLabel}</label>
+            <input type="text" value="${user.userArticleCount}" readonly="readonly" />
 
-            <label for="userCommentCount">${commentCountLabel}</label>
-            <input type="text" id="userCommentCount" name="userCommentCount" value="${user.userCommentCount}" readonly="readonly" />
+            <label>${commentCountLabel}</label>
+            <input type="text" value="${user.userCommentCount}" readonly="readonly" />
 
-            <label for="userTagCount">${tagCountLabel}</label>
-            <input type="text" id="userTagCount" name="userTagCount" value="${user.userTagCount}" readonly="readonly" />
+            <label>${tagCountLabel}</label>
+            <input type="text" value="${user.userTagCount}" readonly="readonly" />
+
+            <label>${pointLabel}</label>
+            <input type="text" value="${user.userPoint?c}" readonly="readonly" />
         </div>
     </div>
     <div class="module">
@@ -54,15 +57,12 @@
 
                 <label for="userRole">${roleLabel}</label>
                 <input type="text" id="userRole" name="userRole" value="${user.userRole}" />
-                
+
                 <label for="userAppRole">${appRoleLabel}</label>
                 <input type="text" id="userAppRole" name="userAppRole" value="${user.userAppRole}" />
 
                 <label for="userStatus">${userStatusLabel}</label>
                 <input type="text" id="userStatus" name="userStatus" value="${user.userStatus}" />
-
-                <label for="userPoint">${pointLabel}</label>
-                <input type="text" id="userPoint" name="userPoint" value="${user.userPoint?c}" />
 
                 <label for="userB3Key">B3 Key</label>
                 <input type="text" id="userB3Key" name="userB3Key" value="${user.userB3Key}" />
@@ -98,7 +98,29 @@
 
             <form action="/admin/user/${user.oId}/username" method="POST">
                 <label for="userName">${userNameLabel}</label>
-                <input type="text" id="userName" name="userName" value="${user.userName}" />
+                <input type="text" name="userName" value="${user.userName}" />
+
+                <br/><br/>
+                <button type="submit" class="green fn-right">${submitLabel}</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="module">
+        <div class="module-header">
+            <h2>${chargePointLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/user/${user.oId}/charge-point" method="POST">
+                <label>${userNameLabel}</label>
+                <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
+                
+                <label>${pointLabel}</label>
+                <input type="text" name="point" value="" />
+                
+                <label>${memoLabel}</label>
+                <input type="text" name="memo" value="" placeholder="${chargePointPlaceholderLabel}" />
 
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>

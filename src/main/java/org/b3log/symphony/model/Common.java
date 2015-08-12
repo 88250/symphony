@@ -19,10 +19,20 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.16.1.10, Jul 26, 2015
+ * @version 1.17.1.10, Aug 7, 2015
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of memo.
+     */
+    public static final String MEMO = "memo";
+
+    /**
+     * Key of point.
+     */
+    public static final String POINT = "point";
 
     /**
      * Key of elapsed.

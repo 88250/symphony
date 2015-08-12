@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
@@ -43,6 +44,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AdminCheck;
@@ -54,6 +56,7 @@ import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.TagMgmtService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -72,6 +75,7 @@ import org.json.JSONObject;
  * <li>Updates a user (/admin/user/{userId}), POST</li>
  * <li>Updates a user's email (/admin/user/{userId}/email), POST</li>
  * <li>Updates a user's username (/admin/user/{userId}/username), POST</li>
+ * <li>Charges a user's point (/admin/user/{userId}/charge-point), POST</li>
  * <li>Shows articles (/admin/articles), GET</li>
  * <li>Shows an article (/admin/article/{articleId}), GET</li>
  * <li>Updates an article (/admin/article/{articleId}), POST</li>
@@ -86,7 +90,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.1, Aug 3, 2015
+ * @version 1.7.0.1, Aug 7, 2015
  * @since 1.1.0
  */
 @RequestProcessor
@@ -156,6 +160,12 @@ public class AdminProcessor {
      */
     @Inject
     private TagMgmtService tagMgmtService;
+
+    /**
+     * Pointtransfer management service.
+     */
+    @Inject
+    private PointtransferMgmtService pointtransferMgmtService;
 
     /**
      * Filler.
@@ -383,6 +393,49 @@ public class AdminProcessor {
         try {
             userMgmtService.updateUserName(userId, user);
         } catch (final ServiceException e) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, e.getMessage());
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+    }
+
+    /**
+     * Charges a user's point.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userId the specified user id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/user/{userId}/charge-point", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void chargePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String userId) throws Exception {
+        final String pointStr = request.getParameter(Common.POINT);
+        final String memo = request.getParameter("memo");
+
+        if (StringUtils.isBlank(pointStr) || StringUtils.isBlank(memo) || !Strings.isNumeric(memo.split("-")[0])) {
+            response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+
+            return;
+        }
+        
+        try {
+            final int point = Integer.valueOf(pointStr);
+
+            pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId, Pointtransfer.TRANSFER_TYPE_C_CHARGE,
+                    point, memo);
+        } catch (final Exception e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
             renderer.setTemplateName("admin/error.ftl");

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.7.4, Jul 27, 2015
+ * @version 1.7.8.4, Aug 6, 2015
  */
 
 /**
@@ -112,7 +112,7 @@ var Comment = {
         if (!Validate.goValidate(Comment._validateData)) {
             return false;
         }
-        
+
         var requestJSONObject = {
             articleId: id,
             commentContent: Comment.editor.getValue() // 实际提交时不去除空格，因为直接贴代码时需要空格
@@ -147,7 +147,7 @@ var Comment = {
         });
     },
     /**
-     * @description 预览文章
+     * @description 预览评论
      */
     preview: function () {
         $.ajax({
@@ -161,6 +161,8 @@ var Comment = {
                 $(".dialog-background").height($("body").height());
                 $("#preview").dialog("open");
                 $("#preview").html(result.html);
+                hljs.initHighlighting.called = false;
+                hljs.initHighlighting();
             }
         });
     },
@@ -178,7 +180,7 @@ var Comment = {
 
 var Article = {
     /**
-     * @description 初识化发文页面
+     * @description 初识化文章
      */
     init: function () {
         this.share();

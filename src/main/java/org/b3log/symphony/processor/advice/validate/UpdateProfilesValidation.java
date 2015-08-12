@@ -36,7 +36,6 @@ import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.UserMgmtService;
@@ -47,7 +46,7 @@ import org.json.JSONObject;
  * Validates for user profiles update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.3, Aug 3, 2015
+ * @version 2.0.1.3, Aug 7, 2015
  */
 @Named
 @Singleton
@@ -145,7 +144,8 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
         if (tagBuilder.length() > 0) {
             tagBuilder.deleteCharAt(tagBuilder.length() - 1);
         }
-        requestJSONObject.put(Article.ARTICLE_TAGS, tagBuilder.toString());
+        
+        requestJSONObject.put(UserExt.USER_TAGS, tagBuilder.toString());
     }
 
     /**

@@ -15,16 +15,22 @@
  */
 package org.b3log.symphony.service;
 
+import com.qiniu.storage.UploadManager;
+import com.qiniu.util.Auth;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -43,6 +49,8 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Ids;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
@@ -67,7 +75,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.6.2, Jul 27, 2015
+ * @version 1.8.8.4, Aug 11, 2015
  * @since 0.2.0
  */
 @Service
@@ -125,6 +133,12 @@ public class UserMgmtService {
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
+     * Avatar query service.
+     */
+    @Inject
+    private AvatarQueryService avatarQueryService;
 
     /**
      * Tries to login with cookie.
@@ -401,6 +415,7 @@ public class UserMgmtService {
             boolean toUpdate = false;
             String ret = null;
             user = userRepository.getByEmail(userEmail);
+            int userNo = 0;
             if (null != user) {
                 if (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)) {
                     if (transaction.isActive()) {
@@ -412,6 +427,7 @@ public class UserMgmtService {
 
                 toUpdate = true;
                 ret = user.optString(Keys.OBJECT_ID);
+                userNo = user.optInt(UserExt.USER_NO);
             }
 
             user = new JSONObject();
@@ -431,7 +447,6 @@ public class UserMgmtService {
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, "");
             user.put(UserExt.USER_INTRO, "");
             user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
-            user.put(UserExt.USER_AVATAR_URL, "");
             user.put(UserExt.USER_QQ, "");
             user.put(UserExt.USER_ONLINE_FLAG, false);
             user.put(UserExt.USER_LATEST_ARTICLE_TIME, 0L);
@@ -447,11 +462,12 @@ public class UserMgmtService {
             user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName")); // TODO: set default skin by app role
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
-            final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
-            int memberCount = memberCntOption.optInt(Option.OPTION_VALUE);
 
             if (toUpdate) {
-                user.put(UserExt.USER_NO, memberCount);
+                user.put(UserExt.USER_NO, userNo);
+                user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
+                        + new Date().getTime());
+
                 userRepository.update(ret, user);
 
                 // Occupy the username, defeat others
@@ -479,11 +495,37 @@ public class UserMgmtService {
                 }
 
             } else {
-                user.put(UserExt.USER_NO, ++memberCount);
+                ret = Ids.genTimeMillisId();
+                user.put(Keys.OBJECT_ID, ret);
 
-                ret = userRepository.add(user);
+                try {
+                    final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+                    final UploadManager uploadManager = new UploadManager();
 
-                // Updates stat. (member count +1)
+                    final BufferedImage img = avatarQueryService.createAvatar(MD5.hash(ret), 512);
+                    final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ImageIO.write(img, "jpg", baos);
+                    baos.flush();
+                    final byte[] bytes = baos.toByteArray();
+                    baos.close();
+
+                    uploadManager.put(bytes, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                            null, "image/jpeg", false);
+                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
+                            + new Date().getTime());
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Generates avatar error", e);
+
+                    user.put(UserExt.USER_AVATAR_URL, "");
+                }
+
+                final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
+                final int memberCount = memberCntOption.optInt(Option.OPTION_VALUE) + 1; // Updates stat. (member count +1)
+
+                user.put(UserExt.USER_NO, memberCount);
+
+                userRepository.add(user);
+
                 memberCntOption.put(Option.OPTION_VALUE, String.valueOf(memberCount));
                 optionRepository.update(Option.ID_C_STATISTIC_MEMBER_COUNT, memberCntOption);
             }
@@ -684,8 +726,8 @@ public class UserMgmtService {
      * @return formatted tags string
      */
     public String formatUserTags(final String userTags) {
-        final String articleTags1 = userTags.replaceAll("，", ",").replaceAll("、", ",").replaceAll("；", ",")
-                .replaceAll(";", ",");
+        final String articleTags1 = userTags.replaceAll("\\s+", ",").replaceAll("，", ",").replaceAll("、", ",").
+                replaceAll("；", ",").replaceAll(";", ",");
         String[] tagTitles = articleTags1.split(",");
 
         tagTitles = Strings.trimAll(tagTitles);
@@ -694,6 +736,10 @@ public class UserMgmtService {
 
         final StringBuilder tagsBuilder = new StringBuilder();
         for (final String tagTitle : tagTitles) {
+            if (StringUtils.isBlank(tagTitle.trim())) {
+                continue;
+            }
+
             tagsBuilder.append(tagTitle.trim()).append(",");
         }
         if (tagsBuilder.length() > 0) {

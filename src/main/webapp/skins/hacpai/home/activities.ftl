@@ -4,7 +4,7 @@
     <head>
         <@head title="${symphonyLabel} - ${activityLabel} - ${activity1A0001Label}">
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">

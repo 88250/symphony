@@ -623,6 +623,10 @@
                     "name": "articleBadCnt",
                     "description": "Oppose count",
                     "type": "int"
+                },
+                {
+                    "name": "articleCollectCnt",
+                    "type": "int"
                 }
             ]
         },

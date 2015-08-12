@@ -5,7 +5,7 @@
         <@head title="${symphonyLabel} - ${registerLabel}">
         <meta name="description" content="${registerLabel} ${symphonyLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
@@ -58,8 +58,8 @@
             </div>
         </div>
         <#include "footer.ftl">
-        <script type="text/javascript" src="/js/register${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="/js/lib/md5.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/register${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/md5.js"></script>
         <script>
                                         Register.init();
                                         Label.userNameErrorLabel = "${userNameErrorLabel}";

@@ -4,7 +4,7 @@
     <head>
         <@head title="${symphonyLabel} - ${aboutLabel}">
         </@head>
-        <link type="text/css" rel="stylesheet" href="/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
@@ -66,7 +66,7 @@
                     </p>
                     <br/>
                     <h3>新的社区体验</h3>
-                    <img src="/images/about/about.png" width="458" height="199" />
+                    <img src="${staticServePath}/images/about/about.png" width="458" height="199" />
                     <p>
                         这是一个非常简单的内容聚合平台。仅文章同步而言，没有什么新鲜的，其新意体现在文章/评论的同时同步上。
                     </p>

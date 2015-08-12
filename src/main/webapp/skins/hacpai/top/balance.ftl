@@ -1,5 +1,8 @@
 <#include "macro-top.ftl">
 <@top "balance">
+<div class="content content-reset">
+    <h2><font style="color: black;">♠</font> ${pointLabel}${balanceLabel}${rankingLabel}</h2>
+</div>
 <div class="list top">
     <ul>
         <#list topBalanceUsers as user>

@@ -1,5 +1,8 @@
 <#include "macro-top.ftl">
 <@top "balance">
+<div class="content content-reset">
+    <h2><font style="color: black;">♠</font> ${pointLabel}${balanceLabel}${rankingLabel}</h2>
+</div>
 <div class="list top">
     <ul>
         <#list topBalanceUsers as user>
@@ -29,8 +32,8 @@
                             <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
                         </div>
                     </div>
-                    <div class="cmts" title="${cmtLabel}">
-                        <a href="/member/${user.userName}/points" title="${user.userPoint?c}">
+                    <div class="cmts" title="${user.userPoint?c}">
+                        <a href="/member/${user.userName}/points">
                             <#if 0 == user.userAppRole>
                             0x${user.userPointHex}
                             <#else>
