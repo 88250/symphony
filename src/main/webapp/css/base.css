@@ -603,6 +603,10 @@ a.icon:hover {
 .icon-flag:before {
     content: "\e615";
 }
+
+.icon-star:before {
+    content: "\e617";
+}
 /* end icon */
 
 /* start tip */
