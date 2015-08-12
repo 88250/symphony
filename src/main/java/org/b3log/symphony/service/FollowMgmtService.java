@@ -243,6 +243,10 @@ public class FollowMgmtService {
 
             tag.put(Tag.TAG_FOLLOWER_CNT, tag.optInt(Tag.TAG_FOLLOWER_CNT) - 1);
 
+            if (tag.optInt(Tag.TAG_FOLLOWER_CNT) < 0) {
+                tag.put(Tag.TAG_FOLLOWER_CNT, 0);
+            }
+
             tagRepository.update(followingId, tag);
         } else if (Follow.FOLLOWING_TYPE_C_ARTICLE == followingType) {
             final JSONObject article = articleRepository.get(followingId);
@@ -253,6 +257,10 @@ public class FollowMgmtService {
             }
 
             article.put(Article.ARTICLE_COLLECT_CNT, article.optInt(Article.ARTICLE_COLLECT_CNT) - 1);
+
+            if (article.optInt(Article.ARTICLE_COLLECT_CNT) < 0) {
+                article.put(Article.ARTICLE_COLLECT_CNT, 0);
+            }
 
             articleRepository.update(followingId, article);
         }
