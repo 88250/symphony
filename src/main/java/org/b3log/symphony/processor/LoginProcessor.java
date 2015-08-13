@@ -228,8 +228,6 @@ public class LoginProcessor {
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("verifycodeSentLabel"));
-
-            LOGGER.log(Level.INFO, "Created a user [name={0}, email={1}]", name, email);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);

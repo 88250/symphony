@@ -5,6 +5,33 @@
     "since": "0.2.0",
     "repositories": [
         {
+            "name": "vote",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "length": 19
+                }, {
+                    "name": "type",
+                    "type": "int",
+                    "description": "0: up, 1: down"
+                }, {
+                    "name": "dataType",
+                    "type": "int",
+                    "description": "0: article, 1: comment, 2: user, 3: tag"
+                }, {
+                    "name": "dataId",
+                    "type": "String",
+                    "length": 19
+                }
+            ]
+        },
+        {
             "name": "verifycode",
             "keys": [
                 {

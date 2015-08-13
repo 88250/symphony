@@ -23,6 +23,11 @@ package org.b3log.symphony.model;
  * @since 0.2.0
  */
 public final class Common {
+    
+    /**
+     * Key of data id.
+     */
+    public static final String DATA_ID = "dataId";
 
     /**
      * Key of memo.

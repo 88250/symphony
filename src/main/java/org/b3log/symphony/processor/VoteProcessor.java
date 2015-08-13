@@ -1,0 +1,138 @@
+/*
+ * Copyright (c) 2012-2015, b3log.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.b3log.symphony.processor;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.util.Requests;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.processor.advice.LoginCheck;
+import org.b3log.symphony.service.VoteMgmtService;
+import org.b3log.symphony.util.Results;
+import org.json.JSONObject;
+
+/**
+ * Vote processor.
+ *
+ * <ul>
+ * <li>Votes up an article (/vote/up/article), POST</li>
+ * <li>Votes down an article (/vote/down/article), POST</li>
+ * </ul>
+ *
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.0, Aug 13, 2015
+ * @since 1.3.0
+ */
+@RequestProcessor
+public class VoteProcessor {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(VoteProcessor.class.getName());
+
+    /**
+     * Vote management service.
+     */
+    @Inject
+    private VoteMgmtService voteMgmtService;
+
+    /**
+     * Votes up an article.
+     *
+     * <p>
+     * The request json object:
+     * <pre>
+     * {
+     *   "dataId": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/vote/up/article", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = LoginCheck.class)
+    public void voteUpArticle(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = Results.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final String dataId = requestJSONObject.optString(Common.DATA_ID);
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        voteMgmtService.voteUpArticle(userId, dataId);
+
+        ret.put(Keys.STATUS_CODE, true);
+    }
+
+    /**
+     * Votes down an article.
+     *
+     * <p>
+     * The request json object:
+     * <pre>
+     * {
+     *   "dataId": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/vote/down/article", method = HTTPRequestMethod.DELETE)
+    @Before(adviceClass = LoginCheck.class)
+    public void voteDownArticle(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = Results.falseResult();
+        renderer.setJSONObject(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final String dataId = requestJSONObject.optString(Common.DATA_ID);
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        voteMgmtService.voteDownArticle(userId, dataId);
+
+        ret.put(Keys.STATUS_CODE, true);
+    }
+}
