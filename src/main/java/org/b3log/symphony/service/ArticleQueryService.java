@@ -667,7 +667,7 @@ public class ArticleQueryService {
                 }
                 story.put("id", article.optLong("oId"));
 //                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-                story.put("url", "http://192.168.1.101:8084" + article.optString(Article.ARTICLE_PERMALINK));
+                story.put("url", "http://192.168.1.103:8084" + article.optString(Article.ARTICLE_PERMALINK));
                 story.put("user_display_name", article.optString(Article.ARTICLE_T_AUTHOR_NAME));
                 story.put("user_job", author.optString(UserExt.USER_INTRO));
                 story.put("comment_html", article.optString(Article.ARTICLE_CONTENT));
