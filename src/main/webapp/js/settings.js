@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.5, Jul 26, 2015
+ * @version 1.3.1.6, Aug 12, 2015
  */
 
 /**
@@ -100,7 +100,7 @@ var Settings = {
 
                 setTimeout(function () {
                     $("#" + type.replace(/\//g, "") + "Tip").hide();
-                }, 2000);
+                }, 5000);
 
             }
         });
@@ -114,38 +114,48 @@ var Settings = {
                 URLVal = $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                 QQVal = $("#userQQ").val().replace(/(^\s*)|(\s*$)/g, ""),
                 introVal = $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, "");
-        if (Validate.goValidate([{
-                "id": "userTags",
-                "type": "tags",
-                "msg": Label.tagsErrorLabel
-            }, {
-                "id": "userURL",
-                "type": "url",
-                "msg": Label.invalidUserURLLabel
-            }, {
-                "id": "userQQ",
-                "type": "12",
-                "msg": Label.invalidUserQQLabel
-            }, {
-                "id": "userIntro",
-                "type": "255",
-                "msg": Label.invalidUserIntroLabel
-            }, {
-                "id": "avatarURL",
-                "type": "imgSrc",
-                "msg": Label.invalidAvatarURLLabel
-            }])) {
-            var data = {};
-            data.userTags = tagsVal;
-            data.userURL = URLVal;
-            data.userQQ = QQVal;
-            data.userIntro = introVal;
-            data.userAvatarURL = $("#avatarURL").attr("src");
+        // 跳过前端校验
+//        if (Validate.goValidate([{
+//                "id": "userTags",
+//                "type": "tags",
+//                "msg": Label.tagsErrorLabel
+//            }, {
+//                "id": "userURL",
+//                "type": "url",
+//                "msg": Label.invalidUserURLLabel
+//            }, {
+//                "id": "userQQ",
+//                "type": "12",
+//                "msg": Label.invalidUserQQLabel
+//            }, {
+//                "id": "userIntro",
+//                "type": "255",
+//                "msg": Label.invalidUserIntroLabel
+//            }, {
+//                "id": "avatarURL",
+//                "type": "imgSrc",
+//                "msg": Label.invalidAvatarURLLabel
+//            }])) {
+//            var data = {};
+//            data.userTags = tagsVal;
+//            data.userURL = URLVal;
+//            data.userQQ = QQVal;
+//            data.userIntro = introVal;
+//            data.userAvatarURL = $("#avatarURL").attr("src");
+//
+//            return data;
+//        }
+//
+//        return false;
 
-            return data;
-        }
+        var data = {};
+        data.userTags = tagsVal;
+        data.userURL = URLVal;
+        data.userQQ = QQVal;
+        data.userIntro = introVal;
+        data.userAvatarURL = $("#avatarURL").attr("src");
 
-        return false;
+        return data;
     },
     /**
      * @description settings 页面 solo 数据同步校验
