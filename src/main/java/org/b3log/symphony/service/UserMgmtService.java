@@ -493,7 +493,6 @@ public class UserMgmtService {
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Defeat others error", e);
                 }
-
             } else {
                 ret = Ids.genTimeMillisId();
                 user.put(Keys.OBJECT_ID, ret);

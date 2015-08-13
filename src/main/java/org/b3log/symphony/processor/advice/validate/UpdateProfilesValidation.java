@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Validates for user profiles update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.3, Aug 7, 2015
+ * @version 2.0.1.4, Aug 12, 2015
  */
 @Named
 @Singleton
@@ -87,12 +87,14 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
 
         final String userURL = requestJSONObject.optString(User.USER_URL);
         if (!Strings.isEmptyOrNull(userURL) && invalidUserURL(userURL)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserURLLabel")));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
+                    "URL" + langPropsService.get("colonLabel") + langPropsService.get("invalidUserURLLabel")));
         }
 
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         if (!Strings.isEmptyOrNull(userQQ) && (!Strings.isNumeric(userQQ) || userQQ.length() > MAX_USER_QQ_LENGTH)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserQQLabel")));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
+                    langPropsService.get("invalidUserQQLabel")));
         }
 
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
@@ -100,9 +102,12 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserIntroLabel")));
         }
 
+        final String tagErrMsg = langPropsService.get("selfTagLabel") + langPropsService.get("colonLabel")
+                + langPropsService.get("tagsErrorLabel");
+
         String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
         if (Strings.isEmptyOrNull(userTags)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
         }
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
@@ -111,7 +116,7 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
         userTags = userMgmtService.formatUserTags(userTags);
         String[] tagTitles = userTags.split(",");
         if (null == tagTitles || 0 == tagTitles.length) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
         }
 
         tagTitles = new LinkedHashSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
@@ -121,22 +126,23 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
             final String tagTitle = tagTitles[i].trim();
 
             if (Strings.isEmptyOrNull(tagTitle)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
             }
 
             if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
             }
 
             if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
             }
 
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
             if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
                     && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
-                        + " [" + tagTitle + "]"));
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
+                        langPropsService.get("selfTagLabel") + langPropsService.get("colonLabel")
+                        + langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
             }
 
             tagBuilder.append(tagTitle).append(",");
@@ -144,7 +150,7 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
         if (tagBuilder.length() > 0) {
             tagBuilder.deleteCharAt(tagBuilder.length() - 1);
         }
-        
+
         requestJSONObject.put(UserExt.USER_TAGS, tagBuilder.toString());
     }
 

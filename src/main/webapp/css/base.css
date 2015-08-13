@@ -631,6 +631,14 @@ a.icon:hover {
 .icon-star:before {
     content: "\e616";
 }
+
+.icon-chevron-down:before {
+    content: "\e617";
+}
+
+.icon-chevron-up:before {
+    content: "\e618";
+}
 /* end icon */
 
 /* start tip */

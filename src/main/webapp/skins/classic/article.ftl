@@ -61,7 +61,13 @@
                                 </a> &nbsp;
                             </h2> 
                             <span>
-                                <#if isLoggedIn> 
+                                <#if isLoggedIn>
+                                <span title="${upLabel}">
+                                    <span class="icon icon-chevron-up"></span>
+                                </span>&nbsp;
+                                <span title="${downLabel}">
+                                    <span class="icon icon-chevron-down"></span>
+                                </span>&nbsp;
                                 <#if isFollowing>
                                 <button class="red small" onclick="Util.unfollow(this, '${article.oId}', 'article')"> 
                                     ${uncollectLabel}
