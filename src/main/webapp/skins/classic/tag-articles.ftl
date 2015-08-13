@@ -23,20 +23,25 @@
                                title="${tag.tagTitle?url('UTF-8')}" 
                                href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                         </h1>
-                        <#if isLoggedIn> &nbsp;
-                        <#if isFollowing>
-                        <button class="red small" onclick="Util.unfollow(this, '${tag.oId}', 'tag')"> 
-                            ${unfollowLabel}
-                        </button>
-                        <#else>
-                        <button class="green small" onclick="Util.follow(this, '${tag.oId}', 'tag')"> 
-                            ${followLabel}
-                        </button>
+                        <#if isLoggedIn>
+                        <a class="btn small red" href="/add-article?tags=${tag.tagTitle?url('utf-8')}">${addArticleLabel}</a>
                         </#if>
-                        </#if>
-                        <#if isAdminLoggedIn> &nbsp;
-                        <a class="ft-small icon icon-setting" href="/admin/tag/${tag.oId}" title="${adminLabel}"></a>
-                        </#if>
+                        <span class='fn-right'>
+                            <#if isLoggedIn> &nbsp;
+                            <#if isFollowing>
+                            <button class="red small" onclick="Util.unfollow(this, '${tag.oId}', 'tag')"> 
+                                ${unfollowLabel}
+                            </button>
+                            <#else>
+                            <button class="green small" onclick="Util.follow(this, '${tag.oId}', 'tag')"> 
+                                ${followLabel}
+                            </button>
+                            </#if>
+                            </#if>
+                            <#if isAdminLoggedIn> &nbsp;
+                            <a class="ft-small icon icon-setting" href="/admin/tag/${tag.oId}" title="${adminLabel}"></a>
+                            </#if>
+                        </span>
                     </div>
                     <p<#if tag.tagIconPath != ""> class="description" </#if>>
                         ${tag.tagDescription}

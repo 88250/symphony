@@ -54,6 +54,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Reward;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -97,7 +98,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.8.21, Aug 6, 2015
+ * @version 1.11.8.21, Aug 13, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -203,6 +204,12 @@ public class ArticleProcessor {
         final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
+
+        String tags = request.getParameter(Tag.TAGS);
+        if (StringUtils.isBlank(tags)) {
+            tags = "";
+        }
+        dataModel.put(Tag.TAGS, tags);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }

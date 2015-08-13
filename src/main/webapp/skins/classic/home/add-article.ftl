@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div>
-                        <input id="articleTags" type="text" value="<#if article??>${article.articleTags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
+                        <input id="articleTags" type="text" value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
                         <span style="right:2px;top:424px;"></span><br/><br/>
                     </div>
                     <div class="fn-clear article-reward-content">
@@ -114,6 +114,8 @@
                                                         "uploadingLabel": "${uploadingLabel}",
                                                         "qiniuDomain": "${qiniuDomain}"
                                                 });
+                                                
+                                                $('#articleTitle').focus();
         </script>
     </body>
 </html>
