@@ -112,7 +112,7 @@ public class VoteMgmtService {
                 return;
             }
 
-            if (0 == oldType) {
+            if (-1 == oldType) {
                 article.put(Article.ARTICLE_GOOD_CNT, article.optInt(Article.ARTICLE_GOOD_CNT) + 1);
 
                 articleRepository.update(dataId, article);
@@ -152,7 +152,7 @@ public class VoteMgmtService {
                 return;
             }
 
-            if (0 == oldType) {
+            if (-1 == oldType) {
                 article.put(Article.ARTICLE_BAD_CNT, article.optInt(Article.ARTICLE_BAD_CNT) + 1);
 
                 articleRepository.update(dataId, article);

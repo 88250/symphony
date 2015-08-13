@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.6.8, Aug 5, 2015
+ * @version 1.9.6.8, Aug 13, 2015
  */
 
 /**
@@ -199,7 +200,7 @@ var Util = {
      * @description 关注
      * @param {BOM} it 触发事件的元素
      * @param {String} id 关注 id
-     * @param {String} type 取消关注的类型
+     * @param {String} type 关注的类型
      */
     follow: function (it, id, type) {
         if ($(it).hasClass("disabled")) {
@@ -229,7 +230,9 @@ var Util = {
         });
     },
     /**
-     * @description 取消关注     
+     * @description 取消关注
+     * @param {BOM} it 触发事件的元素
+     * @param {String} id 关注 id
      * @param {String} type 取消关注的类型
      */
     unfollow: function (it, id, type) {
@@ -255,6 +258,64 @@ var Util = {
                     } else {
                         $(it).text(Label.followLabel);
                     }
+                }
+            }
+        });
+    },
+    /**
+     * @description 赞同
+     * @param {String} id 赞同的实体数据 id
+     * @param {String} type 赞同的实体类型
+     */
+    voteUp: function (id, type) {
+        if ($("#voteUp").hasClass("disabled")) {
+            return false;
+        }
+
+        var requestJSONObject = {
+            dataId: id
+        };
+        
+        $("#voteUp").addClass("disabled");
+        
+        $.ajax({
+            url: "/vote/up/" + type,
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    $("#voteUp").removeClass("disabled").addClass("ft-red");
+                    $("#voteDown").removeClass("ft-red");
+                }
+            }
+        });
+    },
+    /**
+     * @description 反对
+     * @param {String} id 反对的实体数据 id
+     * @param {String} type 反对的实体类型
+     */
+    voteDown: function (id, type) {
+        if ($("#voteDown").hasClass("disabled")) {
+            return false;
+        }
+
+        var requestJSONObject = {
+            dataId: id
+        };
+        
+        $("#voteDown").addClass("disabled");
+        
+        $.ajax({
+            url: "/vote/down/" + type,
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    $("#voteDown").removeClass("disabled").addClass("ft-red");
+                    $("#voteUp").removeClass("ft-red");
                 }
             }
         });

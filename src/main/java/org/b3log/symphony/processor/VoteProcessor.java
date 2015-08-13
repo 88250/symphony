@@ -115,7 +115,7 @@ public class VoteProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/vote/down/article", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/vote/down/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void voteDownArticle(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
