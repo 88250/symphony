@@ -532,11 +532,10 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getRecentArticles(final int currentPageNum, final int fetchSize) throws ServiceException {
         final Query query = new Query()
-                .addSort(Article.ARTICLE_STATUS, SortDirection.ASCENDING)
-                .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
-                .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+
+        query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
 
         try {
             final JSONObject result = articleRepository.get(query);
@@ -571,11 +570,11 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getIndexArticles(final int fetchSize) throws ServiceException {
         final Query query = new Query()
-                .addSort(Article.ARTICLE_STATUS, SortDirection.ASCENDING)
-                .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
-                .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
+                .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
                 .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(1);
+
+        query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
 
         try {
             final JSONObject result = articleRepository.get(query);

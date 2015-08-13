@@ -284,9 +284,15 @@ var Util = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
+                $("#voteUp").removeClass("disabled");
+                
                 if (result.sc) {
-                    $("#voteUp").removeClass("disabled").addClass("ft-red");
-                    $("#voteDown").removeClass("ft-red");
+                    if (0 == result.type) { // cancel up
+                        $("#voteUp").removeClass("ft-red");
+                    } else {
+                        $("#voteUp").addClass("ft-red");
+                        $("#voteDown").removeClass("ft-red");  
+                    }
                 }
             }
         });
@@ -313,9 +319,15 @@ var Util = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
+                $("#voteDown").removeClass("disabled");
+                
                 if (result.sc) {
-                    $("#voteDown").removeClass("disabled").addClass("ft-red");
-                    $("#voteUp").removeClass("ft-red");
+                    if (1 == result.type) { // cancel down
+                        $("#voteDown").removeClass("ft-red");
+                    } else {
+                        $("#voteDown").addClass("ft-red");
+                        $("#voteUp").removeClass("ft-red");  
+                    }
                 }
             }
         });

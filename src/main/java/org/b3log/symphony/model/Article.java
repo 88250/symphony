@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.9, Aug 12, 2015
+ * @version 1.7.0.10, Aug 13, 2015
  * @since 0.2.0
  */
 public final class Article {
@@ -148,6 +148,11 @@ public final class Article {
      * Key of article collection count.
      */
     public static final String ARTICLE_COLLECT_CNT = "articleCollectCnt";
+    
+    /**
+     * Key of reddit score.
+     */
+    public static final String REDDIT_SCORE = "redditScore";
 
     //// Transient ////
     /**
