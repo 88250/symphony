@@ -62,10 +62,10 @@
                             </h2> 
                             <span>
                                 <#if isLoggedIn>
-                                <span id="voteUp" <#if 0==vote>class="ft-red"</#if> style="cursor: pointer;" title="${upLabel}" onclick="Util.voteUp('${article.oId}', 'article')">
+                                <span id="voteUp" <#if 0==vote>class="ft-red"</#if> style="cursor: pointer;" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
                                     <span class="icon icon-chevron-up"></span>
                                 </span>&nbsp;
-                                <span id="voteDown" <#if 1==vote>class="ft-red"</#if> style="cursor: pointer;" title="${downLabel}" onclick="Util.voteDown('${article.oId}', 'article')">
+                                <span id="voteDown" <#if 1==vote>class="ft-red"</#if> style="cursor: pointer;" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
                                     <span class="icon icon-chevron-down"></span>
                                 </span>&nbsp;
                                 <#if isFollowing>
