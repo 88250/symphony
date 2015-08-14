@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import org.apache.commons.lang.ArrayUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -46,6 +47,7 @@ import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.TagTagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -93,6 +95,16 @@ public class TagQueryService {
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
+    /**
+     * Determines whether the specified tag title is reserved.
+     *
+     * @param tagTitle the specified tag title
+     * @return {@code true} if it is reserved, otherwise returns {@code false}
+     */
+    public boolean isReservedTag(final String tagTitle) {
+        return ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle);
+    }
 
     /**
      * Gets a tag by the specified tag title.

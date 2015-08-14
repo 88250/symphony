@@ -24,7 +24,9 @@
                                href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                         </h1>
                         <#if isLoggedIn>
+                        <#if !tag.isReserved || isAdminLoggedIn>
                         <a class="btn small red" href="/add-article?tags=${tag.tagTitle?url('utf-8')}">${addArticleLabel}</a>
+                        </#if>
                         </#if>
                         <span class='fn-right'>
                             <#if isLoggedIn> &nbsp;
