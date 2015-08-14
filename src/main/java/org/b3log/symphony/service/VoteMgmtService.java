@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Vote management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 13, 2015
+ * @version 1.0.1.0, Aug 14, 2015
  * @since 1.3.0
  */
 @Service
@@ -76,12 +76,18 @@ public class VoteMgmtService {
                     return;
                 }
 
-                if (-1 == oldType) {
-                    article.put(Article.ARTICLE_GOOD_CNT, article.optInt(Article.ARTICLE_GOOD_CNT) + 1);
+                if (Vote.TYPE_C_UP == oldType) {
+                    article.put(Article.ARTICLE_GOOD_CNT, article.optInt(Article.ARTICLE_GOOD_CNT) - 1);
                 } else if (Vote.TYPE_C_DOWN == oldType) {
                     article.put(Article.ARTICLE_BAD_CNT, article.optInt(Article.ARTICLE_BAD_CNT) - 1);
-                    article.put(Article.ARTICLE_GOOD_CNT, article.optInt(Article.ARTICLE_GOOD_CNT) + 1);
                 }
+
+                final int ups = article.optInt(Article.ARTICLE_GOOD_CNT);
+                final int downs = article.optInt(Article.ARTICLE_BAD_CNT);
+                final long t = article.optLong(Keys.OBJECT_ID) / 1000;
+
+                final double redditScore = redditScore(ups, downs, t);
+                article.put(Article.REDDIT_SCORE, redditScore);
 
                 articleRepository.update(dataId, article);
             }
