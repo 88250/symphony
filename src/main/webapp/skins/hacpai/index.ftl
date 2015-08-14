@@ -16,7 +16,7 @@
                     <@list listData=indexArticles/>
                     <div>
                         <br/>
-                        <span class="ft-small"><a href="/recent">更多新文章</a></span>
+                        <span class="ft-small"><a href="/recent">更多新文章11</a></span>
                     </div>
                 </div>
                 <div class="side">

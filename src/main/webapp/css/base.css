@@ -1055,8 +1055,7 @@ a.icon:hover {
 }
 
 .nav .tags {
-    white-space: normal;
-    word-wrap: break-word;
+    display: block;
     margin: 0 20px 0 70px;
     height: 36px;
     overflow: hidden;
@@ -1066,7 +1065,7 @@ a.icon:hover {
     color: #333333;
     font-weight: normal;
     padding: 0 5px;
-    word-break: break-all;
+    white-space: nowrap;
 }
 
 .nav .tags a:hover {
