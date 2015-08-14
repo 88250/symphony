@@ -29,8 +29,10 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Vote;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.service.VoteMgmtService;
+import org.b3log.symphony.service.VoteQueryService;
 import org.b3log.symphony.util.Results;
 import org.json.JSONObject;
 
@@ -59,6 +61,12 @@ public class VoteProcessor {
      */
     @Inject
     private VoteMgmtService voteMgmtService;
+
+    /**
+     * Vote query service.
+     */
+    @Inject
+    private VoteQueryService voteQueryService;
 
     /**
      * Votes up an article.
@@ -93,8 +101,14 @@ public class VoteProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        voteMgmtService.voteUpArticle(userId, dataId);
+        final int vote = voteQueryService.isVoted(userId, dataId);
+        if (Vote.TYPE_C_UP == vote) {
+            voteMgmtService.voteCancel(userId, dataId, Vote.DATA_TYPE_C_ARTICLE);
+        } else {
+            voteMgmtService.voteUpArticle(userId, dataId);
+        }
 
+        ret.put(Vote.TYPE, vote);
         ret.put(Keys.STATUS_CODE, true);
     }
 
@@ -115,7 +129,7 @@ public class VoteProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/vote/down/article", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/vote/down/article", method = HTTPRequestMethod.POST)
     @Before(adviceClass = LoginCheck.class)
     public void voteDownArticle(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
@@ -131,8 +145,14 @@ public class VoteProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        voteMgmtService.voteDownArticle(userId, dataId);
+        final int vote = voteQueryService.isVoted(userId, dataId);
+        if (Vote.TYPE_C_DOWN == vote) {
+            voteMgmtService.voteCancel(userId, dataId, Vote.DATA_TYPE_C_ARTICLE);
+        } else {
+            voteMgmtService.voteDownArticle(userId, dataId);
+        }
 
+        ret.put(Vote.TYPE, vote);
         ret.put(Keys.STATUS_CODE, true);
     }
 }

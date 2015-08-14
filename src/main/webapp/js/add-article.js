@@ -62,7 +62,7 @@ var AddArticle = {
                 articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")
             },
             url = "/article", type = "POST";
-
+    
             if (id) {
                 url = url + "/" + id;
                 type = "PUT";

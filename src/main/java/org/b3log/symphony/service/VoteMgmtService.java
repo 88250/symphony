@@ -16,6 +16,7 @@
 package org.b3log.symphony.service;
 
 import javax.inject.Inject;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -32,7 +33,7 @@ import org.json.JSONObject;
  * Vote management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 13, 2015
+ * @version 1.0.1.0, Aug 14, 2015
  * @since 1.3.0
  */
 @Service
@@ -54,6 +55,46 @@ public class VoteMgmtService {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * Cancels the vote.
+     *
+     * @param userId the specified user id
+     * @param dataId the specified data id
+     * @param dataType the specified data type
+     */
+    @Transactional
+    public void voteCancel(final String userId, final String dataId, final int dataType) {
+        try {
+            final int oldType = voteRepository.removeIfExists(userId, dataId);
+
+            if (Vote.DATA_TYPE_C_ARTICLE == dataType) {
+                final JSONObject article = articleRepository.get(dataId);
+                if (null == article) {
+                    LOGGER.log(Level.ERROR, "Not found article [id={0}] to vote cancel", dataId);
+
+                    return;
+                }
+
+                if (Vote.TYPE_C_UP == oldType) {
+                    article.put(Article.ARTICLE_GOOD_CNT, article.optInt(Article.ARTICLE_GOOD_CNT) - 1);
+                } else if (Vote.TYPE_C_DOWN == oldType) {
+                    article.put(Article.ARTICLE_BAD_CNT, article.optInt(Article.ARTICLE_BAD_CNT) - 1);
+                }
+
+                final int ups = article.optInt(Article.ARTICLE_GOOD_CNT);
+                final int downs = article.optInt(Article.ARTICLE_BAD_CNT);
+                final long t = article.optLong(Keys.OBJECT_ID) / 1000;
+
+                final double redditScore = redditScore(ups, downs, t);
+                article.put(Article.REDDIT_SCORE, redditScore);
+
+                articleRepository.update(dataId, article);
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
+        }
+    }
 
     /**
      * The specified user vote up the specified article.
@@ -112,16 +153,21 @@ public class VoteMgmtService {
                 return;
             }
 
-            if (0 == oldType) {
+            if (-1 == oldType) {
                 article.put(Article.ARTICLE_GOOD_CNT, article.optInt(Article.ARTICLE_GOOD_CNT) + 1);
-
-                articleRepository.update(dataId, article);
             } else if (Vote.TYPE_C_DOWN == oldType) {
                 article.put(Article.ARTICLE_BAD_CNT, article.optInt(Article.ARTICLE_BAD_CNT) - 1);
                 article.put(Article.ARTICLE_GOOD_CNT, article.optInt(Article.ARTICLE_GOOD_CNT) + 1);
-
-                articleRepository.update(dataId, article);
             }
+
+            final int ups = article.optInt(Article.ARTICLE_GOOD_CNT);
+            final int downs = article.optInt(Article.ARTICLE_BAD_CNT);
+            final long t = article.optLong(Keys.OBJECT_ID) / 1000;
+
+            final double redditScore = redditScore(ups, downs, t);
+            article.put(Article.REDDIT_SCORE, redditScore);
+
+            articleRepository.update(dataId, article);
         }
 
         final JSONObject vote = new JSONObject();
@@ -152,16 +198,21 @@ public class VoteMgmtService {
                 return;
             }
 
-            if (0 == oldType) {
+            if (-1 == oldType) {
                 article.put(Article.ARTICLE_BAD_CNT, article.optInt(Article.ARTICLE_BAD_CNT) + 1);
-
-                articleRepository.update(dataId, article);
             } else if (Vote.TYPE_C_UP == oldType) {
                 article.put(Article.ARTICLE_GOOD_CNT, article.optInt(Article.ARTICLE_GOOD_CNT) - 1);
                 article.put(Article.ARTICLE_BAD_CNT, article.optInt(Article.ARTICLE_BAD_CNT) + 1);
-
-                articleRepository.update(dataId, article);
             }
+
+            final int ups = article.optInt(Article.ARTICLE_GOOD_CNT);
+            final int downs = article.optInt(Article.ARTICLE_BAD_CNT);
+            final long t = article.optLong(Keys.OBJECT_ID) / 1000;
+
+            final double redditScore = redditScore(ups, downs, t);
+            article.put(Article.REDDIT_SCORE, redditScore);
+
+            articleRepository.update(dataId, article);
         }
 
         final JSONObject vote = new JSONObject();
@@ -171,5 +222,26 @@ public class VoteMgmtService {
         vote.put(Vote.DATA_TYPE, dataType);
 
         voteRepository.add(vote);
+    }
+
+    /**
+     * Gets Reddit score.
+     *
+     * @param ups the specified vote up count
+     * @param downs the specified vote down count
+     * @param t time (epoch seconds)
+     * @return reddit score
+     */
+    private static double redditScore(final int ups, final int downs, final long t) {
+        final int x = ups - downs;
+        final double z = Math.max(Math.abs(x), 1);
+        int y = 0;
+        if (x > 0) {
+            y = 1;
+        } else if (x < 0) {
+            y = -1;
+        }
+
+        return Math.log10(z) + y * (t - 1353745196) / 45000;
     }
 }

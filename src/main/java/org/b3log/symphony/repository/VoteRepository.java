@@ -40,13 +40,13 @@ import org.json.JSONObject;
  */
 @Repository
 public class VoteRepository extends AbstractRepository {
-
+    
     /**
      * Removes vote if it exists.
      *
      * @param userId the specified user id
      * @param dataId the specified data entity id
-     * @return the removed vote type, returns {@code 0} if removed nothing
+     * @return the removed vote type, returns {@code -1} if removed nothing
      * @throws RepositoryException repository exception
      */
     public int removeIfExists(final String userId, final String dataId) throws RepositoryException {
@@ -60,7 +60,7 @@ public class VoteRepository extends AbstractRepository {
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
         if (0 == array.length()) {
-            return 0;
+            return -1;
         }
 
         final JSONObject voteToRemove = array.optJSONObject(0);

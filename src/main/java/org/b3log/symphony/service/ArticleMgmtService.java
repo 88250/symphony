@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.9.10, Aug 12, 2015
+ * @version 1.5.9.11, Aug 13, 2015
  * @since 0.2.0
  */
 @Service
@@ -293,6 +293,7 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
             }
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+            article.put(Article.REDDIT_SCORE, Math.log10(1));
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
             article.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));

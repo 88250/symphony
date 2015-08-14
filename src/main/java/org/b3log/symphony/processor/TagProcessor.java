@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Jun 9, 2015
+ * @version 1.2.0.2, Aug 14, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -147,6 +147,8 @@ public class TagProcessor {
             return;
         }
 
+        tag.put(Common.IS_RESERVED, tagQueryService.isReservedTag(tagTitle));
+        
         dataModel.put(Tag.TAG, tag);
 
         final String tagId = tag.optString(Keys.OBJECT_ID);

@@ -56,6 +56,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.model.Vote;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
@@ -70,6 +71,7 @@ import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.RewardQueryService;
 import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.service.VoteQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Markdowns;
@@ -175,6 +177,12 @@ public class ArticleProcessor {
     private RewardQueryService rewardQueryService;
 
     /**
+     * Vote query service.
+     */
+    @Inject
+    private VoteQueryService voteQueryService;
+
+    /**
      * Filler.
      */
     @Inject
@@ -270,6 +278,9 @@ public class ArticleProcessor {
 
             final boolean isFollowing = followQueryService.isFollowing(currentUserId, articleId);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
+
+            final int vote = voteQueryService.isVoted(currentUserId, articleId);
+            dataModel.put(Vote.VOTE, vote);
 
             if (currentUserId.equals(author.optString(Keys.OBJECT_ID))) {
                 article.put(Common.REWARDED, true);
