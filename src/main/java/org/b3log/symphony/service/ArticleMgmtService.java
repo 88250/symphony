@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.9.11, Aug 13, 2015
+ * @version 1.5.10.11, Aug 15, 2015
  * @since 0.2.0
  */
 @Service
@@ -414,7 +414,7 @@ public class ArticleMgmtService {
             oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
 
             final long currentTimeMillis = System.currentTimeMillis();
-            final long oldUpdateTime = oldArticle.optLong(Article.ARTICLE_UPDATE_TIME);
+            final long createTime = oldArticle.optLong(Keys.OBJECT_ID);
             oldArticle.put(Article.ARTICLE_UPDATE_TIME, currentTimeMillis);
 
             final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
@@ -429,7 +429,7 @@ public class ArticleMgmtService {
 
             transaction.commit();
 
-            if (!fromClient && currentTimeMillis - oldUpdateTime > 1000 * 60 * 5) {
+            if (!fromClient && currentTimeMillis - createTime > 1000 * 60 * 5) {
                 // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 int addition = (int) Math.round(Math.sqrt(followerCnt));

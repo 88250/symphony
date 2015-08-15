@@ -29,7 +29,9 @@ import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Vote;
+import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.VoteRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,6 +56,12 @@ public class VoteQueryService {
      */
     @Inject
     private VoteRepository voteRepository;
+
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Determines whether the specified user dose vote the specified entity.
@@ -84,6 +92,35 @@ public class VoteQueryService {
             LOGGER.log(Level.ERROR, e.getMessage());
 
             return -1;
+        }
+    }
+
+    /**
+     * Determines whether the specified data dose belong to the specified user.
+     *
+     * @param userId the specified user id
+     * @param dataId the specified data id
+     * @param dataType the specified data type
+     * @return {@code true} if it belongs to the user, otherwise returns {@code false}
+     */
+    public boolean isOwn(final String userId, final String dataId, final int dataType) {
+        try {
+            if (Vote.DATA_TYPE_C_ARTICLE == dataType) {
+                final JSONObject article = articleRepository.get(dataId);
+                if (null == article) {
+                    LOGGER.log(Level.ERROR, "Not found article [id={0}] to vote up", dataId);
+
+                    return false;
+                }
+
+                return article.optString(Article.ARTICLE_AUTHOR_ID).equals(userId);
+            }
+
+            return false;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
+
+            return false;
         }
     }
 }
