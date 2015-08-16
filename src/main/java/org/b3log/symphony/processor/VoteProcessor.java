@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
@@ -45,7 +46,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 13, 2015
+ * @version 1.1.0.0, Aug 15, 2015
  * @since 1.3.0
  */
 @RequestProcessor
@@ -67,6 +68,12 @@ public class VoteProcessor {
      */
     @Inject
     private VoteQueryService voteQueryService;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Votes up an article.
@@ -100,6 +107,13 @@ public class VoteProcessor {
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        if (voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, langPropsService.get("cantVoteSelfLabel"));
+
+            return;
+        }
 
         final int vote = voteQueryService.isVoted(userId, dataId);
         if (Vote.TYPE_C_UP == vote) {
@@ -144,6 +158,13 @@ public class VoteProcessor {
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        if (voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, langPropsService.get("cantVoteSelfLabel"));
+
+            return;
+        }
 
         final int vote = voteQueryService.isVoted(userId, dataId);
         if (Vote.TYPE_C_DOWN == vote) {

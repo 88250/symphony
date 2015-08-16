@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.6.8, Aug 13, 2015
+ * @version 1.10.6.8, Aug 15, 2015
  */
 
 /**
@@ -293,7 +293,11 @@ var Util = {
                         $("#voteUp").addClass("ft-red");
                         $("#voteDown").removeClass("ft-red");  
                     }
+                    
+                    return;
                 }
+                
+                alert(result.msg);
             }
         });
     },
@@ -328,7 +332,11 @@ var Util = {
                         $("#voteDown").addClass("ft-red");
                         $("#voteUp").removeClass("ft-red");  
                     }
+                    
+                    return;
                 }
+                
+                alert(result.msg);
             }
         });
     },
