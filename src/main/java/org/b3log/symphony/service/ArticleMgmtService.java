@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import com.vdurmont.emoji.EmojiParser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -61,7 +62,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.10.11, Aug 15, 2015
+ * @version 1.5.11.11, Aug 17, 2015
  * @since 0.2.0
  */
 @Service
@@ -260,7 +261,10 @@ public class ArticleMgmtService {
             final String clientArticleId = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
             final boolean isBroadcast = requestJSONObject.optBoolean(Article.ARTICLE_T_IS_BROADCAST);
 
-            article.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
+            String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+            articleTitle = EmojiParser.parseToAliases(articleTitle);
+            article.put(Article.ARTICLE_TITLE, articleTitle);
+
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
 //            if (fromClient) {
 //                article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
@@ -270,7 +274,10 @@ public class ArticleMgmtService {
 //                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
 //            }
 
-            article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
+            String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
+            articleContent = EmojiParser.parseToAliases(articleContent);
+            article.put(Article.ARTICLE_CONTENT, articleContent);
+
             article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
 
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
@@ -398,7 +405,10 @@ public class ArticleMgmtService {
 
             final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
 
-            oldArticle.put(Article.ARTICLE_TITLE, requestJSONObject.optString(Article.ARTICLE_TITLE));
+            String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+            articleTitle = EmojiParser.parseToAliases(articleTitle);
+            oldArticle.put(Article.ARTICLE_TITLE, articleTitle);
+
             oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
             oldArticle.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             oldArticle.put(Article.ARTICLE_TYPE,
@@ -411,7 +421,9 @@ public class ArticleMgmtService {
 //                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
 //            }
 
-            oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
+            String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
+            articleContent = EmojiParser.parseToAliases(articleContent);
+            oldArticle.put(Article.ARTICLE_CONTENT, articleContent);
 
             final long currentTimeMillis = System.currentTimeMillis();
             final long createTime = oldArticle.optLong(Keys.OBJECT_ID);
@@ -760,7 +772,7 @@ public class ArticleMgmtService {
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 final String title = tag.optString(Tag.TAG_TITLE);
                 articleTags = articleTags.replaceAll("(?i)" + tagTitle, title);
-                
+
                 tagTmp.put(Tag.TAG_TITLE, title);
                 tagTmp.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + articleCmtCnt);
                 tagTmp.put(Tag.TAG_STATUS, tag.optInt(Tag.TAG_STATUS));
@@ -775,7 +787,7 @@ public class ArticleMgmtService {
 
                 userTagType = Tag.TAG_TYPE_C_ARTICLE;
             }
-            
+
             article.put(Article.ARTICLE_TAGS, articleTags);
 
             // Tag-Article relation
@@ -818,7 +830,7 @@ public class ArticleMgmtService {
             if (StringUtils.isBlank(tagTitle.trim())) {
                 continue;
             }
-            
+
             tagsBuilder.append(tagTitle.trim()).append(",");
         }
         if (tagsBuilder.length() > 0) {

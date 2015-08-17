@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import com.vdurmont.emoji.EmojiParser;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
@@ -198,6 +199,9 @@ public class CommentMgmtService {
                 content += " <i class='ft-small'>by " + authorName + "</i>";
             }
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
+            
+            content = EmojiParser.parseToAliases(content);
+            
             comment.put(Comment.COMMENT_CONTENT, content);
 
             comment.put(Comment.COMMENT_CREATE_TIME, System.currentTimeMillis());

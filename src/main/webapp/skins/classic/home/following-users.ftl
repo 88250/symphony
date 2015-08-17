@@ -5,12 +5,9 @@
     <ol class="fn-clear">
         <#list userHomeFollowingUsers as followingUser>
         <li<#if followingUser_index % 2 = 1> class="even"</#if>>
-            <a rel="nofollow" href="/member/${followingUser.userName}">
-                <img title="${followingUser.userName}" class="avatar" src="${followingUser.userAvatarURL}"/>
+            <a rel="nofollow" title="${followingUser.userName} <#if followingUser.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" href="/member/${followingUser.userName}">
+                <img class="avatar" src="${followingUser.userAvatarURL}"/>
             </a>
-            <img class="user-online"
-                 title="<#if followingUser.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>"
-                 src="${staticServePath}/images/<#if followingUser.userOnlineFlag>on<#else>off</#if>line.png" />
             <div>
                 <h3>
                     <a rel="nofollow" href="/member/${followingUser.userName}" >${followingUser.userName}</a>
