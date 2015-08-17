@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.json.JSONObject;
 
@@ -34,6 +35,7 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Aug 13, 2015
  * @since 0.2.5
  */
+@RequestProcessor
 public class ActivityProcessor {
     
     /**
@@ -49,9 +51,11 @@ public class ActivityProcessor {
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-        ret.put("balance", 1905);
-        ret.put("reward", 5);
-        ret.put("streak", 2);
-        ret.put("streaked", 10);
+        final JSONObject checkin = new JSONObject();
+        checkin.put("balance", 1905);
+        checkin.put("reward", 5);
+        checkin.put("streak", 2);
+        checkin.put("streaked", 10);
+        ret.put("checkin", checkin);
     }
 }
