@@ -20,27 +20,33 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Nov 14, 2013
+ * @version 1.1.0.5, Aug 18, 2015
  * @since 0.2.0
  */
 @Named
@@ -73,6 +79,12 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
      */
     @Inject
     private UserQueryService userQueryService;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
@@ -129,6 +141,21 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
 
                 notificationMgmtService.addFollowingUserNotification(requestJSONObject);
             }
+
+            // Timeline
+            final String articleTitle = StringUtils.substring(Jsoup.parse(
+                    originalArticle.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
+            final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
+
+            final JSONObject timeline = new JSONObject();
+            timeline.put(Common.TYPE, Article.ARTICLE);
+            String content = langPropsService.get("timelineArticleLabel");
+            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                    + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>")
+                    .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
+                            + "'>" + articleTitle + "</a>");
+            timeline.put(Common.CONTENT, content);
+            TimelineChannel.notifyTimeline(timeline);
 
 //            final Set<String> qqSet = new HashSet<String>();
 //            for (final String userName : atUserNames) {

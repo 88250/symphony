@@ -1,2 +1,5 @@
 User-agent: *
-Disallow: /admin
+Disallow: /settings
+Disallow: /timeline
+Disallow: /admin/
+Disallow: /member/

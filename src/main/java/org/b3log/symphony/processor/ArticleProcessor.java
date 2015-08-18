@@ -974,7 +974,7 @@ public class ArticleProcessor {
 
         final Set<String> userNames = userQueryService.getUserNames(markdownText);
         for (final String userName : userNames) {
-            markdownText = markdownText.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
+            markdownText = markdownText.replace('@' + userName, "@<a href='" + Latkes.getServePath()
                     + "/member/" + userName + "'>" + userName + "</a>");
         }
         markdownText = shortLinkQueryService.linkArticle(markdownText);
@@ -1052,7 +1052,7 @@ public class ArticleProcessor {
 
             if (!invited) {
                 String blockContent = langPropsService.get("articleDiscussionLabel");
-                blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getStaticServePath()
+                blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
                         + "/member/" + authorName + "'>" + authorName + "</a>");
 
                 result.put("html", blockContent);

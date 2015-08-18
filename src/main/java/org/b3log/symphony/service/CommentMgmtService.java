@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.5.15, Jul 28, 2015
+ * @version 1.5.5.15, Aug 18, 2015
  * @since 0.2.0
  */
 @Service
@@ -199,9 +199,9 @@ public class CommentMgmtService {
                 content += " <i class='ft-small'>by " + authorName + "</i>";
             }
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
-            
+
             content = EmojiParser.parseToAliases(content);
-            
+
             comment.put(Comment.COMMENT_CONTENT, content);
 
             comment.put(Comment.COMMENT_CREATE_TIME, System.currentTimeMillis());

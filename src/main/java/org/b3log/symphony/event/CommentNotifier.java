@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -28,6 +29,7 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
@@ -35,6 +37,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
+import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.ShortLinkQueryService;
@@ -42,12 +45,13 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.11, Jul 20, 2015
+ * @version 1.4.3.11, Aug 18, 2015
  * @since 0.2.0
  */
 @Named
@@ -82,6 +86,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
 
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
@@ -103,7 +113,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             final String userEmail = commenter.optString(User.USER_EMAIL);
             chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURL(userEmail));
-            
+
             chData.put(Comment.COMMENT_CREATE_TIME,
                     DateFormatUtils.format(new Date(originalComment.optLong(Comment.COMMENT_CREATE_TIME)), "yyyy-MM-dd HH:mm"));
             String cc = shortLinkQueryService.linkArticle(commentContent);
@@ -114,8 +124,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             try {
                 final Set<String> userNames = userQueryService.getUserNames(commentContent);
                 for (final String userName : userNames) {
-                    cc = cc.replace('@' + userName,
-                            "@<a href='" + Latkes.getStaticServePath()
+                    cc = cc.replace('@' + userName, "@<a href='" + Latkes.getServePath()
                             + "/member/" + userName + "'>" + userName + "</a>");
                 }
             } catch (final ServiceException e) {
@@ -130,6 +139,26 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             articleHeat.put(Article.ARTICLE_T_ID, originalArticle.optString(Keys.OBJECT_ID));
             articleHeat.put(Common.OPERATION, "+");
             ArticleListChannel.notifyHeat(articleHeat);
+
+            final boolean isDiscussion = originalArticle.optInt(Article.ARTICLE_TYPE) == Article.ARTICLE_TYPE_C_DISCUSSION;
+
+            // Timeline
+            if (!isDiscussion) {
+                final String articleTitle = StringUtils.substring(Jsoup.parse(
+                        originalArticle.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
+                final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
+
+                final JSONObject timeline = new JSONObject();
+                timeline.put(Common.TYPE, Comment.COMMENT);
+                String content = langPropsService.get("timelineCommentLabel");
+                content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                        + "/member/" + commenterName + "'>" + commenterName + "</a>")
+                        .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
+                                + "'>" + articleTitle + "</a>")
+                        .replace("{comment}", StringUtils.substring(Jsoup.parse(cc).text(), 0, 28));
+                timeline.put(Common.CONTENT, content);
+                TimelineChannel.notifyTimeline(timeline);
+            }
 
             // 1. 'Commented' Notification
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
@@ -150,7 +179,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
 
             final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
-            final boolean isDiscussion = originalArticle.optInt(Article.ARTICLE_TYPE) == Article.ARTICLE_TYPE_C_DISCUSSION;
             final Set<String> articleContentAtUserNames = userQueryService.getUserNames(articleContent);
 
             // 2. 'At' Notification
