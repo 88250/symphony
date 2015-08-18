@@ -85,12 +85,13 @@ public class ActivityProcessor {
         
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int checkinReward = activityMgmtService.dailyCheckin(userId);
-        final int balance = currentUser.optInt(UserExt.USER_POINT);
+        final JSONObject checkedinUser = userQueryService.getUserByEmail(email);
+        final int balance = checkedinUser.optInt(UserExt.USER_POINT);
         
-        activityMgmtService.fillCheckinStreak(currentUser);
+        activityMgmtService.fillCheckinStreak(checkedinUser);
         
-        final int streak = currentUser.optInt(UserExt.USER_T_CURRENT_CHECKIN_STREAK);
-        final int streaked = currentUser.optInt(UserExt.USER_T_LONGEST_CHECKIN_STREAK);
+        final int streak = checkedinUser.optInt(UserExt.USER_T_CURRENT_CHECKIN_STREAK);
+        final int streaked = checkedinUser.optInt(UserExt.USER_T_LONGEST_CHECKIN_STREAK);
         
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
