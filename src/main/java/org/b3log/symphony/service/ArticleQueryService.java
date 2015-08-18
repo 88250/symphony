@@ -671,7 +671,7 @@ public class ArticleQueryService {
                 story.put("user_job", author.optString(UserExt.USER_INTRO));
                 story.put("comment_html", article.optString(Article.ARTICLE_CONTENT));
                 story.put("comment_count", article.optInt(Article.ARTICLE_COMMENT_CNT));
-                story.put("vote_count", article.optInt(Article.ARTICLE_VIEW_CNT));
+                story.put("vote_count", article.optInt(Article.ARTICLE_GOOD_CNT));
                 story.put("created_at", formatDate(article.get(Article.ARTICLE_CREATE_TIME)));
                 story.put("user_portrait_url", article.optString(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL));
                 story.put("comments", getAllComments(article.optString("oId")));
