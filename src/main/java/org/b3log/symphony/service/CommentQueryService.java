@@ -265,7 +265,7 @@ public class CommentQueryService {
 
                 if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
                     final String msgContent = langPropsService.get("articleDiscussionLabel").
-                            replace("{user}", "<a href='" + Latkes.getStaticServePath()
+                            replace("{user}", "<a href='" + Latkes.getServePath()
                                     + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>");
 
                     if (null == viewer) {
@@ -532,7 +532,7 @@ public class CommentQueryService {
             final Set<String> userNames = userQueryService.getUserNames(commentContent);
             for (final String userName : userNames) {
                 commentContent = commentContent.replace('@' + userName,
-                        "@<a href='" + Latkes.getStaticServePath()
+                        "@<a href='" + Latkes.getServePath()
                         + "/member/" + userName + "'>" + userName + "</a>");
             }
         } catch (final ServiceException e) {

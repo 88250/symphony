@@ -8,11 +8,12 @@
         </div>
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
-                <a rel="help" href="/about">${aboutLabel}</a> 
-                <a rel="help" href="/tags/系统公告">${symAnnouncementLabel}</a>
-                <a rel="help" href="/tags/Q%26A">${qnaLabel}</a>
+                <a rel="help" href="/about">${aboutLabel}</a>
+                <a href="/timeline">${timelineLabel}</a>
+                <a href="/tags/系统公告">${symAnnouncementLabel}</a>
+                <a href="/tags/Q%26A">${qnaLabel}</a>
                 <a href="/tags" class="last">${tagLabel}</a>
-                
+
                 <span class="fn-right">${visionLabel}</span>
             </div>
             <div class="fn-clear">

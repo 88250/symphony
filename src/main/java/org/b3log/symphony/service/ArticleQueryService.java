@@ -838,7 +838,7 @@ public class ArticleQueryService {
 
             if (!invited) {
                 String blockContent = langPropsService.get("articleDiscussionLabel");
-                blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getStaticServePath()
+                blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
                         + "/member/" + authorName + "'>" + authorName + "</a>");
 
                 article.put(Article.ARTICLE_CONTENT, blockContent);
@@ -852,7 +852,7 @@ public class ArticleQueryService {
         }
 
         for (final String userName : userNames) {
-            articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
+            articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
                     + "/member/" + userName + "'>" + userName + "</a>");
         }
 
@@ -868,7 +868,7 @@ public class ArticleQueryService {
             final Set<String> rewordContentUserNames = userQueryService.getUserNames(articleRewardContent);
 
             for (final String userName : rewordContentUserNames) {
-                articleRewardContent = articleRewardContent.replace('@' + userName, "@<a href='" + Latkes.getStaticServePath()
+                articleRewardContent = articleRewardContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
                         + "/member/" + userName + "'>" + userName + "</a>");
             }
 

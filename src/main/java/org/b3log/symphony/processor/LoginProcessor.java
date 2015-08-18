@@ -26,6 +26,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -50,6 +51,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
+import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -73,7 +75,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.8, Jul 13, 2015
+ * @version 1.5.0.8, Aug 18, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -309,6 +311,15 @@ public class LoginProcessor {
             ret.put(Keys.STATUS_CODE, true);
 
             LOGGER.log(Level.INFO, "Registered a user [name={0}, email={1}]", name, email);
+
+            // Timeline
+            final JSONObject timeline = new JSONObject();
+            timeline.put(Common.TYPE, Common.NEW_USER);
+            String content = langPropsService.get("timelineNewUser");
+            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                    + "/member/" + name + "'>" + name + "</a>");
+            timeline.put(Common.CONTENT, content);
+            TimelineChannel.notifyTimeline(timeline);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);

@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.2, Jul 29, 2015
+ * @version 1.3.3.2, Aug 18, 2015
  */
 
 /**
@@ -164,6 +164,58 @@ var ArticleListChannel = {
         };
 
         ArticleListChannel.ws.onerror = function (err) {
+            console.log("ERROR", err)
+        };
+    }
+};
+
+/**
+ * @description Timeline channel.
+ * @static
+ */
+var TimelineChannel = {
+    /**
+     * WebSocket instance.
+     * 
+     * @type WebSocket
+     */
+    ws: undefined,
+    /**
+     * @description Initializes message channel
+     */
+    init: function (channelServer) {
+        TimelineChannel.ws = new ReconnectingWebSocket(channelServer);
+        TimelineChannel.ws.reconnectInterval = 10000;
+
+        TimelineChannel.ws.onopen = function () {
+            setInterval(function () {
+                TimelineChannel.ws.send('-hb-');
+            }, 1000 * 60 * 3);
+        };
+
+        TimelineChannel.ws.onmessage = function (evt) {
+            var data = JSON.parse(evt.data);
+
+            $('#emptyTimeline').remove();
+
+            switch (data.type) {
+                case 'newUser':
+                case 'article':
+                case 'comment':
+                    var time = new Date().getTime();
+                    var template = "<li class=\"fn-none\" id=" + time + ">" + data.content + "</li>";
+                    $("#ul").prepend(template);
+                    $("#" + time).fadeIn(2000);
+
+                    break;
+            }
+        };
+
+        TimelineChannel.ws.onclose = function () {
+            TimelineChannel.ws.close();
+        };
+
+        TimelineChannel.ws.onerror = function (err) {
             console.log("ERROR", err)
         };
     }
