@@ -149,7 +149,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
 
             final JSONObject timeline = new JSONObject();
             timeline.put(Common.TYPE, Article.ARTICLE);
-            String content = langPropsService.get("timelineArticle");
+            String content = langPropsService.get("timelineArticleLabel");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
                     + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>")
                     .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink

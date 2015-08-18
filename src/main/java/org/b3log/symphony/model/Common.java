@@ -160,6 +160,11 @@ public final class Common {
     public static final String TYPE = "type";
     
     /**
+     * Key of activity.
+     */
+    public static final String ACTIVITY = "activity";
+    
+    /**
      * Key of recent articles.
      */
     public static final String RECENT_ARTICLES = "recentArticles";

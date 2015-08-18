@@ -202,6 +202,7 @@ var TimelineChannel = {
                 case 'newUser':
                 case 'article':
                 case 'comment':
+                case 'activity':
                     var time = new Date().getTime();
                     var template = "<li class=\"fn-none\" id=" + time + ">" + data.content + "</li>";
                     $("#ul").prepend(template);

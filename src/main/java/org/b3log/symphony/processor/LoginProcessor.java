@@ -315,7 +315,7 @@ public class LoginProcessor {
             // Timeline
             final JSONObject timeline = new JSONObject();
             timeline.put(Common.TYPE, Common.NEW_USER);
-            String content = langPropsService.get("timelineNewUser");
+            String content = langPropsService.get("timelineNewUserLabel");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
                     + "/member/" + name + "'>" + name + "</a>");
             timeline.put(Common.CONTENT, content);

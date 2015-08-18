@@ -24,13 +24,17 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.util.Results;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -210,6 +214,17 @@ public class ActivityMgmtService {
                         Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK, userId);
             }
 
+            final String userName = user.optString(User.USER_NAME);
+            
+            // Timeline
+            final JSONObject timeline = new JSONObject();
+            timeline.put(Common.TYPE, Common.ACTIVITY);
+            String content = langPropsService.get("timelineActivityCheckinLabel");
+            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                    + "/member/" + userName + "'>" + userName + "</a>");
+            timeline.put(Common.CONTENT, content);
+            TimelineChannel.notifyTimeline(timeline);
+
             return true;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Checkin streak error", e);
@@ -293,13 +308,13 @@ public class ActivityMgmtService {
                 LOGGER.error("Activity 1A0001 collect result [" + endInt + "]");
             }
         } catch (final Exception e) {
-            ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFail"));
+            ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFailLabel"));
 
             return ret;
         }
 
         if (Strings.isEmptyOrNull(smallOrLarge)) {
-            ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFail"));
+            ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFailLabel"));
 
             return ret;
         }
@@ -313,15 +328,15 @@ public class ActivityMgmtService {
                     DateFormatUtils.format(new Date(), "yyyyMMdd") + "-" + smallOrLargeResult);
 
             if (succ) {
-                String msg = langPropsService.get("activity1A0001CollectSucc1");
+                String msg = langPropsService.get("activity1A0001CollectSucc1Label");
                 msg = msg.replace("{point}", String.valueOf(amount));
 
                 ret.put(Keys.MSG, msg);
             } else {
-                ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFail"));
+                ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFailLabel"));
             }
         } else {
-            ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectSucc0"));
+            ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectSucc0Label"));
         }
 
         return ret;

@@ -51,7 +51,7 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.11, Aug 18, 2015
+ * @version 1.4.3.11, Aug 18, 2015
  * @since 0.2.0
  */
 @Named
@@ -140,21 +140,25 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             articleHeat.put(Common.OPERATION, "+");
             ArticleListChannel.notifyHeat(articleHeat);
 
-            // Timeline
-            final String articleTitle = StringUtils.substring(Jsoup.parse(
-                    originalArticle.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
-            final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
+            final boolean isDiscussion = originalArticle.optInt(Article.ARTICLE_TYPE) == Article.ARTICLE_TYPE_C_DISCUSSION;
 
-            final JSONObject timeline = new JSONObject();
-            timeline.put(Common.TYPE, Comment.COMMENT);
-            String content = langPropsService.get("timelineComment");
-            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
-                    + "/member/" + commenterName + "'>" + commenterName + "</a>")
-                    .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
-                            + "'>" + articleTitle + "</a>")
-                    .replace("{comment}", StringUtils.substring(Jsoup.parse(cc).text(), 0, 28));
-            timeline.put(Common.CONTENT, content);
-            TimelineChannel.notifyTimeline(timeline);
+            // Timeline
+            if (!isDiscussion) {
+                final String articleTitle = StringUtils.substring(Jsoup.parse(
+                        originalArticle.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
+                final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
+
+                final JSONObject timeline = new JSONObject();
+                timeline.put(Common.TYPE, Comment.COMMENT);
+                String content = langPropsService.get("timelineCommentLabel");
+                content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                        + "/member/" + commenterName + "'>" + commenterName + "</a>")
+                        .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
+                                + "'>" + articleTitle + "</a>")
+                        .replace("{comment}", StringUtils.substring(Jsoup.parse(cc).text(), 0, 28));
+                timeline.put(Common.CONTENT, content);
+                TimelineChannel.notifyTimeline(timeline);
+            }
 
             // 1. 'Commented' Notification
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
@@ -175,7 +179,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
 
             final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
-            final boolean isDiscussion = originalArticle.optInt(Article.ARTICLE_TYPE) == Article.ARTICLE_TYPE_C_DISCUSSION;
             final Set<String> articleContentAtUserNames = userQueryService.getUserNames(articleContent);
 
             // 2. 'At' Notification
