@@ -29,6 +29,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
@@ -215,7 +216,7 @@ public class ActivityMgmtService {
             }
 
             final String userName = user.optString(User.USER_NAME);
-            
+
             // Timeline
             final JSONObject timeline = new JSONObject();
             timeline.put(Common.TYPE, Common.ACTIVITY);
@@ -260,6 +261,22 @@ public class ActivityMgmtService {
         final String msg = succ
                 ? langPropsService.get("activityBetSuccLabel") : langPropsService.get("activityBetFailLabel");
         ret.put(Keys.MSG, msg);
+
+        try {
+            final JSONObject user = userQueryService.getUser(userId);
+            final String userName = user.optString(User.USER_NAME);
+
+            // Timeline
+            final JSONObject timeline = new JSONObject();
+            timeline.put(Common.TYPE, Common.ACTIVITY);
+            String content = langPropsService.get("timelineActivity1A0001Label");
+            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                    + "/member/" + userName + "'>" + userName + "</a>");
+            timeline.put(Common.CONTENT, content);
+            TimelineChannel.notifyTimeline(timeline);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.ERROR, "Timeline error", e);
+        }
 
         return ret;
     }
