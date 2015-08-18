@@ -47,11 +47,13 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -65,7 +67,7 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.5.14, Aug 1, 2015
+ * @version 1.10.5.15, Aug 18, 2015
  * @since 0.2.0
  */
 @Service
@@ -81,6 +83,12 @@ public class ArticleQueryService {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Tag-Article repository.
@@ -711,11 +719,64 @@ public class ArticleQueryService {
             final String participantThumbnailURL = "";
 
             final List<JSONObject> articleParticipants
-                    = commentQueryService.getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
+                    = getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
             article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
 
             article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
             article.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, participantThumbnailURL);
+        }
+    }
+
+    /**
+     * Gets the article participants (commenters) with the specified article article id and fetch size.
+     *
+     * @param articleId the specified article id
+     * @param fetchSize the specified fetch size
+     * @return article participants, for example,      <pre>
+     * [
+     *     {
+     *         "articleParticipantName": "",
+     *         "articleParticipantThumbnailURL": "",
+     *         "commentId": ""
+     *     }, ....
+     * ]
+     * </pre>, returns an empty list if not found
+     *
+     * @throws ServiceException service exception
+     */
+    private List<JSONObject> getArticleLatestParticipants(final String articleId, final int fetchSize) throws ServiceException {
+        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
+                .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId))
+                .addProjection(Comment.COMMENT_AUTHOR_EMAIL, String.class).addProjection(Keys.OBJECT_ID, String.class)
+                .setPageCount(1).setCurrentPageNum(1).setPageSize(fetchSize);
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        try {
+            final JSONObject result = commentRepository.get(query);
+            final List<JSONObject> comments = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            for (final JSONObject comment : comments) {
+                final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
+                final JSONObject commenter = userRepository.getByEmail(email);
+
+                String thumbnailURL = Symphonys.get("defaultThumbnailURL");
+                if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
+                    thumbnailURL = avatarQueryService.getAvatarURL(email);
+                }
+
+                final JSONObject participant = new JSONObject();
+                participant.put(Article.ARTICLE_T_PARTICIPANT_NAME, commenter.optString(User.USER_NAME));
+                participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
+                participant.put(Article.ARTICLE_T_PARTICIPANT_URL, commenter.optString(User.USER_URL));
+                participant.put(Comment.COMMENT_T_ID, comment.optString(Keys.OBJECT_ID));
+
+                ret.add(participant);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets article [" + articleId + "] participants failed", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -765,7 +826,7 @@ public class ArticleQueryService {
         final String currentRole = null == currentUser ? "" : currentUser.optString(User.USER_ROLE);
         final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
         if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
-                && !authorName.equals(currentUserName)) {
+                && !authorName.equals(currentUserName) && !Role.ADMIN_ROLE.equals(currentRole)) {
             boolean invited = false;
             for (final String userName : userNames) {
                 if (userName.equals(currentUserName)) {
@@ -773,10 +834,6 @@ public class ArticleQueryService {
 
                     break;
                 }
-            }
-
-            if (Role.ADMIN_ROLE.equals(currentRole)) {
-                invited = true;
             }
 
             if (!invited) {

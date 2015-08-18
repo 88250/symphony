@@ -15,7 +15,6 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +26,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
@@ -56,7 +56,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.17, Jul 20, 2015
+ * @version 1.3.4.17, Aug 18, 2015
  * @since 0.2.0
  */
 @Service
@@ -225,10 +225,12 @@ public class CommentQueryService {
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
+     * @param viewer the specified viewer, may be {@code null}
      * @return user comments, return an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getUserComments(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public List<JSONObject> getUserComments(final String userId, final int currentPageNum, final int pageSize,
+            final JSONObject viewer) throws ServiceException {
         final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                 setFilter(new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId));
@@ -261,65 +263,44 @@ public class CommentQueryService {
                 final String articleAuthorThumbnailURL = avatarQueryService.getAvatarURL(articleAuthorEmail);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
 
+                if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
+                    final String msgContent = langPropsService.get("articleDiscussionLabel").
+                            replace("{user}", "<a href='" + Latkes.getStaticServePath()
+                                    + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>");
+
+                    if (null == viewer) {
+                        comment.put(Comment.COMMENT_CONTENT, msgContent);
+                    } else {
+                        final String commenterName = commenter.optString(User.USER_NAME);
+                        final String viewerUserName = viewer.optString(User.USER_NAME);
+                        final String viewerRole = viewer.optString(User.USER_ROLE);
+
+                        if (!commenterName.equals(viewerUserName) && !Role.ADMIN_ROLE.equals(viewerRole)) {
+                            final String articleContent = article.optString(Article.ARTICLE_CONTENT);
+                            final Set<String> userNames = userQueryService.getUserNames(articleContent);
+
+                            boolean invited = false;
+                            for (final String userName : userNames) {
+                                if (userName.equals(viewerUserName)) {
+                                    invited = true;
+
+                                    break;
+                                }
+                            }
+
+                            if (!invited) {
+                                comment.put(Comment.COMMENT_CONTENT, msgContent);
+                            }
+                        }
+                    }
+                }
+
                 processCommentContent(comment);
             }
 
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets user comments failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * Gets the article participants (commenters) with the specified article article id and fetch size.
-     *
-     * @param articleId the specified article id
-     * @param fetchSize the specified fetch size
-     * @return article participants, for example,      <pre>
-     * [
-     *     {
-     *         "articleParticipantName": "",
-     *         "articleParticipantThumbnailURL": "",
-     *         "commentId": ""
-     *     }, ....
-     * ]
-     * </pre>, returns an empty list if not found
-     *
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getArticleLatestParticipants(final String articleId, final int fetchSize) throws ServiceException {
-        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
-                .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId))
-                .addProjection(Comment.COMMENT_AUTHOR_EMAIL, String.class).addProjection(Keys.OBJECT_ID, String.class)
-                .setPageCount(1).setCurrentPageNum(1).setPageSize(fetchSize);
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-
-        try {
-            final JSONObject result = commentRepository.get(query);
-            final List<JSONObject> comments = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-
-            for (final JSONObject comment : comments) {
-                final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
-                final JSONObject commenter = userRepository.getByEmail(email);
-
-                String thumbnailURL = Symphonys.get("defaultThumbnailURL");
-                if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
-                    thumbnailURL = avatarQueryService.getAvatarURL(email);
-                }
-
-                final JSONObject participant = new JSONObject();
-                participant.put(Article.ARTICLE_T_PARTICIPANT_NAME, commenter.optString(User.USER_NAME));
-                participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
-                participant.put(Article.ARTICLE_T_PARTICIPANT_URL, commenter.optString(User.USER_URL));
-                participant.put(Comment.COMMENT_T_ID, comment.optString(Keys.OBJECT_ID));
-
-                ret.add(participant);
-            }
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets article [" + articleId + "] participants failed", e);
             throw new ServiceException(e);
         }
     }
