@@ -30,8 +30,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
@@ -56,11 +54,6 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleNotifier.class.getName());
-
-    /**
-     * URL fetch service.
-     */
-    private URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
      * Notification management service.

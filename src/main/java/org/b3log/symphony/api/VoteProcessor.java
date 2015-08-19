@@ -47,7 +47,6 @@ import org.json.JSONObject;
  */
 @RequestProcessor
 public class VoteProcessor {
-    
 
     /**
      * Logger.
@@ -59,7 +58,7 @@ public class VoteProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
-    
+
     /**
      * Vote management service.
      */
@@ -77,6 +76,7 @@ public class VoteProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
+
     /**
      * Votes up an article.
      *
@@ -99,17 +99,17 @@ public class VoteProcessor {
     public void voteUpArticle(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String id) throws Exception {
         final String auth = request.getHeader("Authorization");
-        if(auth == null){//TODO validate
+        if (auth == null) {//TODO validate
             return;
         }
         final String email = new JSONObject(auth.substring("Bearer ".length())).optString("userEmail");
-        
+
         final JSONObject currentUser = userQueryService.getUserByEmail(email);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
-        
+
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);

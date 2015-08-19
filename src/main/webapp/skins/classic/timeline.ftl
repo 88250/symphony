@@ -11,7 +11,8 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content fn-clear">
+                <div class="content content-reset">
+                    <h2>${timelineLabel}</h2>
                     <div id="emptyTimeline">${emptyTimelineLabel}</div>
                     <div class="list">
                         <ul id="ul">

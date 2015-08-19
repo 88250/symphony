@@ -58,23 +58,23 @@ import org.json.JSONObject;
  *
  * @author <a href="http://wdx.me">DX</a>
  * @version 1.0.0.0, Aug 4, 2015
- * @since 0.2.5
+ * @since 1.3.0
  */
 @RequestProcessor
 public class CommentProcessor {
-    
+
     /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
-    
+
     /**
      * User query service.
      */
     @Inject
     private UserQueryService userQueryService;
-    
+
     /**
      * Comment query service.
      */
@@ -86,10 +86,9 @@ public class CommentProcessor {
      */
     @Inject
     private CommentMgmtService commentMgmtService;
-    
-    
+
     /**
-     * reply.
+     * Reply.
      *
      * @param context the specified context
      * @param request the specified request
@@ -106,9 +105,9 @@ public class CommentProcessor {
         final JSONObject comment = commentQueryService.getCommentById(id);
         comment(context, request, response, comment.optString(Comment.COMMENT_ON_ARTICLE_ID));
     }
-    
+
     /**
-     * comment.
+     * Comment.
      *
      * @param context the specified context
      * @param request the specified request
@@ -123,13 +122,13 @@ public class CommentProcessor {
             final String id) throws ServletException, JSONException, IOException {
 
         final String auth = request.getHeader("Authorization");
-        if(auth == null){//TODO validate
+        if (auth == null) {//TODO validate
             return;
         }
         final String email = new JSONObject(auth.substring("Bearer ".length())).optString("userEmail");
         final String httpBody = getBody(request);
         final String content = httpBody.substring("comment[body]=".length());
-        
+
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -193,29 +192,28 @@ public class CommentProcessor {
         } catch (final ServiceException e) {
             ret.put("error", "invalid");
         }
-        
+
     }
-    
+
     /**
      * The demand format date.
-     * 
+     *
      * @param date the original date
      * @return the format date like "2015-08-03T07:26:57Z"
      */
-    private String formatDate(final Object date){
-        return DateFormatUtils.format(((Date) date).getTime(), "yyyy-MM-dd") 
-                        + "T" + DateFormatUtils.format(((Date) date).getTime(), "HH:mm:ss") + "Z";
+    private String formatDate(final Object date) {
+        return DateFormatUtils.format(((Date) date).getTime(), "yyyy-MM-dd")
+                + "T" + DateFormatUtils.format(((Date) date).getTime(), "HH:mm:ss") + "Z";
     }
-    
+
     /**
      * Get request body.
-     * 
+     *
      * @param request req
      * @return body
-     * @throws IOException 
+     * @throws IOException io exception
      */
     public String getBody(final HttpServletRequest request) throws IOException {
-
         final StringBuilder stringBuilder = new StringBuilder();
         BufferedReader bufferedReader = null;
 

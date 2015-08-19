@@ -21,14 +21,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
@@ -43,6 +47,7 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Article channel.
@@ -98,6 +103,39 @@ public class ArticleChannel {
         message.put(Common.OPERATION, "+");
 
         ArticleListChannel.notifyHeat(message);
+
+        final HttpSession httpSession = (HttpSession) session.getUpgradeRequest().getSession();
+        final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
+        if (null == user) {
+            return;
+        }
+
+        final String userName = user.optString(User.USER_NAME);
+
+        // Timeline
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+
+            final String articleTitle = StringUtils.substring(Jsoup.parse(
+                    article.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
+            final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+
+            final JSONObject timeline = new JSONObject();
+            timeline.put(Common.TYPE, Article.ARTICLE);
+            String content = langPropsService.get("timelineInArticleLabel");
+            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                    + "/member/" + userName + "'>" + userName + "</a>")
+                    .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
+                            + "'>" + articleTitle + "</a>");
+            timeline.put(Common.CONTENT, content);
+            TimelineChannel.notifyTimeline(timeline);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Timeline error", e);
+        }
     }
 
     /**
@@ -257,5 +295,38 @@ public class ArticleChannel {
         message.put(Common.OPERATION, "-");
 
         ArticleListChannel.notifyHeat(message);
+
+        final HttpSession httpSession = (HttpSession) session.getUpgradeRequest().getSession();
+        final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
+        if (null == user) {
+            return;
+        }
+
+        final String userName = user.optString(User.USER_NAME);
+
+        // Timeline
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+
+            final String articleTitle = StringUtils.substring(Jsoup.parse(
+                    article.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
+            final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+
+            final JSONObject timeline = new JSONObject();
+            timeline.put(Common.TYPE, Article.ARTICLE);
+            String content = langPropsService.get("timelineOutArticleLabel");
+            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                    + "/member/" + userName + "'>" + userName + "</a>")
+                    .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
+                            + "'>" + articleTitle + "</a>");
+            timeline.put(Common.CONTENT, content);
+            TimelineChannel.notifyTimeline(timeline);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Timeline error", e);
+        }
     }
 }

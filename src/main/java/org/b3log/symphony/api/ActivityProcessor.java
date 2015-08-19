@@ -33,7 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Activity api processor.
+ * Activity API processor.
  *
  * <ul>
  * <li>Daily checkin (/api/v1/activities/checkin), POST</li>
@@ -41,7 +41,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://wdx.me">DX</a>
  * @version 1.0.0.0, Aug 13, 2015
- * @since 0.2.5
+ * @since 1.3.0
  */
 @RequestProcessor
 public class ActivityProcessor {
