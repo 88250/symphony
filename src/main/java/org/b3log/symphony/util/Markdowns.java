@@ -17,6 +17,7 @@ package org.b3log.symphony.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
@@ -75,11 +76,17 @@ public final class Markdowns {
         for (final Element p : ps) {
             p.removeAttr("style");
         }
-        
+
         final Elements as = doc.getElementsByTag("a");
         for (final Element a : as) {
-            a.attr("target", "_blank");
             a.attr("rel", "nofollow");
+            
+            final String href = a.attr("href");
+            if (href.startsWith(Latkes.getServePath())) {
+                continue;
+            }
+
+            a.attr("target", "_blank");
         }
 
         return doc.html();
