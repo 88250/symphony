@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -61,6 +62,7 @@ import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -568,7 +570,8 @@ public class ArticleQueryService {
             throw new ServiceException(e);
         }
     }
-
+    
+    
     /**
      * Gets the index articles with the specified fetch size.
      *
@@ -606,6 +609,132 @@ public class ArticleQueryService {
             LOGGER.log(Level.ERROR, "Gets index articles failed", e);
             throw new ServiceException(e);
         }
+    }
+    
+
+    /**
+     * Gets the recent articles with the specified fetch size.
+     *
+     * @param currentPageNum the specified current page number
+     * @param fetchSize the specified fetch size
+     * @return recent articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getRecentArticlesWithComments(final int currentPageNum, final int fetchSize) throws ServiceException {
+        final Query query = new Query()
+                .addSort(Article.ARTICLE_STATUS, SortDirection.ASCENDING)
+                .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
+                .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
+                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+        return getArticles(query);
+    }
+
+    /**
+     * Gets the index articles with the specified fetch size.
+     *
+     * @param currentPageNum the specified current page number
+     * @param fetchSize the specified fetch size
+     * @return recent articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getTopArticlesWithComments(final int currentPageNum, final int fetchSize) throws ServiceException {
+        final Query query = new Query()
+                .addSort(Article.ARTICLE_STATUS, SortDirection.ASCENDING)
+                .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
+                .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
+                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
+                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+        return getArticles(query);
+    }
+
+    /**
+     * The specific articles.
+     * 
+     * @param query conditions
+     * @return articles
+     * @throws ServiceException 
+     */
+    private List<JSONObject> getArticles(final Query query) throws ServiceException {
+        try {
+            final JSONObject result = articleRepository.get(query);
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            organizeArticles(ret);
+            final List<JSONObject> stories = new ArrayList<JSONObject>();
+
+            for (final JSONObject article : ret) {
+                final JSONObject story = new JSONObject();
+                final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                final JSONObject author = userRepository.get(authorId);
+                if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
+                    story.put("title", langPropsService.get("articleTitleBlockLabel"));
+                } else {
+                    story.put("title", article.optString(Article.ARTICLE_TITLE));
+                }
+                story.put("id", article.optLong("oId"));
+//                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+                story.put("url", "http://192.168.1.103:8084" + article.optString(Article.ARTICLE_PERMALINK));
+                story.put("user_display_name", article.optString(Article.ARTICLE_T_AUTHOR_NAME));
+                story.put("user_job", author.optString(UserExt.USER_INTRO));
+                story.put("comment_html", article.optString(Article.ARTICLE_CONTENT));
+                story.put("comment_count", article.optInt(Article.ARTICLE_COMMENT_CNT));
+                story.put("vote_count", article.optInt(Article.ARTICLE_GOOD_CNT));
+                story.put("created_at", formatDate(article.get(Article.ARTICLE_CREATE_TIME)));
+                story.put("user_portrait_url", article.optString(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL));
+                story.put("comments", getAllComments(article.optString("oId")));
+                story.put("badge", "mysql");
+                stories.add(story);
+            }
+            final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
+            genParticipants(stories, participantsCnt);
+            return stories;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets index articles failed", e);
+            throw new ServiceException(e);
+        } catch (final JSONException ex) {
+            LOGGER.log(Level.ERROR, "Gets index articles failed", ex);
+            throw new ServiceException(ex);
+        }
+    }
+    
+    
+    /**
+     * Gets the article comments with the specified article id.
+     * 
+     * @param articleId the specified article id
+     * @return comments, return an empty list if not found 
+     * @throws ServiceException  service exception
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private List<JSONObject> getAllComments(final String articleId) throws ServiceException, JSONException, RepositoryException{
+        final List<JSONObject> commments = new ArrayList<JSONObject>();
+        final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, 1, Integer.MAX_VALUE);
+        for(final JSONObject ac : articleComments){
+            final JSONObject comment = new JSONObject();
+            final JSONObject author = userRepository.get(ac.optString(Comment.COMMENT_AUTHOR_ID));
+            comment.put("id", ac.optLong("oId"));
+            comment.put("body_html", ac.optString(Comment.COMMENT_CONTENT));
+            comment.put("depth", 0);
+            comment.put("user_display_name", ac.optString(Comment.COMMENT_T_AUTHOR_NAME));
+            comment.put("user_job", author.optString(UserExt.USER_INTRO));
+            comment.put("vote_count", 0);
+            comment.put("created_at", formatDate(ac.get(Comment.COMMENT_CREATE_TIME)));
+            comment.put("user_portrait_url", ac.optString(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL));
+            commments.add(comment);
+        }
+        return commments;
+    }
+    
+    /**
+     * The demand format date.
+     * 
+     * @param date the original date
+     * @return the format date like "2015-08-03T07:26:57Z"
+     */
+    private String formatDate(final Object date){
+        return DateFormatUtils.format(((Date) date).getTime(), "yyyy-MM-dd") 
+                        + "T" + DateFormatUtils.format(((Date) date).getTime(), "HH:mm:ss") + "Z";
     }
 
     /**

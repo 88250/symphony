@@ -134,11 +134,11 @@ public class ActivityMgmtService {
      * Daily checkin.
      *
      * @param userId the specified user id
-     * @return {@code true} if checkin succeeded, returns {@code false} otherwise
+     * @return {@code Random int} if checkin succeeded, returns {@code Integer.MIN_VALUE} otherwise
      */
-    public synchronized boolean dailyCheckin(final String userId) {
+    public synchronized int dailyCheckin(final String userId) {
         if (activityQueryService.isCheckedinToday(userId)) {
-            return false;
+            return Integer.MIN_VALUE;
         }
 
         final Random random = new Random();
@@ -148,7 +148,7 @@ public class ActivityMgmtService {
         final boolean succ = pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN, sum, userId);
         if (!succ) {
-            return false;
+            return Integer.MIN_VALUE;
         }
 
         try {
@@ -169,7 +169,7 @@ public class ActivityMgmtService {
 
                 userMgmtService.updateUser(userId, user);
 
-                return true;
+                return sum;
             }
 
             final Date endDate = DateUtils.parseDate(String.valueOf(currentStreakEnd), new String[]{"yyyyMMdd"});
@@ -226,11 +226,11 @@ public class ActivityMgmtService {
             timeline.put(Common.CONTENT, content);
             TimelineChannel.notifyTimeline(timeline);
 
-            return true;
+            return sum;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Checkin streak error", e);
 
-            return false;
+            return Integer.MIN_VALUE;
         }
     }
 
