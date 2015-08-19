@@ -104,8 +104,7 @@ public class ArticleChannel {
 
         ArticleListChannel.notifyHeat(message);
 
-        final HttpSession httpSession = (HttpSession) session.getUpgradeRequest().getSession();
-        final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
         if (null == user) {
             return;
         }
@@ -296,8 +295,7 @@ public class ArticleChannel {
 
         ArticleListChannel.notifyHeat(message);
 
-        final HttpSession httpSession = (HttpSession) session.getUpgradeRequest().getSession();
-        final JSONObject user = (JSONObject) httpSession.getAttribute(User.USER);
+        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
         if (null == user) {
             return;
         }
