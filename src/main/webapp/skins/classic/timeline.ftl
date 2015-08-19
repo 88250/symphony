@@ -35,6 +35,8 @@
 
             // Init [Timeline] channel
             TimelineChannel.init("ws://${serverHost}:${serverPort}/timeline-channel");
+            
+            var timelineCnt = ${timelineCnt};
         </script>
     </body>
 </html>

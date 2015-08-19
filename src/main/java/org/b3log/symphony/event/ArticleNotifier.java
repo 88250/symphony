@@ -149,48 +149,6 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                             + "'>" + articleTitle + "</a>");
             timeline.put(Common.CONTENT, content);
             TimelineChannel.notifyTimeline(timeline);
-
-//            final Set<String> qqSet = new HashSet<String>();
-//            for (final String userName : atUserNames) {
-//                final JSONObject user = userQueryService.getUserByName(userName);
-//                final String qq = user.optString(UserExt.USER_QQ);
-//                if (!Strings.isEmptyOrNull(qq)) {
-//                    qqSet.add(qq);
-//                }
-//            }
-//
-//            if (qqSet.isEmpty()) {
-//                return;
-//            }
-//            /*
-//             * {
-//             *     "key": "",
-//             *     "messageContent": "",
-//             *     "messageProcessor": "QQ",
-//             *     "messageToAccounts": [
-//             *         "", ....
-//             *     ]
-//             * }
-//             */
-//            final HTTPRequest httpRequest = new HTTPRequest();
-//            httpRequest.setURL(new URL(Symphonys.get("imServePath")));
-//            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
-//            final JSONObject requestJSONObject = new JSONObject();
-//            final JSONArray qqs = CollectionUtils.toJSONArray(qqSet);
-//
-//            requestJSONObject.put("messageProcessor", "QQ");
-//            requestJSONObject.put("messageToAccounts", qqs);
-//            requestJSONObject.put("key", Symphonys.get("keyOfSymphony"));
-//
-//            final StringBuilder msgContent = new StringBuilder("----\n");
-//            msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
-//                    .append(originalArticle.optString(Article.ARTICLE_PERMALINK)).append("\n\n");
-//
-//            requestJSONObject.put("messageContent", msgContent.toString());
-//
-//            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-//
-//            urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article notification failed", e);
         }
