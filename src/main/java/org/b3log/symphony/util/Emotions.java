@@ -40,7 +40,8 @@ public final class Emotions {
     /**
      * Emoji list.
      */
-    private static final String[] EMOJIS = {"+1",
+    private static final String[] EMOJIS = {
+        "+1",
         "-1",
         "100",
         "1234",
