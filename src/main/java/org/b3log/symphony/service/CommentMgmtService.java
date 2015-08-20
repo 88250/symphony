@@ -15,7 +15,6 @@
  */
 package org.b3log.symphony.service;
 
-import com.vdurmont.emoji.EmojiParser;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
@@ -44,6 +43,7 @@ import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -200,7 +200,7 @@ public class CommentMgmtService {
             }
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
 
-            content = EmojiParser.parseToAliases(content);
+            content = Emotions.toAliases(content);
 
             comment.put(Comment.COMMENT_CONTENT, content);
 

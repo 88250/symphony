@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.util;
 
+import com.vdurmont.emoji.EmojiParser;
 import org.b3log.latke.Latkes;
 
 /**
@@ -921,6 +922,16 @@ public final class Emotions {
         "zero",
         "zzz"
     };
+
+    /**
+     * Replaces the emoji's unicode occurrences by one of their alias (between 2 ':'). Example: "😄" gives ":smile:".
+     *
+     * @param content the string to parse
+     * @return the string with the emojis replaced by their alias.
+     */
+    public static String toAliases(final String content) {
+        return EmojiParser.parseToAliases(content);
+    }
 
     /**
      * Clears the emotions ({@literal [em00], :heart:}) with specified content.

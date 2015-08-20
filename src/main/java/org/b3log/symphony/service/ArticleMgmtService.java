@@ -15,7 +15,6 @@
  */
 package org.b3log.symphony.service;
 
-import com.vdurmont.emoji.EmojiParser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -54,6 +53,7 @@ import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -262,7 +262,7 @@ public class ArticleMgmtService {
             final boolean isBroadcast = requestJSONObject.optBoolean(Article.ARTICLE_T_IS_BROADCAST);
 
             String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
-            articleTitle = EmojiParser.parseToAliases(articleTitle);
+            articleTitle = Emotions.toAliases(articleTitle);
             article.put(Article.ARTICLE_TITLE, articleTitle);
 
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
@@ -275,7 +275,7 @@ public class ArticleMgmtService {
 //            }
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
-            articleContent = EmojiParser.parseToAliases(articleContent);
+            articleContent = Emotions.toAliases(articleContent);
             article.put(Article.ARTICLE_CONTENT, articleContent);
 
             article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
@@ -406,7 +406,7 @@ public class ArticleMgmtService {
             final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
 
             String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
-            articleTitle = EmojiParser.parseToAliases(articleTitle);
+            articleTitle = Emotions.toAliases(articleTitle);
             oldArticle.put(Article.ARTICLE_TITLE, articleTitle);
 
             oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
@@ -422,7 +422,7 @@ public class ArticleMgmtService {
 //            }
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
-            articleContent = EmojiParser.parseToAliases(articleContent);
+            articleContent = Emotions.toAliases(articleContent);
             oldArticle.put(Article.ARTICLE_CONTENT, articleContent);
 
             final long currentTimeMillis = System.currentTimeMillis();
