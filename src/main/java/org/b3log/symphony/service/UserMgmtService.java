@@ -67,6 +67,7 @@ import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -75,7 +76,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.8.4, Aug 11, 2015
+ * @version 1.9.8.4, Aug 21, 2015
  * @since 0.2.0
  */
 @Service
@@ -219,6 +220,18 @@ public class UserMgmtService {
             final JSONObject user = userRepository.get(userId);
             if (null == user) {
                 return;
+            }
+
+            final JSONObject address = Geos.getAddress(ip);
+            if (null != address) {
+                final String province = address.optString(Common.PROVINCE);
+                final String city = address.optString(Common.CITY);
+
+                user.put(UserExt.USER_PROVINCE, province);
+                user.put(UserExt.USER_CITY, city);
+            } else {
+                user.put(UserExt.USER_PROVINCE, "");
+                user.put(UserExt.USER_CITY, "");
             }
 
             transaction = userRepository.beginTransaction();

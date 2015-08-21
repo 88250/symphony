@@ -538,6 +538,16 @@
                     "name": "userSkin",
                     "type": "String",
                     "length": 32
+                },
+                {
+                    "name": "userProvince",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "userCity",
+                    "type": "String",
+                    "length": 32
                 }
             ]
         },

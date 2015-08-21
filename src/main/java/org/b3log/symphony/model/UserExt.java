@@ -19,12 +19,22 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.0.9, Aug 4, 2015
+ * @version 2.13.0.9, Aug 21, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
-    
+
+    /**
+     * Key of user city.
+     */
+    public static final String USER_CITY = "userCity";
+
+    /**
+     * Key of user province.
+     */
+    public static final String USER_PROVINCE = "userProvince";
+
     /**
      * Key of user skin.
      */
@@ -74,7 +84,7 @@ public final class UserExt {
      * Key of user point.
      */
     public static final String USER_POINT = "userPoint";
-    
+
     /**
      * Key of user tags.
      */
