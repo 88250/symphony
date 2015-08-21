@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -33,6 +32,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -69,10 +69,10 @@ public class TimelineProcessor {
     private Filler filler;
 
     /**
-     * Language service.
+     * Timeline management service.
      */
     @Inject
-    private LangPropsService langPropsService;
+    private TimelineMgmtService timelineMgmtService;
 
     /**
      * Shows timeline.
@@ -104,5 +104,6 @@ public class TimelineProcessor {
         filler.fillLatestCmts(dataModel);
 
         dataModel.put("timelineCnt", Symphonys.getInt("timelineCnt"));
+        dataModel.put("timelines", timelineMgmtService.getTimelines());
     }
 }

@@ -33,9 +33,9 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -78,6 +78,12 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Timeline management service.
+     */
+    @Inject
+    private TimelineMgmtService timelineMgmtService;
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
@@ -148,7 +154,8 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                     .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
                             + "'>" + articleTitle + "</a>");
             timeline.put(Common.CONTENT, content);
-            TimelineChannel.notifyTimeline(timeline);
+            
+            timelineMgmtService.addTimeline(timeline);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article notification failed", e);
         }

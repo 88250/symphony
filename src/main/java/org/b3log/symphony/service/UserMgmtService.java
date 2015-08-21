@@ -229,9 +229,6 @@ public class UserMgmtService {
 
                 user.put(UserExt.USER_PROVINCE, province);
                 user.put(UserExt.USER_CITY, city);
-            } else {
-                user.put(UserExt.USER_PROVINCE, "");
-                user.put(UserExt.USER_CITY, "");
             }
 
             transaction = userRepository.beginTransaction();

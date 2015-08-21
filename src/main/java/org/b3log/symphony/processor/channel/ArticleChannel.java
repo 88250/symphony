@@ -36,6 +36,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -114,6 +115,7 @@ public class ArticleChannel {
         final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
         final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+        final TimelineMgmtService timelineMgmtService = beanManager.getReference(TimelineMgmtService.class);
 
         try {
             final JSONObject article = articleRepository.get(articleId);
@@ -130,7 +132,8 @@ public class ArticleChannel {
                     .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
                             + "'>" + articleTitle + "</a>");
             timeline.put(Common.CONTENT, content);
-            TimelineChannel.notifyTimeline(timeline);
+
+            timelineMgmtService.addTimeline(timeline);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Timeline error", e);
         }
@@ -305,6 +308,7 @@ public class ArticleChannel {
         final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
         final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+        final TimelineMgmtService timelineMgmtService = beanManager.getReference(TimelineMgmtService.class);
 
         try {
             final JSONObject article = articleRepository.get(articleId);
@@ -321,7 +325,8 @@ public class ArticleChannel {
                     .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
                             + "'>" + articleTitle + "</a>");
             timeline.put(Common.CONTENT, content);
-            TimelineChannel.notifyTimeline(timeline);
+            
+            timelineMgmtService.addTimeline(timeline);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Timeline error", e);
         }

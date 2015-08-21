@@ -37,10 +37,10 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
-import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.ShortLinkQueryService;
+import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
@@ -91,6 +91,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Timeline management service.
+     */
+    @Inject
+    private TimelineMgmtService timelineMgmtService;
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
@@ -157,7 +163,8 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                                 + "'>" + articleTitle + "</a>")
                         .replace("{comment}", StringUtils.substring(Jsoup.parse(cc).text(), 0, 28));
                 timeline.put(Common.CONTENT, content);
-                TimelineChannel.notifyTimeline(timeline);
+               
+                timelineMgmtService.addTimeline(timeline);
             }
 
             // 1. 'Commented' Notification

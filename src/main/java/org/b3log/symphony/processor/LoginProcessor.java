@@ -51,8 +51,8 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
-import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.service.PointtransferMgmtService;
+import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.service.VerifycodeMgmtService;
@@ -127,6 +127,12 @@ public class LoginProcessor {
      */
     @Inject
     private VerifycodeQueryService verifycodeQueryService;
+
+    /**
+     * Timeline management service.
+     */
+    @Inject
+    private TimelineMgmtService timelineMgmtService;
 
     /**
      * Shows registration page.
@@ -319,7 +325,8 @@ public class LoginProcessor {
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
                     + "/member/" + name + "'>" + name + "</a>");
             timeline.put(Common.CONTENT, content);
-            TimelineChannel.notifyTimeline(timeline);
+
+            timelineMgmtService.addTimeline(timeline);
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
