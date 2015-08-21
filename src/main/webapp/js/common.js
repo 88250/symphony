@@ -63,11 +63,14 @@ var Util = {
                     }
 
                     for (var i = 0; i < result.userNames.length; i++) {
-                        var displayText = result.userNames[i];
-                        var text = result.userNames[i];
+                        var user = result.userNames[i];
+                        var name = user.userName;
+                        var avatar = user.userAvatarURL;
+                        
                         autocompleteHints.push({
-                            displayText: "<span>" + displayText + "</span>",
-                            text: text + " "
+                            displayText: "<span style='font-size: 1.2rem;'><img style='width: 1.6rem' src='" + avatar 
+                                    + "-64'>&nbsp;" + name + "</span>",
+                            text: name + " "
                         });
                     }
                 }
@@ -94,7 +97,7 @@ var Util = {
                 if (Util.startsWith(text, input)) {
                     autocompleteHints.push({
                         displayText: "<span>" + displayText +
-                                "&nbsp;<img style='width: 16px' src='/js/lib/emojify.js-1.0.2/images/basic/" + text + ".png'></span>",
+                                "&nbsp;<img style='width: 1.2rem' src='/js/lib/emojify.js-1.0.2/images/basic/" + text + ".png'></span>",
                         text: ":" + text + ": "
                     });
                     matchCnt++;

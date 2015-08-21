@@ -1046,7 +1046,7 @@ public class UserProcessor {
             return;
         }
 
-        final List<String> userNames = userQueryService.getUserNamesByPrefix(namePrefix);
+        final List<JSONObject> userNames = userQueryService.getUserNamesByPrefix(namePrefix);
         ret.put(Common.USER_NAMES, userNames);
     }
 
