@@ -473,6 +473,8 @@ public class UserMgmtService {
             user.put(UserExt.USER_POINT, 0);
             user.put(UserExt.USER_TAGS, "");
             user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName")); // TODO: set default skin by app role
+            user.put(UserExt.USER_PROVINCE, "");
+            user.put(UserExt.USER_CITY, "");
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
 
