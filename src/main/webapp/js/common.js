@@ -156,10 +156,10 @@ var Util = {
                         cm.replaceRange('<audio controls="controls" src="' + qiniuDomain + '/' + key + '"></audio>\n\n',
                             CodeMirror.Pos(cursor.line, cursor.ch - uploadingLabel.length), cursor);
                     },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert("Error: " + errorThrown); 
                         var cursor = cm.getCursor();
-                        cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                        cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - uploadingLabel.length), cursor);
                     }
                 });    
             };      

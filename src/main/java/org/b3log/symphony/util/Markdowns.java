@@ -50,12 +50,12 @@ public final class Markdowns {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Markdowns.class.getName());
-    
+
     /**
      * Language service.
      */
-    public static final LangPropsService LANG_PROPS_SERVICE = 
-            LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
+    public static final LangPropsService LANG_PROPS_SERVICE
+            = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
 
     /**
      * Gets the safe HTML content of the specified content.
@@ -89,7 +89,7 @@ public final class Markdowns {
         final Elements as = doc.getElementsByTag("a");
         for (final Element a : as) {
             a.attr("rel", "nofollow");
-            
+
             final String href = a.attr("href");
             if (href.startsWith(Latkes.getServePath())) {
                 continue;
@@ -97,9 +97,16 @@ public final class Markdowns {
 
             a.attr("target", "_blank");
         }
-        
+
         final Elements audios = doc.getElementsByTag("audio");
         for (final Element audio : audios) {
+            final String src = audio.attr("src");
+            if (!src.startsWith(Symphonys.get("qiniu.domain"))) {
+                audio.remove();
+
+                continue;
+            }
+
             audio.text(LANG_PROPS_SERVICE.get("notSupportAudioLabel"));
             audio.attr("preload", "auto");
         }
