@@ -30,8 +30,8 @@
                         </label>
                     </div>
                     <div class="fn-clear article-content">
-                        <form class="fn-none" id="fileupload" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="file" accept="image/*">
+                        <form class="fn-none" id="fileUpload" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="file">
                         </form>
                         <textarea id="articleContent" placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if></textarea>
                         <span id="articleContentTip" style="top: 304px; right: 2px;"></span>
@@ -44,7 +44,7 @@
                         <span style="right:2px;top:424px;"></span><br/><br/>
                     </div>
                     <div class="fn-clear article-reward-content">
-                        <form class="fn-none" id="rewardFileupload" method="POST" enctype="multipart/form-data">
+                        <form class="fn-none" id="rewardFileUpload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
                         </form>
                         <textarea id="articleRewardContent" placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
@@ -90,16 +90,16 @@
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-process.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
-        
+
         <script>
                                                 Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
                                                 Label.articleContentErrorLabel = "${articleContentErrorLabel}";
                                                 Label.tagsErrorLabel = "${tagsErrorLabel}";
                                                 Label.userName = "${userName}";
                                                 Util.uploadFile({
-                                                        "id": "fileupload",
+                                                        "id": "fileUpload",
                                                         "pasteZone": $("#articleContent").next(),
                                                         "qiniuUploadToken": "${qiniuUploadToken}",
                                                         "editor": AddArticle.editor,
@@ -107,15 +107,173 @@
                                                         "qiniuDomain": "${qiniuDomain}"
                                                 });
                                                 Util.uploadFile({
-                                                        "id": "rewardFileupload",
+                                                        "id": "rewardFileUpload",
                                                         "pasteZone": $("#articleRewardContent").next(),
                                                         "qiniuUploadToken": "${qiniuUploadToken}",
                                                         "editor": AddArticle.rewardEditor,
                                                         "uploadingLabel": "${uploadingLabel}",
                                                         "qiniuDomain": "${qiniuDomain}"
                                                 });
-                                                
                                                 $('#articleTitle').focus();
         </script>
+        <script>
+            var qiniuToken = '${qiniuUploadToken}';
+            var qiniuDomain = '${qiniuDomain}';
+            var audioRecordingLabel = '${audioRecordingLabel}';
+            var uploadingLabel = '${uploadingLabel}';
+            
+			// variables
+			var wavFileBlob = null;
+			var recorderObj = null;
+			var scriptProcessor = null;										
+			var detectGetUserMedia = new BrowserGetUserMediaDetection();
+			
+			//First, check to see if get user media is supported:
+			console.log("Get user media supported: " + detectGetUserMedia.getUserMediaSupported());
+															
+			if(detectGetUserMedia.getUserMediaSupported())
+			{   
+				console.log("Get user media is supported!");
+				console.log("Supported get user media method: " + detectGetUserMedia.getUserMediaMethod());
+				
+				console.log("Assigning get user media method.");
+				navigator.getUserMedia = detectGetUserMedia.getUserMediaMethod();
+				
+				console.log("Requesting microphone access from browser.");
+				navigator.getUserMedia({audio:true}, success, failure);
+				
+				//document.getElementById("div_RecordingNotSupported").style.display="none"; // hide recording not supported message
+				//document.getElementById("button_startRecording").style.display="block"; // show start recording button
+					
+			}
+			else
+			{
+				console.log("ERROR: getUserMedia not supported by browser.");
+								
+				alert('Your browser does not appear to support audio recording.');
+			}
+			
+			
+			//Get user media failure callback function:
+			function failure(e)
+			{
+				console.log("getUserMedia->failure(): ERROR: Microphone access request failed!");												    												    
+				
+				var errorMessageToDisplay;
+				var PERMISSION_DENIED_ERROR = "PermissionDeniedError";
+				var DEVICES_NOT_FOUND_ERROR = "DevicesNotFoundError"; 
+				
+				console.log(e);
+				console.log(e.name);
+			   
+				switch(e.name)
+				{
+					case PERMISSION_DENIED_ERROR:
+						errorMessageToDisplay = '${recordDeniedLabel}';
+						break;
+					case DEVICES_NOT_FOUND_ERROR:
+						errorMessageToDisplay = '${recordDeviceNotFoundLabel}';
+						break;
+					default:
+						errorMessageToDisplay = 'ERROR: The following unexpected error occurred while attempting to connect to your microphone: '+e.name;
+						break;                
+				}
+				console.log("getUserMedia->failure(): "+errorMessageToDisplay);
+				alert(errorMessageToDisplay); 
+			}
+			
+			//Get user media success callback function:
+			function success(e)
+			{
+				console.log("getUserMedia->success(): Microphone access request was successful!");
+				
+				var BUFFER_SIZE = 2048;
+				var RECORDING_MODE = PredefinedRecordingModes.MONO_5_KHZ; // 单声道 5kHz 最低的采样率
+				var SAMPLE_RATE = RECORDING_MODE.getSampleRate();
+				var OUTPUT_CHANNEL_COUNT = RECORDING_MODE.getChannelCount();
+				
+				
+				console.log("getUserMedia->success(): Detecting window audio context.");
+				var detectWindowAudioContext = new BrowserWindowAudioContextDetection();
+				
+				if(detectWindowAudioContext.windowAudioContextSupported())
+				{
+					console.log("getUserMedia->success(): Window audio context supported.");
+					
+					var windowAudioContext = detectWindowAudioContext.getWindowAudioContextMethod();
+					
+					console.log("getUserMedia->success(): Window audio context method: " + windowAudioContext);
+				
+					console.log('getUserMedia->success(): Creating recorder object.');
+					
+					recorderObj = new SoundRecorder(windowAudioContext, BUFFER_SIZE, SAMPLE_RATE, OUTPUT_CHANNEL_COUNT);
+					
+					console.log('getUserMedia->success(): Initializing recorder object.');
+					recorderObj.init(e);
+			
+					console.log('getUserMedia->success(): Assigning onaudioprocess event function.');
+				
+					recorderObj.recorder.onaudioprocess = function(e)
+					{            
+						//Do nothing if not recording:
+						if (!recorderObj.isRecording()) return;                        
+						// Copy the data from the input buffers;
+						var left = e.inputBuffer.getChannelData (0);
+						var right = e.inputBuffer.getChannelData (1);
+						recorderObj.cloneChannelData(left, right);            
+						console.log('SoundRecorder.recorder.onaudioprocess: Saving audio data...');
+					};
+					
+					console.log('getUserMedia->success(): Recorder object successfully created and initialized.');
+					console.log('getUserMedia->success(): Recorder object ready status: ' + recorderObj.isReady());
+					
+					//document.getElementById("button_startRecording").disabled = false;
+					//document.getElementById("button_stopRecording").disabled = true;
+				}
+				else
+				{
+					var messageString = "Unable to detect window audio context, cannot continue.";
+					console.log("getUserMedia->success(): "+ messageString);
+					alert(messageString);
+					return;
+				}    
+			}
+						
+			function handleStartRecording()
+			{
+				//Update UI:
+				//document.getElementById("button_startRecording").disabled = true;
+				//document.getElementById("button_startRecording").style.display = "none";
+				//document.getElementById("button_stopRecording").style.display = "block";
+				//document.getElementById("button_stopRecording").disabled = false;
+				
+				//Start the recording:
+				console.log("Starting new recording...");
+				recorderObj.startRecordingNewWavFile();
+				
+			}
+			
+			function handleStopRecording()
+			{
+				//Disable stop button to prevent clicking too many times:
+				//document.getElementById("button_stopRecording").disabled = true;
+				//document.getElementById("button_stopRecording").style.display = "none";
+				
+				//Stop the recording:
+				console.log("Stopping recording.");
+				recorderObj.stopRecording();
+				
+				//Save the recording by building the wav file blob and send it to the client:
+				console.log("Building wav file.");
+				wavFileBlob = recorderObj.buildWavFileBlob();
+				
+				console.log("Downloading...");
+				//wavFileBlob.downloadLocally();
+                                
+				//Re-enable the start button after saving:
+				//document.getElementById("button_startRecording").disabled = false;
+				//document.getElementById("button_startRecording").style.display = "block";
+			}
+	</script>
     </body>
 </html>

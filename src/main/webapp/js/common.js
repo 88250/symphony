@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.6.8, Aug 15, 2015
+ * @version 1.11.6.8, Aug 23, 2015
  */
 
 /**
@@ -121,6 +121,50 @@ var Util = {
                 cm.showHint({hint: CodeMirror.hint.emoji, completeSingle: false});
             }, 50);
             return CodeMirror.Pass;
+        };
+        CodeMirror.commands.startAudioRecord = function (cm) {
+            handleStartRecording();
+            
+            var cursor = cm.getCursor();
+            cm.replaceRange(audioRecordingLabel, cursor, cursor);
+        };
+        CodeMirror.commands.endAudioRecord = function (cm) {
+            handleStopRecording();
+            
+            var cursor = cm.getCursor();
+            cm.replaceRange(uploadingLabel, CodeMirror.Pos(cursor.line, cursor.ch - audioRecordingLabel.length), cursor);
+                        
+            var blob = wavFileBlob.getDataBlob();
+            var key = Math.floor(Math.random() * 100) + "" + new Date().getTime() + "" 
+                    + Math.floor(Math.random() * 100) + ".wav";
+            
+            var reader = new FileReader();
+            reader.onload = function(event){
+                var fd = new FormData();
+                fd.append('token', qiniuToken);
+                fd.append('file', blob);
+                fd.append('key', key);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://upload.qiniu.com/',
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        var cursor = cm.getCursor();
+                        cm.replaceRange('<audio controls="controls" src="' + qiniuDomain + '/' + key + '"></audio>\n\n',
+                            CodeMirror.Pos(cursor.line, cursor.ch - uploadingLabel.length), cursor);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                        alert("Error: " + errorThrown); 
+                        var cursor = cm.getCursor();
+                        cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                    }
+                });    
+            };      
+            // trigger the read from the reader...
+            reader.readAsDataURL(blob);
         };
     },
     /**
@@ -554,10 +598,10 @@ var Util = {
 
                         if (null == mime) {
                             alert("只允许上传图片~");
-                            
+
                             return;
                         }
-                        
+
                         data.submit();
                     } 
                 } else {
@@ -778,8 +822,7 @@ if (!Cookie) {
     };
 }
 
-// 开始 - 判断文件是否是图片
-
+// 开始 - 判断文件类型
 var pngMagic = [
     0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a
 ];
@@ -798,6 +841,12 @@ var gifMagic0 = [
 var getGifMagic1 = [
     0x47, 0x49, 0x46, 0x38, 0x39, 0x61
 ];
+var wavMagic1 = [
+    0x52, 0x49, 0x46, 0x46
+];
+var wavMagic2 = [
+    0x57, 0x41, 0x56, 0x45
+];
 
 function arraycopy(src, index, dist, distIndex, size) {
     for (i = 0; i < size; i++) {
@@ -806,22 +855,27 @@ function arraycopy(src, index, dist, distIndex, size) {
 }
 
 function arrayEquals(arr1, arr2) {
-    //console.log(arr1)
-    //console.log(arr2)
+    //console.log(arr1);
+    //console.log(arr2);
     if (arr1 == 'undefined' || arr2 == 'undefined') {
         return false
     }
+    
     if (arr1 instanceof Array && arr2 instanceof Array) {
         if (arr1.length != arr2.length) {
             return false
         }
+        
         for (i = 0; i < arr1.length; i++) {
             if (arr1[i] != arr2[i]) {
                 return false
             }
         }
+        
+        
         return true
     }
+    
     return false;
 }
 
@@ -829,28 +883,50 @@ function isImage(buf) {
     if (buf == null || buf == 'undefined' || buf.length < 8) {
         return null;
     }
+    
     var bytes = [];
     arraycopy(buf, 0, bytes, 0, 6);
     if (isGif(bytes)) {
         return "image/gif";
     }
+    
     bytes = [];
     arraycopy(buf, 6, bytes, 0, 4);
     if (isJpeg(bytes)) {
         return "image/jpeg";
     }
+    
     bytes = [];
     arraycopy(buf, 0, bytes, 0, 8);
     if (isPng(bytes)) {
         return "image/png";
     }
+    
+    return null;
+}
+
+function isAudio(buf) {
+    if (buf == null || buf == 'undefined' || buf.length < 12) {
+        return null;
+    }
+    
+    var bytes1 = [];
+    arraycopy(buf, 0, bytes1, 0, 4);
+    
+    var bytes2 = [];
+    arraycopy(buf, 8, bytes2, 0, 4);
+    
+    if (isWav(bytes1, bytes2)) {
+        return "audio/wav";
+    }
+
     return null;
 }
 
 
 /**
  * @param data first 6 bytes of file
- * @return gif image file true,other false
+ * @return gif image file true, other false
  */
 function isGif(data) {
     //console.log('GIF')
@@ -859,7 +935,7 @@ function isGif(data) {
 
 /**
  * @param data first 4 bytes of file
- * @return jpeg image file true,other false
+ * @return jpeg image file true, other false
  */
 function isJpeg(data) {
     //console.log('JPEG')
@@ -868,11 +944,19 @@ function isJpeg(data) {
 
 /**
  * @param data first 8 bytes of file
- * @return png image file true,other false
+ * @return png image file true, other false
  */
 function isPng(data) {
     //console.log('PNG')
     return arrayEquals(data, pngMagic);
 }
 
-// 结束 - 判断文件是否是图片
+/**
+ * @param data first 12 bytes of file
+ * @return wav file true, other false
+ */
+function isWav(data1, data2) {
+    return arrayEquals(data1, wavMagic1) && arrayEquals(data2, wavMagic2);
+}
+
+// 结束 - 判断文件类型

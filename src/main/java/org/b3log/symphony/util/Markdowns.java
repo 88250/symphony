@@ -18,8 +18,11 @@ package org.b3log.symphony.util;
 import java.io.StringReader;
 import java.io.StringWriter;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Strings;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,7 +41,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.7, Aug 12, 2015
+ * @version 1.4.1.7, Aug 23, 2015
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -47,6 +50,12 @@ public final class Markdowns {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Markdowns.class.getName());
+    
+    /**
+     * Language service.
+     */
+    public static final LangPropsService LANG_PROPS_SERVICE = 
+            LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
 
     /**
      * Gets the safe HTML content of the specified content.
@@ -61,10 +70,10 @@ public final class Markdowns {
 
         final String tmp = Jsoup.clean(content, baseURI, Whitelist.relaxed().
                 addAttributes(":all", "id", "target", "class", "style").
-                addTags("span", "hr").addAttributes("iframe", "src", "width", "height"), outputSettings);
+                addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
+                .addAttributes("audio", "controls", "src"), outputSettings);
         final Document doc = Jsoup.parse(tmp, baseURI, Parser.xmlParser());
         final Elements iframes = doc.getElementsByTag("iframe");
-
         for (final Element iframe : iframes) {
             final String src = iframe.attr("src");
             if (!src.startsWith("https://wide.b3log.org")) {
@@ -87,6 +96,12 @@ public final class Markdowns {
             }
 
             a.attr("target", "_blank");
+        }
+        
+        final Elements audios = doc.getElementsByTag("audio");
+        for (final Element audio : audios) {
+            audio.text(LANG_PROPS_SERVICE.get("notSupportAudioLabel"));
+            audio.attr("preload", "auto");
         }
 
         return doc.html();
