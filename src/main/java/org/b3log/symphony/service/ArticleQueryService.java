@@ -672,8 +672,7 @@ public class ArticleQueryService {
                     story.put("title", article.optString(Article.ARTICLE_TITLE));
                 }
                 story.put("id", article.optLong("oId"));
-//                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-                story.put("url", "http://192.168.1.103:8084" + article.optString(Article.ARTICLE_PERMALINK));
+                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK)); 
                 story.put("user_display_name", article.optString(Article.ARTICLE_T_AUTHOR_NAME));
                 story.put("user_job", author.optString(UserExt.USER_INTRO));
                 story.put("comment_html", article.optString(Article.ARTICLE_CONTENT));
@@ -682,7 +681,12 @@ public class ArticleQueryService {
                 story.put("created_at", formatDate(article.get(Article.ARTICLE_CREATE_TIME)));
                 story.put("user_portrait_url", article.optString(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL));
                 story.put("comments", getAllComments(article.optString("oId")));
-                story.put("badge", "mysql");
+                final String tagsString = article.optString(Article.ARTICLE_TAGS);
+                String[] tags = null;
+                if(!Strings.isEmptyOrNull(tagsString)){
+                    tags = tagsString.split(",");
+                }
+                story.put("badge",tags == null ? "" : tags[0]);
                 stories.add(story);
             }
             final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
