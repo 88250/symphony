@@ -90,7 +90,7 @@ public class UserQueryService {
     /**
      * All usernames.
      */
-    private List<String> userNames = Collections.synchronizedList(new ArrayList<String>());
+    private List<JSONObject> userNames = Collections.synchronizedList(new ArrayList<JSONObject>());
 
     /**
      * Loads all usernames from database.
@@ -100,26 +100,35 @@ public class UserQueryService {
 
         final Query query = new Query().setPageCount(1);
         query.addProjection(User.USER_NAME, String.class);
+        query.addProjection(UserExt.USER_AVATAR_URL, String.class);
 
         try {
-            final JSONObject result = userRepository.get(query);
+            final JSONObject result = userRepository.get(query); // XXX: Performance Issue
             final JSONArray array = result.optJSONArray(Keys.RESULTS);
             for (int i = 0; i < array.length(); i++) {
-                userNames.add(array.optJSONObject(i).optString(User.USER_NAME));
+                final JSONObject user = array.optJSONObject(i);
+
+                final JSONObject u = new JSONObject();
+                u.put(User.USER_NAME, user.optString(User.USER_NAME));
+
+                String avatar = user.optString(UserExt.USER_AVATAR_URL);
+                if (StringUtils.isBlank(avatar)) {
+                    avatar = AvatarQueryService.DEFAULT_AVATAR_URL;
+                }
+                u.put(UserExt.USER_AVATAR_URL, avatar);
+
+                userNames.add(u);
             }
 
-            final Comparator<String> c = new Comparator<String>() {
+            Collections.sort(userNames, new Comparator<JSONObject>() {
                 @Override
-                public int compare(final String str1, final String str2) {
-                    if (StringUtils.startsWithIgnoreCase(str1, str2)) {
-                        return 0;
-                    }
+                public int compare(final JSONObject u1, final JSONObject u2) {
+                    final String u1Name = u1.optString(User.USER_NAME);
+                    final String u2Name = u2.optString(User.USER_NAME);
 
-                    return str1.compareToIgnoreCase(str2);
+                    return u1Name.compareToIgnoreCase(u2Name);
                 }
-            };
-
-            Collections.sort(userNames, c);
+            });
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Loads usernames error", e);
         }
@@ -129,23 +138,34 @@ public class UserQueryService {
      * Gets usernames by the specified name prefix.
      *
      * @param namePrefix the specified name prefix
-     * @return a list of usernames
+     * @return a list of usernames, for example      <pre>
+     * [
+     *     {
+     *         "userName": "",
+     *         "userAvatarURL": "",
+     *     }, ....
+     * ]
+     * </pre>
      */
-    public List<String> getUserNamesByPrefix(final String namePrefix) {
-        final List<String> ret = new ArrayList<String>();
+    public List<JSONObject> getUserNamesByPrefix(final String namePrefix) {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
 
-        final Comparator<String> c = new Comparator<String>() {
+        final JSONObject nameToSearch = new JSONObject();
+        nameToSearch.put(User.USER_NAME, namePrefix);
+
+        final int index = Collections.binarySearch(userNames, nameToSearch, new Comparator<JSONObject>() {
             @Override
-            public int compare(final String str1, final String str2) {
-                if (StringUtils.startsWithIgnoreCase(str1, str2)) {
+            public int compare(final JSONObject u1, final JSONObject u2) {
+                final String u1Name = u1.optString(User.USER_NAME).toLowerCase();
+                final String inputName = u2.optString(User.USER_NAME).toLowerCase();
+
+                if (u1Name.startsWith(inputName)) {
                     return 0;
+                } else {
+                    return u1Name.compareTo(namePrefix);
                 }
-
-                return str1.compareToIgnoreCase(str2);
             }
-        };
-
-        final int index = Collections.binarySearch(userNames, namePrefix, c);
+        });
         if (index >= 0) {
             final int max = index + 5 <= userNames.size() - 1 ? index + 5 : userNames.size() - 1;
 

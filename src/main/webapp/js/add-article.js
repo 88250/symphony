@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.4.0, Aug 6, 2015
+ * @version 1.9.4.0, Aug 23, 2015
  */
 
 /**
@@ -108,6 +108,8 @@ var AddArticle = {
             extraKeys: {
                 "'@'": "autocompleteUserName",
                 "Ctrl-/": "autocompleteEmoji",
+                "Alt-S": "startAudioRecord",
+                "Alt-E": "endAudioRecord",
                 "F11": function (cm) {
                     cm.setOption("fullScreen", !cm.getOption("fullScreen"));
                 }

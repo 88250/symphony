@@ -35,7 +35,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.util.Results;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -91,6 +90,12 @@ public class ActivityMgmtService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Timeline management service.
+     */
+    @Inject
+    private TimelineMgmtService timelineMgmtService;
 
     /**
      * Fills checkin streak of the specified user.
@@ -224,7 +229,8 @@ public class ActivityMgmtService {
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
                     + "/member/" + userName + "'>" + userName + "</a>");
             timeline.put(Common.CONTENT, content);
-            TimelineChannel.notifyTimeline(timeline);
+
+            timelineMgmtService.addTimeline(timeline);
 
             return sum;
         } catch (final Exception e) {
@@ -273,7 +279,8 @@ public class ActivityMgmtService {
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
                     + "/member/" + userName + "'>" + userName + "</a>");
             timeline.put(Common.CONTENT, content);
-            TimelineChannel.notifyTimeline(timeline);
+
+            timelineMgmtService.addTimeline(timeline);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Timeline error", e);
         }

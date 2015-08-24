@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -33,6 +32,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 18, 2015
+ * @version 1.0.0.1, Aug 19, 2015
  * @since 1.3.0
  */
 @RequestProcessor
@@ -69,10 +69,10 @@ public class TimelineProcessor {
     private Filler filler;
 
     /**
-     * Language service.
+     * Timeline management service.
      */
     @Inject
-    private LangPropsService langPropsService;
+    private TimelineMgmtService timelineMgmtService;
 
     /**
      * Shows timeline.
@@ -102,5 +102,8 @@ public class TimelineProcessor {
         filler.fillHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+
+        dataModel.put("timelineCnt", Symphonys.getInt("timelineCnt"));
+        dataModel.put("timelines", timelineMgmtService.getTimelines());
     }
 }

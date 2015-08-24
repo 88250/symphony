@@ -11,10 +11,16 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content fn-clear">
+                <div class="content content-reset">
+                    <h2>${timelineLabel}</h2>
+                    <#if timelines?size <= 0>
                     <div id="emptyTimeline">${emptyTimelineLabel}</div>
+                    </#if>
                     <div class="list">
                         <ul id="ul">
+                            <#list timelines as timeline>
+                            <li>${timeline.content}</li>
+                            </#list>
                         </ul>
                     </div>
                 </div>
@@ -34,6 +40,8 @@
 
             // Init [Timeline] channel
             TimelineChannel.init("ws://${serverHost}:${serverPort}/timeline-channel");
+            
+            var timelineCnt = ${timelineCnt};
         </script>
     </body>
 </html>

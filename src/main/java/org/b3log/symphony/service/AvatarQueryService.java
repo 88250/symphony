@@ -53,7 +53,7 @@ public class AvatarQueryService {
     /**
      * Default avatar URL.
      */
-    private static final String DEFAULT_AVATAR_URL = Symphonys.get("defaultThumbnailURL");
+    public static final String DEFAULT_AVATAR_URL = Symphonys.get("defaultThumbnailURL");
 
     /**
      * Fills the specified user thumbnail URL.

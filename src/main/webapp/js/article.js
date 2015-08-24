@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.8.4, Aug 6, 2015
+ * @version 1.8.8.4, Aug 23, 2015
  */
 
 /**
@@ -50,7 +50,9 @@ var Comment = {
             lineWrapping: true,
             extraKeys: {
                 "'@'": "autocompleteUserName",
-                "Ctrl-/": "autocompleteEmoji"
+                "Ctrl-/": "autocompleteEmoji",
+                "Alt-S": "startAudioRecord",
+                "Alt-E": "endAudioRecord"
             }
         });
 

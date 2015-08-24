@@ -19,6 +19,7 @@ import java.io.FileReader;
 import java.net.URL;
 import junit.framework.Assert;
 import org.apache.commons.io.IOUtils;
+import org.b3log.latke.Latkes;
 import org.testng.annotations.Test;
 
 /**
@@ -29,7 +30,11 @@ import org.testng.annotations.Test;
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
-
+    
+    static {
+        Latkes.initRuntimeEnv();
+    }
+    
     /**
      * Tests {@link Markdowns#clean(java.lang.String, java.lang.String)} for data XSS.
      */

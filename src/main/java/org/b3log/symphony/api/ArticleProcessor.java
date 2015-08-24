@@ -189,7 +189,7 @@ public class ArticleProcessor {
     }
     
     /**
-     * Gets articles.with the specified query.
+     * Gets articles with the specified query.
      *
      * @param context the specified context
      * @param request the specified request

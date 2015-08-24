@@ -37,7 +37,6 @@ import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 /**
  * Oauth processor.
  *
@@ -47,11 +46,11 @@ import org.json.JSONObject;
  *
  * @author <a href="http://wdx.me">DX</a>
  * @version 1.0.0.0, Aug 4, 2015
- * @since 0.2.5
+ * @since 1.3.0
  */
 @RequestProcessor
 public class OauthProcessor {
-    
+
     /**
      * User query service.
      */
@@ -63,7 +62,7 @@ public class OauthProcessor {
      */
     @Inject
     private UserMgmtService userMgmtService;
-    
+
     /**
      * Mobile logins user.
      *
@@ -84,10 +83,10 @@ public class OauthProcessor {
 
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-        
+
         final String username = request.getParameter("username");
         final String password = request.getParameter("password");
-        
+
         try {
             JSONObject user = userQueryService.getUserByName(username);
             if (null == user) {
@@ -111,16 +110,15 @@ public class OauthProcessor {
             if (userPassword.equals(MD5.hash(password))) {
                 final String ip = Requests.getRemoteAddr(request);
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
-                ret.put("access_token", "{\"userPassword\":\"" + user.optString(User.USER_PASSWORD)+"\",\"userEmail\":\""
-                        + user.optString(User.USER_EMAIL)+"\"}");
+                ret.put("access_token", "{\"userPassword\":\"" + user.optString(User.USER_PASSWORD) + "\",\"userEmail\":\""
+                        + user.optString(User.USER_EMAIL) + "\"}");
                 ret.put("token_type", "bearer");
                 ret.put("scope", "user");
                 ret.put("created_at", new Date().getTime());
             }
         } catch (final ServiceException e) {
-                ret.put("error", error);
-                ret.put("error_description", errorDescription);
+            ret.put("error", error);
+            ret.put("error_description", errorDescription);
         }
     }
-    
 }

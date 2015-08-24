@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.2, Aug 18, 2015
+ * @version 1.3.3.3, Aug 19, 2015
  */
 
 /**
@@ -207,6 +207,11 @@ var TimelineChannel = {
                     var template = "<li class=\"fn-none\" id=" + time + ">" + data.content + "</li>";
                     $("#ul").prepend(template);
                     $("#" + time).fadeIn(2000);
+                    
+                    var length = $("#ul > li").length;
+                    if (length > timelineCnt) {
+                        $("#ul > li:last").remove();
+                    }
 
                     break;
             }

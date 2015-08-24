@@ -30,14 +30,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -56,11 +54,6 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleNotifier.class.getName());
-
-    /**
-     * URL fetch service.
-     */
-    private URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
      * Notification management service.
@@ -85,6 +78,12 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Timeline management service.
+     */
+    @Inject
+    private TimelineMgmtService timelineMgmtService;
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
@@ -155,49 +154,8 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                     .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
                             + "'>" + articleTitle + "</a>");
             timeline.put(Common.CONTENT, content);
-            TimelineChannel.notifyTimeline(timeline);
-
-//            final Set<String> qqSet = new HashSet<String>();
-//            for (final String userName : atUserNames) {
-//                final JSONObject user = userQueryService.getUserByName(userName);
-//                final String qq = user.optString(UserExt.USER_QQ);
-//                if (!Strings.isEmptyOrNull(qq)) {
-//                    qqSet.add(qq);
-//                }
-//            }
-//
-//            if (qqSet.isEmpty()) {
-//                return;
-//            }
-//            /*
-//             * {
-//             *     "key": "",
-//             *     "messageContent": "",
-//             *     "messageProcessor": "QQ",
-//             *     "messageToAccounts": [
-//             *         "", ....
-//             *     ]
-//             * }
-//             */
-//            final HTTPRequest httpRequest = new HTTPRequest();
-//            httpRequest.setURL(new URL(Symphonys.get("imServePath")));
-//            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
-//            final JSONObject requestJSONObject = new JSONObject();
-//            final JSONArray qqs = CollectionUtils.toJSONArray(qqSet);
-//
-//            requestJSONObject.put("messageProcessor", "QQ");
-//            requestJSONObject.put("messageToAccounts", qqs);
-//            requestJSONObject.put("key", Symphonys.get("keyOfSymphony"));
-//
-//            final StringBuilder msgContent = new StringBuilder("----\n");
-//            msgContent.append(originalArticle.optString(Article.ARTICLE_TITLE)).append("\n").append(Latkes.getServePath())
-//                    .append(originalArticle.optString(Article.ARTICLE_PERMALINK)).append("\n\n");
-//
-//            requestJSONObject.put("messageContent", msgContent.toString());
-//
-//            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-//
-//            urlFetchService.fetchAsync(httpRequest);
+            
+            timelineMgmtService.addTimeline(timeline);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article notification failed", e);
         }
