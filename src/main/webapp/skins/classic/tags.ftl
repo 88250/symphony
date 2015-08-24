@@ -27,8 +27,8 @@
                                     </#if>
                                     <h2><a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
                                     <span class="ft-small fn-right">
-                                        ${referenceLabel} ${tag.tagReferenceCount} &nbsp;
-                                        ${cmtLabel} ${tag.tagCommentCount} 
+                                        ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
+                                        ${cmtLabel} ${tag.tagCommentCount?c} 
                                     </span>
                                     <div class="content-reset">${tag.tagDescription}</div>
                                 </li>
@@ -54,8 +54,8 @@
                                     </#if>
                                     <h2><a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
                                     <span class="ft-small fn-right">
-                                        ${referenceLabel} ${tag.tagReferenceCount} &nbsp;
-                                        ${cmtLabel} ${tag.tagCommentCount} 
+                                        ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
+                                        ${cmtLabel} ${tag.tagCommentCount?c} 
                                     </span>
                                     <div class="content-reset">${tag.tagDescription}</div>
                                 </li>

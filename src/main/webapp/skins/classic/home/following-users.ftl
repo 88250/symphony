@@ -21,8 +21,8 @@
                 <span class="ft-small">${numVIPLabel}</span>
                 </#if>
                 <#else>
-                <span class="ft-small">${articleLabel}</span> ${followingUser.userArticleCount} &nbsp;
-                <span class="ft-small">${tagLabel}</span> ${followingUser.userTagCount}
+                <span class="ft-small">${articleLabel}</span> ${followingUser.userArticleCount?c} &nbsp;
+                <span class="ft-small">${tagLabel}</span> ${followingUser.userTagCount?c}
                 </#if>
                 <br/>
 

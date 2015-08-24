@@ -17,8 +17,8 @@
                     <a href="/tags/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
                 </h3>
 
-                <span class="ft-small">${referenceLabel}</span> ${followingTag.tagReferenceCount}
-                <span class="ft-small">${cmtLabel}</span> ${followingTag.tagCommentCount} &nbsp;
+                <span class="ft-small">${referenceLabel}</span> ${followingTag.tagReferenceCount?c}
+                <span class="ft-small">${cmtLabel}</span> ${followingTag.tagCommentCount?c} &nbsp;
                 <br/>
                 <#if isLoggedIn> 
                 <#if followingTag.isFollowing>
