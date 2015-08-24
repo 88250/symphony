@@ -1,63 +1,58 @@
-<div class="nav"> 
-    <div class="wrapper">
-        <h1><a rel="nofollow" href="/">Sym</a></h1>
-        <form target="_blank" action="http://search.b3log.org/cse/search">
+<div class="nav">
+    <div class="logo-wrap">
+        <img src="${staticServePath}/skins/hacpai/static/images/logo.png"/>
+        <span class="fn-none">程序员和设计师的天堂</span>
+    </div>
+    <ul class="fn-clear fn-list">
+        <li class="current">
+            <h1><a rel="nofollow" href="/">首页</a></h1>
+        </li>
+        <li>
+            <h1><a rel="nofollow" href="/">我是画家</a></h1>
+        </li>
+        <li>
+            <h1><a rel="nofollow" href="/">我是黑客</a></h1>
+        </li>
+        <li>
+            <h1><a rel="nofollow" href="/">此刻</a></h1>
+        </li>
+        <li>
+            <h1><a rel="nofollow" href="/">活动</a></h1>
+        </li>
+    </ul>
+    <div class="fn-right info fn-clear">
+        <form target="_blank" action="http://search.b3log.org/cse/search" class="fn-left">
             <span class="icon icon-search"></span>
             <input class="search" type="text" name="q">
             <input type="hidden" value="10365148342193520062" name="s">
             <input type="hidden" name="cc" value="symphony.b3log.org">
             <input type="submit" class="fn-none" value="">
         </form>
-        <div class="fn-flex-1 tags responsive-hide">
-            <#list navTrendTags as trendTag>
-            <a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
-            </#list>
-        </div>
-        <div class="fn-clear user-nav">
-            <#if isLoggedIn>
-            <a id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon icon-logout"></a>
+        
+        <a class="icon-info" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
+
+        <ul class="fn-list">
+            <li>
+                <a href="${logoutURL}}">我的文章</a>
+            </li>
+            <li>
+                <a href="${logoutURL}}">我的评价</a>
+            </li>
+            <li>
+                <a href="${logoutURL}}">我的积分</a>
+            </li>
+            <li>
+                <a href="${logoutURL}}">设置</a>
+            </li>
             <#if "adminRole" == userRole>
-            <a href="/admin" title="${adminLabel}" class="icon icon-userrole"></a>
+            <li>
+                <a href="/admin">用户管理</a>
+            </li>
             </#if>
-            <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
-            <a href="/activities" title="${activityLabel}" class="icon icon-flag"></a>
-            <a href="/add-article" title="${addArticleLabel}" 
-               class="icon icon-addfile"></a>
-            <#else>
-            <a id="aRegister" href="javascript:Util.goRegister()" class="last icon icon-register" 
-               title="${registerLabel}"></a>
-            <a href="javascript: Util.showLogin();" class="icon icon-login" title="${loginLabel}"></a>
-            <div class="form fn-none">
-                <table cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="40">
-                            <label for="nameOrEmail">${accountLabel}</label>
-                        </td>
-                        <td>
-                            <input id="nameOrEmail" type="text" placeholder="${nameOrEmailLabel}" />
-                            <span style="top: 28px; left: 246px;"></span>
-                        </td>
-                        <td>&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="loginPassword">${passwordLabel}</label>
-                        </td>
-                        <td>
-                            <input type="password" id="loginPassword" />
-                            <span style="top: 83px; left: 246px;"></span>
-                        </td>
-                        <td>&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" align="right">
-                            <span id="loginTip" style="right: 82px; top: 126px;"></span>
-                            <button class="red" onclick="Util.login()">${loginLabel}</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            </#if>
-        </div>
+            <li>
+                <button class="btn" onclick="window.location.href='${logoutURL}}'">用户退出</button>
+            </li>
+        </ul>
     </div>
+
 </div>

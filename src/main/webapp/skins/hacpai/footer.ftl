@@ -37,6 +37,7 @@
     </div>
 </div>
 <div class="icon-up icon" onclick="Util.goTop()"></div>
+<img  src="${staticServePath}/skins/hacpai/static/images/logo.png"/>
 <script>var isLoggedIn = ${isLoggedIn?c};</script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
