@@ -21,15 +21,20 @@
         </li>
     </ul>
     <div class="fn-right info fn-clear">
-        <form target="_blank" action="http://search.b3log.org/cse/search" class="fn-left">
-            <span class="icon icon-search"></span>
-            <input class="search" type="text" name="q">
+        <form target="_blank" action="http://search.b3log.org/cse/search" class="fn-clear">
+            <input type="text" name="q" placeholder="随便搜点什么...">
             <input type="hidden" value="10365148342193520062" name="s">
             <input type="hidden" name="cc" value="symphony.b3log.org">
             <input type="submit" class="fn-none" value="">
+            <span class="icon-search"></span>
         </form>
-        
-        <a class="icon-info" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
+
+        <a class="icon-info" href="/notifications" title="${messageLabel}"></a>
+
+        <span class="count">${unreadNotificationCount}</span>
+        <a href="/settings">
+            <img class="avatar" title="${userName}" src="${currentUser.userAvatarURL}" />
+        </a>
 
         <ul class="fn-list">
             <li>
@@ -50,7 +55,7 @@
             </li>
             </#if>
             <li>
-                <button class="btn" onclick="window.location.href='${logoutURL}}'">用户退出</button>
+                <button class="btn" onclick="window.location.href = '${logoutURL}}'">用户退出</button>
             </li>
         </ul>
     </div>
