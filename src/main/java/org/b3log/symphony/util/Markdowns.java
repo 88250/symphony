@@ -108,7 +108,7 @@ public final class Markdowns {
             }
 
             audio.text(LANG_PROPS_SERVICE.get("notSupportAudioLabel"));
-            audio.attr("preload", "auto");
+            audio.attr("preload", "none");
         }
 
         return doc.html();
