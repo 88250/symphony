@@ -342,7 +342,7 @@ textarea {
 .nav .info a.icon-info {
     font-size: 22px;
     line-height: 33px;
-    margin: 0 30px;
+    margin: 0 15px 0 30px;
 }
 
 .nav .count {
@@ -374,6 +374,7 @@ textarea {
     line-height: 40px;
     position: absolute;
     right: 0;
+    z-index: 2;
 }
 
 .nav .info li {

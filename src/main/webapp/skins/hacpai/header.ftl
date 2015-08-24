@@ -31,7 +31,9 @@
 
         <a class="icon-info" href="/notifications" title="${messageLabel}"></a>
 
+        <#if unreadNotificationCount != 0>
         <span class="count">${unreadNotificationCount}</span>
+        </#if>
         <a href="/settings">
             <img class="avatar" title="${userName}" src="${currentUser.userAvatarURL}" />
         </a>
