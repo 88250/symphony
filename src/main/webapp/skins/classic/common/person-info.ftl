@@ -39,15 +39,15 @@
 
         <ul class="status fn-flex">
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/tags'">
-                <strong>${currentUser.followingTagCnt}</strong>
+                <strong>${currentUser.followingTagCnt?c}</strong>
                 <span class="ft-small">${followingTagsLabel}</span>
             </li>
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/users'">
-                <strong>${currentUser.followingUserCnt}</strong>
+                <strong>${currentUser.followingUserCnt?c}</strong>
                 <span class="ft-small">${followingUsersLabel}</span>
             </li>
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/articles'">
-                <strong>${currentUser.followingArticleCnt}</strong>
+                <strong>${currentUser.followingArticleCnt?c}</strong>
                 <span class="ft-small">${followingArticlesLabel}</span>
             </li>
         </ul>

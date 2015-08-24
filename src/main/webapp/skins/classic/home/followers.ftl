@@ -17,12 +17,12 @@
                 <a class="ft-small" target="_blank" rel="friend" href="${follower.userURL?html}">${follower.userURL?html}</a>
                 <#else>
                 <span class="ft-small">Symphony</span>
-                ${follower.userNo}
+                ${follower.userNo?c}
                 <span class="ft-small">${numVIPLabel}</span>
                 </#if>
                 <#else>
-                <span class="ft-small">${articleLabel}</span> ${follower.userArticleCount} &nbsp;
-                <span class="ft-small">${tagLabel}</span> ${follower.userTagCount}
+                <span class="ft-small">${articleLabel}</span> ${follower.userArticleCount?c} &nbsp;
+                <span class="ft-small">${tagLabel}</span> ${follower.userTagCount?c}
                 </#if>
                 <br/>
 

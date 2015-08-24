@@ -61,9 +61,9 @@
                                 <div>${relatedTag.tagDescription}</div>
                                 <span class="fn-right">
                                     <span class="ft-small">${referenceLabel}</span> 
-                                    ${relatedTag.tagReferenceCount} &nbsp;
+                                    ${relatedTag.tagReferenceCount?c} &nbsp;
                                     <span class="ft-small">${cmtLabel}</span>
-                                    ${relatedTag.tagCommentCount}&nbsp;
+                                    ${relatedTag.tagCommentCount?c}&nbsp;
                                 </span>
                             </div>
                         </li>
@@ -73,15 +73,15 @@
                 <div class="fn-flex">
                     <ul class="status fn-flex fn-flex-1">
                         <li>
-                            <strong>${tag.tagReferenceCount}</strong>
+                            <strong>${tag.tagReferenceCount?c}</strong>
                             <span class="ft-small">${referenceLabel}</span>
                         </li>
                         <li>
-                            <strong>${tag.tagCommentCount}</strong>
+                            <strong>${tag.tagCommentCount?c}</strong>
                             <span class="ft-small">${cmtLabel}</span>
                         </li>
                         <li>
-                            <strong>${tag.tagFollowerCount}</strong>
+                            <strong>${tag.tagFollowerCount?c}</strong>
                             <span class="ft-small">${followLabel}</span>
                         </li>
                     </ul>

@@ -30,7 +30,7 @@
         </#if>
         <div class="user-info">
             <span class="ft-small">Symphony</span>
-            ${user.userNo}
+            ${user.userNo?c}
             <span class="ft-small">${numVIPLabel}</span>, <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
         </div>
         <#if "" != user.userTags>
@@ -59,23 +59,23 @@
         </div>
         <div class="user-info">
             <span class="ft-small">${checkinStreakPart0Label}</span>
-            ${user.userLongestCheckinStreak} 
+            ${user.userLongestCheckinStreak?c} 
             <span class="ft-small">${checkinStreakPart1Label}</span> 
-            ${user.userCurrentCheckinStreak}
+            ${user.userCurrentCheckinStreak?c}
             <span class="ft-small">${checkinStreakPart2Label}</span>
         </div>
 
         <ul class="status fn-flex">
             <li>
-                <strong>${user.userTagCount}</strong>
+                <strong>${user.userTagCount?c}</strong>
                 <span class="ft-small">${tagLabel}</span>
             </li>
             <li>
-                <strong>${user.userArticleCount}</strong>
+                <strong>${user.userArticleCount?c}</strong>
                 <span class="ft-small">${articleLabel}</span>
             </li>
             <li>
-                <strong>${user.userCommentCount}</strong>
+                <strong>${user.userCommentCount?c}</strong>
                 <span class="ft-small">${cmtLabel}</span>
             </li>
         </ul>
