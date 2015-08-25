@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.6.8, Aug 23, 2015
+ * @version 1.11.6.9, Aug 25, 2015
  */
 
 /**
@@ -123,18 +123,28 @@ var Util = {
             return CodeMirror.Pass;
         };
         CodeMirror.commands.startAudioRecord = function (cm) {
-            handleStartRecording();
+            if (!Audio.availabel) {
+                Audio.init();
+            }
             
-            var cursor = cm.getCursor();
-            cm.replaceRange(audioRecordingLabel, cursor, cursor);
+            if (Audio.availabel) {
+                Audio.handleStartRecording();
+
+                var cursor = cm.getCursor();
+                cm.replaceRange(audioRecordingLabel, cursor, cursor);
+            }
         };
         CodeMirror.commands.endAudioRecord = function (cm) {
-            handleStopRecording();
+            if (!Audio.availabel) {
+                return;
+            }
+            
+            Audio.handleStopRecording();
             
             var cursor = cm.getCursor();
             cm.replaceRange(uploadingLabel, CodeMirror.Pos(cursor.line, cursor.ch - audioRecordingLabel.length), cursor);
                         
-            var blob = wavFileBlob.getDataBlob();
+            var blob = Audio.wavFileBlob.getDataBlob();
             var key = Math.floor(Math.random() * 100) + "" + new Date().getTime() + "" 
                     + Math.floor(Math.random() * 100) + ".wav";
             

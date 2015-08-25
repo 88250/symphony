@@ -686,7 +686,7 @@ public class ArticleQueryService {
                 if(!Strings.isEmptyOrNull(tagsString)){
                     tags = tagsString.split(",");
                 }
-                story.put("badge",tags == null ? "" : tags[0]);
+                story.put("badge", tags == null ? "" : tags[0]);
                 stories.add(story);
             }
             final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
