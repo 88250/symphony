@@ -246,6 +246,18 @@ textarea {
 .icon-heart:before {
     content: "\e607";
 }
+
+.ico-down {
+    width: 0;
+    height: 0;
+    border-width: 8px 6px;
+    border-style: solid;
+    border-color: #888888 transparent transparent transparent;
+    float: right;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-right: 10px;
+}
 /* end icon */
 
 /* start common */
@@ -261,6 +273,25 @@ textarea {
 /* end common */
 
 /* start framework */
+.wrapper {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    display: -webkit-box;
+    min-width: 720px;
+}
+
+.footer {
+    background-color: #f8f8f8;
+    color: #aaa;
+    font-size: 14px;
+    padding: 20px 0;
+    line-height: 24px;
+}
+
+.footer img {
+    margin-right: 30px;
+}
 /* end framework */
 
 /* start header */
@@ -375,6 +406,7 @@ textarea {
     position: absolute;
     right: 0;
     z-index: 2;
+    top: 48px;  
 }
 
 .nav .info li {
@@ -391,7 +423,37 @@ textarea {
     width: 100%;
     margin: 10px 0;
 }
+
+.nav .list-up {
+    width: 0;
+    height: 0;
+    border-width: 8px 6px;
+    border-style: solid;
+    border-color: transparent transparent #FFF transparent;
+    position: absolute;
+    top: 33px;
+    z-index: 4;
+    right: 44px;
+}
+
+.nav .list-up-wrap {
+    width: 0;
+    height: 0;
+    border-width: 9px 7px;
+    border-style: solid;
+    border-color: transparent transparent #ddd transparent;
+    position: absolute;
+    top: 31px;
+    z-index: 3;
+    right: 43px;
+}
 /* end header */
+
+/* start index */
+.banners {
+    
+}
+/* end index */
 
 /* start responsive */
 @media (min-width: 1850px) {

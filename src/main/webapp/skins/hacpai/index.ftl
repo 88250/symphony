@@ -10,23 +10,21 @@
     </head>
     <body>
         <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper">
-                <div class="content fn-clear">
-                    <@list listData=indexArticles/>
-                    <div>
-                        <br/>
-                        <span class="ft-small"><a href="/recent">更多新文章11</a></span>
-                    </div>
+        <div class="wrapper">
+            <div class="fn-flex ads">
+                <div class="fn-flex-1 ad">
+                    <span class="title"></span>
+                    <img src="${staticServePath}/skins/hacpai/static/images/ad1.png"/>
                 </div>
-                <div class="side">
-                    <#include "side.ftl">
+                <div>
+                    <div class="fn-clear">
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div></div>
                 </div>
             </div>
         </div>
         <#include "footer.ftl">
-        <script>
-            Util.initArticlePreview();
-        </script>
     </body>
 </html>
