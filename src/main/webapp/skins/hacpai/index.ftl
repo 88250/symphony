@@ -38,6 +38,13 @@
                     </div>
                 </div>
             </div>
+
+            <div class="hot-tags">
+                此刻热词： 
+                <#list navTrendTags as trendTag>
+                <a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
+                </#list>
+            </div>
         </div>
         <#include "footer.ftl">
     </body>

@@ -276,8 +276,6 @@ textarea {
 .wrapper {
     width: 80%;
     margin: 0 auto;
-    display: flex;
-    display: -webkit-box;
     min-width: 720px;
 }
 
@@ -471,7 +469,7 @@ textarea {
 }
 
 .ads .ad a.title {
-        color: #FFF;
+    color: #FFF;
     position: absolute;
     bottom: 10px;
     text-align: center;
@@ -521,6 +519,29 @@ textarea {
     height: 205px;
     width: 490px;
     margin-top: 10px;
+}
+
+.hot-tags {
+       font-size: 18px;
+    color: #777;
+    line-height: 32px;
+    margin: 28px 0;
+    height: 34px;
+    overflow: hidden;
+}
+
+.hot-tags a {
+    color: #777;
+    font-size: 14px;
+    padding: 4px 10px;
+    margin: 0 10px;
+}
+
+.hot-tags a:hover {
+    background-color: #febe5b;
+    color: #FFF;
+    text-decoration: none;
+    border-radius: 25px;
 }
 /* end index */
 
