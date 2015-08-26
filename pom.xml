@@ -21,7 +21,7 @@
 
     <!-- Properties -->
     <properties>
-        <org.b3log.latke.version>1.3.2-SNAPSHOT</org.b3log.latke.version>
+        <org.b3log.latke.version>1.3.2</org.b3log.latke.version>
         
         <jetty.version>9.2.7.v20150116</jetty.version>
         <slf4j.version>1.7.5</slf4j.version>

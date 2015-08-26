@@ -150,7 +150,7 @@ public class LoginProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModel.put(Common.REFERRAL, "88250"); // HeHe~
+        dataModel.put(Common.REFERRAL, "");
         String referral = request.getParameter("r");
         if (!Strings.isEmptyOrNull(referral)) {
             dataModel.put(Common.REFERRAL, referral);
@@ -222,7 +222,7 @@ public class LoginProcessor {
 
             final JSONObject verifycode = new JSONObject();
             verifycode.put(Verifycode.BIZ_TYPE, Verifycode.BIZ_TYPE_C_REGISTER);
-            String code = RandomStringUtils.randomNumeric(6);
+            String code = RandomStringUtils.randomAlphanumeric(6);
             if (!Strings.isEmptyOrNull(referral)) {
                 code += "r=" + referral;
             }

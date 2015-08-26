@@ -26,6 +26,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -100,7 +101,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.8.21, Aug 13, 2015
+ * @version 1.11.9.21, Aug 26, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -216,8 +217,42 @@ public class ArticleProcessor {
         String tags = request.getParameter(Tag.TAGS);
         if (StringUtils.isBlank(tags)) {
             tags = "";
+            
+            dataModel.put(Tag.TAGS, tags);
+        } else {
+            tags = articleMgmtService.formatArticleTags(tags);
+            final String[] tagTitles = tags.split(",");
+
+            final StringBuilder tagBuilder = new StringBuilder();
+            for (final String title : tagTitles) {
+                final String tagTitle = title.trim();
+                
+                if (Strings.isEmptyOrNull(tagTitle)) {
+                    continue;
+                }
+                
+                if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
+                    continue;
+                }
+                
+                if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
+                    continue;
+                }
+                
+                final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+                if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+                        && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
+                    continue;
+                }
+                
+                tagBuilder.append(tagTitle).append(",");
+            }
+            if (tagBuilder.length() > 0) {
+                tagBuilder.deleteCharAt(tagBuilder.length() - 1);
+            }
+
+            dataModel.put(Tag.TAGS, tagBuilder.toString());
         }
-        dataModel.put(Tag.TAGS, tags);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
