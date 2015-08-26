@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.8.4, Aug 23, 2015
+ * @version 1.9.8.4, Aug 26, 2015
  */
 
 /**
@@ -56,9 +56,23 @@ var Comment = {
             }
         });
 
-        if (window.localStorage && window.localStorage.commentContent
-                && "" !== window.localStorage.commentContent.replace(/(^\s*)|(\s*$)/g, "")) {
-            Comment.editor.setValue(window.localStorage.commentContent);
+        if (window.localStorage && window.localStorage[Label.articleOId]) {
+            var localData = null;
+            
+            try {
+                localData = JSON.parse(window.localStorage[Label.articleOId]);
+            } catch (e) {
+                var emptyContent = {
+                    commentContent: ""
+                };
+
+                window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
+                localData = JSON.parse(window.localStorage[Label.articleOId]);
+            }
+
+            if ("" !== localData.commentContent.replace(/(^\s*)|(\s*$)/g, "")) {
+                Comment.editor.setValue(localData.commentContent);
+            }
         }
 
         Comment.editor.on('changes', function (cm) {
@@ -71,7 +85,11 @@ var Comment = {
             $(".CodeMirror").next().removeClass("tip-error").text('');
 
             if (window.localStorage) {
-                window.localStorage.commentContent = cm.getValue();
+                window.localStorage[Label.articleOId] = JSON.stringify({
+                    commentContent: cm.getValue()
+                });
+
+                console.log(JSON.parse(window.localStorage[Label.articleOId]).commentContent);
             }
         });
 
@@ -136,7 +154,11 @@ var Comment = {
                     // window.location.reload();
 
                     if (window.localStorage) {
-                        window.localStorage.commentContent = "";
+                        var emptyContent = {
+                            commentContent: ""
+                        };
+
+                        window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
                     }
                 } else {
                     $(".CodeMirror").next().addClass("tip-error").text(result.msg);

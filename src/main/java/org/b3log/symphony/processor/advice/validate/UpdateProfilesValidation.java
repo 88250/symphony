@@ -106,52 +106,50 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
                 + langPropsService.get("tagsErrorLabel");
 
         String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
-        if (Strings.isEmptyOrNull(userTags)) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
-        }
+        if (!Strings.isEmptyOrNull(userTags)) {
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
 
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-        final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-
-        userTags = userMgmtService.formatUserTags(userTags);
-        String[] tagTitles = userTags.split(",");
-        if (null == tagTitles || 0 == tagTitles.length) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
-        }
-
-        tagTitles = new LinkedHashSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
-
-        final StringBuilder tagBuilder = new StringBuilder();
-        for (int i = 0; i < tagTitles.length; i++) {
-            final String tagTitle = tagTitles[i].trim();
-
-            if (Strings.isEmptyOrNull(tagTitle)) {
+            userTags = userMgmtService.formatUserTags(userTags);
+            String[] tagTitles = userTags.split(",");
+            if (null == tagTitles || 0 == tagTitles.length) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
             }
 
-            if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
+            tagTitles = new LinkedHashSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
+
+            final StringBuilder tagBuilder = new StringBuilder();
+            for (int i = 0; i < tagTitles.length; i++) {
+                final String tagTitle = tagTitles[i].trim();
+
+                if (Strings.isEmptyOrNull(tagTitle)) {
+                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
+                }
+
+                if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
+                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
+                }
+
+                if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
+                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
+                }
+
+                final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+                if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+                        && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
+                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
+                            langPropsService.get("selfTagLabel") + langPropsService.get("colonLabel")
+                            + langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
+                }
+
+                tagBuilder.append(tagTitle).append(",");
+            }
+            if (tagBuilder.length() > 0) {
+                tagBuilder.deleteCharAt(tagBuilder.length() - 1);
             }
 
-            if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));
-            }
-
-            final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
-            if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
-                    && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
-                        langPropsService.get("selfTagLabel") + langPropsService.get("colonLabel")
-                        + langPropsService.get("articleTagReservedLabel") + " [" + tagTitle + "]"));
-            }
-
-            tagBuilder.append(tagTitle).append(",");
+            requestJSONObject.put(UserExt.USER_TAGS, tagBuilder.toString());
         }
-        if (tagBuilder.length() > 0) {
-            tagBuilder.deleteCharAt(tagBuilder.length() - 1);
-        }
-
-        requestJSONObject.put(UserExt.USER_TAGS, tagBuilder.toString());
     }
 
     /**

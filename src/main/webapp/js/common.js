@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.6.9, Aug 25, 2015
+ * @version 1.11.6.10, Aug 26, 2015
  */
 
 /**
@@ -784,53 +784,7 @@ var Validate = {
  * @description 全局变量
  */
 var Label = {};
-if (!Cookie) {
-    /**
-     * @description Cookie 相关操作
-     * @static
-     */
-    var Cookie = {
-        /**
-         * @description 读取 cookie
-         * @param {String} name cookie key
-         * @returns {String} 对应 key 的值，如 key 不存在则返回 ""
-         */
-        readCookie: function (name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) === ' ')
-                    c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0)
-                    return c.substring(nameEQ.length, c.length);
-            }
-            return "";
-        },
-        /**
-         * @description 清除 Cookie
-         * @param {String} name 清除 key 为 name 的该条 Cookie
-         */
-        eraseCookie: function (name) {
-            this.createCookie(name, "", -1);
-        },
-        /**
-         * @description 创建 Cookie
-         * @param {String} name 每条 Cookie 唯一的 key
-         * @param {String} value 每条 Cookie 对应的值
-         * @param {Int} days Cookie 保存时间
-         */
-        createCookie: function (name, value, days) {
-            var expires = "";
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toGMTString();
-            }
-            document.cookie = name + "=" + value + expires + "; path=/";
-        }
-    };
-}
+
 
 // 开始 - 判断文件类型
 var pngMagic = [
