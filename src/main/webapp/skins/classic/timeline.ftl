@@ -11,7 +11,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content content-reset">
+                <div class="content">
                     <h2>${timelineLabel}</h2>
                     <#if timelines?size <= 0>
                     <div id="emptyTimeline">${emptyTimelineLabel}</div>
