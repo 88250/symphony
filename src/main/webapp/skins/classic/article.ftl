@@ -25,7 +25,6 @@
                                     ${articleTag}</a><#if articleTag_has_next>, </#if>
                                 </#list>
                             </div>
-                            <br class="responsive-show">
                             <div class="fn-right">
                                 <span class="icon icon-date"></span>
                                 ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;

@@ -69,7 +69,8 @@
     }
 
     .footer .fn-right,
-    .article-info .fn-right {
+    .article-info .fn-right,
+    .article-info .fn-left {
         float: none;
     }
 
