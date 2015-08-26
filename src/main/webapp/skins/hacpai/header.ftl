@@ -14,10 +14,10 @@
             <h1><a rel="nofollow" href="/">我是黑客</a></h1>
         </li>
         <li>
-            <h1><a rel="nofollow" href="/">此刻</a></h1>
+            <h1><a rel="nofollow" href="/timeline">此刻</a></h1>
         </li>
         <li>
-            <h1><a rel="nofollow" href="/">活动</a></h1>
+            <h1><a rel="nofollow" href="/activities">活动</a></h1>
         </li>
     </ul>
     <div class="fn-right info fn-clear">
@@ -37,29 +37,32 @@
         <a href="/settings">
             <img class="avatar" title="${userName}" src="${currentUser.userAvatarURL}" />
         </a>
-
-        <ul class="fn-list">
-            <li>
-                <a href="${logoutURL}}">我的文章</a>
-            </li>
-            <li>
-                <a href="${logoutURL}}">我的评价</a>
-            </li>
-            <li>
-                <a href="${logoutURL}}">我的积分</a>
-            </li>
-            <li>
-                <a href="${logoutURL}}">设置</a>
-            </li>
-            <#if "adminRole" == userRole>
-            <li>
-                <a href="/admin">用户管理</a>
-            </li>
-            </#if>
-            <li>
-                <button class="btn" onclick="window.location.href = '${logoutURL}}'">用户退出</button>
-            </li>
-        </ul>
+        <span class="ico-down" onclick="$(this).next().toggle()"></span>
+        <div class="fn-none">
+            <ul class="fn-list">
+                <li>
+                    <a href="${logoutURL}}">我的文章</a>
+                </li>
+                <li>
+                    <a href="${logoutURL}}">我的评价</a>
+                </li>
+                <li>
+                    <a href="${logoutURL}}">我的积分</a>
+                </li>
+                <li>
+                    <a href="${logoutURL}}">设置</a>
+                </li>
+                <#if "adminRole" == userRole>
+                <li>
+                    <a href="/admin">用户管理</a>
+                </li>
+                </#if>
+                <li>
+                    <button class="btn" onclick="window.location.href = '${logoutURL}'">用户退出</button>
+                </li>
+            </ul>
+            <span class="list-up"></span>
+            <span class="list-up-wrap"></span>
+        </div>
     </div>
-
 </div>

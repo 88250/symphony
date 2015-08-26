@@ -376,7 +376,6 @@ textarea {
 .ft-small,
 .ft-small a {
     color: #999;
-    font-size: 12px;
 }
 
 .ft-red {
@@ -924,9 +923,9 @@ a.icon:hover {
 
 /* start header */
 .nav {
-    height: 35px;
+    height: 42px;
     width: 100%;
-    padding: 10px 0;
+    padding: 5px 0;
     z-index: 99;
     background-color: #fafafa;
     background: linear-gradient(#fafafa, #eaeaea);
@@ -966,7 +965,7 @@ a.icon:hover {
 .nav .user-nav > a.current {
     border-bottom: 2px solid #D26911;
     color: #222;
-    padding-bottom: 13px;
+    padding-bottom: 15px;
 }
 
 .nav .user-nav .no-msg {
@@ -975,8 +974,8 @@ a.icon:hover {
     color: #FFFFFF;
     font-size: 10px;
     font-weight: normal;
-    margin: 10px 10px 0 10px;
-    padding: 4px 8px 4px;
+    margin: 13px 10px 0 10px;
+    padding: 2px 6px;
     text-shadow: 0 0 0;
 }
 
@@ -992,12 +991,12 @@ a.icon:hover {
     font-size: 10px;
     font-weight: normal;
     margin: 10px 10px 0 10px;
-    padding: 4px 8px 4px;
+    padding: 2px 6px;
 }
 
 .nav .user-nav > a.current.msg,
 .nav .user-nav > a.current.no-msg{
-    padding: 4px 8px 4px;
+    padding-bottom:2px;
     background-color: #D26911;
     border-bottom-width: 0;
     -webkit-animation:none;
@@ -1039,7 +1038,7 @@ a.icon:hover {
     left: 81px;
     padding: 3px 5px 3px 20px;
     position: absolute;
-    top: 8px;
+    top: 8.5px;
     width: 0;
     z-index: 1;
     -moz-transition: width 0.4s ease, background 0.4s ease;
@@ -1057,8 +1056,9 @@ a.icon:hover {
 .nav .tags {
     display: block;
     margin: 0 20px 0 70px;
-    height: 36px;
+    height: 42px;
     overflow: hidden;
+    line-height: 21px;
 }
 
 .nav .tags a {
@@ -1110,7 +1110,7 @@ a.icon:hover {
 .list h2 {
     font-size: 16px;
     font-weight: normal;
-    margin-bottom: 9px;
+    margin: 3px 0;
 }
 
 .list > ul {
@@ -1118,7 +1118,7 @@ a.icon:hover {
 }
 
 .list > ul > li {
-    border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #eee;
     padding: 10px;
     white-space: normal;
     word-wrap: break-word;
