@@ -67,6 +67,9 @@
                 <label for="articleStatus">${articleStatusLabel}</label>
                 <input type="text" id="articleStatus" name="articleStatus" value="${article.articleStatus}" />
 
+                <label for="articleType">${articleTypeLabel}</label>
+                <input type="text" id="articleType" name="articleType" value="${article.articleType}" />
+
                 <label for="articleGoodCnt">${goodCntLabel}</label>
                 <input type="text" id="articleGoodCnt" name="articleGoodCnt" value="${article.articleGoodCnt}" />
 
