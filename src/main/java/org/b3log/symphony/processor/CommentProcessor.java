@@ -25,7 +25,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -71,12 +70,6 @@ public class CommentProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class.getName());
-
-    /**
-     * Language service.
-     */
-    @Inject
-    private LangPropsService langPropsService;
 
     /**
      * User query service.
@@ -128,7 +121,7 @@ public class CommentProcessor {
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/comment", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {CommentAddValidation.class, CSRFCheck.class})
+    @Before(adviceClass = {CSRFCheck.class, CommentAddValidation.class})
     public void addComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
         final JSONRenderer renderer = new JSONRenderer();
