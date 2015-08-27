@@ -29,7 +29,7 @@ html {
 
 body {
     margin: 0;
-    font-family: '\5fae\8f6f\96c5\9ed1';
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     font-size: 13px;
     background-color: #FFF;
     color: #333;
@@ -102,7 +102,7 @@ textarea {
     margin: 0;
     font-size: 100%;
     vertical-align: middle;
-    font-family: '\5fae\8f6f\96c5\9ed1';
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti;
     outline: none;
 }
 
