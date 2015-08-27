@@ -657,7 +657,7 @@ public class ArticleQueryService {
      *
      * @param query conditions
      * @return articles
-     * @throws ServiceException
+     * @throws ServiceException service exception
      */
     private List<JSONObject> getArticles(final Query query) throws ServiceException {
         try {
