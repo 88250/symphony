@@ -15,22 +15,24 @@
  */
 package org.b3log.symphony.util;
 
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
-
 
 /**
  * Session utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.1, Aug 26, 2015
+ * @version 2.0.2.1, Aug 27, 2015
  */
 public final class Sessions {
 
@@ -47,21 +49,42 @@ public final class Sessions {
     /**
      * Private default constructor.
      */
-    private Sessions() {}
+    private Sessions() {
+    }
+    
+    /**
+     * Gets CSRF token from the specified request.
+     * 
+     * @param request the specified request
+     * @return CSRF token, returns {@code ""} if not found
+     */
+    public static String getCSRFToken(final HttpServletRequest request) {
+        final HttpSession session = request.getSession(false);
+
+        if (null == session) {
+            return "";
+        }
+        
+        final String ret = (String) session.getAttribute(Common.CSRF_TOKEN);
+        if (StringUtils.isBlank(ret)) {
+            return "";
+        }
+        
+        return ret;
+    }
 
     /**
      * Logins the specified user from the specified request.
-     * 
+     *
      * <p>
      * If no session of the specified request, do nothing.
      * </p>
      *
      * @param request the specified request
      * @param response the specified response
-     * @param user the specified user, for example,
-     * <pre>
+     * @param user the specified user, for example,      <pre>
      * {
-     *     "userEmail": "",
+     *     "oId": "",
      *     "userPassword": ""
      * }
      * </pre>
@@ -71,23 +94,25 @@ public final class Sessions {
 
         if (null == session) {
             LOGGER.warn("The session is null");
+            
             return;
         }
 
         session.setAttribute(User.USER, user);
+        session.setAttribute(Common.CSRF_TOKEN, RandomStringUtils.randomAlphanumeric(12));
 
         try {
             final JSONObject cookieJSONObject = new JSONObject();
 
-            cookieJSONObject.put(User.USER_EMAIL, user.optString(User.USER_EMAIL));
-            cookieJSONObject.put(User.USER_PASSWORD, user.optString(User.USER_PASSWORD));
+            cookieJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
+            cookieJSONObject.put(Common.TOKEN, user.optString(User.USER_PASSWORD));
 
             final Cookie cookie = new Cookie("b3log-latke", cookieJSONObject.toString());
 
             cookie.setPath("/");
             cookie.setMaxAge(COOKIE_EXPIRY);
             cookie.setHttpOnly(true); // HTTP Only
-            
+
             response.addCookie(cookie);
         } catch (final Exception e) {
             LOGGER.log(Level.WARN, "Can not write cookie", e);
@@ -122,69 +147,15 @@ public final class Sessions {
 
     /**
      * Gets the current user with the specified request.
-     * 
+     *
      * @param request the specified request
-     * @return the current user, returns {@code null} if not logged in 
+     * @return the current user, returns {@code null} if not logged in
      */
     public static JSONObject currentUser(final HttpServletRequest request) {
         final HttpSession session = request.getSession(false);
 
         if (null != session) {
             return (JSONObject) session.getAttribute(User.USER);
-        }
-
-        return null;
-    }
-
-    /**
-     * Gets the current logged in user password with the specified request.
-     *
-     * @param request the specified request
-     * @return the current user password or {@code null}
-     */
-    public static String currentUserPwd(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
-
-        if (null != session) {
-            final JSONObject user = (JSONObject) session.getAttribute(User.USER);
-
-            return user.optString(User.USER_PASSWORD);
-        }
-
-        return null;
-    }
-
-    /**
-     * Gets the current logged in user name with the specified request.
-     *
-     * @param request the specified request
-     * @return the current user name or {@code null}
-     */
-    public static String currentUserName(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
-
-        if (null != session) {
-            final JSONObject user = (JSONObject) session.getAttribute(User.USER);
-
-            return user.optString(User.USER_NAME);
-        }
-
-        return null;
-    }
-
-    /**
-     * Gets the current logged in user email with the specified request.
-     *
-     * @param request the specified request
-     * @return the current user name or {@code null}
-     */
-    public static String currentUserEmail(final HttpServletRequest request) {
-        final HttpSession session = request.getSession(false);
-
-        if (null != session) {
-            final JSONObject user = (JSONObject) session.getAttribute(User.USER);
-
-            return user.optString(User.USER_EMAIL);
         }
 
         return null;

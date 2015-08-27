@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.8.4, Aug 26, 2015
+ * @version 1.9.9.4, Aug 27, 2015
  */
 
 /**
@@ -58,7 +58,7 @@ var Comment = {
 
         if (window.localStorage && window.localStorage[Label.articleOId]) {
             var localData = null;
-            
+
             try {
                 localData = JSON.parse(window.localStorage[Label.articleOId]);
             } catch (e) {
@@ -88,14 +88,12 @@ var Comment = {
                 window.localStorage[Label.articleOId] = JSON.stringify({
                     commentContent: cm.getValue()
                 });
-
-                console.log(JSON.parse(window.localStorage[Label.articleOId]).commentContent);
             }
         });
 
         Comment.editor.on('keypress', function (cm, evt) {
             if (evt.ctrlKey && 10 === evt.charCode) {
-                Comment.add(Label.articleOId);
+                Comment.add(Label.articleOId, Label.csrfToken);
 
                 return;
             }
@@ -127,8 +125,9 @@ var Comment = {
     },
     /**
      * @description 添加评论
+     * @csrfToken [string] CSRF 令牌
      */
-    add: function (id) {
+    add: function (id, csrfToken) {
         if (!Validate.goValidate(Comment._validateData)) {
             return false;
         }
@@ -141,6 +140,7 @@ var Comment = {
         $.ajax({
             url: "/comment",
             type: "POST",
+            headers: {"csrfToken": csrfToken},
             cache: false,
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {

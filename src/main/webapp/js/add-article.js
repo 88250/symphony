@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.4.0, Aug 23, 2015
+ * @version 1.9.5.0, Aug 27, 2015
  */
 
 /**
@@ -32,8 +32,9 @@ var AddArticle = {
     /**
      * @description 发布文章
      * @id [string] 文章 id ，如不为空则表示更新文章否则为添加文章
+     * @csrfToken [string] CSRF 令牌
      */
-    add: function (id) {
+    add: function (id, csrfToken) {
         var isError = false;
         if (this.editor.getValue().length < 4 || this.editor.getValue().length > 1048576) {
             $("#articleContentTip").addClass("tip-error").text(Label.articleContentErrorLabel);
@@ -71,6 +72,7 @@ var AddArticle = {
             $.ajax({
                 url: url,
                 type: type,
+                headers: {"csrfToken": csrfToken},
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 beforeSend: function () {

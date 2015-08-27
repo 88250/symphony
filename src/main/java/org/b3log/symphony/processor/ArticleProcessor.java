@@ -45,9 +45,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.user.GeneralUser;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
@@ -58,6 +55,8 @@ import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.model.Vote;
+import org.b3log.symphony.processor.advice.CSRFCheck;
+import org.b3log.symphony.processor.advice.CSRFToken;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
@@ -78,6 +77,7 @@ import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Networks;
 import org.b3log.symphony.util.Results;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -101,7 +101,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.9.21, Aug 26, 2015
+ * @version 1.11.10.21, Aug 27, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -161,11 +161,6 @@ public class ArticleProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
-
-    /**
      * Follow query service.
      */
     @Inject
@@ -199,7 +194,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/add-article", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
@@ -217,7 +212,7 @@ public class ArticleProcessor {
         String tags = request.getParameter(Tag.TAGS);
         if (StringUtils.isBlank(tags)) {
             tags = "";
-            
+
             dataModel.put(Tag.TAGS, tags);
         } else {
             tags = articleMgmtService.formatArticleTags(tags);
@@ -226,25 +221,25 @@ public class ArticleProcessor {
             final StringBuilder tagBuilder = new StringBuilder();
             for (final String title : tagTitles) {
                 final String tagTitle = title.trim();
-                
+
                 if (Strings.isEmptyOrNull(tagTitle)) {
                     continue;
                 }
-                
+
                 if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
                     continue;
                 }
-                
+
                 if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
                     continue;
                 }
-                
+
                 final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
                 if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
                         && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                     continue;
                 }
-                
+
                 tagBuilder.append(tagTitle).append(",");
             }
             if (tagBuilder.length() > 0) {
@@ -268,7 +263,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String articleId) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
@@ -399,7 +394,7 @@ public class ArticleProcessor {
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, ArticleAddValidation.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleAddValidation.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
@@ -470,7 +465,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/update-article", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showUpdateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String articleId = request.getParameter("id");
@@ -487,9 +482,9 @@ public class ArticleProcessor {
             return;
         }
 
-        final GeneralUser currentUser = userService.getCurrentUser(request);
+        final JSONObject currentUser = Sessions.currentUser(request);
         if (null == currentUser
-                || !currentUser.getId().equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
+                || !currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -538,7 +533,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{id}", method = HTTPRequestMethod.PUT)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, ArticleUpdateValidation.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, ArticleUpdateValidation.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String id) throws Exception {

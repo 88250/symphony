@@ -44,7 +44,7 @@
         <span style="right:140px;top:265px;"></span><br/>
         <br/><br/>
         <span id="profilesTip" style="right: 95px; top: 703px;"></span>
-        <button class="green fn-right" onclick="Settings.update('profiles')">${saveLabel}</button>
+        <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 
@@ -72,7 +72,7 @@
         <span style="right:24px;top:49px;"></span><br/><br/>
 
         <span id="pointTransferTip" style="right: 110px; top: 149px;"></span>
-        <button class="red fn-right" onclick="Settings.pointTransfer()">${confirmTransferLabel}</button>
+        <button class="red fn-right" onclick="Settings.pointTransfer('${csrfToken}')">${confirmTransferLabel}</button>
     </div>
 </div>
 
@@ -98,7 +98,7 @@
         <span style="right:24px;top:255px;"></span><br/><br/>
 
         <span id="syncb3Tip" style="right: 95px; top: 305px;"></span>
-        <button class="green fn-right" onclick="Settings.update('sync/b3')">${saveLabel}</button>
+        <button class="green fn-right" onclick="Settings.update('sync/b3', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 
@@ -120,7 +120,7 @@
         <span style="right:24px;top:187px;"></span><br/><br/>
 
         <span id="passwordTip" style="right: 95px; top: 237px;"></span>
-        <button class="green fn-right" onclick="Settings.update('password')">${saveLabel}</button>
+        <button class="green fn-right" onclick="Settings.update('password', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 </@home>

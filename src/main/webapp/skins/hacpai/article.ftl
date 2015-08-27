@@ -114,7 +114,7 @@
                         <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
                         <div class="fn-right">
                             <button class="green" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 
-                            <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
+                            <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                         </div>
                     </div>
                     <div class="grammar fn-none fn-clear">
@@ -222,7 +222,9 @@
                     Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
                     Label.articleOId = "${article.oId}";
                     Label.articleTitle = "${article.articleTitle}";
-                    Label.articlePermalink = "${article.articlePermalink}";</script>
+                    Label.articlePermalink = "${article.articlePermalink}";
+                    Label.csrfToken = "${csrfToken}";                            
+        </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js"></script>

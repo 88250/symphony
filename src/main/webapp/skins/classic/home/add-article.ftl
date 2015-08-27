@@ -69,7 +69,7 @@
                         </div>
                         <div class="fn-right">
                             <button class="green" onclick="AddArticle.preview()">${previewLabel}</button> &nbsp; &nbsp; 
-                            <button class="red" onclick="AddArticle.add(<#if article??>'${article.oId}'</#if>)"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
+                            <button class="red" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>
                     <div id="addArticleTip" style="bottom: 70px;right: 137px;"></div>

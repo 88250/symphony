@@ -40,7 +40,7 @@
                         </#if>
                     <#else>
                     <div class="fn-clear">
-                        <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001()">${activityBetLabel}</button>
+                        <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001('${csrfToken}')">${activityBetLabel}</button>
                     </div>
                     <span id="tip" style="top: 307px;"></span>
                     </#if>

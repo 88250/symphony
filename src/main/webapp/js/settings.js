@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.6, Aug 12, 2015
+ * @version 1.3.2.6, Aug 27, 2015
  */
 
 /**
@@ -29,8 +29,9 @@
 var Settings = {
     /**
      * @description 积分转账
+     * @argument {String} csrfToken CSRF token
      */
-    pointTransfer: function () {
+    pointTransfer: function (csrfToken) {
         var requestJSONObject = {
             "userName": $("#pointTransferUserName").val(),
             "amount": $("#pointTransferAmount").val()
@@ -39,6 +40,7 @@ var Settings = {
         $.ajax({
             url: "/point/transfer",
             type: "POST",
+            headers: {"csrfToken": csrfToken},
             cache: false,
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {
@@ -60,10 +62,12 @@ var Settings = {
         });
     },
     /**
-     * @description 更新 settings 页面数据。
+     * @description 更新 settings 页面数据.
+     * @argument {String} csrfToken CSRF token
      */
-    update: function (type) {
+    update: function (type, csrfToken) {
         var requestJSONObject = {};
+        
         switch (type) {
             case "profiles":
                 requestJSONObject = this._validateProfiles();
@@ -85,6 +89,7 @@ var Settings = {
         $.ajax({
             url: "/settings/" + type,
             type: "POST",
+            headers: {"csrfToken": csrfToken},
             cache: false,
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {

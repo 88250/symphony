@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.0, Jul 23, 2015
+ * @version 1.1.1.0, Aug 27, 2015
  */
 
 /**
@@ -29,8 +29,9 @@
 var Activity = {
     /**
      * @description 上证指数博彩活动下注
+     * @argument {String} csrfToken CSRF token
      */
-    bet1A0001: function () {
+    bet1A0001: function (csrfToken) {
         var requestJSONObject = {
             smallOrLarge: $("input[name=smallOrLarge]:checked").val(),
             amount: $("input[name=amount]:checked").val()
@@ -39,6 +40,7 @@ var Activity = {
         $.ajax({
             url: "/activity/1A0001/bet",
             type: "POST",
+            headers: {"csrfToken": csrfToken},            
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {

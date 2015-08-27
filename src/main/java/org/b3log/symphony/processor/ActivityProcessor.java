@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -36,6 +37,8 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.processor.advice.CSRFCheck;
+import org.b3log.symphony.processor.advice.CSRFToken;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
@@ -143,7 +146,10 @@ public class ActivityProcessor {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final String userId = user.optString(Keys.OBJECT_ID);
 
-        activityMgmtService.dailyCheckin(userId);
+        final String referer = request.getHeader("Referer");
+        if (StringUtils.startsWith(referer, Latkes.getServePath())) {
+            activityMgmtService.dailyCheckin(userId);
+        }
 
         response.sendRedirect("/member/" + user.optString(User.USER_NAME) + "/points");
     }
@@ -158,7 +164,7 @@ public class ActivityProcessor {
      */
     @RequestProcessing(value = "/activity/1A0001", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void show1A0001(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
@@ -248,7 +254,7 @@ public class ActivityProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/activity/1A0001/bet", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, Activity1A0001Validation.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class, Activity1A0001Validation.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void bet1A0001(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {

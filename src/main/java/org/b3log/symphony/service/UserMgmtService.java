@@ -76,7 +76,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.8.4, Aug 21, 2015
+ * @version 1.9.9.4, Aug 27, 2015
  * @since 0.2.0
  */
 @Service
@@ -162,12 +162,12 @@ public class UserMgmtService {
 
                 final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
 
-                final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
-                if (Strings.isEmptyOrNull(userEmail)) {
+                final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
+                if (Strings.isEmptyOrNull(userId)) {
                     break;
                 }
 
-                final JSONObject user = userRepository.getByEmail(userEmail.toLowerCase().trim());
+                final JSONObject user = userRepository.get(userId);
                 if (null == user) {
                     break;
                 }
@@ -177,17 +177,17 @@ public class UserMgmtService {
                 if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
                     Sessions.logout(request, response);
 
-                    updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, false);
+                    updateOnlineStatus(userId, ip, false);
 
                     return false;
                 }
 
                 final String userPassword = user.optString(User.USER_PASSWORD);
-                final String password = cookieJSONObject.optString(User.USER_PASSWORD);
+                final String password = cookieJSONObject.optString(Common.TOKEN);
                 if (userPassword.equals(password)) {
                     Sessions.login(request, response, user);
-                    updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
-                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userEmail);
+                    updateOnlineStatus(userId, ip, true);
+                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userId);
 
                     return true;
                 }
