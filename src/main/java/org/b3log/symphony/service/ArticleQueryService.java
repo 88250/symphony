@@ -545,7 +545,10 @@ public class ArticleQueryService {
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
 
-        query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+        filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
+        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
         try {
             final JSONObject result = articleRepository.get(query);
@@ -570,8 +573,7 @@ public class ArticleQueryService {
             throw new ServiceException(e);
         }
     }
-    
-    
+
     /**
      * Gets the index articles with the specified fetch size.
      *
@@ -585,7 +587,10 @@ public class ArticleQueryService {
                 .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(1);
 
-        query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+        filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
+        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
         try {
             final JSONObject result = articleRepository.get(query);
@@ -610,7 +615,6 @@ public class ArticleQueryService {
             throw new ServiceException(e);
         }
     }
-    
 
     /**
      * Gets the recent articles with the specified fetch size.
@@ -650,10 +654,10 @@ public class ArticleQueryService {
 
     /**
      * The specific articles.
-     * 
+     *
      * @param query conditions
      * @return articles
-     * @throws ServiceException 
+     * @throws ServiceException
      */
     private List<JSONObject> getArticles(final Query query) throws ServiceException {
         try {
@@ -672,7 +676,7 @@ public class ArticleQueryService {
                     story.put("title", article.optString(Article.ARTICLE_TITLE));
                 }
                 story.put("id", article.optLong("oId"));
-                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK)); 
+                story.put("url", Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
                 story.put("user_display_name", article.optString(Article.ARTICLE_T_AUTHOR_NAME));
                 story.put("user_job", author.optString(UserExt.USER_INTRO));
                 story.put("comment_html", article.optString(Article.ARTICLE_CONTENT));
@@ -683,7 +687,7 @@ public class ArticleQueryService {
                 story.put("comments", getAllComments(article.optString("oId")));
                 final String tagsString = article.optString(Article.ARTICLE_TAGS);
                 String[] tags = null;
-                if(!Strings.isEmptyOrNull(tagsString)){
+                if (!Strings.isEmptyOrNull(tagsString)) {
                     tags = tagsString.split(",");
                 }
                 story.put("badge", tags == null ? "" : tags[0]);
@@ -700,21 +704,20 @@ public class ArticleQueryService {
             throw new ServiceException(ex);
         }
     }
-    
-    
+
     /**
      * Gets the article comments with the specified article id.
-     * 
+     *
      * @param articleId the specified article id
-     * @return comments, return an empty list if not found 
-     * @throws ServiceException  service exception
+     * @return comments, return an empty list if not found
+     * @throws ServiceException service exception
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    private List<JSONObject> getAllComments(final String articleId) throws ServiceException, JSONException, RepositoryException{
+    private List<JSONObject> getAllComments(final String articleId) throws ServiceException, JSONException, RepositoryException {
         final List<JSONObject> commments = new ArrayList<JSONObject>();
         final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, 1, Integer.MAX_VALUE);
-        for(final JSONObject ac : articleComments){
+        for (final JSONObject ac : articleComments) {
             final JSONObject comment = new JSONObject();
             final JSONObject author = userRepository.get(ac.optString(Comment.COMMENT_AUTHOR_ID));
             comment.put("id", ac.optLong("oId"));
@@ -729,16 +732,16 @@ public class ArticleQueryService {
         }
         return commments;
     }
-    
+
     /**
      * The demand format date.
-     * 
+     *
      * @param date the original date
      * @return the format date like "2015-08-03T07:26:57Z"
      */
-    private String formatDate(final Object date){
-        return DateFormatUtils.format(((Date) date).getTime(), "yyyy-MM-dd") 
-                        + "T" + DateFormatUtils.format(((Date) date).getTime(), "HH:mm:ss") + "Z";
+    private String formatDate(final Object date) {
+        return DateFormatUtils.format(((Date) date).getTime(), "yyyy-MM-dd")
+                + "T" + DateFormatUtils.format(((Date) date).getTime(), "HH:mm:ss") + "Z";
     }
 
     /**
@@ -832,12 +835,12 @@ public class ArticleQueryService {
         if (Strings.isEmptyOrNull(authorEmail)) {
             return;
         }
-        
+
         final JSONObject author = userRepository.getByEmail(authorEmail);
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURL(authorEmail));
         article.put(Article.ARTICLE_T_AUTHOR, author);
-        
+
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
     }
 
@@ -903,7 +906,7 @@ public class ArticleQueryService {
                 final JSONObject participant = new JSONObject();
                 participant.put(Article.ARTICLE_T_PARTICIPANT_NAME, commenter.optString(User.USER_NAME));
                 participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
-                participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME, 
+                participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME,
                         commenter.optLong(UserExt.USER_UPDATE_TIME));
                 participant.put(Article.ARTICLE_T_PARTICIPANT_URL, commenter.optString(User.USER_URL));
                 participant.put(Comment.COMMENT_T_ID, comment.optString(Keys.OBJECT_ID));
