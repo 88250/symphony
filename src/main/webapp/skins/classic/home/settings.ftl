@@ -33,10 +33,10 @@
         </form>
         <div class="fn-clear"></div>
         <div>
-            <img class="avatar-big" id="avatarURL" src="${currentUser.userAvatarURL}"> &nbsp; 
+            <img class="avatar-big" id="avatarURL" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}"> &nbsp; 
             <span style="top: 506px; right: 24px;"></span>
-            <img class="avatar-mid" id="avatarURLMid" src="${currentUser.userAvatarURL}"> &nbsp;
-            <img class="avatar" id="avatarURLNor" src="${currentUser.userAvatarURL}">
+            <img class="avatar-mid" id="avatarURLMid" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}"> &nbsp;
+            <img class="avatar" id="avatarURLNor" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}">
         </div>
         <div class="fn-right">
             ${updateAvatarTipLabel}
