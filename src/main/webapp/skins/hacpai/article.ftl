@@ -47,7 +47,7 @@
                             <h2 class="fn-flex-1">
                                 <a rel="author" href="/member/${article.articleAuthorName}" class="ft-small"
                                    title="${article.articleAuthorName}">
-                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64" />
+                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg" />
                                 </a> &nbsp;
                                 <a href="${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
@@ -135,7 +135,7 @@
                                     <div class="fn-flex">
                                         <a class="responsive-hide" rel="nofollow" href="/member/${comment.commentAuthorName}">
                                             <img class="avatar" 
-                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}-64" />
+                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}-64.jpg" />
                                         </a>
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">

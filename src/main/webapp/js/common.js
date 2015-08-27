@@ -69,7 +69,7 @@ var Util = {
                         
                         autocompleteHints.push({
                             displayText: "<span style='font-size: 1.2rem;'><img style='width: 1.6rem' src='" + avatar 
-                                    + "-64'>&nbsp;" + name + "</span>",
+                                    + "-64.jpg'>&nbsp;" + name + "</span>",
                             text: name + " "
                         });
                     }
