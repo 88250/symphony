@@ -294,6 +294,8 @@ public class UserMgmtService {
             oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
             oldUser.put(UserExt.USER_AVATAR_TYPE, requestJSONObject.optString(UserExt.USER_AVATAR_TYPE));
             oldUser.put(UserExt.USER_AVATAR_URL, requestJSONObject.optString(UserExt.USER_AVATAR_URL));
+            
+            oldUser.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
 
             userRepository.update(oldUserId, oldUser);
 
@@ -472,6 +474,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName")); // TODO: set default skin by app role
             user.put(UserExt.USER_PROVINCE, "");
             user.put(UserExt.USER_CITY, "");
+            user.put(UserExt.USER_UPDATE_TIME, 0L);
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
 

@@ -832,10 +832,12 @@ public class ArticleQueryService {
         if (Strings.isEmptyOrNull(authorEmail)) {
             return;
         }
+        
+        final JSONObject author = userRepository.getByEmail(authorEmail);
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURL(authorEmail));
-
-        final JSONObject author = userRepository.getByEmail(authorEmail);
+        article.put(Article.ARTICLE_T_AUTHOR, author);
+        
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
     }
 
@@ -870,6 +872,7 @@ public class ArticleQueryService {
      *     {
      *         "articleParticipantName": "",
      *         "articleParticipantThumbnailURL": "",
+     *         "articleParticipantThumbnailUpdateTime": long,
      *         "commentId": ""
      *     }, ....
      * ]
@@ -900,6 +903,8 @@ public class ArticleQueryService {
                 final JSONObject participant = new JSONObject();
                 participant.put(Article.ARTICLE_T_PARTICIPANT_NAME, commenter.optString(User.USER_NAME));
                 participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
+                participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME, 
+                        commenter.optLong(UserExt.USER_UPDATE_TIME));
                 participant.put(Article.ARTICLE_T_PARTICIPANT_URL, commenter.optString(User.USER_URL));
                 participant.put(Comment.COMMENT_T_ID, comment.optString(Keys.OBJECT_ID));
 

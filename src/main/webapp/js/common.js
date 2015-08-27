@@ -66,10 +66,11 @@ var Util = {
                         var user = result.userNames[i];
                         var name = user.userName;
                         var avatar = user.userAvatarURL;
+                        var updateTime = user.userUpdateTime;
                         
                         autocompleteHints.push({
                             displayText: "<span style='font-size: 1.2rem;'><img style='width: 1.6rem' src='" + avatar 
-                                    + "-64.jpg'>&nbsp;" + name + "</span>",
+                                    + "-64.jpg?" + updateTime + "'>&nbsp;" + name + "</span>",
                             text: name + " "
                         });
                     }

@@ -548,6 +548,10 @@
                     "name": "userCity",
                     "type": "String",
                     "length": 32
+                },
+                {
+                    "name": "userUpdateTime",
+                    "type": "long"
                 }
             ]
         },

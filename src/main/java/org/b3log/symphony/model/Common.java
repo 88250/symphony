@@ -343,14 +343,24 @@ public final class Common {
      * Key of thumbnail URL.
      */
     public static final String THUMBNAIL_URL = "thumbnailURL";
+    
+    /**
+     * Key of thumbnail update time.
+     */
+    public static final String THUMBNAIL_UPDATE_TIME = "thumbnailUpdateTime";
 
     /**
      * Key of URL.
      */
     public static final String URL = "url";
+    
+    /**
+     * Key of update time.
+     */
+    public static final String UPDATE_TIME = "updateTime";
 
     /**
-     * Create time.
+     * Key of Create time.
      */
     public static final String CREATE_TIME = "createTime";
 

@@ -43,6 +43,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.TagTagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -190,6 +191,7 @@ public class TagQueryService {
      * @return tag creator, for example,      <pre>
      * {
      *     "tagCreatorThumbnailURL": "",
+     *     "tagCreatorThumbnailUpdateTime": 0,
      *     "tagCreatorName": ""
      * }
      * </pre>, returns {@code null} if not found
@@ -218,6 +220,7 @@ public class TagQueryService {
 
             final JSONObject ret = new JSONObject();
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
+            ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, creator.optLong(UserExt.USER_UPDATE_TIME));
             ret.put(Tag.TAG_T_CREATOR_NAME, creator.optString(User.USER_NAME));
 
             return ret;
@@ -236,7 +239,8 @@ public class TagQueryService {
      * [
      *     {
      *         "tagParticipantName": "",
-     *         "tagParticipantThumbnailURL": ""
+     *         "tagParticipantThumbnailURL": "",
+     *         "tagParticipantThumbnailUpdateTime": long
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found
@@ -273,6 +277,7 @@ public class TagQueryService {
 
                 final String thumbnailURL = avatarQueryService.getAvatarURL(user.optString(User.USER_EMAIL));
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
+                participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME, user.optLong(UserExt.USER_UPDATE_TIME));
 
                 ret.add(participant);
             }

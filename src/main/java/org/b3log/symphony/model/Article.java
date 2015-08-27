@@ -179,7 +179,7 @@ public final class Article {
      * Key of article author thumbnail URL.
      */
     public static final String ARTICLE_T_AUTHOR_THUMBNAIL_URL = "articleAuthorThumbnailURL";
-
+    
     /**
      * Key of article author name.
      */
@@ -214,6 +214,11 @@ public final class Article {
      * Key of article participant thumbnail URL.
      */
     public static final String ARTICLE_T_PARTICIPANT_THUMBNAIL_URL = "articleParticipantThumbnailURL";
+    
+    /**
+     * Key of article participant thumbnail update time.
+     */
+    public static final String ARTICLE_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME = "articleParticipantThumbnailUpdateTime";
 
     /**
      * Key of article participant URL.

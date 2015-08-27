@@ -38,6 +38,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -216,6 +217,8 @@ public class NotificationQueryService {
                 commentedNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
                 commentedNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
                         comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                commentedNotification.put(Common.THUMBNAIL_UPDATE_TIME, comment.optJSONObject(Comment.COMMENT_T_COMMENTER).
+                        optLong(UserExt.USER_UPDATE_TIME));
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.convert(articleTitle));
                 commentedNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
                 commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
@@ -300,6 +303,8 @@ public class NotificationQueryService {
                     atNotification.put(Common.CONTENT, comment.optString(Comment.COMMENT_CONTENT));
                     atNotification.put(Common.THUMBNAIL_URL,
                             comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                    atNotification.put(Common.THUMBNAIL_UPDATE_TIME, comment.optJSONObject(Comment.COMMENT_T_COMMENTER).
+                            optLong(UserExt.USER_UPDATE_TIME));
                     atNotification.put(Article.ARTICLE_TITLE, articleTitle);
                     atNotification.put(Common.URL, comment.optString(Comment.COMMENT_SHARP_URL));
                     atNotification.put(Common.CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
@@ -319,6 +324,7 @@ public class NotificationQueryService {
                     atNotification.put(Common.CONTENT, "");
                     final String thumbnailURL = avatarQueryService.getAvatarURL(articleAuthor.optString(User.USER_EMAIL));
                     atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
+                    atNotification.put(Common.THUMBNAIL_UPDATE_TIME, articleAuthor.optLong(UserExt.USER_UPDATE_TIME));
                     atNotification.put(Article.ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
                     atNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                     atNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
@@ -423,6 +429,7 @@ public class NotificationQueryService {
                 followingUserNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 followingUserNotification.put(Common.CONTENT, "");
                 followingUserNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURL(articleAuthorEmail));
+                followingUserNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
                 followingUserNotification.put(Article.ARTICLE_TITLE, articleTitle);
                 followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                 followingUserNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));

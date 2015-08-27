@@ -26,6 +26,11 @@ package org.b3log.symphony.model;
 public final class UserExt {
 
     /**
+     * Key of user update time.
+     */
+    public static final String USER_UPDATE_TIME = "userUpdateTime";
+
+    /**
      * Key of user city.
      */
     public static final String USER_CITY = "userCity";

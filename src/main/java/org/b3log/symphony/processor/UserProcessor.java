@@ -41,7 +41,6 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
@@ -71,6 +70,7 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import static org.b3log.symphony.util.Networks.isIPv4;
 import org.b3log.symphony.util.Results;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -1022,7 +1022,7 @@ public class UserProcessor {
     }
 
     /**
-     * Loads usernames.
+     * Lists usernames.
      *
      * @param context the specified context
      * @param request the specified request
@@ -1032,7 +1032,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/users/names", method = HTTPRequestMethod.GET)
     public void listNames(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        if (null != Sessions.currentUser(request)) {
+        if (null == Sessions.currentUser(request)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
             return;

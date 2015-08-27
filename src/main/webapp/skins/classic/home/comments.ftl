@@ -9,7 +9,7 @@
                 <h2 class="fn-flex-1">
                     <a title="${comment.commentArticleAuthorName}" class="ft-small"
                        target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}">
-                        <img class="avatar-small" src="${comment.commentArticleAuthorThumbnailURL}-64.jpg"/>
+                        <img class="avatar-small" src="${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}"/>
                     </a>
                     <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                 </h2>

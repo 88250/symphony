@@ -61,7 +61,7 @@ var ArticleChannel = {
                     "<div>" +
                     "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\">" +
                     "<img class=\"avatar\"" +
-                    "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}-64.jpg\" />" +
+                    "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}-64.jpg?${comment.thumbnailUpdateTime}\" />" +
                     "</a>" +
                     "</div>" +
                     "<div class=\"fn-flex-1 comment-content\">" +
@@ -87,6 +87,7 @@ var ArticleChannel = {
             template = replaceAll(template, "${comment.oId}", data.commentId);
             template = replaceAll(template, "${comment.commentAuthorName}", data.commentAuthorName);
             template = replaceAll(template, "${comment.commentAuthorThumbnailURL}", data.commentAuthorThumbnailURL);
+            template = replaceAll(template, "${comment.thumbnailUpdateTime}", data.thumbnailUpdateTime);
             template = replaceAll(template, "${comment.commentContent}", data.commentContent);
             template = replaceAll(template, "${comment.commentCreateTime}", data.commentCreateTime);
 

@@ -159,7 +159,7 @@ var Settings = {
         data.userQQ = QQVal;
         data.userIntro = introVal;
         data.userAvatarURL = $("#avatarURL").attr("src");
-
+        
         return data;
     },
     /**
