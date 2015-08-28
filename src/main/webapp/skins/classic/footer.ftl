@@ -1,9 +1,5 @@
 <div class="footer">
     <div class="wrapper">
-        <div>
-            <a href="http://hacpai.com" rel="nofollow"><img src="${staticServePath}/images/hacpai.png" alt="wide" width="48" /></a>
-            &nbsp; &nbsp; &nbsp; &nbsp;
-        </div>
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
                 <a rel="help" href="/about">${aboutLabel}</a>

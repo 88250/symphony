@@ -7,6 +7,44 @@
     </div> 
 </div>
 </#if>
+<#if navTrendTags?size!=0>
+<div class="module">
+    <div class="module-header">
+        <h2>
+            ${trendTagsLabel}
+        </h2>
+    </div>
+    <div class="module-panel">
+        <ul class="tags fn-clear">
+            <#list navTrendTags as trendTag>
+            <li>
+                <span><a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a></span>
+            </li>
+            </#list>
+        </ul>
+    </div>
+</div>
+</#if>
+<#if sideHotArticles?size!=0>
+<div class="module">
+    <div class="module-header">
+        <h2>
+            ${hotArticleLabel}
+        </h2>
+    </div>
+    <div class="module-panel">
+        <ul class="module-list">
+            <#list sideHotArticles as hotArticle>
+            <li<#if !hotArticle_has_next> class="last"</#if>>
+                <a rel="nofollow" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitle}</a>
+                <a class="ft-small" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
+                   title="${hotArticle.articleAuthorName}">${hotArticle.articleAuthorName}</a>
+            </li>
+            </#list>
+        </ul>
+    </div>
+</div>
+</#if>
 <#if sideTags?size!=0>
 <div class="module">
     <div class="module-header">
@@ -38,26 +76,6 @@
     </div>
 </div>
 </#if>
-<#if sideHotArticles?size!=0>
-<div class="module">
-    <div class="module-header">
-        <h2>
-            ${hotArticleLabel}
-        </h2>
-    </div>
-    <div class="module-panel">
-        <ul class="module-list">
-            <#list sideHotArticles as hotArticle>
-            <li<#if !hotArticle_has_next> class="last"</#if>>
-                <a rel="nofollow" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitle}</a>
-                <a class="ft-small" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
-                   title="${hotArticle.articleAuthorName}">${hotArticle.articleAuthorName}</a>
-            </li>
-            </#list>
-        </ul>
-    </div>
-</div>
-</#if>
 <#if sideRandomArticles?size!=0>
 <div class="module">
     <div class="module-header">
@@ -77,20 +95,21 @@
     </div>
 </div>
 </#if>
-
+<#if newTags?size!=0>
 <div class="module">
     <div class="module-header">
         <h2>
-            ${tagLabel}
+            ${newTagLabel}
         </h2>
     </div>
     <div class="module-panel">
         <ul class="tags fn-clear">
-            <#list navTrendTags as trendTag>
+            <#list newTags as newTag>
             <li>
-                <span><a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a></span>
+                <span><a rel="tag" href="/tags/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a></span>
             </li>
             </#list>
         </ul>
     </div>
 </div>
+</#if>

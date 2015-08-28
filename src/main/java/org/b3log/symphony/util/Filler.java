@@ -180,6 +180,7 @@ public class Filler {
      */
     public void fillSideTags(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.SIDE_TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
+        fillNewTags(dataModel);
     }
 
     /**
@@ -335,6 +336,16 @@ public class Filler {
      */
     private void fillTrendTags(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.NAV_TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
+    }
+
+    /**
+     * Fils new tags.
+     * 
+     * @param dataModel the specified data model
+     * @throws Exception exception
+     */
+    private void fillNewTags(final Map<String, Object> dataModel) throws Exception {
+        dataModel.put(Common.NEW_TAGS, tagQueryService.getNewTags(Symphonys.getInt("newTagsCnt")));
     }
 
     /**

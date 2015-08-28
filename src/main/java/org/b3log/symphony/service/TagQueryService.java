@@ -142,6 +142,26 @@ public class TagQueryService {
             throw new ServiceException(e);
         }
     }
+    
+    /**
+     * Gets the new (sort by oId descending) tags.
+     *
+     * @param fetchSize the specified fetch size
+     * @return trend tags, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getNewTags(final int fetchSize) throws ServiceException {
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+
+        try {
+            final JSONObject result = tagRepository.get(query);
+            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets new tags failed");
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets the cold (sort by reference count ascending) tags.

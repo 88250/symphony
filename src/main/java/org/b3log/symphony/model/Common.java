@@ -198,6 +198,11 @@ public final class Common {
      * Key of navigation trend tags.
      */
     public static final String NAV_TREND_TAGS = "navTrendTags";
+    
+    /**
+     * Key of new tags.
+     */
+    public static final String NEW_TAGS = "newTags";
 
     /**
      * Key of trend tags.
