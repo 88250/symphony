@@ -186,6 +186,5 @@ public class TagMgmtService {
             LOGGER.log(Level.ERROR, "Relates tag and tag [" + tagString + "] failed", e);
             throw new ServiceException(e);
         }
-
     }
 }

@@ -154,6 +154,8 @@ public class TagQueryService {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
 
+        query.setFilter(new PropertyFilter(Tag.TAG_REFERENCE_CNT, FilterOperator.GREATER_THAN, 0));
+
         try {
             final JSONObject result = tagRepository.get(query);
             return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));

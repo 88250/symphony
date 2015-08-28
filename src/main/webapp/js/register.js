@@ -86,7 +86,7 @@ var Register = {
                     "target": $("#confirmPassword"),
                     "original": $("#userPassword"),
                     "msg": Label.confirmPwdErrorLabel,
-                    "type": "email"
+                    "type": "confirmPassword"
                 }]})) {
             var requestJSONObject = {
                 userAppRole: $("input[name=userAppRole]:checked").val(),

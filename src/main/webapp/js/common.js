@@ -741,7 +741,7 @@ var Validate = {
                 }
                 break;
             default:
-                if (val.length < data.max && val.length > (data.min ? data.min : 0)) {
+                if (val.length <= data.max && val.length > (data.min ? data.min : 0)) {
                     isValidate = true;
                 } else {
                     isValidate = false;
