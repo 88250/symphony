@@ -223,10 +223,16 @@ public class TagQueryService {
     public JSONObject getCreator(final String tagId) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
-        filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_CREATOR));
+        
+        final List<Filter> orFilters = new ArrayList<Filter>();
+        orFilters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_CREATOR));
+        orFilters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_USER_SELF));
+        
+        filters.add(new CompositeFilter(CompositeFilterOperator.OR, orFilters));
 
         final Query query = new Query().setCurrentPageNum(1).setPageSize(1).setPageCount(1).
-                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
 
         try {
             final JSONObject result = userTagRepository.get(query);
