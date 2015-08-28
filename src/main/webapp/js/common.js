@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.6.11, Aug 28, 2015
+ * @version 1.12.6.11, Aug 28, 2015
  */
 
 /**
@@ -183,29 +183,41 @@ var Util = {
      */
     initArticlePreview: function () {
         $(".article-list h2 > a").hover(function () {
-            var $li = $(this).closest("li"),
-                    previewHTML = '<div class="preview"><span class="ico-arrow"></span><span class="ico-arrowborder"></span>';
+            var $ele = $(this);
+            
+            $ele.addClass("previewing");
+            
+            var $li = $ele.closest("li"),
+                previewHTML = '<div class="preview"><span class="ico-arrow"></span><span class="ico-arrowborder"></span>';
             $(".article-list .preview").hide();
             if ($li.find('.preview').length === 1) {
                 $li.find('.preview').show();
                 return false;
             }
-            $.ajax({
-                url: "/article/" + $(this).data('id') + "/preview",
-                type: "GET",
-                cache: false,
-                async: false,
-                success: function (result, textStatus) {
-                    if (!result.sc) {
-                        return false;
-                    }
-                    $li.append(previewHTML + result.html + '</div>');
-                    $li.find('.preview').show();
+            
+            setTimeout(function() {
+                if (!$ele.hasClass("previewing")) {
+                    return;
                 }
-            });
+                
+                $.ajax({
+                    url: "/article/" + $ele.data('id') + "/preview",
+                    type: "GET",
+                    cache: false,
+                    success: function (result, textStatus) {
+                        if (!result.sc) {
+                            return false;
+                        }
+                        $li.append(previewHTML + result.html + '</div>');
+                        $li.find('.preview').show();
+                    }
+                });
+            }, 800);
         }, function () {
             var $li = $(this).closest("li");
             $li.find('.preview').hide();
+            
+            $(this).removeClass("previewing");
         });
     },
     /**
