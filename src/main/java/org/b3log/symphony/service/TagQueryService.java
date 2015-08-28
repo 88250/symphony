@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.4, Jul 20, 2015
+ * @version 1.4.1.4, Aug 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -224,8 +224,8 @@ public class TagQueryService {
             ret.put(Tag.TAG_T_CREATOR_NAME, creator.optString(User.USER_NAME));
 
             return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets tag creator failed", e);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets tag creator failed [tagId=" + tagId + "]", e);
             throw new ServiceException(e);
         }
     }
