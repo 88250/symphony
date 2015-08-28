@@ -76,7 +76,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.9.4, Aug 27, 2015
+ * @version 1.9.9.5, Aug 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -294,7 +294,7 @@ public class UserMgmtService {
             oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
             oldUser.put(UserExt.USER_AVATAR_TYPE, requestJSONObject.optString(UserExt.USER_AVATAR_TYPE));
             oldUser.put(UserExt.USER_AVATAR_URL, requestJSONObject.optString(UserExt.USER_AVATAR_URL));
-            
+
             oldUser.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
 
             userRepository.update(oldUserId, oldUser);
@@ -816,6 +816,14 @@ public class UserMgmtService {
                 final int tagCnt = tagCntOption.optInt(Option.OPTION_VALUE);
                 tagCntOption.put(Option.OPTION_VALUE, tagCnt + 1);
                 optionRepository.update(Option.ID_C_STATISTIC_TAG_COUNT, tagCntOption);
+
+                // User-Tag relation (creator)
+                final JSONObject userTagRelation = new JSONObject();
+                userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
+                userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
+                userTagRelation.put(Common.TYPE, Tag.TAG_TYPE_C_CREATOR);
+                
+                userTagRepository.add(userTagRelation);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in user[name={2}]",
@@ -825,7 +833,7 @@ public class UserMgmtService {
                 tagTitleStr = tagTitleStr.replaceAll("(?i)" + tagTitle, tag.optString(Tag.TAG_TITLE));
             }
 
-            // User-Tag relation
+            // User-Tag relation (userself)
             final JSONObject userTagRelation = new JSONObject();
             userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
             userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));

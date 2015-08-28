@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.4, Aug 28, 2015
+ * @version 1.4.1.5, Aug 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -223,7 +223,7 @@ public class TagQueryService {
     public JSONObject getCreator(final String tagId) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
-        filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 0));
+        filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_CREATOR));
 
         final Query query = new Query().setCurrentPageNum(1).setPageSize(1).setPageCount(1).
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
