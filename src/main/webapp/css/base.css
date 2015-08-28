@@ -972,8 +972,8 @@ a.icon:hover {
     color: #FFFFFF;
     font-size: 10px;
     font-weight: normal;
-    margin: 13px 10px 0 10px;
-    padding: 2px 6px;
+    margin: 12px 11px 0 11px;
+    padding: 3px 6px;
     text-shadow: 0 0 0;
 }
 
@@ -1034,21 +1034,17 @@ a.icon:hover {
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
     left: 81px;
-    padding: 3px 5px 3px 20px;
+    padding: 3px 5px 3px 25px;
     position: absolute;
     top: 8.5px;
     width: 0;
     z-index: 1;
-    -moz-transition: width 0.4s ease, background 0.4s ease;
-    -webkit-transition: width 0.4s ease, background 0.4s ease;
-    transition: width 0.4s ease, background 0.4s ease;
+    width: 56%;
 }
 
 .nav input.search:focus {
-    padding-left: 25px;
     border-color: #51A7E8;
     box-shadow: 0 0 3px rgba(81, 167, 232, 0.5), 0 1px 1px rgba(0, 0, 0, 0.2) inset;
-    width: 70%;
 }
 
 .nav .tags {

@@ -77,3 +77,20 @@
     </div>
 </div>
 </#if>
+
+<div class="module">
+    <div class="module-header">
+        <h2>
+            ${tagLabel}
+        </h2>
+    </div>
+    <div class="module-panel">
+        <ul class="tags fn-clear">
+            <#list navTrendTags as trendTag>
+            <li>
+                <span><a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a></span>
+            </li>
+            </#list>
+        </ul>
+    </div>
+</div>
