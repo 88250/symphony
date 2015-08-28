@@ -10,7 +10,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper register content-reset">
+            <div class="wrapper register">
                 <div class="form">
                     <table cellpadding="0" cellspacing="0">
                         <tbody>
@@ -19,8 +19,7 @@
                                     <label for="userName">${userNameLabel}</label>
                                 </td>
                                 <td width="165">
-                                    <input type="text" id="userName" />
-                                    <span style="left: 275px; top: 14px;"></span>
+                                    <input autofocus="autofocus" type="text" id="userName" />
                                 </td>
                             </tr>
                             <tr>
@@ -29,7 +28,6 @@
                                 </td>
                                 <td>
                                     <input type="text" id="userEmail" />
-                                    <span style="left:275px;top:68px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -37,14 +35,13 @@
                                     <label for="securityCode">${captchaLabel}</label>
                                 </td>
                                 <td>
-                                    <input type="text" id="securityCode" />
-                                    <span style="top:121px;left:275px;"></span>
+                                    <input type="number" id="securityCode" />
                                     <img id="captcha" class="fn-pointer" src="/captcha" onclick="this.src = '/captcha?' + (new Date()).getTime()" />
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" align="right">
-                                    <span id="registerTip" style="top: 163px; right: 71px;"></span>
+                                <td colspan="2" align="right"><br/>
+                                    <div id="registerTip" class="tip"></div><br/>
                                     <button class="green" onclick="Register.register()">${registerLabel}</button>
                                     <input id="referral" type="hidden" value="${referral}">
                                 </td>
@@ -52,7 +49,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="intro fn-flex-1">
+                <div class="intro fn-flex-1  content-reset">
                     ${introLabel}
                 </div>
             </div>

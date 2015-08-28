@@ -17,8 +17,7 @@
             <div class="wrapper post">
                 <div class="form fn-flex-1">
                     <div>
-                        <input type="text" id="articleTitle" value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
-                        <span style="right:2px;top:4px;"></span>
+                        <input autofocus="autofocus" type="text" id="articleTitle" value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                     </div>
                     <div class="fn-clear">
                         <label class="article-content-label">
@@ -34,26 +33,25 @@
                             <input type="file" name="file">
                         </form>
                         <textarea id="articleContent" placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if></textarea>
-                        <span id="articleContentTip" style="top: 304px; right: 2px;"></span>
                         <div class="fn-left grammar fn-none">
                             ${markdwonGrammarLabel}
                         </div>
                     </div>
                     <div>
                         <input id="articleTags" type="text" value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
-                        <span style="right:2px;top:424px;"></span><br/><br/>
+                        <br/><br/>
                     </div>
                     <div class="fn-clear article-reward-content">
                         <form class="fn-none" id="rewardFileUpload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
                         </form>
                         <textarea id="articleRewardContent" placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
-                        <span id="articleRewardContentTip" style="top: 304px; right: 2px;"></span>
                     </div>
                     <div>
                         <input id="articleRewardPoint" type="text" value="<#if article?? && 0 != article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
-                               <span style="right:2px;top:424px;"></span><br/><br/>
+                        <br/><br/>
                     </div>
+                    <div class="tip" id="addArticleTip"></div><br/>
                     <div class="fn-clear">
                         <div class="fn-left">
                             <input<#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked="checked"</#if></#if> type="checkbox" id="syncWithSymphonyClient"/> 
@@ -72,7 +70,6 @@
                             <button class="red" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>
-                    <div id="addArticleTip" style="bottom: 70px;right: 137px;"></div>
                     ${postGuideLabel}
                 </div>
             </div>
@@ -118,7 +115,6 @@
                     "uploadingLabel": "${uploadingLabel}",
                     "qiniuDomain": "${qiniuDomain}"
             });
-            $('#articleTitle').focus();
             var qiniuToken = '${qiniuUploadToken}';
             var qiniuDomain = '${qiniuDomain}';
             var audioRecordingLabel = '${audioRecordingLabel}';

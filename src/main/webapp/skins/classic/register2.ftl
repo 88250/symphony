@@ -10,7 +10,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper register content-reset">
+            <div class="wrapper register">
                 <div class="form">
                     <table cellpadding="0" cellspacing="0">
                         <tbody>
@@ -20,7 +20,6 @@
                                 </td>
                                 <td width="165">
                                     <input type="text" id="userName" value="${user.userName}" readonly="readonly" />
-                                    <span style="left: 275px; top: 14px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -29,7 +28,6 @@
                                 </td>
                                 <td>
                                     <input type="text" id="userEmail" value="${user.userEmail}" readonly="readonly" />
-                                    <span style="left:275px;top:68px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -38,7 +36,6 @@
                                 </td>
                                 <td>
                                     <input id="userPassword"  type="password" />
-                                    <span style="left:275px;top:121px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -47,7 +44,6 @@
                                 </td>
                                 <td>
                                     <input id="confirmPassword" type="password" />
-                                    <span style="left:275px;top:174px;"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -60,8 +56,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" align="right">
-                                    <span id="registerTip" style="top: 199px; right: 71px;"></span>
+                                <td colspan="2" align="right"><br/>
+                                    <div id="registerTip" class="tip"></div><br/>
                                     <button class="green" onclick="Register.register2()">${registerLabel}</button>
                                     <input id="referral" type="hidden" value="${referral}">
                                     <input id="userId" type="hidden" value="${user.oId}">
@@ -70,7 +66,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="intro fn-flex-1">
+                <div class="intro fn-flex-1 content-reset">
                     ${introLabel}
                 </div>
             </div>

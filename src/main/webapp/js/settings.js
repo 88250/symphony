@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.6, Aug 27, 2015
+ * @version 1.3.2.7, Aug 28, 2015
  */
 
 /**
@@ -32,34 +32,47 @@ var Settings = {
      * @argument {String} csrfToken CSRF token
      */
     pointTransfer: function (csrfToken) {
-        var requestJSONObject = {
-            "userName": $("#pointTransferUserName").val(),
-            "amount": $("#pointTransferAmount").val()
-        };
+        if (Validate.goValidate({target: $('#pointTransferTip'),
+            data: [{
+                    "target": $("#pointTransferUserName"),
+                    "type": "string",
+                    "max": 256,
+                    "msg": Label.invalidUserNameLabel
+                }, {
+                    "target": $("#pointTransferAmount"),
+                    "type": "string",
+                    'max': 50,
+                    "msg": Label.amountNotEmpty
+                }]})) {
+            var requestJSONObject = {
+                "userName": $("#pointTransferUserName").val(),
+                "amount": $("#pointTransferAmount").val()
+            };
 
-        $.ajax({
-            url: "/point/transfer",
-            type: "POST",
-            headers: {"csrfToken": csrfToken},
-            cache: false,
-            data: JSON.stringify(requestJSONObject),
-            beforeSend: function () {
-                $("#pointTransferTip").removeClass("tip-succ").removeClass("tip-error").text("");
-            },
-            success: function (result, textStatus) {
-                if (result.sc) {
-                    $("#pointTransferTip").addClass("tip-succ").text(Label.transferSuccLabel);
-                } else {
-                    $("#pointTransferTip").addClass("tip-error").text(result.msg);
+            $.ajax({
+                url: "/point/transfer",
+                type: "POST",
+                headers: {"csrfToken": csrfToken},
+                cache: false,
+                data: JSON.stringify(requestJSONObject),
+                beforeSend: function () {
+                    $("#pointTransferTip").removeClass("succ").removeClass("error").html("");
+                },
+                success: function (result, textStatus) {
+                    if (result.sc) {
+                        $("#pointTransferTip").addClass("succ").removeClass("error").html('<ul><li>' + Label.transferSuccLabel + '</li></ul>');
+                    } else {
+                        $("#pointTransferTip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
+                    }
+
+                    $("#pointTransferTip").show();
+
+                    setTimeout(function () {
+                        $("#pointTransferTip").hide();
+                    }, 2000);
                 }
-
-                $("#pointTransferTip").show();
-
-                setTimeout(function () {
-                    $("#pointTransferTip").hide();
-                }, 2000);
-            }
-        });
+            });
+        }
     },
     /**
      * @description 更新 settings 页面数据.
@@ -67,7 +80,7 @@ var Settings = {
      */
     update: function (type, csrfToken) {
         var requestJSONObject = {};
-        
+
         switch (type) {
             case "profiles":
                 requestJSONObject = this._validateProfiles();
@@ -83,7 +96,7 @@ var Settings = {
         }
 
         if (!requestJSONObject) {
-            return;
+            return false;
         }
 
         $.ajax({
@@ -93,13 +106,13 @@ var Settings = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {
-                $("#" + type.replace(/\//g, "") + "Tip").removeClass("tip-succ").removeClass("tip-error").text("");
+                $("#" + type.replace(/\//g, "") + "Tip").removeClass("succ").removeClass("error").html("");
             },
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-succ").text(Label.updateSuccLabel);
+                    $("#" + type.replace(/\//g, "") + "Tip").addClass("succ").removeClass("error").html('<ul><li>' + Label.updateSuccLabel + '</li></ul>');
                 } else {
-                    $("#" + type.replace(/\//g, "") + "Tip").addClass("tip-error").text(result.msg);
+                    $("#" + type.replace(/\//g, "") + "Tip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
                 }
                 $("#" + type.replace(/\//g, "") + "Tip").show();
 
@@ -115,88 +128,74 @@ var Settings = {
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validateProfiles: function () {
-        var tagsVal = $("#userTags").val().replace(/(^\s*)|(\s*$)/g, ""),
-                URLVal = $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-                QQVal = $("#userQQ").val().replace(/(^\s*)|(\s*$)/g, ""),
-                introVal = $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, "");
-        // 跳过前端校验
-//        if (Validate.goValidate([{
-//                "id": "userTags",
-//                "type": "tags",
-//                "msg": Label.tagsErrorLabel
-//            }, {
-//                "id": "userURL",
-//                "type": "url",
-//                "msg": Label.invalidUserURLLabel
-//            }, {
-//                "id": "userQQ",
-//                "type": "12",
-//                "msg": Label.invalidUserQQLabel
-//            }, {
-//                "id": "userIntro",
-//                "type": "255",
-//                "msg": Label.invalidUserIntroLabel
-//            }, {
-//                "id": "avatarURL",
-//                "type": "imgSrc",
-//                "msg": Label.invalidAvatarURLLabel
-//            }])) {
-//            var data = {};
-//            data.userTags = tagsVal;
-//            data.userURL = URLVal;
-//            data.userQQ = QQVal;
-//            data.userIntro = introVal;
-//            data.userAvatarURL = $("#avatarURL").attr("src");
-//
-//            return data;
-//        }
-//
-//        return false;
-
-        var data = {};
-        data.userTags = tagsVal;
-        data.userURL = URLVal;
-        data.userQQ = QQVal;
-        data.userIntro = introVal;
-        data.userAvatarURL = $("#avatarURL").attr("src");
-        
-        return data;
+        if (Validate.goValidate({target: $('#profilesTip'),
+            data: [{
+                    "target": $("#userTags"),
+                    "type": "tags",
+                    "msg": Label.tagsErrorLabel
+                }, {
+                    "target": $("#userURL"),
+                    "type": "url",
+                    "msg": Label.invalidUserURLLabel
+                }, {
+                    "target": $("#userQQ"),
+                    "type": "number",
+                    'max': 15,
+                    "msg": Label.invalidUserQQLabel
+                }, {
+                    "target": $("#userIntro"),
+                    "type": "string",
+                    'max': 255,
+                    "msg": Label.invalidUserIntroLabel
+                }, {
+                    "target": $("#avatarURL"),
+                    "type": "imgSrc",
+                    "msg": Label.invalidAvatarURLLabel
+                }]})) {
+            return {
+                userTags: $("#userTags").val().replace(/(^\s*)|(\s*$)/g, ""),
+                userURL: $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                userQQ: $("#userQQ").val().replace(/(^\s*)|(\s*$)/g, ""),
+                userIntro: $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, ""),
+                userAvatarURL: $("#avatarURL").attr("src")
+            };
+        } else {
+            return false;
+        }
     },
     /**
      * @description settings 页面 solo 数据同步校验
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validateSyncB3: function () {
-        var keyVal = $("#soloKey").val().replace(/(^\s*)|(\s*$)/g, ""),
-                postURLVal = $("#soloPostURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-                updateURLVal = $("#soloUpdateURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-                cmtURLVal = $("#soloCmtURL").val().replace(/(^\s*)|(\s*$)/g, "");
-
-        if (Validate.goValidate([{
-                "id": "soloKey",
-                "type": "20",
-                "msg": Label.invalidUserB3KeyLabel
-            }, {
-                "id": "soloPostURL",
-                "type": "150",
-                "msg": Label.invalidUserB3ClientURLLabel
-            }, {
-                "id": "soloUpdateURL",
-                "type": "150",
-                "msg": Label.invalidUserB3ClientURLLabel
-            }, {
-                "id": "soloCmtURL",
-                "type": "150",
-                "msg": Label.invalidUserB3ClientURLLabel
-            }])) {
-            var data = {};
-            data.userB3Key = keyVal;
-            data.userB3ClientAddArticleURL = postURLVal;
-            data.userB3ClientUpdateArticleURL = updateURLVal;
-            data.userB3ClientAddCommentURL = cmtURLVal;
-            return data;
+        if (Validate.goValidate({target: $("#syncb3Tip"),
+            data: [{
+                    "target": $("#soloKey"),
+                    "type": "string",
+                    'max': 20,
+                    "msg": Label.invalidUserB3KeyLabel
+                }, {
+                    "target": $("#soloPostURL"),
+                    "type": "url",
+                    "msg": Label.invalidUserB3ClientURLLabel
+                }, {
+                    "target": $("#soloUpdateURL"),
+                    "type": "url",
+                    "msg": Label.invalidUserB3ClientURLLabel
+                }, {
+                    "target": $("#soloCmtURL"),
+                    "type": "url",
+                    "msg": Label.invalidUserB3ClientURLLabel
+                }]})) {
+            return {
+                userB3Key: $("#soloKey").val().replace(/(^\s*)|(\s*$)/g, ""),
+                userB3ClientAddArticleURL: $("#soloPostURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                userB3ClientUpdateArticleURL: $("#soloUpdateURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                userB3ClientAddCommentURL: $("#soloCmtURL").val().replace(/(^\s*)|(\s*$)/g, "")
+            };
+        } else {
+            return false;
         }
-        return false;
     },
     /**
      * @description settings 页面密码校验
@@ -205,19 +204,21 @@ var Settings = {
     _validatePassword: function () {
         var pwdVal = $("#pwdOld").val(),
                 newPwdVal = $("#pwdNew").val();
-        if (Validate.goValidate([{
-                "id": "pwdOld",
-                "type": "password",
-                "msg": Label.invalidPasswordLabel
-            }, {
-                "id": "pwdNew",
-                "type": "password",
-                "msg": Label.invalidPasswordLabel
-            }, {
-                "id": "pwdRepeat",
-                "type": "confirmPassword|pwdNew",
-                "msg": Label.confirmPwdErrorLabel
-            }])) {
+        if (Validate.goValidate({target: $('#passwordTip'),
+            data: [{
+                    "target": $("#pwdOld"),
+                    "type": "password",
+                    "msg": Label.invalidPasswordLabel
+                }, {
+                    "target": $("#pwdNew"),
+                    "type": "password",
+                    "msg": Label.invalidPasswordLabel
+                }, {
+                    "target": $("#pwdRepeat"),
+                    "type": "password",
+                    "oranginal": $('#pwdNew'),
+                    "msg": Label.confirmPwdErrorLabel
+                }]})) {
             if (newPwdVal !== $("#pwdRepeat").val()) {
                 return false;
             }

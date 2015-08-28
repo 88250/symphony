@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.5.0, Aug 27, 2015
+ * @version 1.9.5.1, Aug 28, 2015
  */
 
 /**
@@ -35,23 +35,23 @@ var AddArticle = {
      * @csrfToken [string] CSRF 令牌
      */
     add: function (id, csrfToken) {
-        var isError = false;
-        if (this.editor.getValue().length < 4 || this.editor.getValue().length > 1048576) {
-            $("#articleContentTip").addClass("tip-error").text(Label.articleContentErrorLabel);
-        } else {
-            isError = true;
-            $("#articleContentTip").removeClass("tip-error").text("");
-        }
-
-        if (Validate.goValidate([{
-                "id": "articleTitle",
-                "type": 256,
-                "msg": Label.articleTitleErrorLabel
+        if (Validate.goValidate({target: $('#addArticleTip'), 
+            data: [{
+                "type": "string",
+                "max": 256,
+                "msg": Label.articleTitleErrorLabel,
+                "target": $('#articleTitle')
             }, {
-                "id": "articleTags",
+                "type": "editor",
+                "target": this.editor,
+                "max": 1048576,
+                "min": 4,
+                "msg": Label.articleContentErrorLabel
+            }, {
                 "type": "tags",
-                "msg": Label.tagsErrorLabel
-            }]) && isError) {
+                "msg": Label.tagsErrorLabel,
+                "target": $('#articleTags')
+            }]})) {
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g, ""),
                 articleContent: this.editor.getValue(),
@@ -87,7 +87,7 @@ var AddArticle = {
                             window.localStorage.articleContent = "";
                         }
                     } else {
-                        $("#addArticleTip").addClass("tip-error").text(result.msg);
+                        $("#addArticleTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                     }
                 },
                 complete: function () {

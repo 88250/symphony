@@ -86,6 +86,8 @@
             Label.followLabel = "${followLabel}";
             Label.unfollowLabel = "${unfollowLabel}";
             Label.invalidPasswordLabel = "${invalidPasswordLabel}";
+            Label.amountNotEmpty = "${amountNotEmpty}";
+            Label.invalidUserNameLabel = "${invalidUserNameLabel}";
             Label.loginNameErrorLabel = "${loginNameErrorLabel}";
             Label.updateSuccLabel = "${updateSuccLabel}";
             Label.transferSuccLabel = "${transferSuccLabel}";

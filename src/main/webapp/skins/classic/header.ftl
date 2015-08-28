@@ -35,9 +35,7 @@
                         </td>
                         <td>
                             <input id="nameOrEmail" type="text" placeholder="${nameOrEmailLabel}" />
-                            <span style="top: 28px; left: 246px;"></span>
                         </td>
-                        <td>&nbsp;</td>
                     </tr>
                     <tr>
                         <td>
@@ -45,13 +43,11 @@
                         </td>
                         <td>
                             <input type="password" id="loginPassword" />
-                            <span style="top: 83px; left: 246px;"></span>
                         </td>
-                        <td>&nbsp;</td>
                     </tr>
                     <tr>
-                        <td colspan="3" align="right">
-                            <span id="loginTip" style="right: 82px; top: 126px;"></span>
+                        <td colspan="2" align="right">
+                            <div id="loginTip" class="tip"></div><br/>
                             <button class="red" onclick="Util.login()">${loginLabel}</button>
                         </td>
                     </tr>

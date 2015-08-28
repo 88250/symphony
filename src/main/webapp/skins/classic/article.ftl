@@ -118,7 +118,7 @@
                             <input type="file" name="file">
                         </form>
                         <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
-                        <span style="bottom: 4px; right: 137px;"></span>
+                        <div class="tip" id="addCommentTip"></div><br/>
                         Markdown
                         <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>

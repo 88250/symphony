@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.10.4, Aug 28, 2015
+ * @version 1.9.10.5, Aug 28, 2015
  */
 
 /**
@@ -27,12 +27,6 @@
  * @static
  */
 var Comment = {
-    _validateData: [{
-            "id": "commentContent",
-            "type": 1000,
-            "msg": Label.commentErrorLabel,
-            "$error": $("#commentContent").next()
-        }],
     editor: undefined,
     init: function () {
         $("#comments").on('dblclick', 'img', function () {
@@ -82,7 +76,7 @@ var Comment = {
                 $(".form .green").hide();
             }
 
-            $(".CodeMirror").next().removeClass("tip-error").text('');
+            $("#addCommentTip").removeClass("error succ").html('');
 
             if (window.localStorage) {
                 window.localStorage[Label.articleOId] = JSON.stringify({
@@ -128,7 +122,15 @@ var Comment = {
      * @csrfToken [string] CSRF 令牌
      */
     add: function (id, csrfToken) {
-        if (!Validate.goValidate(Comment._validateData)) {
+        if (!Validate.goValidate({
+            target: $("#addCommentTip"),
+            data: [{
+                    "target": Comment.editor,
+                    "type": 'editor',
+                    'max': 1000,
+                    "msg": Label.commentErrorLabel
+                }]
+        })) {
             return false;
         }
 
@@ -161,11 +163,11 @@ var Comment = {
                         window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
                     }
                 } else {
-                    $(".CodeMirror").next().addClass("tip-error").text(result.msg);
+                    $("#addCommentTip").addClass("error").html('<ul><li>' + result.msg + '</li></ul>');
                 }
             },
-            error: function(result) {
-                $(".CodeMirror").next().addClass("tip-error").text(result.statusText);
+            error: function (result) {
+                $("#addCommentTip").addClass("error").html('<ul><li>' + result.statusText + '</li></ul>');
             },
             complete: function () {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
