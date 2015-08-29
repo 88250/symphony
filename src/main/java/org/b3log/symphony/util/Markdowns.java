@@ -122,23 +122,25 @@ public final class Markdowns {
      * 'markdownErrorLabel' if exception
      */
     public static String toHTML(final String markdownText) {
-        if (markdownText.contains("<p>")) {
-            return markdownText;
-        }
-
         if (Strings.isEmptyOrNull(markdownText)) {
             return null;
         }
+        
+        if (markdownText.contains("<p>")) {
+            return markdownText;
+        }
+        
+        final String text = markdownText.replaceAll("\\n", "<br>");
 
         final StringWriter writer = new StringWriter();
         final Markdown markdown = new Markdown();
 
         try {
-            markdown.transform(new StringReader(markdownText), writer);
+            markdown.transform(new StringReader(text), writer);
         } catch (final ParseException e) {
-            LOGGER.log(Level.ERROR, "Markdown error[text={0}]", markdownText);
+            LOGGER.log(Level.WARN, "Markdown error[text={0}]", markdownText);
 
-            return markdownText;
+            return text;
         }
 
         return writer.toString();
