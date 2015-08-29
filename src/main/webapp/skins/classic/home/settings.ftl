@@ -3,7 +3,7 @@
 <br/>
 <div class="module">
     <div class="module-header fn-clear">
-        <a rel="nofollow" href="/member/${currentUser.userName}">${currentUser.userName}</a>
+        <a rel="nofollow" href="/member/${currentUser.userName}" target="_blank">${currentUser.userName}</a>
         <h2>${profilesLabel}</h2>
         <span>(${currentUser.userEmail})</span>
     </div>
@@ -14,8 +14,10 @@
         <label>URL</label><br/>
         <input id="userURL" type="text" value="${currentUser.userURL}"/>
 
+        <!--
         <label>QQ</label><br/>
         <input id="userQQ" type="text" value="${currentUser.userQQ}" />
+        -->
 
         <label>${userIntroLabel}</label><br/>
         <textarea id="userIntro">${currentUser.userIntro}</textarea>
@@ -73,7 +75,19 @@
 
 <div class="module">
     <div class="module-header">
-        <h2>${syncLabel}</h2>
+        <h2>${geoLable} <a href="/" target="_blank">(?)</a></h2>
+    </div>
+
+    <div class="module-panel form fn-clear">
+        ${geoInfoTipLabel}<br><br>
+        <input id="cityName" type="text" placeholder="${geoInfoPlaceholderLabel}" value="${user.userCity}" 
+               readonly="readonly"/>
+    </div>
+</div>
+
+<div class="module">
+    <div class="module-header">
+        <h2>${syncLabel} <a href="http://hacpai.com/article/1440820551723" target="_blank">(?)</a></h2>
     </div>
     <div class="module-panel form fn-clear">
         <label>B3log Key</label>

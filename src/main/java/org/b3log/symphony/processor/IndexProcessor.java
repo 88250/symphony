@@ -46,13 +46,14 @@ import org.json.JSONObject;
  * <ul>
  * <li>Shows index (/), GET</li>
  * <li>Shows about (/about), GET</li>
+ * <li>Shows b3log (/b3log), GET</li>
  * <li>Shows Baidu search header (/search-header), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.1.9, Jul 26, 2015
+ * @version 1.3.1.9, Aug 29, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -130,9 +131,38 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showAbout(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
+        
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("about.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+        filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
+    }
+
+    /**
+     * Shows b3log.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/b3log", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showB3log(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
+        
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("b3log.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);

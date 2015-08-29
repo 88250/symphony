@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
-                <a rel="help" href="/about">${aboutLabel}</a>
+                <a rel="help" href="http://hacpai.com/article/1440573175609">${aboutLabel}</a>
                 <a href="/timeline">${timelineLabel}</a>
                 <a href="/tags/系统公告">${symAnnouncementLabel}</a>
                 <a href="/tags/Q%26A">${qnaLabel}</a>
