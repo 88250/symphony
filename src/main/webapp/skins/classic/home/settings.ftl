@@ -147,7 +147,7 @@
                 submit: function (e, data) {
                 },
                 done: function (e, data) {
-                    console.log(data.result)
+                    // console.log(data.result)
                     var qiniuKey = data.result.key;
                     if (!qiniuKey) {
                         alert("Upload error");

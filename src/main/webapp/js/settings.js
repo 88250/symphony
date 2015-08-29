@@ -138,11 +138,6 @@ var Settings = {
                     "type": "url",
                     "msg": Label.invalidUserURLLabel
                 }, {
-                    "target": $("#userQQ"),
-                    "type": "number",
-                    'max': 15,
-                    "msg": Label.invalidUserQQLabel
-                }, {
                     "target": $("#userIntro"),
                     "type": "string",
                     'max': 255,
@@ -155,7 +150,6 @@ var Settings = {
             return {
                 userTags: $("#userTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userURL: $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-                userQQ: $("#userQQ").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userIntro: $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userAvatarURL: $("#avatarURL").attr("src")
             };
@@ -230,32 +224,9 @@ var Settings = {
         return false;
     },
     /**
-     * @description 初识化设置页面，回车提交表单
+     * @description 初识化设置页面
      */
     init: function () {
-        $("#userURL, #userQQ").keyup(function (event) {
-            if (event.keyCode === 13) {
-                Settings.update('profiles');
-            }
-        });
-
-        $("#userIntro").keyup(function (event) {
-            if (event.keyCode === 13 && event.ctrlKey) {
-                Settings.update('profiles');
-            }
-        });
-
-        $("#soloKey, #soloPostURL, , #soloUpdateURL, #soloCmtURL").keyup(function (event) {
-            if (event.keyCode === 13) {
-                Settings.update('sync/b3');
-            }
-        });
-
-        $("#pwdOld, #pwdNew, #pwdRepeat").keyup(function (event) {
-            if (event.keyCode === 13) {
-                Settings.update('password');
-            }
-        });
     }
 };
 

@@ -19,7 +19,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
@@ -144,8 +143,7 @@ public final class Markdowns {
         try {
             markdown.transform(new StringReader(text), writer);
         } catch (final ParseException e) {
-            LOGGER.log(Level.WARN, "Markdown error[text={0}]", markdownText);
-
+            // LOGGER.log(Level.WARN, "Markdown error[text={0}]", markdownText);
             return text;
         }
 
