@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.6.11, Aug 28, 2015
+ * @version 1.12.7.11, Aug 29, 2015
  */
 
 /**
@@ -607,8 +607,6 @@ var Util = {
      */
     uploadFile: function (obj) {
         $('#' + obj.id).fileupload({
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            maxFileSize: 1024 * 1024, // 1M
             multipart: true,
             pasteZone: obj.pasteZone,
             dropZone: obj.pasteZone,
@@ -622,9 +620,15 @@ var Util = {
                         var mime = isImage(fileBuf);
 
                         if (null == mime) {
-                            alert("只允许上传图片~");
+                            alert("Image only~");
 
                             return;
+                        }
+                        
+                        if (evt.target.result.byteLength > 1024 * 1024) {
+                            alert("This image is too big (max: 1Mb)");
+                            
+                            return
                         }
 
                         data.submit();
