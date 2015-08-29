@@ -26,6 +26,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -497,10 +498,12 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getHotArticles(final int fetchSize) throws ServiceException {
+        final String id = String.valueOf(DateUtils.addDays(new Date(), -15).getTime());
+        
         try {
-            final Query query = new Query();
-            query.addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
-                    addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(fetchSize);
+            final Query query = new Query().addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
+                    addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(fetchSize)
+                    .setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
 
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
