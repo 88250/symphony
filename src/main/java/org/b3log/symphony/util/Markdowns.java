@@ -57,11 +57,6 @@ public final class Markdowns {
             = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
 
     /**
-     * Escape paragraph replacement.
-     */
-    private static final String ESC_P = "_esc_p";
-
-    /**
      * Gets the safe HTML content of the specified content.
      *
      * @param content the specified content
@@ -134,17 +129,14 @@ public final class Markdowns {
             return markdownText;
         }
 
-        String text = markdownText.replaceAll("\\n\n", ESC_P);
-        text = text.replaceAll("\\n", "<br>").replaceAll(ESC_P, "\n\n");
-
         final StringWriter writer = new StringWriter();
         final Markdown markdown = new Markdown();
 
         try {
-            markdown.transform(new StringReader(text), writer);
+            markdown.transform(new StringReader(markdownText), writer);
         } catch (final ParseException e) {
             // LOGGER.log(Level.WARN, "Markdown error[text={0}]", markdownText);
-            return text;
+            return markdownText;
         }
 
         return writer.toString();
