@@ -17,7 +17,8 @@
             <div class="wrapper post">
                 <div class="form fn-flex-1">
                     <div>
-                        <input autofocus="autofocus" type="text" id="articleTitle" value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
+                        <input autofocus="autofocus" type="text" id="articleTitle" tabindex="1"
+                               value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                     </div>
                     <div class="fn-clear">
                         <label class="article-content-label">
@@ -32,42 +33,46 @@
                         <form class="fn-none" id="fileUpload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
                         </form>
-                        <textarea id="articleContent" placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if></textarea>
+                        <textarea id="articleContent" tabindex="2"
+                                  placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if></textarea>
                         <div class="fn-left grammar fn-none">
                             ${markdwonGrammarLabel}
                         </div>
                     </div>
                     <div>
-                        <input id="articleTags" type="text" value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
+                        <input id="articleTags" type="text" tabindex="3" 
+                               value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
                         <br/><br/>
                     </div>
                     <div class="fn-clear article-reward-content">
                         <form class="fn-none" id="rewardFileUpload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
                         </form>
-                        <textarea id="articleRewardContent" placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
+                        <textarea id="articleRewardContent" tabindex="4"
+                                  placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
                     </div>
                     <div>
-                        <input id="articleRewardPoint" type="text" value="<#if article?? && 0 != article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
+                        <input id="articleRewardPoint" type="text" tabindex="5" 
+                               value="<#if article?? && 0 != article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
                         <br/><br/>
                     </div>
                     <div class="tip" id="addArticleTip"></div><br/>
                     <div class="fn-clear">
                         <div class="fn-left">
-                            <input<#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked="checked"</#if></#if> type="checkbox" id="syncWithSymphonyClient"/> 
+                            <input tabindex="6"<#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked="checked"</#if></#if> type="checkbox" id="syncWithSymphonyClient"/> 
                                 ${syncWithSymphonyClientLabel}
                         </div>
                         <div class="fn-left"> &nbsp;
-                            <input<#if article??><#if article.articleCommentable> checked="checked"</#if><#else> checked="checked"</#if> type="checkbox" id="articleCommentable"/> 
+                            <input tabindex="7"<#if article??><#if article.articleCommentable> checked="checked"</#if><#else> checked="checked"</#if> type="checkbox" id="articleCommentable"/> 
                                 ${commentableLabel}
                         </div>
                         <div class="fn-left"> &nbsp;
-                            <input<#if article?? && 1 == article.articleType> checked="checked"</#if> type="checkbox" id="articleType"/> 
+                            <input tabindex="8"<#if article?? && 1 == article.articleType> checked="checked"</#if> type="checkbox" id="articleType"/> 
                                 ${discussionLabel}
                         </div>
                         <div class="fn-right">
                             <button class="green" onclick="AddArticle.preview()">${previewLabel}</button> &nbsp; &nbsp; 
-                            <button class="red" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
+                            <button class="red" tabindex="9" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>
                     ${postGuideLabel}

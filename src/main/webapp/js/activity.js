@@ -47,9 +47,9 @@ var Activity = {
                 $("#betDiv").remove();
                 if (result.sc) {
                     $("#betBtn").remove();
-                    $("#tip").addClass("tip-succ").text(result.msg);
+                    $("#tip").addClass("succ").removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                 } else {
-                    $("#tip").addClass("tip-error").text(result.msg);
+                    $("#tip").addClass("error").removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                 }
 
                 $("#tip").show();
@@ -75,10 +75,10 @@ var Activity = {
             success: function (result, textStatus) {
                 $("#tip").show();
                 if (result.sc) {
-                    $("#tip").addClass("tip-succ").text(result.msg);
+                    $("#tip").addClass("succ").removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                     $("#collectBtn").remove();
                 } else {
-                    $("#tip").addClass("tip-error").text(result.msg);
+                    $("#tip").addClass("error").removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                     setTimeout(function () {
                         $("#tip").hide();
                     }, 3000);
