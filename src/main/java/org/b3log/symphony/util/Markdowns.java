@@ -41,7 +41,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.7, Aug 23, 2015
+ * @version 1.4.2.7, Aug 29, 2015
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -56,6 +56,11 @@ public final class Markdowns {
      */
     public static final LangPropsService LANG_PROPS_SERVICE
             = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
+
+    /**
+     * Escape paragraph replacement.
+     */
+    private static final String ESC_P = "_esc_p";
 
     /**
      * Gets the safe HTML content of the specified content.
@@ -125,12 +130,13 @@ public final class Markdowns {
         if (Strings.isEmptyOrNull(markdownText)) {
             return null;
         }
-        
+
         if (markdownText.contains("<p>")) {
             return markdownText;
         }
-        
-        final String text = markdownText.replaceAll("\\n", "<br>");
+
+        String text = markdownText.replaceAll("\\n\n", ESC_P);
+        text = text.replaceAll("\\n", "<br>").replaceAll(ESC_P, "\n\n");
 
         final StringWriter writer = new StringWriter();
         final Markdown markdown = new Markdown();
