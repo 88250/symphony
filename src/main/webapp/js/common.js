@@ -288,14 +288,19 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $(it).removeClass("disabled").removeClass("green").addClass("red")
-                            .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')");
+                    $(it).removeClass("disabled");
                     if ("article" == type) {
-                        $(it).text(Label.uncollectLabel);
+                        $(it).addClass('ft-red').html(' <span class="icon icon-star"></span> ' + 
+                                (parseInt($(it).text()) + 1) + ' ').
+                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')");
                     } else {
-                        $(it).text(Label.unfollowLabel);
+                        $(it).removeClass("green").addClass("red")
+                            .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')").text(Label.unfollowLabel);
                     }
                 }
+            },
+            complete: function () {
+                $(it).removeClass("disabled");
             }
         });
     },
@@ -321,14 +326,19 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $(it).removeClass("disabled").removeClass("red").addClass("green")
-                            .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')");
                     if ("article" === type) {
-                        $(it).text(Label.collectLabel);
+                        $(it).removeClass('ft-red').html(' <span class="icon icon-star"></span> ' + 
+                                (parseInt($(it).text()) - 1) + ' ')
+                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')");
                     } else {
-                        $(it).text(Label.followLabel);
+                        $(it).removeClass("red").addClass("green")
+                            .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
+                            .text(Label.followLabel);
                     }
                 }
+            },
+            complete: function () {
+                $(it).removeClass("disabled");
             }
         });
     },

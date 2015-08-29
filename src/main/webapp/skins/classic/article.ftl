@@ -40,8 +40,20 @@
                                     ${article.articleViewCntDisplayFormat}
                                     </#if>
                                 </span>
-                                <#if 0 < article.articleCollectCnt>
                                 &nbsp;
+                                <#if isLoggedIn>
+                                <#if isFollowing>
+                                <span class="ft-red" title="${collectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
+                                    <span class="icon icon-star"></span>
+                                    ${article.articleCollectCnt}
+                                </span>
+                                <#else>
+                                <span title="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')">
+                                    <span class="icon icon-star"></span>
+                                    ${article.articleCollectCnt}
+                                </span>
+                                </#if>
+                                <#else>
                                 <span title="${collectLabel}">
                                     <span class="icon icon-star"></span>
                                     ${article.articleCollectCnt}
@@ -62,21 +74,9 @@
                             <span>
                                 <#if isLoggedIn>
                                 <span id="voteUp" <#if 0==vote>class="ft-red"</#if> style="cursor: pointer;" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
-                                      <span class="icon icon-chevron-up"></span>
-                                </span>&nbsp;
+                                      <span class="icon icon-chevron-up"></span></span>&nbsp;
                                 <span id="voteDown" <#if 1==vote>class="ft-red"</#if> style="cursor: pointer;" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
-                                      <span class="icon icon-chevron-down"></span>
-                                </span>&nbsp;
-                                <#if isFollowing>
-                                <button class="red small" onclick="Util.unfollow(this, '${article.oId}', 'article')"> 
-                                    ${uncollectLabel}
-                                </button>
-                                <#else>
-                                <button class="green small" onclick="Util.follow(this, '${article.oId}', 'article')"> 
-                                    ${collectLabel}
-                                </button>
-                                </#if>
-                                &nbsp;
+                                      <span class="icon icon-chevron-down"></span></span>
                                 </#if>
 
                                 <#if article.isMyArticle>
@@ -229,16 +229,15 @@
         <#include "footer.ftl">
         <div id="preview" class="content-reset"></div>
         <script>
-            Label.commentErrorLabel = "${commentErrorLabel}";
-            Label.symphonyLabel = "${symphonyLabel}";
-            Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
-            Label.articleOId = "${article.oId}";
-            Label.articleTitle = "${article.articleTitle}";
-            Label.articlePermalink = "${article.articlePermalink}";
-            Label.recordDeniedLabel = "${recordDeniedLabel}";
-            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-            Label.csrfToken = "${csrfToken}";
-        </script>
+                    Label.commentErrorLabel = "${commentErrorLabel}";
+                    Label.symphonyLabel = "${symphonyLabel}";
+                    Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
+                    Label.articleOId = "${article.oId}";
+                    Label.articleTitle = "${article.articleTitle}";
+                    Label.articlePermalink = "${article.articlePermalink}";
+                    Label.recordDeniedLabel = "${recordDeniedLabel}";
+                    Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
+                    Label.csrfToken = "${csrfToken}";</script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js"></script>
@@ -258,24 +257,23 @@
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
-            // Init [Article] channel
-            ArticleChannel.init("ws://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
-            // jQuery File Upload
-            Util.uploadFile({
-            "type": "img",
-                    "id": "fileUpload",
-                    "pasteZone": $(".CodeMirror"),
-                    "qiniuUploadToken": "${qiniuUploadToken}",
-                    "editor": Comment.editor,
-                    "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}"
-            });
-            
-            var qiniuToken = '${qiniuUploadToken}';
-            var qiniuDomain = '${qiniuDomain}';
-            var audioRecordingLabel = '${audioRecordingLabel}';
-            var uploadingLabel = '${uploadingLabel}';
-	</script>
+                    WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
+                    // Init [Article] channel
+                    ArticleChannel.init("ws://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
+                    // jQuery File Upload
+                    Util.uploadFile({
+                    "type": "img",
+                            "id": "fileUpload",
+                            "pasteZone": $(".CodeMirror"),
+                            "qiniuUploadToken": "${qiniuUploadToken}",
+                            "editor": Comment.editor,
+                            "uploadingLabel": "${uploadingLabel}",
+                            "qiniuDomain": "${qiniuDomain}"
+                    });
+                    var qiniuToken = '${qiniuUploadToken}';
+                    var qiniuDomain = '${qiniuDomain}';
+                    var audioRecordingLabel = '${audioRecordingLabel}';
+                    var uploadingLabel = '${uploadingLabel}';
+        </script>
     </body>
 </html>

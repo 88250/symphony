@@ -4,7 +4,7 @@
 <div class="follow">
     <ol class="fn-clear">
         <#list userHomeFollowingTags as followingTag>
-        <li<#if followingTag_index % 2 = 1> class="even"</#if>>
+        <li class="fn-flex">
             <#if "" != followingTag.tagIconPath>
             <a href="/tags/${followingTag.tagTitle?url('utf-8')}">
                 <img title="${followingTag.tagTitle}" class="tag-img" src="${staticServePath}/images/tags/${followingTag.tagIconPath}">
@@ -12,14 +12,11 @@
             <#else>
             <a class="icon icon-tags" href="/tags/${followingTag.tagTitle?url('utf-8')}"></a>
             </#if>
-            <div>
-                <h3>
+            <div class="fn-flex-1">
+                <h3 class="fn-inline">
                     <a href="/tags/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
                 </h3>
-
-                <span class="ft-small">${referenceLabel}</span> ${followingTag.tagReferenceCount?c}
-                <span class="ft-small">${cmtLabel}</span> ${followingTag.tagCommentCount?c} &nbsp;
-                <br/>
+                &nbsp;
                 <#if isLoggedIn> 
                 <#if followingTag.isFollowing>
                 <button class="red small" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
@@ -31,6 +28,10 @@
                 </button>
                 </#if>
                 </#if>
+                <div>
+                    <span class="ft-small">${referenceLabel}</span> ${followingTag.tagReferenceCount?c}
+                    <span class="ft-small">${cmtLabel}</span> ${followingTag.tagCommentCount?c} 
+                </div>
             </div>
         </li>
         </#list>
