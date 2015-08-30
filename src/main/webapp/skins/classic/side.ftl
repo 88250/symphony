@@ -18,7 +18,7 @@
         <ul class="tags fn-clear">
             <#list navTrendTags as trendTag>
             <li>
-                <span><a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a></span>
+                <span><a rel="nofollow" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a></span>
             </li>
             </#list>
         </ul>
@@ -58,7 +58,7 @@
             <li>
                 <span>
                     <#if tag.tagIconPath!="">
-                    <img src="${staticServePath}/images/tags/${tag.tagIconPath}" /></#if><a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                    <img src="${staticServePath}/images/tags/${tag.tagIconPath}" /></#if><a rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                 </span>
                 <div<#if tag.tagDescription == ''> style="width:auto"</#if>>
                     <div>${tag.tagDescription}</div>
@@ -106,7 +106,7 @@
         <ul class="tags fn-clear">
             <#list newTags as newTag>
             <li>
-                <span><a rel="tag" href="/tags/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a></span>
+                <span><a rel="nofollow" href="/tags/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a></span>
             </li>
             </#list>
         </ul>
