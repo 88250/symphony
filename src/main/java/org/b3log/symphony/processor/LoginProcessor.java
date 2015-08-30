@@ -41,7 +41,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
@@ -59,6 +58,7 @@ import org.b3log.symphony.service.VerifycodeMgmtService;
 import org.b3log.symphony.service.VerifycodeQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Results;
+import org.b3log.symphony.util.Sessions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -150,7 +150,7 @@ public class LoginProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
-        dataModel.put(Common.REFERRAL, "88250"); // HeHe~
+        dataModel.put(Common.REFERRAL, "");
         String referral = request.getParameter("r");
         if (!Strings.isEmptyOrNull(referral)) {
             dataModel.put(Common.REFERRAL, referral);
@@ -222,7 +222,7 @@ public class LoginProcessor {
 
             final JSONObject verifycode = new JSONObject();
             verifycode.put(Verifycode.BIZ_TYPE, Verifycode.BIZ_TYPE_C_REGISTER);
-            String code = RandomStringUtils.randomNumeric(6);
+            String code = RandomStringUtils.randomAlphanumeric(6);
             if (!Strings.isEmptyOrNull(referral)) {
                 code += "r=" + referral;
             }
@@ -296,7 +296,7 @@ public class LoginProcessor {
             userMgmtService.addUser(user);
 
             Sessions.login(request, response, user);
-
+            
             final String ip = Requests.getRemoteAddr(request);
             userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
 

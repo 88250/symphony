@@ -9,7 +9,7 @@
                 <h2> 
                     <a title="${article.articleAuthorName}"
                         target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}">
-                        <img class="avatar-small fn-left" src="${article.articleAuthorThumbnailURL}-64"/>
+                        <img class="avatar-small fn-left" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}"/>
                     </a>
                     &nbsp;
                     <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>

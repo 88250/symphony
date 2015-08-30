@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,6 +29,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
@@ -43,15 +46,13 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.user.GeneralUser;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.Sessions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -59,7 +60,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.5, Jul 10, 2015
+ * @version 1.5.2.5, Aug 27, 2015
  * @since 0.2.0
  */
 @Service
@@ -69,11 +70,6 @@ public class UserQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserQueryService.class.getName());
-
-    /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
 
     /**
      * User repository.
@@ -185,12 +181,12 @@ public class UserQueryService {
      * @throws ServiceException service exception
      */
     public JSONObject getCurrentUser(final HttpServletRequest request) throws ServiceException {
-        final GeneralUser currentUser = UserServiceFactory.getUserService().getCurrentUser(request);
+        final JSONObject currentUser = Sessions.currentUser(request);
         if (null == currentUser) {
             return null;
         }
 
-        final String email = currentUser.getEmail();
+        final String email = currentUser.optString(User.USER_EMAIL);
 
         return getUserByEmail(email);
     }
@@ -456,10 +452,19 @@ public class UserQueryService {
     /**
      * Gets the URL of user logout.
      *
+     * @param redirectURL redirect URL after logged in
      * @return logout URL, returns {@code null} if the user is not logged in
      */
-    public String getLogoutURL() {
-        return userService.createLogoutURL("/");
+    public String getLogoutURL(final String redirectURL) {
+        String to = Latkes.getServePath();
+
+        try {
+            to = URLEncoder.encode(to + redirectURL, "UTF-8");
+        } catch (final UnsupportedEncodingException e) {
+            LOGGER.log(Level.ERROR, "URL encode[string={0}]", redirectURL);
+        }
+
+        return Latkes.getContextPath() + "/logout?goto=" + to;
     }
 
     /**
@@ -469,6 +474,14 @@ public class UserQueryService {
      * @return login URL
      */
     public String getLoginURL(final String redirectURL) {
-        return userService.createLoginURL(redirectURL);
+        String to = Latkes.getServePath();
+
+        try {
+            to = URLEncoder.encode(to + redirectURL, "UTF-8");
+        } catch (final UnsupportedEncodingException e) {
+            LOGGER.log(Level.ERROR, "URL encode[string={0}]", redirectURL);
+        }
+
+        return Latkes.getContextPath() + "/login?goto=" + to;
     }
 }

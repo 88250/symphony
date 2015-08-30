@@ -20,7 +20,7 @@
     Description: Cron job configurations. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.5.0.1, Jul 20, 2015
+    Version: 1.5.0.2, Aug 28, 2015
     Author: Liang Ding
 -->
 <cronentries>
@@ -31,12 +31,14 @@
         <schedule>every 30 minutes</schedule>
     </cron>
     
+    <!-- Disabled on Dev environment -->
+    <!--
     <cron>
         <url>/status?key=dev_key</url>
         <description>Checks running status</description>
         <schedule>every 2 hours</schedule>
     </cron>
-    
+
     <cron>
         <url>/verifycode/email/register?key=dev_key</url>
         <description>Sends email register verifycodes</description>
@@ -54,4 +56,5 @@
         <description>Resets unverified users</description>
         <schedule>every 24 hours</schedule>
     </cron>
+    -->
 </cronentries>

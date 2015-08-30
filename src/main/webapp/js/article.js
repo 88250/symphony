@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.8.4, Aug 23, 2015
+ * @version 1.9.10.5, Aug 28, 2015
  */
 
 /**
@@ -27,12 +27,6 @@
  * @static
  */
 var Comment = {
-    _validateData: [{
-            "id": "commentContent",
-            "type": 1000,
-            "msg": Label.commentErrorLabel,
-            "$error": $("#commentContent").next()
-        }],
     editor: undefined,
     init: function () {
         $("#comments").on('dblclick', 'img', function () {
@@ -56,9 +50,23 @@ var Comment = {
             }
         });
 
-        if (window.localStorage && window.localStorage.commentContent
-                && "" !== window.localStorage.commentContent.replace(/(^\s*)|(\s*$)/g, "")) {
-            Comment.editor.setValue(window.localStorage.commentContent);
+        if (window.localStorage && window.localStorage[Label.articleOId]) {
+            var localData = null;
+
+            try {
+                localData = JSON.parse(window.localStorage[Label.articleOId]);
+            } catch (e) {
+                var emptyContent = {
+                    commentContent: ""
+                };
+
+                window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
+                localData = JSON.parse(window.localStorage[Label.articleOId]);
+            }
+
+            if ("" !== localData.commentContent.replace(/(^\s*)|(\s*$)/g, "")) {
+                Comment.editor.setValue(localData.commentContent);
+            }
         }
 
         Comment.editor.on('changes', function (cm) {
@@ -68,16 +76,18 @@ var Comment = {
                 $(".form .green").hide();
             }
 
-            $(".CodeMirror").next().removeClass("tip-error").text('');
+            $("#addCommentTip").removeClass("error succ").html('');
 
             if (window.localStorage) {
-                window.localStorage.commentContent = cm.getValue();
+                window.localStorage[Label.articleOId] = JSON.stringify({
+                    commentContent: cm.getValue()
+                });
             }
         });
 
         Comment.editor.on('keypress', function (cm, evt) {
             if (evt.ctrlKey && 10 === evt.charCode) {
-                Comment.add(Label.articleOId);
+                Comment.add(Label.articleOId, Label.csrfToken);
 
                 return;
             }
@@ -109,9 +119,18 @@ var Comment = {
     },
     /**
      * @description 添加评论
+     * @csrfToken [string] CSRF 令牌
      */
-    add: function (id) {
-        if (!Validate.goValidate(Comment._validateData)) {
+    add: function (id, csrfToken) {
+        if (!Validate.goValidate({
+            target: $("#addCommentTip"),
+            data: [{
+                    "target": Comment.editor,
+                    "type": 'editor',
+                    'max': 1000,
+                    "msg": Label.commentErrorLabel
+                }]
+        })) {
             return false;
         }
 
@@ -123,6 +142,7 @@ var Comment = {
         $.ajax({
             url: "/comment",
             type: "POST",
+            headers: {"csrfToken": csrfToken},
             cache: false,
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {
@@ -136,11 +156,18 @@ var Comment = {
                     // window.location.reload();
 
                     if (window.localStorage) {
-                        window.localStorage.commentContent = "";
+                        var emptyContent = {
+                            commentContent: ""
+                        };
+
+                        window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
                     }
                 } else {
-                    $(".CodeMirror").next().addClass("tip-error").text(result.msg);
+                    $("#addCommentTip").addClass("error").html('<ul><li>' + result.msg + '</li></ul>');
                 }
+            },
+            error: function (result) {
+                $("#addCommentTip").addClass("error").html('<ul><li>' + result.statusText + '</li></ul>');
             },
             complete: function () {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");

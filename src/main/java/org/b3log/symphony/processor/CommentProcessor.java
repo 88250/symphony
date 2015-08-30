@@ -25,7 +25,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -36,6 +35,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.8, Jun 13, 2015
+ * @version 1.1.1.8, Aug 27, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -70,12 +70,6 @@ public class CommentProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class.getName());
-
-    /**
-     * Language service.
-     */
-    @Inject
-    private LangPropsService langPropsService;
 
     /**
      * User query service.
@@ -127,7 +121,7 @@ public class CommentProcessor {
      * @throws ServletException servlet exception
      */
     @RequestProcessing(value = "/comment", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = CommentAddValidation.class)
+    @Before(adviceClass = {CSRFCheck.class, CommentAddValidation.class})
     public void addComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
         final JSONRenderer renderer = new JSONRenderer();

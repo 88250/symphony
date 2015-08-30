@@ -31,9 +31,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
-import org.b3log.latke.util.Sessions;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
@@ -55,7 +52,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.10, Jul 19, 2015
+ * @version 1.4.1.10, Aug 27, 2015
  * @since 0.2.0
  */
 @Service
@@ -71,11 +68,6 @@ public class Filler {
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Follow query service.
@@ -188,6 +180,7 @@ public class Filler {
      */
     public void fillSideTags(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.SIDE_TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
+        fillNewTags(dataModel);
     }
 
     /**
@@ -269,7 +262,7 @@ public class Filler {
         }
 
         dataModel.put(Common.IS_LOGGED_IN, true);
-        dataModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
+        dataModel.put(Common.LOGOUT_URL, userQueryService.getLogoutURL("/"));
 
         dataModel.put("logoutLabel", langPropsService.get("logoutLabel"));
 
@@ -343,6 +336,16 @@ public class Filler {
      */
     private void fillTrendTags(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.NAV_TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
+    }
+
+    /**
+     * Fils new tags.
+     * 
+     * @param dataModel the specified data model
+     * @throws Exception exception
+     */
+    private void fillNewTags(final Map<String, Object> dataModel) throws Exception {
+        dataModel.put(Common.NEW_TAGS, tagQueryService.getNewTags(Symphonys.getInt("newTagsCnt")));
     }
 
     /**

@@ -19,6 +19,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -29,16 +31,19 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.Results;
+import org.json.JSONObject;
 
 /**
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Sep 2, 2013
+ * @version 1.1.0.4, Aug 27, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -62,7 +67,7 @@ public class ErrorProcessor {
     private Filler filler;
 
     /**
-     * Shows the user template page.
+     * Handles the error.
      *
      * @param context the specified context
      * @param request the specified HTTP servlet request
@@ -70,23 +75,35 @@ public class ErrorProcessor {
      * @param statusCode the specified status code
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/error/{statusCode}", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/error/{statusCode}", method = {HTTPRequestMethod.GET, HTTPRequestMethod.POST})
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String statusCode) throws Exception {
-        final String requestURI = request.getRequestURI();
-        final String templateName = statusCode + ".ftl";
-        LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
+    public void handleErrorPage(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response, final String statusCode) throws Exception {
+        if (StringUtils.equals("GET", request.getMethod())) {
+            final String requestURI = request.getRequestURI();
+            final String templateName = statusCode + ".ftl";
+            LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]",
+                    new Object[]{requestURI, templateName});
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-        renderer.setTemplateName("error/" + templateName);
-        context.setRenderer(renderer);
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            renderer.setTemplateName("error/" + templateName);
+            context.setRenderer(renderer);
 
-        final Map<String, Object> dataModel = renderer.getDataModel();
+            final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
+            dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
 
-        filler.fillHeaderAndFooter(request, response, dataModel);
+            filler.fillHeaderAndFooter(request, response, dataModel);
+        } else {
+            final JSONRenderer renderer = new JSONRenderer();
+            context.setRenderer(renderer);
+
+            final JSONObject ret = Results.falseResult();
+            renderer.setJSONObject(ret);
+
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, statusCode);
+        }
     }
 }

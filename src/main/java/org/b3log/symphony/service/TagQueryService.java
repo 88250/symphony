@@ -43,6 +43,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.TagTagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.4, Jul 20, 2015
+ * @version 1.4.1.5, Aug 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -141,6 +142,28 @@ public class TagQueryService {
             throw new ServiceException(e);
         }
     }
+    
+    /**
+     * Gets the new (sort by oId descending) tags.
+     *
+     * @param fetchSize the specified fetch size
+     * @return trend tags, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getNewTags(final int fetchSize) throws ServiceException {
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+
+        query.setFilter(new PropertyFilter(Tag.TAG_REFERENCE_CNT, FilterOperator.GREATER_THAN, 0));
+
+        try {
+            final JSONObject result = tagRepository.get(query);
+            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets new tags failed");
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets the cold (sort by reference count ascending) tags.
@@ -190,6 +213,7 @@ public class TagQueryService {
      * @return tag creator, for example,      <pre>
      * {
      *     "tagCreatorThumbnailURL": "",
+     *     "tagCreatorThumbnailUpdateTime": 0,
      *     "tagCreatorName": ""
      * }
      * </pre>, returns {@code null} if not found
@@ -199,10 +223,16 @@ public class TagQueryService {
     public JSONObject getCreator(final String tagId) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
-        filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 0));
+        
+        final List<Filter> orFilters = new ArrayList<Filter>();
+        orFilters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_CREATOR));
+        orFilters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_USER_SELF));
+        
+        filters.add(new CompositeFilter(CompositeFilterOperator.OR, orFilters));
 
         final Query query = new Query().setCurrentPageNum(1).setPageSize(1).setPageCount(1).
-                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
 
         try {
             final JSONObject result = userTagRepository.get(query);
@@ -218,11 +248,12 @@ public class TagQueryService {
 
             final JSONObject ret = new JSONObject();
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
+            ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, creator.optLong(UserExt.USER_UPDATE_TIME));
             ret.put(Tag.TAG_T_CREATOR_NAME, creator.optString(User.USER_NAME));
 
             return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets tag creator failed", e);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets tag creator failed [tagId=" + tagId + "]", e);
             throw new ServiceException(e);
         }
     }
@@ -236,7 +267,8 @@ public class TagQueryService {
      * [
      *     {
      *         "tagParticipantName": "",
-     *         "tagParticipantThumbnailURL": ""
+     *         "tagParticipantThumbnailURL": "",
+     *         "tagParticipantThumbnailUpdateTime": long
      *     }, ....
      * ]
      * </pre>, returns an empty list if not found
@@ -273,6 +305,7 @@ public class TagQueryService {
 
                 final String thumbnailURL = avatarQueryService.getAvatarURL(user.optString(User.USER_EMAIL));
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
+                participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME, user.optLong(UserExt.USER_UPDATE_TIME));
 
                 ret.add(participant);
             }

@@ -38,9 +38,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.user.GeneralUser;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
@@ -50,6 +47,8 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.CSRFCheck;
+import org.b3log.symphony.processor.advice.CSRFToken;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.UserBlockCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -71,6 +70,7 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import static org.b3log.symphony.util.Networks.isIPv4;
 import org.b3log.symphony.util.Results;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -97,7 +97,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.6.12, Aug 18, 2015
+ * @version 1.9.7.12, Aug 27, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -143,11 +143,6 @@ public class UserProcessor {
      */
     @Inject
     private FollowQueryService followQueryService;
-
-    /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Filler.
@@ -247,11 +242,11 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final GeneralUser currentUser = userService.getCurrentUser(request);
+        final JSONObject currentUser = Sessions.currentUser(request);
         if (null == currentUser) {
             dataModel.put(Common.IS_MY_ARTICLE, false);
         } else {
-            dataModel.put(Common.IS_MY_ARTICLE, userName.equals(currentUser.getNickname()));
+            dataModel.put(Common.IS_MY_ARTICLE, userName.equals(currentUser.optString(User.USER_NAME)));
         }
     }
 
@@ -700,7 +695,7 @@ public class UserProcessor {
      */
     @RequestProcessing(value = "/settings", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
+    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
@@ -741,7 +736,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/profiles", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, UpdateProfilesValidation.class})
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdateProfilesValidation.class})
     public void updateProfiles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -789,7 +784,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/point/transfer", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, PointTransferValidation.class})
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PointTransferValidation.class})
     public void pointTransfer(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -824,7 +819,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/sync/b3", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, UpdateSyncB3Validation.class})
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdateSyncB3Validation.class})
     public void updateSyncB3(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -866,7 +861,7 @@ public class UserProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/password", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {LoginCheck.class, UpdatePasswordValidation.class})
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdatePasswordValidation.class})
     public void updatePassword(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -1027,7 +1022,7 @@ public class UserProcessor {
     }
 
     /**
-     * Loads usernames.
+     * Lists usernames.
      *
      * @param context the specified context
      * @param request the specified request
@@ -1037,7 +1032,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/users/names", method = HTTPRequestMethod.GET)
     public void listNames(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        if (!userService.isUserLoggedIn(request)) {
+        if (null == Sessions.currentUser(request)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
             return;

@@ -35,6 +35,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.service.AvatarQueryService;
@@ -119,6 +120,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             final String userEmail = commenter.optString(User.USER_EMAIL);
             chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURL(userEmail));
+            chData.put(Common.THUMBNAIL_UPDATE_TIME, commenter.optLong(UserExt.USER_UPDATE_TIME));
 
             chData.put(Comment.COMMENT_CREATE_TIME,
                     DateFormatUtils.format(new Date(originalComment.optLong(Comment.COMMENT_CREATE_TIME)), "yyyy-MM-dd HH:mm"));

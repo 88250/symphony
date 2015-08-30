@@ -47,7 +47,7 @@
                             <h2 class="fn-flex-1">
                                 <a rel="author" href="/member/${article.articleAuthorName}" class="ft-small"
                                    title="${article.articleAuthorName}">
-                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64" />
+                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg${article.articleAuthor.userUpdateTime?c}" />
                                 </a> &nbsp;
                                 <a href="${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
@@ -114,7 +114,7 @@
                         <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
                         <div class="fn-right">
                             <button class="green" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 
-                            <button class="red" onclick="Comment.add('${article.oId}')">${submitLabel}</button>
+                            <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                         </div>
                     </div>
                     <div class="grammar fn-none fn-clear">
@@ -135,7 +135,7 @@
                                     <div class="fn-flex">
                                         <a class="responsive-hide" rel="nofollow" href="/member/${comment.commentAuthorName}">
                                             <img class="avatar" 
-                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}-64" />
+                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}" />
                                         </a>
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
@@ -222,7 +222,9 @@
                     Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
                     Label.articleOId = "${article.oId}";
                     Label.articleTitle = "${article.articleTitle}";
-                    Label.articlePermalink = "${article.articlePermalink}";</script>
+                    Label.articlePermalink = "${article.articlePermalink}";
+                    Label.csrfToken = "${csrfToken}";                            
+        </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js"></script>

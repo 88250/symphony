@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -108,7 +109,8 @@ public class VoteProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        if (voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
+        if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+                && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
             ret.put(Keys.STATUS_CODE, false);
             ret.put(Keys.MSG, langPropsService.get("cantVoteSelfLabel"));
 
@@ -159,7 +161,8 @@ public class VoteProcessor {
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
-        if (voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
+        if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
+                && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
             ret.put(Keys.STATUS_CODE, false);
             ret.put(Keys.MSG, langPropsService.get("cantVoteSelfLabel"));
 

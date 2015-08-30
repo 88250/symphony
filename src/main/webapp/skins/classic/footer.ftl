@@ -1,14 +1,8 @@
 <div class="footer">
     <div class="wrapper">
-        <div>
-            <a href="http://b3log.org" target="_blank"><img src="http://b3log.org/images/b3log.png" alt="b3log" width="48" /></a>
-            &nbsp;
-            <a href="https://wide.b3log.org" target="_blank"><img src="http://b3log.org/images/wide.png" alt="wide" width="48" /></a>
-            &nbsp; &nbsp; &nbsp; &nbsp;
-        </div>
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
-                <a rel="help" href="/about">${aboutLabel}</a>
+                <a rel="help" href="http://hacpai.com/article/1440573175609">${aboutLabel}</a>
                 <a href="/timeline">${timelineLabel}</a>
                 <a href="/tags/系统公告">${symAnnouncementLabel}</a>
                 <a href="/tags/Q%26A">${qnaLabel}</a>

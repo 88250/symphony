@@ -52,7 +52,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
@@ -68,6 +67,7 @@ import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
 import org.b3log.symphony.util.Geos;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -76,7 +76,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.8.4, Aug 21, 2015
+ * @version 1.9.9.5, Aug 28, 2015
  * @since 0.2.0
  */
 @Service
@@ -162,12 +162,12 @@ public class UserMgmtService {
 
                 final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
 
-                final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
-                if (Strings.isEmptyOrNull(userEmail)) {
+                final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
+                if (Strings.isEmptyOrNull(userId)) {
                     break;
                 }
 
-                final JSONObject user = userRepository.getByEmail(userEmail.toLowerCase().trim());
+                final JSONObject user = userRepository.get(userId);
                 if (null == user) {
                     break;
                 }
@@ -177,17 +177,17 @@ public class UserMgmtService {
                 if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
                     Sessions.logout(request, response);
 
-                    updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, false);
+                    updateOnlineStatus(userId, ip, false);
 
                     return false;
                 }
 
                 final String userPassword = user.optString(User.USER_PASSWORD);
-                final String password = cookieJSONObject.optString(User.USER_PASSWORD);
+                final String password = cookieJSONObject.optString(Common.TOKEN);
                 if (userPassword.equals(password)) {
                     Sessions.login(request, response, user);
-                    updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
-                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userEmail);
+                    updateOnlineStatus(userId, ip, true);
+                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userId);
 
                     return true;
                 }
@@ -294,6 +294,8 @@ public class UserMgmtService {
             oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
             oldUser.put(UserExt.USER_AVATAR_TYPE, requestJSONObject.optString(UserExt.USER_AVATAR_TYPE));
             oldUser.put(UserExt.USER_AVATAR_URL, requestJSONObject.optString(UserExt.USER_AVATAR_URL));
+
+            oldUser.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
 
             userRepository.update(oldUserId, oldUser);
 
@@ -472,6 +474,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName")); // TODO: set default skin by app role
             user.put(UserExt.USER_PROVINCE, "");
             user.put(UserExt.USER_CITY, "");
+            user.put(UserExt.USER_UPDATE_TIME, 0L);
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
 
@@ -813,6 +816,14 @@ public class UserMgmtService {
                 final int tagCnt = tagCntOption.optInt(Option.OPTION_VALUE);
                 tagCntOption.put(Option.OPTION_VALUE, tagCnt + 1);
                 optionRepository.update(Option.ID_C_STATISTIC_TAG_COUNT, tagCntOption);
+
+                // User-Tag relation (creator)
+                final JSONObject userTagRelation = new JSONObject();
+                userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
+                userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
+                userTagRelation.put(Common.TYPE, Tag.TAG_TYPE_C_CREATOR);
+                
+                userTagRepository.add(userTagRelation);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in user[name={2}]",
@@ -822,7 +833,7 @@ public class UserMgmtService {
                 tagTitleStr = tagTitleStr.replaceAll("(?i)" + tagTitle, tag.optString(Tag.TAG_TITLE));
             }
 
-            // User-Tag relation
+            // User-Tag relation (userself)
             final JSONObject userTagRelation = new JSONObject();
             userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
             userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));

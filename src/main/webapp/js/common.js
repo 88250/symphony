@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.6.8, Aug 23, 2015
+ * @version 1.12.7.11, Aug 29, 2015
  */
 
 /**
@@ -66,10 +66,11 @@ var Util = {
                         var user = result.userNames[i];
                         var name = user.userName;
                         var avatar = user.userAvatarURL;
-                        
+                        var updateTime = user.userUpdateTime;
+
                         autocompleteHints.push({
-                            displayText: "<span style='font-size: 1.2rem;'><img style='width: 1.6rem' src='" + avatar 
-                                    + "-64'>&nbsp;" + name + "</span>",
+                            displayText: "<span style='font-size: 1.2rem;'><img style='width: 1.6rem' src='" + avatar
+                                    + "-64.jpg?" + updateTime + "'>&nbsp;" + name + "</span>",
                             text: name + " "
                         });
                     }
@@ -123,23 +124,33 @@ var Util = {
             return CodeMirror.Pass;
         };
         CodeMirror.commands.startAudioRecord = function (cm) {
-            handleStartRecording();
-            
-            var cursor = cm.getCursor();
-            cm.replaceRange(audioRecordingLabel, cursor, cursor);
+            if (!Audio.availabel) {
+                Audio.init();
+            }
+
+            if (Audio.availabel) {
+                Audio.handleStartRecording();
+
+                var cursor = cm.getCursor();
+                cm.replaceRange(audioRecordingLabel, cursor, cursor);
+            }
         };
         CodeMirror.commands.endAudioRecord = function (cm) {
-            handleStopRecording();
-            
+            if (!Audio.availabel) {
+                return;
+            }
+
+            Audio.handleStopRecording();
+
             var cursor = cm.getCursor();
             cm.replaceRange(uploadingLabel, CodeMirror.Pos(cursor.line, cursor.ch - audioRecordingLabel.length), cursor);
-                        
-            var blob = wavFileBlob.getDataBlob();
-            var key = Math.floor(Math.random() * 100) + "" + new Date().getTime() + "" 
+
+            var blob = Audio.wavFileBlob.getDataBlob();
+            var key = Math.floor(Math.random() * 100) + "" + new Date().getTime() + ""
                     + Math.floor(Math.random() * 100) + ".wav";
-            
+
             var reader = new FileReader();
-            reader.onload = function(event){
+            reader.onload = function (event) {
                 var fd = new FormData();
                 fd.append('token', qiniuToken);
                 fd.append('file', blob);
@@ -151,18 +162,18 @@ var Util = {
                     data: fd,
                     processData: false,
                     contentType: false,
-                    success: function(data) {
+                    success: function (data) {
                         var cursor = cm.getCursor();
                         cm.replaceRange('<audio controls="controls" src="' + qiniuDomain + '/' + key + '"></audio>\n\n',
-                            CodeMirror.Pos(cursor.line, cursor.ch - uploadingLabel.length), cursor);
+                                CodeMirror.Pos(cursor.line, cursor.ch - uploadingLabel.length), cursor);
                     },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert("Error: " + errorThrown); 
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Error: " + errorThrown);
                         var cursor = cm.getCursor();
                         cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - uploadingLabel.length), cursor);
                     }
-                });    
-            };      
+                });
+            };
             // trigger the read from the reader...
             reader.readAsDataURL(blob);
         };
@@ -172,29 +183,41 @@ var Util = {
      */
     initArticlePreview: function () {
         $(".article-list h2 > a").hover(function () {
-            var $li = $(this).closest("li"),
-                    previewHTML = '<div class="preview"><span class="ico-arrow"></span><span class="ico-arrowborder"></span>';
+            var $ele = $(this);
+            
+            $ele.addClass("previewing");
+            
+            var $li = $ele.closest("li"),
+                previewHTML = '<div class="preview"><span class="ico-arrow"></span><span class="ico-arrowborder"></span>';
             $(".article-list .preview").hide();
             if ($li.find('.preview').length === 1) {
                 $li.find('.preview').show();
                 return false;
             }
-            $.ajax({
-                url: "/article/" + $(this).data('id') + "/preview",
-                type: "GET",
-                cache: false,
-                async: false,
-                success: function (result, textStatus) {
-                    if (!result.sc) {
-                        return false;
-                    }
-                    $li.append(previewHTML + result.html + '</div>');
-                    $li.find('.preview').show();
+            
+            setTimeout(function() {
+                if (!$ele.hasClass("previewing")) {
+                    return;
                 }
-            });
+                
+                $.ajax({
+                    url: "/article/" + $ele.data('id') + "/preview",
+                    type: "GET",
+                    cache: false,
+                    success: function (result, textStatus) {
+                        if (!result.sc) {
+                            return false;
+                        }
+                        $li.append(previewHTML + result.html + '</div>');
+                        $li.find('.preview').show();
+                    }
+                });
+            }, 800);
         }, function () {
             var $li = $(this).closest("li");
             $li.find('.preview').hide();
+            
+            $(this).removeClass("previewing");
         });
     },
     /**
@@ -207,11 +230,11 @@ var Util = {
             cache: false,
             success: function (result, textStatus) {
                 var count = result.unreadNotificationCount;
-                
+
                 if (0 < count) {
                     $("#aNotifications").removeClass("no-msg").addClass("msg").text(count);
                     document.title = "(" + count + ") " + Label.symphonyLabel + " - " + Label.visionLabel;
-                    
+
                     if (window.localStorage) {
                         if (count !== Number(window.localStorage.unreadNotificationCount)) {
                             // Webkit Desktop Notification
@@ -235,7 +258,7 @@ var Util = {
                 } else {
                     $("#aNotifications").removeClass("msg").addClass("no-msg").text(count);
                     document.title = Label.symphonyLabel + " - " + Label.visionLabel;
-                    
+
                     if (window.localStorage) {
                         window.localStorage.unreadNotificationCount = 0;
                     }
@@ -265,14 +288,19 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $(it).removeClass("disabled").removeClass("green").addClass("red")
-                            .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')");
+                    $(it).removeClass("disabled");
                     if ("article" == type) {
-                        $(it).text(Label.uncollectLabel);
+                        $(it).addClass('ft-red').html(' <span class="icon icon-star"></span> ' + 
+                                (parseInt($(it).text()) + 1) + ' ').
+                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')");
                     } else {
-                        $(it).text(Label.unfollowLabel);
+                        $(it).removeClass("green").addClass("red")
+                            .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')").text(Label.unfollowLabel);
                     }
                 }
+            },
+            complete: function () {
+                $(it).removeClass("disabled");
             }
         });
     },
@@ -298,14 +326,19 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $(it).removeClass("disabled").removeClass("red").addClass("green")
-                            .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')");
                     if ("article" === type) {
-                        $(it).text(Label.collectLabel);
+                        $(it).removeClass('ft-red').html(' <span class="icon icon-star"></span> ' + 
+                                (parseInt($(it).text()) - 1) + ' ')
+                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')");
                     } else {
-                        $(it).text(Label.followLabel);
+                        $(it).removeClass("red").addClass("green")
+                            .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
+                            .text(Label.followLabel);
                     }
                 }
+            },
+            complete: function () {
+                $(it).removeClass("disabled");
             }
         });
     },
@@ -322,9 +355,9 @@ var Util = {
         var requestJSONObject = {
             dataId: id
         };
-        
+
         $("#voteUp").addClass("disabled");
-        
+
         $.ajax({
             url: "/vote/up/" + type,
             type: "POST",
@@ -332,18 +365,18 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 $("#voteUp").removeClass("disabled");
-                
+
                 if (result.sc) {
                     if (0 == result.type) { // cancel up
                         $("#voteUp").removeClass("ft-red");
                     } else {
                         $("#voteUp").addClass("ft-red");
-                        $("#voteDown").removeClass("ft-red");  
+                        $("#voteDown").removeClass("ft-red");
                     }
-                    
+
                     return;
                 }
-                
+
                 alert(result.msg);
             }
         });
@@ -361,9 +394,9 @@ var Util = {
         var requestJSONObject = {
             dataId: id
         };
-        
+
         $("#voteDown").addClass("disabled");
-        
+
         $.ajax({
             url: "/vote/down/" + type,
             type: "POST",
@@ -371,18 +404,18 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 $("#voteDown").removeClass("disabled");
-                
+
                 if (result.sc) {
                     if (1 == result.type) { // cancel down
                         $("#voteDown").removeClass("ft-red");
                     } else {
                         $("#voteDown").addClass("ft-red");
-                        $("#voteUp").removeClass("ft-red");  
+                        $("#voteUp").removeClass("ft-red");
                     }
-                    
+
                     return;
                 }
-                
+
                 alert(result.msg);
             }
         });
@@ -391,7 +424,7 @@ var Util = {
      * @description 回到顶部
      */
     goTop: function () {
-       $('html, body').animate({scrollTop : 0},800);
+        $('html, body').animate({scrollTop: 0}, 800);
     },
     /**
      * @description 页面初始化执行的函数 
@@ -470,16 +503,16 @@ var Util = {
                 $(".icon-up").hide();
             }
         });
-        
+
         if (isLoggedIn) { // 如果登录了
             // 定时获取并设置未读提醒计数
             setInterval(function () {
                 Util.setUnreadNotificationCount();
             }, 60000);
-            
+
             $("#logout").click(function () { // Register logout click event handler
                 Util.logout();
-            });    
+            });
         }
     },
     /**
@@ -504,15 +537,17 @@ var Util = {
      * @description 登录
      */
     login: function () {
-        if (Validate.goValidate([{
-                "id": "nameOrEmail",
-                "type": 256,
+        if (Validate.goValidate({target: $('#loginTip'),
+        data: [{
+                "target": $("#nameOrEmail"),
+                "type": "string",
+                "max": 256,
                 "msg": Label.loginNameErrorLabel
             }, {
-                "id": "loginPassword",
+                "target": $("#loginPassword"),
                 "type": "password",
                 "msg": Label.invalidPasswordLabel
-            }])) {
+            }]})) {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userPassword: calcMD5($("#loginPassword").val())
@@ -529,22 +564,22 @@ var Util = {
                         } else {
                             window.location.reload();
                         }
-                        
+
                         if (window.localStorage) {
                             if (!window.localStorage.articleContent) {
                                 window.localStorage.articleContent = "";
                             }
-                            
+
                             if (!window.localStorage.commentContent) {
                                 window.localStorage.commentContent = "";
                             }
-                            
+
                             if (!window.localStorage.unreadNotificationCount) {
                                 window.localStorage.unreadNotificationCount = 0;
                             }
                         }
                     } else {
-                        $("#loginTip").text(result.msg).addClass("tip-error");
+                        $("#loginTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                     }
                 }
             });
@@ -553,7 +588,7 @@ var Util = {
     /**
      * @description 登出
      */
-    logout: function() {
+    logout: function () {
         if (window.localStorage) {
             // Clear localStorage
             window.localStorage.articleContent = "";
@@ -582,8 +617,6 @@ var Util = {
      */
     uploadFile: function (obj) {
         $('#' + obj.id).fileupload({
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            maxFileSize: 1024 * 1024, // 1M
             multipart: true,
             pasteZone: obj.pasteZone,
             dropZone: obj.pasteZone,
@@ -597,16 +630,22 @@ var Util = {
                         var mime = isImage(fileBuf);
 
                         if (null == mime) {
-                            alert("只允许上传图片~");
+                            alert("Image only~");
 
                             return;
                         }
+                        
+                        if (evt.target.result.byteLength > 1024 * 1024) {
+                            alert("This image is too big (max: 1Mb)");
+                            
+                            return
+                        }
 
                         data.submit();
-                    } 
+                    }
                 } else {
                     data.submit();
-                }   
+                }
             },
             formData: function (form) {
                 var data = form.serializeArray();
@@ -652,81 +691,60 @@ var Validate = {
      * @param {array} data 验证数据
      * @returns 验证通过返回 true，否则为 false。 
      */
-    goValidate: function (data) {
-        for (var j = 0; j < data.length; j++) {
-            var $it = $("#" + data[j].id);
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].id === $it.attr("id")) {
-                    data[i].val = $it.val();
-                    if (data[i].type === 'imgSrc') {
-                        data[i].val = $it.attr('src');
-                    } else if (data[i].id === 'commentContent') {
-                        data[i].val = Comment.editor.getValue().replace(/(^\s*)|(\s*$)/g, "");
-                    }
-
-
-                    var $error = $it.next();
-                    if (data[i].$error) {
-                        $error = data[i].$error;
-                    }
-                    if (Validate.validate(data[i].type, data[i].val)) {
-                        $error.removeClass("tip-error").text("");
-                    } else {
-                        $error.addClass("tip-error").text(data[i].msg);
-                    }
-                    break;
-                }
+    goValidate: function (obj) {
+        var tipHTML = '<ul>';
+        for (var i = 0; i < obj.data.length; i++) {
+            if (!Validate.validate(obj.data[i])) {
+                tipHTML += '<li>' + obj.data[i].msg + '</li>';
             }
         }
 
-        for (var j = 0; j < data.length; j++) {
-            var $error = $("#" + data[j].id).next();
-            if (data[j].$error) {
-                $error = data[j].$error;
-            }
-            if ($error.text() !== "") {
-                return false;
-            }
+        if (tipHTML === '<ul>') {
+            return true;
+        } else {
+            obj.target.html(tipHTML + '</ul>');
+            obj.target.addClass('error');
+            return false;
         }
-        return true;
     },
     /**
      * @description 数据验证。
-     * @param {string} type 验证类型
-     * @param {string} val 待验证数据 
+     * @param {object} data 验证数据
+     * @param {string} data.type 验证类型
+     * @param {object} data.target 验证对象 
+     * @param {number} [data.min] 最小值 
+     * @param {number} [data.max] 最大值 
      * @returns 验证通过返回 true，否则为 false。 
      */
-    validate: function (type, val) {
-        var isValidate = true;
-        if (typeof (type) === "string" && type.indexOf("|") > -1) {
-            var passwordId = type.split("|")[1];
-            type = type.split("|")[0];
+    validate: function (data) {
+        var isValidate = true,
+                val = '';
+        if (data.type === 'editor') {
+           val = data.target.getValue();
+        } else if (data.type === 'imgSrc'){
+            val = data.target.attr('src');
+        } else {
+            val =  data.target.val().toString().replace(/(^\s*)|(\s*$)/g, "");
         }
-
-        switch (type) {
+        switch (data.type) {
             case "email":
-                if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(val)) {
+                if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(data.target.val())) {
                     isValidate = false;
                 }
                 break;
             case "password":
-                if (val.length === 0 || val.length > 16) {
+                if (data.target.val().length === 0 || data.target.val().length > 16) {
                     isValidate = false;
                 }
                 break;
             case "confirmPassword":
-                if (val !== $("#" + passwordId).val()) {
-                    isValidate = false;
-                }
-                break;
-            case "securityCode":
-                if (val === "" || val.length > 4) {
+                if (data.target.val() !== data.original.val()) {
                     isValidate = false;
                 }
                 break;
             case "tags":
                 var tagList = val.split(",");
-                if (val.replace(/(^\s*)|(\s*$)/g, "") === "" || tagList.length > 7) {
+                if (val === "" || tagList.length > 7) {
                     isValidate = false;
                 }
 
@@ -739,31 +757,20 @@ var Validate = {
                 }
                 break;
             case "url":
-                val = val.replace(/(^\s*)|(\s*$)/g, "");
-                if (val !== "") {
-                    if (!/^\w+:\/\//.test(val) || val.length > 100) {
-                        isValidate = false;
-                    }
+                if (val === '' || val !== "" && (!/^\w+:\/\//.test(val) || val.length > 100)) {
+                    isValidate = false;
                 }
                 break;
             case "imgSrc":
-                val = val.replace(/(^\s*)|(\s*$)/g, "");
-                if (val !== "") {
-                    if (!/^\w+:\/\//.test(val) || val.length > 100) {
-                        isValidate = false;
-                    }
+                if (val=== '' || val !== "" && (!/^\w+:\/\//.test(val) || val.length > 100)) {
+                    isValidate = false;
                 }
                 break;
             default:
-                val = val.replace(/(^\s*)|(\s*$)/g, "");
-                if (typeof (type) === "string") {
-                    if (val.length > type) {
-                        isValidate = false;
-                    }
+                if (val.length <= data.max && val.length > (data.min ? data.min : 0)) {
+                    isValidate = true;
                 } else {
-                    if (val.length === 0 || val.length > type) {
-                        isValidate = false;
-                    }
+                    isValidate = false;
                 }
                 break;
         }
@@ -774,53 +781,7 @@ var Validate = {
  * @description 全局变量
  */
 var Label = {};
-if (!Cookie) {
-    /**
-     * @description Cookie 相关操作
-     * @static
-     */
-    var Cookie = {
-        /**
-         * @description 读取 cookie
-         * @param {String} name cookie key
-         * @returns {String} 对应 key 的值，如 key 不存在则返回 ""
-         */
-        readCookie: function (name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) === ' ')
-                    c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0)
-                    return c.substring(nameEQ.length, c.length);
-            }
-            return "";
-        },
-        /**
-         * @description 清除 Cookie
-         * @param {String} name 清除 key 为 name 的该条 Cookie
-         */
-        eraseCookie: function (name) {
-            this.createCookie(name, "", -1);
-        },
-        /**
-         * @description 创建 Cookie
-         * @param {String} name 每条 Cookie 唯一的 key
-         * @param {String} value 每条 Cookie 对应的值
-         * @param {Int} days Cookie 保存时间
-         */
-        createCookie: function (name, value, days) {
-            var expires = "";
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toGMTString();
-            }
-            document.cookie = name + "=" + value + expires + "; path=/";
-        }
-    };
-}
+
 
 // 开始 - 判断文件类型
 var pngMagic = [
@@ -855,27 +816,25 @@ function arraycopy(src, index, dist, distIndex, size) {
 }
 
 function arrayEquals(arr1, arr2) {
-    //console.log(arr1);
-    //console.log(arr2);
     if (arr1 == 'undefined' || arr2 == 'undefined') {
         return false
     }
-    
+
     if (arr1 instanceof Array && arr2 instanceof Array) {
         if (arr1.length != arr2.length) {
             return false
         }
-        
+
         for (i = 0; i < arr1.length; i++) {
             if (arr1[i] != arr2[i]) {
                 return false
             }
         }
-        
-        
+
+
         return true
     }
-    
+
     return false;
 }
 
@@ -883,25 +842,25 @@ function isImage(buf) {
     if (buf == null || buf == 'undefined' || buf.length < 8) {
         return null;
     }
-    
+
     var bytes = [];
     arraycopy(buf, 0, bytes, 0, 6);
     if (isGif(bytes)) {
         return "image/gif";
     }
-    
+
     bytes = [];
     arraycopy(buf, 6, bytes, 0, 4);
     if (isJpeg(bytes)) {
         return "image/jpeg";
     }
-    
+
     bytes = [];
     arraycopy(buf, 0, bytes, 0, 8);
     if (isPng(bytes)) {
         return "image/png";
     }
-    
+
     return null;
 }
 
@@ -909,13 +868,13 @@ function isAudio(buf) {
     if (buf == null || buf == 'undefined' || buf.length < 12) {
         return null;
     }
-    
+
     var bytes1 = [];
     arraycopy(buf, 0, bytes1, 0, 4);
-    
+
     var bytes2 = [];
     arraycopy(buf, 8, bytes2, 0, 4);
-    
+
     if (isWav(bytes1, bytes2)) {
         return "audio/wav";
     }

@@ -19,7 +19,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
@@ -41,7 +40,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.7, Aug 23, 2015
+ * @version 1.4.2.7, Aug 29, 2015
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -122,12 +121,12 @@ public final class Markdowns {
      * 'markdownErrorLabel' if exception
      */
     public static String toHTML(final String markdownText) {
-        if (markdownText.contains("<p>")) {
-            return markdownText;
-        }
-
         if (Strings.isEmptyOrNull(markdownText)) {
             return null;
+        }
+
+        if (markdownText.contains("<p>")) {
+            return markdownText;
         }
 
         final StringWriter writer = new StringWriter();
@@ -136,8 +135,7 @@ public final class Markdowns {
         try {
             markdown.transform(new StringReader(markdownText), writer);
         } catch (final ParseException e) {
-            LOGGER.log(Level.ERROR, "Markdown error[text={0}]", markdownText);
-
+            // LOGGER.log(Level.WARN, "Markdown error[text={0}]", markdownText);
             return markdownText;
         }
 

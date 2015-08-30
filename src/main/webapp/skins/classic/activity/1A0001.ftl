@@ -10,7 +10,8 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content content-reset activity">
+                <div class="content activity">
+                    <div class="content-reset">
                     ${activity1A0001TitleLabel}
                     ${activity1A0001GuideLabel}
 
@@ -31,18 +32,19 @@
                         </div>
                     </div>
                     </#if>
+                    </div>
                     <#if participated || closed || closed1A0001 || collected || end>
-                    <span id="tip" class="tip-succ" style="top: 307px;">${msg}</span>
+                        <div id="tip" class="tip succ"><ul><li>${msg}</li></ul></div><br/>
                         <#if participated && hour?? && hour gt 15>
                         <div class="fn-clear">
                             <button id="collectBtn" class="red fn-right" onclick="Activity.collect1A0001()">${activityCollectLabel}</button>
                         </div>
                         </#if>
                     <#else>
+                    <div id="tip" class="tip"></div><br/>
                     <div class="fn-clear">
-                        <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001()">${activityBetLabel}</button>
+                        <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001('${csrfToken}')">${activityBetLabel}</button>
                     </div>
-                    <span id="tip" style="top: 307px;"></span>
                     </#if>
                 </div>
                 <div class="side">

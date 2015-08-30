@@ -6,7 +6,7 @@
                 <div class="fn-right">
                     <a href="/settings">
                         <img class="avatar" 
-                             title="${userName}" src="${currentUser.userAvatarURL}" />
+                             title="${userName}" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}" />
                     </a>
                 </div>
                 <div class="fn-left">

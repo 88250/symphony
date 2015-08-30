@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.1.7, Aug 3, 2015
+ * @version 2.2.1.8, Aug 28, 2015
  */
 
 /**
@@ -31,19 +31,22 @@ var Register = {
      * @description Register Step 1
      */
     register: function () {
-        if (Validate.goValidate([{
-                "id": "userName",
-                "msg": Label.userNameErrorLabel,
-                "type": 20
-            }, {
-                "id": "userEmail",
-                "msg": Label.invalidEmailLabel,
-                "type": "email"
-            }, {
-                "id": "securityCode",
-                "msg": Label.captchaErrorLabel,
-                "type": 4
-            }])) {
+        if (Validate.goValidate({target: $("#registerTip"),
+            data: [{
+                    "target": $("#userName"),
+                    "msg": Label.userNameErrorLabel,
+                    "type": 'string',
+                    'max': 20
+                }, {
+                    "target": $("#userEmail"),
+                    "msg": Label.invalidEmailLabel,
+                    "type": "email"
+                }, {
+                    "target": $("#securityCode"),
+                    "msg": Label.captchaErrorLabel,
+                    "type": 'string',
+                    'max': 4
+                }]})) {
             var requestJSONObject = {
                 userName: $("#userName").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userEmail: $("#userEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
@@ -58,10 +61,10 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        $("#registerTip").text(result.msg).addClass("tip-succ");
+                        $("#registerTip").addClass('succ').removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                     } else {
                         $("#registerTip").removeClass("tip-succ");
-                        $("#registerTip").text(result.msg).addClass("tip-error");
+                         $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                         $("#captcha").attr("src", "/captcha?code=" + Math.random());
                         $("#securityCode").val("");
                     }
@@ -73,15 +76,18 @@ var Register = {
      * @description Register Step 2
      */
     register2: function () {
-        if (Validate.goValidate([{
-                "id": "userPassword",
-                "msg": Label.invalidPasswordLabel,
-                "type": "password"
-            }, {
-                "id": "confirmPassword",
-                "msg": Label.confirmPwdErrorLabel,
-                "type": "confirmPassword|userPassword"
-            }])) {
+        if (Validate.goValidate({target: $("#registerTip"),
+            data: [{
+                    "target": $("#userPassword"),
+                    "msg": Label.invalidPasswordLabel,
+                    "type": 'password',
+                    'max': 20
+                }, {
+                    "target": $("#confirmPassword"),
+                    "original": $("#userPassword"),
+                    "msg": Label.confirmPwdErrorLabel,
+                    "type": "confirmPassword"
+                }]})) {
             var requestJSONObject = {
                 userAppRole: $("input[name=userAppRole]:checked").val(),
                 userPassword: calcMD5($("#userPassword").val()),
@@ -96,9 +102,9 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        window.location = "http://symphony.b3log.org/article/1360294444788";
+                        window.location = "http://hacpai.com/article/1440573175609";
                     } else {
-                        $("#registerTip").text(result.msg).addClass("tip-error");
+                        $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                     }
                 }
             });

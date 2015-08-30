@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.9, Jul 29, 2015
+ * @version 1.5.5.10, Aug 29, 2015
  */
 
 /* start reset */
@@ -30,8 +30,8 @@ html {
 
 body {
     margin: 0;
-    font-family: '\5fae\8f6f\96c5\9ed1';
-    font-size: 13px;
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+    font-size: 14px;
     background-color: #F8F8F8;
     color: #333;
 }
@@ -162,7 +162,7 @@ textarea {
     margin: 0;
     font-size: 100%;
     vertical-align: middle;
-    font-family: '\5fae\8f6f\96c5\9ed1';
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     outline: none;
 }
 
@@ -376,11 +376,10 @@ textarea {
 .ft-small,
 .ft-small a {
     color: #999;
-    font-size: 12px;
 }
 
 .ft-red {
-    color: #D26911;
+    color: #911;
 }
 
 .ft-center {
@@ -398,7 +397,6 @@ button,
     cursor: pointer;
     color: #333;
     border-radius: 3px;
-    font-weight: bold;
     padding: 6px 12px;
     background-color: #fcfcfc;
     background: linear-gradient(#fcfcfc, #eee);
@@ -469,7 +467,6 @@ button.red:active,
 button.small,
 .btn.small {
     padding: 0 5px 2px;
-    vertical-align: baseline;
     font-size: 12px;
     font-weight: normal;
     text-shadow: initial;
@@ -642,22 +639,20 @@ a.icon:hover {
 /* end icon */
 
 /* start tip */
-.tip-error, 
-.tip-succ {
-    background-color: #FFEAEA;
-    border-left: 15px solid #990000;
-    color: #990000;
-    font-weight: bold;
-    padding: 3px 5px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-    position: absolute;
-    white-space: nowrap;
-    word-wrap: normal;
+.tip.error {
+    color: #911;
+    background-color: #fcdede;
+    border: 1px solid #d2b2b2;
 }
 
-.tip-succ {
+.tip ul {
+    margin: 10px 40px;
+    text-align: left;
+}
+
+.tip.succ {
     background-color: #D4F6FA;
-    border-left-color: #1D2B3D;
+    border: 1px solid #1D2B3D;
     color: #1D2B3D;
 }
 
@@ -762,6 +757,7 @@ a.icon:hover {
 
 .form input[type=text],
 .form input[type=password],
+.form input[type=number],
 .form textarea {
     border: 1px solid #CCCCCC;
     background-color: #FAFAFA;
@@ -769,6 +765,7 @@ a.icon:hover {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
     padding: 7px 8px;
     width: 100%;
+    line-height: 17px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -784,8 +781,7 @@ a.icon:hover {
 
 .form label {
     color: #666;
-    font-weight: bold;
-    font-size: 13px;
+    font-size: 15px;
     margin: 12px 0 6px;
     float: left;
 }
@@ -924,9 +920,9 @@ a.icon:hover {
 
 /* start header */
 .nav {
-    height: 35px;
+    height: 42px;
     width: 100%;
-    padding: 10px 0;
+    padding: 5px 0;
     z-index: 99;
     background-color: #fafafa;
     background: linear-gradient(#fafafa, #eaeaea);
@@ -966,7 +962,7 @@ a.icon:hover {
 .nav .user-nav > a.current {
     border-bottom: 2px solid #D26911;
     color: #222;
-    padding-bottom: 13px;
+    padding-bottom: 15px;
 }
 
 .nav .user-nav .no-msg {
@@ -975,8 +971,8 @@ a.icon:hover {
     color: #FFFFFF;
     font-size: 10px;
     font-weight: normal;
-    margin: 10px 10px 0 10px;
-    padding: 4px 8px 4px;
+    margin: 12px 11px 0 11px;
+    padding: 3px 6px;
     text-shadow: 0 0 0;
 }
 
@@ -992,12 +988,12 @@ a.icon:hover {
     font-size: 10px;
     font-weight: normal;
     margin: 10px 10px 0 10px;
-    padding: 4px 8px 4px;
+    padding: 2px 6px;
 }
 
 .nav .user-nav > a.current.msg,
 .nav .user-nav > a.current.no-msg{
-    padding: 4px 8px 4px;
+    padding-bottom:2px;
     background-color: #D26911;
     border-bottom-width: 0;
     -webkit-animation:none;
@@ -1037,28 +1033,25 @@ a.icon:hover {
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
     left: 81px;
-    padding: 3px 5px 3px 20px;
+    padding: 3px 5px 3px 25px;
     position: absolute;
-    top: 8px;
+    top: 8.5px;
     width: 0;
     z-index: 1;
-    -moz-transition: width 0.4s ease, background 0.4s ease;
-    -webkit-transition: width 0.4s ease, background 0.4s ease;
-    transition: width 0.4s ease, background 0.4s ease;
+    width: 56%;
 }
 
 .nav input.search:focus {
-    padding-left: 25px;
     border-color: #51A7E8;
     box-shadow: 0 0 3px rgba(81, 167, 232, 0.5), 0 1px 1px rgba(0, 0, 0, 0.2) inset;
-    width: 70%;
 }
 
 .nav .tags {
     display: block;
     margin: 0 20px 0 70px;
-    height: 36px;
+    height: 42px;
     overflow: hidden;
+    line-height: 21px;
 }
 
 .nav .tags a {
@@ -1110,7 +1103,7 @@ a.icon:hover {
 .list h2 {
     font-size: 16px;
     font-weight: normal;
-    margin-bottom: 9px;
+    margin: 3px 0;
 }
 
 .list > ul {
@@ -1118,7 +1111,7 @@ a.icon:hover {
 }
 
 .list > ul > li {
-    border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #eee;
     padding: 10px;
     white-space: normal;
     word-wrap: break-word;
@@ -1162,7 +1155,7 @@ a.icon:hover {
 
 .CodeMirror-scroll {
     background-color: #FAFAFA;
-    font-family: '\5fae\8f6f\96c5\9ed1';
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
 }
 
@@ -1236,7 +1229,8 @@ a.icon:hover {
 
 .module-header h2 {
     display: inline;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: normal;
 }
 
 .module-panel {

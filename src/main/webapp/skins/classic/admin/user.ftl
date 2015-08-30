@@ -13,7 +13,7 @@
             <input type="text" value="${user.userName}" readonly="readonly" />
 
             <label>${userNoLabel}</label>
-            <input type="text" value="${user.userNo}" readonly="readonly" />
+            <input type="text" value="${user.userNo?c}" readonly="readonly" />
 
             <label>${userEmailLabel}</label>
             <input type="text" value="${user.userEmail}" readonly="readonly" />
@@ -29,6 +29,24 @@
 
             <label>${pointLabel}</label>
             <input type="text" value="${user.userPoint?c}" readonly="readonly" />
+
+            <label>${provinceLabel}</label>
+            <input type="text" value="${user.userProvince}" readonly="readonly" />
+
+            <label>${cityLabel}</label>
+            <input type="text" value="${user.userCity}" readonly="readonly" />
+
+            <label>${registerTimeLabel}</label>
+            <input type="text" value="${user.oId?number?number_to_datetime}" readonly="readonly" />
+            
+            <label>${loginTimeLabel}</label>
+            <input type="text" value="${user.userLatestLoginTime?number_to_datetime}" readonly="readonly" />
+
+            <label>${commentTimeLabel}</label>
+            <input type="text" value="${user.userLatestCmtTime?number_to_datetime}" readonly="readonly" />
+
+            <label>${articleTimeLabel}</label>
+            <input type="text" value="${user.userLatestArticleTime?number_to_datetime}" readonly="readonly" />
         </div>
     </div>
     <div class="module">
@@ -115,10 +133,10 @@
             <form action="/admin/user/${user.oId}/charge-point" method="POST">
                 <label>${userNameLabel}</label>
                 <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
-                
+
                 <label>${pointLabel}</label>
                 <input type="text" name="point" value="" />
-                
+
                 <label>${memoLabel}</label>
                 <input type="text" name="memo" value="" placeholder="${chargePointPlaceholderLabel}" />
 
