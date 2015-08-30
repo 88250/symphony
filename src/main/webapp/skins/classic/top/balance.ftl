@@ -28,7 +28,7 @@
                         </div>
                         </#if>
                         <div>
-                            Symphony ${user.userNo} ${numVIPLabel}, 
+                            ${symphonyLabel} ${user.userNo} ${numVIPLabel},
                             <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
                         </div>
                     </div>

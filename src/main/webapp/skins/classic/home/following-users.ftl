@@ -28,7 +28,7 @@
                     <#if followingUser.userURL != "">
                     <a class="ft-small" target="_blank" rel="friend" href="${followingUser.userURL?html}">${followingUser.userURL?html}</a>
                     <#else>
-                    <span class="ft-small">Symphony</span>
+                    <span class="ft-small">${symphonyLabel}</span>
                     ${followingUser.userNo}
                     <span class="ft-small">${numVIPLabel}</span>
                     </#if>

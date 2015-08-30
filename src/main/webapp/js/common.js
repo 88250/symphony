@@ -242,11 +242,11 @@ var Util = {
                             msg = msg.replace("${count}", count);
                             var options = {
                                 iconUrl: '',
-                                title: 'Sym 社区',
+                                title: 'HacPai',
                                 body: msg,
                                 timeout: 5000,
                                 onclick: function () {
-                                    console.log('Pewpew');
+                                    console.log('~');
                                 }
                             };
 

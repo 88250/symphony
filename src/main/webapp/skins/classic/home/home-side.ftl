@@ -29,7 +29,7 @@
         </div>
         </#if>
         <div class="user-info">
-            <span class="ft-small">Symphony</span>
+            <span class="ft-small">${symphonyLabel}</span>
             ${user.userNo?c}
             <span class="ft-small">${numVIPLabel}</span>, <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
         </div>
