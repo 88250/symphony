@@ -534,6 +534,50 @@ public class ArticleQueryService {
             throw new ServiceException(e);
         }
     }
+    
+    /**
+     * Makes article showing filters.
+     * 
+     * @return filter the article showing to user
+     */
+    private CompositeFilter makeArticleShowingFilter(){
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+        filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
+        return new CompositeFilter(CompositeFilterOperator.AND, filters);
+    }
+    
+    /**
+     * Makes the recent (sort by create time) articles with the specified fetch size.
+     *
+     * @param currentPageNum the specified current page number
+     * @param fetchSize the specified fetch size
+     * @return recent articles query
+     */
+    private Query makeRecentQuery(final int currentPageNum, final int fetchSize){
+        final Query query = new Query()
+                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+        query.setFilter(makeArticleShowingFilter());
+        return query;
+    }
+    
+    /**
+     * Makes the top articles with the specified fetch size.
+     *
+     * @param currentPageNum the specified current page number
+     * @param fetchSize the specified fetch size
+     * @return top articles query
+     */
+    private Query makeTopQuery(final int currentPageNum, final int fetchSize){
+        final Query query = new Query()
+                .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
+                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
+                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+
+        query.setFilter(makeArticleShowingFilter());
+        return query;
+    }
 
     /**
      * Gets the recent (sort by create time) articles with the specified fetch size.
@@ -544,14 +588,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getRecentArticles(final int currentPageNum, final int fetchSize) throws ServiceException {
-        final Query query = new Query()
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-
-        final List<Filter> filters = new ArrayList<Filter>();
-        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
-        filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
-        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+        final Query query = makeRecentQuery(currentPageNum, fetchSize);
 
         try {
             final JSONObject result = articleRepository.get(query);
@@ -585,15 +622,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getIndexArticles(final int fetchSize) throws ServiceException {
-        final Query query = new Query()
-                .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
-                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(1);
-
-        final List<Filter> filters = new ArrayList<Filter>();
-        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
-        filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
-        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+        final Query query = makeTopQuery(1, fetchSize);
 
         try {
             final JSONObject result = articleRepository.get(query);
@@ -628,13 +657,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getRecentArticlesWithComments(final int currentPageNum, final int fetchSize) throws ServiceException {
-        final Query query = new Query()
-                .addSort(Article.ARTICLE_STATUS, SortDirection.ASCENDING)
-                .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
-                .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
-                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-        return getArticles(query);
+        return getArticles(makeRecentQuery(currentPageNum, fetchSize));
     }
 
     /**
@@ -646,13 +669,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getTopArticlesWithComments(final int currentPageNum, final int fetchSize) throws ServiceException {
-        final Query query = new Query()
-                .addSort(Article.ARTICLE_STATUS, SortDirection.ASCENDING)
-                .addSort(Article.ARTICLE_BAD_CNT, SortDirection.ASCENDING)
-                .addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING)
-                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-        return getArticles(query);
+        return getArticles(makeTopQuery(currentPageNum, fetchSize));
     }
 
     /**
