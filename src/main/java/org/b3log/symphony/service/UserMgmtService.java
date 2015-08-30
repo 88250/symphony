@@ -475,6 +475,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_PROVINCE, "");
             user.put(UserExt.USER_CITY, "");
             user.put(UserExt.USER_UPDATE_TIME, 0L);
+            user.put(UserExt.USER_GEO_STATUS, UserExt.USER_GEO_STATUS_C_PUBLIC);
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
 

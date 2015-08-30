@@ -26,6 +26,11 @@ package org.b3log.symphony.model;
 public final class UserExt {
 
     /**
+     * Key of user geo status.
+     */
+    public static final String USER_GEO_STATUS = "userGeoStatus";
+
+    /**
      * Key of user update time.
      */
     public static final String USER_UPDATE_TIME = "userUpdateTime";
@@ -233,6 +238,17 @@ public final class UserExt {
      * User status - registered but not verified.
      */
     public static final int USER_STATUS_C_NOT_VERIFIED = 2;
+
+    //// Geo Status constants
+    /**
+     * User geo status - public.
+     */
+    public static final int USER_GEO_STATUS_C_PUBLIC = 0;
+
+    /**
+     * User geo status - private.
+     */
+    public static final int USER_GEO_STATUS_C_PRIVATE = 1;
 
     //// Avatar type constants
     /**

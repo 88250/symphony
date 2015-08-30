@@ -552,6 +552,11 @@
                 {
                     "name": "userUpdateTime",
                     "type": "long"
+                },
+                {
+                    "name": "userGeoStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
                 }
             ]
         },

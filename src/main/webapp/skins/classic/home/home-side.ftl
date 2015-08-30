@@ -38,6 +38,11 @@
             <span class="ft-small">${selfTagLabel}</span> <#list user.userTags?split(',') as tag> ${tag?html}<#if tag_has_next>,</#if></#list>
         </div>
         </#if>
+        <#if "" != user.userCity && 0 == user.userGeoStatus>
+        <div class="user-info">
+            <span class="ft-small">${geoLable}</span> ${user.userCity}
+        </div>
+        </#if>
         <div class="user-info">
             <span class="ft-small">${pointLabel}</span>
             <a href="/member/${user.userName}/points" title="${user.userPoint?c}">
@@ -50,7 +55,6 @@
         </div>
         <#if user.userURL!="">
         <div class="user-info">
-            <span class="ft-small">URL</span>
             <a target="_blank" rel="friend" href="${user.userURL?html}">${user.userURL?html}</a>
         </div>
         </#if>

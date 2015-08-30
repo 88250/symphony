@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.7, Aug 28, 2015
+ * @version 1.4.2.7, Aug 31, 2015
  */
 
 /**
@@ -27,6 +27,26 @@
  * @static
  */
 var Settings = {
+    /**
+     * @description 修改地理位置状态
+     * @param {type} csrfToken CSRF token
+     */
+    changeGeoStatus: function (csrfToken) {
+        var requestJSONObject = {
+            "userGeoStatus": $('#geoStatus').val()
+        };
+
+        $.ajax({
+            url: "/settings/geo/status",
+            type: "POST",
+            headers: {"csrfToken": csrfToken},
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+                console.log(result);
+            }
+        });
+    },
     /**
      * @description 积分转账
      * @argument {String} csrfToken CSRF token

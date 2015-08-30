@@ -89,6 +89,7 @@ import org.json.JSONObject;
  * <li>User points (/member/{userName}/points), GET</li>
  * <li>Settings (/settings), GET</li>
  * <li>Profiles (/settings/profiles), POST</li>
+ * <li>Geo status (/settings/geo/status), POST</li>
  * <li>Sync (/settings/sync/b3), POST</li>
  * <li>Password (/settings/password), POST</li>
  * <li>SyncUser (/apis/user), POST</li>
@@ -97,7 +98,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.7.12, Aug 27, 2015
+ * @version 1.10.7.12, Aug 31, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -301,7 +302,7 @@ public class UserProcessor {
 
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
 
-        final List<JSONObject> userComments = commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID), 
+        final List<JSONObject> userComments = commentQueryService.getUserComments(user.optString(Keys.OBJECT_ID),
                 pageNum, pageSize, currentUser);
         dataModel.put(Common.USER_HOME_COMMENTS, userComments);
 
@@ -725,6 +726,51 @@ public class UserProcessor {
         String pointTransferTipLabel = (String) dataModel.get("pointTransferTipLabel");
         pointTransferTipLabel = pointTransferTipLabel.replace("{point}", Symphonys.get("pointTransferMin"));
         dataModel.put("pointTransferTipLabel", pointTransferTipLabel);
+    }
+
+    /**
+     * Updates user geo status.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/settings/geo/status", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    public void updateGeoStatus(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = Results.falseResult();
+        renderer.setJSONObject(ret);
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            request.setAttribute(Keys.REQUEST, requestJSONObject);
+        } catch (final Exception e) {
+            LOGGER.warn(e.getMessage());
+            
+            requestJSONObject = new JSONObject();
+        }
+
+        int geoStatus = requestJSONObject.optInt(UserExt.USER_GEO_STATUS);
+        if (UserExt.USER_GEO_STATUS_C_PRIVATE != geoStatus && UserExt.USER_GEO_STATUS_C_PRIVATE != geoStatus) {
+            geoStatus = UserExt.USER_GEO_STATUS_C_PUBLIC;
+        }
+
+        final JSONObject user = userQueryService.getCurrentUser(request);
+
+        user.put(UserExt.USER_GEO_STATUS, geoStatus);
+
+        try {
+            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            ret.put(Keys.MSG, e.getMessage());
+        }
     }
 
     /**
