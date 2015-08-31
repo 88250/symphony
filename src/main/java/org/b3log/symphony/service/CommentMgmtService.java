@@ -36,6 +36,7 @@ import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
@@ -51,7 +52,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.5.15, Aug 18, 2015
+ * @version 1.6.5.15, Aug 31, 2015
  * @since 0.2.0
  */
 @Service
@@ -109,6 +110,88 @@ public class CommentMgmtService {
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
+     * Reward management service.
+     */
+    @Inject
+    private RewardMgmtService rewardMgmtService;
+
+    /**
+     * Reward query service.
+     */
+    @Inject
+    private RewardQueryService rewardQueryService;
+
+    /**
+     * A user specified by the given sender id thanks the author of a comment specified by the given comment id.
+     *
+     * @param commentId the given comment id
+     * @param senderId the given sender id
+     * @throws ServiceException service exception
+     */
+    public void thankComment(final String commentId, final String senderId) throws ServiceException {
+        try {
+            final JSONObject comment = commentRepository.get(commentId);
+
+            if (null == comment) {
+                return;
+            }
+
+            if (Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)) {
+                return;
+            }
+
+            final JSONObject sender = userRepository.get(senderId);
+            if (null == sender) {
+                return;
+            }
+
+            if (UserExt.USER_STATUS_C_VALID != sender.optInt(UserExt.USER_STATUS)) {
+                return;
+            }
+
+            final String receiverId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+            final JSONObject receiver = userRepository.get(receiverId);
+            if (null == receiver) {
+                return;
+            }
+
+            if (UserExt.USER_STATUS_C_VALID != receiver.optInt(UserExt.USER_STATUS)) {
+                return;
+            }
+
+            if (receiverId.equals(senderId)) {
+                throw new ServiceException(langPropsService.get("thankSelfLabel"));
+            }
+
+            final int rewardPoint = Symphonys.getInt("pointThankComment");
+
+            if (rewardQueryService.isRewarded(senderId, commentId, Reward.TYPE_C_COMMENT)) {
+                return;
+            }
+
+            final String rewardId = Ids.genTimeMillisId();
+            final boolean succ = pointtransferMgmtService.transfer(senderId, receiverId,
+                    Pointtransfer.TRANSFER_TYPE_C_COMMENT_REWARD, rewardPoint, rewardId);
+
+            if (!succ) {
+                throw new ServiceException(langPropsService.get("transferFailLabel"));
+            }
+
+            final JSONObject reward = new JSONObject();
+            reward.put(Keys.OBJECT_ID, rewardId);
+            reward.put(Reward.SENDER_ID, senderId);
+            reward.put(Reward.DATA_ID, commentId);
+            reward.put(Reward.TYPE, Reward.TYPE_C_COMMENT);
+
+            rewardMgmtService.addReward(reward);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Thanks a comment[id=" + commentId + "] failed", e);
+            
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Adds a comment with the specified request json object.

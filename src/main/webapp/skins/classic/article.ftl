@@ -159,6 +159,7 @@
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                                     &nbsp;<span class="icon icon-date ft-small"></span>
                                                     <span class="ft-small">${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span> 
+                                                    <span class="ft-small"><#if comment.rewarded>${thankedLabel}<#else><a href="javascript:if(confirm('${comment.commentThankLabel}')){Comment.thank('${comment.oId}', '${csrfToken}')}">${thankLabel}</a></#if></span>
                                                 </span>
                                                 <span class="fn-right">
                                                     <#if isAdminLoggedIn>

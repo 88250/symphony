@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.1, Aug 7, 2015
+ * @version 1.7.1.1, Aug 31, 2015
  * @since 1.3.0
  */
 @Service
@@ -212,7 +212,8 @@ public class PointtransferQueryService {
                 String typeStr = record.optString(Pointtransfer.TYPE);
                 if (("3".equals(typeStr) && userId.equals(toId))
                         || ("5".equals(typeStr) && userId.equals(fromId))
-                        || ("9".equals(typeStr) && userId.equals(toId))) {
+                        || ("9".equals(typeStr) && userId.equals(toId))
+                        || ("14".equals(typeStr) && userId.equals(toId))) {
                     typeStr += "In";
                 }
 
@@ -298,6 +299,29 @@ public class PointtransferQueryService {
                         desTemplate = desTemplate.replace("{article}", articleRewardLink);
 
                         break;
+                    case Pointtransfer.TRANSFER_TYPE_C_COMMENT_REWARD:
+                        final JSONObject reward14 = rewardRepository.get(dataId);
+                        JSONObject user14;
+                        if ("14In".equals(typeStr)) {
+                            user14 = userRepository.get(fromId);
+                        } else {
+                            user14 = userRepository.get(toId);
+                        }
+                        final String commentId14 = reward14.optString(Reward.DATA_ID);
+                        final JSONObject comment14 = commentRepository.get(commentId14);
+                        final String articleId14 = comment14.optString(Comment.COMMENT_ON_ARTICLE_ID);
+
+                        final String userLInk14 = "<a href=\"/member/" + user14.optString(User.USER_NAME) + "\">"
+                                + user14.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", userLInk14);
+
+                        final JSONObject article = articleRepository.get(articleId14);
+                        final String articleLink = "<a href=\""
+                                + article.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + article.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", articleLink);
+
+                        break;
                     case Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER:
                         final JSONObject newUser = userRepository.get(dataId);
                         final String newUserLink = "<a href=\"/member/" + newUser.optString(User.USER_NAME) + "\">"
@@ -317,15 +341,15 @@ public class PointtransferQueryService {
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT:
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACOUNT2ACOUNT:
-                        JSONObject user;
+                        JSONObject user9;
                         if ("9In".equals(typeStr)) {
-                            user = userRepository.get(fromId);
+                            user9 = userRepository.get(fromId);
                         } else {
-                            user = userRepository.get(toId);
+                            user9 = userRepository.get(toId);
                         }
 
-                        final String userLink = "<a href=\"/member/" + user.optString(User.USER_NAME) + "\">"
-                                + user.optString(User.USER_NAME) + "</a>";
+                        final String userLink = "<a href=\"/member/" + user9.optString(User.USER_NAME) + "\">"
+                                + user9.optString(User.USER_NAME) + "</a>";
                         desTemplate = desTemplate.replace("{user}", userLink);
 
                         break;
@@ -335,7 +359,7 @@ public class PointtransferQueryService {
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_CHARGE:
                         final String yuan = dataId.split("-")[0];
-                        
+
                         desTemplate = desTemplate.replace("{yuan}", yuan);
                         break;
                     default:

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.10.5, Aug 28, 2015
+ * @version 1.10.10.5, Aug 31, 2015
  */
 
 /**
@@ -118,8 +118,33 @@ var Comment = {
         });
     },
     /**
+     * @description 感谢.
+     * @param {String} id 评论 id
+     * @param {String} csrfToken CSRF 令牌
+     */
+    thank: function (id, csrfToken) {
+        var requestJSONObject = {
+            commentId: id
+        };
+
+        $.ajax({
+            url: "/comment/thank",
+            type: "POST",
+            headers: {"csrfToken": csrfToken},
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+                alert(result.msg);
+                if (result.sc) {
+                    // TODO: 改变为“已感谢”
+                }
+            }
+        });
+    },
+    /**
      * @description 添加评论
-     * @csrfToken [string] CSRF 令牌
+     * @param {String} 文章 id
+     * @csrfToken {String} CSRF 令牌
      */
     add: function (id, csrfToken) {
         if (!Validate.goValidate({

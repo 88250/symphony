@@ -62,7 +62,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.11.11, Aug 17, 2015
+ * @version 1.5.12.11, Aug 31, 2015
  * @since 0.2.0
  */
 @Service
@@ -531,6 +531,10 @@ public class ArticleMgmtService {
 
             final JSONObject sender = userRepository.get(senderId);
             if (null == sender) {
+                return;
+            }
+
+            if (UserExt.USER_STATUS_C_VALID != sender.optInt(UserExt.USER_STATUS)) {
                 return;
             }
 

@@ -25,6 +25,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -32,10 +33,12 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.processor.advice.CSRFCheck;
+import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
 import org.b3log.symphony.processor.advice.validate.CommentAddValidation;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -52,6 +55,7 @@ import org.json.JSONObject;
  * <ul>
  * <li>Adds a comment (/comment) <em>locally</em>, POST</li>
  * <li>Adds a comment (/solo/comment) <em>remotely</em>, POST</li>
+ * <li>Thanks a comment (/comment/thank), POST</li>
  * </ul>
  *
  * <p>
@@ -60,7 +64,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.8, Aug 27, 2015
+ * @version 1.2.1.8, Aug 31, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -100,6 +104,12 @@ public class CommentProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Adds a comment locally.
@@ -182,6 +192,57 @@ public class CommentProcessor {
 
             commentMgmtService.addComment(comment);
             ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            ret.put(Keys.MSG, e.getMessage());
+        }
+    }
+
+    /**
+     * Thanks a comment.
+     *
+     * <p>
+     * The request json object:
+     * <pre>
+     * {
+     *     "commentId": "",
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws IOException io exception
+     * @throws ServletException servlet exception
+     */
+    @RequestProcessing(value = "/comment/thank", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    public void thankComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException, ServletException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = Results.falseResult();
+        renderer.setJSONObject(ret);
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            request.setAttribute(Keys.REQUEST, requestJSONObject);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Thank comment error", e);
+
+            return;
+        }
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
+
+        try {
+            commentMgmtService.thankComment(commentId, currentUser.optString(Keys.OBJECT_ID));
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("thankSentLabel"));
         } catch (final ServiceException e) {
             ret.put(Keys.MSG, e.getMessage());
         }

@@ -50,6 +50,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
@@ -101,7 +102,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.10.21, Aug 27, 2015
+ * @version 1.12.10.21, Aug 31, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -300,9 +301,11 @@ public class ArticleProcessor {
         articleQueryService.processArticleContent(article, request);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        JSONObject currentUser = null;
+        String currentUserId = null;
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
-            final String currentUserId = currentUser.optString(Keys.OBJECT_ID);
+            currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+            currentUserId = currentUser.optString(Keys.OBJECT_ID);
 
             article.put(Common.IS_MY_ARTICLE, currentUserId.equals(article.optString(Article.ARTICLE_AUTHOR_ID)));
 
@@ -352,6 +355,20 @@ public class ArticleProcessor {
 
         final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, pageNum, pageSize);
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
+
+        // Fill reward(thank)
+        for (final JSONObject comment : articleComments) {
+            String thankTemplate = langPropsService.get("thankConfirmLabel");
+            thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
+                    .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
+            comment.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
+
+            final String commentId = comment.optString(Keys.OBJECT_ID);
+            if (isLoggedIn) {
+                comment.put(Common.REWARDED,
+                        rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
+            }
+        }
 
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
