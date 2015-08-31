@@ -1,5 +1,4 @@
 <#include "macro-head.ftl">
-<#include "macro-list.ftl">
 <!DOCTYPE html>
 <html>
     <head>
