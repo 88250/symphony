@@ -144,7 +144,8 @@ var Comment = {
                     $("#" + id + 'Thx').text(thxed).removeAttr('onclick').removeClass('fn-none thx fn-pointer');
                     var cnt = parseInt($("#" + id + 'RewardedCnt').text());
                     if ($("#" + id + 'RewardedCnt').length <= 0) {
-                        $('#' + id + ' .comment-info > .fn-left .ft-small:last').append('&nbsp;&nbsp;<span class="icon-heart ft-small"></span> <span class="ft-small">1</span>');
+                        $('#' + id + ' .comment-info > .fn-left .ft-small:last').
+                                append('&nbsp;&nbsp;<span class="icon-heart ft-small"></span> <span class="ft-small">1</span>');
                     } else {
                          $("#" + id + 'RewardedCnt').text(cnt + 1);
                     }
