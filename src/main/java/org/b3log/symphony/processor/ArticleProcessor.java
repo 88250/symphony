@@ -301,7 +301,7 @@ public class ArticleProcessor {
         articleQueryService.processArticleContent(article, request);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
-        JSONObject currentUser = null;
+        JSONObject currentUser;
         String currentUserId = null;
         if (isLoggedIn) {
             currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
@@ -368,6 +368,8 @@ public class ArticleProcessor {
                 comment.put(Common.REWARDED,
                         rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
             }
+
+            comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
         }
 
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);

@@ -25,6 +25,11 @@ package org.b3log.symphony.model;
 public final class Common {
     
     /**
+     * Key of rewarded count.
+     */
+    public static final String REWARED_COUNT = "rewardedCnt";
+    
+    /**
      * Key of CSRF token.
      */
     public static final String CSRF_TOKEN = "csrfToken";
