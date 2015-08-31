@@ -60,7 +60,7 @@
 #voteUp,
 #voteDown {
     border: 1px solid #e0e0e0;
-    padding: 0 6px;
+    padding: 0px 6px 3px 6px;
     border-radius: 3px;
 }
 
@@ -94,7 +94,12 @@
 }
 
 #comments .comment-content {
-    width: 610px;
+    width: 610px; /* TODO:检测safari，没有问题可删除 */
+}
+
+
+#comments li:hover .thx {
+    display: initial;
 }
 
 #comments .comment > p {

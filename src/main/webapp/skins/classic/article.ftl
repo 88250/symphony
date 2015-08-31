@@ -48,13 +48,13 @@
                                     ${article.articleCollectCnt}
                                 </span>
                                 <#else>
-                                <span title="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')">
+                                <span title="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')" class="fn-pointer">
                                     <span class="icon icon-star"></span>
                                     ${article.articleCollectCnt}
                                 </span>
                                 </#if>
                                 <#else>
-                                <span title="${collectLabel}">
+                                <span title="${collectLabel}" class="fn-pointer">
                                     <span class="icon icon-star"></span>
                                     ${article.articleCollectCnt}
                                 </span>
@@ -73,13 +73,14 @@
                             </h2> 
                             <span>
                                 <#if isLoggedIn>
-                                <span id="voteUp" <#if 0==vote>class="ft-red"</#if> style="cursor: pointer;" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
-                                      <span class="icon icon-chevron-up"></span></span>&nbsp;
-                                <span id="voteDown" <#if 1==vote>class="ft-red"</#if> style="cursor: pointer;" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
-                                      <span class="icon icon-chevron-down"></span></span>
+                                <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
+                                    <span class="icon icon-chevron-up"></span></span>&nbsp;
+                                <span id="voteDown" class="fn-pointer<#if 1==vote> ft-red</#if>" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
+                                    <span class="icon icon-chevron-down"></span></span>
                                 </#if>
 
                                 <#if article.isMyArticle>
+                                &nbsp;
                                 <a href="/update-article?id=${article.oId}" title="${editLabel}" class="icon icon-edit"></a>
                                 &nbsp;
                                 </#if>
@@ -159,14 +160,24 @@
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                                     &nbsp;<span class="icon icon-date ft-small"></span>
                                                     <span class="ft-small">${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span> 
-                                                    <span class="ft-small"><#if comment.rewarded>${thankedLabel}<#else><a href="javascript:if(confirm('${comment.commentThankLabel}')){Comment.thank('${comment.oId}', '${csrfToken}')}">${thankLabel}</a></#if></span>
+                                                    <#if comment.rewardedCnt gt 0>
+                                                    &nbsp;<span class="icon-heart ft-small"></span> <span class="ft-small" id='${comment.oId}RewardedCnt'>${comment.rewardedCnt}</span> 
+                                                    </#if>
                                                 </span>
                                                 <span class="fn-right">
+                                                    <#if isLoggedIn>
+                                                    <#if comment.commentAuthorId != currentUser.oId>
+                                                    <#if comment.rewarded>
+                                                    <span class='ft-smaller ft-small'>${thankedLabel}</span>
+                                                    <#else>
+                                                    <span class='fn-none thx fn-pointer ft-smaller ft-small' id='${comment.oId}Thx'
+                                                       onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}')">${thankLabel}</span>
+                                                    </#if>
+                                                    </#if>
+                                                    <span class="icon icon-reply fn-pointer" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
+                                                    </#if>
                                                     <#if isAdminLoggedIn>
                                                     <a class="icon icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
-                                                    </#if>
-                                                    <#if isLoggedIn> 
-                                                    <span class="icon icon-cmt" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
                                                     </#if>
                                                     #<i>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</i>
                                                 </span>    

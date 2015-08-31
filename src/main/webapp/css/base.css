@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.5.10, Aug 29, 2015
+ * @version 1.6.5.10, Aug 31, 2015
  */
 
 /* start reset */
@@ -378,6 +378,10 @@ textarea {
     color: #999;
 }
 
+.ft-smaller {
+    font-size: 12px;
+}
+
 .ft-red {
     color: #911;
 }
@@ -474,7 +478,7 @@ button.small,
 /* end button */
 
 /* start icon */
-.icon {
+[class^="icon-"], [class*=" icon-"] {
     font-family: 'icomoon';
     speak: none;
     font-style: normal;
@@ -485,6 +489,7 @@ button.small,
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    vertical-align: middle;
 }
 
 a.icon {
@@ -496,20 +501,83 @@ a.icon:hover {
     color: #4183c4;
 }
 
-.icon-weibo:before {
-    content: "\e605";
+.icon-heart:before {
+	content: "\e601";
 }
-
-.icon-tencent:before {
-    content: "\e60d";
+.icon-reply:before {
+	content: "\e61a";
 }
-
+.icon-star:before {
+	content: "\e600";
+}
+.icon-register:before {
+	content: "\e602";
+}
+.icon-lougout:before {
+	content: "\e603";
+}
+.icon-setting:before {
+	content: "\e604";
+}
 .icon-google:before {
-    content: "\e603";
+	content: "\e605";
 }
-
-.icon-search:before {
-    content: "\e604";
+.icon-seach:before {
+	content: "\e606";
+}
+.icon-weibo:before {
+	content: "\e607";
+}
+.icon-date:before {
+	content: "\e608";
+}
+.icon-view:before {
+	content: "\e609";
+}
+.icon-cmts:before {
+	content: "\e60a";
+}
+.icon-up:before {
+	content: "\e60c";
+}
+.icon-twitter:before {
+	content: "\e60d";
+}
+.icon-edit:before {
+	content: "\e60e";
+}
+.icon-tencent:before {
+	content: "\e60f";
+}
+.icon-tag:before {
+	content: "\e610";
+}
+.icon-tags:before {
+	content: "\e611";
+}
+.icon-addfile:before {
+	content: "\e612";
+}
+.icon-login:before {
+	content: "\e613";
+}
+.icon-articles:before {
+	content: "\e614";
+}
+.icon-userrole:before {
+	content: "\e615";
+}
+.icon-email:before {
+	content: "\e616";
+}
+.icon-flag:before {
+	content: "\e617";
+}
+.icon-chevron-down:before {
+	content: "\e618";
+}
+.icon-chevron-up:before {
+	content: "\e619";
 }
 
 .icon-search {
@@ -521,33 +589,8 @@ a.icon:hover {
     cursor: pointer;
 }
 
-.icon-date:before {
-    content: "\e606";
-}
-
-.icon-view:before {
-    content: "\e607";
-}
-
-.icon-cmts:before {
-    content: "\e608";
-}
-
-.icon-cmt {
-    cursor: pointer;
-    vertical-align: middle;
-}
-
-.icon-cmt:hover {
+.icon-reply:hover {
     color: #4183C4;
-}
-
-.icon-cmt:before {
-    content: "\e609";
-}
-
-.icon-up:before {
-    content: "\e60a";
 }
 
 .icon-up {
@@ -571,70 +614,6 @@ a.icon:hover {
 
 .icon-up:hover {
     background-color: #d8e0e3 !important;
-}
-
-.icon-twitter:before {
-    content: "\e60b";
-}
-
-.icon-edit:before {
-    content: "\e60c";
-}
-
-.icon-tag:before {
-    content: "\e60e";
-}
-
-.icon-tags:before {
-    content: "\e60f";
-}
-
-.icon-addfile:before {
-    content: "\e610";
-}
-
-.icon-setting:before {
-    content: "\e602";
-}
-
-.icon-logout:before {
-    content: "\e601";
-}
-
-.icon-login:before {
-    content: "\e611";
-}
-
-.icon-register:before {
-    content: "\e600";
-}
-
-.icon-articles:before {
-    content: "\e612";
-}
-
-.icon-userrole:before {
-    content: "\e613";
-}
-
-.icon-email:before {
-    content: "\e614";
-}
-
-.icon-flag:before {
-    content: "\e615";
-}
-
-.icon-star:before {
-    content: "\e616";
-}
-
-.icon-chevron-down:before {
-    content: "\e617";
-}
-
-.icon-chevron-up:before {
-    content: "\e618";
 }
 /* end icon */
 
