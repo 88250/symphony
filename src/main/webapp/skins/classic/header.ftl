@@ -1,5 +1,5 @@
 <div class="nav"> 
-    <div class="wrapper">
+    <div class="wrapper fn-clear">
         <h1><a rel="nofollow" href="/"><img src="${staticServePath}/images/hacpai.png" alt="黑客派" title="HacPai" width="42" /></a></h1>
         <form target="_blank" action="http://search.b3log.org/cse/search">
             <span class="icon icon-search"></span>

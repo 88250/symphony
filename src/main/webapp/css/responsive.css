@@ -102,11 +102,9 @@
 
     .nav h1 {
         margin: 0 0.5rem;
-        float: left;
     }
 
     .nav .user-nav {
-        margin-left: 40px;
         float: left;
     }
 
