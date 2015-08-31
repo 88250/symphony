@@ -26,10 +26,6 @@
                                 </#list>
                             </div>
                             <div class="fn-right">
-                                <#if 0 == article.articleAuthor.userGeoStatus && "" != article.articleAuthor.userCity>
-                                <span class="icon"></span>
-                                <span style="color: #ffffff;">${article.articleAuthor.userCity}</span>&nbsp;
-                                </#if>
                                 <span class="icon icon-date"></span>
                                 ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;
                                 <a title="${cmtLabel}" rel="nofollow" href="#comments">
@@ -163,10 +159,6 @@
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                                     &nbsp;<span class="icon icon-date ft-small"></span>
                                                     <span class="ft-small">${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span> 
-                                                    <#if 0 == comment.commenter.userGeoStatus && "" != comment.commenter.userCity>
-                                                    <span class="icon"></span>
-                                                    <span style="color: #ffffff;">${comment.commenter.userCity}</span>&nbsp;
-                                                    </#if>
                                                 </span>
                                                 <span class="fn-right">
                                                     <#if isAdminLoggedIn>
