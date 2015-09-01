@@ -378,6 +378,10 @@ textarea {
     color: #999;
 }
 
+.ft-fade {
+    color: #ccc;
+}
+
 .ft-smaller {
     font-size: 12px;
 }

@@ -158,8 +158,7 @@
                                                     </#if>
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
-                                                    &nbsp;<span class="icon icon-date ft-small"></span>
-                                                    <span class="ft-small">${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}</span> 
+                                                    <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo}</span> 
                                                     <#if comment.rewardedCnt gt 0>
                                                     &nbsp;<span class="icon-heart ft-small"></span> <span class="ft-small" id='${comment.oId}RewardedCnt'>${comment.rewardedCnt}</span> 
                                                     </#if>

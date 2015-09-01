@@ -40,6 +40,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
@@ -47,6 +48,7 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.Times;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -433,6 +435,7 @@ public class CommentQueryService {
      * <li>markdowns comment content</li>
      * <li>block comment if need</li>
      * <li>generates emotion images</li>
+     * <li>generates time ago text</li>
      * </ul>
      *
      * @param comments the specified comments
@@ -456,12 +459,14 @@ public class CommentQueryService {
      * <li>markdowns comment content</li>
      * <li>block comment if need</li>
      * <li>generates emotion images</li>
+     * <li>generates time ago text</li>
      * </ul>
      *
      * @param comment the specified comment
      * @throws RepositoryException repository exception
      */
     private void organizeComment(final JSONObject comment) throws RepositoryException {
+        comment.put(Common.TIME_AGO, Times.getTimeAgo(comment.optLong(Comment.COMMENT_CREATE_TIME), Latkes.getLocale()));
         comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
 
         final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);

@@ -62,6 +62,7 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.Times;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -499,7 +500,7 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getHotArticles(final int fetchSize) throws ServiceException {
         final String id = String.valueOf(DateUtils.addDays(new Date(), -15).getTime());
-        
+
         try {
             final Query query = new Query().addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
                     addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(fetchSize)
@@ -534,19 +535,19 @@ public class ArticleQueryService {
             throw new ServiceException(e);
         }
     }
-    
+
     /**
      * Makes article showing filters.
-     * 
+     *
      * @return filter the article showing to user
      */
-    private CompositeFilter makeArticleShowingFilter(){
+    private CompositeFilter makeArticleShowingFilter() {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         return new CompositeFilter(CompositeFilterOperator.AND, filters);
     }
-    
+
     /**
      * Makes the recent (sort by create time) articles with the specified fetch size.
      *
@@ -554,14 +555,14 @@ public class ArticleQueryService {
      * @param fetchSize the specified fetch size
      * @return recent articles query
      */
-    private Query makeRecentQuery(final int currentPageNum, final int fetchSize){
+    private Query makeRecentQuery(final int currentPageNum, final int fetchSize) {
         final Query query = new Query()
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
         query.setFilter(makeArticleShowingFilter());
         return query;
     }
-    
+
     /**
      * Makes the top articles with the specified fetch size.
      *
@@ -569,7 +570,7 @@ public class ArticleQueryService {
      * @param fetchSize the specified fetch size
      * @return top articles query
      */
-    private Query makeTopQuery(final int currentPageNum, final int fetchSize){
+    private Query makeTopQuery(final int currentPageNum, final int fetchSize) {
         final Query query = new Query()
                 .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
                 .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
@@ -774,6 +775,7 @@ public class ArticleQueryService {
      * <li>escapes article title &lt; and &gt;</li>
      * <li>generates article heat</li>
      * <li>generates article view count display format(1k+/1.5k+...)</li>
+     * <li>generates time ago text</li>
      * </ul>
      *
      * @param articles the specified articles
@@ -795,6 +797,7 @@ public class ArticleQueryService {
      * <li>escapes article title &lt; and &gt;</li>
      * <li>generates article heat</li>
      * <li>generates article view count display format(1k+/1.5k+...)</li>
+     * <li>generates time ago text</li>
      * </ul>
      *
      * @param article the specified article
@@ -838,6 +841,8 @@ public class ArticleQueryService {
      * @param article the specified article
      */
     private void toArticleDate(final JSONObject article) {
+        article.put(Common.TIME_AGO, Times.getTimeAgo(article.optLong(Article.ARTICLE_CREATE_TIME), Latkes.getLocale()));
+        
         article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
         article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
         article.put(Article.ARTICLE_LATEST_CMT_TIME, new Date(article.optLong(Article.ARTICLE_LATEST_CMT_TIME)));
