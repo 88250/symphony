@@ -300,7 +300,7 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
             }
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-            article.put(Article.REDDIT_SCORE, Math.log10(1));
+            article.put(Article.REDDIT_SCORE, VoteMgmtService.redditScore(0, 0, currentTimeMillis / 1000));
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
             article.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));

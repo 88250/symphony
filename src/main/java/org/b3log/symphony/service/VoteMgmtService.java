@@ -232,7 +232,7 @@ public class VoteMgmtService {
      * @param t time (epoch seconds)
      * @return reddit score
      */
-    private static double redditScore(final int ups, final int downs, final long t) {
+    public static double redditScore(final int ups, final int downs, final long t) {
         final int x = ups - downs;
         final double z = Math.max(Math.abs(x), 1);
         int y = 0;
