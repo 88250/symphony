@@ -35,6 +35,9 @@
 }
 
 @media (max-width: 720px) {
+    .nav {
+        height: 84px;
+    }
     .fn-flex {
         display: flex;
         flex-wrap: wrap;
