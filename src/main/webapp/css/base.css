@@ -501,11 +501,11 @@ a.icon:hover {
     color: #4183c4;
 }
 
-.icon-heart:before {
-	content: "\e601";
-}
 .icon-reply:before {
 	content: "\e61a";
+}
+.icon-heart:before {
+	content: "\e601";
 }
 .icon-star:before {
 	content: "\e600";
@@ -513,7 +513,7 @@ a.icon:hover {
 .icon-register:before {
 	content: "\e602";
 }
-.icon-lougout:before {
+.icon-logout:before {
 	content: "\e603";
 }
 .icon-setting:before {
@@ -522,7 +522,7 @@ a.icon:hover {
 .icon-google:before {
 	content: "\e605";
 }
-.icon-seach:before {
+.icon-search:before {
 	content: "\e606";
 }
 .icon-weibo:before {
@@ -579,7 +579,6 @@ a.icon:hover {
 .icon-chevron-up:before {
 	content: "\e619";
 }
-
 .icon-search {
     color: #999999;
     left: 88px;

@@ -157,8 +157,8 @@ var Comment = {
     },
     /**
      * @description 添加评论
-     * @param {String} 文章 id
-     * @csrfToken {String} CSRF 令牌
+     * @param {String} id 文章 id
+     * @param {String} csrfToken CSRF 令牌
      */
     add: function (id, csrfToken) {
         if (!Validate.goValidate({
