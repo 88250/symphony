@@ -158,9 +158,9 @@
                                                     </#if>
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
-                                                    <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo}</span> 
+                                                    <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo}</span>
                                                     <#if comment.rewardedCnt gt 0>
-                                                    &nbsp;<span class="icon-heart ft-small"></span> <span class="ft-small" id='${comment.oId}RewardedCnt'>${comment.rewardedCnt}</span> 
+                                                    <span class="icon-heart ft-smaller ft-fade"></span> <span class="ft-smaller ft-fade" id='${comment.oId}RewardedCnt'>${comment.rewardedCnt}</span> 
                                                     </#if>
                                                 </span>
                                                 <span class="fn-right">

@@ -79,19 +79,19 @@ public final class Times {
         if (diff > YEAR_UNIT) {
             r = diff / YEAR_UNIT;
 
-            return r + " " + langs.get("yearAgoLabel");
+            return r + " " + langs.get("yearsAgoLabel");
         }
 
         if (diff > MONTH_UNIT) {
             r = diff / MONTH_UNIT;
 
-            return r + " " + langs.get("monthAgoLabel");
+            return r + " " + langs.get("monthsAgoLabel");
         }
 
         if (diff > WEEK_UNIT) {
             r = diff / WEEK_UNIT;
 
-            return r + " " + langs.get("weekAgoLabel");
+            return r + " " + langs.get("weeksAgoLabel");
         }
 
         if (diff > DAY_UNIT) {
@@ -109,7 +109,7 @@ public final class Times {
         if (diff > MINUTE_UNIT) {
             r = diff / MINUTE_UNIT;
 
-            return r + " " + langs.get("minuteAgoLabel");
+            return r + " " + langs.get("minutesAgoLabel");
         }
 
         return langs.get("justNowLabel");
