@@ -270,6 +270,10 @@ textarea {
     padding: 5px 30px;
     text-align: center;
 }
+
+.btn.orange {
+    background-color: #febe5b;
+}
 /* end common */
 
 /* start framework */
@@ -522,7 +526,7 @@ textarea {
 }
 
 .hot-tags {
-       font-size: 18px;
+    font-size: 18px;
     color: #777;
     line-height: 32px;
     margin: 28px 0;
@@ -542,6 +546,158 @@ textarea {
     color: #FFF;
     text-decoration: none;
     border-radius: 25px;
+}
+
+.side {
+    width: 340px;
+}
+
+.side .btn {
+    height: 47px;
+    border-radius: 35px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.side .panel {
+    margin-top: 22px;
+    background-color: #f8f8f8;
+    padding: 22px;
+}
+
+.side .panel-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #43a099;
+    line-height: 24px;
+}
+.side .panel-title span {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.side .panel li {
+    margin-top: 20px;
+    height: 74px;
+    overflow: hidden;
+}
+
+.side .panel img {
+    width: 100px;
+    height: 74px;
+}
+
+.side .panel .title {
+    margin: 3px 0 7px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+}
+.side .panel .abstract {
+    margin-left: 20px;
+    font-size: 12px;
+    color: #888;
+    line-height: 20px;
+}
+
+.side .avatar-wrap {
+    float: left;
+    position: relative;
+    margin: 20px 9px 0px 0;
+}
+.side img.avatar {
+    height: 65px;
+    width: 65px;
+    border-radius: 35px;
+}
+
+.side .avatar-wrap:hover .hover {
+    position: absolute;
+    height: 65px;
+    width: 65px;
+    background-color: rgba(254, 190, 91, 0.8);
+    top: 0;
+    border-radius: 35px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 59px;
+    font-weight: bold;
+    font-size: 50px;
+    color: #FFF;
+}
+
+.side .avatar-wrap:hover .hover:before {
+    content: '+';
+}
+
+.content {
+    margin-right: 20px;
+    border-top: 3px solid #43a099;
+}
+
+.content li {
+    width: 30.8%;
+    border: 1px solid #f8f8f8;
+    margin: 20px 8px 0;
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    overflow: hidden;
+    float: left;
+}
+
+.content li:hover {
+    border-color:#febe5b;
+}
+
+.content .header {
+    padding: 10px;
+    height: 19.3vw;
+    overflow: hidden;
+}
+
+.content .header .title {
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.content .header .abstract {
+    font-size: 12px;
+    color: #888;
+    line-height: 18px;
+}
+
+.content .info {
+    background-color: #F8f8f8;
+    padding: 12px 15px;
+}
+
+.content .count span {
+    font-size: 12px;
+    color:  #b6b6b6;
+}
+
+.content .avatar {
+    height: 36px;
+    width: 36px;
+    border-radius: 18px;
+    border: 1px solid #efefef;
+    margin-right: 15px;
+}
+
+.content .date {
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.content .cmt-name {
+    color: #fdb10f;
+    font-size: 14px;
+}
+
+.content .cmt-content {
+    color: #777;
+    font-size: 14px;
 }
 /* end index */
 

@@ -1,5 +1,5 @@
 <div class="footer">
-    <div class="wrapper">
+    <div class="wrapper fn-flex">
         <img src="${staticServePath}/skins/hacpai/static/images/logo1.png"/>
         <div class="fn-flex-1">
             黑客与画家的社区 © 2015 B3LOG.ORG 1.0.0<br/>
