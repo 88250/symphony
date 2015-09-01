@@ -378,6 +378,10 @@ textarea {
     color: #999;
 }
 
+.ft-13 {
+    font-size: 13px;
+}
+
 .ft-fade {
     color: #ccc;
 }
@@ -663,31 +667,28 @@ a.icon:hover {
 }
 
 .avatar {
-    box-shadow: 0 0 2px #DDDDDD;
     height: 48px;
     width: 48px;
     margin-right: 10px;
-    border-radius: 24px;
 }
 
 .avatar-small {
     height: 25px;
     width: 25px;
-    border-radius: 13px;
 }
 
 .avatar-big {
-    border: 25px solid #EEEEEE;
+    border: 15px solid #EEEEEE;
     height: 210px;
     width: 210px;
-    border-radius: 130px;
+    border-radius: 10px;
 }
 
 .avatar-mid {
-    border: 10px solid #EEEEEE;
+    border: 5px solid #EEEEEE;
     height: 118px;
     width: 118px;
-    border-radius: 70px;
+    border-radius: 6px;
 }
 
 /* end avatar */
@@ -1297,7 +1298,6 @@ a.icon:hover {
     margin-right: 0;
     height: 53px;
     width: 53px;
-    border-radius: 27px;
 }
 
 .nopanel .status {

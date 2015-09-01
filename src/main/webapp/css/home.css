@@ -30,9 +30,13 @@
 }
 
 .user-info {
-    line-height: 25px;
+    line-height: 26px;
     font-size: 12px;
     color: #666666;
+}
+
+.user-intro {
+     line-height: 26px;
 }
 /* end home side */
 

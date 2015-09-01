@@ -5,10 +5,10 @@
             <a href="/member/${user.userName}">${user.userName}</a>
             <img title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
             <#if "adminRole" == user.userRole>
-            <span class="icon icon-userrole" title="${administratorLabel}"></span>
+            <span class="ft-13 icon icon-userrole" title="${administratorLabel}"></span>
             </#if>
             <#if isAdminLoggedIn>
-            <a class="ft-small icon icon-setting" href="/admin/user/${user.oId}" title="${adminLabel}"></a>
+            <a class="ft-13 icon icon-setting" href="/admin/user/${user.oId}" title="${adminLabel}"></a>
             </#if>
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>
@@ -24,7 +24,7 @@
         </div>
 
         <#if user.userIntro!="">
-        <div>
+        <div class="user-intro">
             ${user.userIntro}
         </div>
         </#if>
