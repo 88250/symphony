@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Pointtransfer management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Jul 9, 2015
+ * @version 1.1.1.1, Sep 1, 2015
  * @since 1.3.0
  */
 @Service
@@ -66,12 +66,12 @@ public class PointtransferMgmtService {
      * @param type the specified type
      * @param sum the specified sum
      * @param dataId the specified data id
-     * @return {@code true} if transfer successfully, returns {@code false} otherwise
+     * @return transfer record id, returns {@code null} if transfer failed
      */
-    public synchronized boolean transfer(final String fromId, final String toId, final int type, final int sum,
+    public synchronized String transfer(final String fromId, final String toId, final int type, final int sum,
             final String dataId) {
         if (StringUtils.equals(fromId, toId)) { // for example the commenter is the article author
-            return false;
+            return null;
         }
 
         final Transaction transaction = pointtransferRepository.beginTransaction();
@@ -116,11 +116,11 @@ public class PointtransferMgmtService {
             pointtransfer.put(Pointtransfer.TYPE, type);
             pointtransfer.put(Pointtransfer.DATA_ID, dataId);
 
-            pointtransferRepository.add(pointtransfer);
+            final String ret = pointtransferRepository.add(pointtransfer);
 
             transaction.commit();
 
-            return true;
+            return ret;
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -129,7 +129,7 @@ public class PointtransferMgmtService {
             LOGGER.log(Level.ERROR, "Transfer [fromId=" + fromId + ", toId=" + toId + ", sum=" + sum + ", type=" + type
                     + ", dataId=" + dataId + "] error", e);
 
-            return false;
+            return null;
         }
     }
 

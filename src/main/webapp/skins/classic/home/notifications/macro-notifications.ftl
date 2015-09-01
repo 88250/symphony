@@ -43,6 +43,14 @@
                                 </#if>
                             </a>
                         </li>
+                        <li<#if type == "point"> class="current"</#if>>
+                            <a href="/notifications/point">
+                                <span>${pointLabel}</span>
+                                <#if unreadPointNotificationCnt &gt; 0>
+                                <span class="counter">${unreadPointNotificationCnt}</span>
+                                </#if>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

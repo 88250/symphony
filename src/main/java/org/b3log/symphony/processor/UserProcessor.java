@@ -45,6 +45,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.CSRFCheck;
@@ -63,6 +64,7 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
+import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -175,6 +177,12 @@ public class UserProcessor {
     @Inject
     private ActivityMgmtService activityMgmtService;
 
+        /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
+    
     /**
      * Shows user home page.
      *
@@ -752,7 +760,7 @@ public class UserProcessor {
             request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             LOGGER.warn(e.getMessage());
-            
+
             requestJSONObject = new JSONObject();
         }
 
@@ -848,11 +856,18 @@ public class UserProcessor {
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
         final String toId = toUser.optString(Keys.OBJECT_ID);
 
-        final boolean succ = pointtransferMgmtService.transfer(fromId, toId,
+        final String transferId = pointtransferMgmtService.transfer(fromId, toId,
                 Pointtransfer.TRANSFER_TYPE_C_ACOUNT2ACOUNT, amount, toId);
+        final boolean succ = null != transferId;
         ret.put(Keys.STATUS_CODE, succ);
         if (!succ) {
             ret.put(Keys.MSG, langPropsService.get("transferFailLabel"));
+        } else {
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, toId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, transferId);
+
+            notificationMgmtService.addPointTransferNotification(notification);
         }
     }
 

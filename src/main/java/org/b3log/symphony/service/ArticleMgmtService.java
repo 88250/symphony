@@ -42,6 +42,7 @@ import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Reward;
@@ -150,6 +151,12 @@ public class ArticleMgmtService {
      */
     @Inject
     private FollowQueryService followQueryService;
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * Increments the view count of the specified article by the given article id.
@@ -300,7 +307,7 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
             }
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-            article.put(Article.REDDIT_SCORE,  0);
+            article.put(Article.REDDIT_SCORE, 0);
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
             article.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
@@ -562,7 +569,7 @@ public class ArticleMgmtService {
             }
 
             final String rewardId = Ids.genTimeMillisId();
-            final boolean succ = pointtransferMgmtService.transfer(senderId, receiverId,
+            final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
                     Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, rewardId);
 
             if (!succ) {
@@ -576,6 +583,12 @@ public class ArticleMgmtService {
             reward.put(Reward.TYPE, Reward.TYPE_C_ARTICLE);
 
             rewardMgmtService.addReward(reward);
+
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, receiverId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, rewardId);
+
+            notificationMgmtService.addArticleRewardNotification(notification);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Rewards an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);

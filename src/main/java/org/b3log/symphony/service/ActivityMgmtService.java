@@ -150,7 +150,7 @@ public class ActivityMgmtService {
         final int sum = random.nextInt(Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX)
                 % (Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX - Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN + 1)
                 + Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN;
-        final boolean succ = pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
+        final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN, sum, userId);
         if (!succ) {
             return Integer.MIN_VALUE;
@@ -259,7 +259,7 @@ public class ActivityMgmtService {
 
         final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");
 
-        final boolean succ = pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
+        final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001, amount, date + "-" + smallOrLarge);
 
         ret.put(Keys.STATUS_CODE, succ);
@@ -347,7 +347,7 @@ public class ActivityMgmtService {
         if (StringUtils.equals(smallOrLarge, smallOrLargeResult)) {
             final int amount = sum * 2;
 
-            final boolean succ = pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
+            final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                     Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT, amount,
                     DateFormatUtils.format(new Date(), "yyyyMMdd") + "-" + smallOrLargeResult);
 

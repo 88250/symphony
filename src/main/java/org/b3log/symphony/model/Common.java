@@ -23,37 +23,37 @@ package org.b3log.symphony.model;
  * @since 0.2.0
  */
 public final class Common {
-    
+
     /**
      * Key of time ago.
      */
     public static final String TIME_AGO = "timeAgo";
-    
+
     /**
      * Key of rewarded count.
      */
     public static final String REWARED_COUNT = "rewardedCnt";
-    
+
     /**
      * Key of CSRF token.
      */
     public static final String CSRF_TOKEN = "csrfToken";
-    
+
     /**
      * Key of token.
      */
     public static final String TOKEN = "token";
-    
+
     /**
      * Key of city.
      */
     public static final String CITY = "city";
-    
+
     /**
      * Key of province.
      */
     public static final String PROVINCE = "province";
-    
+
     /**
      * Key of new user.
      */
@@ -68,6 +68,16 @@ public final class Common {
      * Key of data id.
      */
     public static final String DATA_ID = "dataId";
+
+    /**
+     * Key of data title.
+     */
+    public static final String DATA_TITLE = "dataTitle";
+
+    /**
+     * Key of data link.
+     */
+    public static final String DATA_LINK = "dataLink";
 
     /**
      * Key of memo.
@@ -188,12 +198,12 @@ public final class Common {
      * Key of type.
      */
     public static final String TYPE = "type";
-    
+
     /**
      * Key of activity.
      */
     public static final String ACTIVITY = "activity";
-    
+
     /**
      * Key of recent articles.
      */
@@ -208,7 +218,7 @@ public final class Common {
      * Key of navigation trend tags.
      */
     public static final String NAV_TREND_TAGS = "navTrendTags";
-    
+
     /**
      * Key of new tags.
      */
@@ -295,6 +305,16 @@ public final class Common {
     public static final String USER_HOME_POINTS = "userHomePoints";
 
     /**
+     * Key of 'point' notifications.
+     */
+    public static final String POINT_NOTIFICATIONS = "pointNotifications";
+
+    /**
+     * Key of unread 'point' notifications count.
+     */
+    public static final String UNREAD_POINT_NOTIFICATION_CNT = "unreadPointNotificationCnt";
+
+    /**
      * Key of 'commented' notifications.
      */
     public static final String COMMENTED_NOTIFICATIONS = "commentedNotifications";
@@ -358,7 +378,7 @@ public final class Common {
      * Key of thumbnail URL.
      */
     public static final String THUMBNAIL_URL = "thumbnailURL";
-    
+
     /**
      * Key of thumbnail update time.
      */
@@ -368,7 +388,7 @@ public final class Common {
      * Key of URL.
      */
     public static final String URL = "url";
-    
+
     /**
      * Key of update time.
      */

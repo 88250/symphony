@@ -92,6 +92,84 @@ public class NotificationMgmtService {
     }
 
     /**
+     * Adds a 'point transfer' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * {
+     *     "userId"; "",
+     *     "dataId": "" // transfer record id
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addPointTransferNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_POINT_TRANSFER);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=point_transfer] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
+     * Adds a 'article reward' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * {
+     *     "userId"; "",
+     *     "dataId": "" // reward id
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addArticleRewardNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=article_reward] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
+     * Adds a 'comment thank' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * {
+     *     "userId"; "",
+     *     "dataId": "" // reward id
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addCommentThankNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_POINT_COMMENT_THANK);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=comment_thank] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
      * Adds a 'comment' type notification with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,      <pre>
@@ -103,6 +181,7 @@ public class NotificationMgmtService {
      *
      * @throws ServiceException service exception
      */
+    // XXX: Unused
     @Transactional
     public void addCommentNotification(final JSONObject requestJSONObject) throws ServiceException {
         try {

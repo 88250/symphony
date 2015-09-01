@@ -32,15 +32,21 @@ import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.NotificationRepository;
+import org.b3log.symphony.repository.PointtransferRepository;
+import org.b3log.symphony.repository.RewardRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.json.JSONArray;
@@ -86,10 +92,34 @@ public class NotificationQueryService {
     private UserRepository userRepository;
 
     /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
+
+    /**
+     * Reward repository.
+     */
+    @Inject
+    private RewardRepository rewardRepository;
+    
+    /**
+     * Pointtransfer repository.
+     */
+    @Inject
+    private PointtransferRepository pointtransferRepository;
+
+    /**
      * Avatar query service.
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Gets the count of unread notifications of a user specified with the given user id.
@@ -97,7 +127,6 @@ public class NotificationQueryService {
      * @param userId the given user id
      * @return count of unread notifications, returns {@code 0} if occurs exception
      */
-    // XXX: Performance Issue: count without result list
     public int getUnreadNotificationCount(final String userId) {
         final List<Filter> filters = new ArrayList<Filter>();
 
@@ -119,7 +148,7 @@ public class NotificationQueryService {
     }
 
     /**
-     * Gets the count of unread notifications with the specified data of a user specified with the given user id.
+     * Gets the count of unread notifications of a user specified with the given user id and data type.
      *
      * @param userId the given user id
      * @param notificationDataType the specified notification data type
@@ -129,7 +158,6 @@ public class NotificationQueryService {
      * @see Notification#DATA_TYPE_C_COMMENT
      * @see Notification#DATA_TYPE_C_COMMENTED
      */
-    // XXX: Performance Issue: count type notification
     public int getUnreadNotificationCountByType(final String userId, final int notificationDataType) {
         final List<Filter> filters = new ArrayList<Filter>();
 
@@ -148,6 +176,180 @@ public class NotificationQueryService {
             LOGGER.log(Level.ERROR, "Gets [commented] notification count failed [userId=" + userId + "]", e);
 
             return 0;
+        }
+    }
+
+    /**
+     * Gets the count of unread 'point' notifications of a user specified with the given user id.
+     *
+     * @param userId the given user id
+     * @return count of unread notifications, returns {@code 0} if occurs exception
+     * @see Notification#DATA_TYPE_C_POINT_ARTICLE_REWARD
+     * @see Notification#DATA_TYPE_C_POINT_CHARGE
+     * @see Notification#DATA_TYPE_C_POINT_COMMENT_THANK
+     * @see Notification#DATA_TYPE_C_POINT_TRANSFER
+     */
+    public int getUnreadPointNotificationCount(final String userId) {
+        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
+
+        final List<Filter> subFilters = new ArrayList<Filter>();
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_CHARGE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_TRANSFER));
+
+        filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
+
+        final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+        try {
+            final JSONObject result = notificationRepository.get(query);
+
+            return result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets [commented] notification count failed [userId=" + userId + "]", e);
+
+            return 0;
+        }
+    }
+
+    /**
+     * Gets 'point' type notifications with the specified user id, current page number and page size.
+     *
+     * @param userId the specified user id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return result json object, for example,      <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         "oId": "", // notification record id
+     *         "description": int,
+     *         "hasRead": boolean
+     *     }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    public JSONObject getPointNotifications(final String userId, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+
+        ret.put(Keys.RESULTS, (Object) rslts);
+
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+
+        final List<Filter> subFilters = new ArrayList<Filter>();
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_CHARGE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_TRANSFER));
+
+        filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
+
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+        try {
+            final JSONObject queryResult = notificationRepository.get(query);
+            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT,
+                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
+
+            for (int i = 0; i < results.length(); i++) {
+                final JSONObject notification = results.optJSONObject(i);
+                final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
+                final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
+                String desTemplate = "";
+
+                switch (dataType) {
+                    case Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD:
+                        desTemplate = langPropsService.get("notificationArticleRewardLabel");
+
+                        final JSONObject reward7 = rewardRepository.get(dataId);
+                        final String senderId7 = reward7.optString(Reward.SENDER_ID);
+                        final JSONObject user7 = userRepository.get(senderId7);
+                        final String articleId7 = reward7.optString(Reward.DATA_ID);
+                        final JSONObject article7 = articleRepository.get(articleId7);
+
+                        final String userLink7 = "<a href=\"/member/" + user7.optString(User.USER_NAME) + "\">"
+                                + user7.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", userLink7);
+
+                        final String articleLink7 = "<a href=\""
+                                + article7.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + article7.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", articleLink7);
+
+                        break;
+                    case Notification.DATA_TYPE_C_POINT_CHARGE:
+
+                        break;
+                    case Notification.DATA_TYPE_C_POINT_COMMENT_THANK:
+                        desTemplate = langPropsService.get("notificationCmtThankLabel");
+
+                        final JSONObject reward8 = rewardRepository.get(dataId);
+                        final String senderId8 = reward8.optString(Reward.SENDER_ID);
+                        final JSONObject user8 = userRepository.get(senderId8);
+                        final JSONObject comment8 = commentRepository.get(reward8.optString(Reward.DATA_ID));
+                        final String articleId8 = comment8.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                        final JSONObject article8 = articleRepository.get(articleId8);
+
+                        final String userLink8 = "<a href=\"/member/" + user8.optString(User.USER_NAME) + "\">"
+                                + user8.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", userLink8);
+
+                        final String articleLink8 = "<a href=\""
+                                + article8.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + article8.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", articleLink8);
+
+                        break;
+                    case Notification.DATA_TYPE_C_POINT_TRANSFER:
+                        desTemplate = langPropsService.get("notificationPointTransferLabel");
+
+                        final JSONObject transfer6 = pointtransferRepository.get(dataId);
+                        final String fromId6 = transfer6.optString(Pointtransfer.FROM_ID);
+                        final JSONObject user6 = userRepository.get(fromId6);
+                        final int sum6 = transfer6.optInt(Pointtransfer.SUM);
+
+                        final String userLink6 = "<a href=\"/member/" + user6.optString(User.USER_NAME) + "\">"
+                                + user6.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", userLink6);
+                        desTemplate = desTemplate.replace("{amount}", String.valueOf(sum6));
+
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+
+                notification.put(Common.DESCRIPTION, desTemplate);
+
+                rslts.add(notification);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets [commented] notifications", e);
+            throw new ServiceException(e);
         }
     }
 

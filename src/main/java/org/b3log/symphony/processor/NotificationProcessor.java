@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.1, Jun 29, 2015
+ * @version 1.3.1.1, Sep 1, 2015
  * @since 0.2.5
  */
 @RequestProcessor
@@ -136,6 +136,13 @@ public class NotificationProcessor {
             return;
         }
 
+        final int unreadPointNotificationCnt = notificationQueryService.getUnreadPointNotificationCount(userId);
+        if (unreadPointNotificationCnt > 0) {
+            response.sendRedirect("/notifications/point");
+
+            return;
+        }
+
         final int unreadFollowingUserNotificationCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
         if (unreadFollowingUserNotificationCnt > 0) {
@@ -145,6 +152,93 @@ public class NotificationProcessor {
         }
 
         response.sendRedirect("/notifications/commented");
+    }
+
+    /**
+     * Shows [point] notifications.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/notifications/point", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showPointNotifications(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/notifications/point.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("pointNotificationsCnt");
+        final int windowSize = Symphonys.getInt("pointNotificationsWindowSize");
+
+        final JSONObject result = notificationQueryService.getPointNotifications(userId, pageNum, pageSize);
+        @SuppressWarnings("unchecked")
+        final List<JSONObject> pointNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
+        dataModel.put(Common.POINT_NOTIFICATIONS, pointNotifications);
+
+        fillNotificationCount(userId, dataModel);
+
+        notificationMgmtService.makeRead(pointNotifications);
+
+        final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil((double) recordCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Fills notification count.
+     *
+     * @param userId the specified user id
+     * @param dataModel the specified data model
+     */
+    private void fillNotificationCount(final String userId, final Map<String, Object> dataModel) {
+        final int unreadCommentedNotificationCnt
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
+        dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
+
+        final int unreadAtNotificationCnt
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
+        dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
+
+        final int unreadFollowingUserNotificationCnt
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
+        dataModel.put(Common.UNREAD_FOLLOWING_USER_NOTIFICATION_CNT, unreadFollowingUserNotificationCnt);
+
+        final int unreadPointNotificationCnt
+                = notificationQueryService.getUnreadPointNotificationCount(userId);
+        dataModel.put(Common.UNREAD_POINT_NOTIFICATION_CNT, unreadPointNotificationCnt);
     }
 
     /**
@@ -190,16 +284,7 @@ public class NotificationProcessor {
         final List<JSONObject> commentedNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
         dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
 
-        final int unreadCommentedNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
-        dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
-        final int unreadAtNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
-        dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
-
-        final int unreadFollowingUserNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
-        dataModel.put(Common.UNREAD_FOLLOWING_USER_NOTIFICATION_CNT, unreadFollowingUserNotificationCnt);
+        fillNotificationCount(userId, dataModel);
 
         notificationMgmtService.makeRead(commentedNotifications);
 
@@ -263,16 +348,7 @@ public class NotificationProcessor {
 
         dataModel.put(Common.AT_NOTIFICATIONS, atNotifications);
 
-        final int unreadCommentedNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
-        dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
-        final int unreadAtNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
-        dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
-
-        final int unreadFollowingUserNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
-        dataModel.put(Common.UNREAD_FOLLOWING_USER_NOTIFICATION_CNT, unreadFollowingUserNotificationCnt);
+        fillNotificationCount(userId, dataModel);
 
         notificationMgmtService.makeRead(atNotifications);
 
@@ -336,17 +412,7 @@ public class NotificationProcessor {
 
         dataModel.put(Common.FOLLOWING_USER_NOTIFICATIONS, followingUserNotifications);
 
-        final int unreadCommentedNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
-        dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
-
-        final int unreadAtNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
-        dataModel.put(Common.UNREAD_AT_NOTIFICATION_CNT, unreadAtNotificationCnt);
-
-        final int unreadFollowingUserNotificationCnt
-                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
-        dataModel.put(Common.UNREAD_FOLLOWING_USER_NOTIFICATION_CNT, unreadFollowingUserNotificationCnt);
+        fillNotificationCount(userId, dataModel);
 
         notificationMgmtService.makeRead(followingUserNotifications);
 

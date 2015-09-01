@@ -311,9 +311,9 @@ public class PointtransferQueryService {
                         final JSONObject comment14 = commentRepository.get(commentId14);
                         final String articleId14 = comment14.optString(Comment.COMMENT_ON_ARTICLE_ID);
 
-                        final String userLInk14 = "<a href=\"/member/" + user14.optString(User.USER_NAME) + "\">"
+                        final String userLink14 = "<a href=\"/member/" + user14.optString(User.USER_NAME) + "\">"
                                 + user14.optString(User.USER_NAME) + "</a>";
-                        desTemplate = desTemplate.replace("{user}", userLInk14);
+                        desTemplate = desTemplate.replace("{user}", userLink14);
 
                         final JSONObject article = articleRepository.get(articleId14);
                         final String articleLink = "<a href=\""

@@ -34,6 +34,7 @@ import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Reward;
@@ -52,7 +53,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.5.15, Aug 31, 2015
+ * @version 1.7.5.15, Sep 1, 2015
  * @since 0.2.0
  */
 @Service
@@ -122,6 +123,12 @@ public class CommentMgmtService {
      */
     @Inject
     private RewardQueryService rewardQueryService;
+    
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * A user specified by the given sender id thanks the author of a comment specified by the given comment id.
@@ -172,7 +179,7 @@ public class CommentMgmtService {
             }
 
             final String rewardId = Ids.genTimeMillisId();
-            final boolean succ = pointtransferMgmtService.transfer(senderId, receiverId,
+            final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
                     Pointtransfer.TRANSFER_TYPE_C_COMMENT_REWARD, rewardPoint, rewardId);
 
             if (!succ) {
@@ -186,6 +193,12 @@ public class CommentMgmtService {
             reward.put(Reward.TYPE, Reward.TYPE_C_COMMENT);
 
             rewardMgmtService.addReward(reward);
+            
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, receiverId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, rewardId);
+            
+            notificationMgmtService.addCommentThankNotification(notification);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Thanks a comment[id=" + commentId + "] failed", e);
             

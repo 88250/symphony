@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all notification model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Nov 11, 2013
+ * @version 1.1.0.2, Sep 1, 2015
  * @since 0.2.5
  */
 public final class Notification {
@@ -79,6 +79,26 @@ public final class Notification {
      * Data type - followingUser.
      */
     public static final int DATA_TYPE_C_FOLLOWING_USER = 4;
+
+    /**
+     * Data type - point charge.
+     */
+    public static final int DATA_TYPE_C_POINT_CHARGE = 5;
+
+    /**
+     * Data type - point transfer.
+     */
+    public static final int DATA_TYPE_C_POINT_TRANSFER = 6;
+
+    /**
+     * Data type - article reward.
+     */
+    public static final int DATA_TYPE_C_POINT_ARTICLE_REWARD = 7;
+
+    /**
+     * Data type - comment reward (thank).
+     */
+    public static final int DATA_TYPE_C_POINT_COMMENT_THANK = 8;
 
     //// Transient ////
     /**
