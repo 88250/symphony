@@ -20,7 +20,7 @@
                     <div class="fn-clear">
                         <a class="ad fn-left" href="/">
                             <span class="heading">黑客</span>
-                            <div class="title">
+                            <div class="title fn-ellipsis">
                                 黑客黑客黑客黑客黑客黑客黑客黑客黑客黑客黑客客黑客客黑客
                             </div>
                         </a>
@@ -50,8 +50,8 @@
                     <ul class="fn-clear fn-list">
                         <li>
                             <div class="header">
-                                <img src="http://localhost:8084/skins/hacpai/static/images/ad3.jpg"/>
-                                <div class="title">发表文章或作品发表文章或作品</div>
+                                <div class='img' style="background-image: url('http://localhost:8084/skins/hacpai/static/images/ad3.jpg')"></div>
+                                <div class="title fn-ellipsis">发表文章或作品发表文章或作品</div>
                                 <div class="abstract">免费观看、下载、高清大图【无水印】最新海报#创意海报#海报 创意#平面广告#汽车平面广告#汽车海报设计#汽车平面设计#汽车创意海报 #创意广告Iveco依维柯汽车创意海报设计：带着所有的东西</div>
                             </div>
                             <div class="info">
@@ -76,8 +76,8 @@
                         </li>
                         <li>
                             <div class="header">
-                                <img src="http://localhost:8084/skins/hacpai/static/images/ad3.jpg"/>
-                                <div class="title">发表文章或作品发表文章或作品</div>
+                                <div class='img' style="background-image: url('http://localhost:8084/skins/hacpai/static/images/ad3.jpg')"></div>
+                                <div class="title fn-ellipsis">发表文章或作品发表文章或作品</div>
                                 <div class="abstract">免费观看、下载、高清大图【无水印】最新海报#创意海报#海报 创意#平面广告#汽车平面广告#汽车海报设计#汽车平面设计#汽车创意海报 #创意广告Iveco依维柯汽车创意海报设计：带着所有的东西</div>
                             </div>
                             <div class="info">
@@ -102,8 +102,8 @@
                         </li>
                         <li>
                             <div class="header">
-                                <img src="http://localhost:8084/skins/hacpai/static/images/ad3.jpg"/>
-                                <div class="title">发表文章或作品发表文章或作品</div>
+                                <div class='img' style="background-image: url('http://localhost:8084/skins/hacpai/static/images/ad3.jpg')"></div>
+                                <div class="title fn-ellipsis">发表文章或作品发表文章或作品</div>
                                 <div class="abstract">免费观看、下载、高清大图【无水印】最新海报#创意海报#海报 创意#平面广告#汽车平面广告#汽车海报设计#汽车平面设计#汽车创意海报 #创意广告Iveco依维柯汽车创意海报设计：带着所有的东西</div>
                             </div>
                             <div class="info">
@@ -128,8 +128,8 @@
                         </li>
                         <li>
                             <div class="header">
-                                <img src="http://localhost:8084/skins/hacpai/static/images/ad3.jpg"/>
-                                <div class="title">发表文章或作品发表文章或作品</div>
+                                <div class='img' style="background-image: url('http://localhost:8084/skins/hacpai/static/images/ad3.jpg')"></div>
+                                <div class="title fn-ellipsis">发表文章或作品发表文章或作品</div>
                                 <div class="abstract">免费观看、下载、高清大图【无水印】最新海报#创意海报#海报 创意#平面广告#汽车平面广告#汽车海报设计#汽车平面设计#汽车创意海报 #创意广告Iveco依维柯汽车创意海报设计：带着所有的东西</div>
                             </div>
                             <div class="info">

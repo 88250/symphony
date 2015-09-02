@@ -18,7 +18,7 @@
  * Hacpai style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.0, Aug 26, 2015
+ * @version 1.0.0.1, Sep 2, 2015
  */
 
 /* start reset */
@@ -462,6 +462,16 @@ textarea {
     overflow: hidden;
 }
 
+.ads .ad:after {
+    content: ' ';
+    background-image: linear-gradient(0deg, rgba(110, 110, 110, 0.3), transparent);
+    height: 50%;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-image: -o-linear-gradient(top, rgba(110, 110, 110, 0.3), transparent);
+}
+
 .ads a.ad .title {
     color: #FFF;
     font-size: 30px;
@@ -481,6 +491,7 @@ textarea {
     font-size: 18px;
     padding: 0 10px;
     box-sizing: border-box;
+    z-index: 10;
 }
 
 .ads a.ad:hover {
@@ -624,6 +635,7 @@ textarea {
     font-weight: bold;
     font-size: 50px;
     color: #FFF;
+    transition: background 200ms ease;
 }
 
 .side .avatar-wrap:hover .hover:before {
@@ -643,6 +655,9 @@ textarea {
     cursor: pointer;
     overflow: hidden;
     float: left;
+    min-width: 180px;
+    max-width: 300px;
+    transition:border 500ms ease-out;
 }
 
 .content li:hover {
@@ -653,6 +668,19 @@ textarea {
     padding: 10px;
     height: 19.3vw;
     overflow: hidden;
+    min-height: 250px;
+    max-height: 310px;
+}
+
+.content li:hover .header .img {
+    height: 50%;
+}
+
+.content .header .img {
+    background-size: cover;
+    background-position: center center;
+    height: 91%;
+    transition: height 500ms  ease;
 }
 
 .content .header .title {
