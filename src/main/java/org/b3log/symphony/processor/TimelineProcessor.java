@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -87,6 +88,7 @@ public class TimelineProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTimeline(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("timeline.ftl");

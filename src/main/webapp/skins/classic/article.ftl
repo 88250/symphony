@@ -167,9 +167,9 @@
                                                     <#if isLoggedIn>
                                                     <#if comment.commentAuthorId != currentUser.oId>
                                                     <#if comment.rewarded>
-                                                    <span class='ft-smaller ft-small'>${thankedLabel}</span>
+                                                    <span class='ft-smaller ft-fade'>${thankedLabel}</span>
                                                     <#else>
-                                                    <span class='fn-none thx fn-pointer ft-smaller ft-small' id='${comment.oId}Thx'
+                                                    <span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'
                                                        onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}')">${thankLabel}</span>
                                                     </#if>
                                                     </#if>

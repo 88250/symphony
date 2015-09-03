@@ -118,6 +118,7 @@ public class ActivityProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showActivities(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/activities.ftl");
@@ -167,6 +168,7 @@ public class ActivityProcessor {
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void show1A0001(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/1A0001.ftl");
