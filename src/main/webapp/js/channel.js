@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.3, Aug 19, 2015
+ * @version 1.3.4.3, Sep 3, 2015
  */
 
 /**
@@ -58,24 +58,23 @@ var ArticleChannel = {
             // Append comment
             var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" +
                     "<div class=\"fn-flex\">" +
-                    "<div>" +
-                    "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\">" +
+                    "<a class=\"responsive-hide\" rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\">" +
                     "<img class=\"avatar\"" +
-                    "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}-64.jpg?${comment.thumbnailUpdateTime}\" />" +
+                    "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}\" />" +
                     "</a>" +
-                    "</div>" +
                     "<div class=\"fn-flex-1 comment-content\">" +
                     "<div class=\"fn-clear comment-info\">" +
                     "<span class=\"fn-left\">" +
                     "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\"" +
                     "title=\"${comment.commentAuthorName}\">${comment.commentAuthorName}</a>" +
-                    " &nbsp;<span class=\"icon icon-date ft-small\"></span>" +
-                    "<span class=\"ft-small\">&nbsp;${comment.commentCreateTime}</span>" +
+                    "<span class=\"ft-fade ft-smaller\">&nbsp;•&nbsp;${comment.timeAgo}</span>" +
                     "</span>" +
                     "<span class=\"fn-right\">" +
-                    "<span class=\"icon icon-cmt\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span>" +
-                    " <i>#" + parseInt($("#comments > h2").text()) + "</i>" +
-                    "</span>" +
+                    "<span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'" +
+                    "   onclick=\"Comment.thank('${comment.oId}', '" + Label.csrfToken + "', '${comment.commentThankLabel}', '${comment.thankedLabel}')\">${comment.thankLabel}</span> " +
+                    "<span class=\"icon icon-reply fn-pointer\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span> " +
+                    "#<i>" + parseInt($("#comments > h2").text()) + "</i>" +
+                    "</span>    " +
                     "</div>" +
                     "<div class=\"content-reset comment\">" +
                     "${comment.commentContent}" +
@@ -90,6 +89,10 @@ var ArticleChannel = {
             template = replaceAll(template, "${comment.thumbnailUpdateTime}", data.thumbnailUpdateTime);
             template = replaceAll(template, "${comment.commentContent}", data.commentContent);
             template = replaceAll(template, "${comment.commentCreateTime}", data.commentCreateTime);
+            template = replaceAll(template, "${comment.timeAgo}", data.timeAgo);
+            template = replaceAll(template, "${comment.thankLabel}", data.thankLabel);
+            template = replaceAll(template, "${comment.thankedLabel}", data.thankedLabel);
+            template = replaceAll(template, "${comment.commentThankLabel}", data.commentThankLabel);
 
             $("#comments > ul").prepend(template);
 
@@ -208,7 +211,7 @@ var TimelineChannel = {
                     var template = "<li class=\"fn-none\" id=" + time + ">" + data.content + "</li>";
                     $("#ul").prepend(template);
                     $("#" + time).fadeIn(2000);
-                    
+
                     var length = $("#ul > li").length;
                     if (length > timelineCnt) {
                         $("#ul > li:last").remove();

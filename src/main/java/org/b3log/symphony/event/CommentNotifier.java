@@ -45,6 +45,7 @@ import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
@@ -52,7 +53,7 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.3.11, Aug 18, 2015
+ * @version 1.4.4.11, Sep 3, 2015
  * @since 0.2.0
  */
 @Named
@@ -124,6 +125,13 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             chData.put(Comment.COMMENT_CREATE_TIME,
                     DateFormatUtils.format(new Date(originalComment.optLong(Comment.COMMENT_CREATE_TIME)), "yyyy-MM-dd HH:mm"));
+            chData.put(Common.TIME_AGO, langPropsService.get("justNowLabel"));
+            chData.put("thankLabel", langPropsService.get("thankLabel"));
+            chData.put("thankedLabel", langPropsService.get("thankedLabel"));
+            String thankTemplate = langPropsService.get("thankConfirmLabel");
+            thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
+                    .replace("{user}", commenterName);
+            chData.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
             String cc = shortLinkQueryService.linkArticle(commentContent);
             cc = shortLinkQueryService.linkTag(cc);
             cc = Emotions.convert(cc);
@@ -165,7 +173,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                                 + "'>" + articleTitle + "</a>")
                         .replace("{comment}", StringUtils.substring(Jsoup.parse(cc).text(), 0, 28));
                 timeline.put(Common.CONTENT, content);
-               
+
                 timelineMgmtService.addTimeline(timeline);
             }
 
