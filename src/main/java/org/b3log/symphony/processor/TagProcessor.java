@@ -124,6 +124,7 @@ public class TagProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String tagTitle) throws Exception {
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
 
@@ -138,7 +139,7 @@ public class TagProcessor {
 
         final int pageNum = Integer.valueOf(pageNumStr);
         final int pageSize = Symphonys.getInt("tagArticlesCnt");
-        final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
+        final int windowSize = Symphonys.getInt("tagArticlesWindowSize");
 
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
         if (null == tag) {

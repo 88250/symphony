@@ -352,6 +352,38 @@ public class ArticleQueryService {
     }
 
     /**
+     * Gets articles by the specified city (order by article create date desc).
+     *
+     * @param city the specified city
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return articles, return an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getArticlesByCity(final String city, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        try {
+            final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                    setFilter(new PropertyFilter(Article.ARTICLE_CITY, FilterOperator.EQUAL, city))
+                    .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+
+            final JSONObject result = articleRepository.get(query);
+
+            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            organizeArticles(ret);
+
+            final Integer participantsCnt = Symphonys.getInt("cityArticleParticipantsCnt");
+            genParticipants(ret, participantsCnt);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets articles by city [" + city + "] failed", e);
+            
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets articles by the specified tag (order by article create date desc).
      *
      * @param tag the specified tag
@@ -360,7 +392,8 @@ public class ArticleQueryService {
      * @return articles, return an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getArticlesByTag(final JSONObject tag, final int currentPageNum, final int pageSize) throws ServiceException {
+    public List<JSONObject> getArticlesByTag(final JSONObject tag, final int currentPageNum, final int pageSize)
+            throws ServiceException {
         try {
             Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                     setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
@@ -842,7 +875,7 @@ public class ArticleQueryService {
      */
     private void toArticleDate(final JSONObject article) {
         article.put(Common.TIME_AGO, Times.getTimeAgo(article.optLong(Article.ARTICLE_CREATE_TIME), Latkes.getLocale()));
-        
+
         article.put(Article.ARTICLE_CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
         article.put(Article.ARTICLE_UPDATE_TIME, new Date(article.optLong(Article.ARTICLE_UPDATE_TIME)));
         article.put(Article.ARTICLE_LATEST_CMT_TIME, new Date(article.optLong(Article.ARTICLE_LATEST_CMT_TIME)));

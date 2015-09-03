@@ -677,6 +677,11 @@
                 {
                     "name": "redditScore",
                     "type": "double"
+                },
+                {
+                    "name": "articleCity",
+                    "type": "String",
+                    "length": 32
                 }
             ]
         },

@@ -312,13 +312,37 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
             article.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
-
+            String city = "";
+            article.put(Article.ARTICLE_CITY, city);
+            if (UserExt.USER_GEO_STATUS_C_PUBLIC == author.optInt(UserExt.USER_GEO_STATUS)) {
+                city = author.optString(UserExt.USER_CITY);
+                article.put(Article.ARTICLE_CITY, city);
+            }
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
             articleCntOption.put(Option.OPTION_VALUE, articleCnt + 1);
             optionRepository.update(Option.ID_C_STATISTIC_ARTICLE_COUNT, articleCntOption);
+
+            if (!StringUtils.isBlank(city)) {
+                final String cityStatId = city + "-ArticleCount";
+                JSONObject cityArticleCntOption = optionRepository.get(cityStatId);
+
+                if (null == cityArticleCntOption) {
+                    cityArticleCntOption = new JSONObject();
+                    cityArticleCntOption.put(Keys.OBJECT_ID, cityStatId);
+                    cityArticleCntOption.put(Option.OPTION_VALUE, 1);
+                    cityArticleCntOption.put(Option.OPTION_CATEGORY, city + "-statistic");
+
+                    optionRepository.add(cityArticleCntOption);
+                } else {
+                    final int cityArticleCnt = cityArticleCntOption.optInt(Option.OPTION_VALUE);
+                    cityArticleCntOption.put(Option.OPTION_VALUE, cityArticleCnt + 1);
+
+                    optionRepository.update(cityStatId, cityArticleCntOption);
+                }
+            }
 
             author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) + 1);
             author.put(UserExt.USER_LATEST_ARTICLE_TIME, currentTimeMillis);
