@@ -5,24 +5,24 @@
     </div>
     <ul class="fn-clear fn-list">
         <li class="current">
-            <h1><a rel="nofollow" href="/">首页</a></h1>
+            <h1><a rel="nofollow" href="/">${indexLabel}</a></h1>
         </li>
         <li>
-            <h1><a rel="nofollow" href="/">我是画家</a></h1>
+            <h1><a rel="nofollow" href="/">${iamPainterLabel}</a></h1>
         </li>
         <li>
-            <h1><a rel="nofollow" href="/">我是黑客</a></h1>
+            <h1><a rel="nofollow" href="/">${iamHackerLabel}</a></h1>
         </li>
         <li>
-            <h1><a rel="nofollow" href="/timeline">此刻</a></h1>
+            <h1><a rel="nofollow" href="/timeline">${timelineLabel}</a></h1>
         </li>
         <li>
-            <h1><a rel="nofollow" href="/activities">活动</a></h1>
+            <h1><a rel="nofollow" href="/activities">${activityLabel}</a></h1>
         </li>
     </ul>
     <div class="fn-right info fn-clear">
         <form target="_blank" action="http://search.b3log.org/cse/search" class="fn-clear">
-            <input type="text" name="q" placeholder="随便搜点什么...">
+            <input type="text" name="q" placeholder="${searchSthLabel}">
             <input type="hidden" value="10365148342193520062" name="s">
             <input type="hidden" name="cc" value="symphony.b3log.org">
             <input type="submit" class="fn-none" value="">
@@ -41,24 +41,24 @@
         <div class="fn-none">
             <ul class="fn-list">
                 <li>
-                    <a href="${logoutURL}}">我的文章</a>
+                    <a href="/member/${userName}">${myArticleLabel}</a>
                 </li>
                 <li>
-                    <a href="${logoutURL}}">我的评价</a>
+                    <a href="/member/${userName}/comments">${myCommentLabel}</a>
                 </li>
                 <li>
-                    <a href="${logoutURL}}">我的积分</a>
+                    <a href="/member/${userName}/points">${myPointLabel}</a>
                 </li>
                 <li>
-                    <a href="${logoutURL}}">设置</a>
+                    <a href="/settings">${settingsLabel}</a>
                 </li>
                 <#if "adminRole" == userRole>
                 <li>
-                    <a href="/admin">用户管理</a>
+                    <a href="/admin">${adminLabel}</a>
                 </li>
                 </#if>
                 <li>
-                    <button class="btn" onclick="window.location.href = '${logoutURL}'">用户退出</button>
+                    <button class="btn" onclick="window.location.href = '${logoutURL}'">${logoutLabel}</button>
                 </li>
             </ul>
             <span class="list-up"></span>

@@ -20,6 +20,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
@@ -50,6 +51,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -61,7 +63,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.2, Aug 4, 2015
+ * @version 1.6.2.2, Sep 3, 2015
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -154,7 +156,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
 
         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
-        
+
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
@@ -173,10 +175,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
         LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
                 new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
                     session.isNew()});
-        
+
         // Online visitor count
         OptionQueryService.onlineVisitorCount(httpServletRequest);
-        
+
         resolveSkinDir(httpServletRequest);
     }
 
@@ -308,18 +310,50 @@ public final class SymphonyServletListener extends AbstractServletListener {
     /**
      * Resolve skin (template) for the specified HTTP servlet request.
      *
-     * @param httpServletRequest the specified HTTP servlet request
+     * @param request the specified HTTP servlet request
      */
-    private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
+    private void resolveSkinDir(final HttpServletRequest request) {
         try {
             final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+            final UserRepository userRepository = beanManager.getReference(UserRepository.class);
 
-            final JSONObject user = userQueryService.getCurrentUser(httpServletRequest);
+            JSONObject user = userQueryService.getCurrentUser(request);
             if (null == user) {
-                return;
+                final Cookie[] cookies = request.getCookies();
+                if (null == cookies || 0 == cookies.length) {
+                    return;
+                }
+
+                try {
+                    for (final Cookie cookie : cookies) {
+                        if (!"b3log-latke".equals(cookie.getName())) {
+                            continue;
+                        }
+
+                        final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
+
+                        final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
+                        if (Strings.isEmptyOrNull(userId)) {
+                            break;
+                        }
+
+                        user = userRepository.get(userId);
+                        if (null == user) {
+                            return;
+                        } else {
+                            break;
+                        }
+                    }
+                } catch (final Exception e) {
+                    LOGGER.warn(e.getMessage());
+                }
+
+                if (null == user) {
+                    return;
+                }
             }
 
-            httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, user.optString(UserExt.USER_SKIN));
+            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, user.optString(UserExt.USER_SKIN));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);
         }
