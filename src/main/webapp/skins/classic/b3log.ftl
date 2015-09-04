@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - ${aboutLabel}">
+        <@head title="${symphonyLabel} - B3log 构思">
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
