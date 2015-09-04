@@ -21,8 +21,11 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -35,6 +38,8 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -52,7 +57,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 3, 2015
+ * @version 1.1.0.0, Sep 4, 2015
  * @since 1.3.0
  */
 @RequestProcessor
@@ -83,6 +88,12 @@ public class CityProcessor {
     private OptionQueryService optionQueryService;
 
     /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langService;
+
+    /**
      * Shows city articles.
      *
      * @param context the specified context
@@ -92,7 +103,7 @@ public class CityProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/city/{city}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showCityArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response, final String city) throws Exception {
@@ -103,8 +114,41 @@ public class CityProcessor {
         renderer.setTemplateName("city-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
+        filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
 
-        dataModel.put(Common.CITY, city);
+        List<JSONObject> articles = new ArrayList<JSONObject>();
+        dataModel.put(Article.ARTICLES, articles);
+
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+        dataModel.put(UserExt.USER_GEO_STATUS, true);
+        dataModel.put(Common.CITY_FOUND, true);
+        dataModel.put(Common.CITY, langService.get("sameCityLabel"));
+
+        if (UserExt.USER_GEO_STATUS_C_PUBLIC != user.optInt(UserExt.USER_GEO_STATUS)) {
+            dataModel.put(UserExt.USER_GEO_STATUS, false);
+
+            return;
+        }
+
+        final String userCity = user.optString(UserExt.USER_CITY);
+
+        String queryCity = city;
+        if ("my".equals(city)) {
+            dataModel.put(Common.CITY, userCity);
+            queryCity = userCity;
+        } else {
+            dataModel.put(Common.CITY, city);
+        }
+
+        if (StringUtils.isBlank(userCity)) {
+            dataModel.put(Common.CITY_FOUND, false);
+
+            return;
+        }
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -115,13 +159,9 @@ public class CityProcessor {
         final int pageSize = Symphonys.getInt("cityArticlesCnt");
         final int windowSize = Symphonys.getInt("cityArticlesWindowSize");
 
-        List<JSONObject> articles = new ArrayList<JSONObject>();
-
-        final JSONObject statistic = optionQueryService.getOption(city + "-ArticleCount");
-        if (null == statistic) {
-            dataModel.put(Article.ARTICLES, articles);
-        } else {
-            articles = articleQueryService.getArticlesByCity(city, pageNum, pageSize);
+        final JSONObject statistic = optionQueryService.getOption(queryCity + "-ArticleCount");
+        if (null != statistic) {
+            articles = articleQueryService.getArticlesByCity(queryCity, pageNum, pageSize);
             dataModel.put(Article.ARTICLES, articles);
         }
 
@@ -137,10 +177,5 @@ public class CityProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
     }
 }

@@ -48,7 +48,12 @@ public final class Common {
      * Key of city.
      */
     public static final String CITY = "city";
-
+    
+    /**
+     * Key of city found.
+     */
+    public static final String CITY_FOUND = "cityFound";
+    
     /**
      * Key of province.
      */

@@ -14,9 +14,11 @@
             <div class="wrapper">
                 <div class="content">
                     <div class="fn-clear title">
+                        <#if userGeoStatus && cityFound>
                         <h1 class="fn-inline">
                             <a title="${city?url('UTF-8')}" href="/city/${city?url('utf-8')}">${city}</a>
                         </h1>
+                        </#if>
                     </div>
 
                     <#if articles?size gt 0>
@@ -26,6 +28,13 @@
                     </div>
                     <#else>
                     <div class="content content-reset">
+                        <#if !userGeoStatus>
+                        ${cityArticlesTipLabel}
+                        <#else>
+                        <#if !cityFound>
+                        ${geoInfoPlaceholderLabel}
+                        </#if>
+                        </#if>
                     </div>
                     </#if>
                 </div>

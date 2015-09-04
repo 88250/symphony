@@ -4,6 +4,7 @@
             <div class="footer-nav fn-clear">
                 <a rel="help" href="http://hacpai.com/article/1440573175609">${aboutLabel}</a>
                 <a href="/timeline">${timelineLabel}</a>
+                <#if isLoggedIn><a href="/city/my">${sameCityLabel}</a></#if>
                 <a href="/tags/系统公告">${symAnnouncementLabel}</a>
                 <a href="/tags/Q%26A">${qnaLabel}</a>
                 <a href="/tags" class="last">${tagLabel}</a>
