@@ -520,7 +520,7 @@ var Util = {
      */
     _initNav: function () {
         var pathname = location.pathname;
-        $(".nav .user-nav > a").each(function () {
+        $(".nav a").each(function () {
             if (pathname.indexOf("/notifications/") > -1) {
                 // 提醒下面有四个页面
                 $("#aNotifications").addClass("current");
@@ -530,7 +530,7 @@ var Util = {
             } else if (pathname === "/register") {
                 // 注册没有使用 href，对其进行特殊处理
                 $("#aRegister").addClass("current");
-            }
+            } 
         });
     },
     /**

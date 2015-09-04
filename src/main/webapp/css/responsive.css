@@ -58,7 +58,9 @@
     }
 
     .content, 
-    .side {
+    .side,
+    .nav .head-fn,
+    .nav .user-nav {
         width: 95%;
     }
 
@@ -66,7 +68,9 @@
     .side,
     .footer,
     .register .form,
-    .post .form {
+    .post .form,
+    .nav .head-fn,
+    .nav .user-nav {
         flex-basis: 100%;
         margin: 0 0.5rem;
     }
@@ -93,7 +97,7 @@
     }
 
     .responsive-hide,
-    .nav .tags.responsive-hide {
+    .nav .head-fn form {
         display: none;
     }
 

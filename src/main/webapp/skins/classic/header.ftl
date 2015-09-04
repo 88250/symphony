@@ -1,14 +1,23 @@
 <div class="nav"> 
     <div class="wrapper fn-clear">
-        <h1><a rel="nofollow" href="/"><img src="${staticServePath}/images/hacpai.png" alt="黑客派" title="HacPai" width="42" /></a></h1>
-        <form target="_blank" action="http://search.b3log.org/cse/search">
-            <span class="icon icon-search"></span>
-            <input class="search" type="text" name="q">
-            <input type="hidden" value="10365148342193520062" name="s">
-            <input type="hidden" name="cc" value="symphony.b3log.org">
-            <input type="submit" class="fn-none" value="">
-        </form>
-        <div class="fn-clear user-nav fn-flex-1">
+        <div class="head-fn fn-clear">
+            <h1 class="fn-left" onclick="window.location='/'"><img src="${staticServePath}/images/hacpai.png" alt="黑客派" title="黑客派" width="42" /></h1>
+            <form target="_blank" action="http://search.b3log.org/cse/search">
+                <span class="icon icon-search"></span>
+                <input class="search" type="text" name="q">
+                <input type="hidden" value="10365148342193520062" name="s">
+                <input type="hidden" name="cc" value="symphony.b3log.org">
+                <input type="submit" class="fn-none" value="">
+            </form>
+            <div class="fn-right">
+                <a href="/timeline" class="icon-clock last" title="${timelineLabel}"></a>
+                <#if isLoggedIn>
+                <a href="/city/my"  class="icon-compass" title="${sameCityLabel}"></a>
+                </#if>
+            </div>
+        </div>
+
+        <div class="fn-clear user-nav">
             <#if isLoggedIn>
             <a id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon icon-logout"></a>
             <#if "adminRole" == userRole>
@@ -21,7 +30,7 @@
             <#else>
             <a id="aRegister" href="javascript:Util.goRegister()" class="last icon icon-register" 
                title="${registerLabel}"></a>
-            <a href="javascript: Util.showLogin();" class="icon icon-login" title="${loginLabel}"></a>
+            <a href="javascript: Util.showLogin();" class="icon-login" title="${loginLabel}"></a>
             <div class="form fn-none">
                 <table cellspacing="0" cellpadding="0">
                     <tr>
