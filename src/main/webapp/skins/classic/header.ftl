@@ -1,7 +1,7 @@
 <div class="nav"> 
     <div class="wrapper fn-clear">
         <div class="head-fn fn-clear">
-            <h1 class="fn-left" onclick="window.location='/'"><img src="${staticServePath}/images/hacpai.png" alt="黑客派" title="黑客派" width="42" /></h1>
+            <h1 class="fn-left" onclick="window.location='/'"><img src="${staticServePath}/images/hacpai.png" alt="黑客派" title="黑客派" width="42" class="fn-pointer" /></h1>
             <form target="_blank" action="http://search.b3log.org/cse/search">
                 <span class="icon icon-search"></span>
                 <input class="search" type="text" name="q">
