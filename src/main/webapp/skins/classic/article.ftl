@@ -43,12 +43,12 @@
                                 &nbsp;
                                 <#if isLoggedIn>
                                 <#if isFollowing>
-                                <span class="ft-red" title="${collectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
+                                <span class="ft-red fn-pointer" title="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
                                     <span class="icon icon-star"></span>
                                     ${article.articleCollectCnt}
                                 </span>
                                 <#else>
-                                <span title="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')" class="fn-pointer">
+                                <span class="fn-pointer" title="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')">
                                     <span class="icon icon-star"></span>
                                     ${article.articleCollectCnt}
                                 </span>

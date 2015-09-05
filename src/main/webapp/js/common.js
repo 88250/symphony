@@ -292,7 +292,8 @@ var Util = {
                     if ("article" == type) {
                         $(it).addClass('ft-red').html(' <span class="icon icon-star"></span> ' + 
                                 (parseInt($(it).text()) + 1) + ' ').
-                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')");
+                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
+                                .attr("title", Label.uncollectLabel);
                     } else {
                         $(it).removeClass("green").addClass("red")
                             .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')").text(Label.unfollowLabel);
@@ -329,7 +330,8 @@ var Util = {
                     if ("article" === type) {
                         $(it).removeClass('ft-red').html(' <span class="icon icon-star"></span> ' + 
                                 (parseInt($(it).text()) - 1) + ' ')
-                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')");
+                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
+                                .attr("title", Label.collectLabel);
                     } else {
                         $(it).removeClass("red").addClass("green")
                             .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
