@@ -91,9 +91,6 @@
                             <span class="ft-small">&COPY; ${year} </span>
                             <a rel="copyright" href="http://hacpai.com" target="_blank">hacpai.com</a>
                             <span class="ft-small">${version} · ${elapsed?c}ms</span>
-                            <span class="fn-none">
-                                ${siteVisitStatCode}
-                            </span>
                         </div>
                     </div>
                 </div>
