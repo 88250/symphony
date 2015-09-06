@@ -16,89 +16,87 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div>
-                        <div class="ft-small fn-clear article-info">
-                            <div class="fn-left">
-                                <span class="icon icon-tags"></span>
-                                <#list article.articleTags?split(",") as articleTag>
-                                <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
-                                    ${articleTag}</a><#if articleTag_has_next>, </#if>
-                                </#list>
-                            </div>
-                            <div class="fn-right">
-                                <span class="icon icon-date"></span>
-                                ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;
-                                <a title="${cmtLabel}" rel="nofollow" href="#comments">
-                                    <span class="icon icon-cmts"></span>
-                                    ${article.articleCommentCount}
-                                </a> &nbsp;
-                                <span title="${viewLabel}"> 
-                                    <span class="icon icon-view"></span>
-                                    <#if article.articleViewCount < 1000>
-                                    ${article.articleViewCount}
-                                    <#else>
-                                    ${article.articleViewCntDisplayFormat}
-                                    </#if>
-                                </span>
-                                &nbsp;
-                                <#if isLoggedIn>
-                                <#if isFollowing>
-                                <span class="ft-red fn-pointer" title="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
-                                    <span class="icon icon-star"></span>
-                                    ${article.articleCollectCnt}
-                                </span>
-                                <#else>
-                                <span class="fn-pointer" title="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')">
-                                    <span class="icon icon-star"></span>
-                                    ${article.articleCollectCnt}
-                                </span>
-                                </#if>
-                                <#else>
-                                <span title="${collectLabel}" class="fn-pointer">
-                                    <span class="icon icon-star"></span>
-                                    ${article.articleCollectCnt}
-                                </span>
-                                </#if>
-                            </div>
+                    <div class="ft-small fn-clear article-info">
+                        <div class="fn-left">
+                            <span class="icon icon-tags"></span>
+                            <#list article.articleTags?split(",") as articleTag>
+                            <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
+                                ${articleTag}</a><#if articleTag_has_next>, </#if>
+                            </#list>
                         </div>
-                        <div class="article-title fn-flex">
-                            <h2 class="fn-flex-1">
-                                <a rel="author" href="/member/${article.articleAuthorName}" class="ft-small"
-                                   title="${article.articleAuthorName}">
-                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" />
-                                </a> &nbsp;
-                                <a href="${article.articlePermalink}" rel="bookmark">
-                                    ${article.articleTitleEmoj}
-                                </a> &nbsp;
-                            </h2> 
-                            <span>
-                                <#if isLoggedIn>
-                                <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
-                                    <span class="icon icon-chevron-up"></span></span>&nbsp;
-                                <span id="voteDown" class="fn-pointer<#if 1==vote> ft-red</#if>" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
-                                    <span class="icon icon-chevron-down"></span></span>
-                                </#if>
-
-                                <#if article.isMyArticle>
-                                &nbsp;
-                                <a href="/update-article?id=${article.oId}" title="${editLabel}" class="icon icon-edit"></a>
-                                &nbsp;
-                                </#if>
-                                <#if isAdminLoggedIn>
-                                <a class="icon icon-setting" href="/admin/article/${article.oId}" title="${adminLabel}"></a>
+                        <div class="fn-right">
+                            <span class="icon icon-date"></span>
+                            ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;
+                            <a title="${cmtLabel}" rel="nofollow" href="#comments">
+                                <span class="icon icon-cmts"></span>
+                                ${article.articleCommentCount}
+                            </a> &nbsp;
+                            <span title="${viewLabel}"> 
+                                <span class="icon icon-view"></span>
+                                <#if article.articleViewCount < 1000>
+                                ${article.articleViewCount}
+                                <#else>
+                                ${article.articleViewCntDisplayFormat}
                                 </#if>
                             </span>
+                            &nbsp;
+                            <#if isLoggedIn>
+                            <#if isFollowing>
+                            <span class="ft-red fn-pointer" title="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
+                                <span class="icon icon-star"></span>
+                                ${article.articleCollectCnt}
+                            </span>
+                            <#else>
+                            <span class="fn-pointer" title="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')">
+                                <span class="icon icon-star"></span>
+                                ${article.articleCollectCnt}
+                            </span>
+                            </#if>
+                            <#else>
+                            <span title="${collectLabel}" class="fn-pointer">
+                                <span class="icon icon-star"></span>
+                                ${article.articleCollectCnt}
+                            </span>
+                            </#if>
                         </div>
-                        <div class="content-reset article-content">
-                            ${article.articleContent}
-                        </div>
-                        <div class="fn-clear">
-                            <div class="share fn-right">
-                                <span class="icon icon-tencent" data-type="tencent"></span>
-                                <span class="icon icon-weibo" data-type="weibo"></span>
-                                <span class="icon icon-twitter" data-type="twitter"></span>
-                                <span class="icon icon-google" data-type="google"></span>
-                            </div>
+                    </div>
+                    <div class="article-title fn-flex">
+                        <h2 class="fn-flex-1">
+                            <a rel="author" href="/member/${article.articleAuthorName}" class="ft-small"
+                               title="${article.articleAuthorName}">
+                                <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" />
+                            </a> &nbsp;
+                            <a href="${article.articlePermalink}" rel="bookmark">
+                                ${article.articleTitleEmoj}
+                            </a> &nbsp;
+                        </h2> 
+                        <span>
+                            <#if isLoggedIn>
+                            <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
+                                <span class="icon icon-chevron-up"></span></span>&nbsp;
+                            <span id="voteDown" class="fn-pointer<#if 1==vote> ft-red</#if>" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
+                                <span class="icon icon-chevron-down"></span></span>
+                            </#if>
+
+                            <#if article.isMyArticle>
+                            &nbsp;
+                            <a href="/update-article?id=${article.oId}" title="${editLabel}" class="icon icon-edit"></a>
+                            &nbsp;
+                            </#if>
+                            <#if isAdminLoggedIn>
+                            <a class="icon icon-setting" href="/admin/article/${article.oId}" title="${adminLabel}"></a>
+                            </#if>
+                        </span>
+                    </div>
+                    <div class="content-reset article-content">
+                        ${article.articleContent}
+                    </div>
+                    <div class="fn-clear">
+                        <div class="share fn-right">
+                            <span class="icon icon-tencent" data-type="tencent"></span>
+                            <span class="icon icon-weibo" data-type="weibo"></span>
+                            <span class="icon icon-twitter" data-type="twitter"></span>
+                            <span class="icon icon-google" data-type="google"></span>
                         </div>
                     </div>
                     <#if 0 < article.articleRewardPoint>
@@ -170,7 +168,7 @@
                                                     <span class='ft-smaller ft-fade'>${thankedLabel}</span>
                                                     <#else>
                                                     <span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'
-                                                       onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}')">${thankLabel}</span>
+                                                          onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}')">${thankLabel}</span>
                                                     </#if>
                                                     </#if>
                                                     <span class="icon icon-reply fn-pointer" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
@@ -236,6 +234,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="heatBar">
+            <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <#include "footer.ftl">
         <div id="preview" class="content-reset"></div>

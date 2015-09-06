@@ -23,7 +23,7 @@ package org.b3log.symphony.model;
  * @since 0.2.0
  */
 public final class Common {
-
+    
     /**
      * Key of time ago.
      */

@@ -129,7 +129,7 @@ public class ArticleListChannel {
                         session.getRemote().sendString(msgStr);
                     }
                 } catch (final IOException e) {
-                    LOGGER.log(Level.ERROR, "Notify comment error", e);
+                    LOGGER.log(Level.ERROR, "Notify article heat error", e);
                 }
             }
         }

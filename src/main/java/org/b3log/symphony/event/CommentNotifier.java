@@ -154,7 +154,9 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final JSONObject articleHeat = new JSONObject();
             articleHeat.put(Article.ARTICLE_T_ID, originalArticle.optString(Keys.OBJECT_ID));
             articleHeat.put(Common.OPERATION, "+");
+            
             ArticleListChannel.notifyHeat(articleHeat);
+            ArticleChannel.notifyHeat(articleHeat);
 
             final boolean isDiscussion = originalArticle.optInt(Article.ARTICLE_TYPE) == Article.ARTICLE_TYPE_C_DISCUSSION;
 

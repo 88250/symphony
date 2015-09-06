@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.3, Sep 3, 2015
+ * @version 1.4.4.3, Sep 6, 2015
  */
 
 /**
@@ -53,53 +53,81 @@ var ArticleChannel = {
                 return;
             }
 
-            $("#comments > h2").text((parseInt($("#comments > h2").text()) + 1) + Label.cmtLabel);
+            switch (data.type) {
+                case "comment":
+                    $("#comments > h2").text((parseInt($("#comments > h2").text()) + 1) + Label.cmtLabel);
 
-            // Append comment
-            var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" +
-                    "<div class=\"fn-flex\">" +
-                    "<a class=\"responsive-hide\" rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\">" +
-                    "<img class=\"avatar\"" +
-                    "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}\" />" +
-                    "</a>" +
-                    "<div class=\"fn-flex-1 comment-content\">" +
-                    "<div class=\"fn-clear comment-info\">" +
-                    "<span class=\"fn-left\">" +
-                    "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\"" +
-                    "title=\"${comment.commentAuthorName}\">${comment.commentAuthorName}</a>" +
-                    "<span class=\"ft-fade ft-smaller\">&nbsp;•&nbsp;${comment.timeAgo}</span>" +
-                    "</span>" +
-                    "<span class=\"fn-right\">" +
-                    "<span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'" +
-                    "   onclick=\"Comment.thank('${comment.oId}', '" + Label.csrfToken + "', '${comment.commentThankLabel}', '${comment.thankedLabel}')\">${comment.thankLabel}</span> " +
-                    "<span class=\"icon icon-reply fn-pointer\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span> " +
-                    "#<i>" + parseInt($("#comments > h2").text()) + "</i>" +
-                    "</span>    " +
-                    "</div>" +
-                    "<div class=\"content-reset comment\">" +
-                    "${comment.commentContent}" +
-                    "</div>" +
-                    "</div>" +
-                    "</div>" +
-                    "</li>";
+                    // Append comment
+                    var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" +
+                            "<div class=\"fn-flex\">" +
+                            "<a class=\"responsive-hide\" rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\">" +
+                            "<img class=\"avatar\"" +
+                            "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}\" />" +
+                            "</a>" +
+                            "<div class=\"fn-flex-1 comment-content\">" +
+                            "<div class=\"fn-clear comment-info\">" +
+                            "<span class=\"fn-left\">" +
+                            "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\"" +
+                            "title=\"${comment.commentAuthorName}\">${comment.commentAuthorName}</a>" +
+                            "<span class=\"ft-fade ft-smaller\">&nbsp;•&nbsp;${comment.timeAgo}</span>" +
+                            "</span>" +
+                            "<span class=\"fn-right\">" +
+                            "<span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'" +
+                            "   onclick=\"Comment.thank('${comment.oId}', '" + Label.csrfToken + "', '${comment.commentThankLabel}', '${comment.thankedLabel}')\">${comment.thankLabel}</span> " +
+                            "<span class=\"icon icon-reply fn-pointer\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span> " +
+                            "#<i>" + parseInt($("#comments > h2").text()) + "</i>" +
+                            "</span>    " +
+                            "</div>" +
+                            "<div class=\"content-reset comment\">" +
+                            "${comment.commentContent}" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "</li>";
 
-            template = replaceAll(template, "${comment.oId}", data.commentId);
-            template = replaceAll(template, "${comment.commentAuthorName}", data.commentAuthorName);
-            template = replaceAll(template, "${comment.commentAuthorThumbnailURL}", data.commentAuthorThumbnailURL);
-            template = replaceAll(template, "${comment.thumbnailUpdateTime}", data.thumbnailUpdateTime);
-            template = replaceAll(template, "${comment.commentContent}", data.commentContent);
-            template = replaceAll(template, "${comment.commentCreateTime}", data.commentCreateTime);
-            template = replaceAll(template, "${comment.timeAgo}", data.timeAgo);
-            template = replaceAll(template, "${comment.thankLabel}", data.thankLabel);
-            template = replaceAll(template, "${comment.thankedLabel}", data.thankedLabel);
-            template = replaceAll(template, "${comment.commentThankLabel}", data.commentThankLabel);
+                    template = replaceAll(template, "${comment.oId}", data.commentId);
+                    template = replaceAll(template, "${comment.commentAuthorName}", data.commentAuthorName);
+                    template = replaceAll(template, "${comment.commentAuthorThumbnailURL}", data.commentAuthorThumbnailURL);
+                    template = replaceAll(template, "${comment.thumbnailUpdateTime}", data.thumbnailUpdateTime);
+                    template = replaceAll(template, "${comment.commentContent}", data.commentContent);
+                    template = replaceAll(template, "${comment.commentCreateTime}", data.commentCreateTime);
+                    template = replaceAll(template, "${comment.timeAgo}", data.timeAgo);
+                    template = replaceAll(template, "${comment.thankLabel}", data.thankLabel);
+                    template = replaceAll(template, "${comment.thankedLabel}", data.thankedLabel);
+                    template = replaceAll(template, "${comment.commentThankLabel}", data.commentThankLabel);
 
-            $("#comments > ul").prepend(template);
+                    $("#comments > ul").prepend(template);
 
-            $("#comments > ul > li:first").linkify();
-            Article.parseLanguage();
+                    $("#comments > ul > li:first").linkify();
+                    Article.parseLanguage();
 
-            $("#" + data.commentId).fadeIn(2000);
+                    $("#" + data.commentId).fadeIn(2000);
+
+                    break;
+                case "articleHeat":
+                    var $heatBar = $("#heatBar"),
+                            $heat = $(".heat");
+
+                    if (data.operation === "+") {
+                        $heatBar.append('<i class="point"></i>');
+                        setTimeout(function () {
+                            $heat.width($(".heat").width() + 1 * 3);
+                            $heatBar.find(".point").remove();
+                        }, 2000);
+                    } else {
+                        $heat.width($(".heat").width() - 1 * 3);
+                        $heatBar.append('<i class="point-remove"></i>');
+                        setTimeout(function () {
+                            $heatBar.find(".point-remove").remove();
+                        }, 2000);
+                    }
+
+                    break;
+                default:
+                    console.error("Wrong data [type=" + data.type + "]");
+            }
+
+
         };
 
         ArticleChannel.ws.onclose = function () {
@@ -139,28 +167,26 @@ var ArticleListChannel = {
             var data = JSON.parse(evt.data);
             $(".article-list .has-view h2 > a[rel=bookmark]").each(function () {
                 var id = $(this).data('id').toString();
+
                 if (data.articleId === id) {
                     var $li = $(this).closest("li"),
-                            $heat = $li.find('.heat'),
-                            heat = $heat.width();
+                            $heat = $li.find('.heat');
+
                     if (data.operation === "+") {
                         $li.append('<i class="point"></i>');
                         setTimeout(function () {
-                            $heat.width(heat + 1 * 3);
+                            $heat.width($heat.width() + 1 * 3);
                             $li.find(".point").remove();
                         }, 2000);
                     } else {
-                        $heat.width(heat - 1 * 3);
+                        $heat.width($heat.width() - 1 * 3);
                         $li.append('<i class="point-remove"></i>');
                         setTimeout(function () {
                             $li.find(".point-remove").remove();
                         }, 2000);
                     }
-
                 }
             });
-
-            // console.log(data);
         };
 
         ArticleListChannel.ws.onclose = function () {
