@@ -96,8 +96,7 @@
         display: inherit;
     }
 
-    .responsive-hide,
-    .nav .head-fn form {
+    .responsive-hide {
         display: none;
     }
 
@@ -113,6 +112,12 @@
 
     .nav .user-nav {
         float: left;
+    }
+    
+    .nav a.current {
+        border-bottom: 0;
+        padding-bottom: 11px;
+        color: #D26911;
     }
 
     .wrapper .tag-artile-user {

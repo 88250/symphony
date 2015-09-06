@@ -1,17 +1,20 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "followingArticles">
-<div class="home list">
+<div class="list">
     <ul class="fn-clear">
         <#list userHomeFollowingArticles as article>
-        <li>
-            <div>
-                <h2> 
-                    <a title="${article.articleAuthorName}"
-                        target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}">
-                        <img class="avatar-small fn-left" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}"/>
+        <li class="fn-flex read">
+            <a title="${article.articleAuthorName}" class="responsive-hide"
+               target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}">
+                <img class="avatar" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}"/>
+            </a>
+            <div class="fn-flex-1 has-view">
+                <h2>
+                    <a title="${article.articleAuthorName}" 
+                       target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}">
+                        <img class="avatar-small responsive-show" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}"/>
                     </a>
-                    &nbsp;
                     <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
                 <span class="ft-small">
@@ -22,7 +25,7 @@
                     </#list> &nbsp; 
                     <span class="icon icon-date"></span>
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
-                </span>
+                </span> 
             </div>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">

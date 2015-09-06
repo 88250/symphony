@@ -474,9 +474,12 @@ button.red:active,
 
 button.small,
 .btn.small {
-    padding: 0 5px 2px;
+    padding: 0 5px;
     font-size: 12px;
     font-weight: normal;
+    display: inline-block;
+    line-height: 18px;
+    height: 20px;
     text-shadow: initial;
 }
 /* end button */

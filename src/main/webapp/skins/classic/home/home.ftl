@@ -1,7 +1,7 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "home">
-<div class="home list">
+<div class="list">
     <ul> 
         <#list userHomeArticles as article>
         <li>
