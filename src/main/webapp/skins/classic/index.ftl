@@ -4,7 +4,7 @@
 <html>
     <head>
         <@head title="${symphonyLabel}">
-        <meta name="description" content="${symphonyLabel}${symDescriptionLabel}"/>
+        <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
