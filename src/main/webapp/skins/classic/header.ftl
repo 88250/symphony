@@ -1,18 +1,18 @@
 <div class="nav"> 
     <div class="wrapper fn-clear">
         <div class="head-fn fn-clear">
-            <h1 class="fn-left" onclick="window.location='/'"><img src="${staticServePath}/images/hacpai.png" alt="黑客派" title="黑客派" width="42" class="fn-pointer" /></h1>
-            <form target="_blank" action="http://search.b3log.org/cse/search">
+            <h1 class="fn-left" onclick="window.location='/'"><img src="${staticServePath}/images/hacpai.png" alt="${symphonyLabel}" title="${symphonyLabel}" width="42" class="fn-pointer" /></h1>
+            <form target="_blank" action="http://search.hacpai.com/cse/search">
                 <span class="icon icon-search"></span>
                 <input class="search" type="text" name="q">
-                <input type="hidden" value="10365148342193520062" name="s">
-                <input type="hidden" name="cc" value="symphony.b3log.org">
+                <input type="hidden" value="140632643792102269" name="s">
+                <input type="hidden" name="cc" value="hacpai.com">
                 <input type="submit" class="fn-none" value="">
             </form>
             <div class="fn-right">
                 <a href="/timeline" class="icon-clock last" title="${timelineLabel}"></a>
                 <#if isLoggedIn>
-                <a href="/city/my"  class="icon-compass" title="${sameCityLabel}"></a>
+                <a href="/city/my" class="icon-compass" title="${sameCityLabel}"></a>
                 </#if>
             </div>
         </div>
@@ -60,4 +60,5 @@
             </#if>
         </div>
     </div>
+    <script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=140632643792102269' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
 </div>

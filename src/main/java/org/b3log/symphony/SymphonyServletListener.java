@@ -42,6 +42,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.event.ArticleBaiduSender;
 import org.b3log.symphony.event.ArticleNotifier;
 import org.b3log.symphony.event.CommentNotifier;
 import org.b3log.symphony.event.solo.ArticleSender;
@@ -63,7 +64,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.2.2, Sep 3, 2015
+ * @version 1.7.2.2, Sep 6, 2015
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -105,15 +106,19 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         // Register event listeners
         final EventManager eventManager = beanManager.getReference(EventManager.class);
-        eventManager.registerListener(new ArticleSender());
-        eventManager.registerListener(new ArticleUpdater());
-        eventManager.registerListener(new CommentSender());
 
-        final CommentNotifier commentNotifier = beanManager.getReference(CommentNotifier.class);
-        eventManager.registerListener(commentNotifier);
+        eventManager.registerListener(new ArticleSender()); // Not a bean
+        eventManager.registerListener(new ArticleUpdater()); // Not a bean
+        eventManager.registerListener(new CommentSender()); // Not a bean
 
         final ArticleNotifier articleNotifier = beanManager.getReference(ArticleNotifier.class);
         eventManager.registerListener(articleNotifier);
+
+        final ArticleBaiduSender articleBaiduSender = beanManager.getReference(ArticleBaiduSender.class);
+        eventManager.registerListener(articleBaiduSender);
+
+        final CommentNotifier commentNotifier = beanManager.getReference(CommentNotifier.class);
+        eventManager.registerListener(commentNotifier);
 
         LOGGER.info("Initialized the context");
 
