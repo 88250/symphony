@@ -9,8 +9,10 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper ft-center">
-                <h2>403 Forbidden!</h2>
+            <div class="wrapper">
+                <div class="content">
+                    <h2>${reloginLabel}</h2>
+                </div>
             </div>
         </div>
         <#include "../footer.ftl">

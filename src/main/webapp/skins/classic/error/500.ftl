@@ -9,8 +9,12 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper ft-center">
-                <h2>500 Internal Server Error!</h2>
+            <div class="wrapper">
+                <div class="content">
+                    <h2>500 Internal Server Error!</h2>
+                    <br/>
+                    ${err500Label}
+                </div>
             </div>
         </div>
         <#include "../footer.ftl">
