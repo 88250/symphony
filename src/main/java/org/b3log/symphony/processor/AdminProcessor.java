@@ -43,6 +43,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Tag;
@@ -54,6 +55,7 @@ import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.OptionMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.PointtransferMgmtService;
@@ -90,7 +92,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.1, Aug 7, 2015
+ * @version 1.8.0.1, Sep 7, 2015
  * @since 1.1.0
  */
 @RequestProcessor
@@ -166,6 +168,12 @@ public class AdminProcessor {
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * Filler.
@@ -425,16 +433,24 @@ public class AdminProcessor {
         final String memo = request.getParameter("memo");
 
         if (StringUtils.isBlank(pointStr) || StringUtils.isBlank(memo) || !Strings.isNumeric(memo.split("-")[0])) {
+            LOGGER.warn("Charge point memo format error");
+
             response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
 
             return;
         }
-        
+
         try {
             final int point = Integer.valueOf(pointStr);
 
-            pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId, Pointtransfer.TRANSFER_TYPE_C_CHARGE,
-                    point, memo);
+            final String transferId = pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
+                    Pointtransfer.TRANSFER_TYPE_C_CHARGE, point, memo);
+
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, userId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, transferId);
+
+            notificationMgmtService.addPointChargeNotification(notification);
         } catch (final Exception e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);

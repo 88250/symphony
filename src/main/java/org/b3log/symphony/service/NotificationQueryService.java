@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Nov 14, 2013
+ * @version 1.1.0.3, Sep 7, 2015
  * @since 0.2.5
  */
 @Service
@@ -102,7 +102,7 @@ public class NotificationQueryService {
      */
     @Inject
     private RewardRepository rewardRepository;
-    
+
     /**
      * Pointtransfer repository.
      */
@@ -301,6 +301,16 @@ public class NotificationQueryService {
 
                         break;
                     case Notification.DATA_TYPE_C_POINT_CHARGE:
+                        desTemplate = langPropsService.get("notificationPointChargeLabel");
+
+                        final JSONObject transfer5 = pointtransferRepository.get(dataId);
+                        final String toId5 = transfer5.optString(Pointtransfer.TO_ID);
+                        final int sum5 = transfer5.optInt(Pointtransfer.SUM);
+                        final String memo5 = transfer5.optString(Pointtransfer.DATA_ID);
+                        final String yuan = memo5.split("-")[0];
+
+                        desTemplate = desTemplate.replace("{yuan}", yuan);
+                        desTemplate = desTemplate.replace("{point}", String.valueOf(sum5));
 
                         break;
                     case Notification.DATA_TYPE_C_POINT_COMMENT_THANK:

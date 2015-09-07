@@ -177,12 +177,12 @@ public class UserProcessor {
     @Inject
     private ActivityMgmtService activityMgmtService;
 
-        /**
+    /**
      * Notification management service.
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
-    
+
     /**
      * Shows user home page.
      *

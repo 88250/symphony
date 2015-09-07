@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Sep 2, 2013
+ * @version 1.1.0.3, Sep 7, 2013
  * @since 0.2.5
  */
 @Service
@@ -85,6 +85,32 @@ public class NotificationMgmtService {
             notificationRepository.update(id, record);
         } catch (final RepositoryException e) {
             final String msg = "Makes notification as read failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+    
+    /**
+     * Adds a 'point charge' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * {
+     *     "userId"; "",
+     *     "dataId": "" // transfer record id
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addPointChargeNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_POINT_CHARGE);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=point_charge] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
