@@ -44,12 +44,12 @@ public final class Mails {
     /**
      * API User.
      */
-    private static final String API_USER = Symphonys.get("apiUser");
+    private static final String API_USER = Symphonys.get("sendcloud.apiUser");
 
     /**
      * API Key.
      */
-    private static final String API_KEY = Symphonys.get("apiKey");
+    private static final String API_KEY = Symphonys.get("sendcloud.apiKey");
 
     /**
      * Sends mail.
