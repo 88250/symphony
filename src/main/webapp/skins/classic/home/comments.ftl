@@ -5,7 +5,7 @@
     <ul>
         <#list userHomeComments as comment>
         <li class="fn-flex">
-            <a target="_blank" rel="nofollow" href="/member//member/${comment.commentArticleAuthorName}" 
+            <a target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
                title="${comment.commentArticleAuthorName}" class="responsive-hide">
                 <img class="avatar" src="${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}"/>
             </a>
