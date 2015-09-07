@@ -5,7 +5,7 @@
 <html>
     <head>
         <@head title="${symphonyLabel} - ${tag.tagTitle}">
-        <meta name="description" content="${tag.tagCreatorName},${tag.tagDescription}"/>
+        <meta name="description" content="${tag.tagDescription}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
@@ -16,7 +16,7 @@
                 <div class="content">
                     <div class="fn-clear title">
                         <#if tag.tagIconPath != "">
-                        <img class="avatar fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}">
+                        <img class="avatar fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}">
                         </#if>
                         <h1 class="fn-inline">
                             <a rel="tag" 
@@ -55,7 +55,7 @@
                         <li>
                             <span>
                                 <#if relatedTag.tagIconPath != "">
-                                <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" /></#if><a rel="tag" href="/tags/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
+                                <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if><a rel="tag" href="/tags/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
                             </span>
                             <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
                                 <div>${relatedTag.tagDescription}</div>
