@@ -3,33 +3,33 @@
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
                 <a rel="help" href="http://hacpai.com/article/1440573175609">${aboutLabel}</a>
-                <a href="/timeline">${timelineLabel}</a>
-                <#if isLoggedIn><a href="/city/my">${sameCityLabel}</a></#if>
+                <a class="responsive-hide" href="/timeline">${timelineLabel}</a>
+                <#if isLoggedIn><a class="responsive-hide" href="/city/my">${sameCityLabel}</a></#if>
                 <a href="/tags/系统公告">${symAnnouncementLabel}</a>
                 <a href="/tags/Q%26A">${qnaLabel}</a>
                 <a href="/tags" class="last">${tagLabel}</a>
 
-                <span class="fn-right">${visionLabel}</span>
+                <div class="fn-right">${visionLabel}</div>
             </div>
             <div class="fn-clear">
-                <div class="fn-left info">
-                    <span class="ft-small">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c} &nbsp;
-                    <span class="ft-small">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
-                    <span class="ft-small">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
-                    <span class="ft-small">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
-                    <span class="ft-small">${tagLabel}</span> ${statistic.statisticTagCount?c} &nbsp;
-                    <span class="ft-small">${cmtLabel}</span> ${statistic.statisticCmtCount?c}
+                <div class="fn-left info responsive-hide">
+                    <span class="ft-gray">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c} &nbsp;
+                    <span class="ft-gray">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
+                    <span class="ft-gray">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
+                    <span class="ft-gray">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
+                    <span class="ft-gray">${tagLabel}</span> ${statistic.statisticTagCount?c} &nbsp;
+                    <span class="ft-gray">${cmtLabel}</span> ${statistic.statisticCmtCount?c}
                 </div>
                 <div class="fn-right">
-                    <span class="ft-small">&COPY; ${year} </span>
+                    <span class="ft-gray">&COPY; ${year} </span>
                     <a rel="copyright" href="http://hacpai.com" target="_blank">hacpai.com</a>
-                    <span class="ft-small">${version} • ${elapsed?c}ms</span>
+                    <span class="ft-gray">${version} • ${elapsed?c}ms</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="icon-up icon" onclick="Util.goTop()"></div>
+<div class="icon-up" onclick="Util.goTop()"></div>
 <script>var isLoggedIn = ${isLoggedIn?c};</script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>

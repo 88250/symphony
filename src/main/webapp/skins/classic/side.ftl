@@ -37,7 +37,7 @@
             <#list sideHotArticles as hotArticle>
             <li<#if !hotArticle_has_next> class="last"</#if>>
                 <a rel="nofollow" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitle}</a>
-                <a class="ft-small" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
+                <a class="ft-gray" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
                    title="${hotArticle.articleAuthorName}">${hotArticle.articleAuthorName}</a>
             </li>
             </#list>
@@ -63,9 +63,9 @@
                 <div<#if tag.tagDescription == ''> style="width:auto"</#if>>
                     <div>${tag.tagDescription}</div>
                     <span class="fn-right">
-                        <span class="ft-small">${referenceLabel}</span> 
+                        <span class="ft-gray">${referenceLabel}</span> 
                         ${tag.tagReferenceCount} &nbsp;
-                        <span class="ft-small">${cmtLabel}</span>
+                        <span class="ft-gray">${cmtLabel}</span>
                         ${tag.tagCommentCount}&nbsp;
                     </span>
 
@@ -88,7 +88,7 @@
             <#list sideRandomArticles as randomArticle>
             <li<#if !randomArticle_has_next> class="last"</#if>>
                 <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
-                <a class="ft-small" rel="nofollow" href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
+                <a class="ft-gray" rel="nofollow" href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
             </li>
             </#list>
         </ul>

@@ -18,13 +18,18 @@
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.4, Jul 29, 2014
+ * @version 1.0.1.5, Sep 7, 2014
  */
+@media (max-width: 1040px) {
+    .person-info .avatar {
+        display: none;
+    }
+}
 @media (max-width: 1016px) {
     .avatar-big {
         height: 140px;
         width: 140px;
-        border-width: 15px;
+        border-width: 10px;
     }
 
     .avatar-mid {
@@ -34,7 +39,7 @@
     }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
     .nav {
         height: 84px;
     }
@@ -92,7 +97,8 @@
         padding: 0;
     }
 
-    .responsive-show {
+    .responsive-show,
+    .person-info .avatar {
         display: inherit;
     }
 
@@ -113,8 +119,8 @@
     .nav .user-nav {
         float: left;
     }
-    
-    .nav a.current {
+
+    .nav div > a.current {
         border-bottom: 0;
         padding-bottom: 11px;
         color: #D26911;
@@ -123,5 +129,9 @@
     .wrapper .tag-artile-user {
         margin-left: 1px;
         margin-bottom: 1rem;
+    }
+    
+    .wrapper .article-title > span {
+        margin-top: 10px;
     }
 }

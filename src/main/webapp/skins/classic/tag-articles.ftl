@@ -16,7 +16,7 @@
                 <div class="content">
                     <div class="fn-clear title">
                         <#if tag.tagIconPath != "">
-                        <img class="tag-img fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}">
+                        <img class="avatar fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}">
                         </#if>
                         <h1 class="fn-inline">
                             <a rel="tag" 
@@ -24,7 +24,7 @@
                                href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                         </h1>
                         <#if isLoggedIn>
-                        <#if !tag.isReserved || isAdminLoggedIn>
+                        <#if !tag.isReserved || isAdminLoggedIn> &nbsp;
                         <a class="btn small red" href="/add-article?tags=${tag.tagTitle?url('utf-8')}">${addArticleLabel}</a>
                         </#if>
                         </#if>
@@ -41,7 +41,7 @@
                             </#if>
                             </#if>
                             <#if isAdminLoggedIn> &nbsp;
-                            <a class="ft-small icon icon-setting" href="/admin/tag/${tag.oId}" title="${adminLabel}"></a>
+                            <a class="ft-gray icon-setting" href="/admin/tag/${tag.oId}" title="${adminLabel}"></a>
                             </#if>
                         </span>
                     </div>
@@ -60,9 +60,9 @@
                             <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
                                 <div>${relatedTag.tagDescription}</div>
                                 <span class="fn-right">
-                                    <span class="ft-small">${referenceLabel}</span> 
+                                    <span class="ft-gray">${referenceLabel}</span> 
                                     ${relatedTag.tagReferenceCount?c} &nbsp;
-                                    <span class="ft-small">${cmtLabel}</span>
+                                    <span class="ft-gray">${cmtLabel}</span>
                                     ${relatedTag.tagCommentCount?c}&nbsp;
                                 </span>
                             </div>
@@ -74,15 +74,15 @@
                     <ul class="status fn-flex fn-flex-1">
                         <li>
                             <strong>${tag.tagReferenceCount?c}</strong>
-                            <span class="ft-small">${referenceLabel}</span>
+                            <span class="ft-gray">${referenceLabel}</span>
                         </li>
                         <li>
                             <strong>${tag.tagCommentCount?c}</strong>
-                            <span class="ft-small">${cmtLabel}</span>
+                            <span class="ft-gray">${cmtLabel}</span>
                         </li>
                         <li>
                             <strong>${tag.tagFollowerCount?c}</strong>
-                            <span class="ft-small">${followLabel}</span>
+                            <span class="ft-gray">${followLabel}</span>
                         </li>
                     </ul>
                     <div class="tag-artile-user">
@@ -92,11 +92,13 @@
                         </a>
                         <div class="fn-right">
                             <#list tag.tagParticipants as commenter>
+                            <#if commenter_index < 4>
                             <a rel="nofollow" class="fn-left" 
                                title="${contributorLabel} ${commenter.tagParticipantName}"
                                href="/member/${commenter.tagParticipantName}">
                                 <img class="avatar" src="${commenter.tagParticipantThumbnailURL}-64.jpg?${commenter.tagParticipantThumbnailUpdateTime?c}">
                             </a>
+                            </#if>
                             </#list>
                         </div>
                     </div>

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.6, Aug 29, 2015
+ * @version 1.2.4.7, Sep 7, 2015
  */
 /* start module */
 .index-module .index-module-list > li {
@@ -60,7 +60,7 @@
 #voteUp,
 #voteDown {
     border: 1px solid #e0e0e0;
-    padding: 0px 6px 3px 6px;
+    padding: 0px 6px;
     border-radius: 3px;
 }
 
@@ -69,14 +69,6 @@
     top: 2px;
     right: 0px;
     width: 100%;
-}
-
-#heatBar .point {
-    animation-name: slideInLeftArticle;
-}
-
-#heatBar .point-remove {
-    animation-name: slideInRightArticle;
 }
 
 .article-title {
@@ -172,6 +164,7 @@
 
 .share .icon:hover {
     transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
     color: #4183c4;
 }
 
@@ -191,28 +184,6 @@
 
 .CodeMirror-scroll {
     min-height: 65px;
-}
-
-@keyframes slideInLeftArticle {
-    0% {
-        transform: translate3d(-100vw, 0, 0);
-        visibility: visible;
-    }
-
-    100% {
-        transform: translate3d(0, 0, 0);
-    }
-}
-
-@keyframes slideInRightArticle {
-    0% {
-        transform: translate3d(100vw, 0, 0);
-        visibility: visible;
-    }
-
-    100% {
-        transform: translate3d(0, 0, 0);
-    }
 }
 /* end article */
 
@@ -301,35 +272,56 @@
     bottom: -3px;
     right: 0px;
     width: 5px;
+    -webkit-animation-duration: 2s;
     animation-duration: 2s;
+    -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
-    animation-name: slideInLeft;
+    -webkit-animation-name: slideInRight;
+    animation-name: slideInRight;
 }
 
 .point-remove {
-    left: 0;
-    animation-name: slideInRight;
+    animation-name: slideInLeft;
+    -webkit-animation-name: slideInLeft;
 }
 
 @keyframes slideInLeft {
     0% {
-        transform: translate3d(-690px, 0, 0);
-        visibility: visible;
+        right: 0;
     }
 
     100% {
-        transform: translate3d(0, 0, 0);
+        right: 100%;
+    }
+}
+
+@-webkit-keyframes slideInLeft {
+    0% {
+        right: 0;
+    }
+
+    100% {
+        right: 100%;
     }
 }
 
 @keyframes slideInRight {
     0% {
-        transform: translate3d(690px, 0, 0);
-        visibility: visible;
+        right: 100%;
     }
 
     100% {
-        transform: translate3d(0, 0, 0);
+        right: 0;
+    }
+}
+
+@-webkit-keyframes slideInRight {
+    0% {
+        right: 100%;
+    }
+
+    100% {
+        right: 0;
     }
 }
 /* end article list */
@@ -425,6 +417,10 @@
 
 .tag-articles p.description {
     text-indent: 60px;
+}
+
+.tag-articles .title .fn-right {
+    margin-top: 13px;
 }
 /* end side tags */
 

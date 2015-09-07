@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.4.3, Sep 6, 2015
+ * @version 1.4.4.4, Sep 7, 2015
  */
 
 /**
@@ -74,7 +74,7 @@ var ArticleChannel = {
                             "<span class=\"fn-right\">" +
                             "<span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'" +
                             "   onclick=\"Comment.thank('${comment.oId}', '" + Label.csrfToken + "', '${comment.commentThankLabel}', '${comment.thankedLabel}')\">${comment.thankLabel}</span> " +
-                            "<span class=\"icon icon-reply fn-pointer\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span> " +
+                            "<span class=\"icon-reply fn-pointer\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span> " +
                             "#<i>" + parseInt($("#comments > h2").text()) + "</i>" +
                             "</span>    " +
                             "</div>" +

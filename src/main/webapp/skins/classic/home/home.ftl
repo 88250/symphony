@@ -7,24 +7,23 @@
         <li>
             <div>
                 <h2><a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
-                <span class="ft-small">
-                    <span class="icon icon-tags"></span>
+                <span class="ft-gray">
                     <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
-                        ${articleTag}</a><#if articleTag_has_next>, </#if>
+                    <a class="tag" rel="tag" href="/tags/${articleTag?url('UTF-8')}">
+                        ${articleTag}</a>
                     </#list> &nbsp; 
-                    <span class="icon icon-date"></span>
+                    <span class="icon-date"></span>
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
             <#if isMyArticle>
             <div class="cmts">
-                <a class="icon icon-edit" href="/update-article?id=${article.oId}" title="${editLabel}"></a>
+                <a class="icon-edit" href="/update-article?id=${article.oId}" title="${editLabel}"></a>
             </div>
             <#else>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">
-                <a class="count ft-small" href="${article.articlePermalink}">${article.articleCommentCount}</a>
+                <a class="count ft-gray" href="${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
             </#if>

@@ -2,24 +2,31 @@
 <#include "../macro-pagination.ftl">
 <@home "comments">
 <div class="list">
-    <ul class="home-comments">
+    <ul>
         <#list userHomeComments as comment>
-        <li>
-            <div class="fn-flex">
-                <h2 class="fn-flex-1">
-                    <a title="${comment.commentArticleAuthorName}" class="ft-small"
-                       target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}">
-                        <img class="avatar-small" src="${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}"/>
-                    </a>
-                    <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
-                </h2>
-                <span class="ft-small">
-                    <span class="icon icon-date"></span>
-                    ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
-                </span>    
-            </div>
-            <div class="content-reset comment">
-                ${comment.commentContent}
+        <li class="fn-flex">
+            <a target="_blank" rel="nofollow" href="/member//member/${comment.commentArticleAuthorName}" 
+               title="${comment.commentArticleAuthorName}" class="responsive-hide">
+                <img class="avatar" src="${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}"/>
+            </a>
+            <div class="fn-flex-1">
+                <div class="fn-flex">
+                    <h2 class="fn-flex-1">
+                        <a target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
+                           title="${comment.commentArticleAuthorName}">
+                            <img class="avatar-small responsive-show" src="${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}"/>
+                        </a>
+                        <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
+                    </h2>
+                    <span class="ft-gray fn-sub">
+                        <span class="icon-date"></span>
+                        ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
+                    </span>
+                </div>
+
+                <div class="content-reset comment">
+                    ${comment.commentContent}
+                </div>
             </div>
         </li>
         </#list>  

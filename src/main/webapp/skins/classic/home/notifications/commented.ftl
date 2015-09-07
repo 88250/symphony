@@ -17,8 +17,8 @@
                     </a>
                     <a rel="bookmark" href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>
                 </h2>
-                <span class="ft-small">
-                    <span class="icon icon-date"></span>
+                <span class="ft-gray fn-sub">
+                    <span class="icon-date"></span>
                     ${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>

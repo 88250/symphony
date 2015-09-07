@@ -2,13 +2,13 @@
 <#include "../macro-pagination.ftl">
 <@home "followingUsers">
 <div class="follow">
-    <ol class="fn-clear">
+    <ol>
         <#list userHomeFollowingUsers as followingUser>
-        <li class="fn-flex">
+        <li class="fn-clear">
             <a rel="nofollow" title="${followingUser.userName} <#if followingUser.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" href="/member/${followingUser.userName}">
-                <img class="avatar" src="${followingUser.userAvatarURL}"/>
+                <img class="avatar fn-left" src="${followingUser.userAvatarURL}"/>
             </a>
-            <div class="fn-flex-1">
+            <div class="fn-left">
                 <h3 class="fn-inline">
                     <a rel="nofollow" href="/member/${followingUser.userName}" >${followingUser.userName}</a>
                 </h3> &nbsp;
@@ -23,18 +23,18 @@
                 </button>
                 </#if>
                 </#if>
-                <div class="fn-flex-1">
+                <div>
                     <#if followingUser.userArticleCount == 0>
                     <#if followingUser.userURL != "">
-                    <a class="ft-small" target="_blank" rel="friend" href="${followingUser.userURL?html}">${followingUser.userURL?html}</a>
+                    <a class="ft-gray" target="_blank" rel="friend" href="${followingUser.userURL?html}">${followingUser.userURL?html}</a>
                     <#else>
-                    <span class="ft-small">${symphonyLabel}</span>
+                    <span class="ft-gray">${symphonyLabel}</span>
                     ${followingUser.userNo}
-                    <span class="ft-small">${numVIPLabel}</span>
+                    <span class="ft-gray">${numVIPLabel}</span>
                     </#if>
                     <#else>
-                    <span class="ft-small">${articleLabel}</span> ${followingUser.userArticleCount?c} &nbsp;
-                    <span class="ft-small">${tagLabel}</span> ${followingUser.userTagCount?c}
+                    <span class="ft-gray">${articleLabel}</span> ${followingUser.userArticleCount?c} &nbsp;
+                    <span class="ft-gray">${tagLabel}</span> ${followingUser.userTagCount?c}
                     </#if>
                 </div>
             </div>

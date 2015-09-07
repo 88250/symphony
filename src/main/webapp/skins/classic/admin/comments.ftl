@@ -9,12 +9,12 @@
                 <img class="avatar" src="${item.commentAuthorThumbnailURL}-64.jpg?${item.commenter.userUpdateTime?c}" title="${item.commentAuthorName}">
                 <a href="${item.commentSharpURL}">${item.commentArticleTitle}</a> &nbsp;
                 <#if item.commentStatus == 0>
-                <span class="ft-small">${validLabel}</span>
+                <span class="ft-gray">${validLabel}</span>
                 <#else>
-                <font class="ft-red ft-small">${banLabel}</font>
+                <font class="ft-red">${banLabel}</font>
                 </#if>
-                <a href="/admin/comment/${item.oId}" class="fn-right icon icon-edit" title="${editLabel}"></a>
-                <span class="icon icon-date fn-right ft-small" title="${createTimeLabel}"> ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;</span>
+                <a href="/admin/comment/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
+                <span class="icon-date fn-right ft-gray" title="${createTimeLabel}"> ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;</span>
             </div>
             <div class="content-reset">
                  ${item.commentContent}

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.7.11, Aug 29, 2015
+ * @version 1.12.7.12, Sep 7, 2015
  */
 
 /**
@@ -290,7 +290,7 @@ var Util = {
                 if (result.sc) {
                     $(it).removeClass("disabled");
                     if ("article" == type) {
-                        $(it).addClass('ft-red').html(' <span class="icon icon-star"></span> ' + 
+                        $(it).addClass('ft-red').html(' <span class="icon-star"></span> ' + 
                                 (parseInt($(it).text()) + 1) + ' ').
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
                                 .attr("title", Label.uncollectLabel);
@@ -328,7 +328,7 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     if ("article" === type) {
-                        $(it).removeClass('ft-red').html(' <span class="icon icon-star"></span> ' + 
+                        $(it).removeClass('ft-red').html(' <span class="icon-star"></span> ' + 
                                 (parseInt($(it).text()) - 1) + ' ')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
                                 .attr("title", Label.collectLabel);
@@ -522,11 +522,8 @@ var Util = {
      */
     _initNav: function () {
         var pathname = location.pathname;
-        $(".nav a").each(function () {
-            if (pathname.indexOf("/notifications/") > -1) {
-                // 提醒下面有四个页面
-                $("#aNotifications").addClass("current");
-            } else if (pathname.indexOf($(this).attr("href")) > -1) {
+        $(".nav div > a").each(function () {
+            if (pathname.indexOf($(this).attr("href")) > -1) {
                 // 用户下面有两个页面：用户的评论及文章列表
                 $(this).addClass("current");
             } else if (pathname === "/register") {

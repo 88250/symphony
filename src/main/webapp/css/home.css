@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.4, Aug 29, 2015
+ * @version 1.1.3.5, Sep 7, 2015
  */
 /* start home side */
 .user-name {
@@ -36,7 +36,7 @@
 }
 
 .user-intro {
-     line-height: 26px;
+    line-height: 26px;
 }
 /* end home side */
 
@@ -96,7 +96,7 @@
     cursor: pointer;
     float: left;
     list-style: none outside none;
-    padding: 8px 10px;
+    padding: 8px 9px;
     margin-bottom: -1px;
 }
 
@@ -195,11 +195,11 @@
 .follow li {
     position: relative;
     border-bottom: 1px solid #EEEEEE;
-    float: left;
-    margin: 20px 10px;
-    padding-bottom: 20px;
-    width: 335px;
+    margin: 20px auto;
+    padding: 0 10px 20px;
+    width: 95%;
     list-style: none;
+    box-sizing: border-box;
 }
 
 .follow .user-online {
@@ -209,7 +209,7 @@
 }
 
 .follow button {
-    margin-bottom: 9px;
+    margin-bottom: 7px;
 }
 
 .follow .icon-tags {

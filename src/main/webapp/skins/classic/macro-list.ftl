@@ -7,27 +7,27 @@
         <#if article_has_next><#assign articleIds = articleIds + ","></#if>
         <li>
             <div class="fn-flex">
-                <a rel="nofollow" class="ft-small"
+                <a rel="nofollow" class="ft-gray"
                    href="/member/${article.articleAuthorName}" 
                    title="${article.articleAuthorName}"><img class="avatar responsive-hide" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" /></a>
                 <div class="fn-flex-1 has-view">
                     <h2>
-                        <a rel="nofollow" class="ft-small"
+                        <a rel="nofollow" class="ft-gray"
                            href="/member/${article.articleAuthorName}" 
                            title="${article.articleAuthorName}">
                             <img class="avatar-small responsive-show" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" />
                         </a>
-                        <a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
-                    <span class="ft-small">
-                        <span class="icon icon-tags"></span>
-                        <#list article.articleTags?split(",") as articleTag>
-                        <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>, </#if></#list><span class="ft-smaller ft-fade">&nbsp;•&nbsp;${article.timeAgo}</span>
-                    </span>
+                        <a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                    </h2>
+                    <#list article.articleTags?split(",") as articleTag>
+                    <a rel="tag" class="tag" href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a>
+                    </#list>
+                    <span class="ft-grayer ft-fade">&nbsp;•&nbsp;${article.timeAgo}</span>
                 </div>
             </div>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">
-                <a class="count ft-small" href="${article.articlePermalink}">${article.articleCommentCount}</a>
+                <a class="count ft-gray" href="${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
             <div class="commenters">

@@ -12,7 +12,7 @@
                 <div class="fn-left">
                     <div class="fn-hr5"></div>
                     <a href="/member/${currentUser.userName}">${userName}</a>&nbsp;
-                    <a href="/member/${currentUser.userName}/points" class="ft-small" title="${pointLabel} ${currentUser.userPoint?c}">
+                    <a href="/member/${currentUser.userName}/points" class="ft-gray" title="${pointLabel} ${currentUser.userPoint?c}">
                         <#if 0 == currentUser.userAppRole>
                         0x${currentUser.userPointHex}
                         <#else>
@@ -24,7 +24,7 @@
                     <#if !isDailyCheckin>
                     <a class="btn small red" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
                     <#else>
-                    <span class="ft-small">
+                    <span class="ft-gray">
                         ${checkinStreakLabel}
                         ${currentUser.userCurrentCheckinStreak}/<span class="ft-red">${currentUser.userLongestCheckinStreak}</span>
                         ${checkinStreakPart2Label}
@@ -40,15 +40,15 @@
         <ul class="status fn-flex">
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/tags'">
                 <strong>${currentUser.followingTagCnt?c}</strong>
-                <span class="ft-small">${followingTagsLabel}</span>
+                <span class="ft-gray">${followingTagsLabel}</span>
             </li>
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/users'">
                 <strong>${currentUser.followingUserCnt?c}</strong>
-                <span class="ft-small">${followingUsersLabel}</span>
+                <span class="ft-gray">${followingUsersLabel}</span>
             </li>
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/articles'">
                 <strong>${currentUser.followingArticleCnt?c}</strong>
-                <span class="ft-small">${followingArticlesLabel}</span>
+                <span class="ft-gray">${followingArticlesLabel}</span>
             </li>
         </ul>
     </div> 

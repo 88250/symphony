@@ -6,7 +6,7 @@
     <tr<#if point_index % 2 == 1> class="even"</#if>>
         <td class="date">
             ${point.createTime?string('yyyy-MM-dd')} 
-            <span class="ft-small">${point.createTime?string('HH:mm')}</span>
+            <span class="ft-gray">${point.createTime?string('HH:mm')}</span>
         </td>
         <td class="name">${point.description}</td>
         <td class="sum<#if "+" == point.operation> plus">${point.sum?c}<#else>">-${point.sum?c}</#if></td>

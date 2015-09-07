@@ -16,7 +16,7 @@
                         ${user_index + 1}.
                         <a rel="bookmark" href="/member/${user.userName}">${user.userName}</a>
                     </h2>
-                    <div class="ft-small">
+                    <div class="ft-gray">
                         <#if user.userIntro!="">
                         <div>
                             ${user.userIntro}

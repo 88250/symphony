@@ -2,17 +2,17 @@
 <#include "../macro-pagination.ftl">
 <@home "followingTags">
 <div class="follow">
-    <ol class="fn-clear">
+    <ol>
         <#list userHomeFollowingTags as followingTag>
-        <li class="fn-flex">
+        <li class="fn-clear">
             <#if "" != followingTag.tagIconPath>
             <a href="/tags/${followingTag.tagTitle?url('utf-8')}">
-                <img title="${followingTag.tagTitle}" class="tag-img" src="${staticServePath}/images/tags/${followingTag.tagIconPath}">
+                <img title="${followingTag.tagTitle}" class="avatar fn-left" src="${staticServePath}/images/tags/${followingTag.tagIconPath}">
             </a>
             <#else>
-            <a class="icon icon-tags" href="/tags/${followingTag.tagTitle?url('utf-8')}"></a>
+            <a class="icon-tags fn-left" href="/tags/${followingTag.tagTitle?url('utf-8')}"></a>
             </#if>
-            <div class="fn-flex-1">
+            <div class="fn-left">
                 <h3 class="fn-inline">
                     <a href="/tags/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
                 </h3>
@@ -29,8 +29,8 @@
                 </#if>
                 </#if>
                 <div>
-                    <span class="ft-small">${referenceLabel}</span> ${followingTag.tagReferenceCount?c}
-                    <span class="ft-small">${cmtLabel}</span> ${followingTag.tagCommentCount?c} 
+                    <span class="ft-gray">${referenceLabel}</span> ${followingTag.tagReferenceCount?c}
+                    <span class="ft-gray">${cmtLabel}</span> ${followingTag.tagCommentCount?c} 
                 </div>
             </div>
         </li>

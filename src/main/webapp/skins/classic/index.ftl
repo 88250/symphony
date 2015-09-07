@@ -16,7 +16,7 @@
                     <@list listData=indexArticles/>
                     <div>
                         <br/>
-                        <span class="ft-small"><a href="/recent">${moreRecentArticleLabel}</a></span>
+                        <span class="ft-gray"><a href="/recent">${moreRecentArticleLabel}</a></span>
                     </div>
                 </div>
                 <div class="side">

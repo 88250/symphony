@@ -1,9 +1,13 @@
 <div class="nav"> 
     <div class="wrapper fn-clear">
         <div class="head-fn fn-clear">
-            <h1 class="fn-left" onclick="window.location='/'"><img src="${staticServePath}/images/hacpai.png" alt="${symphonyLabel}" title="${symphonyLabel}" width="42" class="fn-pointer" /></h1>
+            <h1 class="fn-left">
+                <a href="/">
+                    <img src="${staticServePath}/images/hacpai.png" alt="${symphonyLabel}" title="${symphonyLabel}" width="42" class="fn-pointer" />
+                </a>
+            </h1>
             <form class="responsive-hide" target="_blank" action="http://search.hacpai.com/cse/search">
-                <span class="icon icon-search"></span>
+                <span class="icon-search"></span>
                 <input class="search" type="text" name="q">
                 <input type="hidden" value="140632643792102269" name="s">
                 <input type="hidden" name="cc" value="hacpai.com">
@@ -14,21 +18,22 @@
                 <#if isLoggedIn>
                 <a href="/city/my" class="icon-compass" title="${sameCityLabel}"></a>
                 </#if>
+                <a href="/recent" class="icon-refresh" title="${recentArticleLabel}"></a>
             </div>
         </div>
 
         <div class="fn-clear user-nav">
             <#if isLoggedIn>
-            <a id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon icon-logout"></a>
+            <a id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon-logout"></a>
             <#if "adminRole" == userRole>
-            <a href="/admin" title="${adminLabel}" class="icon icon-userrole"></a>
+            <a href="/admin" title="${adminLabel}" class="icon-userrole"></a>
             </#if>
-            <a href="/activities" title="${activityLabel}" class="icon icon-flag"></a>
+            <a href="/activities" title="${activityLabel}" class="icon-flag"></a>
             <a href="/add-article" title="${addArticleLabel}" 
-               class="icon icon-addfile"></a>
+               class="icon-addfile"></a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
             <#else>
-            <a id="aRegister" href="javascript:Util.goRegister()" class="last icon icon-register" 
+            <a id="aRegister" href="javascript:Util.goRegister()" class="last icon-register" 
                title="${registerLabel}"></a>
             <a href="javascript: Util.showLogin();" class="icon-login" title="${loginLabel}"></a>
             <div class="form fn-none">
@@ -60,5 +65,13 @@
             </#if>
         </div>
     </div>
-    <script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=140632643792102269' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
+    <script type="text/javascript">(function () {
+            document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));
+            var bdcs = document.createElement('script');
+            bdcs.type = 'text/javascript';
+            bdcs.async = true;
+            bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=140632643792102269' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date() / 3600000);
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(bdcs, s);
+        })();</script>
 </div>

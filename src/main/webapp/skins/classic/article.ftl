@@ -16,23 +16,23 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="ft-small fn-clear article-info">
+                    <div class="ft-gray fn-clear article-info">
                         <div class="fn-left">
-                            <span class="icon icon-tags"></span>
                             <#list article.articleTags?split(",") as articleTag>
-                            <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
-                                ${articleTag}</a><#if articleTag_has_next>, </#if>
+                            <a rel="tag" class="tag" href="/tags/${articleTag?url('UTF-8')}">
+                                ${articleTag}
+                            </a>&nbsp;
                             </#list>
                         </div>
                         <div class="fn-right">
-                            <span class="icon icon-date"></span>
+                            <span class="icon-date"></span>
                             ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;
                             <a title="${cmtLabel}" rel="nofollow" href="#comments">
-                                <span class="icon icon-cmts"></span>
+                                <span class="icon-cmts"></span>
                                 ${article.articleCommentCount}
                             </a> &nbsp;
                             <span title="${viewLabel}"> 
-                                <span class="icon icon-view"></span>
+                                <span class="icon-view"></span>
                                 <#if article.articleViewCount < 1000>
                                 ${article.articleViewCount}
                                 <#else>
@@ -43,18 +43,18 @@
                             <#if isLoggedIn>
                             <#if isFollowing>
                             <span class="ft-red fn-pointer" title="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
-                                <span class="icon icon-star"></span>
+                                <span class="icon-star"></span>
                                 ${article.articleCollectCnt}
                             </span>
                             <#else>
                             <span class="fn-pointer" title="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')">
-                                <span class="icon icon-star"></span>
+                                <span class="icon-star"></span>
                                 ${article.articleCollectCnt}
                             </span>
                             </#if>
                             <#else>
                             <span title="${collectLabel}" class="fn-pointer">
-                                <span class="icon icon-star"></span>
+                                <span class="icon-star"></span>
                                 ${article.articleCollectCnt}
                             </span>
                             </#if>
@@ -62,7 +62,7 @@
                     </div>
                     <div class="article-title fn-flex">
                         <h2 class="fn-flex-1">
-                            <a rel="author" href="/member/${article.articleAuthorName}" class="ft-small"
+                            <a rel="author" href="/member/${article.articleAuthorName}" class="ft-gray"
                                title="${article.articleAuthorName}">
                                 <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" />
                             </a> &nbsp;
@@ -73,18 +73,18 @@
                         <span>
                             <#if isLoggedIn>
                             <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
-                                <span class="icon icon-chevron-up"></span></span>&nbsp;
+                                <span class="icon-chevron-up"></span></span>&nbsp;
                             <span id="voteDown" class="fn-pointer<#if 1==vote> ft-red</#if>" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
-                                <span class="icon icon-chevron-down"></span></span>
+                                <span class="icon-chevron-down"></span></span>
                             </#if>
 
                             <#if article.isMyArticle>
                             &nbsp;
-                            <a href="/update-article?id=${article.oId}" title="${editLabel}" class="icon icon-edit"></a>
+                            <a href="/update-article?id=${article.oId}" title="${editLabel}" class="icon-edit"></a>
                             &nbsp;
                             </#if>
                             <#if isAdminLoggedIn>
-                            <a class="icon icon-setting" href="/admin/article/${article.oId}" title="${adminLabel}"></a>
+                            <a class="icon-setting" href="/admin/article/${article.oId}" title="${adminLabel}"></a>
                             </#if>
                         </span>
                     </div>
@@ -93,10 +93,10 @@
                     </div>
                     <div class="fn-clear">
                         <div class="share fn-right">
-                            <span class="icon icon-tencent" data-type="tencent"></span>
-                            <span class="icon icon-weibo" data-type="weibo"></span>
-                            <span class="icon icon-twitter" data-type="twitter"></span>
-                            <span class="icon icon-google" data-type="google"></span>
+                            <span class="icon-tencent" data-type="tencent"></span>
+                            <span class="icon-weibo" data-type="weibo"></span>
+                            <span class="icon-twitter" data-type="twitter"></span>
+                            <span class="icon-google" data-type="google"></span>
                         </div>
                     </div>
                     <#if 0 < article.articleRewardPoint>
@@ -151,9 +151,6 @@
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
-                                                    <#if "adminRole" == comment.commenter.userRole>
-                                                    <span class="icon icon-userrole" title="${administratorLabel}"></span>
-                                                    </#if>
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                                     <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo}</span>
@@ -171,10 +168,10 @@
                                                           onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}')">${thankLabel}</span>
                                                     </#if>
                                                     </#if>
-                                                    <span class="icon icon-reply fn-pointer" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
+                                                    <span class="icon-reply fn-pointer" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
-                                                    <a class="icon icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
+                                                    <a class="icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
                                                     </#if>
                                                     #<i>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</i>
                                                 </span>    
@@ -206,7 +203,7 @@
                                 <#list sideRelevantArticles as relevantArticle>
                                 <li<#if !relevantArticle_has_next> class="last"</#if>>
                                     <a rel="nofollow" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
-                                    <a class="ft-small" rel="nofollow" 
+                                    <a class="ft-gray" rel="nofollow" 
                                        href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
                                 </li>
                                 </#list>
@@ -225,7 +222,7 @@
                                 <#list sideRandomArticles as randomArticle>
                                 <li<#if !randomArticle_has_next> class="last"</#if>>
                                     <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
-                                    <a class="ft-small" rel="nofollow"
+                                    <a class="ft-gray" rel="nofollow"
                                        href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
                                 </li>
                                 </#list>

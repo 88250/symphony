@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.5.10, Aug 31, 2015
+ * @version 1.6.5.11, Sep 7, 2015
  */
 
 /* start reset */
@@ -161,7 +161,7 @@ select,
 textarea {
     margin: 0;
     font-size: 100%;
-    vertical-align: middle;
+    vertical-align: baseline;
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     outline: none;
 }
@@ -199,7 +199,6 @@ input[type="search"]::-webkit-search-cancel-button {
 
 textarea {
     overflow: auto;
-    vertical-align: top;
 }
 @-webkit-keyframes spaceboots {
     0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
@@ -211,7 +210,7 @@ textarea {
 
 
 @-o-keyframes spaceboots{
-      0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
+    0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
     30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
     45%{-webkit-transform:translate(0px,0px);-moz-transform:translate(0px,0px);-o-transform:translate(0px,0px);-ms-transform:translate(0px,0px);transform:translate(0px,0px)}
     60%{-webkit-transform:translate(0px,-1px);-moz-transform:translate(0px,-1px);-o-transform:translate(0px,-1px);-ms-transform:translate(0px,-1px);transform:translate(0px,-1px)}
@@ -219,7 +218,7 @@ textarea {
 }
 
 @-ms-keyframes spaceboots{
-        0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
+    0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
     30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
     45%{-webkit-transform:translate(0px,0px);-moz-transform:translate(0px,0px);-o-transform:translate(0px,0px);-ms-transform:translate(0px,0px);transform:translate(0px,0px)}
     60%{-webkit-transform:translate(0px,-1px);-moz-transform:translate(0px,-1px);-o-transform:translate(0px,-1px);-ms-transform:translate(0px,-1px);transform:translate(0px,-1px)}
@@ -227,7 +226,7 @@ textarea {
 }
 
 @keyframes spaceboots{
-        0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
+    0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
     30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
     45%{-webkit-transform:translate(0px,0px);-moz-transform:translate(0px,0px);-o-transform:translate(0px,0px);-ms-transform:translate(0px,0px);transform:translate(0px,0px)}
     60%{-webkit-transform:translate(0px,-1px);-moz-transform:translate(0px,-1px);-o-transform:translate(0px,-1px);-ms-transform:translate(0px,-1px);transform:translate(0px,-1px)}
@@ -331,8 +330,8 @@ textarea {
     cursor: pointer;
 }
 
-.fn-relative {
-    position: relative;
+.fn-sub {
+    vertical-align: sub;
 }
 
 .fn-clear:before,
@@ -369,21 +368,21 @@ textarea {
     height: 5px;
 }
 
-.ft-small,
-.ft-small a {
-    color: #999;
-}
-
 .ft-13 {
     font-size: 13px;
 }
 
-.ft-fade {
-    color: #ccc;
-}
-
 .ft-smaller {
     font-size: 12px;
+}
+
+.ft-gray,
+.ft-gray a {
+    color: #999;
+}
+
+.ft-fade {
+    color: #ccc;
 }
 
 .ft-red {
@@ -399,6 +398,19 @@ textarea {
 }
 /* end function */
 
+/* start common */
+.tag {   
+    padding: 2px 4px;
+    font-size: 12px;
+    border-radius: 2px;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);
+    background-color: #f0f0f0;
+    color: #999;
+}
+
+.tag:hover {
+    text-decoration: none;
+}
 /* start button */
 button,
 .btn {
@@ -411,6 +423,7 @@ button,
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#fcfcfc', endColorstr='#eee');
     border: 1px solid #D5D5D5;
     border-bottom-color: #E1E1E1;
+    box-sizing: border-box;
 }
 
 button:hover,
@@ -496,23 +509,23 @@ button.small,
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    vertical-align: middle;
 }
 
-a.icon {
+a[class^="icon-"], 
+a[class*=" icon-"] {
     color: #333;
 }
 
-a.icon:hover {
+a[class^="icon-"]:hover, 
+a[class*=" icon-"]:hover {
     text-decoration: none;
     color: #4183c4;
 }
-
-.icon-clock:before {
-    content: "\e61b";
+.icon-refresh:before {
+    content: "\e60b";
 }
 .icon-compass:before {
-    content: "\e60b";
+    content: "\e61c";
 }
 .icon-heart:before {
     content: "\e601";
@@ -589,9 +602,13 @@ a.icon:hover {
 .icon-chevron-up:before {
     content: "\e619";
 }
+.icon-clock:before {
+    content: "\e61b";
+}
 .icon-reply:before {
     content: "\e61a";
 }
+
 .icon-search {
     color: #999999;
     left: 88px;
@@ -665,12 +682,6 @@ a.icon:hover {
     border-radius: 3px 3px 3px 3px;
 }
 
-.tag-img {
-    height: 48px;
-    width: 48px;  
-    margin-right: 10px;
-}
-
 .avatar {
     height: 48px;
     width: 48px;
@@ -695,7 +706,6 @@ a.icon:hover {
     width: 118px;
     border-radius: 6px;
 }
-
 /* end avatar */
 
 /* start status */
@@ -885,6 +895,7 @@ a.icon:hover {
     display: -webkit-box;
     min-width: 720px;
     flex-wrap: wrap;
+    max-width: 1300px;
 }
 
 .main {
@@ -933,7 +944,7 @@ a.icon:hover {
     width: 30%;
 }
 
-.nav a {
+.nav div > a {
     color: #777;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     text-decoration: none;
@@ -943,15 +954,15 @@ a.icon:hover {
     font-size: 20px;
 }
 
-.nav a:hover {
+.nav div > a:hover {
     color: #4183C4;
 }
 
-.nav a.last {
+.nav div > a.last {
     margin-right: 0;
 }
 
-.nav a.current {
+.nav div > a.current {
     border-bottom: 2px solid #D26911;
     color: #222;
     padding-bottom: 15px;
@@ -996,12 +1007,6 @@ a.icon:hover {
     color: #FFF;
 }
 
-.nav .avatar-small {
-    height: 23px;
-    width: 23px;
-    vertical-align: top;
-}
-
 .nav .form {
     background-color: #FFF;
     border: 1px solid #CACACA;
@@ -1024,7 +1029,7 @@ a.icon:hover {
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
     padding: 3px 5px 3px 25px;
-    width: 270px;
+    width: 240px;
     margin: 8.5px 0 0 37px;
     float: left;
 }
@@ -1107,7 +1112,7 @@ a.icon:hover {
 
 .cmts a.count {
     color: #FFF;
-    background-color: #aaa;
+    background-color: #b0b0b0;
     padding: 0px 5px;
     border-radius: 3px;
 }
@@ -1305,9 +1310,5 @@ a.icon:hover {
 /* start responsive */
 .responsive-show {
     display: none;
-}
-
-.responsive-hide {
-    display: inherit;
 }
 /* end responsive */
