@@ -57,7 +57,8 @@ var AddArticle = {
                 articleContent: this.editor.getValue(),
                 articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked"),
-                articleCommentable: $("#articleCommentable").prop("checked"),
+                //articleCommentable: $("#articleCommentable").prop("checked"),
+                articleCommentable: true,
                 articleType: $("#articleType").prop("checked") ? 1 : 0,
                 articleRewardContent: this.rewardEditor.getValue(),
                 articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")
