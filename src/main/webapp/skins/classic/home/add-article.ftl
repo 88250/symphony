@@ -67,7 +67,6 @@
                             <button class="red" tabindex="7" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>
-                    ${postGuideLabel}
                 </div>
             </div>
         </div>
