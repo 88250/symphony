@@ -397,7 +397,6 @@ public class ArticleProcessor {
      *   "articleTitle": "",
      *   "articleTags": "", // Tags spliting by ','
      *   "articleContent": "",
-     *   "syncWithSymphonyClient": boolean,
      *   "articleCommentable": boolean,
      *   "articleType": int,
      *   "articleRewardContent": "",
@@ -428,7 +427,6 @@ public class ArticleProcessor {
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
-        final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
         //final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
         final boolean articleCommentable = true;
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
@@ -439,7 +437,6 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
-        article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
         article.put(Article.ARTICLE_COMMENTABLE, articleCommentable);
         article.put(Article.ARTICLE_TYPE, articleType);
         article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
@@ -537,7 +534,6 @@ public class ArticleProcessor {
      *   "articleTitle": "",
      *   "articleTags": "", // Tags spliting by ','
      *   "articleContent": "",
-     *   "syncWithSymphonyClient": boolean,
      *   "articleCommentable": boolean,
      *   "articleType": int,
      *   "articleRewardContent": "",
@@ -581,7 +577,6 @@ public class ArticleProcessor {
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
         final String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
-        final boolean syncToClient = requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT);
         //final boolean articleCommentable = requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE);
         final boolean articleCommentable = true;
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
@@ -593,7 +588,6 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_CONTENT, articleContent);
         article.put(Article.ARTICLE_EDITOR_TYPE, 0);
-        article.put(Article.ARTICLE_SYNC_TO_CLIENT, syncToClient);
         article.put(Article.ARTICLE_COMMENTABLE, articleCommentable);
         article.put(Article.ARTICLE_TYPE, articleType);
         article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);

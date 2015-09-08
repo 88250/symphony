@@ -205,7 +205,8 @@ var Settings = {
                 userB3Key: $("#soloKey").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userB3ClientAddArticleURL: $("#soloPostURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userB3ClientUpdateArticleURL: $("#soloUpdateURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-                userB3ClientAddCommentURL: $("#soloCmtURL").val().replace(/(^\s*)|(\s*$)/g, "")
+                userB3ClientAddCommentURL: $("#soloCmtURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked")
             };
         } else {
             return false;

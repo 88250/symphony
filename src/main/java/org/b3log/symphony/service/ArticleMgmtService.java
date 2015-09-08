@@ -289,7 +289,7 @@ public class ArticleMgmtService {
 
             article.put(Article.ARTICLE_EDITOR_TYPE, requestJSONObject.optString(Article.ARTICLE_EDITOR_TYPE));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, requestJSONObject.optString(Article.ARTICLE_AUTHOR_EMAIL));
-            article.put(Article.ARTICLE_SYNC_TO_CLIENT, fromClient ? true : requestJSONObject.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT));
+            article.put(Article.ARTICLE_SYNC_TO_CLIENT, fromClient ? true : author.optBoolean(UserExt.SYNC_TO_CLIENT));
             article.put(Article.ARTICLE_AUTHOR_ID, authorId);
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
             article.put(Article.ARTICLE_VIEW_CNT, 0);
@@ -444,13 +444,6 @@ public class ArticleMgmtService {
             oldArticle.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
             oldArticle.put(Article.ARTICLE_TYPE,
                     requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
-//            if (fromClient) {
-//                oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
-//            } else {
-//                oldArticle.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
-//                        replace("<", "&lt;").replace(">", "&gt;")
-//                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
-//            }
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
             articleContent = Emotions.toAliases(articleContent);
@@ -518,11 +511,12 @@ public class ArticleMgmtService {
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
-            article.put(Article.ARTICLE_COMMENTABLE, Boolean.valueOf(article.optBoolean(Article.ARTICLE_COMMENTABLE)));
-            article.put(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.valueOf(article.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)));
-
             final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userRepository.get(authorId);
+            
+            article.put(Article.ARTICLE_COMMENTABLE, Boolean.valueOf(article.optBoolean(Article.ARTICLE_COMMENTABLE)));
+            article.put(Article.ARTICLE_SYNC_TO_CLIENT, author.optBoolean(UserExt.SYNC_TO_CLIENT));
+
             final JSONObject oldArticle = articleRepository.get(articleId);
 
             processTagsForArticleUpdate(oldArticle, article, author);

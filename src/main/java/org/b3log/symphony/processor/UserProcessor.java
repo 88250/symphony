@@ -895,12 +895,14 @@ public class UserProcessor {
         final String addArticleURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL);
         final String updateArticleURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL);
         final String addCommentURL = requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
+        final boolean syncWithSymphonyClient = requestJSONObject.optBoolean(UserExt.SYNC_TO_CLIENT, false);
 
         final JSONObject user = userQueryService.getCurrentUser(request);
         user.put(UserExt.USER_B3_KEY, b3Key);
         user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
         user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
         user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
+        user.put(UserExt.SYNC_TO_CLIENT, syncWithSymphonyClient);
 
         try {
             userMgmtService.updateSyncB3(user);

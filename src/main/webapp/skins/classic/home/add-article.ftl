@@ -58,23 +58,13 @@
                     </div>
                     <div class="tip" id="addArticleTip"></div><br/>
                     <div class="fn-clear">
-                        <div class="fn-left">
-                            <input tabindex="6"<#if article??> disabled="disabled"<#if article.syncWithSymphonyClient> checked="checked"</#if></#if> type="checkbox" id="syncWithSymphonyClient"/> 
-                                ${syncWithSymphonyClientLabel}
-                        </div>
-                        <!--
                         <div class="fn-left"> &nbsp;
-                            <input tabindex="7"<#if article??><#if article.articleCommentable> checked="checked"</#if><#else> checked="checked"</#if> type="checkbox" id="articleCommentable"/> 
-                                ${commentableLabel}
-                        </div>
-                        -->
-                        <div class="fn-left"> &nbsp;
-                            <input tabindex="8"<#if article?? && 1 == article.articleType> checked="checked"</#if> type="checkbox" id="articleType"/> 
+                            <input tabindex="6"<#if article?? && 1 == article.articleType> checked="checked"</#if> type="checkbox" id="articleType"/> 
                                 ${discussionLabel}
                         </div>
                         <div class="fn-right">
                             <button class="green" onclick="AddArticle.preview()">${previewLabel}</button> &nbsp; &nbsp; 
-                            <button class="red" tabindex="9" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
+                            <button class="red" tabindex="7" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>
                     ${postGuideLabel}

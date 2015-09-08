@@ -66,7 +66,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
         if (Latkes.getServePath().contains("localhost") || Networks.isIPv4(Latkes.getServerHost())
                 || RuntimeMode.DEVELOPMENT == Latkes.getRuntimeMode()) {
-            LOGGER.log(Level.DEBUG, "Do not sync in DEV env");
+            LOGGER.log(Level.TRACE, "Do not sync in DEV env");
             return;
         }
 

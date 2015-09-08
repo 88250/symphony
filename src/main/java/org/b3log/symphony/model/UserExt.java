@@ -19,11 +19,16 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.13.0.9, Aug 21, 2015
+ * @version 2.14.0.9, Sep 8, 2015
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+
+    /**
+     * Key of sync to client.
+     */
+    public static final String SYNC_TO_CLIENT = "syncWithSymphonyClient";
 
     /**
      * Key of user geo status.

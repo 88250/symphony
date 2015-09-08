@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.5.1, Aug 28, 2015
+ * @version 1.9.5.2, Sep 8, 2015
  */
 
 /**
@@ -56,7 +56,6 @@ var AddArticle = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g, ""),
                 articleContent: this.editor.getValue(),
                 articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g, ""),
-                syncWithSymphonyClient: $("#syncWithSymphonyClient").prop("checked"),
                 //articleCommentable: $("#articleCommentable").prop("checked"),
                 articleCommentable: true,
                 articleType: $("#articleType").prop("checked") ? 1 : 0,

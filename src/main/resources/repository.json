@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "2.10.3.2, Aug 13, 2015",
+    "version": "2.11.3.2, Sep 8, 2015",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
@@ -557,6 +557,10 @@
                     "name": "userGeoStatus",
                     "type": "int",
                     "description": "0: public, 1: private"
+                },
+                {
+                    "name": "syncWithSymphonyClient",
+                    "type": "boolean"
                 }
             ]
         },

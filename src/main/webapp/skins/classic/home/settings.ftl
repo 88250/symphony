@@ -106,7 +106,11 @@
         <input id="soloUpdateURL" type="text" value="${currentUser.userB3ClientUpdateArticleURL}" />
 
         <label>${clientCmtLabel}</label>
-        <input id="soloCmtURL" type="text" value="${currentUser.userB3ClientAddCommentURL}" /> 
+        <input id="soloCmtURL" type="text" value="${currentUser.userB3ClientAddCommentURL}" />
+
+        <label>${syncWithSymphonyClientLabel}</label>
+        <input id="syncWithSymphonyClient" <#if currentUser.syncWithSymphonyClient> checked="checked"</#if> type="checkbox" /> 
+
         <br/><br/>
         <div id="syncb3Tip" class="tip"></div><br/>
         <button class="green fn-right" onclick="Settings.update('sync/b3', '${csrfToken}')">${saveLabel}</button>

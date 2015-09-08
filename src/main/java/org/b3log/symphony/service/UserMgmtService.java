@@ -320,6 +320,7 @@ public class UserMgmtService {
      *     "userB3ClientAddArticleURL": "",
      *     "userB3ClientUpdateArticleURL": "",
      *     "userB3ClientAddCommentURL": "",
+     *     "syncWithSymphonyClient": boolean
      * }
      * </pre>
      *
@@ -341,6 +342,7 @@ public class UserMgmtService {
             oldUser.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL));
             oldUser.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, requestJSONObject.optString(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL));
             oldUser.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, requestJSONObject.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL));
+            oldUser.put(UserExt.SYNC_TO_CLIENT, requestJSONObject.optBoolean(UserExt.SYNC_TO_CLIENT, false));
 
             userRepository.update(oldUserId, oldUser);
             transaction.commit();
@@ -476,6 +478,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_CITY, "");
             user.put(UserExt.USER_UPDATE_TIME, 0L);
             user.put(UserExt.USER_GEO_STATUS, UserExt.USER_GEO_STATUS_C_PUBLIC);
+            user.put(UserExt.SYNC_TO_CLIENT, false);
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
 
