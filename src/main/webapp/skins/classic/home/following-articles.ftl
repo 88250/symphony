@@ -17,14 +17,16 @@
                     </a>
                     <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
-                <span class="ft-gray">
-                    <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="/tags/${articleTag?url('UTF-8')}">
-                        ${articleTag}</a>
-                    </#list> &nbsp; 
-                    <span class="icon-date"></span>
-                    ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
-                </span> 
+                <div class="list-info">
+                    <span class="ft-gray">
+                        <#list article.articleTags?split(",") as articleTag>
+                        <a rel="tag" class="tag" href="/tags/${articleTag?url('UTF-8')}">
+                            ${articleTag}</a>
+                        </#list> &nbsp; 
+                        <span class="icon-date"></span>
+                        ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
+                    </span> 
+                </div> 
             </div>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">

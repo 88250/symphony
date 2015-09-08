@@ -13,12 +13,48 @@
         <#include "../../header.ftl">
         <div class="main">
             <div class="wrapper">
+                <div class="side responsive-show">
+                    <ul class="tab fn-clear">
+                        <li<#if type == "commented"> class="current"</#if>>
+                            <a href="/notifications/commented">
+                                <span>${notificationCommentedLabel}</span>
+                                <#if unreadCommentedNotificationCnt &gt; 0>
+                                <span class="counter">${unreadCommentedNotificationCnt}</span>
+                                </#if>
+                            </a> 
+                        </li>
+                        <li<#if type == "at"> class="current"</#if>>
+                            <a href="/notifications/at">
+                                <span>${notificationAtLabel}</span>
+                                <#if unreadAtNotificationCnt &gt; 0>
+                                <span class="counter">${unreadAtNotificationCnt}</span>
+                                </#if>
+                            </a>
+                        </li>
+                        <li<#if type == "followingUser"> class="current"</#if>>
+                            <a href="/notifications/following-user">
+                                <span>${notificationFollowingUserLabel}</span>
+                                <#if unreadFollowingUserNotificationCnt &gt; 0>
+                                <span class="counter">${unreadFollowingUserNotificationCnt}</span>
+                                </#if>
+                            </a>
+                        </li>
+                        <li<#if type == "point"> class="current"</#if>>
+                            <a href="/notifications/point">
+                                <span>${pointLabel}</span>
+                                <#if unreadPointNotificationCnt &gt; 0>
+                                <span class="counter">${unreadPointNotificationCnt}</span>
+                                </#if>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                 <div class="list content">
                     <#nested>
                 </div>
                 <div class="side">
                     <#include '../../common/person-info.ftl'/>
-                    <ul class="note-list">
+                    <ul class="note-list responsive-hide">
                         <li<#if type == "commented"> class="current"</#if>>
                             <a href="/notifications/commented">
                                 <span>${notificationCommentedLabel}</span>

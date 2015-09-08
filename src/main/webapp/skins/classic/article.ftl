@@ -24,6 +24,7 @@
                             </a>&nbsp;
                             </#list>
                         </div>
+                        <div class="responsive-show fn-hr5"></div>
                         <div class="fn-right">
                             <span class="icon-date"></span>
                             ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;

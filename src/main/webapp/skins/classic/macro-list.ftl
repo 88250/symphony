@@ -19,10 +19,12 @@
                         </a>
                         <a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
                     </h2>
-                    <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a>
-                    </#list>
-                    <span class="ft-grayer ft-fade">&nbsp;•&nbsp;${article.timeAgo}</span>
+                    <div class="list-info">
+                        <#list article.articleTags?split(",") as articleTag>
+                        <a rel="tag" class="tag" href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a>
+                        </#list>
+                        <span class="ft-grayer ft-fade">&nbsp;•&nbsp;${article.timeAgo}</span>
+                    </div>
                 </div>
             </div>
             <#if article.articleCommentCount != 0>

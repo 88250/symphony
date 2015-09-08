@@ -9,6 +9,7 @@
     </#list>
 </ul>
 <#else>
+<div class="fn-hr5"></div>
 ${noMessageLabel}
 </#if>
 

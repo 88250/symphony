@@ -18,13 +18,13 @@
                         </a>
                         <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                     </h2>
-                    <span class="ft-gray fn-sub">
+                    <span class="ft-gray fn-sub list-info">
                         <span class="icon-date"></span>
                         ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
                     </span>
                 </div>
 
-                <div class="content-reset comment">
+                <div class="content-reset comment list-info">
                     ${comment.commentContent}
                 </div>
             </div>

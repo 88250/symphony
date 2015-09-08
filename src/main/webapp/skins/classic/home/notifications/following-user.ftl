@@ -15,14 +15,14 @@
                     <img class="avatar-small responsive-show" src="${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}"/>
                 </a> 
                 <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
-            <span class="ft-gray">
+            <div class="ft-gray list-info">
                 <#list notification.articleTags?split(",") as articleTag>
                 <a class="tag" rel="tag" href="/tags/${articleTag?url('UTF-8')}">
                     ${articleTag}</a>
                 </#list> &nbsp;
                 <span class="icon-date"></span>
                 ${notification.createTime?string('yyyy-MM-dd HH:mm')}
-            </span> 
+            </div> 
         </div>
         <#if notification.articleCommentCount != 0>
         <div class="cmts" title="${cmtLabel}">

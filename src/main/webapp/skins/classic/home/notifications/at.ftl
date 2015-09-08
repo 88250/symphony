@@ -18,12 +18,12 @@
                         <img class="avatar-small responsive-show" src="${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}"/>
                     </a>
                     <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
-                <span class="ft-gray fn-sub">    
+                <span class="ft-gray fn-sub list-info">    
                     <span class="icon-date"></span>
                     ${notification.createTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
-            <div class="content-reset comment">
+            <div class="content-reset comment list-info">
                 ${notification.content}
             </div>
         </div>
@@ -35,7 +35,7 @@
                     <img class="avatar-small responsive-show" src="${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime}"/>
                 </a>
                 <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
-            <div class="comment">
+            <div class="list-info">
                 <p class="ft-gray">
                     <#list notification.articleTags?split(",") as articleTag>
                     <a rel="tag" class="tag" href="/tags/${notification?url('UTF-8')}">

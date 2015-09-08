@@ -32,9 +32,12 @@
         <div class="fn-clear">
             <div>
                 <img class="avatar-big" id="avatarURL" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}"> &nbsp; 
+                <div class="responsive-show fn-hr5"></div>
                 <img class="avatar-mid" id="avatarURLMid" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}"> &nbsp;
+                <div class="responsive-show fn-hr5"></div>
                 <img class="avatar" id="avatarURLNor" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}">
             </div>
+            <div class="fn-hr5"></div>
             <div class="fn-right">
                 ${updateAvatarTipLabel}
             </div>
