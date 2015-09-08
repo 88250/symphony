@@ -204,6 +204,16 @@ public final class Pointtransfer {
     public static final int TRANSFER_TYPE_C_COMMENT_REWARD = 14;
 
     /**
+     * Transfer type - Add Article Broadcast Outcome.
+     */
+    public static final int TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST = 15;
+
+    /**
+     * Transfer sum - Add Article.
+     */
+    public static final int TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST = Symphonys.getInt("pointAddArticleBroadcast");
+
+    /**
      * Private constructor.
      */
     private Pointtransfer() {

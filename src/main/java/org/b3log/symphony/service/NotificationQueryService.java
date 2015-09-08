@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Sep 7, 2015
+ * @version 1.2.0.3, Sep 8, 2015
  * @since 0.2.5
  */
 @Service
@@ -157,6 +157,7 @@ public class NotificationQueryService {
      * @see Notification#DATA_TYPE_C_AT
      * @see Notification#DATA_TYPE_C_COMMENT
      * @see Notification#DATA_TYPE_C_COMMENTED
+     * @see Notification#DATA_TYPE_C_BROADCAST
      */
     public int getUnreadNotificationCountByType(final String userId, final int notificationDataType) {
         final List<Filter> filters = new ArrayList<Filter>();
@@ -190,8 +191,6 @@ public class NotificationQueryService {
      * @see Notification#DATA_TYPE_C_POINT_TRANSFER
      */
     public int getUnreadPointNotificationCount(final String userId) {
-        final List<JSONObject> rslts = new ArrayList<JSONObject>();
-
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
@@ -304,7 +303,6 @@ public class NotificationQueryService {
                         desTemplate = langPropsService.get("notificationPointChargeLabel");
 
                         final JSONObject transfer5 = pointtransferRepository.get(dataId);
-                        final String toId5 = transfer5.optString(Pointtransfer.TO_ID);
                         final int sum5 = transfer5.optInt(Pointtransfer.SUM);
                         final String memo5 = transfer5.optString(Pointtransfer.DATA_ID);
                         final String yuan = memo5.split("-")[0];
@@ -552,6 +550,7 @@ public class NotificationQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [at] notifications", e);
+            
             throw new ServiceException(e);
         }
     }
@@ -657,6 +656,113 @@ public class NotificationQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [followingUser] notifications", e);
+            
+            throw new ServiceException(e);
+        }
+    }
+    
+    /**
+     * Gets 'broadcast' type notifications with the specified user id, current page number and page size.
+     *
+     * @param userId the specified user id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return result json object, for example,      <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         "oId": "", // notification record id
+     *         "authorName": "",
+     *         "content": "",
+     *         "thumbnailURL": "",
+     *         "articleTitle": "",
+     *         "articleTags": "",
+     *         "articleCommentCnt": int,
+     *         "url": "",
+     *         "createTime": java.util.Date,
+     *         "hasRead": boolean,
+     *         "type": "", // article/comment
+     *     }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    public JSONObject getBroadcastNotifications(final String userId, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+
+        ret.put(Keys.RESULTS, (Object) rslts);
+
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_BROADCAST));
+
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+        try {
+            final JSONObject queryResult = notificationRepository.get(query);
+            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT,
+                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
+
+            for (int i = 0; i < results.length(); i++) {
+                final JSONObject notification = results.optJSONObject(i);
+                final String articleId = notification.optString(Notification.NOTIFICATION_DATA_ID);
+
+                final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
+                        addProjection(Article.ARTICLE_AUTHOR_EMAIL, String.class).
+                        addProjection(Article.ARTICLE_PERMALINK, String.class).
+                        addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                        addProjection(Article.ARTICLE_TAGS, String.class).
+                        addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                        setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
+                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
+                final JSONObject article = rlts.optJSONObject(0);
+
+                if (null == article) {
+                    LOGGER.warn("Not found article[id=" + articleId + ']');
+
+                    continue;
+                }
+
+                final String articleTitle = article.optString(Article.ARTICLE_TITLE);
+                final String articleAuthorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
+                final JSONObject author = userRepository.getByEmail(articleAuthorEmail);
+
+                if (null == author) {
+                    LOGGER.warn("Not found user[email=" + articleAuthorEmail + ']');
+
+                    continue;
+                }
+
+                final JSONObject broadcastNotification = new JSONObject();
+                broadcastNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
+                broadcastNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
+                broadcastNotification.put(Common.CONTENT, "");
+                broadcastNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURL(articleAuthorEmail));
+                broadcastNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
+                broadcastNotification.put(Article.ARTICLE_TITLE, articleTitle);
+                broadcastNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
+                broadcastNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
+                broadcastNotification.put(Notification.NOTIFICATION_HAS_READ,
+                        notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
+                broadcastNotification.put(Common.TYPE, Article.ARTICLE);
+                broadcastNotification.put(Article.ARTICLE_TAGS, article.optString(Article.ARTICLE_TAGS));
+                broadcastNotification.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
+
+                rslts.add(broadcastNotification);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets [broadcast] notifications", e);
+            
             throw new ServiceException(e);
         }
     }

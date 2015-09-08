@@ -23,7 +23,7 @@ package org.b3log.symphony.model;
  * @since 0.2.0
  */
 public final class Common {
-    
+
     /**
      * Key of time ago.
      */
@@ -48,12 +48,12 @@ public final class Common {
      * Key of city.
      */
     public static final String CITY = "city";
-    
+
     /**
      * Key of city found.
      */
     public static final String CITY_FOUND = "cityFound";
-    
+
     /**
      * Key of province.
      */
@@ -345,6 +345,21 @@ public final class Common {
     public static final String FOLLOWING_USER_NOTIFICATIONS = "followingUserNotifications";
 
     /**
+     * Key of unread 'broadcast' notifications count.
+     */
+    public static final String UNREAD_BROADCAST_NOTIFICATION_CNT = "unreadBroadcastNotificationCnt";
+
+    /**
+     * Key of 'broadcast' notifications.
+     */
+    public static final String BROADCAST_NOTIFICATIONS = "broadcastNotifications";
+
+    /**
+     * Key of unread 'followingUser' notifications count.
+     */
+    public static final String UNREAD_FOLLOWING_USER_NOTIFICATION_CNT = "unreadFollowingUserNotificationCnt";
+
+    /**
      * Key of follower user count.
      */
     public static final String FOLLOWER_USER_CNT = "followerUserCnt";
@@ -363,11 +378,6 @@ public final class Common {
      * Key of following tag count.
      */
     public static final String FOLLOWING_TAG_CNT = "followingTagCnt";
-
-    /**
-     * Key of unread 'followingUser' notifications count.
-     */
-    public static final String UNREAD_FOLLOWING_USER_NOTIFICATION_CNT = "unreadFollowingUserNotificationCnt";
 
     /**
      * Key of author name.

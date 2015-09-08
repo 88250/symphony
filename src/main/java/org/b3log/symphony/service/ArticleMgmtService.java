@@ -302,8 +302,8 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.REDDIT_SCORE, 0);
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
-            article.put(Article.ARTICLE_TYPE,
-                    requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
+            final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
+            article.put(Article.ARTICLE_TYPE, articleType);
             article.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
             String city = "";
             article.put(Article.ARTICLE_CITY, city);
@@ -362,6 +362,12 @@ public class ArticleMgmtService {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
                 }
+                
+                if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == articleType) {
+                    pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST, 
+                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST, articleId);
+                }
             }
 
             // Event
@@ -369,7 +375,7 @@ public class ArticleMgmtService {
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
             try {
-                eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
             }
@@ -479,7 +485,7 @@ public class ArticleMgmtService {
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, oldArticle);
             try {
-                eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
+                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
             }

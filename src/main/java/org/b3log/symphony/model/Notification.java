@@ -99,6 +99,11 @@ public final class Notification {
      * Data type - comment reward (thank).
      */
     public static final int DATA_TYPE_C_POINT_COMMENT_THANK = 8;
+    
+    /**
+     * Data type - broadcast.
+     */
+    public static final int DATA_TYPE_C_BROADCAST = 9;
 
     //// Transient ////
     /**

@@ -362,6 +362,14 @@ public class PointtransferQueryService {
 
                         desTemplate = desTemplate.replace("{yuan}", yuan);
                         break;
+                    case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST:
+                        final JSONObject addArticleBroadcast = articleRepository.get(dataId);
+                        final String addArticleBroadcastLink = "<a href=\""
+                                + addArticleBroadcast.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + addArticleBroadcast.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", addArticleBroadcastLink);
+
+                        break;
                     default:
                         LOGGER.warn("Invalid point type [" + type + "]");
                 }

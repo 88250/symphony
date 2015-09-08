@@ -151,6 +151,14 @@ public class NotificationProcessor {
             return;
         }
 
+        final int unreadBroadcastCnt
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_BROADCAST);
+        if (unreadBroadcastCnt > 0) {
+            response.sendRedirect("/notifications/broadcast");
+
+            return;
+        }
+
         response.sendRedirect("/notifications/commented");
     }
 
@@ -239,6 +247,10 @@ public class NotificationProcessor {
         final int unreadPointNotificationCnt
                 = notificationQueryService.getUnreadPointNotificationCount(userId);
         dataModel.put(Common.UNREAD_POINT_NOTIFICATION_CNT, unreadPointNotificationCnt);
+
+        final int unreadBroadcastCnt
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_BROADCAST);
+        dataModel.put(Common.UNREAD_BROADCAST_NOTIFICATION_CNT, unreadBroadcastCnt);
     }
 
     /**
@@ -415,6 +427,70 @@ public class NotificationProcessor {
         fillNotificationCount(userId, dataModel);
 
         notificationMgmtService.makeRead(followingUserNotifications);
+
+        final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil((double) recordCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+    
+    /**
+     * Shows [broadcast] notifications.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/notifications/broadcast", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showBroadcastNotifications(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/notifications/broadcast.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("broadcastNotificationsCnt");
+        final int windowSize = Symphonys.getInt("broadcastNotificationsWindowSize");
+
+        final JSONObject result = notificationQueryService.getBroadcastNotifications(userId, pageNum, pageSize);
+        @SuppressWarnings("unchecked")
+        final List<JSONObject> broadcastNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
+
+        dataModel.put(Common.BROADCAST_NOTIFICATIONS, broadcastNotifications);
+
+        fillNotificationCount(userId, dataModel);
+
+        notificationMgmtService.makeRead(broadcastNotifications);
 
         final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
         final int pageCount = (int) Math.ceil((double) recordCnt / (double) pageSize);

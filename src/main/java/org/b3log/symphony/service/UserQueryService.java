@@ -30,8 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -51,7 +49,6 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.UserRepository;
-import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -411,8 +408,86 @@ public class UserQueryService {
         final JSONArray users = result.optJSONArray(Keys.RESULTS);
         ret.put(User.USERS, users);
 
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-        final Filler filler = beanManager.getReference(Filler.class);
+        for (int i = 0; i < users.length(); i++) {
+            final JSONObject user = users.optJSONObject(i);
+            user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
+
+            avatarQueryService.fillUserAvatarURL(user);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets users by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * {
+     *     "userCity": "",
+     *     "userLatestLoginTime": long, // optional, default to 0
+     *     "paginationCurrentPageNum": 1,
+     *     "paginationPageSize": 20,
+     *     "paginationWindowSize": 10,
+     * }, see {@link Pagination} for more details
+     * </pre>
+     *
+     * @return for example,      <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "users": [{
+     *         "oId": "",
+     *         "userName": "",
+     *         "userEmail": "",
+     *         "userPassword": "",
+     *         "roleName": "",
+     *         ....
+     *      }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     * @see Pagination
+     */
+    public JSONObject getUsersByCity(final JSONObject requestJSONObject) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
+        final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
+        final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+
+        final String city = requestJSONObject.optString(UserExt.USER_CITY);
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(UserExt.USER_CITY, FilterOperator.EQUAL, city));
+        final long latestTime = requestJSONObject.optLong(UserExt.USER_LATEST_LOGIN_TIME);
+        filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.GREATER_THAN_OR_EQUAL, latestTime));
+
+        query.setFilter(new CompositeFilter(CompositeFilterOperator.OR, filters));
+        
+        JSONObject result = null;
+
+        try {
+            result = userRepository.get(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets users by city error", e);
+
+            throw new ServiceException(e);
+        }
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        final JSONArray users = result.optJSONArray(Keys.RESULTS);
+        ret.put(User.USERS, users);
 
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.optJSONObject(i);
@@ -445,6 +520,7 @@ public class UserQueryService {
             return userRepository.get(userId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a user failed", e);
+
             throw new ServiceException(e);
         }
     }

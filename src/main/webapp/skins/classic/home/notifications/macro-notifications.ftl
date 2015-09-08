@@ -47,6 +47,14 @@
                                 </#if>
                             </a>
                         </li>
+                        <li<#if type == "broadcast"> class="current"</#if>>
+                            <a href="/notifications/broadcast">
+                                <span>${sameCityLabel}</span>
+                                <#if unreadBroadcastNotificationCnt &gt; 0>
+                                <span class="counter">${unreadBroadcastNotificationCnt}</span>
+                                </#if>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="list content">
@@ -84,6 +92,14 @@
                                 <span>${pointLabel}</span>
                                 <#if unreadPointNotificationCnt &gt; 0>
                                 <span class="counter">${unreadPointNotificationCnt}</span>
+                                </#if>
+                            </a>
+                        </li>
+                        <li<#if type == "broadcast"> class="current"</#if>>
+                            <a href="/notifications/broadcast">
+                                <span>${sameCityLabel}</span>
+                                <#if unreadBroadcastNotificationCnt &gt; 0>
+                                <span class="counter">${unreadBroadcastNotificationCnt}</span>
                                 </#if>
                             </a>
                         </li>

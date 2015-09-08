@@ -15,12 +15,14 @@
  */
 package org.b3log.symphony.event;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
@@ -28,15 +30,18 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
@@ -84,20 +89,21 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
      */
     @Inject
     private TimelineMgmtService timelineMgmtService;
-
+    
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, ArticleNotifier.class.getName()});
-
+        
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
-
+            final String articleId = originalArticle.optString(Keys.OBJECT_ID);
+            
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
             final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
-
+            
             final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
             final Set<String> atUserNames = userQueryService.getUserNames(articleContent);
             atUserNames.remove(articleAuthorName); // Do not notify the author itself
@@ -107,22 +113,23 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             // 'At' Notification
             for (final String userName : atUserNames) {
                 final JSONObject user = userQueryService.getUserByName(userName);
-
+                
                 if (null == user) {
                     LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
-
+                    
                     continue;
                 }
-
+                
                 final JSONObject requestJSONObject = new JSONObject();
                 final String atedUserId = user.optString(Keys.OBJECT_ID);
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, atedUserId);
-                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalArticle.optString(Keys.OBJECT_ID));
-
+                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
+                
                 notificationMgmtService.addAtNotification(requestJSONObject);
-
+                
                 atedUserIds.add(atedUserId);
             }
+
             // 'FollowingUser' Notification
             final JSONObject followerUsersResult = followQueryService.getFollowerUsers(articleAuthorId, 1, Integer.MAX_VALUE);
             @SuppressWarnings("unchecked")
@@ -130,14 +137,14 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             for (final JSONObject followerUser : followerUsers) {
                 final JSONObject requestJSONObject = new JSONObject();
                 final String followerUserId = followerUser.optString(Keys.OBJECT_ID);
-
+                
                 if (atedUserIds.contains(followerUserId)) {
                     continue;
                 }
-
+                
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, followerUserId);
-                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, originalArticle.optString(Keys.OBJECT_ID));
-
+                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
+                
                 notificationMgmtService.addFollowingUserNotification(requestJSONObject);
             }
 
@@ -145,7 +152,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             final String articleTitle = StringUtils.substring(Jsoup.parse(
                     originalArticle.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
             final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
-
+            
             final JSONObject timeline = new JSONObject();
             timeline.put(Common.TYPE, Article.ARTICLE);
             String content = langPropsService.get("timelineArticleLabel");
@@ -156,6 +163,37 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             timeline.put(Common.CONTENT, content);
             
             timelineMgmtService.addTimeline(timeline);
+
+            // 'Broadcast' Notification
+            if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == originalArticle.optInt(Article.ARTICLE_TYPE)) {
+                final String city = originalArticle.optString(Article.ARTICLE_CITY);
+                
+                if (StringUtils.isNotBlank(city)) {
+                    final JSONObject requestJSONObject = new JSONObject();
+                    requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
+                    requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, Integer.MAX_VALUE);
+                    requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, Integer.MAX_VALUE);
+                    
+                    final long latestLoginTime = DateUtils.addDays(new Date(), -15).getTime();
+                    requestJSONObject.put(UserExt.USER_LATEST_LOGIN_TIME, latestLoginTime);
+                    requestJSONObject.put(UserExt.USER_CITY, city);
+                    
+                    final JSONObject result = userQueryService.getUsersByCity(requestJSONObject);
+                    final JSONArray users = result.optJSONArray(User.USERS);
+                    
+                    for (int i = 0; i < users.length(); i++) {
+                        final String userId = users.optJSONObject(i).optString(Keys.OBJECT_ID);
+                        
+                        final JSONObject notification = new JSONObject();
+                        notification.put(Notification.NOTIFICATION_USER_ID, userId);
+                        notification.put(Notification.NOTIFICATION_DATA_ID, articleId);
+                        
+                        notificationMgmtService.addBroadcastNotification(notification);
+                    }
+                    
+                    LOGGER.info("City broadcast [" + users.length() + "]");
+                }
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article notification failed", e);
         }

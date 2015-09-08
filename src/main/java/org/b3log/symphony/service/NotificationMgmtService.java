@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Sep 7, 2013
+ * @version 1.2.0.3, Sep 8, 2013
  * @since 0.2.5
  */
 @Service
@@ -90,7 +90,33 @@ public class NotificationMgmtService {
             throw new ServiceException(msg);
         }
     }
-    
+
+    /**
+     * Adds a 'broadcast' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * {
+     *     "userId"; "",
+     *     "dataId": "" // article id
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addBroadcastNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_BROADCAST);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=broadcast] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
     /**
      * Adds a 'point charge' type notification with the specified request json object.
      *
@@ -260,6 +286,7 @@ public class NotificationMgmtService {
      *
      * @throws ServiceException service exception
      */
+    // XXX: Unused
     @Transactional
     public void addArticleNotification(final JSONObject requestJSONObject) throws ServiceException {
         try {
@@ -280,7 +307,7 @@ public class NotificationMgmtService {
      * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "userId"; "",
-     *     "dataId": ""
+     *     "dataId": "" // article id
      * }
      * </pre>
      *

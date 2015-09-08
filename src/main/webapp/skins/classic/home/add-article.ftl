@@ -67,12 +67,10 @@
                             <input tabindex="7" type="radio" name="articleType" value="1"/> 
                                    ${discussionLabel}
                         </div>
-                        <!--
                         <div class="fn-left"> &nbsp;
                             <input tabindex="8" type="radio" name="articleType" value="2"/> 
                                    ${cityBroadcastLabel}
                         </div>
-                        -->
                         <#else>
                         <#if 1 == article.articleType>
                         <div class="fn-left"> &nbsp;
