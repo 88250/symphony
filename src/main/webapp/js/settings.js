@@ -151,16 +151,21 @@ var Settings = {
         if (Validate.goValidate({target: $('#profilesTip'),
             data: [{
                     "target": $("#userTags"),
-                    "type": "tags",
+                    "type": "string",
+                    "min": 0,
+                    "max": 255,
                     "msg": Label.tagsErrorLabel
                 }, {
                     "target": $("#userURL"),
-                    "type": "url",
+                    "type": "string",
+                    "min": 0,
+                    "max": 255,
                     "msg": Label.invalidUserURLLabel
                 }, {
                     "target": $("#userIntro"),
                     "type": "string",
-                    'max': 255,
+                    "min": 0,
+                    "max": 255,
                     "msg": Label.invalidUserIntroLabel
                 }, {
                     "target": $("#avatarURL"),
