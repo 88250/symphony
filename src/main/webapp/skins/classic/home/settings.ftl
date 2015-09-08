@@ -31,11 +31,11 @@
         </form>
         <div class="fn-clear">
             <div>
-                <img class="avatar-big" id="avatarURL" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}"> &nbsp; 
+                <img class="avatar-big" id="avatarURL" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}"> &nbsp; 
                 <div class="responsive-show fn-hr5"></div>
-                <img class="avatar-mid" id="avatarURLMid" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}"> &nbsp;
+                <img class="avatar-mid" id="avatarURLMid" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}"> &nbsp;
                 <div class="responsive-show fn-hr5"></div>
-                <img class="avatar" id="avatarURLNor" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}">
+                <img class="avatar" id="avatarURLNor" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}">
             </div>
             <div class="fn-hr5"></div>
             <div class="fn-right">

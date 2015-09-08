@@ -6,7 +6,7 @@
                 <div class="fn-right">
                     <a href="/settings">
                         <img class="avatar" 
-                             title="${userName}" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime}" />
+                             title="${userName}" src="${currentUser.userAvatarURL}-64.jpg??${currentUser.userUpdateTime?c}" />
                     </a>
                 </div>
                 <div class="fn-left">
