@@ -112,7 +112,7 @@
         <input id="soloCmtURL" type="text" value="${currentUser.userB3ClientAddCommentURL}" />
 
         <label>${syncWithSymphonyClientLabel}</label>
-        <input id="syncWithSymphonyClient" <#if currentUser.syncWithSymphonyClient> checked="checked"</#if> type="checkbox" /> 
+        <input style="margin-top: 1rem;margin-left: 1rem;" id="syncWithSymphonyClient" <#if currentUser.syncWithSymphonyClient> checked="checked"</#if> type="checkbox" /> 
 
         <br/><br/>
         <div id="syncb3Tip" class="tip"></div><br/>
