@@ -148,12 +148,12 @@ public final class Article {
      * Key of article collection count.
      */
     public static final String ARTICLE_COLLECT_CNT = "articleCollectCnt";
-    
+
     /**
      * Key of reddit score.
      */
     public static final String REDDIT_SCORE = "redditScore";
-    
+
     /**
      * Key of article city.
      */
@@ -184,7 +184,7 @@ public final class Article {
      * Key of article author thumbnail URL.
      */
     public static final String ARTICLE_T_AUTHOR_THUMBNAIL_URL = "articleAuthorThumbnailURL";
-    
+
     /**
      * Key of article author name.
      */
@@ -219,7 +219,7 @@ public final class Article {
      * Key of article participant thumbnail URL.
      */
     public static final String ARTICLE_T_PARTICIPANT_THUMBNAIL_URL = "articleParticipantThumbnailURL";
-    
+
     /**
      * Key of article participant thumbnail update time.
      */
@@ -266,6 +266,11 @@ public final class Article {
      * Article type - discussion.
      */
     public static final int ARTICLE_TYPE_C_DISCUSSION = 1;
+
+    /**
+     * Article type - city broadcast.
+     */
+    public static final int ARTICLE_TYPE_C_CITY_BROADCAST = 2;
 
     /**
      * Private constructor.

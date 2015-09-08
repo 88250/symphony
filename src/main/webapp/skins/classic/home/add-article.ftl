@@ -54,17 +54,40 @@
                     <div>
                         <input id="articleRewardPoint" type="text" tabindex="5" 
                                value="<#if article?? && 0 != article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
-                        <br/><br/>
+                               <br/><br/>
                     </div>
                     <div class="tip" id="addArticleTip"></div><br/>
                     <div class="fn-clear">
+                        <#if !article??>
                         <div class="fn-left"> &nbsp;
-                            <input tabindex="6"<#if article?? && 1 == article.articleType> checked="checked"</#if> type="checkbox" id="articleType"/> 
-                                ${discussionLabel}
+                            <input tabindex="6" type="radio" name="articleType" checked="checked" value="0"/> 
+                                   ${articleLabel}
                         </div>
+                        <div class="fn-left"> &nbsp;
+                            <input tabindex="7" type="radio" name="articleType" value="1"/> 
+                                   ${discussionLabel}
+                        </div>
+                         <div class="fn-left"> &nbsp;
+                            <input tabindex="8" type="radio" name="articleType" value="2"/> 
+                                   ${cityBroadcastLabel}
+                        </div>
+                        <#else>
+                        <#if 1 == article.articleType>
+                        <div class="fn-left"> &nbsp;
+                            <input tabindex="7" disabled="disabled" checked="checked" type="radio" name="articleType" value="1"/> 
+                                   ${discussionLabel}
+                        </div>
+                        </#if>
+                        <#if 2 == article.articleType>
+                        <div class="fn-left"> &nbsp;
+                            <input tabindex="8" disabled="disabled" checked="checked" type="radio" name="articleType" value="2"/> 
+                                   ${cityBroadcastLabel}
+                        </div>
+                        </#if>
+                        </#if>
                         <div class="fn-right">
                             <button class="green" onclick="AddArticle.preview()">${previewLabel}</button> &nbsp; &nbsp; 
-                            <button class="red" tabindex="7" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
+                            <button class="red" tabindex="9" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>
                 </div>
@@ -88,33 +111,32 @@
         <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
 
         <script>
-            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
-            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
-            Label.tagsErrorLabel = "${tagsErrorLabel}";
-            Label.userName = "${userName}";
-            Label.recordDeniedLabel = "${recordDeniedLabel}";
-            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-
-            Util.uploadFile({
-            "id": "fileUpload",
-                    "pasteZone": $("#articleContent").next(),
-                    "qiniuUploadToken": "${qiniuUploadToken}",
-                    "editor": AddArticle.editor,
-                    "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}"
-            });
-            Util.uploadFile({
-            "id": "rewardFileUpload",
-                    "pasteZone": $("#articleRewardContent").next(),
-                    "qiniuUploadToken": "${qiniuUploadToken}",
-                    "editor": AddArticle.rewardEditor,
-                    "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}"
-            });
-            var qiniuToken = '${qiniuUploadToken}';
-            var qiniuDomain = '${qiniuDomain}';
-            var audioRecordingLabel = '${audioRecordingLabel}';
-            var uploadingLabel = '${uploadingLabel}';
+                                                Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
+                                                Label.articleContentErrorLabel = "${articleContentErrorLabel}";
+                                                Label.tagsErrorLabel = "${tagsErrorLabel}";
+                                                Label.userName = "${userName}";
+                                                Label.recordDeniedLabel = "${recordDeniedLabel}";
+                                                Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
+                                                Util.uploadFile({
+                                                "id": "fileUpload",
+                                                        "pasteZone": $("#articleContent").next(),
+                                                        "qiniuUploadToken": "${qiniuUploadToken}",
+                                                        "editor": AddArticle.editor,
+                                                        "uploadingLabel": "${uploadingLabel}",
+                                                        "qiniuDomain": "${qiniuDomain}"
+                                                });
+                                                Util.uploadFile({
+                                                "id": "rewardFileUpload",
+                                                        "pasteZone": $("#articleRewardContent").next(),
+                                                        "qiniuUploadToken": "${qiniuUploadToken}",
+                                                        "editor": AddArticle.rewardEditor,
+                                                        "uploadingLabel": "${uploadingLabel}",
+                                                        "qiniuDomain": "${qiniuDomain}"
+                                                });
+                                                var qiniuToken = '${qiniuUploadToken}';
+                                                var qiniuDomain = '${qiniuDomain}';
+                                                var audioRecordingLabel = '${audioRecordingLabel}';
+                                                var uploadingLabel = '${uploadingLabel}';
         </script>
     </body>
 </html>

@@ -203,10 +203,10 @@ public class ArticleMgmtService {
      *     "articleCommentable": boolean, // optional, default to true
      *     "syncWithSymphonyClient": boolean, // optional
      *     "clientArticleId": "" // optional
-     *     "isBroadcast": boolean,
+     *     "isBroadcast": boolean, // Client broadcast
      *     "articleType": int, // optional, default to 0
      *     "articleRewardContent": "", // optional, default to ""
-     *     "articleRewardPoint": int // optional default to 0
+     *     "articleRewardPoint": int, // optional, default to 0
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -273,13 +273,6 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_TITLE, articleTitle);
 
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
-//            if (fromClient) {
-//                article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT));
-//            } else {
-//                article.put(Article.ARTICLE_CONTENT, requestJSONObject.optString(Article.ARTICLE_CONTENT).
-//                        replace("<", "&lt;").replace(">", "&gt;")
-//                        .replace("&lt;pre&gt;", "<pre>").replace("&lt;/pre&gt;", "</pre>"));
-//            }
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
             articleContent = Emotions.toAliases(articleContent);
@@ -513,7 +506,7 @@ public class ArticleMgmtService {
         try {
             final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userRepository.get(authorId);
-            
+
             article.put(Article.ARTICLE_COMMENTABLE, Boolean.valueOf(article.optBoolean(Article.ARTICLE_COMMENTABLE)));
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, author.optBoolean(UserExt.SYNC_TO_CLIENT));
 

@@ -58,7 +58,7 @@ var AddArticle = {
                 articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 //articleCommentable: $("#articleCommentable").prop("checked"),
                 articleCommentable: true,
-                articleType: $("#articleType").prop("checked") ? 1 : 0,
+                articleType: $("input[type='radio'][name='articleType']:checked").val(),
                 articleRewardContent: this.rewardEditor.getValue(),
                 articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")
             },
