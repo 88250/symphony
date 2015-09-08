@@ -35,6 +35,9 @@
 
             <label>${cityLabel}</label>
             <input type="text" value="${user.userCity}" readonly="readonly" />
+            
+            <label>IP</label>
+            <input type="text" value="${user.userLatestLoginIP}" readonly="readonly" />
 
             <label>${registerTimeLabel}</label>
             <input type="text" value="${user.oId?number?number_to_datetime}" readonly="readonly" />

@@ -509,7 +509,8 @@
                 {
                     "name": "userLatestLoginTime",
                     "type": "long"
-                }, {
+                },
+                {
                     "name": "userLatestLoginIP",
                     "type": "String",
                     "length": 32
