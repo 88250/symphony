@@ -903,7 +903,7 @@ a[class*=" icon-"]:hover {
 
 /* start framework */
 .wrapper {
-    width: 86%;
+    width: 75%;
     margin: 0 auto;
     display: flex;
     display: -webkit-box;
