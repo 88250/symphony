@@ -40,11 +40,12 @@ public final class Geos {
     private static final Logger LOGGER = Logger.getLogger(Geos.class.getName());
 
     /**
-     * Gets province, city of the specified IP.
+     * Gets country, province and city of the specified IP.
      *
      * @param ip the specified IP
      * @return address info, for example      <pre>
      * {
+     *     "country": "",
      *     "province": "",
      *     "city": ""
      * }
@@ -75,15 +76,79 @@ public final class Geos {
 
             final JSONObject data = new JSONObject(sb.toString());
             if (0 != data.optInt("status")) {
+                return getAddressSina(ip); // Try it via Sina API
+            }
+
+            final String content = data.optString("address");
+            final String country = content.split("\\|")[0];
+            if (!"CN".equals(country)) {
+                LOGGER.log(Level.WARN, "Found other country via Baidu [" + country + ", " + ip + "]");
+
                 return null;
             }
 
-            final JSONObject content = data.optJSONObject("content");
-            final JSONObject addressDetail = content.optJSONObject("address_detail");
-            final String province = addressDetail.optString(Common.PROVINCE);
-            final String city = addressDetail.optString(Common.CITY);
+            final String province = content.split("\\|")[1];
+            final String city = content.split("\\|")[2];
 
             final JSONObject ret = new JSONObject();
+            ret.put(Common.COUNTRY, "中国");
+            ret.put(Common.PROVINCE, province);
+            ret.put(Common.CITY, city);
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Can't get location [ip=" + ip + "]", e);
+
+            return null;
+        } finally {
+            if (null != conn) {
+                try {
+                    conn.disconnect();
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Close HTTP connection error", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Gets province, city of the specified IP by Sina API.
+     *
+     * @param ip the specified IP
+     * @return address info, for example      <pre>
+     * {
+     *     "province": "",
+     *     "city": ""
+     * }
+     * </pre>, returns {@code null} if not found
+     */
+    private static JSONObject getAddressSina(final String ip) {
+        HttpURLConnection conn = null;
+
+        try {
+            final URL url = new URL("http://int.dpool.sina.com.cn/iplookup/iplookup.php?ip=" + ip + "&format=json");
+
+            conn = (HttpURLConnection) url.openConnection();
+            final BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            String line = null;
+
+            final StringBuilder sb = new StringBuilder();
+            while (null != (line = bufferedReader.readLine())) {
+                sb.append(line);
+            }
+
+            final JSONObject data = new JSONObject(sb.toString());
+            if (1 != data.optInt("ret")) {
+                return null;
+            }
+
+            final String country = data.optString("country");
+            final String province = data.optString("province");
+            final String city = data.optString("city");
+
+            final JSONObject ret = new JSONObject();
+            ret.put(Common.COUNTRY, country);
             ret.put(Common.PROVINCE, province);
             ret.put(Common.CITY, city);
 

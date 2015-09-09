@@ -224,9 +224,11 @@ public class UserMgmtService {
 
             final JSONObject address = Geos.getAddress(ip);
             if (null != address) {
+                final String country = address.optString(Common.COUNTRY);
                 final String province = address.optString(Common.PROVINCE);
                 final String city = address.optString(Common.CITY);
 
+                user.put(UserExt.USER_COUNTRY, country);
                 user.put(UserExt.USER_PROVINCE, province);
                 user.put(UserExt.USER_CITY, city);
             }
@@ -474,6 +476,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_POINT, 0);
             user.put(UserExt.USER_TAGS, "");
             user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName")); // TODO: set default skin by app role
+            user.put(UserExt.USER_COUNTRY, "");
             user.put(UserExt.USER_PROVINCE, "");
             user.put(UserExt.USER_CITY, "");
             user.put(UserExt.USER_UPDATE_TIME, 0L);
@@ -826,7 +829,7 @@ public class UserMgmtService {
                 userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
                 userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
                 userTagRelation.put(Common.TYPE, Tag.TAG_TYPE_C_CREATOR);
-                
+
                 userTagRepository.add(userTagRelation);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);

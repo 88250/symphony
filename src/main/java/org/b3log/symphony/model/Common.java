@@ -55,6 +55,11 @@ public final class Common {
     public static final String CITY_FOUND = "cityFound";
 
     /**
+     * Key of country.
+     */
+    public static final String COUNTRY = "country";
+
+    /**
      * Key of province.
      */
     public static final String PROVINCE = "province";
