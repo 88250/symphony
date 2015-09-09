@@ -30,18 +30,21 @@
             <label>${pointLabel}</label>
             <input type="text" value="${user.userPoint?c}" readonly="readonly" />
 
+            <label>${countryLabel}</label>
+            <input type="text" value="${user.userCountry}" readonly="readonly" />
+
             <label>${provinceLabel}</label>
             <input type="text" value="${user.userProvince}" readonly="readonly" />
 
             <label>${cityLabel}</label>
             <input type="text" value="${user.userCity}" readonly="readonly" />
-            
+
             <label>IP</label>
             <input type="text" value="${user.userLatestLoginIP}" readonly="readonly" />
 
             <label>${registerTimeLabel}</label>
             <input type="text" value="${user.oId?number?number_to_datetime}" readonly="readonly" />
-            
+
             <label>${loginTimeLabel}</label>
             <input type="text" value="${user.userLatestLoginTime?number_to_datetime}" readonly="readonly" />
 
