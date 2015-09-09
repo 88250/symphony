@@ -68,7 +68,7 @@ public final class Markdowns {
         outputSettings.prettyPrint(false);
 
         final String tmp = Jsoup.clean(content, baseURI, Whitelist.relaxed().
-                addAttributes(":all", "id", "target", "class", "style").
+                addAttributes(":all", "id", "target", "class").
                 addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
                 .addAttributes("audio", "controls", "src"), outputSettings);
         final Document doc = Jsoup.parse(tmp, baseURI, Parser.xmlParser());
