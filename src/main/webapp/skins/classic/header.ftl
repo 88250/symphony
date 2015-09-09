@@ -28,6 +28,7 @@
             <#if "adminRole" == userRole>
             <a href="/admin" title="${adminLabel}" class="icon-userrole"></a>
             </#if>
+            <a href="/settings" title="${settingsLabel}" class="icon-setting"></a>
             <a href="/activities" title="${activityLabel}" class="icon-flag"></a>
             <a href="/add-article" title="${addArticleLabel}" 
                class="icon-addfile"></a>
