@@ -18,7 +18,7 @@
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.5, Sep 7, 2014
+ * @version 1.0.1.6, Sep 9, 2015
  */
 @media (max-width: 1040px) {
     .person-info .avatar {
@@ -64,12 +64,11 @@
     }
 
     .footer,
-    .nav,
-    .post {
+    .nav {
         padding: 0.5rem;
     }
 
-    .side .tags > li:hover > span {
+    .wrapper .tags > li:hover > span {
         border-bottom-style: solid;
         border-radius: 3px;
     }
@@ -91,7 +90,7 @@
     }
 
 
-    /* settings */
+    /* home */
     .points .name {
         padding: 0;
     }
@@ -100,6 +99,23 @@
         border-width: 0;
         border-bottom: 2px solid #911;
         padding-bottom: 7px;
+    }
+
+    .comment-list-item h2 {
+        margin-bottom: 0;
+    }
+
+    .wrapper.pre-post a {
+        width: 100%;
+        font-size: 20px;
+        margin: 12px 0;
+        padding: 20px 0;
+        background-color: #f8f8f8;
+    }
+
+    .wrapper.pre-post a div {
+        font-size: 25px;
+        margin-bottom: 20px;
     }
 
     /* article */
@@ -111,7 +127,7 @@
     .wrapper .tag-artile-user {
         margin: 0.5rem 0 0.5rem 0.5rem;
     }
-    
+
     .tag-artile-user .avatar {
         height: 45px;
         width: 45px;
@@ -152,7 +168,8 @@
     }
 
     .article-title,
-    .tag-articles .content > .fn-flex {
+    .tag-articles .content > .fn-flex,
+    .comment-list-item .fn-flex {
         display: block;
     }
 

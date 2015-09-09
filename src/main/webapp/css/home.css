@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.5, Sep 7, 2015
+ * @version 1.1.3.6, Sep 9, 2015
  */
 /* start home side */
 .user-name {
@@ -41,6 +41,25 @@
 /* end home side */
 
 /* start add article */
+.pre-post a {
+    width: 30%;
+    margin: 100px 10px;
+    text-align: center;
+    font-size: 30px;
+    display: block;
+    color: #404040;
+}
+
+.pre-post a:hover {
+    text-decoration: none;
+    color: #4183C4;
+}
+
+.pre-post a div {
+    font-size: 50px;
+    margin-bottom: 50px;
+}
+
 #articleContent {
     height: 332px;
     margin-bottom: 20px;
@@ -165,15 +184,6 @@
     right: -1px;
     top: -1px;
     width: 3px;
-}
-
-.notification {
-    list-style: none;
-}
-
-.notification li > div.content-reset {
-    float: right;
-    width: 612px;
 }
 
 .notification .read {

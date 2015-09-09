@@ -3,7 +3,7 @@
 <#if commentedNotifications?size != 0>
 <ul class="notification">
     <#list commentedNotifications as notification>
-    <li class="fn-flex<#if notification.hasRead> read</#if>">
+    <li class="fn-flex comment-list-item<#if notification.hasRead> read</#if>">
         <a target="_blank" rel="nofollow" href="/member/${notification.commentAuthorName}" 
            title="${notification.commentAuthorName}">
             <img class="avatar" src="${notification.commentAuthorThumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}"/>
@@ -13,13 +13,13 @@
                 <h2 class="fn-flex-1">
                     <a rel="bookmark" href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>
                 </h2>
-                <span class="ft-gray fn-sub list-info">
+                <span class="ft-gray fn-sub">
                     <span class="icon-date"></span>
                     ${notification.commentCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
 
-            <div class="content-reset comment list-info">
+            <div class="content-reset comment">
                 ${notification.commentContent}
             </div>
         </div>

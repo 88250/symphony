@@ -15,7 +15,7 @@
         </h2>
     </div>
     <div class="module-panel">
-        <ul class="tags fn-clear">
+        <ul class="tags fn-clear tags-no-desc">
             <#list navTrendTags as trendTag>
             <li>
                 <span><a rel="nofollow" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a></span>
@@ -103,7 +103,7 @@
         </h2>
     </div>
     <div class="module-panel">
-        <ul class="tags fn-clear">
+        <ul class="tags fn-clear tags-no-desc">
             <#list newTags as newTag>
             <li>
                 <span><a rel="nofollow" href="/tags/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a></span>

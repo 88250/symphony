@@ -17,7 +17,7 @@
                     <#list article.articleTags?split(",") as articleTag>
                     <a rel="tag" class="tag" href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a>
                     </#list>
-                    <span class="ft-grayer ft-fade">&nbsp;•&nbsp;${article.timeAgo}</span>
+                    <span class="ft-fade">&nbsp;•&nbsp;${article.timeAgo}</span>
                 </div>
             </div>
             <#if article.articleCommentCount != 0>

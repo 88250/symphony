@@ -9,12 +9,22 @@
     </head>
     <body>
         <#include "../header.ftl">
-            <div class="wrapper post">
-                <a href="/post?type=0">${articleLabel}</a>
-                <a href="/post?type=1">${discussionLabel}</a>
-                <a href="/post?type=2">${cityBroadcastLabel}</a>
+        <div class="main">
+            <div class="wrapper pre-post">
+                <a href="/post?type=0">
+                    <div class="icon-article"></div>
+                    ${articleLabel}
+                </a>
+                <a href="/post?type=1">
+                    <div class="icon-locked"></div>
+                    ${discussionLabel}
+                </a>
+                <a href="/post?type=2">
+                    <div class="icon-feed"></div>
+                    ${cityBroadcastLabel}
+                </a>
             </div>
-        <div id="preview" class="content-reset"></div>
+        </div>
         <#include "../footer.ftl">
     </body>
 </html>

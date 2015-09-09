@@ -4,7 +4,7 @@
 <div class="list">
     <ul>
         <#list userHomeComments as comment>
-        <li class="fn-flex">
+        <li class="fn-flex comment-list-item">
             <a target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
                title="${comment.commentArticleAuthorName}">
                 <img class="avatar" src="${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}"/>
@@ -14,13 +14,13 @@
                     <h2 class="fn-flex-1">
                         <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                     </h2>
-                    <span class="ft-gray fn-sub list-info">
+                    <span class="ft-gray fn-sub">
                         <span class="icon-date"></span>
                         ${comment.commentCreateTime?string('yyyy-MM-dd HH:mm')}  
                     </span>
                 </div>
 
-                <div class="content-reset comment list-info">
+                <div class="content-reset comment">
                     ${comment.commentContent}
                 </div>
             </div>

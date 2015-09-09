@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.7, Sep 7, 2015
+ * @version 1.2.4.8, Sep 9, 2015
  */
 /* start module */
 .index-module .index-module-list > li {
@@ -386,6 +386,11 @@
     z-index: 3;
 }
 
+.tags.tags-no-desc > li:hover > span {
+    border-bottom-style: solid;
+    border-radius: 3px;
+}
+
 .tags > li > span > img {
     border-radius: 2px 2px 2px 2px;
     height: 16px;
@@ -420,7 +425,7 @@
 }
 
 .tag-articles .title .fn-right {
-    margin-top: 13px;
+    margin-top: 18px;
 }
 /* end side tags */
 

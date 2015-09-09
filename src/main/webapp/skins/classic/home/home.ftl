@@ -5,7 +5,7 @@
     <ul> 
         <#list userHomeArticles as article>
         <li>
-            <div>
+            <div class="has-view">
                 <h2><a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
                 <span class="ft-gray">
                     <#list article.articleTags?split(",") as articleTag>
