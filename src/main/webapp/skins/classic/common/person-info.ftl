@@ -19,7 +19,7 @@
                         <div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div>
                         </#if>
                     </a>&nbsp;
-                    <a class="btn small red" href="/add-article?tags=Q%26A">${IHaveAQuestionLabel}</a>
+                    <a class="btn small red" href="/post?tags=Q%26A&type=0">${IHaveAQuestionLabel}</a>
                     <br/>
                     <#if !isDailyCheckin>
                     <a class="btn small red" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>

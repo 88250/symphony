@@ -81,7 +81,7 @@
 
                             <#if article.isMyArticle>
                             &nbsp;
-                            <a href="/update-article?id=${article.oId}" title="${editLabel}" class="icon-edit"></a>
+                            <a href="/update?id=${article.oId}" title="${editLabel}" class="icon-edit"></a>
                             &nbsp;
                             </#if>
                             <#if isAdminLoggedIn>

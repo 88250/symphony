@@ -89,11 +89,16 @@ import org.jsoup.safety.Whitelist;
  *
  * <ul>
  * <li>Shows an article (/article/{articleId}), GET</li>
- * <li>Shows article adding form page (/add-article), GET</li>
- * <li>Adds an article (/article) <em>locally</em>, POST</li>
+ * <li>Shows article pre adding form page (/pre-post), GET</li>
+ * <li>Shows article adding form page (/post), GET</li>
+ * <li>Adds an article (/post) <em>locally</em>, POST</li>
+ * <li>Shows an article updating form page (/update) <em>locally</em>, GET</li>
  * <li>Updates an article (/article/{id}) <em>locally</em>, PUT</li>
  * <li>Adds an article (/rhythm/article) <em>remotely</em>, POST</li>
+ * <li>Updates an article (/rhythm/article) <em>remotely</em>, PUT</li>
  * <li>Markdowns text (/markdown), POST</li>
+ * <li>Rewards an article (/article/reward), POST</li>
+ * <li>Gets an article preview content (/article/{articleId}/preview), GET</li>
  * </ul>
  *
  * <p>
@@ -186,6 +191,28 @@ public class ArticleProcessor {
     private Filler filler;
 
     /**
+     * Shows pre-add article.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/pre-post", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
+    public void showPreAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+
+        renderer.setTemplateName("/home/pre-post.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
      * Shows add article.
      *
      * @param context the specified context
@@ -193,7 +220,7 @@ public class ArticleProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/add-article", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/post", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -201,7 +228,7 @@ public class ArticleProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
 
-        renderer.setTemplateName("/home/add-article.ftl");
+        renderer.setTemplateName("/home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         // Qiniu file upload authenticate
@@ -248,6 +275,25 @@ public class ArticleProcessor {
             }
 
             dataModel.put(Tag.TAGS, tagBuilder.toString());
+        }
+
+        final String type = request.getParameter(Common.TYPE);
+        if (StringUtils.isBlank(type)) {
+            dataModel.put(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
+        } else {
+            int articleType = Article.ARTICLE_TYPE_C_NORMAL;
+
+            try {
+                articleType = Integer.valueOf(type);
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Gets article type error [" + type + "]", e);
+            }
+
+            if (articleType < 0 || articleType > Article.ARTICLE_TYPE_C_CITY_BROADCAST) {
+                articleType = Article.ARTICLE_TYPE_C_NORMAL;
+            }
+
+            dataModel.put(Article.ARTICLE_TYPE, articleType);
         }
 
         filler.fillHeaderAndFooter(request, response, dataModel);
@@ -480,7 +526,7 @@ public class ArticleProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/update-article", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/update", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showUpdateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -510,7 +556,7 @@ public class ArticleProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
 
-        renderer.setTemplateName("/home/add-article.ftl");
+        renderer.setTemplateName("/home/post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.put(Article.ARTICLE, article);

@@ -22,7 +22,7 @@
                     <a target="_blank" href="/admin" title="${adminLabel}" class="icon-setting"></a>
                     </#if>
                     <a target="_blank" id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
-                    <a target="_blank" href="/add-article" title="${addArticleLabel}" 
+                    <a target="_blank" href="/pre-post" title="${addArticleLabel}" 
                        class="icon-addfile"></a>
                     <#else>
                     <a target="_blank" href="/register" class="last icon-register" 

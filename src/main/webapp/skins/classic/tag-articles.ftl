@@ -25,7 +25,7 @@
                         </h1>
                         <#if isLoggedIn>
                         <#if !tag.isReserved || isAdminLoggedIn> &nbsp;
-                        <a class="btn small red" href="/add-article?tags=${tag.tagTitle?url('utf-8')}">${addArticleLabel}</a>
+                        <a class="btn small red" href="/post?tags=${tag.tagTitle?url('utf-8')}&type=0">${addArticleLabel}</a>
                         </#if>
                         </#if>
                         <span class='fn-right'>

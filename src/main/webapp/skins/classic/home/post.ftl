@@ -60,15 +60,15 @@
                     <div class="fn-clear">
                         <#if !article??>
                         <div class="fn-left"> &nbsp;
-                            <input tabindex="6" type="radio" name="articleType" checked="checked" value="0"/> 
+                            <input tabindex="6" type="radio" name="articleType" <#if 0 == articleType>checked="checked"</#if> value="0"/> 
                                    ${articleLabel}
                         </div>
                         <div class="fn-left"> &nbsp;
-                            <input tabindex="7" type="radio" name="articleType" value="1"/> 
+                            <input tabindex="7" type="radio" name="articleType" <#if 1 == articleType>checked="checked"</#if> value="1"/> 
                                    ${discussionLabel}
                         </div>
                         <div class="fn-left"> &nbsp;
-                            <input tabindex="8" type="radio" name="articleType" value="2"/> 
+                            <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/> 
                                    ${cityBroadcastLabel}
                         </div>
                         <#else>

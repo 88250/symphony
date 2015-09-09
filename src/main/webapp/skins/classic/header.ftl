@@ -30,7 +30,7 @@
             </#if>
             <a href="/settings" title="${settingsLabel}" class="icon-setting"></a>
             <a href="/activities" title="${activityLabel}" class="icon-flag"></a>
-            <a href="/add-article" title="${addArticleLabel}" 
+            <a href="/pre-post" title="${addArticleLabel}" 
                class="icon-addfile"></a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
             <#else>
