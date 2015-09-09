@@ -45,7 +45,7 @@
                             </#if>
                         </span>
                     </div>
-                    <p<#if tag.tagIconPath != ""> class="description" </#if>>
+                    <p<#if tag.tagIconPath != ""> class="description"</#if>>
                         ${tag.tagDescription}
                 </p>
                 <div class="fn-clear">
@@ -85,7 +85,7 @@
                             <span class="ft-gray">${followLabel}</span>
                         </li>
                     </ul>
-                    <div class="tag-artile-user">
+                    <div class="tag-artile-user fn-clear">
                         <a rel="nofollow" class="fn-left" title="${creatorLabel} ${tag.tagCreatorName}" 
                            href="/member/${tag.tagCreatorName}">
                             <img class="avatar" src="${tag.tagCreatorThumbnailURL}-64.jpg?${tag.tagCreatorThumbnailUpdateTime?c}">

@@ -5,16 +5,12 @@
     <ul class="fn-clear">
         <#list userHomeFollowingArticles as article>
         <li class="fn-flex read">
-            <a title="${article.articleAuthorName}" class="responsive-hide"
+            <a title="${article.articleAuthorName}"
                target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}">
                 <img class="avatar" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}"/>
             </a>
             <div class="fn-flex-1 has-view">
                 <h2>
-                    <a title="${article.articleAuthorName}" 
-                       target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}">
-                        <img class="avatar-small responsive-show" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}"/>
-                    </a>
                     <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
                 <div class="list-info">

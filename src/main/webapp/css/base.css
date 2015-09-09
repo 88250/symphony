@@ -34,6 +34,7 @@ body {
     font-size: 14px;
     background-color: #F8F8F8;
     color: #333;
+    overflow-x: hidden;
 }
 
 ::-moz-selection {
@@ -407,6 +408,8 @@ textarea {
     background-color: #f0f0f0;
     color: #999;
     white-space: nowrap;
+    display: inline-block;
+    margin-top: 5px;
 }
 
 .tag:hover {
@@ -628,7 +631,7 @@ a[class*=" icon-"]:hover {
     border: 1px solid #D2D9DD;
     border-right-width: 0;
     border-radius: 5px 0 0 5px;
-    bottom: 76px;
+    bottom: 68px;
     color: #999;
     cursor: pointer;
     display: none;
@@ -890,7 +893,7 @@ a[class*=" icon-"]:hover {
 
 /* start framework */
 .wrapper {
-    width: 80%;
+    width: 86%;
     margin: 0 auto;
     display: flex;
     display: -webkit-box;
@@ -1072,7 +1075,7 @@ a[class*=" icon-"]:hover {
 .list h2 {
     font-size: 16px;
     font-weight: normal;
-    margin-bottom: 8px;
+    margin-bottom: 3px;
     line-height: 21px;
 }
 

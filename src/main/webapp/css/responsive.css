@@ -24,10 +24,6 @@
     .person-info .avatar {
         display: none;
     }
-
-    .wrapper {
-        width: 95%;
-    }
 }
 
 @media (max-width: 1016px) {
@@ -45,26 +41,99 @@
 }
 
 @media (max-width: 768px) {
+    /* start itself */
+    /* framework */
     .nav {
         height: 84px;
-    }
-    .fn-flex {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .fn-flex-1 {
-        flex-basis: 100%;
-    }
-
-    .main {
-        padding: 0.5rem 0;
     }
 
     .wrapper {
         display: block;
         width: 100%;
         min-width: 310px;
+    }
+
+    .main {
+        padding: 0.5rem 0;
+    }
+    .wrapper .side {
+        margin-top: 0.5rem;
+    }
+    .icon-up {
+        bottom: 88px;
+    }
+
+    .footer,
+    .nav,
+    .post {
+        padding: 0.5rem;
+    }
+
+    .side .tags > li:hover > span {
+        border-bottom-style: solid;
+        border-radius: 3px;
+    }
+
+
+    /* header */
+    .nav .user-nav {
+        float: left;
+    }
+
+    .nav div > a.current {
+        border-bottom: 0;
+        padding-bottom: 11px;
+        color: #D26911;
+    }
+
+    .nav .form {
+        top: 89px;
+    }
+
+
+    /* settings */
+    .points .name {
+        padding: 0;
+    }
+
+    .wrapper .tab > li.current {
+        border-width: 0;
+        border-bottom: 2px solid #911;
+        padding-bottom: 7px;
+    }
+
+    /* article */
+    .list .avatar {
+        height: 25px;
+        width: 25px;
+    }
+
+    .wrapper .tag-artile-user {
+        margin: 0.5rem 0 0.5rem 0.5rem;
+    }
+    
+    .tag-artile-user .avatar {
+        height: 45px;
+        width: 45px;
+    }
+
+
+    /* register */
+    .wrapper.register .intro {
+        border-left-width: 0;
+        margin: 0 0.5rem;
+        padding: 0;
+    }
+    /* end itself */
+
+    .responsive-show,
+    .person-info .avatar {
+        display: inherit;
+    }
+
+    .responsive-hide,
+    .wrapper .tags > li:hover > div {
+        display: none;
     }
 
     .content, 
@@ -76,90 +145,20 @@
 
     .content, 
     .side,
-    .footer,
     .register .form,
-    .post .form,
-    .nav .head-fn,
-    .nav .user-nav {
+    .post .form {
         flex-basis: 100%;
         margin: 0 0.5rem;
+    }
+
+    .article-title,
+    .tag-articles .content > .fn-flex {
+        display: block;
     }
 
     .footer .fn-right,
     .article-info .fn-right,
     .article-info .fn-left {
         float: none;
-    }
-
-    .footer-nav,
-    .side {
-        margin-top: 0.5rem;
-    }
-
-    .wrapper.register .intro {
-        border-left-width: 0;
-        margin: 0 0.5rem;
-        padding: 0;
-    }
-
-    .responsive-show,
-    .person-info .avatar {
-        display: inherit;
-    }
-
-    .responsive-hide {
-        display: none;
-    }
-
-    .wrapper .follow li,
-    .wrapper .follow li.even {
-        margin: 20px auto;
-        float: none;
-    }
-
-    .nav h1 {
-        margin: 0 0.5rem;
-    }
-
-    .nav .user-nav {
-        float: left;
-    }
-
-    .nav div > a.current {
-        border-bottom: 0;
-        padding-bottom: 11px;
-        color: #D26911;
-    }
-
-    .wrapper .tag-artile-user {
-        margin-left: 1px;
-        margin-bottom: 1rem;
-    }
-
-    .wrapper .article-title > span {
-        margin-top: 10px;
-    }
-
-    .points .name {
-        padding: 0;
-    }
-
-    .wrapper .tab > li.current {
-        border-color: #f0f0f0;
-        border-radius: 3px;
-        background-color: #f0f0f0;
-    }
-
-    .nav .form {
-        top: 89px;
-    }
-
-    .list-info {
-        margin-left: 35px;
-    }
-
-    .list .responsive-show.avatar-small {
-        float: left;
-        margin-right: 10px;
     }
 }

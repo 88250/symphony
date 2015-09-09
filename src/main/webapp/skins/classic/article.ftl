@@ -71,6 +71,7 @@
                                 ${article.articleTitleEmoj}
                             </a> &nbsp;
                         </h2> 
+                        <div class="responsive-show fn-hr5"></div>
                         <span>
                             <#if isLoggedIn>
                             <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
@@ -118,12 +119,14 @@
                             <input type="file" name="file">
                         </form>
                         <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
-                        <div class="tip" id="addCommentTip"></div><br/>
+                        <div class="tip" id="addCommentTip"></div>
+                        <span class="responsive-hide">    
                         Markdown
                         <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                         <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
                         |
                         <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
+                        </span>
                         <div class="fn-right">
                             <button class="green" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 
                             <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
@@ -145,7 +148,7 @@
                                 <#list article.articleComments as comment>
                                 <li id="${comment.oId}">
                                     <div class="fn-flex">
-                                        <a class="responsive-hide" rel="nofollow" href="/member/${comment.commentAuthorName}">
+                                        <a rel="nofollow" href="/member/${comment.commentAuthorName}">
                                             <img class="avatar" 
                                                  title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}" />
                                         </a>

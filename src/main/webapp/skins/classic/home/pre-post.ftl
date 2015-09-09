@@ -9,13 +9,11 @@
     </head>
     <body>
         <#include "../header.ftl">
-        <div class="main">
             <div class="wrapper post">
                 <a href="/post?type=0">${articleLabel}</a>
                 <a href="/post?type=1">${discussionLabel}</a>
                 <a href="/post?type=2">${cityBroadcastLabel}</a>
             </div>
-        </div>
         <div id="preview" class="content-reset"></div>
         <#include "../footer.ftl">
     </body>
