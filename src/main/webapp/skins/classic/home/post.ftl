@@ -15,7 +15,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper post">
-                <div class="form fn-flex-1">
+                <div class="form fn-flex-1 fn-clear">
                     <div>
                         <input autofocus="autofocus" type="text" id="articleTitle" tabindex="1"
                                value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
@@ -56,35 +56,36 @@
                                value="<#if article?? && 0 != article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
                                <br/><br/>
                     </div>
-                    <div class="tip" id="addArticleTip"></div><br/>
+                    <div class="tip" id="addArticleTip"></div>
                     <div class="fn-clear">
                         <#if !article??>
-                        <div class="fn-left"> &nbsp;
+                        <label> &nbsp;
                             <input tabindex="6" type="radio" name="articleType" <#if 0 == articleType>checked="checked"</#if> value="0"/> 
                                    ${articleLabel}
-                        </div>
-                        <div class="fn-left"> &nbsp;
+                        </label>
+                        <label> &nbsp;
                             <input tabindex="7" type="radio" name="articleType" <#if 1 == articleType>checked="checked"</#if> value="1"/> 
                                    ${discussionLabel}
-                        </div>
-                        <div class="fn-left"> &nbsp;
+                        </label>
+                        <label> &nbsp;
                             <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/> 
                                    ${cityBroadcastLabel}
-                        </div>
+                        </label>
                         <#else>
                         <#if 1 == article.articleType>
-                        <div class="fn-left"> &nbsp;
+                        <label> &nbsp;
                             <input tabindex="7" disabled="disabled" checked="checked" type="radio" name="articleType" value="1"/> 
                                    ${discussionLabel}
-                        </div>
+                        </label>
                         </#if>
                         <#if 2 == article.articleType>
-                        <div class="fn-left"> &nbsp;
+                        <label> &nbsp;
                             <input tabindex="8" disabled="disabled" checked="checked" type="radio" name="articleType" value="2"/> 
                                    ${cityBroadcastLabel}
+                        </label>
+                        </#if>
+                        </#if>
                         </div>
-                        </#if>
-                        </#if>
                         <div class="fn-right">
                             <button class="green" onclick="AddArticle.preview()">${previewLabel}</button> &nbsp; &nbsp; 
                             <button class="red" tabindex="9" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
@@ -92,7 +93,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         <div id="preview" class="content-reset"></div>
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
