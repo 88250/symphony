@@ -800,6 +800,12 @@ a[class*=" icon-"]:hover {
 .form label > a {
     font-weight: normal;
 }
+
+.form label input[type=checkbox],
+.form label input[type=radio] {
+    vertical-align: middle;
+}
+
 /* end form */
 
 /* start pagination */
