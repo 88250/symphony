@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Sep 8, 2015
+ * @version 1.2.0.4, Sep 10, 2015
  * @since 0.2.5
  */
 @Service
@@ -536,6 +536,7 @@ public class NotificationQueryService {
                     atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                     atNotification.put(Common.THUMBNAIL_UPDATE_TIME, articleAuthor.optLong(UserExt.USER_UPDATE_TIME));
                     atNotification.put(Article.ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
+                    atNotification.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
                     atNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                     atNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                     atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
@@ -647,6 +648,7 @@ public class NotificationQueryService {
                 followingUserNotification.put(Notification.NOTIFICATION_HAS_READ,
                         notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                 followingUserNotification.put(Common.TYPE, Article.ARTICLE);
+                followingUserNotification.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
                 followingUserNotification.put(Article.ARTICLE_TAGS, article.optString(Article.ARTICLE_TAGS));
                 followingUserNotification.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
 
@@ -753,6 +755,7 @@ public class NotificationQueryService {
                 broadcastNotification.put(Notification.NOTIFICATION_HAS_READ,
                         notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                 broadcastNotification.put(Common.TYPE, Article.ARTICLE);
+                broadcastNotification.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
                 broadcastNotification.put(Article.ARTICLE_TAGS, article.optString(Article.ARTICLE_TAGS));
                 broadcastNotification.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
 
