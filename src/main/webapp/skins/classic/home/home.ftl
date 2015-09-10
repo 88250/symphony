@@ -6,7 +6,14 @@
         <#list userHomeArticles as article>
         <li>
             <div class="has-view">
-                <h2><a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
+                <h2>
+                    <#if article.articleType == 1>
+                    <span class="icon-locked" title="${discussionLabel}"></span>
+                    <#elseif article.articleType == 2>
+                    <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                    </#if>
+                    <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                </h2>
                 <span class="ft-gray">
                     <#list article.articleTags?split(",") as articleTag>
                     <a class="tag" rel="tag" href="/tags/${articleTag?url('UTF-8')}">

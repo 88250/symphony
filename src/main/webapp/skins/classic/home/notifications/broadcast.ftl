@@ -10,7 +10,13 @@
         </a>
         <div class="fn-flex-1 has-view">
             <h2>
-                <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
+                <#if notification.articleType == 1>
+                <span class="icon-locked" title="${discussionLabel}"></span>
+                <#elseif notification.articleType == 2>
+                <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                </#if>
+                <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
+            </h2>
             <div class="ft-gray">
                 <#list notification.articleTags?split(",") as articleTag>
                 <a class="tag" rel="tag" href="/tags/${articleTag?url('UTF-8')}">

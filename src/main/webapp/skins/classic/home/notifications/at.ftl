@@ -13,7 +13,13 @@
         <div class="fn-flex-1">
             <div class="fn-flex">
                 <h2 class="fn-flex-1">
-                    <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
+                    <#if notification.articleType == 1>
+                    <span class="icon-locked" title="${discussionLabel}"></span>
+                    <#elseif notification.articleType == 2>
+                    <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                    </#if>
+                    <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
+                </h2>
                 <span class="ft-gray fn-sub">    
                     <span class="icon-date"></span>
                     ${notification.createTime?string('yyyy-MM-dd HH:mm')}
@@ -26,7 +32,13 @@
         <#else>
         <div class="fn-flex-1 has-view">
             <h2>
-                <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
+                <#if notification.articleType == 1>
+                    <span class="icon-locked" title="${discussionLabel}"></span>
+                    <#elseif notification.articleType == 2>
+                    <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                    </#if>
+                <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
+            </h2>
             <p class="ft-gray">
                 <#list notification.articleTags?split(",") as articleTag>
                 <a rel="tag" class="tag" href="/tags/${notification?url('UTF-8')}">
