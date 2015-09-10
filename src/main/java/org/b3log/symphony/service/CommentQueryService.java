@@ -250,6 +250,7 @@ public class CommentQueryService {
                         Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
                                 ? langPropsService.get("articleTitleBlockLabel")
                                 : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
+                comment.put(Comment.COMMENT_T_ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
 
                 final JSONObject commenter = userRepository.get(userId);

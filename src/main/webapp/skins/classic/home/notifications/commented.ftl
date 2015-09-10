@@ -11,9 +11,9 @@
         <div class="fn-flex-1">
             <div class="fn-flex">
                 <h2 class="fn-flex-1">
-                    <#if notification.articleType == 1>
+                    <#if notification.commentArticleType == 1>
                     <span class="icon-locked" title="${discussionLabel}"></span>
-                    <#elseif notification.articleType == 2>
+                    <#elseif notification.commentArticleType == 2>
                     <span class="icon-feed" title="${cityBroadcastLabel}"></span>
                     </#if>
                     <a rel="bookmark" href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>

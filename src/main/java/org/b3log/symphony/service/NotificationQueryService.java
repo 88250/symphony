@@ -376,6 +376,7 @@ public class NotificationQueryService {
      *         "commentContent": "",
      *         "commentAuthorThumbnailURL": "",
      *         "commentArticleTitle": "",
+     *         "commentArticleType": int,
      *         "commentSharpURL": "",
      *         "commentCreateTime": java.util.Date,
      *         "hasRead": boolean
@@ -414,12 +415,15 @@ public class NotificationQueryService {
 
                 final JSONObject comment = commentQueryService.getCommentById(commentId);
 
-                final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
+                final Query q = new Query().setPageCount(1).
+                        addProjection(Article.ARTICLE_TITLE, String.class).
+                        addProjection(Article.ARTICLE_TYPE, Integer.class).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
                                         comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                 final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                 final JSONObject article = rlts.optJSONObject(0);
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
+                final int articleType = article.optInt(Article.ARTICLE_TYPE);
 
                 final JSONObject commentedNotification = new JSONObject();
                 commentedNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
@@ -430,6 +434,7 @@ public class NotificationQueryService {
                 commentedNotification.put(Common.THUMBNAIL_UPDATE_TIME, comment.optJSONObject(Comment.COMMENT_T_COMMENTER).
                         optLong(UserExt.USER_UPDATE_TIME));
                 commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.convert(articleTitle));
+                commentedNotification.put(Comment.COMMENT_T_ARTICLE_TYPE, articleType);
                 commentedNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
                 commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
                 commentedNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
@@ -459,6 +464,7 @@ public class NotificationQueryService {
      *         "content": "",
      *         "thumbnailURL": "",
      *         "articleTitle": "",
+     *         "articleType": int,
      *         "url": "",
      *         "createTime": java.util.Date,
      *         "hasRead": boolean,
@@ -500,12 +506,15 @@ public class NotificationQueryService {
 
                 final JSONObject comment = commentQueryService.getCommentById(commentId);
                 if (null != comment) {
-                    final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
+                    final Query q = new Query().setPageCount(1).
+                            addProjection(Article.ARTICLE_TITLE, String.class).
+                            addProjection(Article.ARTICLE_TYPE, Integer.class).
                             setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
                                             comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                     final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                     final JSONObject article = rlts.optJSONObject(0);
                     final String articleTitle = article.optString(Article.ARTICLE_TITLE);
+                    final int articleType = article.optInt(Article.ARTICLE_TYPE);
 
                     final JSONObject atNotification = new JSONObject();
                     atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
@@ -516,6 +525,7 @@ public class NotificationQueryService {
                     atNotification.put(Common.THUMBNAIL_UPDATE_TIME, comment.optJSONObject(Comment.COMMENT_T_COMMENTER).
                             optLong(UserExt.USER_UPDATE_TIME));
                     atNotification.put(Article.ARTICLE_TITLE, articleTitle);
+                    atNotification.put(Article.ARTICLE_TYPE, articleType);
                     atNotification.put(Common.URL, comment.optString(Comment.COMMENT_SHARP_URL));
                     atNotification.put(Common.CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
                     atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
@@ -571,6 +581,7 @@ public class NotificationQueryService {
      *         "content": "",
      *         "thumbnailURL": "",
      *         "articleTitle": "",
+     *         "articleType": int,
      *         "articleTags": "",
      *         "articleCommentCnt": int,
      *         "url": "",
@@ -610,7 +621,9 @@ public class NotificationQueryService {
                 final JSONObject notification = results.optJSONObject(i);
                 final String articleId = notification.optString(Notification.NOTIFICATION_DATA_ID);
 
-                final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
+                final Query q = new Query().setPageCount(1).
+                        addProjection(Article.ARTICLE_TITLE, String.class).
+                        addProjection(Article.ARTICLE_TYPE, Integer.class).
                         addProjection(Article.ARTICLE_AUTHOR_EMAIL, String.class).
                         addProjection(Article.ARTICLE_PERMALINK, String.class).
                         addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
@@ -678,6 +691,7 @@ public class NotificationQueryService {
      *         "content": "",
      *         "thumbnailURL": "",
      *         "articleTitle": "",
+     *         "articleType": int,
      *         "articleTags": "",
      *         "articleCommentCnt": int,
      *         "url": "",
@@ -717,7 +731,9 @@ public class NotificationQueryService {
                 final JSONObject notification = results.optJSONObject(i);
                 final String articleId = notification.optString(Notification.NOTIFICATION_DATA_ID);
 
-                final Query q = new Query().setPageCount(1).addProjection(Article.ARTICLE_TITLE, String.class).
+                final Query q = new Query().setPageCount(1).
+                        addProjection(Article.ARTICLE_TITLE, String.class).
+                        addProjection(Article.ARTICLE_TYPE, Integer.class).
                         addProjection(Article.ARTICLE_AUTHOR_EMAIL, String.class).
                         addProjection(Article.ARTICLE_PERMALINK, String.class).
                         addProjection(Article.ARTICLE_CREATE_TIME, Long.class).

@@ -12,9 +12,9 @@
             <div class="fn-flex-1">
                 <div class="fn-flex">
                     <h2 class="fn-flex-1">
-                        <#if comment.articleType == 1>
+                        <#if comment.commentArticleType == 1>
                         <span class="icon-locked" title="${discussionLabel}"></span>
-                        <#elseif comment.articleType == 2>
+                        <#elseif comment.commentArticleType == 2>
                         <span class="icon-feed" title="${cityBroadcastLabel}"></span>
                         </#if>
                         <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
