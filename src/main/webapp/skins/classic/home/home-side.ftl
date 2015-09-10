@@ -40,7 +40,7 @@
         </#if>
         <#if "" != user.userCity && 0 == user.userGeoStatus>
         <div class="user-info">
-            <span class="ft-gray">${geoLable}</span> ${user.userCity}
+            <span class="ft-gray">${geoLable}</span> <#if "中国" == user.userCountry>${user.userCity}<#else>${user.userCountry} ${user.userCity}</#if>
         </div>
         </#if>
         <div class="user-info">
