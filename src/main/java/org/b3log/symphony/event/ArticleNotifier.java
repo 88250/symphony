@@ -49,7 +49,7 @@ import org.jsoup.Jsoup;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Aug 18, 2015
+ * @version 1.1.1.5, Sep 10, 2015
  * @since 0.2.0
  */
 @Named
@@ -89,21 +89,21 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
      */
     @Inject
     private TimelineMgmtService timelineMgmtService;
-    
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, ArticleNotifier.class.getName()});
-        
+
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             final String articleId = originalArticle.optString(Keys.OBJECT_ID);
-            
+
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject articleAuthor = userQueryService.getUser(articleAuthorId);
             final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
-            
+
             final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
             final Set<String> atUserNames = userQueryService.getUserNames(articleContent);
             atUserNames.remove(articleAuthorName); // Do not notify the author itself
@@ -113,20 +113,20 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             // 'At' Notification
             for (final String userName : atUserNames) {
                 final JSONObject user = userQueryService.getUserByName(userName);
-                
+
                 if (null == user) {
                     LOGGER.log(Level.WARN, "Not found user by name [{0}]", userName);
-                    
+
                     continue;
                 }
-                
+
                 final JSONObject requestJSONObject = new JSONObject();
                 final String atedUserId = user.optString(Keys.OBJECT_ID);
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, atedUserId);
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
-                
+
                 notificationMgmtService.addAtNotification(requestJSONObject);
-                
+
                 atedUserIds.add(atedUserId);
             }
 
@@ -137,14 +137,14 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             for (final JSONObject followerUser : followerUsers) {
                 final JSONObject requestJSONObject = new JSONObject();
                 final String followerUserId = followerUser.optString(Keys.OBJECT_ID);
-                
+
                 if (atedUserIds.contains(followerUserId)) {
                     continue;
                 }
-                
+
                 requestJSONObject.put(Notification.NOTIFICATION_USER_ID, followerUserId);
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
-                
+
                 notificationMgmtService.addFollowingUserNotification(requestJSONObject);
             }
 
@@ -152,7 +152,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             final String articleTitle = StringUtils.substring(Jsoup.parse(
                     originalArticle.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
             final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
-            
+
             final JSONObject timeline = new JSONObject();
             timeline.put(Common.TYPE, Article.ARTICLE);
             String content = langPropsService.get("timelineArticleLabel");
@@ -161,36 +161,40 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                     .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
                             + "'>" + articleTitle + "</a>");
             timeline.put(Common.CONTENT, content);
-            
+
             timelineMgmtService.addTimeline(timeline);
 
             // 'Broadcast' Notification
             if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == originalArticle.optInt(Article.ARTICLE_TYPE)) {
                 final String city = originalArticle.optString(Article.ARTICLE_CITY);
-                
+
                 if (StringUtils.isNotBlank(city)) {
                     final JSONObject requestJSONObject = new JSONObject();
                     requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
                     requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, Integer.MAX_VALUE);
                     requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, Integer.MAX_VALUE);
-                    
+
                     final long latestLoginTime = DateUtils.addDays(new Date(), -15).getTime();
                     requestJSONObject.put(UserExt.USER_LATEST_LOGIN_TIME, latestLoginTime);
                     requestJSONObject.put(UserExt.USER_CITY, city);
-                    
+
                     final JSONObject result = userQueryService.getUsersByCity(requestJSONObject);
                     final JSONArray users = result.optJSONArray(User.USERS);
-                    
+
                     for (int i = 0; i < users.length(); i++) {
                         final String userId = users.optJSONObject(i).optString(Keys.OBJECT_ID);
-                        
+
+                        if (userId.equals(articleAuthorId)) {
+                            continue;
+                        }
+
                         final JSONObject notification = new JSONObject();
                         notification.put(Notification.NOTIFICATION_USER_ID, userId);
                         notification.put(Notification.NOTIFICATION_DATA_ID, articleId);
-                        
+
                         notificationMgmtService.addBroadcastNotification(notification);
                     }
-                    
+
                     LOGGER.info("City broadcast [" + users.length() + "]");
                 }
             }
