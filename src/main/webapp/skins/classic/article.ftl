@@ -67,6 +67,11 @@
                                title="${article.articleAuthorName}">
                                 <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" />
                             </a> &nbsp;
+                            <#if article.articleType == 1>
+                            <span class="icon-locked" title="${discussionLabel}"></span>
+                            <#elseif article.articleType == 2>
+                            <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                            </#if>
                             <a href="${article.articlePermalink}" rel="bookmark">
                                 ${article.articleTitleEmoj}
                             </a> &nbsp;
@@ -121,11 +126,11 @@
                         <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
                         <div class="tip" id="addCommentTip"></div>
                         <span class="responsive-hide">    
-                        Markdown
-                        <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                        <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                        |
-                        <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
+                            Markdown
+                            <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
+                            <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
+                            |
+                            <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
                         </span>
                         <div class="fn-right">
                             <button class="green" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 

@@ -12,6 +12,9 @@
                    title="${article.articleAuthorName}"><img class="avatar" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" /></a>
                 <div class="fn-flex-1 has-view">
                     <h2>
+                        <#if article.articleType == 2>
+                        <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                        </#if>
                         <a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
                     </h2>
                     <#list article.articleTags?split(",") as articleTag>

@@ -27,15 +27,15 @@
         <div class="fn-flex-1 has-view">
             <h2>
                 <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a></h2>
-                <p class="ft-gray">
-                    <#list notification.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="/tags/${notification?url('UTF-8')}">
-                        ${articleTag}</a>
-                    </#list>
-                    &nbsp; 
-                    <span class="icon-date"></span>
-                    ${notification.createTime?string('yyyy-MM-dd HH:mm')}
-                </p>
+            <p class="ft-gray">
+                <#list notification.articleTags?split(",") as articleTag>
+                <a rel="tag" class="tag" href="/tags/${notification?url('UTF-8')}">
+                    ${articleTag}</a>
+                </#list>
+                &nbsp; 
+                <span class="icon-date"></span>
+                ${notification.createTime?string('yyyy-MM-dd HH:mm')}
+            </p>
             <#if notification.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">
                 <a class="count ft-gray" href="${notification.url}">${notification.articleCommentCount}</a>
