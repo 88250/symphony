@@ -62,7 +62,7 @@ var ArticleChannel = {
                             "<div class=\"fn-flex\">" +
                             "<a class=\"responsive-hide\" rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\">" +
                             "<img class=\"avatar\"" +
-                            "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}\" />" +
+                            "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}-64.jpg?${comment.thumbnailUpdateTime}\" />" +
                             "</a>" +
                             "<div class=\"fn-flex-1 comment-content\">" +
                             "<div class=\"fn-clear comment-info\">" +
