@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Geography utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 21, 2015
+ * @version 1.0.1.0, Sep 10, 2015
  * @since 1.3.0
  */
 public final class Geos {
@@ -89,6 +89,10 @@ public final class Geos {
 
             final String province = content.split("\\|")[1];
             final String city = content.split("\\|")[2];
+
+            if ("None".equals(province) || "None".equals(city)) {
+                return getAddressSina(ip); // Try it via Sina API
+            }
 
             final JSONObject ret = new JSONObject();
             ret.put(Common.COUNTRY, "中国");
