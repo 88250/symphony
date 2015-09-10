@@ -72,6 +72,6 @@ public class MarkdownsTestCase {
         final String md = IOUtils.toString(new FileReader(mdResource.getPath()));
         final String html = Markdowns.toHTML(md);
         
-        System.out.println(html);
+        // System.out.println(html);
     }
 }
