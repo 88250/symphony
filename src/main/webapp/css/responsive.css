@@ -49,22 +49,24 @@
 
     .wrapper {
         display: block;
-        width: 95%;
-        min-width: 310px;
+        padding: 0 10px;
+        min-width: 300px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .main {
         padding: 0.5rem 0;
     }
-    
+
     .wrapper .side {
         margin-top: 2rem;
     }
-    
+
     .icon-up {
-        bottom: 88px;
+        bottom: 92px;
     }
-    
+
     .wrapper .tags > li:hover > span {
         border-bottom-style: solid;
         border-radius: 3px;
@@ -83,7 +85,7 @@
         right: 0;
     }
 
-    
+
     /* article */
     .list .avatar {
         height: 25px;
@@ -105,10 +107,11 @@
         border-left-width: 0;
         padding: 0;
     }
-    
+
     /* home */
-    .points .name {
-        padding: 0;
+    .wrapper .points .name {
+        padding: 10px 0;
+        font-size: 12px;
     }
 
     .wrapper .tab > li.current {
@@ -122,16 +125,16 @@
     }
 
     .wrapper.pre-post a {
-        width: 100%;
-        font-size: 20px;
-        margin: 12px 0;
-        padding: 20px 0;
+        display: block;
+        font-size: 16px;
+        margin: 15px auto;
+        padding: 20px 50px;
         background-color: #f8f8f8;
     }
 
     .wrapper.pre-post a div {
-        font-size: 25px;
-        margin-bottom: 20px;
+        font-size: 20px;
+        margin-bottom: 10px;
     }
     /* end itself */
 

@@ -8,7 +8,7 @@
         <#list topBalanceUsers as user>
         <li>
             <div class="fn-flex">
-                <a rel="nofollow" class="responsive-hide"
+                <a rel="nofollow"
                    href="/member/${user.userName}" 
                    title="${user.userName}"><img class="avatar" src="${user.userAvatarURL}-64.jpg?${user.userUpdateTime}" /></a>
                 <div class="has-view fn-flex-1">

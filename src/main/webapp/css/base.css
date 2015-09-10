@@ -409,6 +409,7 @@ textarea {
     white-space: nowrap;
     display: inline-block;
     margin-top: 5px;
+    line-height: 16px;
 }
 
 .tag:hover {
@@ -1090,7 +1091,7 @@ a[class*=" icon-"]:hover {
 .list h2 {
     font-size: 16px;
     font-weight: normal;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
     line-height: 21px;
 }
 

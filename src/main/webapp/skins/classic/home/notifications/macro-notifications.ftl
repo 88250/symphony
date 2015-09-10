@@ -13,7 +13,7 @@
         <#include "../../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="side responsive-show">
+                <div class="responsive-show">
                     <ul class="tab fn-clear">
                         <li<#if type == "commented"> class="current"</#if>>
                             <a href="/notifications/commented">

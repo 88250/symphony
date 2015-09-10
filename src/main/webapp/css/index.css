@@ -365,7 +365,7 @@
 .tags > li > span {
     float: left;
     padding: 3px 10px;
-    border: 1px solid #FFF;
+    border: 1px solid transparent;
     position: relative;
     height: 20px;
     white-space: nowrap;
@@ -425,7 +425,7 @@
 }
 
 .tag-articles .title .fn-right {
-    margin-top: 18px;
+    margin-top: 15px;
 }
 /* end side tags */
 
