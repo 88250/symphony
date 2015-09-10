@@ -9,7 +9,7 @@
             <form class="responsive-hide" target="_blank" action="http://search.hacpai.com/cse/search">
                 <span class="icon-search"></span>
                 <input class="search" type="text" name="q">
-                <input type="hidden" value="140632643792102269" name="s">
+                <input type="hidden" value="11228953646196486415" name="s">
                 <input type="hidden" name="cc" value="hacpai.com">
                 <input type="submit" class="fn-none" value="">
             </form>
