@@ -114,6 +114,11 @@ public final class Comment {
      * Key of comment article title.
      */
     public static final String COMMENT_T_ARTICLE_TITLE = "commentArticleTitle";
+    
+    /**
+     * Key of comment article type.
+     */
+    public static final String COMMENT_T_ARTICLE_TYPE = "commentArticleType";
 
     /**
      * Key of comment article author name.
