@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.5.11, Sep 9, 2015
+ * @version 1.7.5.12, Sep 10, 2015
  */
 
 /* start reset */
@@ -34,7 +34,6 @@ body {
     font-size: 14px;
     background-color: #F8F8F8;
     color: #333;
-    overflow-x: hidden;
 }
 
 ::-moz-selection {

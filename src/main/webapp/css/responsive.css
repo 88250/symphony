@@ -18,9 +18,9 @@
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.6, Sep 9, 2015
+ * @version 1.0.1.7, Sep 10, 2015
  */
-@media (max-width: 1040px) {
+@media (max-width: 1200px) {
     .person-info .avatar {
         display: none;
     }
@@ -44,30 +44,27 @@
     /* start itself */
     /* framework */
     .nav {
-        height: 84px;
+        height: auto;
     }
 
     .wrapper {
         display: block;
-        width: 100%;
+        width: 95%;
         min-width: 310px;
     }
 
     .main {
         padding: 0.5rem 0;
     }
+    
     .wrapper .side {
-        margin-top: 0.5rem;
+        margin-top: 2rem;
     }
+    
     .icon-up {
         bottom: 88px;
     }
-
-    .footer,
-    .nav {
-        padding: 0.5rem;
-    }
-
+    
     .wrapper .tags > li:hover > span {
         border-bottom-style: solid;
         border-radius: 3px;
@@ -75,10 +72,6 @@
 
 
     /* header */
-    .nav .user-nav {
-        float: left;
-    }
-
     .nav div > a.current {
         border-bottom: 0;
         padding-bottom: 11px;
@@ -87,9 +80,32 @@
 
     .nav .form {
         top: 89px;
+        right: 0;
+    }
+
+    
+    /* article */
+    .list .avatar {
+        height: 25px;
+        width: 25px;
+    }
+
+    .wrapper .tag-artile-user {
+        margin: 0.5rem 0 0.5rem 0.5rem;
+    }
+
+    .tag-artile-user .avatar {
+        height: 45px;
+        width: 45px;
     }
 
 
+    /* register */
+    .wrapper.register .intro {
+        border-left-width: 0;
+        padding: 0;
+    }
+    
     /* home */
     .points .name {
         padding: 0;
@@ -117,29 +133,6 @@
         font-size: 25px;
         margin-bottom: 20px;
     }
-
-    /* article */
-    .list .avatar {
-        height: 25px;
-        width: 25px;
-    }
-
-    .wrapper .tag-artile-user {
-        margin: 0.5rem 0 0.5rem 0.5rem;
-    }
-
-    .tag-artile-user .avatar {
-        height: 45px;
-        width: 45px;
-    }
-
-
-    /* register */
-    .wrapper.register .intro {
-        border-left-width: 0;
-        margin: 0 0.5rem;
-        padding: 0;
-    }
     /* end itself */
 
     .responsive-show,
@@ -154,17 +147,12 @@
 
     .content, 
     .side,
+    .register .form,
+    .post .form,
+    .wrapper.register .intro,
     .nav .head-fn,
     .nav .user-nav {
-        width: 95%;
-    }
-
-    .content, 
-    .side,
-    .register .form,
-    .post .form {
-        flex-basis: 100%;
-        margin: 0 0.5rem;
+        width: 100%;
     }
 
     .article-title,
