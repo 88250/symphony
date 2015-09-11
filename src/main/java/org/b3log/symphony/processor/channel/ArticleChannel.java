@@ -15,7 +15,6 @@
  */
 package org.b3log.symphony.processor.channel;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +54,7 @@ import org.jsoup.Jsoup;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.1, Sep 6, 2015
+ * @version 1.2.4.1, Sep 11, 2015
  * @since 1.3.0
  */
 @WebSocket
@@ -196,12 +195,8 @@ public class ArticleChannel {
                 continue;
             }
 
-            try {
-                if (session.isOpen()) {
-                    session.getRemote().sendString(msgStr);
-                }
-            } catch (final IOException e) {
-                LOGGER.log(Level.ERROR, "Notify article heat error", e);
+            if (session.isOpen()) {
+                session.getRemote().sendStringByFuture(msgStr);
             }
         }
     }
@@ -279,7 +274,7 @@ public class ArticleChannel {
                 }
 
                 if (session.isOpen()) {
-                    session.getRemote().sendString(msgStr);
+                    session.getRemote().sendStringByFuture(msgStr);
                 }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Notify comment error", e);

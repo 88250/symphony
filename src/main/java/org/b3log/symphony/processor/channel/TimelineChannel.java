@@ -21,7 +21,6 @@ import java.util.Set;
 import javax.servlet.annotation.WebServlet;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -37,7 +36,7 @@ import org.json.JSONObject;
  * Timeline channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 18, 2015
+ * @version 1.0.1.0, Sep 11, 2015
  * @since 1.3.0
  */
 @WebSocket
@@ -111,12 +110,8 @@ public class TimelineChannel {
 
         synchronized (SESSIONS) {
             for (final Session session : SESSIONS) {
-                try {
-                    if (session.isOpen()) {
-                        session.getRemote().sendString(msgStr);
-                    }
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Notify comment error", e);
+                if (session.isOpen()) {
+                    session.getRemote().sendStringByFuture(msgStr);
                 }
             }
         }
