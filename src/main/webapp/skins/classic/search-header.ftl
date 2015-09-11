@@ -8,26 +8,43 @@
     </head>
     <body style="background-color: #FFF;">
         <div class="nav"> 
-            <div class="wrapper" style="margin-left: 66px">
-                <h1><a target="_blank" rel="nofollow" href="/">Sym</a></h1>
-                <span class="tags">
-                    <#list navTrendTags as trendTag>
-                    <a target="_blank" rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
-                    </#list>
-                </span>
+            <div class="wrapper fn-clear" style="margin-left: 66px">
+                <div class="head-fn fn-clear">
+                    <h1 class="fn-left">
+                        <a href="/" target="_blank">
+                            <img src="${staticServePath}/images/hacpai.png" alt="${symphonyLabel}" title="${symphonyLabel}" width="42" class="fn-pointer" />
+                        </a>
+                    </h1>
+                    <form class="responsive-hide" target="_blank" action="http://search.hacpai.com/cse/search">
+                        <span class="icon-search"></span>
+                        <input class="search" type="text" name="q">
+                        <input type="hidden" value="140632643792102269" name="s">
+                        <input type="hidden" name="cc" value="hacpai.com">
+                        <input type="submit" class="fn-none" value="">
+                    </form>
+                    <div class="fn-right">
+                        <a target="_blank" href="/timeline" class="icon-clock last" title="${timelineLabel}"></a>
+                        <#if isLoggedIn>
+                        <a target="_blank" href="/city/my" class="icon-compass" title="${sameCityLabel}"></a>
+                        </#if>
+                        <a target="_blank" href="/recent" class="icon-refresh" title="${recentArticleLabel}"></a>
+                    </div>
+                </div>
                 <div class="fn-clear user-nav">
                     <#if isLoggedIn>
-                    <a target="_blank" id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon-logout"></a>
+                    <a id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon-logout"></a>
                     <#if "adminRole" == userRole>
-                    <a target="_blank" href="/admin" title="${adminLabel}" class="icon-setting"></a>
+                    <a target="_blank" href="/admin" title="${adminLabel}" class="icon-userrole"></a>
                     </#if>
-                    <a target="_blank" id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
+                    <a target="_blank" href="/settings" title="${settingsLabel}" class="icon-setting"></a>
+                    <a target="_blank" href="/activities" title="${activityLabel}" class="icon-flag"></a>
                     <a target="_blank" href="/pre-post" title="${addArticleLabel}" 
                        class="icon-addfile"></a>
+                    <a target="_blank" id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
                     <#else>
-                    <a target="_blank" href="/register" class="last icon-register" 
+                    <a target="_blank" id="aRegister" href="javascript:Util.goRegister()" class="last icon-register" 
                        title="${registerLabel}"></a>
-                    <a href="javascript: Util.showLogin();" class="icon-login" title="${loginLabel}"></a>
+                    <a target="_blank" href="javascript: Util.showLogin();" class="icon-login" title="${loginLabel}"></a>
                     <div class="form fn-none">
                         <table cellspacing="0" cellpadding="0">
                             <tr>
@@ -36,9 +53,7 @@
                                 </td>
                                 <td>
                                     <input id="nameOrEmail" type="text" placeholder="${nameOrEmailLabel}" />
-                                    <span style="top: 28px; left: 246px;"></span>
                                 </td>
-                                <td>&nbsp;</td>
                             </tr>
                             <tr>
                                 <td>
@@ -46,13 +61,11 @@
                                 </td>
                                 <td>
                                     <input type="password" id="loginPassword" />
-                                    <span style="top: 83px; left: 246px;"></span>
                                 </td>
-                                <td>&nbsp;</td>
                             </tr>
                             <tr>
-                                <td colspan="3" align="right">
-                                    <span id="loginTip" style="right: 82px; top: 126px;"></span>
+                                <td colspan="2" align="right">
+                                    <div id="loginTip" class="tip"></div><br/>
                                     <button class="red" onclick="Util.login()">${loginLabel}</button>
                                 </td>
                             </tr>
@@ -60,26 +73,25 @@
                     </div>
                     </#if>
                 </div>
+
             </div>
+
         </div>
-        <div class="footer" style="margin-top: 54px;border-top-width: 0;border-bottom: 1px solid #e0e0e0;padding-bottom: 54px;">
-            <div class="wrapper" style="margin-left: 66px">
-                <div>
-                    <a target="_blank" href="http://b3log.org" target="_blank"><img src="http://b3log.org/images/b3log.png" alt="b3log" width="48" /></a>
-                    &nbsp;
-                    <a target="_blank" href="https://wide.b3log.org" target="_blank"><img src="http://b3log.org/images/wide.png" alt="wide" width="48" /></a>
-                    &nbsp; &nbsp; &nbsp; &nbsp;
-                </div>
+        <div class="footer" style="margin-top: 63px;border-top-width: 0;border-bottom: 1px solid #e0e0e0;padding-bottom: 63px;">
+            <div class="wrapper">
                 <div class="fn-flex-1">
                     <div class="footer-nav fn-clear">
-                        <a target="_blank" rel="help" href="/about">${aboutLabel}</a> 
-                        <a target="_blank" rel="help" href="/tags/系统公告">${symAnnouncementLabel}</a>
-                        <a target="_blank" rel="help" href="/tags/Q%26A">${qnaLabel}</a>
+                        <a target="_blank" rel="help" href="http://hacpai.com/article/1440573175609">${aboutLabel}</a>
+                        <a target="_blank" class="responsive-hide" href="/timeline">${timelineLabel}</a>
+                        <#if isLoggedIn><a target="_blank" class="responsive-hide" href="/city/my">${sameCityLabel}</a></#if>
+                        <a target="_blank" href="/tags/系统公告">${symAnnouncementLabel}</a>
+                        <a target="_blank" href="/tags/Q%26A">${qnaLabel}</a>
                         <a target="_blank" href="/tags" class="last">${tagLabel}</a>
-                        <span class="fn-right">${visionLabel}</span>
+
+                        <div class="fn-right">${visionLabel}</div>
                     </div>
                     <div class="fn-clear">
-                        <div class="fn-left info">
+                        <div class="fn-left info responsive-hide">
                             <span class="ft-gray">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c} &nbsp;
                             <span class="ft-gray">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
                             <span class="ft-gray">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
@@ -89,8 +101,8 @@
                         </div>
                         <div class="fn-right">
                             <span class="ft-gray">&COPY; ${year} </span>
-                            <a rel="copyright" href="http://hacpai.com" target="_blank">hacpai.com</a>
-                            <span class="ft-gray">${version} · ${elapsed?c}ms</span>
+                            <a target="_blank" rel="copyright" href="http://hacpai.com" target="_blank">hacpai.com</a>
+                            <span class="ft-gray">${version} • ${elapsed?c}ms</span>
                         </div>
                     </div>
                 </div>
