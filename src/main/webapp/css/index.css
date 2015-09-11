@@ -94,6 +94,10 @@
     color: #4183C4;
 }
 
+.article-info .tag {
+    margin-top: 0;
+}
+
 #comments > h2 {
     padding-bottom: 5px;
     border-bottom: 1px solid #CCCCCC;

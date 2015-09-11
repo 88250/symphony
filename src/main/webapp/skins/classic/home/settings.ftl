@@ -116,8 +116,9 @@
             ${syncWithSymphonyClientLabel}
            <input id="syncWithSymphonyClient" <#if currentUser.syncWithSymphonyClient> checked="checked"</#if> type="checkbox" /> 
         </label>
-
+        
         <br/><br/>
+        <div class="fn-clear"></div>
         <div id="syncb3Tip" class="tip"></div><br/>
         <button class="green fn-right" onclick="Settings.update('sync/b3', '${csrfToken}')">${saveLabel}</button>
     </div>
