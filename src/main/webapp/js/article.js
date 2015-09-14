@@ -321,6 +321,7 @@ var Article = {
                 console.log(units[0]);
             }, 1000);
         }
+        
     }
 };
 
