@@ -53,6 +53,12 @@
 
             <label>${articleTimeLabel}</label>
             <input type="text" value="${user.userLatestArticleTime?number_to_datetime}" readonly="readonly" />
+
+            <label>${checkinStreakLabel}</label>
+            <input type="text" value="${user.userCurrentCheckinStreak}" readonly="readonly" />
+
+            <label>${checkinStreakPart0Label}</label>
+            <input type="text" value="${user.userLongestCheckinStreak}" readonly="readonly" />
         </div>
     </div>
     <div class="module">

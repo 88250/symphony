@@ -168,13 +168,15 @@ public class ActivityMgmtService {
             final int longestStreakDays
                     = (int) ((longestStreakEndDate.getTime() - longestStreakStartDate.getTime()) / 86400000) + 1;
 
+            user.put(UserExt.USER_CURRENT_CHECKIN_STREAK, currentStreakDays);
+            user.put(UserExt.USER_LONGEST_CHECKIN_STREAK, longestStreakDays);
+
             if (longestStreakDays < currentStreakDays) {
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_START, currentStreakStart);
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_END, currentStreakEnd);
-            }
 
-            user.put(UserExt.USER_LONGEST_CHECKIN_STREAK, longestStreakDays);
-            user.put(UserExt.USER_CURRENT_CHECKIN_STREAK, currentStreakDays);
+                user.put(UserExt.USER_LONGEST_CHECKIN_STREAK, currentStreakDays);
+            }
 
             userMgmtService.updateUser(userId, user);
 
