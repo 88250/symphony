@@ -7,6 +7,10 @@
         <@head title="${symphonyLabel} - ${pointLabel}${balanceLabel}${rankingLabel}">
         </@head>
         </#if>
+        <#if type == "checkin">
+        <@head title="${symphonyLabel} - ${checkinTopLabel}${rankingLabel}">
+        </@head>
+        </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/responsive${miniPostfix}.css?${staticResourceVersion}" />
     </head>

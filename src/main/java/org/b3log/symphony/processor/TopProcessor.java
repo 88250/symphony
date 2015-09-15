@@ -30,6 +30,7 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
@@ -38,14 +39,13 @@ import org.json.JSONObject;
 /**
  * Top ranking list processor.
  *
- * <p>
  * <ul>
  * <li>Top balance (/top/balance), GET</li>
+ * <li>Top checkin (/top/checkin), GET</li>
  * </ul>
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 1, 2015
+ * @version 1.1.0.0, Sep 13, 2015
  * @since 1.3.0
  */
 @RequestProcessor
@@ -62,6 +62,12 @@ public class TopProcessor {
      */
     @Inject
     private PointtransferQueryService pointtransferQueryService;
+
+    /**
+     * Activity query service.
+     */
+    @Inject
+    private ActivityQueryService activityQueryService;
 
     /**
      * Shows balance ranking list.
@@ -85,6 +91,36 @@ public class TopProcessor {
 
         final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(Symphonys.getInt("topBalanceCnt"));
         dataModel.put(Common.TOP_BALANCE_USERS, users);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+        filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
+    }
+
+    /**
+     * Shows checkin ranking list.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/top/checkin", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showCheckin(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+
+        renderer.setTemplateName("/top/checkin.ftl");
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final List<JSONObject> users = activityQueryService.getTopCheckinUsers(Symphonys.getInt("topCheckinCnt"));
+        dataModel.put(Common.TOP_CHECKIN_USERS, users);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);

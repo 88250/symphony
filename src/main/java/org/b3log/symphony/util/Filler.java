@@ -297,8 +297,6 @@ public class Filler {
         dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);
 
         dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedinToday(userId));
-
-        activityMgmtService.fillCheckinStreak(curUser);
     }
 
     /**

@@ -17,8 +17,9 @@
 </table>
 
 <div class="fn-left" style="margin: 25px 0 10px">
-    <font style="color: black;">♠</font> <a href="/top/balance">${pointLabel}${balanceLabel}${rankingLabel}</a>
+    <font style="color: black;">♠</font> <a href="/top/balance">${pointLabel}${balanceLabel}</a>
     <font style="color: red;">♥</font> <a href="/charge/point">${chargePointLabel}</a>
+    <font style="color: black;">♣</font> <a href="/top/checkin">${checkinTopLabel}</a>
 </div>
 <@pagination url="/member/${user.userName}/points"/>
 </@home>

@@ -473,6 +473,8 @@ public class UserMgmtService {
             user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_END, 0);
             user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_START, 0);
             user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_END, 0);
+            user.put(UserExt.USER_LONGEST_CHECKIN_STREAK, 0);
+            user.put(UserExt.USER_CURRENT_CHECKIN_STREAK, 0);
             user.put(UserExt.USER_POINT, 0);
             user.put(UserExt.USER_TAGS, "");
             user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName")); // TODO: set default skin by app role

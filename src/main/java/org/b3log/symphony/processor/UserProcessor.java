@@ -59,7 +59,6 @@ import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
-import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
@@ -170,12 +169,6 @@ public class UserProcessor {
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
-
-    /**
-     * Activity management service.
-     */
-    @Inject
-    private ActivityMgmtService activityMgmtService;
 
     /**
      * Notification management service.
@@ -1147,6 +1140,5 @@ public class UserProcessor {
      */
     private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
         dataModel.put(User.USER, user);
-        activityMgmtService.fillCheckinStreak(user);
     }
 }

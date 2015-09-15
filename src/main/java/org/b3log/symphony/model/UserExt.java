@@ -81,6 +81,16 @@ public final class UserExt {
     public static final String USER_CURRENT_CHECKIN_STREAK_END = "userCurrentCheckinStreakEnd";
 
     /**
+     * Key of user longest checkin streak.
+     */
+    public static final String USER_LONGEST_CHECKIN_STREAK = "userLongestCheckinStreak";
+
+    /**
+     * Key of user current checkin streak.
+     */
+    public static final String USER_CURRENT_CHECKIN_STREAK = "userCurrentCheckinStreak";
+
+    /**
      * Key of user article count.
      */
     public static final String USER_ARTICLE_COUNT = "userArticleCount";
@@ -186,16 +196,6 @@ public final class UserExt {
     public static final String USER_APP_ROLE = "userAppRole";
 
     //// Transient ////
-    /**
-     * Key of user longest checkin streak.
-     */
-    public static final String USER_T_LONGEST_CHECKIN_STREAK = "userLongestCheckinStreak";
-
-    /**
-     * Key of user current checkin streak.
-     */
-    public static final String USER_T_CURRENT_CHECKIN_STREAK = "userCurrentCheckinStreak";
-
     /**
      * Key of user create time.
      */

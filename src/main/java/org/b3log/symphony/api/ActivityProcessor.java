@@ -88,11 +88,6 @@ public class ActivityProcessor {
         final JSONObject checkedinUser = userQueryService.getUserByEmail(email);
         final int balance = checkedinUser.optInt(UserExt.USER_POINT);
         
-        activityMgmtService.fillCheckinStreak(checkedinUser);
-        
-        final int streak = checkedinUser.optInt(UserExt.USER_T_CURRENT_CHECKIN_STREAK);
-        final int streaked = checkedinUser.optInt(UserExt.USER_T_LONGEST_CHECKIN_STREAK);
-        
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
@@ -100,8 +95,8 @@ public class ActivityProcessor {
         final JSONObject checkin = new JSONObject();
         checkin.put("balance", balance);
         checkin.put("reward", checkinReward);
-        checkin.put("streak", streak);
-        checkin.put("streaked", streaked);
+        checkin.put("streak", checkedinUser.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK));
+        checkin.put("streaked", checkedinUser.optInt(UserExt.USER_LONGEST_CHECKIN_STREAK));
         ret.put("checkin", checkin);
     }
 }

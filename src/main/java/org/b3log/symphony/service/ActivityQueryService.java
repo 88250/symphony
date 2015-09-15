@@ -15,14 +15,23 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import org.apache.commons.lang.time.DateUtils;
+import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -30,7 +39,7 @@ import org.json.JSONObject;
  * Activity query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Jul 23, 2015
+ * @version 1.3.0.0, Sep 13, 2015
  * @since 1.3.0
  */
 @Service
@@ -42,10 +51,55 @@ public class ActivityQueryService {
     private static final Logger LOGGER = Logger.getLogger(ActivityQueryService.class.getName());
 
     /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+
+    /**
      * Pointtransfer query service.
      */
     @Inject
     private PointtransferQueryService pointtransferQueryService;
+
+    /**
+     * Avatar query service.
+     */
+    @Inject
+    private AvatarQueryService avatarQueryService;
+
+    /**
+     * Gets the top checkin users with the specified fetch size.
+     *
+     * @param fetchSize the specified fetch size
+     * @return users, returns an empty list if not found
+     */
+    public List<JSONObject> getTopCheckinUsers(final int fetchSize) {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        final Query query = new Query().addSort(UserExt.USER_LONGEST_CHECKIN_STREAK, SortDirection.DESCENDING).
+                setCurrentPageNum(1).setPageSize(fetchSize);
+        try {
+            final JSONObject result = userRepository.get(query);
+            final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            for (final JSONObject user : users) {
+                if (UserExt.USER_APP_ROLE_C_HACKER == user.optInt(UserExt.USER_APP_ROLE)) {
+                    user.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(user.optInt(UserExt.USER_POINT)));
+                } else {
+                    user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
+                }
+
+                avatarQueryService.fillUserAvatarURL(user);
+
+                ret.add(user);
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets top checkin users error", e);
+        }
+
+        return ret;
+    }
 
     /**
      * Does checkin today?

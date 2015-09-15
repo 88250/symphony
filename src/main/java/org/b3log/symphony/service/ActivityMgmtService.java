@@ -98,44 +98,6 @@ public class ActivityMgmtService {
     private TimelineMgmtService timelineMgmtService;
 
     /**
-     * Fills checkin streak of the specified user.
-     *
-     * @param user the specified user
-     */
-    public void fillCheckinStreak(final JSONObject user) {
-        final int currentStreakStart = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_START);
-        final int currentStreakEnd = user.optInt(UserExt.USER_CURRENT_CHECKIN_STREAK_END);
-        final int longestStreakStart = user.optInt(UserExt.USER_LONGEST_CHECKIN_STREAK_START);
-        final int longestStreakEnd = user.optInt(UserExt.USER_LONGEST_CHECKIN_STREAK_END);
-
-        int currentStreakDays = 0;
-        int longestStreakDays = 0;
-
-        if (0 != currentStreakStart && 0 != currentStreakEnd && 0 != longestStreakStart && 0 != longestStreakEnd) {
-            try {
-                final Date currentStreakStartDate
-                        = DateUtils.parseDate(String.valueOf(currentStreakStart), new String[]{"yyyyMMdd"});
-                final Date currentStreakEndDate
-                        = DateUtils.parseDate(String.valueOf(currentStreakEnd), new String[]{"yyyyMMdd"});
-                final Date longestStreakStartDate
-                        = DateUtils.parseDate(String.valueOf(longestStreakStart), new String[]{"yyyyMMdd"});
-                final Date longestStreakEndDate
-                        = DateUtils.parseDate(String.valueOf(longestStreakEnd), new String[]{"yyyyMMdd"});
-
-                currentStreakDays
-                        = (int) ((currentStreakEndDate.getTime() - currentStreakStartDate.getTime()) / 86400000) + 1;
-                longestStreakDays
-                        = (int) ((longestStreakEndDate.getTime() - longestStreakStartDate.getTime()) / 86400000) + 1;
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Parses checkin streak error", e);
-            }
-        }
-
-        user.put(UserExt.USER_T_LONGEST_CHECKIN_STREAK, longestStreakDays);
-        user.put(UserExt.USER_T_CURRENT_CHECKIN_STREAK, currentStreakDays);
-    }
-
-    /**
      * Daily checkin.
      *
      * @param userId the specified user id
@@ -210,6 +172,9 @@ public class ActivityMgmtService {
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_START, currentStreakStart);
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_END, currentStreakEnd);
             }
+
+            user.put(UserExt.USER_LONGEST_CHECKIN_STREAK, longestStreakDays);
+            user.put(UserExt.USER_CURRENT_CHECKIN_STREAK, currentStreakDays);
 
             userMgmtService.updateUser(userId, user);
 
