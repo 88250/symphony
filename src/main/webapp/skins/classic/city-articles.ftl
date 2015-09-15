@@ -16,7 +16,7 @@
                     <div class="fn-clear title">
                         <#if userGeoStatus && cityFound>
                         <h2>
-                            <a title="${city?url('UTF-8')}" href="/city/${city?url('utf-8')}">${city}</a>
+                            ${city}
                         </h2>
                         </#if>
                     </div>
