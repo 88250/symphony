@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.6, Sep 8, 2015
+ * @version 1.1.2.6, Sep 17, 2015
  * @since 0.2.0
  */
 @Named
@@ -124,7 +124,14 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final ArticleMgmtService articleMgmtService = beanManager.getReference(ArticleMgmtService.class);
 
+        articleTags = articleTags.replaceAll("B3log Announcement", "B3logAnnouncement").
+                replaceAll("B3log Broadcast", "B3logBroadcast"); // compatible with legacy systems
+        
         articleTags = articleTags.replaceAll("\\s+", ",");
+        
+        articleTags = articleTags.replaceAll("B3logAnnouncement", "B3log Announcement").
+                replaceAll("B3logBroadcast", "B3log Broadcast");
+        
         articleTags = articleMgmtService.formatArticleTags(articleTags);
 
         String[] tagTitles = articleTags.split(",");
