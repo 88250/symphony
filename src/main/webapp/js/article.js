@@ -315,14 +315,11 @@ var Article = {
         // + 0x1F: Unit Separator (单元分隔符)
 
         var records = articleContent.split("+");
-        for (var i = 0; i < records.length; i++) {
-            var units = records[i].split("-");
-            
-            console.log(units);
-
+        for (var i = 0, j = 0; i < records.length; i++) {
             setTimeout(function () {
+                var units = records[j++].split("-");
                 console.log(units[0]);
-            }, units[1] * 1000);
+            }, 1000);
         }
     }
 };
