@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.10.5, Aug 31, 2015
+ * @version 1.11.10.5, Sep 15, 2015
  */
 
 /**
@@ -128,7 +128,7 @@ var Comment = {
         if (!confirm(tip)) {
             return false;
         }
-        
+
         var requestJSONObject = {
             commentId: id
         };
@@ -147,10 +147,10 @@ var Comment = {
                         $('#' + id + ' .comment-info > .fn-left .ft-smaller:last').
                                 append('&nbsp;<span class="icon-heart ft-smaller ft-fade"></span> <span class="ft-smaller ft-fade">1</span>');
                     } else {
-                         $("#" + id + 'RewardedCnt').text(cnt + 1);
+                        $("#" + id + 'RewardedCnt').text(cnt + 1);
                     }
                 } else {
-                     alert(result.msg);
+                    alert(result.msg);
                 }
             }
         });
@@ -305,8 +305,28 @@ var Article = {
                 }
             });
         }
+    },
+    /**
+     * @description 播放思绪
+     */
+    playThought: function (articleContent) {
+        articleContent = "第一-1+第二-2"
+        // - 0x1E: Record Separator (记录分隔符)
+        // + 0x1F: Unit Separator (单元分隔符)
+
+        var records = articleContent.split("+");
+        for (var i = 0; i < records.length; i++) {
+            var units = records[i].split("-");
+            
+            console.log(units);
+
+            setTimeout(function () {
+                console.log(units[0]);
+            }, units[1] * 1000);
+        }
     }
 };
 
 Article.init();
 Comment.init();
+Article.playThought("");
