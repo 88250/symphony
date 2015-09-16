@@ -310,16 +310,19 @@ var Article = {
      * @description 播放思绪
      */
     playThought: function (articleContent) {
-        articleContent = "第一-1+第二-2"
         // - 0x1E: Record Separator (记录分隔符)
         // + 0x1F: Unit Separator (单元分隔符)
 
-        var records = articleContent.split("+");
+        var records = articleContent.split("-");
         for (var i = 0, j = 0; i < records.length; i++) {
             setTimeout(function () {
-                var units = records[j++].split("-");
-                console.log(units[0]);
-            }, 1000);
+                var units = records[j++].split("+");
+                console.log();
+                
+                var text = units[0].replace("<p>", "").replace("</p>", "");
+                $('.article-content').text($('.article-content').text() + text);
+                
+            }, 1000 + i * 300);
         }
         
     }
@@ -327,4 +330,3 @@ var Article = {
 
 Article.init();
 Comment.init();
-Article.playThought("");

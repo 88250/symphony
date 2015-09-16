@@ -278,6 +278,16 @@ public final class Article {
     public static final int ARTICLE_TYPE_C_THOUGHT = 3;
 
     /**
+     * Checks the specified article type is whether invalid.
+     *
+     * @param articleType the specified article type
+     * @return {@code true} if it is invalid, otherwise returns {@code false}
+     */
+    public static boolean isInvalidArticleType(final int articleType) {
+        return articleType < 0 || articleType > Article.ARTICLE_TYPE_C_THOUGHT;
+    }
+
+    /**
      * Private constructor.
      */
     private Article() {

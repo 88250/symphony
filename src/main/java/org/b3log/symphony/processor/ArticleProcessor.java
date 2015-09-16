@@ -289,7 +289,7 @@ public class ArticleProcessor {
                 LOGGER.log(Level.WARN, "Gets article type error [" + type + "]", e);
             }
 
-            if (articleType < 0 || articleType > Article.ARTICLE_TYPE_C_CITY_BROADCAST) {
+            if (Article.isInvalidArticleType(articleType)) {
                 articleType = Article.ARTICLE_TYPE_C_NORMAL;
             }
 

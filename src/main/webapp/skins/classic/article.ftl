@@ -96,7 +96,9 @@
                         </span>
                     </div>
                     <div class="content-reset article-content">
+                        <#if 3 != article.articleType>
                         ${article.articleContent}
+                        </#if>
                     </div>
                     <div class="fn-clear">
                         <div class="share fn-right">
@@ -255,7 +257,7 @@
                     Label.articlePermalink = "${article.articlePermalink}";
                     Label.recordDeniedLabel = "${recordDeniedLabel}";
                     Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-                    Label.csrfToken = "${csrfToken}";</script>
+                    Label.csrfToken = "${csrfToken}";        </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js"></script>
@@ -292,6 +294,8 @@
                     var qiniuDomain = '${qiniuDomain}';
                     var audioRecordingLabel = '${audioRecordingLabel}';
                     var uploadingLabel = '${uploadingLabel}';
+                    
+                    Article.playThought('${article.articleContent}');        
         </script>
     </body>
 </html>

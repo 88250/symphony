@@ -23,6 +23,10 @@
                     <div class="icon-feed"></div>
                     ${cityBroadcastLabel}
                 </a>
+                <a href="/post?type=3">
+                    <div class="icon-feed"></div>
+                    ${thoughtLabel}
+                </a>
             </div>
         </div>
         <#include "../footer.ftl">

@@ -112,7 +112,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         }
         
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE);
-        if (articleType < 0 || articleType > Article.ARTICLE_TYPE_C_CITY_BROADCAST) {
+        if (Article.isInvalidArticleType(articleType)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTypeErrorLabel")));
         }
 

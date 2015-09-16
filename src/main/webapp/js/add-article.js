@@ -35,23 +35,23 @@ var AddArticle = {
      * @csrfToken [string] CSRF 令牌
      */
     add: function (id, csrfToken) {
-        if (Validate.goValidate({target: $('#addArticleTip'), 
+        if (Validate.goValidate({target: $('#addArticleTip'),
             data: [{
-                "type": "string",
-                "max": 256,
-                "msg": Label.articleTitleErrorLabel,
-                "target": $('#articleTitle')
-            }, {
-                "type": "editor",
-                "target": this.editor,
-                "max": 1048576,
-                "min": 4,
-                "msg": Label.articleContentErrorLabel
-            }, {
-                "type": "tags",
-                "msg": Label.tagsErrorLabel,
-                "target": $('#articleTags')
-            }]})) {
+                    "type": "string",
+                    "max": 256,
+                    "msg": Label.articleTitleErrorLabel,
+                    "target": $('#articleTitle')
+                }, {
+                    "type": "editor",
+                    "target": this.editor,
+                    "max": 1048576,
+                    "min": 4,
+                    "msg": Label.articleContentErrorLabel
+                }, {
+                    "type": "tags",
+                    "msg": Label.tagsErrorLabel,
+                    "target": $('#articleTags')
+                }]})) {
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g, ""),
                 articleContent: this.editor.getValue(),
@@ -64,6 +64,10 @@ var AddArticle = {
             },
             url = "/article", type = "POST";
     
+            if (3 === parseInt(requestJSONObject.articleType)) { // 如果文章是“思绪”
+                requestJSONObject.articleContent = window.localStorage.thoughtContent;
+            }
+
             if (id) {
                 url = url + "/" + id;
                 type = "PUT";
@@ -82,9 +86,10 @@ var AddArticle = {
                     $(".form button.red").removeAttr("disabled").css("opacity", "1");
                     if (result.sc) {
                         window.location = "/member/" + Label.userName;
-                        
+
                         if (window.localStorage) {
                             window.localStorage.articleContent = "";
+                            window.localStorage.thoughtContent = "";
                         }
                     } else {
                         $("#addArticleTip").addClass('error').html('<ul><li>' + result.msg + '</li></ul>');
@@ -117,10 +122,14 @@ var AddArticle = {
                 }
             }
         });
-        
+
         if (window.localStorage && window.localStorage.articleContent && "" === AddArticle.editor.getValue()
                 && "" !== window.localStorage.articleContent.replace(/(^\s*)|(\s*$)/g, "")) {
             AddArticle.editor.setValue(window.localStorage.articleContent);
+        }
+        
+        if (!window.localStorage.thoughtContent) {
+            window.localStorage.thoughtContent = "";
         }
 
         AddArticle.editor.on('keydown', function (cm, evt) {
@@ -142,16 +151,33 @@ var AddArticle = {
             }
         });
 
-        AddArticle.editor.on('changes', function (cm) {
+        AddArticle.editor.on('changes', function (cm, changes) {
             if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
                 $(".form .green").show();
             } else {
                 $(".form .green").hide();
             }
-            
+
             if (window.localStorage) {
                 window.localStorage.articleContent = cm.getValue();
             }
+
+            // - 0x1E: Record Separator (记录分隔符)
+            // + 0x1F: Unit Separator (单元分隔符)
+
+            var change = "";
+            switch (changes[0].origin) {
+                case "+input":
+                    change = changes[0].text + "+" + "1" + "-";
+
+                    break;
+                case "+delete":
+                    break;
+                case "*compose":
+                    break;
+            }
+
+            window.localStorage.thoughtContent += change; 
         });
 
         $("#articleTitle, #articleTags, #articleRewardPoint").keypress(function (event) {
