@@ -71,10 +71,12 @@
                             <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/> 
                                    ${cityBroadcastLabel}
                         </label>
+                        <!--
                         <label> &nbsp;
                             <input tabindex="9" type="radio" name="articleType" <#if 3 == articleType>checked="checked"</#if> value="3"/> 
                                    ${thoughtLabel}
                         </label>
+                        -->
                         <#else>
                         <#if 1 == article.articleType>
                         <label> &nbsp;
