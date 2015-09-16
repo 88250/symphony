@@ -78,6 +78,7 @@ var Util = {
             });
             return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
         });
+        
         CodeMirror.registerHelper("hint", "emoji", function (cm) {
             var word = /[\w$]+/;
             var cur = cm.getCursor(), curLine = cm.getLine(cur.line);
@@ -111,18 +112,21 @@ var Util = {
 
             return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
         });
+        
         CodeMirror.commands.autocompleteUserName = function (cm) {
             setTimeout(function () {
                 cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
             }, 50);
             return CodeMirror.Pass;
         };
+        
         CodeMirror.commands.autocompleteEmoji = function (cm) {
             setTimeout(function () {
                 cm.showHint({hint: CodeMirror.hint.emoji, completeSingle: false});
             }, 50);
             return CodeMirror.Pass;
         };
+        
         CodeMirror.commands.startAudioRecord = function (cm) {
             if (!Audio.availabel) {
                 Audio.init();
@@ -135,6 +139,7 @@ var Util = {
                 cm.replaceRange(audioRecordingLabel, cursor, cursor);
             }
         };
+        
         CodeMirror.commands.endAudioRecord = function (cm) {
             if (!Audio.availabel) {
                 return;
@@ -174,6 +179,7 @@ var Util = {
                     }
                 });
             };
+            
             // trigger the read from the reader...
             reader.readAsDataURL(blob);
         };
