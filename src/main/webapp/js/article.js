@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.10.5, Sep 15, 2015
+ * @version 1.11.10.6, Sep 16, 2015
  */
 
 /**
@@ -313,10 +313,10 @@ var Article = {
         // - 0x1E: Record Separator (记录分隔符)
         // + 0x1F: Unit Separator (单元分隔符)
 
-        var records = articleContent.split("-");
+        var records = articleContent.split("".charCodeAt(0));
         for (var i = 0, j = 0; i < records.length; i++) {
             setTimeout(function () {
-                var units = records[j++].split("+");
+                var units = records[j++].split("".charCodeAt(0));
                 console.log();
                 
                 var text = units[0].replace("<p>", "").replace("</p>", "");

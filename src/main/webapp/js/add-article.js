@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.5.2, Sep 8, 2015
+ * @version 1.9.5.3, Sep 16, 2015
  */
 
 /**
@@ -168,7 +168,7 @@ var AddArticle = {
             var change = "";
             switch (changes[0].origin) {
                 case "+input":
-                    change = changes[0].text + "+" + "1" + "-";
+                    change = changes[0].text + String.fromCharCode(0x1F) + "1" + String.fromCharCode(0x1E);
 
                     break;
                 case "+delete":
