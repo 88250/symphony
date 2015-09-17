@@ -326,38 +326,41 @@ var Article = {
                         lines = article.split('<br>'),
                         texts = text.split(""),
                         result = '';
-
+                from[0] = parseInt(from[0]);
+                from[1] = parseInt(from[1]);
+                to[0] = parseInt(to[0]);
+                to[1] = parseInt(to[1]);
 
                 if (units.length === 5) {
                     // remove
                     var removeLines = [];
                     for (var n = from[1], m = 0; n <= to[1]; n++, m++) {
                         if (n === from[1]) {
-                            lines[n] = lines[n].substring(0, from[0] - 1) +
-                                    lines[n].substr(from[0] - 1 + texts[m]);
+                            lines[n] = lines[n].substr(from[0]) +
+                                    lines[n].substr(from[0] + texts[m].length);
                         } else if (n === to[1]) {
-                            lines[n] = lines[n].substring(0, to[0] - 1) +
-                                    lines[n].substr(to[0] - 1 + texts[m]);
+                            lines[n] = lines[n].substr(to[0]) +
+                                    lines[n].substr(to[0] + texts[m] ? texts[m].length : 0);
                         } else {
-                            removeLines[n];
+                            removeLines.push(n);
                         }
                     }
                     for (var o = 0; o < removeLines.length; o++) {
-                        lines.split(removeLines[o] - o, 1);
+                        lines.splice(removeLines[o] - o, 1);
                     }
                 } else {
+                    var tHTML = '';
                     for (var l = 0; l < texts.length; l++) {
                         if (l === texts.length - 1) {
-                            text += texts[l];
+                            tHTML += texts[l];
                         } else {
-                            text += texts[l] + '<br>';
+                            tHTML += texts[l] + '<br>';
                         }
                     }
 
-                    lines[from[1]] = lines[from[1]].substring(0, from[0]) + text
+                    lines[from[1]] = lines[from[1]].substring(0, from[0]) + tHTML
                             + lines[from[1]].substr(from[0]);
                 }
-                console.log(lines);
                 for (var k = 0; k < lines.length; k++) {
                     result += lines[k] + '<br>';
                 }

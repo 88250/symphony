@@ -294,6 +294,9 @@
                     var qiniuDomain = '${qiniuDomain}';
                     var audioRecordingLabel = '${audioRecordingLabel}';
                     var uploadingLabel = '${uploadingLabel}';
+                    <#if 3 == article.articleType>
+                    Article.playThought('${article.articleContent}');
+                    </#if>
         </script>
     </body>
 </html>
