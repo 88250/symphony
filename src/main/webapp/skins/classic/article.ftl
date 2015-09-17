@@ -294,8 +294,6 @@
                     var qiniuDomain = '${qiniuDomain}';
                     var audioRecordingLabel = '${audioRecordingLabel}';
                     var uploadingLabel = '${uploadingLabel}';
-                    
-                    Article.playThought('${article.articleContent}');        
         </script>
     </body>
 </html>
