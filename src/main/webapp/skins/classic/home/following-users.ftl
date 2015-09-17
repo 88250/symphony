@@ -29,7 +29,7 @@
                     <a class="ft-gray" target="_blank" rel="friend" href="${followingUser.userURL?html}">${followingUser.userURL?html}</a>
                     <#else>
                     <span class="ft-gray">${symphonyLabel}</span>
-                    ${followingUser.userNo}
+                    ${followingUser.userNo?c}
                     <span class="ft-gray">${numVIPLabel}</span>
                     </#if>
                     <#else>
