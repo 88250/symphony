@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.7.12, Sep 7, 2015
+ * @version 1.12.8.12, Sep 17, 2015
  */
 
 /**
@@ -445,6 +445,12 @@ var Util = {
      * @description 跳转到注册页面
      */
     goRegister: function () {
+        if (-1 !== location.href.indexOf("/register")) {
+            window.location.reload();
+            
+            return;
+        }
+        
         window.location = "/register?goto=" + encodeURIComponent(location.href);
     },
     /**
