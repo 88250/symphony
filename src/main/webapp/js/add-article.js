@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.5.3, Sep 16, 2015
+ * @version 1.9.6.3, Sep 17, 2015
  */
 
 /**
@@ -63,7 +63,7 @@ var AddArticle = {
                 articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")
             },
             url = "/article", type = "POST";
-    
+
             if (3 === parseInt(requestJSONObject.articleType)) { // 如果文章是“思绪”
                 requestJSONObject.articleContent = window.localStorage.thoughtContent;
             }
@@ -127,7 +127,7 @@ var AddArticle = {
                 && "" !== window.localStorage.articleContent.replace(/(^\s*)|(\s*$)/g, "")) {
             AddArticle.editor.setValue(window.localStorage.articleContent);
         }
-        
+
         if (!window.localStorage.thoughtContent) {
             window.localStorage.thoughtContent = "";
         }
@@ -162,22 +162,50 @@ var AddArticle = {
                 window.localStorage.articleContent = cm.getValue();
             }
 
+            if (!window.localStorage.thoughtContent) {
+                window.localStorage.thoughtContent = '';
+            }
+
             // - 0x1E: Record Separator (记录分隔符)
             // + 0x1F: Unit Separator (单元分隔符)
 
-            var change = "";
+            var change = "",
+                    unitSep = String.fromCharCode(0x1F);
             switch (changes[0].origin) {
-                case "+input":
-                    change = changes[0].text + String.fromCharCode(0x1F) + "1" + String.fromCharCode(0x1E);
-
-                    break;
                 case "+delete":
+                    for (var i = 0; i < changes[0].text.length; i++) {
+                        if (i === changes[0].text.length - 1) {
+                            change += changes[0].text[i];
+                        } else {
+                            change += changes[0].text[i] + String.fromCharCode(127); // delete line
+                        }
+                    }
+
+                    change += unitSep + "10"
+                            + unitSep + changes[0].from.ch + '-' + changes[0].from.line
+                            + unitSep + changes[0].to.ch + '-' + changes[0].to.line
+                            + unitSep + 'remove'
+                            + String.fromCharCode(0x1E);
                     break;
                 case "*compose":
+                case "+input":
+                default:
+                    for (var i = 0; i < changes[0].text.length; i++) {
+                        if (i === changes[0].text.length - 1) {
+                            change += changes[0].text[i];
+                        } else {
+                            change += changes[0].text[i] + String.fromCharCode(127); // new line
+                        }
+                    }
+
+                    change += unitSep + "10"
+                            + unitSep + changes[0].from.ch + '-' + changes[0].from.line
+                            + unitSep + changes[0].to.ch + '-' + changes[0].to.line
+                            + String.fromCharCode(0x1E);
                     break;
             }
 
-            window.localStorage.thoughtContent += change; 
+            window.localStorage.thoughtContent += change;
         });
 
         $("#articleTitle, #articleTags, #articleRewardPoint").keypress(function (event) {

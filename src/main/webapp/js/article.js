@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.10.6, Sep 16, 2015
+ * @version 1.11.12.6, Sep 17, 2015
  */
 
 /**
@@ -313,18 +313,59 @@ var Article = {
         // - 0x1E: Record Separator (记录分隔符)
         // + 0x1F: Unit Separator (单元分隔符)
 
-        var records = articleContent.split("".charCodeAt(0));
-        for (var i = 0, j = 0; i < records.length; i++) {
+        var records = articleContent.split("");
+        for (var i = 0, j = 0; i < records.length - 1; i++) {
             setTimeout(function () {
-                var units = records[j++].split("".charCodeAt(0));
-                console.log();
-                
-                var text = units[0].replace("<p>", "").replace("</p>", "");
-                $('.article-content').text($('.article-content').text() + text);
-                
+                var units = records[j++].split("");
+
+                var text = units[0].replace("<p>", "").replace("</p>", ""),
+                        from = units[2].split('-'),
+                        to = units[3].split('-'),
+                        time = units[1],
+                        article = $.trim($('.article-content').html()),
+                        lines = article.split('<br>'),
+                        texts = text.split(""),
+                        result = '';
+
+
+                if (units.length === 5) {
+                    // remove
+                    var removeLines = [];
+                    for (var n = from[1], m = 0; n <= to[1]; n++, m++) {
+                        if (n === from[1]) {
+                            lines[n] = lines[n].substring(0, from[0] - 1) +
+                                    lines[n].substr(from[0] - 1 + texts[m]);
+                        } else if (n === to[1]) {
+                            lines[n] = lines[n].substring(0, to[0] - 1) +
+                                    lines[n].substr(to[0] - 1 + texts[m]);
+                        } else {
+                            removeLines[n];
+                        }
+                    }
+                    for (var o = 0; o < removeLines.length; o++) {
+                        lines.split(removeLines[o] - o, 1);
+                    }
+                } else {
+                    for (var l = 0; l < texts.length; l++) {
+                        if (l === texts.length - 1) {
+                            text += texts[l];
+                        } else {
+                            text += texts[l] + '<br>';
+                        }
+                    }
+
+                    lines[from[1]] = lines[from[1]].substring(0, from[0]) + text
+                            + lines[from[1]].substr(from[0]);
+                }
+                console.log(lines);
+                for (var k = 0; k < lines.length; k++) {
+                    result += lines[k] + '<br>';
+                }
+                $('.article-content').html(result.slice(0, result.length - 4));
+
             }, 1000 + i * 300);
         }
-        
+
     }
 };
 
