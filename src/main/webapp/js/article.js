@@ -314,62 +314,56 @@ var Article = {
         // + 0x1F: Unit Separator (单元分隔符)
 
         var records = articleContent.split("");
-        for (var i = 0, j = 0; i < records.length - 1; i++) {
+        for (var i = 0, j = 0; i < records.length; i++) {
             setTimeout(function () {
-                var units = records[j++].split("");
-
-                var text = units[0].replace("<p>", "").replace("</p>", ""),
+                if (!$('.article-content').data('text')) {
+                    $('.article-content').data('text', '');
+                }
+                var units = records[j++].split(""),
+                        srcLinesContent = units[0],
+                        time = units[1],
                         from = units[2].split('-'),
                         to = units[3].split('-'),
-                        time = units[1],
-                        article = $.trim($('.article-content').html()),
-                        lines = article.split('<br>'),
-                        texts = text.split(""),
-                        result = '';
+                        articleLinesList = $('.article-content').data('text').split(String.fromCharCode(10));
                 from[0] = parseInt(from[0]);
                 from[1] = parseInt(from[1]);
                 to[0] = parseInt(to[0]);
                 to[1] = parseInt(to[1]);
 
-                if (text === "") {
+                if (srcLinesContent === "") {
                     // remove
                     var removeLines = [];
                     for (var n = from[1], m = 0; n <= to[1]; n++, m++) {
                         if (from[1] === to[1]) {
-                            lines[n] = lines[n].substring(0, from[0]) +
-                                    lines[n].substr(to[0]);
+                            articleLinesList[n] = articleLinesList[n].substring(0, from[0]) +
+                                    articleLinesList[n].substr(to[0]);
                             break;
                         }
                         
                         if (n === from[1]) {
-                            lines[n] = lines[n].substr(0, from[0]);
+                            articleLinesList[n] = articleLinesList[n].substr(0, from[0]);
                         } else if (n === to[1]) {
-                            lines[from[1]] += lines[n].substr(to[0]);
-                            lines.splice(n, 1);
+                            articleLinesList[from[1]] += articleLinesList[n].substr(to[0]);
+                            articleLinesList.splice(n, 1);
                         } else {
                             removeLines.push(n);
                         }
                     }
                     for (var o = 0; o < removeLines.length; o++) {
-                        lines.splice(removeLines[o] - o, 1);
+                        articleLinesList.splice(removeLines[o] - o, 1);
                     }
                 } else {
-                    var tHTML = '';
-                    for (var l = 0; l < texts.length; l++) {
-                        if (l === texts.length - 1) {
-                            tHTML += texts[l];
-                        } else {
-                            tHTML += texts[l] + '<br>';
-                        }
-                    }
-
-                    lines[from[1]] = lines[from[1]].substring(0, from[0]) + tHTML
-                            + lines[from[1]].substr(from[0]);
+                    articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) + srcLinesContent
+                            + articleLinesList[from[1]].substr(from[0]);
                 }
-                for (var k = 0; k < lines.length; k++) {
-                    result += lines[k] + '<br>';
-                }
-                $('.article-content').html(result.slice(0, result.length - 4));
+                
+                
+                var articleText = articleLinesList.join(String.fromCharCode(10));
+                var articleHTML = articleText.replace(/\n/g, "<br>")
+                        .replace(/ /g, "&nbsp;")
+                        .replace(/	/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
+                
+                $('.article-content').data('text', articleText).html(articleHTML);
 
             }, 1000 + i * 300);
         }

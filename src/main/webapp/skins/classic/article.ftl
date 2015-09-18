@@ -87,7 +87,7 @@
                                 <span class="icon-chevron-down"></span></span>
                             </#if>
 
-                            <#if article.isMyArticle>
+                            <#if article.isMyArticle && 3 != article.articleType>
                             &nbsp;
                             <a href="/update?id=${article.oId}" title="${editLabel}" class="icon-edit"></a>
                             &nbsp;
@@ -296,9 +296,9 @@
                     var qiniuDomain = '${qiniuDomain}';
                     var audioRecordingLabel = '${audioRecordingLabel}';
                     var uploadingLabel = '${uploadingLabel}';
-                    < #if 3 == article.articleType >
+                    <#if 3 == article.articleType >
                     Article.playThought('${article.articleContent}');
-                    < /#if>
+                    </#if>
         </script>
     </body>
 </html>

@@ -66,6 +66,9 @@ import org.b3log.symphony.util.Times;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Article query service.
@@ -1177,8 +1180,23 @@ public class ArticleQueryService {
      */
     private void markdown(final JSONObject article) {
         String content = article.optString(Article.ARTICLE_CONTENT);
-        content = Markdowns.toHTML(content);
-        content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+        
+        final int articleType = article.optInt(Article.ARTICLE_TYPE);
+        if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+            content = Markdowns.toHTML(content);
+            content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+        } else {
+            final Document.OutputSettings outputSettings = new Document.OutputSettings();
+            outputSettings.prettyPrint(false);
+
+            content = Jsoup.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK),
+                    Whitelist.relaxed().addAttributes(":all", "id", "target", "class").
+                addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
+                .addAttributes("audio", "controls", "src"), outputSettings);
+            
+            content = content.replace("\n", "\\n");
+        }
+        
         article.put(Article.ARTICLE_CONTENT, content);
 
         if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {

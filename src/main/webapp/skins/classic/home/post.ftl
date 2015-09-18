@@ -64,6 +64,10 @@
                                    ${articleLabel}
                         </label>
                         <label> &nbsp;
+                            <input tabindex="9" type="radio" name="articleType" <#if 3 == articleType>checked="checked"</#if> value="3"/> 
+                                   ${thoughtLabel}
+                        </label>
+                        <label> &nbsp;
                             <input tabindex="7" type="radio" name="articleType" <#if 1 == articleType>checked="checked"</#if> value="1"/> 
                                    ${discussionLabel}
                         </label>
@@ -71,23 +75,6 @@
                             <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/> 
                                    ${cityBroadcastLabel}
                         </label>
-                        <label> &nbsp;
-                            <input tabindex="9" type="radio" name="articleType" <#if 3 == articleType>checked="checked"</#if> value="3"/> 
-                                   ${thoughtLabel}
-                        </label>
-                        <#else>
-                        <#if 1 == article.articleType>
-                        <label> &nbsp;
-                            <input tabindex="7" disabled="disabled" checked="checked" type="radio" name="articleType" value="1"/> 
-                            ${discussionLabel}
-                        </label>
-                        </#if>
-                        <#if 2 == article.articleType>
-                        <label> &nbsp;
-                            <input tabindex="8" disabled="disabled" checked="checked" type="radio" name="articleType" value="2"/> 
-                            ${cityBroadcastLabel}
-                        </label>
-                        </#if>
                         </#if>
                     </div>
                     <div class="fn-right">

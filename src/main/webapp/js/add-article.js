@@ -193,7 +193,7 @@ var AddArticle = {
                         if (i === changes[0].text.length - 1) {
                             change += changes[0].text[i];
                         } else {
-                            change += changes[0].text[i] + String.fromCharCode(127); // new line
+                            change += changes[0].text[i] + String.fromCharCode(10); // File Separator
                         }
                     }
 
