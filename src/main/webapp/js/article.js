@@ -331,16 +331,21 @@ var Article = {
                 to[0] = parseInt(to[0]);
                 to[1] = parseInt(to[1]);
 
-                if (units.length === 5) {
+                if (text === "") {
                     // remove
                     var removeLines = [];
                     for (var n = from[1], m = 0; n <= to[1]; n++, m++) {
+                        if (from[1] === to[1]) {
+                            lines[n] = lines[n].substring(0, from[0]) +
+                                    lines[n].substr(to[0]);
+                            break;
+                        }
+                        
                         if (n === from[1]) {
-                            lines[n] = lines[n].substr(from[0]) +
-                                    lines[n].substr(from[0] + texts[m].length);
+                            lines[n] = lines[n].substr(0, from[0]);
                         } else if (n === to[1]) {
-                            lines[n] = lines[n].substr(to[0]) +
-                                    lines[n].substr(to[0] + texts[m] ? texts[m].length : 0);
+                            lines[from[1]] += lines[n].substr(to[0]);
+                            lines.splice(n, 1);
                         } else {
                             removeLines.push(n);
                         }

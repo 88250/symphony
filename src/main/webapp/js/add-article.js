@@ -173,18 +173,17 @@ var AddArticle = {
                     unitSep = String.fromCharCode(0x1F);
             switch (changes[0].origin) {
                 case "+delete":
-                    for (var i = 0; i < changes[0].text.length; i++) {
-                        if (i === changes[0].text.length - 1) {
-                            change += changes[0].text[i];
-                        } else {
-                            change += changes[0].text[i] + String.fromCharCode(127); // delete line
-                        }
-                    }
+//                    for (var i = 0; i < changes[0].removed.length; i++) {
+//                        if (i === changes[0].removed.length - 1) {
+//                            change += changes[0].removed[i];
+//                        } else {
+//                            change += changes[0].removed[i] + String.fromCharCode(127); // delete line
+//                        }
+//                    }
 
-                    change += unitSep + "10"
+                    change = String.fromCharCode(24) + unitSep + "10" // cancel
                             + unitSep + changes[0].from.ch + '-' + changes[0].from.line
                             + unitSep + changes[0].to.ch + '-' + changes[0].to.line
-                            + unitSep + 'remove'
                             + String.fromCharCode(0x1E);
                     break;
                 case "*compose":
