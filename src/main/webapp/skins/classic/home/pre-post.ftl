@@ -15,6 +15,10 @@
                     <div class="icon-article"></div>
                     ${articleLabel}
                 </a>
+                <a href="/post?type=3">
+                    <div class="icon-video"></div>
+                    ${thoughtLabel}
+                </a>
                 <a href="/post?type=1">
                     <div class="icon-locked"></div>
                     ${discussionLabel}
@@ -22,10 +26,6 @@
                 <a href="/post?type=2">
                     <div class="icon-feed"></div>
                     ${cityBroadcastLabel}
-                </a>
-                <a href="/post?type=3">
-                    <div class="icon-video"></div>
-                    ${thoughtLabel}
                 </a>
             </div>
         </div>
