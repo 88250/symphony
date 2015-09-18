@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.8.12, Sep 17, 2015
+ * @version 1.13.8.12, Sep 18, 2015
  */
 
 /**
@@ -185,11 +185,16 @@ var Util = {
         };
     },
     /**
-     * @description 鼠标移动到文章列表标题上时，提示文章该文章内容
+     * @description 鼠标移动到文章列表标题上时，显示其开头内容
      */
     initArticlePreview: function () {
         $(".article-list h2 > a").hover(function () {
             var $ele = $(this);
+            
+            if (3 === $ele.data('type')) { // 如果是思绪
+                // 不进行预览
+                return;
+            }
             
             $ele.addClass("previewing");
             
@@ -198,6 +203,7 @@ var Util = {
             $(".article-list .preview").hide();
             if ($li.find('.preview').length === 1) {
                 $li.find('.preview').show();
+                
                 return false;
             }
             
@@ -214,6 +220,7 @@ var Util = {
                         if (!result.sc) {
                             return false;
                         }
+                        
                         $li.append(previewHTML + result.html + '</div>');
                         $li.find('.preview').show();
                     }
