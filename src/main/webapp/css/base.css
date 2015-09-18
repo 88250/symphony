@@ -526,14 +526,17 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
-.icon-locked:before {
-	content: "\e61e";
+.icon-video:before {
+	content: "\f057";
 }
 .icon-feed:before {
 	content: "\e61f";
 }
 .icon-article:before {
 	content: "\e61d";
+}
+.icon-locked:before {
+	content: "\e61e";
 }
 .icon-star:before {
 	content: "\e600";

@@ -24,7 +24,7 @@
                     ${cityBroadcastLabel}
                 </a>
                 <a href="/post?type=3">
-                    <div class="icon-feed"></div>
+                    <div class="icon-video"></div>
                     ${thoughtLabel}
                 </a>
             </div>
