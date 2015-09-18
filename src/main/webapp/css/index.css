@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.8, Sep 9, 2015
+ * @version 1.2.5.8, Sep 18, 2015
  */
 /* start module */
 .index-module .index-module-list > li {
@@ -98,6 +98,18 @@
     margin-top: 0;
 }
 
+#thoughtProgress {
+    height: 2px;
+    position: relative;
+    margin-bottom: 6px;
+}
+
+#thoughtProgress div {
+    position: absolute;
+    background-color: #e0e0e0;
+    height: 2px
+}
+
 #comments > h2 {
     padding-bottom: 5px;
     border-bottom: 1px solid #CCCCCC;
@@ -159,14 +171,15 @@
     height: 67px;
 }
 
-.share .icon {
+.share [class^="icon-"] {
     cursor: pointer;
     transition: all 0.2s ease-out 0s;
+    -webkit-transition: all 0.2s ease-out 0s;
     display: inline-block;
     font-size: 16px;
 }
 
-.share .icon:hover {
+.share [class^="icon-"]:hover {
     transform: rotate(360deg);
     -webkit-transform: rotate(360deg);
     color: #4183c4;
@@ -425,7 +438,7 @@
 }
 
 .tag-articles h1.fn-inline {
-	line-height: 37px;
+    line-height: 37px;
 }
 
 .tag-articles p.description {

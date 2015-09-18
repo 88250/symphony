@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* global Validate */
+
 /**
  * @fileoverview article page and add comment.
  *
@@ -308,6 +310,7 @@ var Article = {
     },
     /**
      * @description 播放思绪
+     * @param {string} articleContent 记录过程
      */
     playThought: function (articleContent) {
         // - 0x1E: Record Separator (记录分隔符)
@@ -321,7 +324,6 @@ var Article = {
                 }
                 var units = records[j++].split(""),
                         srcLinesContent = units[0],
-                        time = units[1],
                         from = units[2].split('-'),
                         to = units[3].split('-'),
                         articleLinesList = $('.article-content').data('text').split(String.fromCharCode(10));
@@ -339,7 +341,7 @@ var Article = {
                                     articleLinesList[n].substr(to[0]);
                             break;
                         }
-                        
+
                         if (n === from[1]) {
                             articleLinesList[n] = articleLinesList[n].substr(0, from[0]);
                         } else if (n === to[1]) {
@@ -356,18 +358,31 @@ var Article = {
                     articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) + srcLinesContent
                             + articleLinesList[from[1]].substr(from[0]);
                 }
-                
-                
+
+
                 var articleText = articleLinesList.join(String.fromCharCode(10));
                 var articleHTML = articleText.replace(/\n/g, "<br>")
                         .replace(/ /g, "&nbsp;")
                         .replace(/	/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
-                
+
                 $('.article-content').data('text', articleText).html(articleHTML);
 
-            }, 1000 + i * 300);
+            }, 1000 + parseInt(records[i].split("")[1]));
         }
 
+        // timeline
+        var currentTime = 0,
+                amountTime = parseInt(records[i-1].split("")[1]) + 300;
+        var interval = setInterval(function () {
+            if (currentTime >= amountTime) {
+                $('#thoughtProgress div').width('100%');
+                clearInterval(interval);
+            } else {
+                currentTime += 50;
+                $('#thoughtProgress div').width((currentTime * 100 / amountTime) + '%');
+            }
+
+        }, 50);
     }
 };
 

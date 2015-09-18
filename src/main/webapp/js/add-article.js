@@ -150,7 +150,8 @@ var AddArticle = {
                 }
             }
         });
-
+        
+        var thoughtTime = '';
         AddArticle.editor.on('changes', function (cm, changes) {
             if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
                 $(".form .green").show();
@@ -165,23 +166,20 @@ var AddArticle = {
             if (!window.localStorage.thoughtContent) {
                 window.localStorage.thoughtContent = '';
             }
+            
+            if (thoughtTime === '') {
+                thoughtTime = (new Date()).getTime();
+            }
 
             // - 0x1E: Record Separator (记录分隔符)
             // + 0x1F: Unit Separator (单元分隔符)
-
+            
             var change = "",
-                    unitSep = String.fromCharCode(0x1F);
+                    unitSep = String.fromCharCode(0x1F),
+                    time = (new Date()).getTime() - thoughtTime;
             switch (changes[0].origin) {
                 case "+delete":
-//                    for (var i = 0; i < changes[0].removed.length; i++) {
-//                        if (i === changes[0].removed.length - 1) {
-//                            change += changes[0].removed[i];
-//                        } else {
-//                            change += changes[0].removed[i] + String.fromCharCode(127); // delete line
-//                        }
-//                    }
-
-                    change = String.fromCharCode(24) + unitSep + "10" // cancel
+                    change = String.fromCharCode(24) + unitSep + time // cancel
                             + unitSep + changes[0].from.ch + '-' + changes[0].from.line
                             + unitSep + changes[0].to.ch + '-' + changes[0].to.line
                             + String.fromCharCode(0x1E);
@@ -197,7 +195,7 @@ var AddArticle = {
                         }
                     }
 
-                    change += unitSep + "10"
+                    change += unitSep + time
                             + unitSep + changes[0].from.ch + '-' + changes[0].from.line
                             + unitSep + changes[0].to.ch + '-' + changes[0].to.line
                             + String.fromCharCode(0x1E);

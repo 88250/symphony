@@ -97,11 +97,14 @@
                             </#if>
                         </span>
                     </div>
-                    <div class="content-reset article-content">
-                        <#if 3 != article.articleType>
-                        ${article.articleContent}
-                        </#if>
-                    </div>
+
+                    <#if 3 != article.articleType>
+                    <div class="content-reset article-content">${article.articleContent}</div>
+                    <#else>
+                    <div id="thoughtProgress"><div></div></div>
+                    <div class="content-reset article-content"></div>
+                    </#if>
+
                     <div class="fn-clear">
                         <div class="share fn-right">
                             <span class="icon-tencent" data-type="tencent"></span>
