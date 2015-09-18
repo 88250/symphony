@@ -7,7 +7,7 @@ Sym 是一个用 Java 写的实时社区。
 * 原始创意请看[这里](http://hacpai.com/b3log)
 * 细节特性请看[这里](http://hacpai.com/article/1440573175609)
 
-> 黑客派是使用 Sym 搭建的，欢迎[加入](http://hacpai.com/register?r=Vanessa)！
+> 黑客派是使用 Sym 搭建的，欢迎[**加入**](http://hacpai.com/register?r=Vanessa)！
 
 ## 安装
 
