@@ -315,6 +315,8 @@ var Article = {
     playThought: function (articleContent) {
         // - 0x1E: Record Separator (记录分隔符)
         // + 0x1F: Unit Separator (单元分隔符)
+        
+        var fast = 2;
 
         var records = articleContent.split("");
         for (var i = 0, j = 0; i < records.length; i++) {
@@ -367,12 +369,12 @@ var Article = {
 
                 $('.article-content').data('text', articleText).html(articleHTML);
 
-            }, 1000 + parseInt(records[i].split("")[1]));
+            }, parseInt(records[i].split("")[1]) / fast);
         }
 
-        // timeline
+        // progress
         var currentTime = 0,
-                amountTime = parseInt(records[i-1].split("")[1]) + 300;
+                amountTime = parseInt(records[i-1].split("")[1]) / fast + 300;
         var interval = setInterval(function () {
             if (currentTime >= amountTime) {
                 $('#thoughtProgress div').width('100%');
