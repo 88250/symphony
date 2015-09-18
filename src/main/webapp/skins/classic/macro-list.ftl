@@ -12,10 +12,12 @@
                    title="${article.articleAuthorName}"><img class="avatar" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" /></a>
                 <div class="fn-flex-1 has-view">
                     <h2>
-                        <#if article.articleType == 1>
+                        <#if 1 == article.articleType>
                         <span class="icon-locked" title="${discussionLabel}"></span>
-                        <#elseif article.articleType == 2>
+                        <#elseif 2 == article.articleType>
                         <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                        <#elseif 3 == article.articleType>
+                        <span class="icon-video" title="${thoughtLabel}"></span>
                         </#if>
                         <a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
                     </h2>

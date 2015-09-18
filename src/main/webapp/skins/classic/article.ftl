@@ -67,10 +67,12 @@
                                title="${article.articleAuthorName}">
                                 <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" />
                             </a> &nbsp;
-                            <#if article.articleType == 1>
+                            <#if 1 == article.articleType>
                             <span class="icon-locked" title="${discussionLabel}"></span>
-                            <#elseif article.articleType == 2>
+                            <#elseif 2 == article.articleType>
                             <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                            <#elseif 3 == article.articleType>
+                            <span class="icon-video" title="${thoughtLabel}"></span>
                             </#if>
                             <a href="${article.articlePermalink}" rel="bookmark">
                                 ${article.articleTitleEmoj}
@@ -257,7 +259,7 @@
                     Label.articlePermalink = "${article.articlePermalink}";
                     Label.recordDeniedLabel = "${recordDeniedLabel}";
                     Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-                    Label.csrfToken = "${csrfToken}";        </script>
+                    Label.csrfToken = "${csrfToken}";</script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js"></script>
@@ -294,9 +296,9 @@
                     var qiniuDomain = '${qiniuDomain}';
                     var audioRecordingLabel = '${audioRecordingLabel}';
                     var uploadingLabel = '${uploadingLabel}';
-                    <#if 3 == article.articleType>
+                    < #if 3 == article.articleType >
                     Article.playThought('${article.articleContent}');
-                    </#if>
+                    < /#if>
         </script>
     </body>
 </html>

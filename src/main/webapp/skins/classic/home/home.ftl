@@ -7,10 +7,12 @@
         <li>
             <div class="has-view">
                 <h2>
-                    <#if article.articleType == 1>
+                    <#if 1 == article.articleType>
                     <span class="icon-locked" title="${discussionLabel}"></span>
-                    <#elseif article.articleType == 2>
+                    <#elseif 2 == article.articleType>
                     <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                    <#elseif 3 == article.articleType>
+                    <span class="icon-video" title="${thoughtLabel}"></span>
                     </#if>
                     <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>

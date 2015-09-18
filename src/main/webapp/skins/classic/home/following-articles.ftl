@@ -11,11 +11,13 @@
             </a>
             <div class="fn-flex-1 has-view">
                 <h2>
-                     <#if article.articleType == 1>
-                        <span class="icon-locked" title="${discussionLabel}"></span>
-                        <#elseif article.articleType == 2>
-                        <span class="icon-feed" title="${cityBroadcastLabel}"></span>
-                        </#if>
+                    <#if 1 == article.articleType>
+                    <span class="icon-locked" title="${discussionLabel}"></span>
+                    <#elseif 2 == article.articleType>
+                    <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                    <#elseif 3 == article.articleType>
+                    <span class="icon-video" title="${thoughtLabel}"></span>
+                    </#if>
                     <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
                 <span class="ft-gray">
