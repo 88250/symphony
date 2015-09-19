@@ -31,6 +31,10 @@ Sym 是一个用 Java 写的实时社区。
 
 用户注册时是启用邮件验证的，如果需要修改请参考相关代码。
 
+## 商用授权
+
+请看[这里](https://github.com/b3log/symphony/wiki/%E5%95%86%E7%94%A8%E6%8E%88%E6%9D%83)。
+
 ## Terms
 
 * This software is open sourced under the Apache License 2.0
