@@ -987,7 +987,7 @@ public class UserProcessor {
             return;
         }
 
-        LOGGER.log(Level.INFO, "Prepare sync user from host {0}", clientHost);
+        LOGGER.log(Level.INFO, "Prepare sync user from host [{0}]", clientHost);
         
         final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
         if (isIPv4(maybeIP)) {
