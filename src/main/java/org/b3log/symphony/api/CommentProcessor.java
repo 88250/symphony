@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
@@ -39,6 +40,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.UserExt;
@@ -57,7 +59,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://wdx.me">DX</a>
- * @version 1.0.0.0, Aug 4, 2015
+ * @version 1.0.0.1, Sep 19, 2015
  * @since 1.3.0
  */
 @RequestProcessor
@@ -125,9 +127,11 @@ public class CommentProcessor {
         if (auth == null) {//TODO validate
             return;
         }
+
         final String email = new JSONObject(auth.substring("Bearer ".length())).optString("userEmail");
         final String httpBody = getBody(request);
         final String content = httpBody.substring("comment[body]=".length());
+        final String ip = Requests.getRemoteAddr(request);
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
@@ -138,6 +142,10 @@ public class CommentProcessor {
         final JSONObject comment = new JSONObject();
         comment.put(Comment.COMMENT_CONTENT, content);
         comment.put(Comment.COMMENT_ON_ARTICLE_ID, id);
+        comment.put(Comment.COMMENT_IP, "");
+        if (StringUtils.isNotBlank(ip)) {
+            comment.put(Comment.COMMENT_IP, ip);
+        }
 
         try {
             final JSONObject currentUser = userQueryService.getUserByEmail(email);

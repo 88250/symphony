@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "2.11.4.3, Sep 13, 2015",
+    "version": "2.12.4.3, Sep 19, 2015",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
@@ -243,6 +243,11 @@
                     "name": "commentStatus",
                     "type": "int",
                     "description": "0: valid, 1: invalid"
+                },
+                {
+                    "name": "commentIP",
+                    "type": "String",
+                    "length": 128
                 }
             ]
         },
@@ -513,7 +518,7 @@
                 {
                     "name": "userLatestLoginIP",
                     "type": "String",
-                    "length": 32
+                    "length": 128
                 },
                 {
                     "name": "userAppRole",
@@ -700,6 +705,11 @@
                     "name": "articleCity",
                     "type": "String",
                     "length": 32
+                },
+                {
+                    "name": "articleIP",
+                    "type": "String",
+                    "length": 128
                 }
             ]
         },

@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.5.15, Sep 1, 2015
+ * @version 1.7.5.16, Sep 19, 2015
  * @since 0.2.0
  */
 @Service
@@ -123,7 +123,7 @@ public class CommentMgmtService {
      */
     @Inject
     private RewardQueryService rewardQueryService;
-    
+
     /**
      * Notification management service.
      */
@@ -193,15 +193,15 @@ public class CommentMgmtService {
             reward.put(Reward.TYPE, Reward.TYPE_C_COMMENT);
 
             rewardMgmtService.addReward(reward);
-            
+
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, receiverId);
             notification.put(Notification.NOTIFICATION_DATA_ID, rewardId);
-            
+
             notificationMgmtService.addCommentThankNotification(notification);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Thanks a comment[id=" + commentId + "] failed", e);
-            
+
             throw new ServiceException(e);
         }
     }
@@ -220,7 +220,8 @@ public class CommentMgmtService {
      *     "commentAuthorName": "" // If from client
      *     "commenter": {
      *         // User model
-     *     }
+     *     },
+     *     "commentIP": "" // optional, default to ""
      * }
      * </pre>, see {@link Comment} for more details
      *
@@ -233,6 +234,7 @@ public class CommentMgmtService {
         final String commentAuthorId = requestJSONObject.optString(Comment.COMMENT_AUTHOR_ID);
         final boolean fromClient = requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID);
         final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
+        final String ip = requestJSONObject.optString(Comment.COMMENT_IP);
 
         if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
                 && !Role.ADMIN_ROLE.equals(commenter.optString(User.USER_ROLE))
@@ -299,10 +301,10 @@ public class CommentMgmtService {
             content = Emotions.toAliases(content);
 
             comment.put(Comment.COMMENT_CONTENT, content);
-
             comment.put(Comment.COMMENT_CREATE_TIME, System.currentTimeMillis());
             comment.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "#" + ret);
-            comment.put(Comment.COMMENT_STATUS, 0);
+            comment.put(Comment.COMMENT_STATUS, Comment.COMMENT_STATUS_C_VALID);
+            comment.put(Comment.COMMENT_IP, ip);
 
             final JSONObject cmtCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
             final int cmtCnt = cmtCntOption.optInt(Option.OPTION_VALUE);

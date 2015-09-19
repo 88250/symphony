@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.12.11, Aug 31, 2015
+ * @version 1.5.12.12, Aug 31, 2015
  * @since 0.2.0
  */
 @Service
@@ -207,6 +207,7 @@ public class ArticleMgmtService {
      *     "articleType": int, // optional, default to 0
      *     "articleRewardContent": "", // optional, default to ""
      *     "articleRewardPoint": int, // optional, default to 0
+     *     "articleIP": "" // optional, default to ""
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -311,7 +312,11 @@ public class ArticleMgmtService {
                 city = author.optString(UserExt.USER_CITY);
                 article.put(Article.ARTICLE_CITY, city);
             }
+
             tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
+
+            final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
+            article.put(Article.ARTICLE_IP, ip);
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
@@ -362,10 +367,10 @@ public class ArticleMgmtService {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
                 }
-                
+
                 if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == articleType) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST, 
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST,
                             Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST, articleId);
                 }
             }
@@ -404,7 +409,8 @@ public class ArticleMgmtService {
      *     "articleCommentable": boolean, // optional, default to true
      *     "articleType": int // optional, default to 0
      *     "articleRewardContent": "", // optional, default to ""
-     *     "articleRewardPoint": int // optional default to 0
+     *     "articleRewardPoint": int, // optional, default to 0
+     *     "articleIP": "" // optional, default to ""
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -459,6 +465,9 @@ public class ArticleMgmtService {
                 oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
                 enableReward = true;
             }
+
+            final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
+            oldArticle.put(Article.ARTICLE_IP, ip);
 
             articleRepository.update(articleId, oldArticle);
 

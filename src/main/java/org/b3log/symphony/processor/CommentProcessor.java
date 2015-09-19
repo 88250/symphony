@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -64,7 +65,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.8, Aug 31, 2015
+ * @version 1.2.1.9, Sep 19, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -144,10 +145,15 @@ public class CommentProcessor {
 
         final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
         final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
+        final String ip = Requests.getRemoteAddr(request);
 
         final JSONObject comment = new JSONObject();
         comment.put(Comment.COMMENT_CONTENT, commentContent);
         comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
+        comment.put(Comment.COMMENT_IP, "");
+        if (StringUtils.isNotBlank(ip)) {
+            comment.put(Comment.COMMENT_IP, ip);
+        }
 
         try {
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
@@ -286,6 +292,7 @@ public class CommentProcessor {
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final JSONObject originalCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
+        final String ip = Requests.getRemoteAddr(request);
 
         final JSONObject defaultCommenter = userQueryService.getDefaultCommenter();
         final JSONObject comment = new JSONObject();
@@ -295,6 +302,10 @@ public class CommentProcessor {
         comment.put(Comment.COMMENT_CONTENT, originalCmt.optString(Comment.COMMENT_CONTENT));
         comment.put(Comment.COMMENT_ON_ARTICLE_ID, article.optString(Keys.OBJECT_ID));
         comment.put(Comment.COMMENT_T_COMMENTER, defaultCommenter);
+        comment.put(Comment.COMMENT_IP, "");
+        if (StringUtils.isNotBlank(ip)) {
+            comment.put(Comment.COMMENT_IP, ip);
+        }
 
         comment.put(Comment.COMMENT_T_AUTHOR_NAME, originalCmt.optString(Comment.COMMENT_T_AUTHOR_NAME));
 

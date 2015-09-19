@@ -107,7 +107,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.10.21, Aug 31, 2015
+ * @version 1.12.10.22, Aug 31, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -478,6 +478,7 @@ public class ArticleProcessor {
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
+        final String ip = Requests.getRemoteAddr(request);
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -487,6 +488,10 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_TYPE, articleType);
         article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
         article.put(Article.ARTICLE_REWARD_POINT, articleRewardPoint);
+        article.put(Article.ARTICLE_IP, "");
+        if (StringUtils.isNotBlank(ip)) {
+            article.put(Article.ARTICLE_IP, ip);
+        }
 
         try {
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -628,6 +633,7 @@ public class ArticleProcessor {
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
+        final String ip = Requests.getRemoteAddr(request);
 
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, id);
@@ -638,6 +644,10 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_TYPE, articleType);
         article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
         article.put(Article.ARTICLE_REWARD_POINT, articleRewardPoint);
+        article.put(Article.ARTICLE_IP, "");
+        if (StringUtils.isNotBlank(ip)) {
+            article.put(Article.ARTICLE_IP, ip);
+        }
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         if (null == currentUser
