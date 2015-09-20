@@ -467,7 +467,7 @@ public class UserQueryService {
         filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.GREATER_THAN_OR_EQUAL, latestTime));
 
         query.setFilter(new CompositeFilter(CompositeFilterOperator.OR, filters));
-        
+
         JSONObject result = null;
 
         try {

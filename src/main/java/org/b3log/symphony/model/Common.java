@@ -523,7 +523,7 @@ public final class Common {
      * Key of top balance users.
      */
     public static final String TOP_BALANCE_USERS = "topBalanceUsers";
-    
+
     /**
      * Key of top checkin users.
      */

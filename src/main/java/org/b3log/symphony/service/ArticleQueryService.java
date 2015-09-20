@@ -381,7 +381,7 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles by city [" + city + "] failed", e);
-            
+
             throw new ServiceException(e);
         }
     }
@@ -540,11 +540,11 @@ public class ArticleQueryService {
         try {
             final Query query = new Query().addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
                     addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(fetchSize);
-            
+
             final List<Filter> filters = new ArrayList<Filter>();
             filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
             filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
-            
+
             query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
             final JSONObject result = articleRepository.get(query);
@@ -1180,7 +1180,7 @@ public class ArticleQueryService {
      */
     private void markdown(final JSONObject article) {
         String content = article.optString(Article.ARTICLE_CONTENT);
-        
+
         final int articleType = article.optInt(Article.ARTICLE_TYPE);
         if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
             content = Markdowns.toHTML(content);
@@ -1191,12 +1191,12 @@ public class ArticleQueryService {
 
             content = Jsoup.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK),
                     Whitelist.relaxed().addAttributes(":all", "id", "target", "class").
-                addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
-                .addAttributes("audio", "controls", "src"), outputSettings);
-            
+                    addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
+                    .addAttributes("audio", "controls", "src"), outputSettings);
+
             content = content.replace("\n", "\\n");
         }
-        
+
         article.put(Article.ARTICLE_CONTENT, content);
 
         if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {

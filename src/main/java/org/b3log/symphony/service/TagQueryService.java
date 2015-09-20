@@ -142,7 +142,7 @@ public class TagQueryService {
             throw new ServiceException(e);
         }
     }
-    
+
     /**
      * Gets the new (sort by oId descending) tags.
      *
@@ -223,11 +223,11 @@ public class TagQueryService {
     public JSONObject getCreator(final String tagId) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
-        
+
         final List<Filter> orFilters = new ArrayList<Filter>();
         orFilters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_CREATOR));
         orFilters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_USER_SELF));
-        
+
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, orFilters));
 
         final Query query = new Query().setCurrentPageNum(1).setPageSize(1).setPageCount(1).

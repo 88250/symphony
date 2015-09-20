@@ -136,8 +136,7 @@ public class ArticleProcessor {
 
         ret.put(Article.ARTICLES, articles);
     }
-    
-    
+
     /**
      * Gets articles.with the specified tags.
      *
@@ -155,14 +154,14 @@ public class ArticleProcessor {
         if (Strings.isNumeric(page)) {
             currentPage = Integer.parseInt(page);
         }
-        
+
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         ret.put("stories", this.articleQueryService.getTopArticlesWithComments(currentPage, pageSize));
         renderer.setJSONObject(ret);
     }
-    
+
     /**
      * Gets articles.with the specified tags.
      *
@@ -180,14 +179,14 @@ public class ArticleProcessor {
         if (Strings.isNumeric(page)) {
             currentPage = Integer.parseInt(page);
         }
-        
+
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         ret.put("stories", this.articleQueryService.getRecentArticlesWithComments(currentPage, pageSize));
         renderer.setJSONObject(ret);
     }
-    
+
     /**
      * Gets articles with the specified query.
      *

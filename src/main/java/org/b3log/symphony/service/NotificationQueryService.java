@@ -561,7 +561,7 @@ public class NotificationQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [at] notifications", e);
-            
+
             throw new ServiceException(e);
         }
     }
@@ -671,11 +671,11 @@ public class NotificationQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [followingUser] notifications", e);
-            
+
             throw new ServiceException(e);
         }
     }
-    
+
     /**
      * Gets 'broadcast' type notifications with the specified user id, current page number and page size.
      *
@@ -781,7 +781,7 @@ public class NotificationQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets [broadcast] notifications", e);
-            
+
             throw new ServiceException(e);
         }
     }

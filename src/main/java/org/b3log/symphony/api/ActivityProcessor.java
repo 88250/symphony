@@ -45,7 +45,7 @@ import org.json.JSONObject;
  */
 @RequestProcessor
 public class ActivityProcessor {
-    
+
     /**
      * User query service.
      */
@@ -57,7 +57,7 @@ public class ActivityProcessor {
      */
     @Inject
     private ActivityMgmtService activityMgmtService;
-    
+
     /**
      * Checkin.
      *
@@ -69,25 +69,25 @@ public class ActivityProcessor {
      * @throws ServiceException service exception
      */
     @RequestProcessing(value = "/api/v1/activities/checkin", method = HTTPRequestMethod.POST)
-    public void checkin(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) 
+    public void checkin(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws JSONException, IOException, ServiceException {
         final String auth = request.getHeader("Authorization");
-        if(auth == null){//TODO validate
+        if (auth == null) {//TODO validate
             return;
         }
         final String email = new JSONObject(auth.substring("Bearer ".length())).optString("userEmail");
-        
+
         final JSONObject currentUser = userQueryService.getUserByEmail(email);
         if (null == currentUser) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
-        
+
         final String userId = currentUser.optString(Keys.OBJECT_ID);
         final int checkinReward = activityMgmtService.dailyCheckin(userId);
         final JSONObject checkedinUser = userQueryService.getUserByEmail(email);
         final int balance = checkedinUser.optInt(UserExt.USER_POINT);
-        
+
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();

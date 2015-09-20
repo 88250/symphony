@@ -296,7 +296,7 @@ public class LoginProcessor {
             userMgmtService.addUser(user);
 
             Sessions.login(request, response, user);
-            
+
             final String ip = Requests.getRemoteAddr(request);
             userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
 

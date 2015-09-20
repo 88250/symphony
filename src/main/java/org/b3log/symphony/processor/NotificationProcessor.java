@@ -443,7 +443,7 @@ public class NotificationProcessor {
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
-    
+
     /**
      * Shows [broadcast] notifications.
      *

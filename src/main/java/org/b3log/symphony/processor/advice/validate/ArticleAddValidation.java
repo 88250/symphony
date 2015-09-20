@@ -110,7 +110,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         if (Strings.isEmptyOrNull(articleTitle) || articleTitle.length() > MAX_ARTICLE_TITLE_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
         }
-        
+
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE);
         if (Article.isInvalidArticleType(articleType)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTypeErrorLabel")));
@@ -120,18 +120,18 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         if (Strings.isEmptyOrNull(articleTags)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
         }
-        
+
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final ArticleMgmtService articleMgmtService = beanManager.getReference(ArticleMgmtService.class);
 
         articleTags = articleTags.replaceAll("B3log Announcement", "B3logAnnouncement").
                 replaceAll("B3log Broadcast", "B3logBroadcast"); // compatible with legacy systems
-        
+
         articleTags = articleTags.replaceAll("\\s+", ",");
-        
+
         articleTags = articleTags.replaceAll("B3logAnnouncement", "B3log Announcement").
                 replaceAll("B3logBroadcast", "B3log Broadcast");
-        
+
         articleTags = articleMgmtService.formatArticleTags(articleTags);
 
         String[] tagTitles = articleTags.split(",");

@@ -40,7 +40,7 @@ import org.json.JSONObject;
  */
 @Repository
 public class VoteRepository extends AbstractRepository {
-    
+
     /**
      * Removes vote if it exists.
      *

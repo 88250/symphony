@@ -51,10 +51,10 @@ public final class Sessions {
      */
     private Sessions() {
     }
-    
+
     /**
      * Gets CSRF token from the specified request.
-     * 
+     *
      * @param request the specified request
      * @return CSRF token, returns {@code ""} if not found
      */
@@ -64,12 +64,12 @@ public final class Sessions {
         if (null == session) {
             return "";
         }
-        
+
         final String ret = (String) session.getAttribute(Common.CSRF_TOKEN);
         if (StringUtils.isBlank(ret)) {
             return "";
         }
-        
+
         return ret;
     }
 
@@ -94,7 +94,7 @@ public final class Sessions {
 
         if (null == session) {
             LOGGER.warn("The session is null");
-            
+
             return;
         }
 

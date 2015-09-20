@@ -80,7 +80,7 @@ public class ActivityQueryService {
         final Query query = new Query().addSort(UserExt.USER_LONGEST_CHECKIN_STREAK, SortDirection.DESCENDING).
                 addSort(UserExt.USER_CURRENT_CHECKIN_STREAK, SortDirection.DESCENDING).
                 setCurrentPageNum(1).setPageSize(fetchSize);
-        
+
         try {
             final JSONObject result = userRepository.get(query);
             final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));

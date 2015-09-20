@@ -78,7 +78,7 @@ public final class Comment {
      * Key of comment status.
      */
     public static final String COMMENT_STATUS = "commentStatus";
-    
+
     /**
      * Key of comment IP.
      */
@@ -119,7 +119,7 @@ public final class Comment {
      * Key of comment article title.
      */
     public static final String COMMENT_T_ARTICLE_TITLE = "commentArticleTitle";
-    
+
     /**
      * Key of comment article type.
      */
@@ -144,7 +144,7 @@ public final class Comment {
      * Key of comment article permalink.
      */
     public static final String COMMENT_T_ARTICLE_PERMALINK = "commentArticlePermalink";
-    
+
     /**
      * Key of comment thank label.
      */
