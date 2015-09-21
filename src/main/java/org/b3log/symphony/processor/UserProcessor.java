@@ -988,7 +988,7 @@ public class UserProcessor {
         }
 
         LOGGER.log(Level.INFO, "Prepare sync user from host [{0}]", clientHost);
-        
+
         final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
         if (isIPv4(maybeIP)) {
             LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the client host is invalid",
