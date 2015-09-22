@@ -74,7 +74,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.6.15, Sep 16, 2015
+ * @version 1.10.7.15, Sep 22, 2015
  * @since 0.2.0
  */
 @Service
@@ -1194,7 +1194,8 @@ public class ArticleQueryService {
                     addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
                     .addAttributes("audio", "controls", "src"), outputSettings);
 
-            content = content.replace("\n", "\\n");
+            content = content.replace("\n", "\\n").replace("'", "\\'")
+                    .replace("\"", "\\\"");
         }
 
         article.put(Article.ARTICLE_CONTENT, content);
