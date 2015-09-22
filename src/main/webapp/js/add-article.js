@@ -186,34 +186,38 @@ var AddArticle = {
                 thoughtTime = (new Date()).getTime();
             }
 
-            // - 0x1E: Record Separator (记录分隔符)
-            // + 0x1F: Unit Separator (单元分隔符)
-            
             var change = "",
-                    unitSep = String.fromCharCode(0x1F),
+                    unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
                     time = (new Date()).getTime() - thoughtTime;
+            console.log(changes[0])
             switch (changes[0].origin) {
                 case "+delete":
                     change = String.fromCharCode(24) + unitSep + time // cancel
                             + unitSep + changes[0].from.ch + '-' + changes[0].from.line
                             + unitSep + changes[0].to.ch + '-' + changes[0].to.line
-                            + String.fromCharCode(0x1E);
+                            + String.fromCharCode(30);  // Record Separator (记录分隔符)
                     break;
                 case "*compose":
                 case "+input":
                 default:
+
                     for (var i = 0; i < changes[0].text.length; i++) {
                         if (i === changes[0].text.length - 1) {
                             change += changes[0].text[i];
                         } else {
-                            change += changes[0].text[i] + String.fromCharCode(10); // File Separator
+                            change += changes[0].text[i] + String.fromCharCode(10); // New Line
                         }
                     }
-
+                    for (var j = 0; j < changes[0].removed.length; j++) {
+                        if (j === 0) {
+                            change += String.fromCharCode(29); // group separator
+                            break;
+                        }
+                    }
                     change += unitSep + time
                             + unitSep + changes[0].from.ch + '-' + changes[0].from.line
                             + unitSep + changes[0].to.ch + '-' + changes[0].to.line
-                            + String.fromCharCode(0x1E);
+                            + String.fromCharCode(30);  // Record Separator (记录分隔符)
                     break;
             }
 

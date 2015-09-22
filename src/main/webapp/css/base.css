@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.5.12, Sep 10, 2015
+ * @version 1.7.6.12, Sep 22, 2015
  */
 
 /* start reset */
@@ -161,7 +161,7 @@ select,
 textarea {
     margin: 0;
     font-size: 100%;
-    vertical-align: baseline;
+    vertical-align: middle;
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     outline: none;
 }
@@ -1149,6 +1149,7 @@ a[class*=" icon-"]:hover {
     background-color: #FAFAFA;
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
+    line-height: 17px;
 }
 
 .form .cm-s-default.CodeMirror.CodeMirror-focused {

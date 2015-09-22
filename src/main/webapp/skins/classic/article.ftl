@@ -132,17 +132,21 @@
                         </form>
                         <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
                         <div class="tip" id="addCommentTip"></div>
-                        <span class="responsive-hide">    
-                            Markdown
-                            <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                            <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                            |
-                            <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
-                        </span>
-                        <div class="fn-right">
-                            <button class="green" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 
-                            <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
+
+                        <div class="fn-clear comment-submit">
+                            <span class="responsive-hide">    
+                                Markdown
+                                <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
+                                <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
+                                |
+                                <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
+                            </span>
+                            <div class="fn-right">
+                                <button class="green" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 
+                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
+                            </div>
                         </div>
+                        
                     </div>
                     <div class="grammar fn-none fn-clear">
                         ${markdwonGrammarLabel}

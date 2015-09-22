@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.5.8, Sep 18, 2015
+ * @version 1.2.5.9, Sep 22, 2015
  */
 /* start module */
 .index-module .index-module-list > li {
@@ -108,6 +108,10 @@
     position: absolute;
     background-color: #e0e0e0;
     height: 2px
+}
+
+.comment-submit {
+    margin-top: 20px;
 }
 
 #comments > h2 {

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.6, Sep 9, 2015
+ * @version 1.1.3.7, Sep 22, 2015
  */
 /* start home side */
 .user-name {
@@ -92,7 +92,15 @@
 .grammar {
     position: absolute;
     right: 0;
-    top: 0;
+    top: -7px;
+}
+
+.grammar dt {
+    line-height: 19px;
+}
+
+.grammar dd {
+    line-height: 16px;
 }
 
 .cm-s-default.CodeMirror {

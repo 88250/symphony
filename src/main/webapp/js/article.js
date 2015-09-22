@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.12.6, Sep 17, 2015
+ * @version 1.11.13.6, Sep 22, 2015
  */
 
 /**
@@ -315,7 +315,7 @@ var Article = {
     playThought: function (articleContent) {
         // - 0x1E: Record Separator (记录分隔符)
         // + 0x1F: Unit Separator (单元分隔符)
-        
+
         var fast = 2;
 
         var records = articleContent.split("");
@@ -357,7 +357,15 @@ var Article = {
                         articleLinesList.splice(removeLines[o] - o, 1);
                     }
                 } else {
-                    articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) + srcLinesContent
+                    var addLines = srcLinesContent.split(String.fromCharCode(29))[0],
+                            removedLines = srcLinesContent.split(String.fromCharCode(29))[1];
+
+                    if (removedLines === '') {
+                        articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) +
+                                articleLinesList[to[1]].substr(to[0]);
+                    }
+
+                    articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) + addLines
                             + articleLinesList[from[1]].substr(from[0]);
                 }
 
@@ -374,7 +382,7 @@ var Article = {
 
         // progress
         var currentTime = 0,
-                amountTime = parseInt(records[i-1].split("")[1]) / fast + 300;
+                amountTime = parseInt(records[i - 1].split("")[1]) / fast + 300;
         var interval = setInterval(function () {
             if (currentTime >= amountTime) {
                 $('#thoughtProgress div').width('100%');
