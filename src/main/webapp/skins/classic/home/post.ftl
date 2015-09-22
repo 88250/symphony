@@ -17,7 +17,7 @@
             <div class="wrapper post">
                 <div class="form fn-flex-1 fn-clear">
                     <div>
-                        <input autofocus="autofocus" type="text" id="articleTitle" tabindex="1"
+                        <input type="text" id="articleTitle" tabindex="1"
                                value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                     </div>
                     <div class="fn-clear">
@@ -34,7 +34,7 @@
                             <input type="file" name="file">
                         </form>
                         <textarea id="articleContent" tabindex="2"
-                                  placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if></textarea>
+                                  placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if><#if at??>${at}</#if></textarea>
                         <div class="fn-left grammar fn-none">
                             ${markdwonGrammarLabel}
                         </div>

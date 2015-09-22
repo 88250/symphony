@@ -19,10 +19,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.22.1.10, Sep 1, 2015
+ * @version 1.23.1.10, Sep 22, 2015
  * @since 0.2.0
  */
 public final class Common {
+    
+    /**
+     * Key of at.
+     */
+    public static final String AT = "at";
 
     /**
      * Key of time ago.

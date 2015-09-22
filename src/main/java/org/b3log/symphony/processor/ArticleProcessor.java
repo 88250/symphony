@@ -295,6 +295,11 @@ public class ArticleProcessor {
 
             dataModel.put(Article.ARTICLE_TYPE, articleType);
         }
+        
+        final String at = request.getParameter(Common.AT);
+        if (StringUtils.isNotBlank(at)) {
+            dataModel.put(Common.AT, at);
+        }
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
