@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.8.12, Sep 18, 2015
+ * @version 1.13.9.12, Sep 24, 2015
  */
 
 /**
@@ -341,8 +341,12 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     if ("article" === type) {
-                        $(it).removeClass('ft-red').html(' <span class="icon-star"></span> ' + 
-                                (parseInt($(it).text()) - 1) + ' ')
+                        var count = parseInt($(it).text()) - 1;
+                        if (count < 0) {
+                            count = 0;
+                        }
+                        
+                        $(it).removeClass('ft-red').html(' <span class="icon-star"></span> ' + count + ' ')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
                                 .attr("title", Label.collectLabel);
                     } else {
