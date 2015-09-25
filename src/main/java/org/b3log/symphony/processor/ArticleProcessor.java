@@ -52,6 +52,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
@@ -107,7 +108,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.10.22, Aug 31, 2015
+ * @version 1.12.10.22, Sep 25, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -208,6 +209,8 @@ public class ArticleProcessor {
 
         renderer.setTemplateName("/home/pre-post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+        
+        dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
     }

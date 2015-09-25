@@ -19,11 +19,16 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.1.10, Sep 22, 2015
+ * @version 1.23.1.10, Sep 26, 2015
  * @since 0.2.0
  */
 public final class Common {
-    
+
+    /**
+     * Key of broadcast point.
+     */
+    public static final String BROADCAST_POINT = "broadcastPoint";
+
     /**
      * Key of at.
      */
