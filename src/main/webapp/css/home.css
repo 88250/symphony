@@ -41,13 +41,17 @@
 /* end home side */
 
 /* start add article */
-.pre-post a {
+.pre-post > div {
     width: 25%;
     margin: 100px 0px;
     text-align: center;
     font-size: 30px;
-    display: block;
+}
+
+.pre-post > div > a {
     color: #404040;
+    margin: 0 10px;
+    display: block;
 }
 
 .pre-post a:hover {
@@ -60,9 +64,9 @@
     margin-bottom: 50px;
 }
 
-.pre-post a div.ft-fade {
+.pre-post div.ft-fade {
     font-size: 15px;
-    margin: 20px 37px 0;
+    margin: 20px 30px 0;
     text-align: left;
 }
 

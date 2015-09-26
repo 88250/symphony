@@ -18,7 +18,7 @@
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.7, Sep 10, 2015
+ * @version 1.0.1.8, Sep 26, 2015
  */
 @media (max-width: 1200px) {
     .person-info .avatar {
@@ -124,7 +124,7 @@
         margin-bottom: 0;
     }
 
-    .wrapper.pre-post a {
+    .wrapper.pre-post > div {
         display: block;
         font-size: 16px;
         margin: 15px auto;
@@ -132,9 +132,14 @@
         background-color: #f8f8f8;
     }
 
-    .wrapper.pre-post a div {
+    .wrapper.pre-post > div > a {
         font-size: 20px;
         margin-bottom: 10px;
+    }
+    
+    .wrapper.pre-post div.ft-fade,
+    .wrapper.pre-post a div {
+        margin: 20px 0;
     }
     /* end itself */
 
