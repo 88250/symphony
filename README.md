@@ -76,19 +76,19 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](http://hacpai.
 
 **首页**
 
-![移动端首页](https://cloud.githubusercontent.com/assets/873584/10241975/e719d4ce-691f-11e5-9336-1df33e11425a.png)
+![移动端首页](https://cloud.githubusercontent.com/assets/873584/10244422/b830f536-6931-11e5-9fb9-088eef709711.png)
 
 **浏览帖子**
 
-![移动端浏览帖子](https://cloud.githubusercontent.com/assets/873584/10242407/279d2ba6-6923-11e5-9265-62afbd024c0b.png)
+![移动端浏览帖子](https://cloud.githubusercontent.com/assets/873584/10244430/c5b8e86c-6931-11e5-8aff-1a1d58661965.png)
 
 **评论区**
 
-![移动端评论区](https://cloud.githubusercontent.com/assets/873584/10242536/02d08358-6924-11e5-94c5-8ea10e1c7c8d.png)
+![移动端评论区](https://cloud.githubusercontent.com/assets/873584/10244441/d17b284a-6931-11e5-860f-ec581633fdff.png)
 
 **发布**
 
-![移动端发布](https://cloud.githubusercontent.com/assets/873584/10241983/f0f1e248-691f-11e5-80c2-16fbda989da9.png)
+![移动端发布](https://cloud.githubusercontent.com/assets/873584/10244451/e192891c-6931-11e5-8441-8d06efa0a547.png)
 
 ## 安装
 
