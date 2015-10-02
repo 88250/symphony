@@ -9,7 +9,10 @@
                 <a href="/tags/Q%26A">${qnaLabel}</a>
                 <a href="/tags" class="last">${tagLabel}</a>
 
-                <div class="fn-right">${visionLabel}</div>
+                <div class="fn-right">
+                    <span class="ft-gray">&COPY; ${year}</span>
+                    <a rel="copyright" href="http://hacpai.com" target="_blank">hacpai.com</a>
+                    ${visionLabel}</div>
             </div>
             <div class="fn-clear">
                 <div class="fn-left info responsive-hide">
@@ -21,9 +24,9 @@
                     <span class="ft-gray">${cmtLabel}</span> ${statistic.statisticCmtCount?c}
                 </div>
                 <div class="fn-right">
-                    <span class="ft-gray">&COPY; ${year} </span>
-                    <a rel="copyright" href="http://hacpai.com" target="_blank">hacpai.com</a>
-                    <span class="ft-gray">${version} • ${elapsed?c}ms</span>
+                    <span class="ft-gray">Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • 
+                        <a href="https://github.com/b3log/symphony" target="_blank">Sym</a>
+                        ${version} • ${elapsed?c}ms</span>
                 </div>
             </div>
         </div>
