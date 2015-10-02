@@ -44,7 +44,6 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.OptionQueryService;
-import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -57,17 +56,11 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 4, 2015
+ * @version 1.1.0.1, Oct 2, 2015
  * @since 1.3.0
  */
 @RequestProcessor
 public class CityProcessor {
-
-    /**
-     * Tag query service.
-     */
-    @Inject
-    private TagQueryService tagQueryService;
 
     /**
      * Article query service.
