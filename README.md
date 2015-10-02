@@ -121,7 +121,7 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](http://hacpai.
 ## Terms
 
 * This software is open sourced under the Apache License 2.0
-* You can not get rid of the "Powered by [B3log](http://b3log.org)" from any page, even which you made
+* You can not get rid of the "Powered by [B3log 开源](http://b3log.org)" from any page, even which you made
 * If you want to use this software for commercial purpose, please mail to support@liuyun.io for a commercial license request
 * Copyright &copy; b3log.org, all rights reserved
 
