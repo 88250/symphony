@@ -11,13 +11,6 @@
         </properties>
     </action>
     <action>
-        <actionName>CUSTOM-jetty-run</actionName>
-        <displayName>jetty-run</displayName>
-        <goals>
-            <goal>jetty:run</goal>
-        </goals>
-    </action>
-    <action>
         <actionName>CUSTOM-license-check</actionName>
         <displayName>license-check</displayName>
         <goals>
@@ -29,13 +22,6 @@
         <displayName>license-format</displayName>
         <goals>
             <goal>license:format</goal>
-        </goals>
-    </action>
-    <action>
-        <actionName>CUSTOM-checkstyle-checkstyle</actionName>
-        <displayName>checkstyle-checkstyle</displayName>
-        <goals>
-            <goal>checkstyle:checkstyle</goal>
         </goals>
     </action>
 </actions>

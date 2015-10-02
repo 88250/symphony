@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.7.2.17, Aug 17, 2015
+    Version: 2.7.2.18, Oct 2, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -21,11 +21,11 @@
 
     <!-- Properties -->
     <properties>
-        <org.b3log.latke.version>1.3.3</org.b3log.latke.version>
+        <latke.version>1.3.3</latke.version>
         
         <jetty.version>9.2.7.v20150116</jetty.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
+        <mysql-connector-java.version>5.1.36</mysql-connector-java.version>
         <jsoup.version>1.7.1</jsoup.version>
         <markdownpapers-core.version>1.4.2</markdownpapers-core.version>
         <qiniu.version>7.0.4.1</qiniu.version>
@@ -33,11 +33,10 @@
         <emoji-java.version>1.1.1</emoji-java.version>
 
         <!-- maven plugin -->
-        <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
-        <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
-        <maven-surefire-plugin.version>2.9</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+        <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+        <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
         <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
-        <maven-checkstyle-plugin.version>2.15</maven-checkstyle-plugin.version>
         <maven-min-plugin.version>1.0.0</maven-min-plugin.version>
         <!-- Unit Test -->
         <testng.version>6.1.1</testng.version>
@@ -119,7 +118,7 @@
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke</artifactId>
-            <version>${org.b3log.latke.version}</version>
+            <version>${latke.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.h2database</groupId>
@@ -147,7 +146,7 @@
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
-            <version>${org.b3log.latke.version}</version>
+            <version>${latke.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.jolbox</groupId>
@@ -285,34 +284,6 @@
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>min</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <!-- For source code style check -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
-                <configuration>
-                    <configLocation>${basedir}/src/main/resources/etc/beyondtrack_checks.xml</configLocation>
-                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <excludes>
-                        **/*TestCase.java,
-                    </excludes>
-                    <consoleOutput>true</consoleOutput>
-                    <failOnViolation>true</failOnViolation>
-                    <failsOnError>true</failsOnError>
-                    <encoding>UTF-8</encoding>
-                    <!-- Do NOT skip code style check before committing -->
-                    <skip>false</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>checkstyle</goal>
                         </goals>
                     </execution>
                 </executions>

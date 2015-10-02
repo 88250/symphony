@@ -11,7 +11,7 @@ Sym 是一个用 Java 写的实时社区。
 
 ## 安装
 
-需求：Maven、MySQL、Tomcat/Jetty
+需求：Maven3+、MySQL5+、Jetty9+
 
 1. [下载](https://github.com/b3log/symphony/archive/master.zip)源码
 2. 解压后修改 `src/main/resources/local.properties` 中的数据库配置，并创建数据库
