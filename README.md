@@ -2,9 +2,7 @@
 
 ## 简介
 
-Sym 是一个用 Java 写的实时论坛。
-
-> 黑客派是使用 Sym 搭建的，欢迎[**加入**](http://hacpai.com/register?r=Vanessa)！
+Sym 是一个用 Java 写的实时论坛，欢迎来[体验](http://hacpai.com/register?r=Vanessa)！
 
 
 ### 初衷
