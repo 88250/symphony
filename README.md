@@ -75,15 +75,19 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](http://hacpai.
 移动端目前除了不能录音外，其他功能和 PC 端保持一致。
 
 **首页**
+
 ![移动端首页](https://cloud.githubusercontent.com/assets/873584/10241975/e719d4ce-691f-11e5-9336-1df33e11425a.png)
 
 **浏览帖子**
+
 ![移动端浏览帖子](https://cloud.githubusercontent.com/assets/873584/10242407/279d2ba6-6923-11e5-9265-62afbd024c0b.png)
 
 **评论区**
+
 ![移动端评论区](https://cloud.githubusercontent.com/assets/873584/10242536/02d08358-6924-11e5-94c5-8ea10e1c7c8d.png)
 
 **发布**
+
 ![移动端发布](https://cloud.githubusercontent.com/assets/873584/10241983/f0f1e248-691f-11e5-80c2-16fbda989da9.png)
 
 ## 安装
