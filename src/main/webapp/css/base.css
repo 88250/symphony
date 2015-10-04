@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.6.12, Oct 2, 2015
+ * @version 1.8.6.13, Oct 3, 2015
  */
 
 /* start reset */
@@ -237,6 +237,7 @@ textarea {
     word-wrap: break-word;
     overflow: hidden;
     line-height: 145%;
+    font-size: 15px;
 }
 
 .content-reset ul,
