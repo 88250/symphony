@@ -111,6 +111,15 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](http://hacpai.
 
 用户注册时是启用邮件验证的，如果需要修改请参考相关代码。
 
+注意：
+
+本地配置完成部署后，还需要对七牛和 SendCloud 进行服务配置：
+
+* 配置_两个_七牛图片数据处理样式：
+  ![qiniu](https://cloud.githubusercontent.com/assets/873584/10298674/3c7230aa-6c14-11e5-9014-2ae4e457a364.png)
+* 配置 SendCloud 邮件模版：
+  ![sendcloud](https://cloud.githubusercontent.com/assets/873584/10298675/3cb11b08-6c14-11e5-9fd4-025122336469.png)
+
 ## 商用授权
 
 请看[这里](https://github.com/b3log/symphony/wiki/%E5%95%86%E7%94%A8%E6%8E%88%E6%9D%83)。
