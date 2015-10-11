@@ -75,6 +75,8 @@
                             <input tabindex="8" type="radio" name="articleType" <#if 2 == articleType>checked="checked"</#if> value="2"/> 
                                    ${cityBroadcastLabel}
                         </label>
+                        <#else>
+                        <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/> 
                         </#if>
                     </div>
                     <div class="fn-right">
