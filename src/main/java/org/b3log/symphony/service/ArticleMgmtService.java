@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -63,7 +64,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.12.12, Aug 31, 2015
+ * @version 1.5.13.12, Oct 17, 2015
  * @since 0.2.0
  */
 @Service
@@ -814,7 +815,7 @@ public class ArticleMgmtService {
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 final String title = tag.optString(Tag.TAG_TITLE);
-                articleTags = articleTags.replaceAll("(?i)" + tagTitle, title);
+                articleTags = articleTags.replaceAll("(?i)" + Pattern.quote(tagTitle), title);
 
                 tagTmp.put(Tag.TAG_TITLE, title);
                 tagTmp.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + articleCmtCnt);

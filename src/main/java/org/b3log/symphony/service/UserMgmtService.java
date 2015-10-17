@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
@@ -76,7 +77,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.9.5, Aug 28, 2015
+ * @version 1.9.10.5, Oct 17, 2015
  * @since 0.2.0
  */
 @Service
@@ -839,7 +840,7 @@ public class UserMgmtService {
                         new Object[]{tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID),
                             user.optString(User.USER_NAME)});
 
-                tagTitleStr = tagTitleStr.replaceAll("(?i)" + tagTitle, tag.optString(Tag.TAG_TITLE));
+                tagTitleStr = tagTitleStr.replaceAll("(?i)" + Pattern.quote(tagTitle), tag.optString(Tag.TAG_TITLE));
             }
 
             // User-Tag relation (userself)
