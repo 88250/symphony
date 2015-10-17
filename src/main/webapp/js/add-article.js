@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.6.3, Sep 22, 2015
+ * @version 1.10.6.4, Oct 17, 2015
  */
 
 /**
@@ -189,7 +189,8 @@ var AddArticle = {
             var change = "",
                     unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
                     time = (new Date()).getTime() - thoughtTime;
-            console.log(changes[0])
+            // console.log(changes[0])
+            
             switch (changes[0].origin) {
                 case "+delete":
                     change = String.fromCharCode(24) + unitSep + time // cancel

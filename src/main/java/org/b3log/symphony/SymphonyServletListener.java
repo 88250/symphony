@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.2.2, Oct 2, 2015
+ * @version 1.8.2.3, Oct 17, 2015
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -206,7 +206,11 @@ public final class SymphonyServletListener extends AbstractServletListener {
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Check init error", e);
+            
+            System.exit(0);
         }
+        
+        LOGGER.info("Initializing Sym....");
 
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
         final ArticleMgmtService articleMgmtService = beanManager.getReference(ArticleMgmtService.class);
@@ -305,6 +309,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
             article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
             articleMgmtService.addArticle(article);
+            
+            LOGGER.info("Initialized Sym");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Creates database tables failed", e);
 
