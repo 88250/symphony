@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.3, Oct 17, 2015
+ * @version 1.4.3.3, Oct 18, 2015
  * @since 0.2.0
  */
 public final class Tag {
@@ -157,7 +157,7 @@ public final class Tag {
     /**
      * Tag title pattern.
      */
-    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5,\\w,\\s,&,+,-,\\.]+");
+    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5,\\w,\\s,&,\\+,\\-,\\.]+");
 
     /**
      * Private constructor.
