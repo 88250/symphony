@@ -131,17 +131,17 @@ var AddArticle = {
         if (!window.localStorage.thoughtContent) {
             window.localStorage.thoughtContent = "";
         }
-        
+
         var atIdx = location.href.indexOf("at=@");
         if (-1 !== atIdx) {
             var at = AddArticle.editor.getValue();
             AddArticle.editor.setValue("\n\n\n" + at);
             AddArticle.editor.setCursor(CodeMirror.Pos(0, 0));
             AddArticle.editor.focus();
-            
+
             var username = location.href.substr(atIdx + "at=@".length);
             $("#articleTitle").val("Hi, " + username);
-            
+
             $("#articleTags").val("讨论组");
         } else {
             $("#articleTitle").focus();
@@ -165,7 +165,7 @@ var AddArticle = {
                 }
             }
         });
-        
+
         var thoughtTime = '';
         AddArticle.editor.on('changes', function (cm, changes) {
             if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
@@ -181,7 +181,7 @@ var AddArticle = {
             if (!window.localStorage.thoughtContent) {
                 window.localStorage.thoughtContent = '';
             }
-            
+
             if (thoughtTime === '') {
                 thoughtTime = (new Date()).getTime();
             }
@@ -190,7 +190,7 @@ var AddArticle = {
                     unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
                     time = (new Date()).getTime() - thoughtTime;
             // console.log(changes[0])
-            
+
             switch (changes[0].origin) {
                 case "+delete":
                     change = String.fromCharCode(24) + unitSep + time // cancel

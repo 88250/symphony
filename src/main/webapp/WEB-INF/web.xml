@@ -18,7 +18,7 @@
 -->
 <!--
     Description: Symphony web deployment descriptor.
-    Version: 1.1.1.7, Jun 19, 2015
+    Version: 1.2.1.7, Oct 19, 2015
     Author: Liang Ding
 -->
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -46,7 +46,7 @@
     
     <session-config>
         <session-timeout>
-            5
+            60
         </session-timeout>
     </session-config>
     
