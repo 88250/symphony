@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Aug 2, 2015
+ * @version 1.3.1.0, Oct 24, 2015
  * @since 1.3.0
  */
 @RequestProcessor
@@ -147,10 +147,7 @@ public class ActivityProcessor {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final String userId = user.optString(Keys.OBJECT_ID);
 
-        final String referer = request.getHeader("Referer");
-        if (StringUtils.startsWith(referer, Latkes.getServePath())) {
-            activityMgmtService.dailyCheckin(userId);
-        }
+        activityMgmtService.dailyCheckin(userId);
 
         response.sendRedirect("/member/" + user.optString(User.USER_NAME) + "/points");
     }
