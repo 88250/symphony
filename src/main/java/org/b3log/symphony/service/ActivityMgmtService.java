@@ -44,7 +44,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.0, Aug 1, 2015
+ * @version 1.2.5.0, Nov 3, 2015
  * @since 1.3.0
  */
 @Service
@@ -288,9 +288,13 @@ public class ActivityMgmtService {
             final Document doc = Jsoup.parse(new URL("http://stockpage.10jqka.com.cn/1A0001/quote/header/"), 5000);
             final JSONObject result = new JSONObject(doc.text());
             final String price = result.optJSONObject("data").optJSONObject("1A0001").optString("10");
-            final String end = price.substring(price.length() - 1);
-            final int endInt = Integer.valueOf(end);
 
+            int endInt = 0;
+            if (price.split("\\.")[1].length() > 1) {
+                final String end = price.substring(price.length() - 1);
+                endInt = Integer.valueOf(end);
+            }
+            
             if (0 <= endInt && endInt <= 4) {
                 smallOrLargeResult = "0";
             } else if (5 <= endInt && endInt <= 9) {
