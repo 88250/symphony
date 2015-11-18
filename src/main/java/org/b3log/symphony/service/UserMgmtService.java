@@ -77,7 +77,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.10.6, Nov 18, 2015
+ * @version 1.9.11.6, Nov 18, 2015
  * @since 0.2.0
  */
 @Service
@@ -220,12 +220,13 @@ public class UserMgmtService {
         Transaction transaction = null;
 
         try {
+            final JSONObject address = Geos.getAddress(ip);
+
             final JSONObject user = userRepository.get(userId);
             if (null == user) {
                 return;
             }
 
-            final JSONObject address = Geos.getAddress(ip);
             if (null != address) {
                 final String country = address.optString(Common.COUNTRY);
                 final String province = address.optString(Common.PROVINCE);
