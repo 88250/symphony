@@ -77,7 +77,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.10.5, Oct 17, 2015
+ * @version 1.9.10.6, Nov 18, 2015
  * @since 0.2.0
  */
 @Service
@@ -187,7 +187,9 @@ public class UserMgmtService {
                 final String password = cookieJSONObject.optString(Common.TOKEN);
                 if (userPassword.equals(password)) {
                     Sessions.login(request, response, user);
+
                     updateOnlineStatus(userId, ip, true);
+
                     LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userId);
 
                     return true;

@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Geography utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Sep 10, 2015
+ * @version 1.0.1.1, Nov 18, 2015
  * @since 1.3.0
  */
 public final class Geos {
@@ -65,6 +65,10 @@ public final class Geos {
                     + "&ak=" + ak);
 
             conn = (HttpURLConnection) url.openConnection();
+
+            conn.setConnectTimeout(1000);
+            conn.setReadTimeout(1000);
+
             final BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(conn.getInputStream(), "UTF-8"));
             String line = null;
@@ -101,7 +105,7 @@ public final class Geos {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Can't get location [ip=" + ip + "]", e);
+            LOGGER.log(Level.ERROR, "Can't get location from Baidu [ip=" + ip + "]", e);
 
             return null;
         } finally {
@@ -133,6 +137,10 @@ public final class Geos {
             final URL url = new URL("http://int.dpool.sina.com.cn/iplookup/iplookup.php?ip=" + ip + "&format=json");
 
             conn = (HttpURLConnection) url.openConnection();
+
+            conn.setConnectTimeout(1000);
+            conn.setReadTimeout(1000);
+
             final BufferedReader bufferedReader = new BufferedReader(
                     new InputStreamReader(conn.getInputStream(), "UTF-8"));
             String line = null;
@@ -158,7 +166,7 @@ public final class Geos {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Can't get location [ip=" + ip + "]", e);
+            LOGGER.log(Level.ERROR, "Can't get location from Sina [ip=" + ip + "]", e);
 
             return null;
         } finally {
