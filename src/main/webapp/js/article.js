@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.13.6, Sep 22, 2015
+ * @version 1.11.14.6, Nov 20, 2015
  */
 
 /**
@@ -168,7 +168,7 @@ var Comment = {
             data: [{
                     "target": Comment.editor,
                     "type": 'editor',
-                    'max': 1000,
+                    'max': 2000,
                     "msg": Label.commentErrorLabel
                 }]
         })) {
