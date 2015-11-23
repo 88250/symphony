@@ -52,6 +52,7 @@
         cmtLabel: "${cmtLabel}",
         collectLabel: "${collectLabel}",
         uncollectLabel: "${uncollectLabel}",
-        desktopNotificationTemplateLabel: "${desktopNotificationTemplateLabel}"
+        desktopNotificationTemplateLabel: "${desktopNotificationTemplateLabel}",
+        staticServePath: "${staticServePath}"
     };
 </script>

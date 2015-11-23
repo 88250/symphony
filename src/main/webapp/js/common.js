@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.9.12, Sep 24, 2015
+ * @version 1.13.9.13, Nov 23, 2015
  */
 
 /**
@@ -36,7 +36,7 @@ var Util = {
             var text = emojis[i];
             emojiAutocompleteHints.push({
                 displayText: "<span>" + displayText +
-                        "&nbsp;<img style='width: 16px' src='/js/lib/emojify.js-1.0.2/images/basic/" + text + ".png'></span>",
+                        '&nbsp;<img style="width: 16px" src="' + Label.staticServePath + '/js/lib/emojify.js-1.0.2/images/basic/' + text + '.png"></span>',
                 text: text + ": "
             });
         }
@@ -99,7 +99,7 @@ var Util = {
                 if (Util.startsWith(text, input)) {
                     autocompleteHints.push({
                         displayText: "<span>" + displayText +
-                                "&nbsp;<img style='width: 1.2rem' src='/js/lib/emojify.js-1.0.2/images/basic/" + text + ".png'></span>",
+                                '&nbsp;<img style="width: 16px" src="' + Label.staticServePath + '/js/lib/emojify.js-1.0.2/images/basic/' + text + '.png"></span>',
                         text: ":" + text + ": "
                     });
                     matchCnt++;
