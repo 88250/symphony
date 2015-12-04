@@ -49,7 +49,7 @@ import org.jsoup.Jsoup;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.5, Sep 10, 2015
+ * @version 1.1.1.6, Dec 4, 2015
  * @since 0.2.0
  */
 @Named
@@ -131,21 +131,23 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             }
 
             // 'FollowingUser' Notification
-            final JSONObject followerUsersResult = followQueryService.getFollowerUsers(articleAuthorId, 1, Integer.MAX_VALUE);
-            @SuppressWarnings("unchecked")
-            final List<JSONObject> followerUsers = (List) followerUsersResult.opt(Keys.RESULTS);
-            for (final JSONObject followerUser : followerUsers) {
-                final JSONObject requestJSONObject = new JSONObject();
-                final String followerUserId = followerUser.optString(Keys.OBJECT_ID);
+            if (Article.ARTICLE_TYPE_C_DISCUSSION != originalArticle.optInt(Article.ARTICLE_TYPE)) {
+                final JSONObject followerUsersResult = followQueryService.getFollowerUsers(articleAuthorId, 1, Integer.MAX_VALUE);
+                @SuppressWarnings("unchecked")
+                final List<JSONObject> followerUsers = (List) followerUsersResult.opt(Keys.RESULTS);
+                for (final JSONObject followerUser : followerUsers) {
+                    final JSONObject requestJSONObject = new JSONObject();
+                    final String followerUserId = followerUser.optString(Keys.OBJECT_ID);
 
-                if (atedUserIds.contains(followerUserId)) {
-                    continue;
+                    if (atedUserIds.contains(followerUserId)) {
+                        continue;
+                    }
+
+                    requestJSONObject.put(Notification.NOTIFICATION_USER_ID, followerUserId);
+                    requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
+
+                    notificationMgmtService.addFollowingUserNotification(requestJSONObject);
                 }
-
-                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, followerUserId);
-                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, articleId);
-
-                notificationMgmtService.addFollowingUserNotification(requestJSONObject);
             }
 
             // Timeline
