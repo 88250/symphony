@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Jul 21, 2015
+ * @version 1.0.1.4, Dec 4, 2015
  * @since 0.2.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -80,6 +80,11 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
             if (!originalArticle.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
+                return;
+            }
+
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == originalArticle.optInt(Article.ARTICLE_TYPE)
+                    || Article.ARTICLE_TYPE_C_THOUGHT == originalArticle.optInt(Article.ARTICLE_TYPE)) {
                 return;
             }
 
