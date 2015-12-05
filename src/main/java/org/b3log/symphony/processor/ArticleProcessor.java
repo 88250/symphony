@@ -108,7 +108,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.10.22, Sep 25, 2015
+ * @version 1.12.11.22, Dec 5, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -803,17 +803,17 @@ public class ArticleProcessor {
             article.put(Keys.OBJECT_ID, articleExisted.optString(Keys.OBJECT_ID));
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
 
-            articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
+            articleContent += "\n\n<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
                     + "<i style='margin-right:5px;'><a target='_blank' href='"
                     + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
         } else { // Add
             final boolean isBroadcast = "aBroadcast".equals(permalink);
             if (isBroadcast) {
-                articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该广播来自</span> "
+                articleContent += "\n\n<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该广播来自</span> "
                         + "<i style='margin-right:5px;'><a target='_blank' href='"
                         + clientHost + "'>" + clientTitle + "</a></i></span></p>";
             } else {
-                articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
+                articleContent += "\n\n<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
                         + "<i style='margin-right:5px;'><a target='_blank' href='"
                         + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
             }
@@ -968,7 +968,7 @@ public class ArticleProcessor {
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
         final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);
-        articleContent += "<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
+        articleContent += "\n\n<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
                 + "<i style='margin-right:5px;'><a target='_blank' href='"
                 + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
 
