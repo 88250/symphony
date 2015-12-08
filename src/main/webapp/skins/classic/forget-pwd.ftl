@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - ${registerLabel}">
-        <meta name="description" content="${registerLabel} ${symphonyLabel}"/>
+        <@head title="${symphonyLabel} - ${forgetPwdLabel}">
+        <meta name="description" content="${forgetPwdLabel} ${symphonyLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
@@ -16,18 +16,10 @@
                         <tbody>
                             <tr>
                                 <td width="70">
-                                    <label for="userName">${userNameLabel}</label>
-                                </td>
-                                <td width="165">
-                                    <input autofocus="autofocus" type="text" id="userName" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
                                     <label for="userEmail">${emailLabel}</label>
                                 </td>
                                 <td>
-                                    <input type="text" id="userEmail" />
+                                    <input autofocus="autofocus" type="text" id="userEmail" />
                                 </td>
                             </tr>
                             <tr>
@@ -42,9 +34,7 @@
                             <tr>
                                 <td colspan="2" align="right"><br/>
                                     <div id="registerTip" class="tip"></div><br/>
-                                    <button class="info" onclick="window.location.href='${servePath}/forget-pwd'">${forgetPwdLabel}</button>
-                                    <button class="green" onclick="Register.register()">${registerLabel}</button>
-                                    <input id="referral" type="hidden" value="${referral}">
+                                    <button class="green" onclick="Register.forgetPwd()">${forgetPwdLabel}</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -59,10 +49,7 @@
         <script type="text/javascript" src="${staticServePath}/js/register${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/md5.js"></script>
         <script>
-                                        Register.init();
-                                        Label.userNameErrorLabel = "${userNameErrorLabel}";
                                         Label.invalidEmailLabel = "${invalidEmailLabel}";
-                                        Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
                                         Label.captchaErrorLabel = "${captchaErrorLabel}";
         </script>
     </body>

@@ -462,7 +462,7 @@ var Util = {
             return;
         }
         
-        window.location = "/register?goto=" + encodeURIComponent(location.href);
+        window.location.href = "/register?goto=" + encodeURIComponent(location.href);
     },
     /**
      * @description 禁止 IE7 以下浏览器访问

@@ -34,12 +34,12 @@ import org.json.JSONObject;
  *
  * <p>
  * <ul>
- * <li>Send email register verifycode (/verifycode/email/register), GET</li>
+ * <li>Send email verifycode (/verifycode/email), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 3, 2015
+ * @version 1.0.0.1, Dec 8, 2015
  * @since 1.3.0
  */
 @RequestProcessor
@@ -64,7 +64,7 @@ public class VerifycodeProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/verifycode/email/register", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/verifycode/email", method = HTTPRequestMethod.GET)
     public void sendEmailRegisterVerifycode(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String key = Symphonys.get("keyOfSymphony");
@@ -74,7 +74,7 @@ public class VerifycodeProcessor {
             return;
         }
 
-        verifycodeMgmtService.sendEmailRegisterVerifycode();
+        verifycodeMgmtService.sendEmailVerifycode();
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);

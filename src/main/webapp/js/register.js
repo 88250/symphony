@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.1.8, Aug 28, 2015
+ * @version 2.3.1.8, Dec 8, 2015
  */
 
 /**
@@ -64,7 +64,7 @@ var Register = {
                         $("#registerTip").addClass('succ').removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                     } else {
                         $("#registerTip").removeClass("tip-succ");
-                         $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
+                        $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                         $("#captcha").attr("src", "/captcha?code=" + Math.random());
                         $("#securityCode").val("");
                     }
@@ -102,7 +102,81 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        window.location = "http://hacpai.com/article/1440573175609";
+                        window.location.href = "http://hacpai.com/article/1440573175609";
+                    } else {
+                        $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
+                    }
+                }
+            });
+        }
+    },
+    /**
+     * @description Forget password
+     */
+    forgetPwd: function () {
+        if (Validate.goValidate({target: $("#registerTip"),
+            data: [{
+                    "target": $("#userEmail"),
+                    "msg": Label.invalidEmailLabel,
+                    "type": "email"
+                }, {
+                    "target": $("#securityCode"),
+                    "msg": Label.captchaErrorLabel,
+                    "type": 'string',
+                    'max': 4
+                }]})) {
+            var requestJSONObject = {
+                userEmail: $("#userEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
+                captcha: $("#securityCode").val()
+            };
+
+            $.ajax({
+                url: "/forget-pwd",
+                type: "POST",
+                cache: false,
+                data: JSON.stringify(requestJSONObject),
+                success: function (result, textStatus) {
+                    if (result.sc) {
+                        $("#registerTip").addClass('succ').removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
+                    } else {
+                        $("#registerTip").removeClass("tip-succ");
+                        $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
+                        $("#captcha").attr("src", "/captcha?code=" + Math.random());
+                        $("#securityCode").val("");
+                    }
+                }
+            });
+        }
+    },
+    /**
+     * @description Reset password
+     */
+    resetPwd: function () {
+        if (Validate.goValidate({target: $("#registerTip"),
+            data: [{
+                    "target": $("#userPassword"),
+                    "msg": Label.invalidPasswordLabel,
+                    "type": 'password',
+                    'max': 20
+                }, {
+                    "target": $("#confirmPassword"),
+                    "original": $("#userPassword"),
+                    "msg": Label.confirmPwdErrorLabel,
+                    "type": "confirmPassword"
+                }]})) {
+            var requestJSONObject = {
+                userPassword: calcMD5($("#userPassword").val()),
+                userId: $("#userId").val()
+            };
+
+            $.ajax({
+                url: "/reset-pwd",
+                type: "POST",
+                cache: false,
+                data: JSON.stringify(requestJSONObject),
+                success: function (result, textStatus) {
+                    if (result.sc) {
+                        window.location.href = "http://hacpai.com";
                     } else {
                         $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                     }

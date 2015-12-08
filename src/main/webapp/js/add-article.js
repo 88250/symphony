@@ -85,7 +85,7 @@ var AddArticle = {
                 success: function (result, textStatus) {
                     $(".form button.red").removeAttr("disabled").css("opacity", "1");
                     if (result.sc) {
-                        window.location = "/member/" + Label.userName;
+                        window.location.href = "/member/" + Label.userName;
 
                         if (window.localStorage) {
                             window.localStorage.articleContent = "";

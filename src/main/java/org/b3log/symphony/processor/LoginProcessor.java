@@ -48,6 +48,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.model.Verifycode;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.advice.validate.UserForgetPwdValidation;
 import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.PointtransferMgmtService;
@@ -68,14 +69,15 @@ import org.json.JSONObject;
  * <p>
  * For user
  * <ul>
- * <li>Registration (/register), GET</li>
+ * <li>Registration (/register), GET/POST</li>
  * <li>Login (/login), GET/POST</li>
  * <li>Logout (/logout), GET</li>
+ * <li>Reset password (/reset-pwd), GET/POST</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.8, Aug 18, 2015
+ * @version 1.6.0.8, Dec 8, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -133,6 +135,173 @@ public class LoginProcessor {
      */
     @Inject
     private TimelineMgmtService timelineMgmtService;
+
+    /**
+     * Shows forget password page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/forget-pwd", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showForgetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        renderer.setTemplateName("forget-pwd.ftl");
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Forget password.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/forget-pwd", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = UserForgetPwdValidation.class)
+    public void forgetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = Results.falseResult();
+        renderer.setJSONObject(ret);
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = new JSONObject((String) request.getParameterMap().keySet().iterator().next());
+        } catch (final JSONException e1) {
+            LOGGER.log(Level.ERROR, e1.getMessage(), e1);
+            requestJSONObject = new JSONObject();
+        }
+
+        final String email = requestJSONObject.optString(User.USER_EMAIL);
+
+        try {
+            final JSONObject user = userQueryService.getUserByEmail(email);
+            if (null == user) {
+                ret.put(Keys.STATUS_CODE, false);
+                ret.put(Keys.MSG, langPropsService.get("notFoundUserLabel"));
+
+                return;
+            }
+
+            final String userId = user.optString(Keys.OBJECT_ID);
+
+            final JSONObject verifycode = new JSONObject();
+            verifycode.put(Verifycode.BIZ_TYPE, Verifycode.BIZ_TYPE_C_RESET_PWD);
+            final String code = RandomStringUtils.randomAlphanumeric(6);
+            verifycode.put(Verifycode.CODE, code);
+            verifycode.put(Verifycode.EXPIRED, DateUtils.addDays(new Date(), 1).getTime());
+            verifycode.put(Verifycode.RECEIVER, email);
+            verifycode.put(Verifycode.STATUS, Verifycode.STATUS_C_UNSENT);
+            verifycode.put(Verifycode.TYPE, Verifycode.TYPE_C_EMAIL);
+            verifycode.put(Verifycode.USER_ID, userId);
+            verifycodeMgmtService.addVerifycode(verifycode);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("verifycodeSentLabel"));
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("resetPwdLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", email);
+
+            ret.put(Keys.MSG, msg);
+        }
+    }
+
+    /**
+     * Shows reset password page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/reset-pwd", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showResetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final String code = request.getParameter("code");
+        final JSONObject verifycode = verifycodeQueryService.getVerifycode(code);
+        if (null == verifycode) {
+            dataModel.put(Keys.MSG, langPropsService.get("verifycodeExpiredLabel"));
+            renderer.setTemplateName("/error/custom.ftl");
+        } else {
+            renderer.setTemplateName("reset-pwd.ftl");
+
+            final String userId = verifycode.optString(Verifycode.USER_ID);
+            final JSONObject user = userQueryService.getUser(userId);
+            dataModel.put(User.USER, user);
+        }
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Resets password.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws ServletException servlet exception
+     * @throws IOException io exception
+     */
+    @RequestProcessing(value = "/reset-pwd", method = HTTPRequestMethod.POST)
+    public void resetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws ServletException, IOException {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = Results.falseResult();
+        renderer.setJSONObject(ret);
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = new JSONObject((String) request.getParameterMap().keySet().iterator().next());
+        } catch (final JSONException e1) {
+            LOGGER.log(Level.ERROR, e1.getMessage(), e1);
+            requestJSONObject = new JSONObject();
+        }
+
+        final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
+        final String userId = requestJSONObject.optString(Common.USER_ID);
+
+        String name = null;
+        String email = null;
+        try {
+            final JSONObject user = userQueryService.getUser(userId);
+            if (null == user) {
+                ret.put(Keys.MSG, langPropsService.get("resetPwdLabel") + " - " + "User Not Found");
+
+                return;
+            }
+
+            user.put(User.USER_PASSWORD, password);
+            userMgmtService.updatePassword(user);
+            ret.put(Keys.STATUS_CODE, true);
+
+            LOGGER.info("User [email=" + user.optString(User.USER_EMAIL) + "] reseted password");
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("resetPwdLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
+
+            ret.put(Keys.MSG, msg);
+        }
+    }
 
     /**
      * Shows registration page.

@@ -20,7 +20,7 @@
     Description: Cron job configurations. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.5.0.2, Aug 28, 2015
+    Version: 1.5.0.3, Dec 8, 2015
     Author: Liang Ding
 -->
 <cronentries>
@@ -40,8 +40,8 @@
     </cron>
 
     <cron>
-        <url>/verifycode/email/register?key=dev_key</url>
-        <description>Sends email register verifycodes</description>
+        <url>/verifycode/email?key=dev_key</url>
+        <description>Sends email verifycodes</description>
         <schedule>every 5 seconds</schedule>
     </cron>
     
