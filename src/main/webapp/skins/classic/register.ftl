@@ -42,7 +42,6 @@
                             <tr>
                                 <td colspan="2" align="right"><br/>
                                     <div id="registerTip" class="tip"></div><br/>
-                                    <button class="info" onclick="window.location.href='${servePath}/forget-pwd'">${forgetPwdLabel}</button>
                                     <button class="green" onclick="Register.register()">${registerLabel}</button>
                                     <input id="referral" type="hidden" value="${referral}">
                                 </td>

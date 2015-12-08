@@ -58,6 +58,7 @@
                     <tr>
                         <td colspan="2" align="right">
                             <div id="loginTip" class="tip"></div><br/>
+                            <button class="info" onclick="window.location.href='${servePath}/forget-pwd'">${forgetPwdLabel}</button>
                             <button class="red" onclick="Util.login()">${loginLabel}</button>
                         </td>
                     </tr>
