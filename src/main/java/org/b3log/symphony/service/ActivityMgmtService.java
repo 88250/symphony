@@ -44,7 +44,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.5.0, Nov 3, 2015
+ * @version 1.2.6.0, Dec 17, 2015
  * @since 1.3.0
  */
 @Service
@@ -289,20 +289,26 @@ public class ActivityMgmtService {
             final JSONObject result = new JSONObject(doc.text());
             final String price = result.optJSONObject("data").optJSONObject("1A0001").optString("10");
 
-            int endInt = 0;
-            if (price.split("\\.")[1].length() > 1) {
-                final String end = price.substring(price.length() - 1);
-                endInt = Integer.valueOf(end);
-            }
-            
-            if (0 <= endInt && endInt <= 4) {
+            if (!price.contains(".")) {
                 smallOrLargeResult = "0";
-            } else if (5 <= endInt && endInt <= 9) {
-                smallOrLargeResult = "1";
             } else {
-                LOGGER.error("Activity 1A0001 collect result [" + endInt + "]");
+                int endInt = 0;
+                if (price.split("\\.")[1].length() > 1) {
+                    final String end = price.substring(price.length() - 1);
+                    endInt = Integer.valueOf(end);
+                }
+
+                if (0 <= endInt && endInt <= 4) {
+                    smallOrLargeResult = "0";
+                } else if (5 <= endInt && endInt <= 9) {
+                    smallOrLargeResult = "1";
+                } else {
+                    LOGGER.error("Activity 1A0001 collect result [" + endInt + "]");
+                }
             }
         } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Collect 1A0001 failed", e);
+
             ret.put(Keys.MSG, langPropsService.get("activity1A0001CollectFailLabel"));
 
             return ret;
