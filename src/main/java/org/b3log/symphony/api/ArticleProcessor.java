@@ -15,12 +15,7 @@
  */
 package org.b3log.symphony.api;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -100,41 +95,9 @@ public class ArticleProcessor {
         final int pageNum = Integer.valueOf(pageNumStr);
         final int pageSize = Integer.valueOf(pageSizeStr);
 
-        final List<JSONObject> tagList = new ArrayList<JSONObject>();
-        for (int i = 0; i < tagTitles.length; i++) {
-            final String tagTitle = tagTitles[i];
-            final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
-            if (null == tag) {
-                continue;
-            }
+        final List<JSONObject> interests = articleQueryService.getInterests(pageNum, pageSize, tagTitles);
 
-            tagList.add(tag);
-        }
-
-        if (tagList.isEmpty()) {
-            ret.put(Article.ARTICLES, Collections.emptyList());
-
-            return;
-        }
-
-        final Map<String, Class<?>> articleFields = new HashMap<String, Class<?>>();
-        articleFields.put(Article.ARTICLE_TITLE, String.class);
-        articleFields.put(Article.ARTICLE_PERMALINK, String.class);
-        articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
-
-        final List<JSONObject> articles = articleQueryService.getArticlesByTags(pageNum, pageSize,
-                articleFields, tagList.toArray(new JSONObject[0]));
-        for (final JSONObject article : articles) {
-            article.remove(Article.ARTICLE_T_PARTICIPANTS);
-            article.remove(Article.ARTICLE_T_PARTICIPANT_NAME);
-            article.remove(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL);
-            article.remove(Article.ARTICLE_LATEST_CMT_TIME);
-            article.remove(Article.ARTICLE_UPDATE_TIME);
-
-            article.put(Article.ARTICLE_CREATE_TIME, ((Date) article.get(Article.ARTICLE_CREATE_TIME)).getTime());
-        }
-
-        ret.put(Article.ARTICLES, articles);
+        ret.put(Article.ARTICLES, interests);
     }
 
     /**

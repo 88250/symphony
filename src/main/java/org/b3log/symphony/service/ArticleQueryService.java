@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +75,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.7.15, Sep 22, 2015
+ * @version 1.11.8.15, Dec 17, 2015
  * @since 0.2.0
  */
 @Service
@@ -246,6 +247,82 @@ public class ArticleQueryService {
     }
 
     /**
+     * Gets interest articles.
+     *
+     * @param currentPageNum the specified current page number
+     * @param pageSize the specified fetch size
+     * @param tagTitles the specified tag titles
+     * @return articles, return an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getInterests(final int currentPageNum, final int pageSize, final String... tagTitles)
+            throws ServiceException {
+        try {
+            final List<JSONObject> tagList = new ArrayList<JSONObject>();
+            for (int i = 0; i < tagTitles.length; i++) {
+                final String tagTitle = tagTitles[i];
+                final JSONObject tag = tagRepository.getByTitle(tagTitle);
+                if (null == tag) {
+                    continue;
+                }
+
+                tagList.add(tag);
+            }
+
+            final Map<String, Class<?>> articleFields = new HashMap<String, Class<?>>();
+            articleFields.put(Article.ARTICLE_TITLE, String.class);
+            articleFields.put(Article.ARTICLE_PERMALINK, String.class);
+            articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
+
+            final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+            if (!tagList.isEmpty()) {
+                final List<JSONObject> tagArticles
+                        = getArticlesByTags(currentPageNum, pageSize, articleFields, tagList.toArray(new JSONObject[0]));
+                for (final JSONObject article : tagArticles) {
+                    article.remove(Article.ARTICLE_T_PARTICIPANTS);
+                    article.remove(Article.ARTICLE_T_PARTICIPANT_NAME);
+                    article.remove(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL);
+                    article.remove(Article.ARTICLE_LATEST_CMT_TIME);
+                    article.remove(Article.ARTICLE_UPDATE_TIME);
+                    article.remove(Article.ARTICLE_T_HEAT);
+                    article.remove(Article.ARTICLE_T_TITLE_EMOJI);
+                    article.remove(Common.TIME_AGO);
+
+                    article.put(Article.ARTICLE_CREATE_TIME, ((Date) article.get(Article.ARTICLE_CREATE_TIME)).getTime());
+                }
+
+                ret.addAll(tagArticles);
+            }
+
+            final List<Filter> filters = new ArrayList<Filter>();
+            filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+            filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
+
+            final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                    .setPageCount(currentPageNum).setPageSize(pageSize).setCurrentPageNum(1);
+            query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+            for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
+                query.addProjection(articleField.getKey(), articleField.getValue());
+            }
+
+            final JSONObject result = articleRepository.get(query);
+
+            final List<JSONObject> recentArticles = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            ret.addAll(recentArticles);
+
+            for (final JSONObject article : ret) {
+                article.put(Article.ARTICLE_PERMALINK, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+            }
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets interests failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets news (articles tags contains "B3log Announcement").
      *
      * @param currentPageNum the specified page number
@@ -291,7 +368,7 @@ public class ArticleQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets articles by tag [tagTitle=" + tag.optString(Tag.TAG_TITLE) + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets news failed", e);
             throw new ServiceException(e);
         }
     }
