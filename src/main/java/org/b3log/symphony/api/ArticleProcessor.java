@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Oct 19, 2014
+ * @version 1.0.1.0, Dec 17, 2015
  * @since 0.2.5
  */
 @RequestProcessor
@@ -89,9 +89,9 @@ public class ArticleProcessor {
             pageNumStr = "1";
         }
 
-        final String pageSizeStr = request.getParameter("size");
+        String pageSizeStr = request.getParameter("size");
         if (Strings.isEmptyOrNull(pageSizeStr) || !Strings.isNumeric(pageSizeStr)) {
-            pageNumStr = "10";
+            pageSizeStr = "10";
         }
 
         final String tagsStr = request.getParameter("tags");
