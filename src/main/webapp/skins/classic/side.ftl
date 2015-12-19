@@ -4,9 +4,21 @@
 <div class="module">
     <div class="module-header nopanel">
         ${ADLabel}
-    </div> 
-</div>
+    </div>
+    </div>
 </#if>
+<div class="module">
+    <div class="module-header">
+        <h2>开源项目</h2>
+    </div>
+    <div class="module-panel">
+        <ul class="module-list">
+            <li>GitHub 上 Star 数最多的 Java 博客 <a style="text-decoration: none;" target="_blank" href="https://github.com/b3log/solo"><span style="color: orangered; font-weight: bold;">Solo</span></a></li>
+            <li>Golang 黑科技之在线 IDE <a style="text-decoration: none;" target="_blank" href="https://github.com/b3log/wide"><span style="color: #4183c4; font-weight: bold;">Wide</span></a></li>
+            <li class="last">黑客与画家的社区 <a style="text-decoration: none;" target="_blank" href="https://github.com/b3log/symphony"><span style="color: #3CB371; font-weight: bold;">Sym</span></a></li>
+        </ul>
+    </div>
+</div>
 <#if navTrendTags?size!=0>
 <div class="module">
     <div class="module-header">
