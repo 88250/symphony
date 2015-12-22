@@ -40,15 +40,10 @@ import org.tautua.markdownpapers.parser.ParseException;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.7, Aug 29, 2015
+ * @version 1.4.3.7, Dec 22, 2015
  * @since 0.2.0
  */
 public final class Markdowns {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(Markdowns.class.getName());
 
     /**
      * Language service.
@@ -123,10 +118,6 @@ public final class Markdowns {
     public static String toHTML(final String markdownText) {
         if (Strings.isEmptyOrNull(markdownText)) {
             return null;
-        }
-
-        if (markdownText.contains("<p>")) {
-            return markdownText;
         }
 
         final StringWriter writer = new StringWriter();
