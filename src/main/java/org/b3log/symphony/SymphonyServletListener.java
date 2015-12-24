@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.2.3, Oct 17, 2015
+ * @version 1.8.2.4, Oct 24, 2015
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -92,7 +92,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Stopwatchs.start("Context Initialized");
-
+        Latkes.setScanPath("org.b3log.symphony");
         super.contextInitialized(servletContextEvent);
 
         // del this after done TODO: https://github.com/b3log/symphony/issues/98

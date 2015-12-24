@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.7.2.21, Dec 18, 2015
+    Version: 2.7.2.22, Dec 24, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -21,7 +21,7 @@
 
     <!-- Properties -->
     <properties>
-        <latke.version>1.4.1</latke.version>
+        <latke.version>1.4.3</latke.version>
         
         <jetty.version>9.2.7.v20150116</jetty.version>
         <slf4j.version>1.7.5</slf4j.version>
