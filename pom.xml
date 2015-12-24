@@ -21,7 +21,7 @@
 
     <!-- Properties -->
     <properties>
-        <latke.version>1.4.3</latke.version>
+        <latke.version>1.4.4</latke.version>
         
         <jetty.version>9.2.7.v20150116</jetty.version>
         <slf4j.version>1.7.5</slf4j.version>
