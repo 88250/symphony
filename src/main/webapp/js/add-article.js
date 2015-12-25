@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.6.4, Oct 17, 2015
+ * @version 1.10.6.5, Dec 25, 2015
  */
 
 /**
@@ -132,17 +132,22 @@ var AddArticle = {
             window.localStorage.thoughtContent = "";
         }
 
-        var atIdx = location.href.indexOf("at=@");
+        var atIdx = location.href.indexOf("at=");
         if (-1 !== atIdx) {
             var at = AddArticle.editor.getValue();
             AddArticle.editor.setValue("\n\n\n" + at);
             AddArticle.editor.setCursor(CodeMirror.Pos(0, 0));
             AddArticle.editor.focus();
-
-            var username = location.href.substr(atIdx + "at=@".length);
+            
+            var username = getParameterByName("at");
             $("#articleTitle").val("Hi, " + username);
-
-            $("#articleTags").val("讨论组");
+            
+            var tagTitles = "讨论组";
+            var tags = getParameterByName("tags");
+            if ("" !== tags) {
+                tagTitles += "," + tags;
+            }
+            $("#articleTags").val(tagTitles);
         } else {
             $("#articleTitle").focus();
         }
@@ -318,3 +323,11 @@ var AddArticle = {
 };
 
 AddArticle.init();
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+    
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}

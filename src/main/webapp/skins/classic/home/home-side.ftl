@@ -20,7 +20,7 @@
                 ${followLabel}
             </button>
             </#if>
-            <button class="green small" onclick="location.href='/post?type=1&at=@${user.userName}'"> 
+            <button class="green small" onclick="location.href='/post?type=1&at=${user.userName}'"> 
                 ${privateMessageLabel}
             </button>
             </#if>
