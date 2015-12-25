@@ -53,6 +53,10 @@ var Util = {
             }
             var tok = cm.getTokenAt(cur);
             var autocompleteHints = [];
+            
+            if (tok.string.indexOf('@') !== 0) {
+                return false;
+            }
             $.ajax({
                 async: false,
                 url: "/users/names?name=" + tok.string.substring(1),
@@ -76,6 +80,7 @@ var Util = {
                     }
                 }
             });
+            
             return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
         });
         
@@ -114,9 +119,7 @@ var Util = {
         });
         
         CodeMirror.commands.autocompleteUserName = function (cm) {
-            setTimeout(function () {
-                cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
-            }, 50);
+            cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
             return CodeMirror.Pass;
         };
         

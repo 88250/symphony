@@ -46,6 +46,7 @@ var Comment = {
             lineWrapping: true,
             extraKeys: {
                 "'@'": "autocompleteUserName",
+                "Alt-/": "autocompleteUserName",
                 "Ctrl-/": "autocompleteEmoji",
                 "Alt-S": "startAudioRecord",
                 "Alt-E": "endAudioRecord"
@@ -96,20 +97,28 @@ var Comment = {
         });
 
         Comment.editor.on('keydown', function (cm, evt) {
-            if (8 === evt.keyCode) { // Backspace
+            if (8 === evt.keyCode) {
                 var cursor = cm.getCursor();
                 var token = cm.getTokenAt(cursor);
 
-                if (" " !== token.string) {
-                    return;
+                // delete the whole username
+                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch);
+                token = cm.getTokenAt(preCursor);
+                if (token.string.indexOf('@') === 0) {
+                    cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
+                            CodeMirror.Pos(cursor.line, token.end - 1));
                 }
 
-                // delete the whole username
-                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch - 1);
+                token.type = 'em'
+                token.state.strong = '*';
+                token.state.formatting = "strong";
+
+                // delete the whole emoji
+                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch);
                 token = cm.getTokenAt(preCursor);
-                if (Util.startsWith(token.string, "@")) {
+                if (/^:\S+:$/.test(token.string)) {
                     cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
-                            CodeMirror.Pos(cursor.line, token.end));
+                            CodeMirror.Pos(cursor.line, token.end - 1));
                 }
             }
         });
