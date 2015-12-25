@@ -16,6 +16,7 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +100,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.7.13, Sep 17, 2015
+ * @version 1.11.7.13, Dec 25, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1104,6 +1105,24 @@ public class UserProcessor {
 
         final String namePrefix = request.getParameter("name");
         if (StringUtils.isBlank(namePrefix)) {
+            final List<JSONObject> admins = userQueryService.getAdmins();
+            final List<JSONObject> userNames = new ArrayList<JSONObject>();
+            
+            for (final JSONObject admin : admins) {
+                final JSONObject userName = new JSONObject();
+                userName.put(User.USER_NAME, admin.optString(User.USER_NAME));
+
+                String avatar = admin.optString(UserExt.USER_AVATAR_URL);
+                if (StringUtils.isBlank(avatar)) {
+                    avatar = AvatarQueryService.DEFAULT_AVATAR_URL;
+                }
+                userName.put(UserExt.USER_AVATAR_URL, avatar);
+
+                userNames.add(userName);
+            }
+            
+            ret.put(Common.USER_NAMES, userNames);
+            
             return;
         }
 
