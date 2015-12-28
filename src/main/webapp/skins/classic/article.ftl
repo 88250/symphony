@@ -139,7 +139,8 @@
                                 <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                                 <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
                                 |
-                                <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
+                                <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>[Ctrl+/]
+                                @[Alt+/]
                             </span>
                             <div class="fn-right">
                                 <button class="green" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.6.5, Dec 25, 2015
+ * @version 1.10.6.6, Dec 29, 2015
  */
 
 /**
@@ -56,7 +56,6 @@ var AddArticle = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g, ""),
                 articleContent: this.editor.getValue(),
                 articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g, ""),
-                //articleCommentable: $("#articleCommentable").prop("checked"),
                 articleCommentable: true,
                 articleType: $("input[type='radio'][name='articleType']:checked").val(),
                 articleRewardContent: this.rewardEditor.getValue(),
@@ -113,7 +112,7 @@ var AddArticle = {
             dragDrop: false,
             lineWrapping: true,
             extraKeys: {
-                "'@'": "autocompleteUserName",
+                "Alt-/": "autocompleteUserName",
                 "Ctrl-/": "autocompleteEmoji",
                 "Alt-S": "startAudioRecord",
                 "Alt-E": "endAudioRecord",
@@ -138,10 +137,10 @@ var AddArticle = {
             AddArticle.editor.setValue("\n\n\n" + at);
             AddArticle.editor.setCursor(CodeMirror.Pos(0, 0));
             AddArticle.editor.focus();
-            
+
             var username = getParameterByName("at");
             $("#articleTitle").val("Hi, " + username);
-            
+
             var tagTitles = "讨论组";
             var tags = getParameterByName("tags");
             if ("" !== tags) {
@@ -153,20 +152,16 @@ var AddArticle = {
         }
 
         AddArticle.editor.on('keydown', function (cm, evt) {
-            if (8 === evt.keyCode) { // Backspace
+            if (8 === evt.keyCode) {
                 var cursor = cm.getCursor();
                 var token = cm.getTokenAt(cursor);
 
-                if (" " !== token.string) {
-                    return;
-                }
-
-                // delete the whole username
-                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch - 1);
+                // delete the whole emoji
+                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch);
                 token = cm.getTokenAt(preCursor);
-                if (Util.startsWith(token.string, "@")) {
+                if (/^:\S+:$/.test(token.string)) {
                     cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
-                            CodeMirror.Pos(cursor.line, token.end));
+                            CodeMirror.Pos(cursor.line, token.end - 1));
                 }
             }
         });
@@ -191,10 +186,16 @@ var AddArticle = {
                 thoughtTime = (new Date()).getTime();
             }
 
+            var cursor = cm.getCursor();
+            var token = cm.getTokenAt(cursor);
+            if (token.string.indexOf('@') === 0) {
+                cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
+                return CodeMirror.Pass;
+            }
+
             var change = "",
                     unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
                     time = (new Date()).getTime() - thoughtTime;
-            // console.log(changes[0])
 
             switch (changes[0].origin) {
                 case "+delete":
@@ -252,7 +253,7 @@ var AddArticle = {
             lineWrapping: true,
             readOnly: readOnly,
             extraKeys: {
-                "'@'": "autocompleteUserName",
+                "Alt-/": "autocompleteUserName",
                 "Ctrl-/": "autocompleteEmoji",
                 "F11": function (cm) {
                     cm.setOption("fullScreen", !cm.getOption("fullScreen"));
@@ -261,21 +262,26 @@ var AddArticle = {
         });
 
         AddArticle.rewardEditor.on('keydown', function (cm, evt) {
-            if (8 === evt.keyCode) { // Backspace
+            if (8 === evt.keyCode) {
                 var cursor = cm.getCursor();
                 var token = cm.getTokenAt(cursor);
 
-                if (" " !== token.string) {
-                    return;
-                }
-
-                // delete the whole username
-                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch - 1);
+                // delete the whole emoji
+                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch);
                 token = cm.getTokenAt(preCursor);
-                if (Util.startsWith(token.string, "@")) {
+                if (/^:\S+:$/.test(token.string)) {
                     cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
-                            CodeMirror.Pos(cursor.line, token.end));
+                            CodeMirror.Pos(cursor.line, token.end - 1));
                 }
+            }
+        });
+
+        AddArticle.rewardEditor.on('changes', function (cm) {
+            var cursor = cm.getCursor();
+            var token = cm.getTokenAt(cursor);
+            if (token.string.indexOf('@') === 0) {
+                cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
+                return CodeMirror.Pass;
             }
         });
 
@@ -328,6 +334,6 @@ function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
             results = regex.exec(location.search);
-    
+
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }

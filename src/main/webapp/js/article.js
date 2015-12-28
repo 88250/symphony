@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.14.6, Nov 20, 2015
+ * @version 1.11.14.7, Dec 29, 2015
  */
 
 /**
@@ -45,7 +45,6 @@ var Comment = {
             dragDrop: false,
             lineWrapping: true,
             extraKeys: {
-                "'@'": "autocompleteUserName",
                 "Alt-/": "autocompleteUserName",
                 "Ctrl-/": "autocompleteEmoji",
                 "Alt-S": "startAudioRecord",
@@ -86,6 +85,13 @@ var Comment = {
                     commentContent: cm.getValue()
                 });
             }
+
+            var cursor = cm.getCursor();
+            var token = cm.getTokenAt(cursor);
+            if (token.string.indexOf('@') === 0) {
+                cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
+                return CodeMirror.Pass;
+            }
         });
 
         Comment.editor.on('keypress', function (cm, evt) {
@@ -100,18 +106,6 @@ var Comment = {
             if (8 === evt.keyCode) {
                 var cursor = cm.getCursor();
                 var token = cm.getTokenAt(cursor);
-
-                // delete the whole username
-                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch);
-                token = cm.getTokenAt(preCursor);
-                if (token.string.indexOf('@') === 0) {
-                    cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
-                            CodeMirror.Pos(cursor.line, token.end - 1));
-                }
-
-                token.type = 'em'
-                token.state.strong = '*';
-                token.state.formatting = "strong";
 
                 // delete the whole emoji
                 var preCursor = CodeMirror.Pos(cursor.line, cursor.ch);
