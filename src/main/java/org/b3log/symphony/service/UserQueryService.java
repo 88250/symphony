@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.5, Aug 27, 2015
+ * @version 1.5.3.5, Dec 29, 2015
  * @since 0.2.0
  */
 @Service
@@ -92,6 +92,7 @@ public class UserQueryService {
         userNames.clear();
 
         final Query query = new Query().setPageCount(1);
+        query.setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.NOT_EQUAL, UserExt.NULL_USER_NAME));
         query.addProjection(User.USER_NAME, String.class);
         query.addProjection(UserExt.USER_AVATAR_URL, String.class);
 
@@ -119,7 +120,7 @@ public class UserQueryService {
                     final String u1Name = u1.optString(User.USER_NAME);
                     final String u2Name = u2.optString(User.USER_NAME);
 
-                    return u1Name.compareToIgnoreCase(u2Name);
+                    return u2Name.compareToIgnoreCase(u1Name);
                 }
             });
         } catch (final RepositoryException e) {
@@ -155,7 +156,7 @@ public class UserQueryService {
                 if (u1Name.startsWith(inputName)) {
                     return 0;
                 } else {
-                    return u1Name.compareTo(namePrefix);
+                    return namePrefix.compareTo(u1Name);
                 }
             }
         });
