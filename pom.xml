@@ -318,8 +318,8 @@
                     </mapping>
                     <useDefaultMapping>true</useDefaultMapping>
                     <properties>
-                        <year>2012-2015</year>
-                        <devTeam>b3log.org</devTeam>
+                        <year>2012-2016</year>
+                        <devTeam>b3log.org &amp; hacpai.com</devTeam>
                     </properties>
                     <encoding>UTF-8</encoding>
                 </configuration>
