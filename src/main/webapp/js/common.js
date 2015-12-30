@@ -72,8 +72,8 @@ var Util = {
                         var updateTime = user.userUpdateTime;
 
                         autocompleteHints.push({
-                            displayText: "<span style='font-size: 1.2rem;'><img style='width: 1.6rem' src='" + avatar
-                                    + "-64.jpg?" + updateTime + "'>&nbsp;" + name + "</span>",
+                            displayText: "<span style='font-size: 1rem;line-height:22px'><img style='width: 1rem;margin:3px 0;float:left' src='" + avatar
+                                    + "-64.jpg?" + updateTime + "'> " + name + "</span>",
                             text: name + " "
                         });
                     }
@@ -102,8 +102,8 @@ var Util = {
                 var text = emojis[i];
                 if (Util.startsWith(text, input)) {
                     autocompleteHints.push({
-                        displayText: "<span>" + displayText +
-                                '&nbsp;<img style="width: 16px" src="' + Label.staticServePath + '/js/lib/emojify.js-1.0.2/images/basic/' + text + '.png"></span>',
+                        displayText: '<span style="font-size: 1rem;line-height:22px"><img style="width: 1rem;margin:3px 0;float:left" src="' + Label.staticServePath + '/js/lib/emojify.js-1.0.2/images/basic/' + text + '.png"> ' + 
+                                  displayText.toString() + '</span>',
                         text: ":" + text + ": "
                     });
                     matchCnt++;
@@ -123,9 +123,7 @@ var Util = {
         };
         
         CodeMirror.commands.autocompleteEmoji = function (cm) {
-            setTimeout(function () {
-                cm.showHint({hint: CodeMirror.hint.emoji, completeSingle: false});
-            }, 50);
+            cm.showHint({hint: CodeMirror.hint.emoji, completeSingle: false});
             return CodeMirror.Pass;
         };
         
