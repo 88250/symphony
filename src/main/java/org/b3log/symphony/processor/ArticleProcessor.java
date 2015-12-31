@@ -108,7 +108,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.11.22, Dec 5, 2015
+ * @version 1.12.11.23, Dec 31, 2015
  * @since 0.2.0
  */
 @RequestProcessor
@@ -209,7 +209,7 @@ public class ArticleProcessor {
 
         renderer.setTemplateName("/home/pre-post.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        
+
         dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
@@ -803,9 +803,9 @@ public class ArticleProcessor {
             article.put(Keys.OBJECT_ID, articleExisted.optString(Keys.OBJECT_ID));
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
 
-            articleContent += "\n\n<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
-                    + "<i style='margin-right:5px;'><a target='_blank' href='"
-                    + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
+//            articleContent += "\n\n<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
+//                    + "<i style='margin-right:5px;'><a target='_blank' href='"
+//                    + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
         } else { // Add
             final boolean isBroadcast = "aBroadcast".equals(permalink);
             if (isBroadcast) {
@@ -813,9 +813,9 @@ public class ArticleProcessor {
                         + "<i style='margin-right:5px;'><a target='_blank' href='"
                         + clientHost + "'>" + clientTitle + "</a></i></span></p>";
             } else {
-                articleContent += "\n\n<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
-                        + "<i style='margin-right:5px;'><a target='_blank' href='"
-                        + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
+//                articleContent += "\n\n<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
+//                        + "<i style='margin-right:5px;'><a target='_blank' href='"
+//                        + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
             }
 
             article.put(Article.ARTICLE_T_IS_BROADCAST, isBroadcast);
@@ -950,7 +950,8 @@ public class ArticleProcessor {
         final String userName = user.optString(User.USER_NAME);
 
         if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-            LOGGER.log(Level.WARN, "B3 key not match, ignored update article [name={0}, host={1}]", userName, clientHost);
+            LOGGER.log(Level.WARN, "B3 key not match, ignored update article [name={0}, host={1}, userSymKey={2}, userClientKey={3}]",
+                    userName, clientHost, user.optString(UserExt.USER_B3_KEY), userB3Key);
 
             return;
         }
@@ -968,9 +969,9 @@ public class ArticleProcessor {
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
         final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);
-        articleContent += "\n\n<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
-                + "<i style='margin-right:5px;'><a target='_blank' href='"
-                + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
+//        articleContent += "\n\n<p class='fn-clear'><span class='fn-right'><span class='ft-small'>该文章同步自</span> "
+//                + "<i style='margin-right:5px;'><a target='_blank' href='"
+//                + clientHost + permalink + "'>" + clientTitle + "</a></i></span></p>";
 
         final String authorId = user.optString(Keys.OBJECT_ID);
         final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
