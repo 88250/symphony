@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Dec 17, 2015
+ * @version 1.0.1.1, Jan 2, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -118,11 +118,10 @@ public class ArticleProcessor {
             currentPage = Integer.parseInt(page);
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         ret.put("stories", this.articleQueryService.getTopArticlesWithComments(currentPage, pageSize));
-        renderer.setJSONObject(ret);
+
+        context.renderJSON(ret);
     }
 
     /**
@@ -143,11 +142,10 @@ public class ArticleProcessor {
             currentPage = Integer.parseInt(page);
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         ret.put("stories", this.articleQueryService.getRecentArticlesWithComments(currentPage, pageSize));
-        renderer.setJSONObject(ret);
+
+        context.renderJSON(ret);
     }
 
     /**

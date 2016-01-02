@@ -85,11 +85,7 @@ public class FollowProcessor {
     @Before(adviceClass = LoginCheck.class)
     public void followUser(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String followingUserId = requestJSONObject.optString(Follow.FOLLOWING_ID);
@@ -99,7 +95,7 @@ public class FollowProcessor {
 
         followMgmtService.followUser(followerUserId, followingUserId);
 
-        ret.put(Keys.STATUS_CODE, true);
+        context.renderTrueResult();
     }
 
     /**
@@ -123,11 +119,7 @@ public class FollowProcessor {
     @Before(adviceClass = LoginCheck.class)
     public void unfollowUser(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String followingUserId = requestJSONObject.optString(Follow.FOLLOWING_ID);
@@ -137,7 +129,7 @@ public class FollowProcessor {
 
         followMgmtService.unfollowUser(followerUserId, followingUserId);
 
-        ret.put(Keys.STATUS_CODE, true);
+        context.renderTrueResult();
     }
 
     /**
@@ -161,11 +153,7 @@ public class FollowProcessor {
     @Before(adviceClass = LoginCheck.class)
     public void followTag(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String followingTagId = requestJSONObject.optString(Follow.FOLLOWING_ID);
@@ -175,7 +163,7 @@ public class FollowProcessor {
 
         followMgmtService.followTag(followerUserId, followingTagId);
 
-        ret.put(Keys.STATUS_CODE, true);
+        context.renderTrueResult();
     }
 
     /**
@@ -199,11 +187,7 @@ public class FollowProcessor {
     @Before(adviceClass = LoginCheck.class)
     public void unfollowTag(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String followingTagId = requestJSONObject.optString(Follow.FOLLOWING_ID);
@@ -213,7 +197,7 @@ public class FollowProcessor {
 
         followMgmtService.unfollowTag(followerUserId, followingTagId);
 
-        ret.put(Keys.STATUS_CODE, true);
+        context.renderTrueResult();
     }
 
     /**
@@ -237,11 +221,7 @@ public class FollowProcessor {
     @Before(adviceClass = LoginCheck.class)
     public void followArticle(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
@@ -251,7 +231,7 @@ public class FollowProcessor {
 
         followMgmtService.followArticle(followerUserId, followingArticleId);
 
-        ret.put(Keys.STATUS_CODE, true);
+        context.renderTrueResult();
     }
 
     /**
@@ -275,11 +255,7 @@ public class FollowProcessor {
     @Before(adviceClass = LoginCheck.class)
     public void unfollowArticle(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String followingArticleId = requestJSONObject.optString(Follow.FOLLOWING_ID);
@@ -289,6 +265,6 @@ public class FollowProcessor {
 
         followMgmtService.unfollowArticle(followerUserId, followingArticleId);
 
-        ret.put(Keys.STATUS_CODE, true);
+        context.renderTrueResult();
     }
 }

@@ -33,7 +33,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
@@ -47,7 +46,6 @@ import org.b3log.symphony.service.ClientMgmtService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Results;
 import org.json.JSONObject;
 
 /**
@@ -65,7 +63,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.9, Sep 19, 2015
+ * @version 1.2.1.10, Jan 2, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -135,11 +133,7 @@ public class CommentProcessor {
     @Before(adviceClass = {CSRFCheck.class, CommentAddValidation.class})
     public void addComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
@@ -197,9 +191,9 @@ public class CommentProcessor {
             comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
 
             commentMgmtService.addComment(comment);
-            ret.put(Keys.STATUS_CODE, true);
+            context.renderTrueResult();
         } catch (final ServiceException e) {
-            ret.put(Keys.MSG, e.getMessage());
+            context.renderMsg(e.getMessage());
         }
     }
 
@@ -225,11 +219,7 @@ public class CommentProcessor {
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
     public void thankComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         JSONObject requestJSONObject;
         try {
@@ -247,10 +237,9 @@ public class CommentProcessor {
         try {
             commentMgmtService.thankComment(commentId, currentUser.optString(Keys.OBJECT_ID));
 
-            ret.put(Keys.STATUS_CODE, true);
-            ret.put(Keys.MSG, langPropsService.get("thankSentLabel"));
+            context.renderTrueResult().renderMsg(langPropsService.get("thankSentLabel"));
         } catch (final ServiceException e) {
-            ret.put(Keys.MSG, e.getMessage());
+            context.renderMsg(e.getMessage());
         }
     }
 

@@ -38,7 +38,6 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
@@ -58,7 +57,6 @@ import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.service.VerifycodeMgmtService;
 import org.b3log.symphony.service.VerifycodeQueryService;
 import org.b3log.symphony.util.Filler;
-import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Sessions;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,7 +75,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.8, Dec 8, 2015
+ * @version 1.6.0.9, Jan 2, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -170,11 +168,7 @@ public class LoginProcessor {
     @Before(adviceClass = UserForgetPwdValidation.class)
     public void forgetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         JSONObject requestJSONObject;
         try {
@@ -189,8 +183,7 @@ public class LoginProcessor {
         try {
             final JSONObject user = userQueryService.getUserByEmail(email);
             if (null == user) {
-                ret.put(Keys.STATUS_CODE, false);
-                ret.put(Keys.MSG, langPropsService.get("notFoundUserLabel"));
+                context.renderFalseResult().renderMsg(langPropsService.get("notFoundUserLabel"));
 
                 return;
             }
@@ -208,13 +201,12 @@ public class LoginProcessor {
             verifycode.put(Verifycode.USER_ID, userId);
             verifycodeMgmtService.addVerifycode(verifycode);
 
-            ret.put(Keys.STATUS_CODE, true);
-            ret.put(Keys.MSG, langPropsService.get("verifycodeSentLabel"));
+            context.renderTrueResult().renderMsg(langPropsService.get("verifycodeSentLabel"));
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("resetPwdLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", email);
 
-            ret.put(Keys.MSG, msg);
+            context.renderMsg(msg);
         }
     }
 
@@ -263,11 +255,7 @@ public class LoginProcessor {
     @RequestProcessing(value = "/reset-pwd", method = HTTPRequestMethod.POST)
     public void resetPwd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         JSONObject requestJSONObject;
         try {
@@ -285,21 +273,21 @@ public class LoginProcessor {
         try {
             final JSONObject user = userQueryService.getUser(userId);
             if (null == user) {
-                ret.put(Keys.MSG, langPropsService.get("resetPwdLabel") + " - " + "User Not Found");
+                context.renderMsg(langPropsService.get("resetPwdLabel") + " - " + "User Not Found");
 
                 return;
             }
 
             user.put(User.USER_PASSWORD, password);
             userMgmtService.updatePassword(user);
-            ret.put(Keys.STATUS_CODE, true);
+            context.renderTrueResult();
 
             LOGGER.info("User [email=" + user.optString(User.USER_EMAIL) + "] reseted password");
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("resetPwdLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
 
-            ret.put(Keys.MSG, msg);
+            context.renderMsg(msg);
         }
     }
 
@@ -363,11 +351,7 @@ public class LoginProcessor {
     @Before(adviceClass = UserRegisterValidation.class)
     public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         JSONObject requestJSONObject;
         try {
@@ -403,13 +387,12 @@ public class LoginProcessor {
             verifycode.put(Verifycode.USER_ID, newUserId);
             verifycodeMgmtService.addVerifycode(verifycode);
 
-            ret.put(Keys.STATUS_CODE, true);
-            ret.put(Keys.MSG, langPropsService.get("verifycodeSentLabel"));
+            context.renderTrueResult().renderMsg(langPropsService.get("verifycodeSentLabel"));
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
 
-            ret.put(Keys.MSG, msg);
+            context.renderMsg(msg);
         }
     }
 
@@ -426,11 +409,7 @@ public class LoginProcessor {
     @Before(adviceClass = UserRegister2Validation.class)
     public void register2(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         JSONObject requestJSONObject;
         try {
@@ -450,7 +429,7 @@ public class LoginProcessor {
         try {
             final JSONObject user = userQueryService.getUser(userId);
             if (null == user) {
-                ret.put(Keys.MSG, langPropsService.get("registerFailLabel") + " - " + "User Not Found");
+                context.renderMsg(langPropsService.get("registerFailLabel") + " - " + "User Not Found");
 
                 return;
             }
@@ -483,7 +462,7 @@ public class LoginProcessor {
                 }
             }
 
-            ret.put(Keys.STATUS_CODE, true);
+            context.renderTrueResult();
 
             LOGGER.log(Level.INFO, "Registered a user [name={0}, email={1}]", name, email);
 
@@ -500,7 +479,7 @@ public class LoginProcessor {
             final String msg = langPropsService.get("registerFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg + "[name={0}, email={1}]", name, email);
 
-            ret.put(Keys.MSG, msg);
+            context.renderMsg(msg);
         }
     }
 
@@ -516,13 +495,7 @@ public class LoginProcessor {
     @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
     public void login(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws ServletException, IOException {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
-
-        ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));
+        context.renderJSON().renderMsg(langPropsService.get("loginFailLabel"));
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
         final String nameOrEmail = requestJSONObject.optString("nameOrEmail");
@@ -534,13 +507,14 @@ public class LoginProcessor {
             }
 
             if (null == user) {
-                ret.put(Keys.MSG, langPropsService.get("notFoundUserLabel"));
+                context.renderMsg(langPropsService.get("notFoundUserLabel"));
+
                 return;
             }
 
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
-                ret.put(Keys.MSG, langPropsService.get("userBlockLabel"));
+                context.renderMsg(langPropsService.get("userBlockLabel"));
 
                 return;
             }
@@ -552,15 +526,14 @@ public class LoginProcessor {
                 final String ip = Requests.getRemoteAddr(request);
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), ip, true);
 
-                ret.put(Keys.MSG, "");
-                ret.put(Keys.STATUS_CODE, true);
+                context.renderMsg("").renderTrueResult();
 
                 return;
             }
 
-            ret.put(Keys.MSG, langPropsService.get("wrongPwdLabel"));
+            context.renderMsg(langPropsService.get("wrongPwdLabel"));
         } catch (final ServiceException e) {
-            ret.put(Keys.MSG, langPropsService.get("loginFailLabel"));
+            context.renderMsg(langPropsService.get("loginFailLabel"));
         }
     }
 

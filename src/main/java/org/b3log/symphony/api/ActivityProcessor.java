@@ -25,7 +25,6 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -40,7 +39,8 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://wdx.me">DX</a>
- * @version 1.0.0.0, Aug 13, 2015
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.1, Jan 2, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -88,10 +88,9 @@ public class ActivityProcessor {
         final JSONObject checkedinUser = userQueryService.getUserByEmail(email);
         final int balance = checkedinUser.optInt(UserExt.USER_POINT);
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
+        context.renderJSON(ret);
+
         final JSONObject checkin = new JSONObject();
         checkin.put("balance", balance);
         checkin.put("reward", checkinReward);

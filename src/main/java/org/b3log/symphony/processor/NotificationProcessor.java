@@ -29,7 +29,6 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
@@ -43,7 +42,6 @@ import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
-import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -57,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.1, Sep 1, 2015
+ * @version 1.3.1.2, Jan 2, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -526,14 +524,7 @@ public class NotificationProcessor {
             return;
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.trueResult();
-        ret.put(Notification.NOTIFICATION_T_UNREAD_COUNT, 0);
-        renderer.setJSONObject(ret);
-
-        ret.put(Notification.NOTIFICATION_T_UNREAD_COUNT,
+        context.renderJSON(true).renderJSONValue(Notification.NOTIFICATION_T_UNREAD_COUNT,
                 notificationQueryService.getUnreadNotificationCount(currentUser.optString(Keys.OBJECT_ID)));
     }
 }

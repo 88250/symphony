@@ -43,7 +43,6 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
@@ -78,7 +77,6 @@ import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Networks;
-import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -108,7 +106,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.11.23, Dec 31, 2015
+ * @version 1.12.11.24, Jan 2, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -470,11 +468,7 @@ public class ArticleProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException, ServletException {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
@@ -522,12 +516,13 @@ public class ArticleProcessor {
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
 
             articleMgmtService.addArticle(article);
-            ret.put(Keys.STATUS_CODE, true);
+
+            context.renderTrueResult();
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
             LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed: {0}", e.getMessage());
 
-            ret.put(Keys.MSG, msg);
+            context.renderMsg(msg);
         }
     }
 
@@ -625,11 +620,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();;
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
@@ -682,12 +673,12 @@ public class ArticleProcessor {
             article.put(Article.ARTICLE_TAGS, articleTags);
 
             articleMgmtService.updateArticle(article);
-            ret.put(Keys.STATUS_CODE, true);
+            context.renderTrueResult();
         } catch (final ServiceException e) {
             final String msg = e.getMessage();
             LOGGER.log(Level.ERROR, "Adds article[title=" + articleTitle + "] failed: {0}", e.getMessage());
 
-            ret.put(Keys.MSG, msg);
+            context.renderMsg(msg);
         }
     }
 
@@ -734,11 +725,7 @@ public class ArticleProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void addArticleFromRhythm(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
@@ -840,12 +827,12 @@ public class ArticleProcessor {
                 articleMgmtService.updateArticle(article);
             }
 
-            ret.put(Keys.STATUS_CODE, true);
+            context.renderTrueResult();
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg, e);
 
-            ret.put(Keys.MSG, msg);
+            context.renderMsg(msg);
         }
 
         // Updates client record
@@ -916,11 +903,7 @@ public class ArticleProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void updateArticleFromRhythm(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
@@ -1006,12 +989,12 @@ public class ArticleProcessor {
 
             articleMgmtService.updateArticle(article);
 
-            ret.put(Keys.STATUS_CODE, true);
+            context.renderTrueResult();
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg, e);
 
-            ret.put(Keys.MSG, msg);
+            context.renderMsg(msg);
         }
 
         // Updates client record
@@ -1061,16 +1044,11 @@ public class ArticleProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-        final JSONObject result = new JSONObject();
-        renderer.setJSONObject(result);
-
-        result.put(Keys.STATUS_CODE, true);
+        context.renderJSON(true);
 
         String markdownText = request.getParameter("markdownText");
         if (Strings.isEmptyOrNull(markdownText)) {
-            result.put("html", "");
+            context.renderJSONValue("html", "");
 
             return;
         }
@@ -1093,7 +1071,7 @@ public class ArticleProcessor {
         markdownText = Markdowns.toHTML(markdownText);
         markdownText = Markdowns.clean(markdownText, "");
 
-        result.put("html", markdownText);
+        context.renderJSONValue("html", markdownText);
     }
 
     /**
@@ -1119,16 +1097,11 @@ public class ArticleProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void getArticlePreviewContent(final HttpServletRequest request, final HttpServletResponse response,
             final HTTPRequestContext context, final String articleId) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-        final JSONObject result = Results.trueResult();
-        renderer.setJSONObject(result);
-
-        result.put("html", "");
+        context.renderJSON(true).renderJSONValue("html", "");
 
         final JSONObject article = articleQueryService.getArticle(articleId);
         if (null == article) {
-            result.put(Keys.STATUS_CODE, false);
+            context.renderFalseResult();
 
             return;
         }
@@ -1140,7 +1113,7 @@ public class ArticleProcessor {
 
         if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
                 || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
-            result.put("html", langPropsService.get("articleContentBlockLabel"));
+            context.renderJSONValue("html", langPropsService.get("articleContentBlockLabel"));
 
             return;
         }
@@ -1165,7 +1138,7 @@ public class ArticleProcessor {
                 blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
                         + "/member/" + authorName + "'>" + authorName + "</a>");
 
-                result.put("html", blockContent);
+                context.renderJSONValue("html", blockContent);
 
                 return;
             }
@@ -1180,7 +1153,7 @@ public class ArticleProcessor {
                     + " ....";
         }
 
-        result.put("html", content);
+        context.renderJSONValue("html", content);
     }
 
     /**
@@ -1210,15 +1183,12 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-        final JSONObject result = Results.falseResult();
-        renderer.setJSONObject(result);
+        context.renderJSON();
 
         try {
             articleMgmtService.reward(articleId, currentUser.optString(Keys.OBJECT_ID));
         } catch (final ServiceException e) {
-            result.put(Keys.MSG, langPropsService.get("transferFailLabel"));
+            context.renderMsg(langPropsService.get("transferFailLabel"));
 
             return;
         }
@@ -1228,8 +1198,9 @@ public class ArticleProcessor {
             return;
         }
 
-        result.put(Keys.STATUS_CODE, true);
         articleQueryService.processArticleContent(article, request);
-        result.put(Article.ARTICLE_REWARD_CONTENT, article.optString(Article.ARTICLE_REWARD_CONTENT));
+
+        context.renderTrueResult().
+                renderJSONValue(Article.ARTICLE_REWARD_CONTENT, article.optString(Article.ARTICLE_REWARD_CONTENT));
     }
 }

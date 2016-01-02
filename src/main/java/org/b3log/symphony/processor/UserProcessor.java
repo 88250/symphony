@@ -37,7 +37,6 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
@@ -100,7 +99,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.7.13, Dec 25, 2015
+ * @version 1.11.7.14, Jan 2, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -742,11 +741,7 @@ public class UserProcessor {
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
     public void updateGeoStatus(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         JSONObject requestJSONObject;
         try {
@@ -769,9 +764,10 @@ public class UserProcessor {
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
-            ret.put(Keys.STATUS_CODE, true);
+
+            context.renderTrueResult();
         } catch (final ServiceException e) {
-            ret.put(Keys.MSG, e.getMessage());
+            context.renderMsg(e.getMessage());
         }
     }
 
@@ -787,11 +783,7 @@ public class UserProcessor {
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdateProfilesValidation.class})
     public void updateProfiles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
@@ -817,9 +809,10 @@ public class UserProcessor {
 
         try {
             userMgmtService.updateProfiles(user);
-            ret.put(Keys.STATUS_CODE, true);
+
+            context.renderTrueResult();
         } catch (final ServiceException e) {
-            ret.put(Keys.MSG, e.getMessage());
+            context.renderMsg(e.getMessage());
         }
     }
 
@@ -835,11 +828,8 @@ public class UserProcessor {
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, PointTransferValidation.class})
     public void pointTransfer(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
         final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON(ret);
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
@@ -877,11 +867,7 @@ public class UserProcessor {
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdateSyncB3Validation.class})
     public void updateSyncB3(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
@@ -900,12 +886,13 @@ public class UserProcessor {
 
         try {
             userMgmtService.updateSyncB3(user);
-            ret.put(Keys.STATUS_CODE, true);
+
+            context.renderTrueResult();
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg, e);
 
-            ret.put(Keys.MSG, msg);
+            context.renderMsg(msg);
         }
     }
 
@@ -921,11 +908,7 @@ public class UserProcessor {
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdatePasswordValidation.class})
     public void updatePassword(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
@@ -935,7 +918,7 @@ public class UserProcessor {
         final JSONObject user = userQueryService.getCurrentUser(request);
 
         if (!password.equals(user.optString(User.USER_PASSWORD))) {
-            ret.put(Keys.MSG, langPropsService.get("invalidOldPwdLabel"));
+            context.renderMsg(langPropsService.get("invalidOldPwdLabel"));
 
             return;
         }
@@ -944,12 +927,12 @@ public class UserProcessor {
 
         try {
             userMgmtService.updatePassword(user);
-            ret.put(Keys.STATUS_CODE, true);
+            context.renderTrueResult();
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
             LOGGER.log(Level.ERROR, msg, e);
 
-            ret.put(Keys.MSG, msg);
+            context.renderMsg(msg);
         }
     }
 
@@ -964,11 +947,7 @@ public class UserProcessor {
     @RequestProcessing(value = "/apis/user", method = HTTPRequestMethod.POST)
     public void syncUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
@@ -1018,7 +997,7 @@ public class UserProcessor {
 
                 LOGGER.log(Level.INFO, "Added a user[{0}] via Solo[{1}] sync", name, clientHost);
 
-                ret.put(Keys.STATUS_CODE, true);
+                context.renderTrueResult();
             } catch (final ServiceException e) {
                 LOGGER.log(Level.ERROR, "Sync add user[name={0}, host={1}] error: " + e.getMessage(), name, clientHost);
             }
@@ -1047,7 +1026,7 @@ public class UserProcessor {
 
             LOGGER.log(Level.INFO, "Updated a user[name={0}] via Solo[{1}] sync", name, clientHost);
 
-            ret.put(Keys.STATUS_CODE, true);
+            context.renderTrueResult();
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Sync update user[name=" + name + ", host=" + clientHost + "] error", e);
         }
@@ -1071,13 +1050,9 @@ public class UserProcessor {
             return;
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.trueResult();
-        renderer.setJSONObject(ret);
-
         userMgmtService.resetUnverifiedUsers();
+
+        context.renderJSON().renderTrueResult();
     }
 
     /**
@@ -1097,17 +1072,13 @@ public class UserProcessor {
             return;
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.trueResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON().renderTrueResult();
 
         final String namePrefix = request.getParameter("name");
         if (StringUtils.isBlank(namePrefix)) {
             final List<JSONObject> admins = userQueryService.getAdmins();
             final List<JSONObject> userNames = new ArrayList<JSONObject>();
-            
+
             for (final JSONObject admin : admins) {
                 final JSONObject userName = new JSONObject();
                 userName.put(User.USER_NAME, admin.optString(User.USER_NAME));
@@ -1120,14 +1091,15 @@ public class UserProcessor {
 
                 userNames.add(userName);
             }
-            
-            ret.put(Common.USER_NAMES, userNames);
-            
+
+            context.renderJSONValue(Common.USER_NAMES, userNames);
+
             return;
         }
 
         final List<JSONObject> userNames = userQueryService.getUserNamesByPrefix(namePrefix);
-        ret.put(Common.USER_NAMES, userNames);
+
+        context.renderJSONValue(Common.USER_NAMES, userNames);
     }
 
     /**

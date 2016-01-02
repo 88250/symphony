@@ -28,14 +28,12 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Vote;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.service.VoteMgmtService;
 import org.b3log.symphony.service.VoteQueryService;
-import org.b3log.symphony.util.Results;
 import org.json.JSONObject;
 
 /**
@@ -47,7 +45,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Aug 15, 2015
+ * @version 1.1.0.1, Jan 2, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -97,11 +95,7 @@ public class VoteProcessor {
     @Before(adviceClass = LoginCheck.class)
     public void voteUpArticle(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
@@ -111,8 +105,7 @@ public class VoteProcessor {
 
         if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
-            ret.put(Keys.STATUS_CODE, false);
-            ret.put(Keys.MSG, langPropsService.get("cantVoteSelfLabel"));
+            context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
 
             return;
         }
@@ -124,8 +117,7 @@ public class VoteProcessor {
             voteMgmtService.voteUpArticle(userId, dataId);
         }
 
-        ret.put(Vote.TYPE, vote);
-        ret.put(Keys.STATUS_CODE, true);
+        context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
     }
 
     /**
@@ -149,11 +141,7 @@ public class VoteProcessor {
     @Before(adviceClass = LoginCheck.class)
     public void voteDownArticle(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = Results.falseResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String dataId = requestJSONObject.optString(Common.DATA_ID);
@@ -163,8 +151,7 @@ public class VoteProcessor {
 
         if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
                 && voteQueryService.isOwn(userId, dataId, Vote.DATA_TYPE_C_ARTICLE)) {
-            ret.put(Keys.STATUS_CODE, false);
-            ret.put(Keys.MSG, langPropsService.get("cantVoteSelfLabel"));
+            context.renderFalseResult().renderMsg(langPropsService.get("cantVoteSelfLabel"));
 
             return;
         }
@@ -176,7 +163,6 @@ public class VoteProcessor {
             voteMgmtService.voteDownArticle(userId, dataId);
         }
 
-        ret.put(Vote.TYPE, vote);
-        ret.put(Keys.STATUS_CODE, true);
+        context.renderTrueResult().renderJSONValue(Vote.TYPE, vote);
     }
 }

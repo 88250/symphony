@@ -20,7 +20,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -31,19 +30,16 @@ import org.b3log.latke.servlet.annotation.After;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.util.Filler;
-import org.b3log.symphony.util.Results;
-import org.json.JSONObject;
 
 /**
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Aug 27, 2015
+ * @version 1.1.0.5, Jan 2, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -96,14 +92,7 @@ public class ErrorProcessor {
 
             filler.fillHeaderAndFooter(request, response, dataModel);
         } else {
-            final JSONRenderer renderer = new JSONRenderer();
-            context.setRenderer(renderer);
-
-            final JSONObject ret = Results.falseResult();
-            renderer.setJSONObject(ret);
-
-            ret.put(Keys.STATUS_CODE, false);
-            ret.put(Keys.MSG, statusCode);
+            context.renderJSON().renderMsg(statusCode);
         }
     }
 }

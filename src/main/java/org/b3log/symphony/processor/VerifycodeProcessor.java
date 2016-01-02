@@ -23,11 +23,8 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.symphony.service.VerifycodeMgmtService;
-import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONObject;
 
 /**
  * Verifycode processor.
@@ -39,7 +36,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Dec 8, 2015
+ * @version 1.0.0.2, Jan 2, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -76,10 +73,7 @@ public class VerifycodeProcessor {
 
         verifycodeMgmtService.sendEmailVerifycode();
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-        final JSONObject ret = Results.trueResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON().renderTrueResult();
     }
 
     /**
@@ -102,9 +96,6 @@ public class VerifycodeProcessor {
 
         verifycodeMgmtService.removeExpiredVerifycodes();
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-        final JSONObject ret = Results.trueResult();
-        renderer.setJSONObject(ret);
+        context.renderJSON().renderTrueResult();
     }
 }

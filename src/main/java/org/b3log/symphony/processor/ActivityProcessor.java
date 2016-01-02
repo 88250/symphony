@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -64,7 +63,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.0, Oct 24, 2015
+ * @version 1.3.1.1, Jan 2, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -258,7 +257,7 @@ public class ActivityProcessor {
     public void bet1A0001(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
+        context.renderJSON().renderFalseResult();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
@@ -277,10 +276,8 @@ public class ActivityProcessor {
             msg = msg.replace("{smallOrLarge}", smallOrLarge == 0 ? small : large);
             msg = msg.replace("{point}", String.valueOf(amount));
 
-            ret.put(Keys.MSG, msg);
+            context.renderTrueResult().renderMsg(msg);
         }
-
-        renderer.setJSONObject(ret);
     }
 
     /**
@@ -296,13 +293,11 @@ public class ActivityProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void collect1A0001(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
 
         final JSONObject ret = activityMgmtService.collect1A0001(userId);
-        renderer.setJSONObject(ret);
+
+        context.renderJSON(ret);
     }
 }
