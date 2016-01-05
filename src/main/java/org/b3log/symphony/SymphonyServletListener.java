@@ -34,6 +34,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
@@ -201,6 +202,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         try {
             final List<JSONObject> admins = userQueryService.getAdmins();
+            JdbcRepository.dispose(); // XXX: JDBC connection close
+            
             if (null != admins && !admins.isEmpty()) { // Initialized already
                 return;
             }
