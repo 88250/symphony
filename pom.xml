@@ -21,7 +21,7 @@
 
     <!-- Properties -->
     <properties>
-        <latke.version>1.4.6</latke.version>
+        <latke.version>1.4.7</latke.version>
         
         <jetty.version>9.2.7.v20150116</jetty.version>
         <slf4j.version>1.7.5</slf4j.version>
@@ -125,8 +125,8 @@
                     <artifactId>h2</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>com.alibaba</groupId>
-                    <artifactId>druid</artifactId>
+                    <groupId>c3p0</groupId>
+                    <artifactId>c3p0</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.jolbox</groupId>
