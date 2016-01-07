@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.2.4, Oct 24, 2015
+ * @version 1.8.3.4, Jan 7, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -155,6 +155,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
                 LOGGER.log(Level.ERROR, "Changes user online from [true] to [false] failed", e);
             }
         }
+
+        super.sessionDestroyed(httpSessionEvent);
     }
 
     @Override
@@ -202,17 +204,17 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         try {
             final List<JSONObject> admins = userQueryService.getAdmins();
-            JdbcRepository.dispose(); // XXX: JDBC connection close
-            
+            JdbcRepository.dispose();
+
             if (null != admins && !admins.isEmpty()) { // Initialized already
                 return;
             }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Check init error", e);
-            
+
             System.exit(0);
         }
-        
+
         LOGGER.info("Initializing Sym....");
 
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
@@ -312,7 +314,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
             articleMgmtService.addArticle(article);
-            
+
             LOGGER.info("Initialized Sym");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Creates database tables failed", e);
