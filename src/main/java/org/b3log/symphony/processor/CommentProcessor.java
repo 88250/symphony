@@ -260,7 +260,7 @@ public class CommentProcessor {
      *     "clientName": "",
      *     "clientVersion": "",
      *     "clientHost": "",
-     *     "clientRuntimeEnv": "" // GAE, BAE, LOCAL
+     *     "clientRuntimeEnv": "" // LOCAL
      *     "clientAdminEmail": "",
      *     "userB3Key": ""
      * }
