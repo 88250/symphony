@@ -30,6 +30,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Strings;
@@ -54,7 +55,7 @@ import org.jsoup.Jsoup;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.1, Sep 11, 2015
+ * @version 1.2.5.1, Jan 8, 2016
  * @since 1.3.0
  */
 @WebSocket
@@ -278,6 +279,8 @@ public class ArticleChannel {
                 }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Notify comment error", e);
+            } finally {
+                JdbcRepository.dispose();
             }
         }
     }

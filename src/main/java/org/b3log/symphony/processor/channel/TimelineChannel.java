@@ -19,8 +19,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import javax.servlet.annotation.WebServlet;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Logger;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -105,8 +103,6 @@ public class TimelineChannel {
      */
     public static void notifyTimeline(final JSONObject message) {
         final String msgStr = message.toString();
-
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
 
         synchronized (SESSIONS) {
             for (final Session session : SESSIONS) {
