@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Geography utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Nov 18, 2015
+ * @version 1.1.1.1, Jan 11, 2016
  * @since 1.3.0
  */
 public final class Geos {
@@ -85,7 +85,7 @@ public final class Geos {
 
             final String content = data.optString("address");
             final String country = content.split("\\|")[0];
-            if (!"CN".equals(country)) {
+            if (!"CN".equals(country) && !"HK".equals(country)) {
                 LOGGER.log(Level.WARN, "Found other country via Baidu [" + country + ", " + ip + "]");
 
                 return null;
