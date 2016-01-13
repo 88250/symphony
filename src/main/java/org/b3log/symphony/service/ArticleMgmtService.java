@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.13.12, Oct 17, 2015
+ * @version 1.5.14.12, Jan 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -474,16 +474,18 @@ public class ArticleMgmtService {
 
             transaction.commit();
 
-            if (!fromClient && currentTimeMillis - createTime > 1000 * 60 * 5) {
-                // Point
-                final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
-                int addition = (int) Math.round(Math.sqrt(followerCnt));
-                final long collectCnt = followQueryService.getFollowerCount(articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
-                addition += collectCnt * 2;
-                pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                        Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
-                        Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition, articleId);
-
+            if (!fromClient) {
+                if (currentTimeMillis - createTime > 1000 * 60 * 5) {
+                    final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
+                    int addition = (int) Math.round(Math.sqrt(followerCnt));
+                    final long collectCnt = followQueryService.getFollowerCount(articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
+                    addition += collectCnt * 2;
+                    
+                    pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
+                            Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
+                            Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition, articleId);
+                }
+                
                 if (enableReward) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
@@ -737,11 +739,9 @@ public class ArticleMgmtService {
             if (tagIdList.isEmpty()) { // Removes all if un-specified
                 relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
                 tagArticleRepository.remove(relationId);
-            } else {
-                if (tagIdList.contains(tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID))) {
-                    relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
-                    tagArticleRepository.remove(relationId);
-                }
+            } else if (tagIdList.contains(tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID))) {
+                relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
+                tagArticleRepository.remove(relationId);
             }
         }
     }
