@@ -106,7 +106,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.11.24, Jan 2, 2016
+ * @version 1.12.11.25, Jan 13, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -738,12 +738,12 @@ public class ArticleProcessor {
         final String clientHost = requestJSONObject.getString(Client.CLIENT_HOST);
         final String clientRuntimeEnv = requestJSONObject.getString(Client.CLIENT_RUNTIME_ENV);
 
-        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
-        if (Networks.isIPv4(maybeIP)) {
-            LOGGER.log(Level.WARN, "Sync add article error, caused by the client host [{0}] is invalid", clientHost);
-
-            return;
-        }
+//        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
+//        if (Networks.isIPv4(maybeIP)) {
+//            LOGGER.log(Level.WARN, "Sync add article error, caused by the client host [{0}] is invalid", clientHost);
+//
+//            return;
+//        }
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
@@ -916,12 +916,12 @@ public class ArticleProcessor {
         final String clientHost = requestJSONObject.getString(Client.CLIENT_HOST);
         final String clientRuntimeEnv = requestJSONObject.getString(Client.CLIENT_RUNTIME_ENV);
 
-        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
-        if (Networks.isIPv4(maybeIP)) {
-            LOGGER.log(Level.WARN, "Sync update article error, caused by the client host [{0}] is invalid", clientHost);
-
-            return;
-        }
+//        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
+//        if (Networks.isIPv4(maybeIP)) {
+//            LOGGER.log(Level.WARN, "Sync update article error, caused by the client host [{0}] is invalid", clientHost);
+//
+//            return;
+//        }
 
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {

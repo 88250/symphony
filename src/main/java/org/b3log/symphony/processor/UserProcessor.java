@@ -99,7 +99,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.7.14, Jan 2, 2016
+ * @version 1.11.7.15, Jan 13, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -967,15 +967,13 @@ public class UserProcessor {
             return;
         }
 
-        LOGGER.log(Level.INFO, "Prepare sync user from host [{0}]", clientHost);
-
-        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
-        if (isIPv4(maybeIP)) {
-            LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the client host is invalid",
-                    name, clientHost);
-
-            return;
-        }
+//        final String maybeIP = StringUtils.substringBetween(clientHost, "://", ":");
+//        if (isIPv4(maybeIP)) {
+//            LOGGER.log(Level.WARN, "Sync add user[name={0}, host={1}] error, caused by the client host is invalid",
+//                    name, clientHost);
+//
+//            return;
+//        }
 
         JSONObject user = userQueryService.getUserByEmail(email);
         if (null == user) {
