@@ -125,14 +125,6 @@
                     <artifactId>h2</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>c3p0</groupId>
-                    <artifactId>c3p0</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.jolbox</groupId>
-                    <artifactId>bonecp</artifactId>
-                </exclusion>
-                <exclusion>
                     <artifactId>mail</artifactId>
                     <groupId>javax.mail</groupId>
                 </exclusion>
