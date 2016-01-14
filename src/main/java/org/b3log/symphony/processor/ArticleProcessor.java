@@ -106,7 +106,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.11.25, Jan 13, 2016
+ * @version 1.12.11.26, Jan 14, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -744,7 +744,6 @@ public class ArticleProcessor {
 //
 //            return;
 //        }
-
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
             LOGGER.log(Level.WARN, "The user[email={0}, host={1}] not found in community", clientAdminEmail, clientHost);
@@ -755,7 +754,8 @@ public class ArticleProcessor {
         final String userName = user.optString(User.USER_NAME);
 
         if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-            LOGGER.log(Level.WARN, "B3 key not match, ignored add article [name={0}, host={1}]", userName, clientHost);
+            LOGGER.log(Level.WARN, "B3 key not match, ignored update article [name={0}, host={1}, userSymKey={2}, userClientKey={3}]",
+                    userName, clientHost, user.optString(UserExt.USER_B3_KEY), userB3Key);
 
             return;
         }
@@ -922,7 +922,6 @@ public class ArticleProcessor {
 //
 //            return;
 //        }
-
         final JSONObject user = userQueryService.getUserByEmail(clientAdminEmail);
         if (null == user) {
             LOGGER.log(Level.WARN, "The user[email={0}, host={1}] not found in community", clientAdminEmail, clientHost);
