@@ -5,6 +5,7 @@
     <form method="GET" action="users" class="form">
         <input name="userNameOrEmail" type="text" placeholder="${userNameLabel}/${userEmailLabel}"/>
         <button type="submit" class="green">${searchLabel}</button>
+        <a class="btn red" href="add-user">${addUserLabel}</a>
     </form>
 
     <ul>

@@ -9,6 +9,9 @@
         <#if type == "users">
         <@head title="${symphonyLabel} - ${userAdminLabel}"></@head>
         </#if>
+        <#if type == "addUser">
+        <@head title="${symphonyLabel} - ${addUserLabel}"></@head>
+        </#if>
         <#if type == "articles">
         <@head title="${symphonyLabel} - ${articleAdminLabel}"></@head>
         </#if>
@@ -19,8 +22,7 @@
         <@head title="${symphonyLabel} - ${tagAdminLabel}"></@head>
         </#if>
         <#if type == "misc">
-        <@head title="${symphonyLabel} - ${miscAdminLabel}">
-        </@head>
+        <@head title="${symphonyLabel} - ${miscAdminLabel}"></@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
     </head>

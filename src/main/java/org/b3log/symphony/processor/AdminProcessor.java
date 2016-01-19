@@ -29,6 +29,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -51,6 +52,8 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AdminCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
+import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
@@ -74,6 +77,8 @@ import org.json.JSONObject;
  * <li>Shows admin index (/admin/index), GET</li>
  * <li>Shows users (/admin/users), GET</li>
  * <li>Shows a user (/admin/user/{userId}), GET</li>
+ * <li>Shows add user (/admin/add-user), GET</li>
+ * <li>Adds a user (/admin/add-user), POST</li>
  * <li>Updates a user (/admin/user/{userId}), POST</li>
  * <li>Updates a user's email (/admin/user/{userId}/email), POST</li>
  * <li>Updates a user's username (/admin/user/{userId}/username), POST</li>
@@ -92,7 +97,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.2.1, Jan 14, 2016
+ * @version 1.9.2.1, Jan 19, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -102,6 +107,12 @@ public class AdminProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AdminProcessor.class.getName());
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * User query service.
@@ -283,6 +294,93 @@ public class AdminProcessor {
         dataModel.put(User.USER, user);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows add user.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/add-user", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showAddUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/add-user.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Adds a user.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/add-user", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void addUser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String userName = request.getParameter(User.USER_NAME);
+        final String email = request.getParameter(User.USER_EMAIL);
+        final String password = request.getParameter(User.USER_PASSWORD);
+        final String appRole = request.getParameter(UserExt.USER_APP_ROLE);
+
+        final boolean nameInvalid = UserRegisterValidation.invalidUserName(userName);
+        final boolean emailInvalid = !Strings.isEmail(email);
+        final boolean passwordInvalid = UserRegister2Validation.invalidUserPassword(password);
+
+        if (nameInvalid || emailInvalid || passwordInvalid) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            if (nameInvalid) {
+                dataModel.put(Keys.MSG, langPropsService.get("invalidUserNameLabel"));
+            } else if (emailInvalid) {
+                dataModel.put(Keys.MSG, langPropsService.get("invalidEmailLabel"));
+            } else if (passwordInvalid) {
+                dataModel.put(Keys.MSG, langPropsService.get("invalidPasswordLabel"));
+            }
+
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        String userId;
+        try {
+            final JSONObject user = new JSONObject();
+            user.put(User.USER_NAME, userName);
+            user.put(User.USER_EMAIL, email);
+            user.put(User.USER_PASSWORD, MD5.hash(password));
+            user.put(UserExt.USER_APP_ROLE, appRole);
+            user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
+
+            userId = userMgmtService.addUser(user);
+        } catch (final Exception e) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, e.getMessage());
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
     }
 
     /**
