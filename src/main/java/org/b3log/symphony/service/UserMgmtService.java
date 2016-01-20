@@ -19,21 +19,26 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -77,7 +82,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.11.6, Nov 18, 2015
+ * @version 1.10.11.6, Jan 20, 2016
  * @since 0.2.0
  */
 @Service
@@ -526,9 +531,6 @@ public class UserMgmtService {
                 user.put(Keys.OBJECT_ID, ret);
 
                 try {
-                    final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-                    final UploadManager uploadManager = new UploadManager();
-
                     final BufferedImage img = avatarQueryService.createAvatar(MD5.hash(ret), 512);
                     final ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ImageIO.write(img, "jpg", baos);
@@ -536,10 +538,23 @@ public class UserMgmtService {
                     final byte[] bytes = baos.toByteArray();
                     baos.close();
 
-                    uploadManager.put(bytes, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
-                            null, "image/jpeg", false);
-                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
-                            + new Date().getTime());
+                    if (Symphonys.getBoolean("qiniu.enabled")) {
+                        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+                        final UploadManager uploadManager = new UploadManager();
+
+                        uploadManager.put(bytes, "avatar/" + ret, auth.uploadToken(Symphonys.get("qiniu.bucket")),
+                                null, "image/jpeg", false);
+                        user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
+                                + new Date().getTime());
+                    } else {
+                        final String fileName = UUID.randomUUID().toString() + ".jpg";
+                        final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName);
+                        IOUtils.write(bytes, output);
+
+                        IOUtils.closeQuietly(output);
+
+                        user.put(UserExt.USER_AVATAR_URL, Latkes.getServePath() + "/upload/" + fileName);
+                    }
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Generates avatar error", e);
 

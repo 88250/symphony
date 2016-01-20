@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * User avatar query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Aug 8, 2015
+ * @version 1.3.0.1, Jan 20, 2016
  * @since 0.3.0
  */
 @Service
@@ -62,10 +62,13 @@ public class AvatarQueryService {
      */
     public void fillUserAvatarURL(final JSONObject user) {
         final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
-        if (!StringUtils.startsWith(originalURL, Symphonys.get("qiniu.domain"))) {
-            user.put(UserExt.USER_AVATAR_URL, DEFAULT_AVATAR_URL);
 
-            return;
+        if (Symphonys.getBoolean("qiniu.enabled")) {
+            if (!StringUtils.startsWith(originalURL, Symphonys.get("qiniu.domain"))) {
+                user.put(UserExt.USER_AVATAR_URL, DEFAULT_AVATAR_URL);
+
+                return;
+            }
         }
 
         user.put(UserExt.USER_AVATAR_URL, StringUtils.substringBeforeLast(originalURL, "?"));
@@ -85,8 +88,11 @@ public class AvatarQueryService {
             }
 
             final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
-            if (!StringUtils.startsWith(originalURL, Symphonys.get("qiniu.domain"))) {
-                return DEFAULT_AVATAR_URL;
+
+            if (Symphonys.getBoolean("qiniu.enabled")) {
+                if (!StringUtils.startsWith(originalURL, Symphonys.get("qiniu.domain"))) {
+                    return DEFAULT_AVATAR_URL;
+                }
             }
 
             return StringUtils.substringBeforeLast(originalURL, "?");

@@ -76,7 +76,6 @@ import org.b3log.symphony.service.VoteQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Markdowns;
-import org.b3log.symphony.util.Networks;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -106,7 +105,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.11.26, Jan 14, 2016
+ * @version 1.13.11.26, Jan 20, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -237,6 +236,10 @@ public class ArticleProcessor {
         final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
+
+        if (!Symphonys.getBoolean("qiniu.enabled")) {
+            dataModel.put("qiniuUploadToken", "");
+        }
 
         String tags = request.getParameter(Tag.TAGS);
         if (StringUtils.isBlank(tags)) {
@@ -388,6 +391,10 @@ public class ArticleProcessor {
         final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
+
+        if (!Symphonys.getBoolean("qiniu.enabled")) {
+            dataModel.put("qiniuUploadToken", "");
+        }
 
         dataModel.put(Common.DISCUSSION_VIEWABLE, article.optBoolean(Common.DISCUSSION_VIEWABLE));
         if (!article.optBoolean(Common.DISCUSSION_VIEWABLE)) {
@@ -576,6 +583,10 @@ public class ArticleProcessor {
         final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
+
+        if (!Symphonys.getBoolean("qiniu.enabled")) {
+            dataModel.put("qiniuUploadToken", "");
+        }
     }
 
     /**
