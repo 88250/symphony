@@ -112,14 +112,15 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](http://hacpai.
 
 ## 配置
 
-* 图片上传使用的是[七牛](http://www.qiniu.com)，需要配置 `symphony.properties` 中的 `qiniu.*` 属性
+* 图片上传默认是上传服务器本地，要使用[七牛](http://www.qiniu.com)可配置 `symphony.properties` 中的 `qiniu.*` 属性
 * 邮件发送使用的是 [SendCloud](http://sendcloud.sohu.com)，需要配置 `symphony.properties` 中的 `sendcloud.*` 属性
+* 将 WEB-INF/cron.xml 中注释掉的部分打开
 
 用户注册时是启用邮件验证的，如果需要修改请参考相关代码。
 
 注意：
 
-本地配置完成部署后，还需要对七牛和 SendCloud 进行服务配置：
+本地配置完成部署后，还需要对七牛（如果使用了）和 SendCloud 进行服务配置：
 
 * 配置_两个_七牛图片数据处理样式：
   ![qiniu](https://cloud.githubusercontent.com/assets/873584/10298674/3c7230aa-6c14-11e5-9014-2ae4e457a364.png)
