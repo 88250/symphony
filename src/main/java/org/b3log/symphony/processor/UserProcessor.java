@@ -99,7 +99,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.7.15, Jan 13, 2016
+ * @version 1.12.7.15, Jan 20, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -718,6 +718,10 @@ public class UserProcessor {
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
+        if (!Symphonys.getBoolean("qiniu.enabled")) {
+            dataModel.put("qiniuUploadToken", "");
+        }
+
         filler.fillHeaderAndFooter(request, response, dataModel);
 
         String inviteTipLabel = (String) dataModel.get("inviteTipLabel");
@@ -800,11 +804,16 @@ public class UserProcessor {
         user.put(UserExt.USER_QQ, userQQ);
         user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
-        if (!StringUtils.startsWith(userAvatarURL, Symphonys.get("qiniu.domain"))) {
-            user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+
+        if (Symphonys.getBoolean("qiniu.enabled")) {
+            if (!StringUtils.startsWith(userAvatarURL, Symphonys.get("qiniu.domain"))) {
+                user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+            } else {
+                user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + user.optString(Keys.OBJECT_ID)
+                        + "?" + new Date().getTime());
+            }
         } else {
-            user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + user.optString(Keys.OBJECT_ID)
-                    + "?" + new Date().getTime());
+            user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
         }
 
         try {
@@ -974,7 +983,6 @@ public class UserProcessor {
 //
 //            return;
 //        }
-
         JSONObject user = userQueryService.getUserByEmail(email);
         if (null == user) {
             user = new JSONObject();

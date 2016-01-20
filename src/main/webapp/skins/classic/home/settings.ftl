@@ -91,7 +91,7 @@
             <option name="private" value="1" <#if 1 == user.userGeoStatus>selected</#if>>${privateLabel}</option>
         </select>
         ${geoInfoLabel}
-                                    -->
+        -->
     </div>
 </div>
 
@@ -114,9 +114,9 @@
 
         <label>
             ${syncWithSymphonyClientLabel}
-           <input id="syncWithSymphonyClient" <#if currentUser.syncWithSymphonyClient> checked="checked"</#if> type="checkbox" /> 
+            <input id="syncWithSymphonyClient" <#if currentUser.syncWithSymphonyClient> checked="checked"</#if> type="checkbox" /> 
         </label>
-        
+
         <br/><br/>
         <div class="fn-clear"></div>
         <div id="syncb3Tip" class="tip"></div><br/>
@@ -148,41 +148,79 @@
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-process.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js"></script>
 <script>
-            $('#avatarUpload').fileupload({
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 1024 * 1024, // 1M
-                multipart: true,
-                pasteZone: null,
-                dropZone: null,
-                url: "http://upload.qiniu.com/",
-                formData: function (form) {
-                    var data = form.serializeArray();
-                    data.push({name: 'token', value: '${qiniuUploadToken}'});
-                    data.push({name: 'key', value: 'avatar/${currentUser.oId}'});
-                    return data;
-                },
-                submit: function (e, data) {
-                },
-                done: function (e, data) {
-                    // console.log(data.result)
-                    var qiniuKey = data.result.key;
-                    if (!qiniuKey) {
-                        alert("Upload error");
-                        return;
-                    }
 
-                    var t = new Date().getTime();
-                    $('#avatarURL').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
-                    $('#avatarURLMid').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
-                    $('#avatarURLNor').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
-                },
-                fail: function (e, data) {
-                    alert("Upload error: " + data.errorThrown);
-                }
-            }).on('fileuploadprocessalways', function (e, data) {
-                var currentFile = data.files[data.index];
-                if (data.files.error && currentFile.error) {
-                    alert(currentFile.error);
-                }
-            });
+            if ("" === '${qiniuUploadToken}') { // 说明没有使用七牛，而是使用本地
+                $('#avatarUpload').fileupload({
+                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                    maxFileSize: 1024 * 1024, // 1M
+                    multipart: true,
+                    pasteZone: null,
+                    dropZone: null,
+                    url: "/upload",
+                    formData: function (form) {
+                        var data = form.serializeArray();
+                        return data;
+                    },
+                    submit: function (e, data) {
+                    },
+                    done: function (e, data) {
+                        // console.log(data.result)
+                        var qiniuKey = data.result.key;
+                        if (!qiniuKey) {
+                            alert("Upload error");
+                            return;
+                        }
+
+                        $('#avatarURL').attr("src", qiniuKey);
+                        $('#avatarURLMid').attr("src", qiniuKey);
+                        $('#avatarURLNor').attr("src", qiniuKey);
+                    },
+                    fail: function (e, data) {
+                        alert("Upload error: " + data.errorThrown);
+                    }
+                }).on('fileuploadprocessalways', function (e, data) {
+                    var currentFile = data.files[data.index];
+                    if (data.files.error && currentFile.error) {
+                        alert(currentFile.error);
+                    }
+                });
+            } else {
+                $('#avatarUpload').fileupload({
+                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                    maxFileSize: 1024 * 1024, // 1M
+                    multipart: true,
+                    pasteZone: null,
+                    dropZone: null,
+                    url: "http://upload.qiniu.com/",
+                    formData: function (form) {
+                        var data = form.serializeArray();
+                        data.push({name: 'token', value: '${qiniuUploadToken}'});
+                        data.push({name: 'key', value: 'avatar/${currentUser.oId}'});
+                        return data;
+                    },
+                    submit: function (e, data) {
+                    },
+                    done: function (e, data) {
+                        // console.log(data.result)
+                        var qiniuKey = data.result.key;
+                        if (!qiniuKey) {
+                            alert("Upload error");
+                            return;
+                        }
+
+                        var t = new Date().getTime();
+                        $('#avatarURL').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
+                        $('#avatarURLMid').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
+                        $('#avatarURLNor').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
+                    },
+                    fail: function (e, data) {
+                        alert("Upload error: " + data.errorThrown);
+                    }
+                }).on('fileuploadprocessalways', function (e, data) {
+                    var currentFile = data.files[data.index];
+                    if (data.files.error && currentFile.error) {
+                        alert(currentFile.error);
+                    }
+                });
+            }
 </script>

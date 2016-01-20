@@ -633,12 +633,80 @@ var Util = {
      * @param {Obj} obj  文件上传参数
      * @param {String} obj.id 上传组件 id
      * @param {jQuery} obj.pasteZone 粘贴区域
-     * @param {String} obj.qiniuUploadToken 七牛 Token
+     * @param {String} obj.qiniuUploadToken 七牛 Token，如果这个 token 是空，说明是上传本地服务器
      * @param {Obj} obj.editor 编辑器对象
      * @param {Obj} obj.uploadingLabel 上传中标签
      * @param {Strng} obj.qiniuDomain 七牛 Domain
      */
     uploadFile: function (obj) {
+        if ("" === obj.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
+            $('#' + obj.id).fileupload({
+                multipart: true,
+                pasteZone: obj.pasteZone,
+                dropZone: obj.pasteZone,
+                url: "/upload",
+                add: function (e, data) {
+                    if (window.File && window.FileReader && window.FileList && window.Blob) {
+                        var reader = new FileReader();
+                        reader.readAsArrayBuffer(data.files[0]);
+                        reader.onload = function (evt) {
+                            var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
+                            var mime = isImage(fileBuf);
+
+                            if (null == mime) {
+                                alert("Image only~");
+
+                                return;
+                            }
+
+                            if (evt.target.result.byteLength > 1024 * 1024) {
+                                alert("This image is too big (max: 1Mb)");
+
+                                return;
+                            }
+
+                            data.submit();
+                        }
+                    } else {
+                        data.submit();
+                    }
+                },
+                formData: function (form) {
+                    var data = form.serializeArray();
+                    return data;
+                },
+                submit: function (e, data) {
+                    var cursor = obj.editor.getCursor();
+                    obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
+                },
+                done: function (e, data) {
+                    var qiniuKey = data.result.key;
+                    if (!qiniuKey) {
+                        alert("Upload error");
+                        
+                        return;
+                    }
+
+                    var cursor = obj.editor.getCursor();
+                    obj.editor.replaceRange('![ ](' + qiniuKey + ') \n\n',
+                            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                },
+                fail: function (e, data) {
+                    alert("Upload error: " + data.errorThrown);
+                    var cursor = obj.editor.getCursor();
+                    obj.editor.replaceRange('',
+                            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                }
+            }).on('fileuploadprocessalways', function (e, data) {
+                var currentFile = data.files[data.index];
+                if (data.files.error && currentFile.error) {
+                    alert(currentFile.error);
+                }
+            });
+            
+            return;
+        }
+        
         $('#' + obj.id).fileupload({
             multipart: true,
             pasteZone: obj.pasteZone,
