@@ -33,6 +33,7 @@ import jodd.util.MimeTypes;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -61,6 +62,16 @@ public class FileUploadServlet extends HttpServlet {
      * Upload directory.
      */
     private static final String UPLOAD_DIR = Symphonys.get("upload.dir");
+
+    static {
+        if (!FileUtil.isExistingFolder(new File(UPLOAD_DIR))) {
+            try {
+                FileUtil.mkdirs(UPLOAD_DIR);
+            } catch (IOException ex) {
+                LOGGER.log(Level.ERROR, "Init upload dir error", ex);
+            }
+        }
+    }
 
     /**
      * Qiniu enabled.
