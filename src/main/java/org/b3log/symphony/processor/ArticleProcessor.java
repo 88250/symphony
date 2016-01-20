@@ -620,7 +620,7 @@ public class ArticleProcessor {
             return;
         }
 
-        context.renderJSON();;
+        context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 

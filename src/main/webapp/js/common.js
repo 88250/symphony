@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @fileoverview util and every page should be used.
  *
@@ -660,7 +661,7 @@ var Util = {
                         if (evt.target.result.byteLength > 1024 * 1024) {
                             alert("This image is too big (max: 1Mb)");
                             
-                            return
+                            return;
                         }
 
                         data.submit();
