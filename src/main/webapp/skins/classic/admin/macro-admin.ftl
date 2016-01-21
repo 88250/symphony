@@ -34,7 +34,7 @@
                 <div class="side">
                     <ul class="note-list">
                         <li<#if type == "index"> class="current"</#if>><a href="/admin">${adminLabel}</a></li>
-                        <li<#if type == "users"> class="current"</#if>><a href="/admin/users">${userAdminLabel}</a></li>
+                        <li<#if type == "users" || type == "addUser"> class="current"</#if>><a href="/admin/users">${userAdminLabel}</a></li>
                         <li<#if type == "articles"> class="current"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
                         <li<#if type == "comments"> class="current"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
                         <li<#if type == "tags"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
