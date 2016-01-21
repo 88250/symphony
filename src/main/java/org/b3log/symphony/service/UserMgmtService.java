@@ -400,7 +400,7 @@ public class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.ERROR, "Updates user sync b3log settings failed", e);
+            LOGGER.log(Level.ERROR, "Updates user password failed", e);
             throw new ServiceException(e);
         }
     }
