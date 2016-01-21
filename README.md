@@ -4,6 +4,8 @@
 
 Sym 是一个用 Java 写的实时论坛，欢迎来[体验](http://hacpai.com/register)！
 
+如果你需要搭建一个企业内网论坛，请使用 [SymX](https://github.com/FangStarNet/symphonyx)。
+
 ### 初衷
 
 Sym 的诞生是有如下几点原因：
