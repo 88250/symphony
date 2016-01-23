@@ -82,9 +82,9 @@
                         <span>
                             <#if isLoggedIn>
                             <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
-                                <span class="icon-chevron-up"></span></span>&nbsp;
+                                <span class="icon-thumbs-up"></span></span>&nbsp;
                             <span id="voteDown" class="fn-pointer<#if 1==vote> ft-red</#if>" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
-                                <span class="icon-chevron-down"></span></span>
+                                <span class="icon-thumbs-down"></span></span>
                             </#if>
 
                             <#if article.isMyArticle && 3 != article.articleType>
