@@ -64,9 +64,7 @@
                     <div class="article-title fn-flex">
                         <h2 class="fn-flex-1">
                             <a rel="author" href="/member/${article.articleAuthorName}" class="ft-gray"
-                               title="${article.articleAuthorName}">
-                                <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" />
-                            </a> &nbsp;
+                               title="${article.articleAuthorName}"><img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" /></a> &nbsp;
                             <#if 1 == article.articleType>
                             <span class="icon-locked" title="${discussionLabel}"></span>
                             <#elseif 2 == article.articleType>
