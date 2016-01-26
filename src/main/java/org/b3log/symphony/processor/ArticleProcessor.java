@@ -105,7 +105,7 @@ import org.jsoup.safety.Whitelist;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.11.26, Jan 20, 2016
+ * @version 1.13.11.27, Jan 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -765,8 +765,8 @@ public class ArticleProcessor {
         final String userName = user.optString(User.USER_NAME);
 
         if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-            LOGGER.log(Level.WARN, "B3 key not match, ignored update article [name={0}, host={1}, userSymKey={2}, userClientKey={3}]",
-                    userName, clientHost, user.optString(UserExt.USER_B3_KEY), userB3Key);
+            LOGGER.log(Level.WARN, "B3 key not match, ignored update article [name={0}, email={1}, host={2}, userSymKey={3}, userClientKey={4}]",
+                    userName, clientAdminEmail, clientHost, user.optString(UserExt.USER_B3_KEY), userB3Key);
 
             return;
         }
