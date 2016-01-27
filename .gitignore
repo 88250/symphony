@@ -1,5 +1,6 @@
 target/
 *.log
+upload/*
 
 src/main/webapp/js/*.min.js
 src/main/webapp/css/*.min.css

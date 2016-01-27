@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.9.13, Nov 23, 2015
+ * @version 1.14.9.13, Jan 27, 2016
  */
 
 /**
@@ -639,6 +639,8 @@ var Util = {
      * @param {Strng} obj.qiniuDomain 七牛 Domain
      */
     uploadFile: function (obj) {
+        var filename = "";
+        
         if ("" === obj.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
             $('#' + obj.id).fileupload({
                 multipart: true,
@@ -646,6 +648,8 @@ var Util = {
                 dropZone: obj.pasteZone,
                 url: "/upload",
                 add: function (e, data) {
+                    filename = data.files[0].name;
+                    
                     if (window.File && window.FileReader && window.FileList && window.Blob) {
                         var reader = new FileReader();
                         reader.readAsArrayBuffer(data.files[0]);
@@ -673,6 +677,7 @@ var Util = {
                 },
                 formData: function (form) {
                     var data = form.serializeArray();
+                    
                     return data;
                 },
                 submit: function (e, data) {
@@ -686,9 +691,13 @@ var Util = {
                         
                         return;
                     }
+                    
+                    if (!filename) {
+                        filename = " ";
+                    }
 
                     var cursor = obj.editor.getCursor();
-                    obj.editor.replaceRange('![ ](' + qiniuKey + ') \n\n',
+                    obj.editor.replaceRange('![' + filename + '](' + qiniuKey + ') \n\n',
                             CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
                 },
                 fail: function (e, data) {
@@ -707,12 +716,19 @@ var Util = {
             return;
         }
         
+        var ext = "";
         $('#' + obj.id).fileupload({
             multipart: true,
             pasteZone: obj.pasteZone,
             dropZone: obj.pasteZone,
             url: "http://upload.qiniu.com/",
             add: function (e, data) {
+                filename = data.files[0].name;
+                
+                if (!filename) {
+                    ext = data.files[0].type.split("/")[1];
+                }
+                
                 if (window.File && window.FileReader && window.FileList && window.Blob) {
                     var reader = new FileReader();
                     reader.readAsArrayBuffer(data.files[0]);
@@ -740,7 +756,14 @@ var Util = {
             },
             formData: function (form) {
                 var data = form.serializeArray();
+                
+                if (filename) {
+                    ext = filename.substring(filename.lastIndexOf(".") + 1);  
+                }
+
+                data.push({name: 'key', value: getUUID() + "." + ext});
                 data.push({name: 'token', value: obj.qiniuUploadToken});
+                 
                 return data;
             },
             submit: function (e, data) {
@@ -751,11 +774,16 @@ var Util = {
                 var qiniuKey = data.result.key;
                 if (!qiniuKey) {
                     alert("Upload error");
+                    
                     return;
+                }
+                
+                if (!filename) {
+                    filename = " ";
                 }
 
                 var cursor = obj.editor.getCursor();
-                obj.editor.replaceRange('![ ](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
+                obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
                         CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
             },
             fail: function (e, data) {
@@ -1010,3 +1038,17 @@ function isWav(data1, data2) {
 }
 
 // 结束 - 判断文件类型
+
+function getUUID() {
+    var d = new Date().getTime();
+    
+    var ret = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    
+    ret = ret.replace(new RegExp("-", 'g'), "");
+    
+    return ret;
+};

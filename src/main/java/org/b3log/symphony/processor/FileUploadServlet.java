@@ -126,7 +126,7 @@ public class FileUploadServlet extends HttpServlet {
             suffix = exts[0];
         }
 
-        final String fileName = UUID.randomUUID().toString() + "." + suffix;
+        final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + suffix;
 
         final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName);
         IOUtils.copy(multipartRequestInputStream, output);
