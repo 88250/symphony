@@ -1011,6 +1011,11 @@ a[class*=" icon-"]:hover {
     text-shadow: 0 0 0;
 }
 
+.nav .no-msg:hover {
+    background-color: #4183C4;
+    color: #FFF;
+}
+
 .nav .msg {
     -webkit-animation:spaceboots 1s infinite;
     -moz-animation:spaceboots 1s infinite;
