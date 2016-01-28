@@ -128,6 +128,7 @@
                         <form class="fn-none" id="fileUpload" method="POST" enctype="multipart/form-data">
                             <input type="file" name="file">
                         </form>
+                        <br/>
                         <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
                         <div class="tip" id="addCommentTip"></div>
 
