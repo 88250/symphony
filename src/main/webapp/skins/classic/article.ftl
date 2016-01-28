@@ -8,8 +8,7 @@
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/codemirror.css" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/hint/show-hint.css" />
+        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
     </head>
     <body>
         <#include "header.ftl">
@@ -91,6 +90,7 @@
                             &nbsp;
                             </#if>
                             <#if isAdminLoggedIn>
+                            &nbsp;
                             <a class="icon-setting" href="/admin/article/${article.oId}" title="${adminLabel}"></a>
                             </#if>
                         </span>
@@ -102,7 +102,7 @@
                     <div id="thoughtProgress"><div></div></div>
                     <div class="content-reset article-content"></div>
                     </#if>
-
+                    
                     <div class="fn-clear">
                         <div class="share fn-right">
                             <span class="icon-tencent" data-type="tencent"></span>
@@ -140,11 +140,10 @@
                                 <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
                             </span>
                             <div class="fn-right">
-                                <button class="green" onclick="Comment.preview()">${previewLabel}</button> &nbsp; &nbsp; 
                                 <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="grammar fn-none fn-clear">
                         ${markdwonGrammarLabel}
@@ -207,7 +206,7 @@
                     </div>
                 </div>
                 <div class="side">
-
+                   
                     <#include 'common/person-info.ftl'/>
 
                     <div class="module">
@@ -256,19 +255,19 @@
         <#include "footer.ftl">
         <div id="preview" class="content-reset"></div>
         <script>
-                    Label.commentErrorLabel = "${commentErrorLabel}";
-                    Label.symphonyLabel = "${symphonyLabel}";
-                    Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
+            Label.commentErrorLabel = "${commentErrorLabel}";
+            Label.symphonyLabel = "${symphonyLabel}";
+            Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
                     Label.articleOId = "${article.oId}";
-                    Label.articleTitle = "${article.articleTitle}";
-                    Label.articlePermalink = "${article.articlePermalink}";
-                    Label.recordDeniedLabel = "${recordDeniedLabel}";
-                    Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-                    Label.csrfToken = "${csrfToken}";</script>
+            Label.articleTitle = "${article.articleTitle}";
+            Label.articlePermalink = "${article.articlePermalink}";
+            Label.recordDeniedLabel = "${recordDeniedLabel}";
+            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
+            Label.csrfToken = "${csrfToken}";</script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
-        <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js"></script>
-        <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js"></script>
-        <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/placeholder.js"></script>
+        <script src="${staticServePath}/js/lib/editor/editor.js"></script>
+        <script src="${staticServePath}/js/lib/editor/placeholder.js"></script>
+        <script src="${staticServePath}/js/lib/editor/fullscreen.js"></script>
         <script src="${staticServePath}/js/overwrite/codemirror/addon/hint/show-hint.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js"></script>
@@ -284,26 +283,26 @@
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                    WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
-                    // Init [Article] channel
-                    ArticleChannel.init("ws://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
-                    // jQuery File Upload
-                    Util.uploadFile({
-                    "type": "img",
-                            "id": "fileUpload",
-                            "pasteZone": $(".CodeMirror"),
-                            "qiniuUploadToken": "${qiniuUploadToken}",
-                            "editor": Comment.editor,
-                            "uploadingLabel": "${uploadingLabel}",
-                            "qiniuDomain": "${qiniuDomain}"
-                    });
-                    var qiniuToken = '${qiniuUploadToken}';
-                    var qiniuDomain = '${qiniuDomain}';
-                    var audioRecordingLabel = '${audioRecordingLabel}';
-                    var uploadingLabel = '${uploadingLabel}';
-                    <#if 3 == article.articleType >
+            WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
+            // Init [Article] channel
+            ArticleChannel.init("ws://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
+            // jQuery File Upload
+            Util.uploadFile({
+            "type": "img",
+                    "id": "fileUpload",
+                    "pasteZone": $(".CodeMirror"),
+                    "qiniuUploadToken": "${qiniuUploadToken}",
+                    "editor": Comment.editor,
+                    "uploadingLabel": "${uploadingLabel}",
+                    "qiniuDomain": "${qiniuDomain}"
+            });
+            var qiniuToken = '${qiniuUploadToken}';
+            var qiniuDomain = '${qiniuDomain}';
+            var audioRecordingLabel = '${audioRecordingLabel}';
+            var uploadingLabel = '${uploadingLabel}';
+            <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');
-                    </#if>
+            </#if>
         </script>
     </body>
 </html>
