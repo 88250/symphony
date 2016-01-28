@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.6.13, Oct 3, 2015
+ * @version 1.8.8.13, Jan 28, 2016
  */
 
 /* start reset */
@@ -526,14 +527,65 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
+.icon-bold:before {
+    content: "\e000";
+}
+.icon-italic:before {
+    content: "\e001";
+}
+.icon-quote:before {
+    content: "\e003";
+}
+.icon-unordered-list:before {
+    content: "\e004";
+}
+.icon-ordered-list:before {
+    content: "\e005";
+}
+.icon-link:before {
+    content: "\e006";
+}
+.icon-image:before {
+    content: "\e007";
+}
+.icon-play:before {
+    content: "\e008";
+}
+.icon-music:before {
+    content: "\e009";
+}
+.icon-contract:before {
+    content: "\e00a";
+}
+.icon-fullscreen:before {
+    content: "\e00b";
+}
+.icon-question:before {
+    content: "\e00c";
+}
+.icon-info:before {
+    content: "\e00d";
+}
+.icon-undo:before {
+    content: "\e00e";
+}
+.icon-redo:before {
+    content: "\e00f";
+}
+.icon-code:before {
+    content: "\e011";
+}
+.icon-preview:before {
+    content: "\e002";
+}
+.icon-navigation:before {
+    content: "\e903";
+}
 .icon-thumbs-down:before {
     content: "\e901";
 }
 .icon-thumbs-up:before {
     content: "\e902";
-}
-.icon-navigation:before {
-    content: "\e900";
 }
 .icon-locked:before {
     content: "\e61e";
@@ -765,7 +817,7 @@ a[class*=" icon-"]:hover {
 }
 
 .grammar dl {
-    margin: 10px;
+    margin: 8px 10px;
 }
 /* end editor */
 /* end common */
@@ -939,6 +991,7 @@ a[class*=" icon-"]:hover {
     flex: 1;
     -webkit-box-flex: 1; 
     width: 30%;
+    min-width: 236px;
 }
 
 .content {
@@ -974,6 +1027,7 @@ a[class*=" icon-"]:hover {
     flex: 1;
     -webkit-box-flex: 1;
     width: 30%;
+    min-width: 236px;
 }
 
 .nav div > a {
@@ -1162,12 +1216,6 @@ a[class*=" icon-"]:hover {
     line-height: 17px;
 }
 
-.form .cm-s-default.CodeMirror.CodeMirror-focused {
-    background-color: #FFF;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset, 0 0 5px rgba(81, 167, 232, 0.5);
-    border: 1px solid #51A7E8;
-}
-
 .cm-s-default.CodeMirror-fullscreen.CodeMirror {
     margin: 0;
 }
@@ -1195,10 +1243,6 @@ a[class*=" icon-"]:hover {
 .CodeMirror-hint:hover {
     background: #08f;
     color: white;
-}
-
-.CodeMirror div.CodeMirror-cursor {
-    border-left: 2px solid #333;
 }
 
 .CodeMirror-scrollbar-filler, 

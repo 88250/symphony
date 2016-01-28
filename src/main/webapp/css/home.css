@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * 后台样式.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.4.7, Sep 26, 2015
+ * @version 1.1.5.7, Jan 28, 2016
  */
 /* start home side */
 .user-name {
@@ -71,13 +72,13 @@
 
 #articleContent {
     height: 332px;
-    margin-bottom: 20px;
+    margin: 30px 0 20px 0;
     padding: 4px;
 }
 
 #articleRewardContent {
     height: 102px;
-    margin-bottom: 20px;
+    margin: 30px 0 20px 0;
     padding: 4px;
 }
 
@@ -100,23 +101,20 @@
 
 .grammar {
     position: absolute;
-    right: 0;
-    top: -7px;
-}
-
-.grammar dt {
-    line-height: 19px;
-}
-
-.grammar dd {
-    line-height: 16px;
+    right: 1px;
+    top: 33px;
+    background-color: #FFF;
+    z-index: 3;
+    height: 328px;
+    border-left: 1px solid rgba(0, 0, 0, 0.075);
 }
 
 .cm-s-default.CodeMirror {
-    border-radius: 3px;
+    border-radius: 0 0 3px 3px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
     border: 1px solid #CCCCCC;
     margin-bottom: 20px;
+    border-top-width: 0;
     height: 330px;
 }
 /* end add article */

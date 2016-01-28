@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.6.6, Dec 29, 2015
+ * @version 2.10.7.6, Jan 28, 2016
  */
 
 /**
@@ -63,7 +63,7 @@ var AddArticle = {
             },
             url = "/article", type = "POST";
 
-            if (3 === parseInt(requestJSONObject.articleType)) { // 如果文章是“思绪”
+            if (3 === parseInt(requestJSONObject.articleType)) { // 如果是“思绪”
                 requestJSONObject.articleContent = window.localStorage.thoughtContent;
             }
 
@@ -105,10 +105,9 @@ var AddArticle = {
      */
     init: function () {
         Util.initCodeMirror();
-
         // 初始化文章编辑器
-        AddArticle.editor = CodeMirror.fromTextArea(document.getElementById("articleContent"), {
-            mode: 'markdown',
+        var addArticleEditor = new Editor({
+            element: document.getElementById('articleContent'),
             dragDrop: false,
             lineWrapping: true,
             extraKeys: {
@@ -119,8 +118,12 @@ var AddArticle = {
                 "F11": function (cm) {
                     cm.setOption("fullScreen", !cm.getOption("fullScreen"));
                 }
-            }
+            },
+            status: false
         });
+        addArticleEditor.render();
+
+        AddArticle.editor = addArticleEditor.codemirror;
 
         if (window.localStorage && window.localStorage.articleContent && "" === AddArticle.editor.getValue()
                 && "" !== window.localStorage.articleContent.replace(/(^\s*)|(\s*$)/g, "")) {
@@ -237,18 +240,15 @@ var AddArticle = {
             }
         });
 
-        $("#preview").dialog({
-            "modal": true,
-            "hideFooter": true
-        });
-
         // 初始化打赏区编辑器
         var readOnly = false;
         if (0 < $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")) {
             readOnly = 'nocursor';
         }
-        AddArticle.rewardEditor = CodeMirror.fromTextArea(document.getElementById("articleRewardContent"), {
-            mode: 'markdown',
+
+
+        var addArticleRewardEditor = new Editor({
+            element: document.getElementById('articleRewardContent'),
             dragDrop: false,
             lineWrapping: true,
             readOnly: readOnly,
@@ -258,8 +258,11 @@ var AddArticle = {
                 "F11": function (cm) {
                     cm.setOption("fullScreen", !cm.getOption("fullScreen"));
                 }
-            }
+            },
+            status: false
         });
+        addArticleRewardEditor.render();
+        AddArticle.rewardEditor = addArticleRewardEditor.codemirror;
 
         AddArticle.rewardEditor.on('keydown', function (cm, evt) {
             if (8 === evt.keyCode) {
@@ -285,46 +288,13 @@ var AddArticle = {
             }
         });
 
-        $("#articleRewardContent").next().height(100);
-    },
-    /**
-     * @description 预览文章
-     */
-    preview: function () {
-        var it = this;
-        $.ajax({
-            url: "/markdown",
-            type: "POST",
-            cache: false,
-            data: {
-                markdownText: it.editor.getValue()
-            },
-            success: function (result, textStatus) {
-                $("#preview").dialog("open");
-                $("#preview").html(result.html);
-                hljs.initHighlighting.called = false;
-                hljs.initHighlighting();
-            }
-        });
+        $("#articleRewardContent").next().next().height(100);
     },
     /**
      * @description 显示简要语法
      */
     grammar: function () {
-        var $grammar = $(".grammar"),
-                $codemirror = $(".CodeMirror:first");
-        if ($("#articleTitle").width() < 500) {
-            // for mobile
-            $grammar.toggle();
-            return;
-        }
-        if ($codemirror.width() > 900) {
-            $grammar.show();
-            $codemirror.width('75%');
-        } else {
-            $grammar.hide();
-            $codemirror.width('100%');
-        }
+        $(".grammar").slideToggle();
     }
 };
 

@@ -6,9 +6,7 @@
         <meta name="robots" content="none" />
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/codemirror.css" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/display/fullscreen.css" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/hint/show-hint.css" />
+        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
     </head>
     <body>
@@ -52,7 +50,7 @@
                                   placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
                     </div>
                     <div>
-                        <input id="articleRewardPoint" type="text" tabindex="5" 
+                        <input id="articleRewardPoint" type="number" tabindex="5" 
                                value="<#if article?? && 0 != article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
                                <br/><br/>
                     </div>
@@ -80,19 +78,17 @@
                         </#if>
                     </div>
                     <div class="fn-right">
-                        <button class="green" onclick="AddArticle.preview()">${previewLabel}</button> &nbsp; &nbsp; 
                         <button class="red" tabindex="10" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
-                    </div>
+                        <button class="red" tabindex="10" onclick="AddArticle.add( <#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                 </div>
             </div>
         </div>
         <div id="preview" class="content-reset"></div>
         <#include "../footer.ftl">
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
-        <script src="${staticServePath}/js/lib/codemirror-5.3/codemirror.js"></script>
-        <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js"></script>
-        <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/placeholder.js"></script>
-        <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/fullscreen.js?"></script>
+        <script src="${staticServePath}/js/lib/editor/editor.js"></script>
+        <script src="${staticServePath}/js/lib/editor/placeholder.js"></script>
+        <script src="${staticServePath}/js/lib/editor/fullscreen.js"></script>
         <script src="${staticServePath}/js/overwrite/codemirror/addon/hint/show-hint.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js"></script>
@@ -104,32 +100,32 @@
         <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
 
         <script>
-                                            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
-                                            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
-                                            Label.tagsErrorLabel = "${tagsErrorLabel}";
-                                            Label.userName = "${userName}";
-                                            Label.recordDeniedLabel = "${recordDeniedLabel}";
-                                            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-                                            Util.uploadFile({
-                                            "id": "fileUpload",
-                                                    "pasteZone": $("#articleContent").next(),
-                                                    "qiniuUploadToken": "${qiniuUploadToken}",
-                                                    "editor": AddArticle.editor,
-                                                    "uploadingLabel": "${uploadingLabel}",
-                                                    "qiniuDomain": "${qiniuDomain}"
-                                            });
-                                            Util.uploadFile({
-                                            "id": "rewardFileUpload",
-                                                    "pasteZone": $("#articleRewardContent").next(),
-                                                    "qiniuUploadToken": "${qiniuUploadToken}",
-                                                    "editor": AddArticle.rewardEditor,
-                                                    "uploadingLabel": "${uploadingLabel}",
-                                                    "qiniuDomain": "${qiniuDomain}"
-                                            });
-                                            var qiniuToken = '${qiniuUploadToken}';
-                                            var qiniuDomain = '${qiniuDomain}';
-                                            var audioRecordingLabel = '${audioRecordingLabel}';
-                                            var uploadingLabel = '${uploadingLabel}';
+                            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
+                            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
+                            Label.tagsErrorLabel = "${tagsErrorLabel}";
+                            Label.userName = "${userName}";
+                            Label.recordDeniedLabel = "${recordDeniedLabel}";
+                            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
+                            Util.uploadFile({
+                            "id": "fileUpload",
+                                    "pasteZone": $("#articleContent").next().next(),
+                                    "qiniuUploadToken": "${qiniuUploadToken}",
+                                    "editor": AddArticle.editor,
+                                    "uploadingLabel": "${uploadingLabel}",
+                                    "qiniuDomain": "${qiniuDomain}"
+                            });
+                            Util.uploadFile({
+                            "id": "rewardFileUpload",
+                                    "pasteZone": $("#articleRewardContent").next().next(),
+                                    "qiniuUploadToken": "${qiniuUploadToken}",
+                                    "editor": AddArticle.rewardEditor,
+                                    "uploadingLabel": "${uploadingLabel}",
+                                    "qiniuDomain": "${qiniuDomain}"
+                            });
+                            var qiniuToken = '${qiniuUploadToken}';
+                            var qiniuDomain = '${qiniuDomain}';
+                            var audioRecordingLabel = '${audioRecordingLabel}';
+                            var uploadingLabel = '${uploadingLabel}';
         </script>
     </body>
 </html>
