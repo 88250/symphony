@@ -43,6 +43,22 @@ var Comment = {
             element: document.getElementById('commentContent'),
             dragDrop: false,
             lineWrapping: true,
+            toolbar: [
+                {name: 'bold'},
+                {name: 'italic'},
+                '|',
+                {name: 'quote'},
+                {name: 'unordered-list'},
+                {name: 'ordered-list'},
+                '|',
+                {name: 'link'},
+                {name: 'image'},
+                '|',
+                {name: 'redo'},
+                {name: 'undo'},
+                '|',
+                {name: 'preview'}
+            ],
             extraKeys: {
                 "Alt-/": "autocompleteUserName",
                 "Ctrl-/": "autocompleteEmoji",

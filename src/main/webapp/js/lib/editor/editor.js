@@ -10158,7 +10158,7 @@
 
     var CodeMirror = window.CodeMirror;
 
-    const listRE = /^(\s*)([*+-]|(\d+)\.)([\w+(\s+\w+)]|[\s*])/,
+    var listRE = /^(\s*)([*+-]|(\d+)\.)([\w+(\s+\w+)]|[\s*])/,
             emptyListRE = /^(\s*)([*+-]|(\d+)\.)(\s*)$/,
             unorderedBullets = '*+-';
 
@@ -11652,6 +11652,14 @@
                 }
 
                 // bind events, special for info
+                if (!item.action) {
+                    for (var j = 0, max = Editor.toolbar.length; j < max; j++) {
+                        if (Editor.toolbar[j].name === item.name) {
+                            item.action = Editor.toolbar[j].action;
+                            break;
+                        }
+                    }
+                }
                 if (item.action) {
                     if (typeof item.action === 'function') {
                         el.onclick = function (e) {

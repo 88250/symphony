@@ -252,6 +252,22 @@ var AddArticle = {
             dragDrop: false,
             lineWrapping: true,
             readOnly: readOnly,
+            toolbar: [
+                {name: 'bold'},
+                {name: 'italic'},
+                '|',
+                {name: 'quote'},
+                {name: 'unordered-list'},
+                {name: 'ordered-list'},
+                '|',
+                {name: 'link'},
+                {name: 'image'},
+                '|',
+                {name: 'redo'},
+                {name: 'undo'},
+                '|',
+                {name: 'preview'}
+            ],
             extraKeys: {
                 "Alt-/": "autocompleteUserName",
                 "Ctrl-/": "autocompleteEmoji",
