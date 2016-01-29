@@ -169,14 +169,14 @@
 
 #commentContent {
     background-color: #FAFAFA;
-    margin: 30px 0 0 0;
+    margin: 50px 0 0 0;
     overflow: hidden;
     padding: 4px;
     height: 67px;
 }
 
 .share {
-    margin: 1em 0;
+    margin-top: 20px;
 }
 
 .share [class^="icon-"] {
@@ -205,6 +205,10 @@
 
 .CodeMirror-scroll {
     min-height: 65px;
+}
+
+.editor-toolbar {
+    margin-top: 20px;
 }
 /* end article */
 
