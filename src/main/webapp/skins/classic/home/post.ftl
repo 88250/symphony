@@ -79,7 +79,6 @@
                     </div>
                     <div class="fn-right">
                         <button class="red" tabindex="10" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
-                        <button class="red" tabindex="10" onclick="AddArticle.add( <#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
                 </div>
             </div>
         </div>
