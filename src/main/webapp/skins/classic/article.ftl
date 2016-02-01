@@ -112,7 +112,7 @@
                         </div>
                     </div>
                     <#if 0 < article.articleRewardPoint>
-                    <div id="articleRewardContent"<#if !article.rewarded> class="reward"</#if>>
+                    <div class="content-reset" id="articleRewardContent"<#if !article.rewarded> class="reward"</#if>>
                          <#if !article.rewarded>
                          <span>
                             ${rewardTipLabel?replace("{articleId}", article.oId)?replace("{point}", article.articleRewardPoint)}
