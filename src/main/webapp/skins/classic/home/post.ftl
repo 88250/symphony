@@ -122,6 +122,7 @@
                             var qiniuDomain = '${qiniuDomain}';
                             var audioRecordingLabel = '${audioRecordingLabel}';
                             var uploadingLabel = '${uploadingLabel}';
+                            $("#articleTitle").focus();
             </script>
     </body>
 </html>
