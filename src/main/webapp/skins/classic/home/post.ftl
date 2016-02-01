@@ -78,24 +78,24 @@
                         </#if>
                     </div>
                     <div class="fn-right">
-                        <button class="red" tabindex="10" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button>
+                        <button class="red" tabindex="10" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button><br/><br/>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id="preview" class="content-reset"></div>
-        <#include "../footer.ftl">
-        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
-        <script src="${staticServePath}/js/lib/editor/editor.js"></script>
-        <script src="${staticServePath}/js/lib/editor/placeholder.js"></script>
-        <script src="${staticServePath}/js/lib/editor/fullscreen.js"></script>
-        <script src="${staticServePath}/js/overwrite/codemirror/addon/hint/show-hint.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
-        <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
+            <div id="preview" class="content-reset"></div>
+            <#include "../footer.ftl">
+            <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
+            <script src="${staticServePath}/js/lib/editor/editor.js"></script>
+            <script src="${staticServePath}/js/lib/editor/placeholder.js"></script>
+            <script src="${staticServePath}/js/lib/editor/fullscreen.js"></script>
+            <script src="${staticServePath}/js/overwrite/codemirror/addon/hint/show-hint.js"></script>
+            <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
+            <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
+            <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
+            <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
+            <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
 
-        <script>
+            <script>
                             Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
                             Label.articleContentErrorLabel = "${articleContentErrorLabel}";
                             Label.tagsErrorLabel = "${tagsErrorLabel}";
@@ -122,6 +122,6 @@
                             var qiniuDomain = '${qiniuDomain}';
                             var audioRecordingLabel = '${audioRecordingLabel}';
                             var uploadingLabel = '${uploadingLabel}';
-        </script>
+            </script>
     </body>
 </html>
