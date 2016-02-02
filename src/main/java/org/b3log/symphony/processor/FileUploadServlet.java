@@ -35,6 +35,8 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.util.MD5;
+import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -42,7 +44,7 @@ import org.json.JSONObject;
  * File upload.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 20, 2016
+ * @version 1.1.0.0, Feb 2, 2016
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -86,19 +88,34 @@ public class FileUploadServlet extends HttpServlet {
         }
 
         final String uri = req.getRequestURI();
-        final String key = uri.substring("/upload/".length());
+        String key = uri.substring("/upload/".length());
+        key = StringUtils.substringBeforeLast(key, "-64.jpg"); // Erase Qiniu template
+        key = StringUtils.substringBeforeLast(key, "-260.jpg"); // Erase Qiniu template
 
         String path = UPLOAD_DIR + key;
-        path = StringUtils.substringBeforeLast(path, "-64.jpg"); // Erase Qiniu template
-        path = StringUtils.substringBeforeLast(path, "-260.jpg"); // Erase Qiniu template
 
         if (!FileUtil.isExistingFile(new File(path))) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
+        final byte[] data = IOUtils.toByteArray(new FileInputStream(path));
+
+        final String ifNoneMatch = req.getHeader("If-None-Match");
+        final String etag = "\"" + MD5.hash(new String(data)) + "\"";
+
+        resp.addHeader("Cache-Control", "public, max-age=31536000");
+        resp.addHeader("ETag", etag);
+        resp.setHeader("Server", "Latke Static Server (v" + SymphonyServletListener.VERSION + ")");
+
+        if (etag.equals(ifNoneMatch)) {
+            resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+
             return;
         }
 
         final OutputStream output = resp.getOutputStream();
-        final byte[] data = IOUtils.toByteArray(new FileInputStream(path));
-
         IOUtils.write(data, output);
         output.flush();
 
