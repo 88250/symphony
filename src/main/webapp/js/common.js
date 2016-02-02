@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.9.13, Jan 27, 2016
+ * @version 1.14.10.13, Feb 2, 2016
  */
 
 /**
@@ -247,7 +247,6 @@ var Util = {
 
                 if (0 < count) {
                     $("#aNotifications").removeClass("no-msg").addClass("msg").text(count);
-                    document.title = "(" + count + ") " + Label.symphonyLabel + " - " + Label.visionLabel;
 
                     if (window.localStorage) {
                         if (count !== Number(window.localStorage.unreadNotificationCount)) {
@@ -271,7 +270,6 @@ var Util = {
                     }
                 } else {
                     $("#aNotifications").removeClass("msg").addClass("no-msg").text(count);
-                    document.title = Label.symphonyLabel + " - " + Label.visionLabel;
 
                     if (window.localStorage) {
                         window.localStorage.unreadNotificationCount = 0;
