@@ -254,8 +254,8 @@ var Util = {
                             var msg = Label.desktopNotificationTemplateLabel;
                             msg = msg.replace("${count}", count);
                             var options = {
-                                iconUrl: '',
-                                title: 'HacPai',
+                                iconUrl: '/images/hacpai.png',
+                                title: '黑客与画家',
                                 body: msg,
                                 timeout: 5000,
                                 onclick: function () {
