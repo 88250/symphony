@@ -1054,8 +1054,7 @@ a[class*=" icon-"]:hover {
     padding-bottom: 15px;
 }
 
-.nav .no-msg:hover ,
-.nav .msg:hover {
+.nav .no-msg {
     background-color: #777;
     border-radius: 5px;
     color: #FFFFFF;
@@ -1066,7 +1065,8 @@ a[class*=" icon-"]:hover {
     text-shadow: 0 0 0;
 }
 
-.nav .no-msg:hover {
+.nav .no-msg:hover,
+.nav .msg:hover {
     background-color: #4183C4;
     color: #FFF;
 }
