@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.8.13, Jan 28, 2016
+ * @version 1.8.9.13, Feb 5, 2016
  */
 
 /* start reset */
@@ -1054,7 +1054,8 @@ a[class*=" icon-"]:hover {
     padding-bottom: 15px;
 }
 
-.nav .no-msg {
+.nav .no-msg:hover ,
+.nav .msg:hover {
     background-color: #777;
     border-radius: 5px;
     color: #FFFFFF;

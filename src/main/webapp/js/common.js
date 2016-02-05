@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.9.13, Jan 27, 2016
+ * @version 1.15.9.13, Feb 5, 2016
  */
 
 /**
@@ -194,7 +194,7 @@ var Util = {
             
             if (3 === $ele.data('type')) { // 如果是思绪
                 // 不进行预览
-                return;
+                return false;
             }
             
             $ele.addClass("previewing");
@@ -208,9 +208,13 @@ var Util = {
                 return false;
             }
             
+            if ($li.find('.no-preview').length === 1) {
+                return false;
+            }
+            
             setTimeout(function() {
                 if (!$ele.hasClass("previewing")) {
-                    return;
+                    return false;
                 }
                 
                 $.ajax({
@@ -218,7 +222,8 @@ var Util = {
                     type: "GET",
                     cache: false,
                     success: function (result, textStatus) {
-                        if (!result.sc) {
+                        if (!result.sc || $.trim(result.html) === '') {
+                            $li.append('<div class="no-preview"></div>');
                             return false;
                         }
                         
