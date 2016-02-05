@@ -13,12 +13,7 @@
                     <div class="fn-hr5"></div>
                     <a href="/member/${currentUser.userName}">${userName}</a>&nbsp;
                     <a href="/member/${currentUser.userName}/points" class="ft-gray" title="${pointLabel} ${currentUser.userPoint?c}">
-                        <#if 0 == currentUser.userAppRole>
-                        0x${currentUser.userPointHex}
-                        <#else>
-                        <div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div>
-                        </#if>
-                    </a>&nbsp;
+                        <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>&nbsp;
                     <a class="btn small red" href="/post?tags=Q%26A&type=0">${IHaveAQuestionLabel}</a>
                     <br/>
                     <#if !isDailyCheckin>
