@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.10.7.6, Jan 28, 2016
+ * @version 2.11.7.6, Feb 5, 2016
  */
 
 /**
@@ -115,6 +115,22 @@ var AddArticle = {
                 "Ctrl-/": "autocompleteEmoji",
                 "Alt-S": "startAudioRecord",
                 "Alt-E": "endAudioRecord",
+                toolbar: [
+                    {name: 'bold'},
+                    {name: 'italic'},
+                    '|',
+                    {name: 'quote'},
+                    {name: 'unordered-list'},
+                    {name: 'ordered-list'},
+                    '|',
+                    {name: 'link'},
+                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
+                    '|',
+                    {name: 'redo'},
+                    {name: 'undo'},
+                    '|',
+                    {name: 'preview'}
+                ],
                 "F11": function (cm) {
                     cm.setOption("fullScreen", !cm.getOption("fullScreen"));
                 }
@@ -261,7 +277,7 @@ var AddArticle = {
                 {name: 'ordered-list'},
                 '|',
                 {name: 'link'},
-                {name: 'image'},
+                {name: 'image', html: '<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
                 '|',
                 {name: 'redo'},
                 {name: 'undo'},

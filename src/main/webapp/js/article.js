@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.15.7, Jan 28, 2016
+ * @version 1.12.15.7, Feb 5, 2016
  */
 
 /**
@@ -52,7 +52,7 @@ var Comment = {
                 {name: 'ordered-list'},
                 '|',
                 {name: 'link'},
-                {name: 'image'},
+                {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
                 '|',
                 {name: 'redo'},
                 {name: 'undo'},

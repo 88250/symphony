@@ -28,9 +28,6 @@
                         </label>
                     </div>
                     <div class="fn-clear article-content">
-                        <form class="fn-none" id="fileUpload" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="file">
-                        </form>
                         <textarea id="articleContent" tabindex="2"
                                   placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if><#if at??>@${at}</#if></textarea>
                         <div class="fn-left grammar fn-none">
@@ -43,9 +40,6 @@
                         <br/><br/>
                     </div>
                     <div class="fn-clear article-reward-content">
-                        <form class="fn-none" id="rewardFileUpload" method="POST" enctype="multipart/form-data">
-                            <input type="file" name="file">
-                        </form>
                         <textarea id="articleRewardContent" tabindex="4"
                                   placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
                     </div>

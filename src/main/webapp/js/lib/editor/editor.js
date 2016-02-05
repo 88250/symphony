@@ -11177,7 +11177,7 @@
         'Cmd-B': toggleBold,
         'Cmd-I': toggleItalic,
         'Cmd-K': drawLink,
-        'Cmd-Alt-I': drawImage,
+        // 'Cmd-Alt-I': drawImage,
         "Cmd-'": toggleBlockquote,
         'Cmd-Alt-L': toggleOrderedList,
         'Cmd-L': toggleUnOrderedList
@@ -11202,6 +11202,9 @@
      */
     function createIcon(name, options) {
         options = options || {};
+        if (name === 'image') {
+            return $(options.html)[0];
+        }
         var el = document.createElement('a');
 
         var shortcut = options.shortcut || shortcuts[name];
@@ -11612,6 +11615,7 @@
             indentWithTabs: true,
             lineNumbers: false,
             autofocus: options.autofocus,
+            lineWrapping: options.lineWrapping,
             extraKeys: keyMaps
         });
 
@@ -11652,6 +11656,7 @@
                 }
 
                 // bind events, special for info
+
                 if (!item.action) {
                     for (var j = 0, max = Editor.toolbar.length; j < max; j++) {
                         if (Editor.toolbar[j].name === item.name) {
@@ -11661,7 +11666,7 @@
                     }
                 }
                 if (item.action) {
-                    if (typeof item.action === 'function') {
+                    if (typeof item.action === 'function' && item.name !== 'image') {
                         el.onclick = function (e) {
                             item.action(self);
                         };
