@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.10.13, Feb 2, 2016
+ * @version 1.14.10.14, Feb 5, 2016
  */
 
 /**
@@ -254,7 +254,7 @@ var Util = {
                             var msg = Label.desktopNotificationTemplateLabel;
                             msg = msg.replace("${count}", count);
                             var options = {
-                                iconUrl: '/images/hacpai.png',
+                                iconUrl: '/images/faviconH.png',
                                 title: '黑客与画家',
                                 body: msg,
                                 timeout: 5000,
@@ -532,7 +532,7 @@ var Util = {
             // 定时获取并设置未读提醒计数
             setInterval(function () {
                 Util.setUnreadNotificationCount();
-            }, 60000);
+            }, 5000);
 
             $("#logout").click(function () { // Register logout click event handler
                 Util.logout();
