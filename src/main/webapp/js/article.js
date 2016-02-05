@@ -280,7 +280,7 @@ var Article = {
             $(this).wrapInner('<code></code>');
             $(this).removeAttr('class');
         });
-        
+
         hljs.initHighlightingOnLoad();
     },
     /**

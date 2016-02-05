@@ -1108,6 +1108,7 @@
      */
     function toggleFullScreen(editor) {
         editor.codemirror.setOption("fullScreen", !editor.codemirror.getOption("fullScreen"));
+        editor.codemirror.focus();
     }
 
 
