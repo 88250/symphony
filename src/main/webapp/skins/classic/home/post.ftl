@@ -32,7 +32,7 @@
                             <input type="file" name="file">
                         </form>
                         <textarea id="articleContent" tabindex="2"
-                                  placeholder="${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if><#if at??>@${at}</#if></textarea>
+                                  placeholder="<#if 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if><#if at??>@${at}</#if></textarea>
                         <div class="fn-left grammar fn-none">
                             ${markdwonGrammarLabel}
                         </div>
