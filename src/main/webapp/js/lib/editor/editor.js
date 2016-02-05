@@ -11611,7 +11611,7 @@
             mode: 'markdown',
             indentWithTabs: true,
             lineNumbers: false,
-            autofocus: true,
+            autofocus: options.autofocus,
             extraKeys: keyMaps
         });
 
