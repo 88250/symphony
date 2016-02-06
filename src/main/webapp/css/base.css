@@ -234,6 +234,7 @@ textarea {
 }
 
 .content-reset {
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     word-wrap: break-word;
     overflow: hidden;
     line-height: 145%;

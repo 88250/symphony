@@ -1258,7 +1258,7 @@
         var preview = wrapper.lastChild;
         if (!/editor-preview/.test(preview.className)) {
             preview = document.createElement('div');
-            preview.className = 'editor-preview';
+            preview.className = 'editor-preview content-reset';
             wrapper.appendChild(preview);
         }
         if (/editor-preview-active/.test(preview.className)) {
