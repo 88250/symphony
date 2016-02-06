@@ -115,23 +115,6 @@ var AddArticle = {
                 "Ctrl-/": "autocompleteEmoji",
                 "Alt-S": "startAudioRecord",
                 "Alt-E": "endAudioRecord",
-                toolbar: [
-                    {name: 'bold'},
-                    {name: 'italic'},
-                    '|',
-                    {name: 'quote'},
-                    {name: 'unordered-list'},
-                    {name: 'ordered-list'},
-                    '|',
-                    {name: 'link'},
-                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
-                    '|',
-                    {name: 'redo'},
-                    {name: 'undo'},
-                    '|',
-                    {name: 'preview'},
-                    {name: 'fullscreen'}
-                ],
                 "F11": function (cm) {
                     cm.setOption("fullScreen", !cm.getOption("fullScreen"));
                 },
@@ -139,6 +122,23 @@ var AddArticle = {
                     cm.setOption("fullScreen", false);
                 }
             },
+            toolbar: [
+                {name: 'bold'},
+                {name: 'italic'},
+                '|',
+                {name: 'quote'},
+                {name: 'unordered-list'},
+                {name: 'ordered-list'},
+                '|',
+                {name: 'link'},
+                {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
+                '|',
+                {name: 'redo'},
+                {name: 'undo'},
+                '|',
+                {name: 'preview'},
+                {name: 'fullscreen'}
+            ],
             status: false
         });
         addArticleEditor.render();
