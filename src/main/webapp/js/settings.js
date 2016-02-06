@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.7, Aug 31, 2015
+ * @version 1.4.3.7, Feb 6, 2016
  */
 
 /**
@@ -78,6 +78,9 @@ var Settings = {
                 beforeSend: function () {
                     $("#pointTransferTip").removeClass("succ").removeClass("error").html("");
                 },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
                 success: function (result, textStatus) {
                     if (result.sc) {
                         $("#pointTransferTip").addClass("succ").removeClass("error").html('<ul><li>' + Label.transferSuccLabel + '</li></ul>');
@@ -127,6 +130,9 @@ var Settings = {
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {
                 $("#" + type.replace(/\//g, "") + "Tip").removeClass("succ").removeClass("error").html("");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
             },
             success: function (result, textStatus) {
                 if (result.sc) {

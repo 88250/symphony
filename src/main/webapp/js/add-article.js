@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.7.6, Feb 5, 2016
+ * @version 2.11.8.6, Feb 6, 2016
  */
 
 /**
@@ -80,6 +80,9 @@ var AddArticle = {
                 data: JSON.stringify(requestJSONObject),
                 beforeSend: function () {
                     $(".form button.red").attr("disabled", "disabled").css("opacity", "0.3");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $("#addArticleTip").addClass('error').html('<ul><li>' + errorThrown + '</li></ul>');
                 },
                 success: function (result, textStatus) {
                     $(".form button.red").removeAttr("disabled").css("opacity", "1");
