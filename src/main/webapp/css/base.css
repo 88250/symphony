@@ -284,7 +284,7 @@ textarea {
 .content-reset blockquote {
     z-index: 1;
     position: relative;
-    margin: 13px 0 13px 10px;
+    margin: 0;
     padding: 15px 15px 15px 15px;
     background-color: #ddd;
     border-radius: 5px;
@@ -296,7 +296,7 @@ textarea {
     font-size: 2rem;
     line-height: 1;
     position: absolute;
-    left: -15px;
+    left: 1px;
     top: 0;
     z-index: -1;
 }
@@ -306,7 +306,7 @@ textarea {
     font-size: 2rem;
     line-height: 0;
     position: absolute;
-    right: -15px;
+    right: 1px;
     bottom: 0;
     z-index: -1;
 }

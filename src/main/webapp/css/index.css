@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.6.10, Jan 28, 2016
+ * @version 1.2.7.10, Feb 14, 2016
  */
 /* start module */
 .index-module .index-module-list > li {
@@ -120,16 +120,16 @@
     margin: 20px 0 0;
 }
 
-#comments .comment-content {
-    width: 610px; /* TODO:检测safari，没有问题可删除 */
-}
-
 #comments li:hover .thx {
     display: initial;
 }
 
 #comments .comment > p {
     margin-top: 13px;
+}
+
+#comments .comment-info {
+    line-height: 17px;
 }
 
 .comment-login {
