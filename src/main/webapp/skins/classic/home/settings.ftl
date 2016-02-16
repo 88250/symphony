@@ -153,6 +153,7 @@
                     pasteZone: null,
                     dropZone: null,
                     url: "/upload",
+                    paramName: "file",
                     formData: function (form) {
                         var data = form.serializeArray();
                         return data;
@@ -188,6 +189,7 @@
                     pasteZone: null,
                     dropZone: null,
                     url: "https://up.qbox.me/",
+                    paramName: "file",
                     formData: function (form) {
                         var data = form.serializeArray();
                         data.push({name: 'token', value: '${qiniuUploadToken}'});

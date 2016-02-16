@@ -168,6 +168,7 @@ var Util = {
                     data: fd,
                     processData: false,
                     contentType: false,
+                    paramName: "file",
                     success: function (data) {
                         var cursor = cm.getCursor();
                         cm.replaceRange('<audio controls="controls" src="' + qiniuDomain + '/' + key + '"></audio>\n\n',
@@ -650,6 +651,7 @@ var Util = {
                 pasteZone: obj.pasteZone,
                 dropZone: obj.pasteZone,
                 url: "/upload",
+                paramName: "file",
                 add: function (e, data) {
                     filename = data.files[0].name;
                     
@@ -725,6 +727,7 @@ var Util = {
             pasteZone: obj.pasteZone,
             dropZone: obj.pasteZone,
             url: "https://up.qbox.me/",
+            paramName: "file",
             add: function (e, data) {
                 filename = data.files[0].name;
                 
