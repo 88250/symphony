@@ -15,10 +15,7 @@
  */
 package org.b3log.symphony.service;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
@@ -33,8 +30,10 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.processor.channel.ArticleChannel;
+import org.b3log.symphony.processor.channel.ArticleListChannel;
+import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.repository.OptionRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,7 +46,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Apr 9, 2015
+ * @version 1.2.0.4, Feb 16, 2016
  * @since 0.2.0
  */
 @Service
@@ -65,20 +64,6 @@ public class OptionQueryService {
     private OptionRepository optionRepository;
 
     /**
-     * Online visitor cache.
-     *
-     * <p>
-     * &lt;ip, recentTime&gt;
-     * </p>
-     */
-    private static final Map<String, Long> ONLINE_VISITORS = new HashMap<String, Long>();
-
-    /**
-     * Online visitor expiration in 5 minutes.
-     */
-    private static final int ONLINE_VISITOR_EXPIRATION = 300000;
-
-    /**
      * Language service.
      */
     @Inject
@@ -90,9 +75,7 @@ public class OptionQueryService {
      * @return online visitor count
      */
     public int getOnlineVisitorCount() {
-        removeExpiredOnlineVisitor();
-
-        final int ret = ONLINE_VISITORS.size();
+        final int ret = ArticleChannel.SESSIONS.size() + ArticleListChannel.SESSIONS.size() + TimelineChannel.SESSIONS.size();
 
         try {
             final JSONObject maxOnlineMemberCntRecord = optionRepository.get(Option.ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT);
@@ -121,33 +104,6 @@ public class OptionQueryService {
         }
 
         return ret;
-    }
-
-    /**
-     * Refreshes online visitor count for the specified request.
-     *
-     * @param request the specified request
-     */
-    public static void onlineVisitorCount(final HttpServletRequest request) {
-        ONLINE_VISITORS.put(Requests.getRemoteAddr(request), System.currentTimeMillis());
-        LOGGER.log(Level.TRACE, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
-    }
-
-    /**
-     * Removes the expired online visitor.
-     */
-    private static void removeExpiredOnlineVisitor() {
-        final long currentTimeMillis = System.currentTimeMillis();
-
-        final Iterator<Map.Entry<String, Long>> iterator = ONLINE_VISITORS.entrySet().iterator();
-        while (iterator.hasNext()) {
-            final Map.Entry<String, Long> onlineVisitor = iterator.next();
-
-            if (currentTimeMillis > (onlineVisitor.getValue() + ONLINE_VISITOR_EXPIRATION)) {
-                iterator.remove();
-                LOGGER.log(Level.TRACE, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
-            }
-        }
     }
 
     /**
