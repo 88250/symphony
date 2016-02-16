@@ -15,7 +15,7 @@
                             <img src="${staticServePath}/images/hacpai.png" alt="${symphonyLabel}" title="${symphonyLabel}" width="42" class="fn-pointer" />
                         </a>
                     </h1>
-                    <form class="responsive-hide" target="_blank" action="http://search.hacpai.com/cse/search">
+                    <form class="responsive-hide" target="_blank" action="https://search.hacpai.com/cse/search">
                         <span class="icon-search"></span>
                         <input class="search" type="text" name="q">
                         <input type="hidden" value="140632643792102269" name="s">

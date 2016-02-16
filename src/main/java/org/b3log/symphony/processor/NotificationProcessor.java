@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -37,7 +38,6 @@ import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.UserQueryService;
@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.2, Jan 2, 2016
+ * @version 1.4.1.2, Feb 16, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -83,12 +83,6 @@ public class NotificationProcessor {
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
-
-    /**
-     * Comment query service.
-     */
-    @Inject
-    private CommentQueryService commentQueryService;
 
     /**
      * Filler.
@@ -121,7 +115,7 @@ public class NotificationProcessor {
         final int unreadCommentedNotificationCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
         if (unreadCommentedNotificationCnt > 0) {
-            response.sendRedirect("/notifications/commented");
+            response.sendRedirect(Latkes.getServePath() + "/notifications/commented");
 
             return;
         }
@@ -129,14 +123,14 @@ public class NotificationProcessor {
         final int unreadAtNotificationCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
         if (unreadAtNotificationCnt > 0) {
-            response.sendRedirect("/notifications/at");
+            response.sendRedirect(Latkes.getServePath() + "/notifications/at");
 
             return;
         }
 
         final int unreadPointNotificationCnt = notificationQueryService.getUnreadPointNotificationCount(userId);
         if (unreadPointNotificationCnt > 0) {
-            response.sendRedirect("/notifications/point");
+            response.sendRedirect(Latkes.getServePath() + "/notifications/point");
 
             return;
         }
@@ -144,7 +138,7 @@ public class NotificationProcessor {
         final int unreadFollowingUserNotificationCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_FOLLOWING_USER);
         if (unreadFollowingUserNotificationCnt > 0) {
-            response.sendRedirect("/notifications/following-user");
+            response.sendRedirect(Latkes.getServePath() + "/notifications/following-user");
 
             return;
         }
@@ -152,12 +146,12 @@ public class NotificationProcessor {
         final int unreadBroadcastCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_BROADCAST);
         if (unreadBroadcastCnt > 0) {
-            response.sendRedirect("/notifications/broadcast");
+            response.sendRedirect(Latkes.getServePath() + "/notifications/broadcast");
 
             return;
         }
 
-        response.sendRedirect("/notifications/commented");
+        response.sendRedirect(Latkes.getServePath() + "/notifications/commented");
     }
 
     /**

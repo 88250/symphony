@@ -39,7 +39,7 @@
             WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
 
             // Init [Timeline] channel
-            TimelineChannel.init("ws://${serverHost}:${serverPort}/timeline-channel");
+            TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}/timeline-channel");
             
             var timelineCnt = ${timelineCnt};
         </script>

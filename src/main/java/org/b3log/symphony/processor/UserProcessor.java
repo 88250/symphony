@@ -69,7 +69,6 @@ import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
-import static org.b3log.symphony.util.Networks.isIPv4;
 import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -99,7 +98,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.7.15, Jan 20, 2016
+ * @version 1.13.7.15, Feb 16, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -806,7 +805,7 @@ public class UserProcessor {
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
 
         if (Symphonys.getBoolean("qiniu.enabled")) {
-            if (!StringUtils.startsWith(userAvatarURL, Symphonys.get("qiniu.domain"))) {
+            if (!StringUtils.contains(userAvatarURL, "qnssl.com") && !StringUtils.contains(userAvatarURL, "clouddn.com")) {
                 user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
             } else {
                 user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + user.optString(Keys.OBJECT_ID)

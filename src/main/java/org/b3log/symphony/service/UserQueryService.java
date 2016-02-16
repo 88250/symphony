@@ -160,6 +160,7 @@ public class UserQueryService {
                 }
             }
         });
+        
         if (index >= 0) {
             final int max = index + 5 <= userNames.size() - 1 ? index + 5 : userNames.size() - 1;
 

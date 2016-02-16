@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.10, Aug 27, 2015
+ * @version 1.5.1.10, Feb 16, 2016
  * @since 0.2.0
  */
 @Service
@@ -227,6 +227,8 @@ public class Filler {
             final Map<String, Object> dataModel) throws Exception {
         fillHeader(request, response, dataModel);
         fillFooter(dataModel);
+        
+        dataModel.put(Common.WEBSOCKET_SCHEME, Symphonys.get("websocket.scheme"));
     }
 
     /**

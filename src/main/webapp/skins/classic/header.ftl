@@ -6,13 +6,16 @@
                     <img src="${staticServePath}/images/hacpai.png" alt="${symphonyLabel}" title="${symphonyLabel}" width="42" class="fn-pointer" />
                 </a>
             </h1>
-            <form class="responsive-hide" target="_blank" action="http://search.hacpai.com/cse/search">
+            <!-- 百度站内搜索不支持 HTTPS -->
+            <!--
+            <form class="responsive-hide" target="_blank" action="https://search.hacpai.com/cse/search">
                 <span class="icon-search"></span>
                 <input class="search" type="text" name="q">
                 <input type="hidden" value="11228953646196486415" name="s">
                 <input type="hidden" name="cc" value="hacpai.com">
                 <input type="submit" class="fn-none" value="">
             </form>
+            -->
             <div class="fn-right">
                 <a href="/timeline" class="icon-clock last" title="${timelineLabel}"></a>
                 <#if isLoggedIn>
@@ -67,6 +70,8 @@
             </#if>
         </div>
     </div>
+    <!-- 百度站内搜索不支持 HTTPS -->
+    <!--
     <script type="text/javascript">(function () {
             document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));
             var bdcs = document.createElement('script');
@@ -76,4 +81,5 @@
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(bdcs, s);
         })();</script>
+    -->
 </div>

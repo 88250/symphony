@@ -21,7 +21,7 @@
         </li>
     </ul>
     <div class="fn-right info fn-clear">
-        <form target="_blank" action="http://search.hacpai.com/cse/search" class="fn-clear">
+        <form target="_blank" action="https://search.hacpai.com/cse/search" class="fn-clear">
             <input type="text" name="q" placeholder="${searchSthLabel}">
             <input type="hidden" value="140632643792102269" name="s">
             <input type="hidden" name="cc" value="hacpai.com">

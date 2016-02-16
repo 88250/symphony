@@ -187,7 +187,7 @@
                     multipart: true,
                     pasteZone: null,
                     dropZone: null,
-                    url: "http://upload.qiniu.com/",
+                    url: "https://up.qbox.me/",
                     formData: function (form) {
                         var data = form.serializeArray();
                         data.push({name: 'token', value: '${qiniuUploadToken}'});

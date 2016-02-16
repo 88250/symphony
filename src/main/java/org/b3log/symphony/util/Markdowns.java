@@ -17,9 +17,9 @@ package org.b3log.symphony.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Strings;
@@ -40,7 +40,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.3.7, Dec 22, 2015
+ * @version 1.5.3.7, Feb 16, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -95,7 +95,7 @@ public final class Markdowns {
         final Elements audios = doc.getElementsByTag("audio");
         for (final Element audio : audios) {
             final String src = audio.attr("src");
-            if (!src.startsWith(Symphonys.get("qiniu.domain"))) {
+            if (!StringUtils.contains(src, "qnssl.com") && !StringUtils.contains(src, "clouddn.com")) {
                 audio.remove();
 
                 continue;

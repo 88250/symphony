@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.9.13, Feb 5, 2016
+ * @version 1.16.9.13, Feb 16, 2016
  */
 
 /**
@@ -164,7 +164,7 @@ var Util = {
 
                 $.ajax({
                     type: 'POST',
-                    url: 'http://upload.qiniu.com/',
+                    url: 'https://up.qbox.me/',
                     data: fd,
                     processData: false,
                     contentType: false,
@@ -724,7 +724,7 @@ var Util = {
             multipart: true,
             pasteZone: obj.pasteZone,
             dropZone: obj.pasteZone,
-            url: "http://upload.qiniu.com/",
+            url: "https://up.qbox.me/",
             add: function (e, data) {
                 filename = data.files[0].name;
                 
