@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.5.16, Sep 19, 2015
+ * @version 1.7.6.16, Feb 16, 2016
  * @since 0.2.0
  */
 @Service
@@ -380,6 +380,10 @@ public class CommentMgmtService {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
+            String content = comment.optString(Comment.COMMENT_CONTENT);
+            content = Emotions.toAliases(content);
+            comment.put(Comment.COMMENT_CONTENT, content);
+
             commentRepository.update(commentId, comment);
 
             transaction.commit();
