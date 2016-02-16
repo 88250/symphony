@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -62,7 +63,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.1, Jan 2, 2016
+ * @version 1.4.1.1, Feb 16, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -147,7 +148,7 @@ public class ActivityProcessor {
 
         activityMgmtService.dailyCheckin(userId);
 
-        response.sendRedirect("/member/" + user.optString(User.USER_NAME) + "/points");
+        response.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
     }
 
     /**
