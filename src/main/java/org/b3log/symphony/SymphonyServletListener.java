@@ -55,7 +55,6 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
-import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Symphonys;
@@ -65,7 +64,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.4, Jan 7, 2016
+ * @version 1.8.3.5, Feb 16, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -183,9 +182,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
         LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
                 new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
                     session.isNew()});
-
-        // Online visitor count
-        OptionQueryService.onlineVisitorCount(httpServletRequest);
 
         resolveSkinDir(httpServletRequest);
     }
