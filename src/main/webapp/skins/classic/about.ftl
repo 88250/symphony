@@ -8,7 +8,7 @@
     </head>
     <body>
         <script>
-            location.href = "http://hacpai.com/article/1440573175609"
+            location.href = "https://hacpai.com/article/1440573175609"
         </script>
     </body>
 </html>

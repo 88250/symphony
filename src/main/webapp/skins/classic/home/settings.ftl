@@ -97,7 +97,7 @@
 
 <div class="module">
     <div class="module-header">
-        <h2>${syncLabel} <a href="http://hacpai.com/article/1440820551723" target="_blank">(?)</a></h2>
+        <h2>${syncLabel} <a href="https://hacpai.com/article/1440820551723" target="_blank">(?)</a></h2>
     </div>
     <div class="module-panel form fn-clear">
         <label>B3log Key</label>

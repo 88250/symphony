@@ -102,7 +102,7 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        window.location.href = "http://hacpai.com/article/1440573175609";
+                        window.location.href = "https://hacpai.com/article/1440573175609";
                     } else {
                         $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                     }
@@ -176,7 +176,7 @@ var Register = {
                 data: JSON.stringify(requestJSONObject),
                 success: function (result, textStatus) {
                     if (result.sc) {
-                        window.location.href = "http://hacpai.com";
+                        window.location.href = "https://hacpai.com";
                     } else {
                         $("#registerTip").addClass('error').removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
                     }

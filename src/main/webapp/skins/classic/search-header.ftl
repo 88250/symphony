@@ -81,7 +81,7 @@
             <div class="wrapper">
                 <div class="fn-flex-1">
                     <div class="footer-nav fn-clear">
-                        <a target="_blank" rel="help" href="http://hacpai.com/article/1440573175609">${aboutLabel}</a>
+                        <a target="_blank" rel="help" href="https://hacpai.com/article/1440573175609">${aboutLabel}</a>
                         <a target="_blank" class="responsive-hide" href="/timeline">${timelineLabel}</a>
                         <#if isLoggedIn><a target="_blank" class="responsive-hide" href="/city/my">${sameCityLabel}</a></#if>
                         <a target="_blank" href="/tags/系统公告">${symAnnouncementLabel}</a>
@@ -101,7 +101,7 @@
                         </div>
                         <div class="fn-right">
                             <span class="ft-gray">&COPY; ${year} </span>
-                            <a target="_blank" rel="copyright" href="http://hacpai.com" target="_blank">hacpai.com</a>
+                            <a target="_blank" rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
                             <span class="ft-gray">${version} • ${elapsed?c}ms</span>
                         </div>
                     </div>

@@ -263,7 +263,7 @@ var Article = {
         $(".share span").click(function () {
             var key = $(this).data("type");
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
-                    url = "http://hacpai.com" + Label.articlePermalink,
+                    url = "https://hacpai.com" + Label.articlePermalink,
                     pic = $(".content-reset img").attr("src");
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +

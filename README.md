@@ -2,7 +2,7 @@
 
 ## 简介
 
-Sym 是一个用 Java 写的实时论坛，欢迎来[体验](http://hacpai.com/register)！
+Sym 是一个用 Java 写的实时论坛，欢迎来[体验](https://hacpai.com/register)！
 
 如果你需要搭建一个企业内网论坛，请使用 [SymX](https://github.com/FangStarNet/symphonyx)。
 
@@ -12,7 +12,7 @@ Sym 的诞生是有如下几点原因：
 
 * 大多数论坛用户体验不够现代化，想做一个和聊 QQ 一样体验的论坛
 * 已有的用 Java 写的论坛真的很少也很丑，并且大多已经不再维护
-* 我们想实现一种[新的网络社区体验](http://hacpai.com/b3log)，独立博客+社区互动
+* 我们想实现一种[新的网络社区体验](https://hacpai.com/b3log)，独立博客+社区互动
 
 ### 基本理念
 
@@ -36,7 +36,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 
 #### 互联
 
-Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](http://hacpai.com/b3log)），目前 [Solo](https://github.com/b3log/solo) 博客系统已经可以完整和 Sym 保持内容同步。
+Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](https://hacpai.com/b3log)），目前 [Solo](https://github.com/b3log/solo) 博客系统已经可以完整和 Sym 保持内容同步。
 
 ### 功能图解
 
@@ -59,7 +59,7 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](http://hacpai.
 目前有 4 类帖子：
 
 * 文章：普通的帖子，注重作者分享经验和见解
-* 思绪：记录写作过程，实例请看[这里](http://hacpai.com/article/1442568741454)
+* 思绪：记录写作过程，实例请看[这里](https://hacpai.com/article/1442568741454)
 * 讨论组：邀请好友进行私密交流，其他用户看不到具体内容和评论
 * 同城广播：发起你所在城市的招聘、Meetup 等
 
@@ -135,9 +135,9 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](http://hacpai.
 
 ## 思绪
 
-在实现 [B3log 构思](http://hacpai.com/b3log)的这几年：
+在实现 [B3log 构思](https://hacpai.com/b3log)的这几年：
 
-* 我们见证了 xAE（GAE/BAE/SAE/etc）的兴起与没落。2009 年选择了 GAE 作为服务器，并开始实现 [Latke](https://github.com/b3log/latke) 框架来解决跨云平台，直到今年[告别 GAE](http://hacpai.com/article/1443685401909)，不得不感叹技术更迭之快
+* 我们见证了 xAE（GAE/BAE/SAE/etc）的兴起与没落。2009 年选择了 GAE 作为服务器，并开始实现 [Latke](https://github.com/b3log/latke) 框架来解决跨云平台，直到今年[告别 GAE](https://hacpai.com/article/1443685401909)，不得不感叹技术更迭之快
 * 感受到了自造轮子的优缺点，并且可以肯定一点：对于一个想要长久的产品来说，自制技术框架优势远大于劣势
 * 一个_好玩_的产品或说是细节特性然并卵，需要做的是一个能够持续提供用户价值的产品/特性
 * 虽然直到目前 B3log 系产品用户不多，但我们已经初步证明了：Java 用来实现博客、论坛没有什么不好的（仅次于 PHP 吧）

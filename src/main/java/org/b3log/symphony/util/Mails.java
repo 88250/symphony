@@ -106,7 +106,7 @@ public final class Mails {
         final List<String> var1 = new ArrayList<String>();
         var1.add("88250");
         final List<String> var2 = new ArrayList<String>();
-        var2.add("http://hacpai.com");
+        var2.add("https://hacpai.com");
 
         final Map<String, List<String>> vars = new HashMap<String, List<String>>();
         vars.put("%1%", var1);

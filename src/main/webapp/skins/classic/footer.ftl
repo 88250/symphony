@@ -2,7 +2,7 @@
     <div class="wrapper">
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
-                <a rel="help" href="http://hacpai.com/article/1440573175609">${aboutLabel}</a>
+                <a rel="help" href="https://hacpai.com/article/1440573175609">${aboutLabel}</a>
                 <a class="responsive-hide" href="/timeline">${timelineLabel}</a>
                 <#if isLoggedIn><a class="responsive-hide" href="/city/my">${sameCityLabel}</a></#if>
                 <a href="/tags/系统公告">${symAnnouncementLabel}</a>
@@ -11,7 +11,7 @@
 
                 <div class="fn-right">
                     <span class="ft-gray">&COPY; ${year}</span>
-                    <a rel="copyright" href="http://hacpai.com" target="_blank">hacpai.com</a>
+                    <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
                     ${visionLabel}</div>
             </div>
             <div class="fn-clear">
