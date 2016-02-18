@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.1, Aug 31, 2015
+ * @version 1.8.1.1, Feb 18, 2016
  * @since 1.3.0
  */
 @Service
@@ -340,7 +340,7 @@ public class PointtransferQueryService {
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001:
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT:
                         break;
-                    case Pointtransfer.TRANSFER_TYPE_C_ACOUNT2ACOUNT:
+                    case Pointtransfer.TRANSFER_TYPE_C_ACCOUNT2ACCOUNT:
                         JSONObject user9;
                         if ("9In".equals(typeStr)) {
                             user9 = userRepository.get(fromId);
@@ -361,6 +361,12 @@ public class PointtransferQueryService {
                         final String yuan = dataId.split("-")[0];
 
                         desTemplate = desTemplate.replace("{yuan}", yuan);
+                        
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_EXCHANGE:
+                        final String exYuan = dataId;
+
+                        desTemplate = desTemplate.replace("{yuan}", exYuan);
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST:
                         final JSONObject addArticleBroadcast = articleRepository.get(dataId);

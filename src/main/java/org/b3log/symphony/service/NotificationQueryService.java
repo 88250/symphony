@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.4, Sep 10, 2015
+ * @version 1.3.0.4, Feb 18, 2016
  * @since 0.2.5
  */
 @Service
@@ -187,6 +187,7 @@ public class NotificationQueryService {
      * @return count of unread notifications, returns {@code 0} if occurs exception
      * @see Notification#DATA_TYPE_C_POINT_ARTICLE_REWARD
      * @see Notification#DATA_TYPE_C_POINT_CHARGE
+     * @see Notification#DATA_TYPE_C_POINT_EXCHANGE
      * @see Notification#DATA_TYPE_C_POINT_COMMENT_THANK
      * @see Notification#DATA_TYPE_C_POINT_TRANSFER
      */
@@ -200,6 +201,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_CHARGE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_EXCHANGE));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
@@ -254,6 +257,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_CHARGE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_EXCHANGE));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
@@ -311,6 +316,17 @@ public class NotificationQueryService {
                         desTemplate = desTemplate.replace("{point}", String.valueOf(sum5));
 
                         break;
+                    case Notification.DATA_TYPE_C_POINT_EXCHANGE:
+                        desTemplate = langPropsService.get("notificationPointExchangeLabel");
+
+                        final JSONObject transfer6 = pointtransferRepository.get(dataId);
+                        final int sum6 = transfer6.optInt(Pointtransfer.SUM);
+                        final String yuan6 = transfer6.optString(Pointtransfer.DATA_ID);
+
+                        desTemplate = desTemplate.replace("{yuan}", yuan6);
+                        desTemplate = desTemplate.replace("{point}", String.valueOf(sum6));
+
+                        break;
                     case Notification.DATA_TYPE_C_POINT_COMMENT_THANK:
                         desTemplate = langPropsService.get("notificationCmtThankLabel");
 
@@ -334,15 +350,15 @@ public class NotificationQueryService {
                     case Notification.DATA_TYPE_C_POINT_TRANSFER:
                         desTemplate = langPropsService.get("notificationPointTransferLabel");
 
-                        final JSONObject transfer6 = pointtransferRepository.get(dataId);
-                        final String fromId6 = transfer6.optString(Pointtransfer.FROM_ID);
+                        final JSONObject transfer7 = pointtransferRepository.get(dataId);
+                        final String fromId6 = transfer7.optString(Pointtransfer.FROM_ID);
                         final JSONObject user6 = userRepository.get(fromId6);
-                        final int sum6 = transfer6.optInt(Pointtransfer.SUM);
+                        final int sum7 = transfer7.optInt(Pointtransfer.SUM);
 
                         final String userLink6 = "<a href=\"/member/" + user6.optString(User.USER_NAME) + "\">"
                                 + user6.optString(User.USER_NAME) + "</a>";
                         desTemplate = desTemplate.replace("{user}", userLink6);
-                        desTemplate = desTemplate.replace("{amount}", String.valueOf(sum6));
+                        desTemplate = desTemplate.replace("{amount}", String.valueOf(sum7));
 
                         break;
                     default:

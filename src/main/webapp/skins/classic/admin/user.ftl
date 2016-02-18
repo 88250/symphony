@@ -93,7 +93,7 @@
 
                 <label for="userStatus">${userStatusLabel}</label>
                 <input type="text" id="userStatus" name="userStatus" value="${user.userStatus}" />
-                
+
                 <label for="syncWithSymphonyClient">${syncWithSymphonyClientLabel}</label>
                 <input type="text" id="syncWithSymphonyClient" name="syncWithSymphonyClient" value="${user.syncWithSymphonyClient?c}"/>
 
@@ -137,7 +137,6 @@
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
         </div>
-
     </div>
 
     <div class="module">
@@ -159,7 +158,24 @@
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
         </div>
+    </div>
 
+    <div class="module">
+        <div class="module-header">
+            <h2>${exchangePointLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/user/${user.oId}/exchange-point" method="POST">
+                <label>${userNameLabel}</label>
+                <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
+
+                <label>${pointLabel}</label>
+                <input type="text" name="point" value="" />
+
+                <br/><br/>
+                <button type="submit" class="green fn-right">${submitLabel}</button>
+            </form>
+        </div>
     </div>
 </div>
 </@admin>
