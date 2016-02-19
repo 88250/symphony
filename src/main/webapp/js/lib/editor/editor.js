@@ -1336,7 +1336,7 @@
                 } else {
                     text = map[name] + text;
                 }
-                cm.replaceRange(text, CodeMirror.Pos(i, 0));
+                cm.replaceRange(text, CodeMirror.Pos(i, 0), CodeMirror.Pos(i, cm.getLine(i).length));
             })(i);
         }
         cm.focus();
