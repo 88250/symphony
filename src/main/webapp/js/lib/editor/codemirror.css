@@ -426,8 +426,8 @@ span.CodeMirror-selectedtext { background: none; }
     text-decoration: none !important;
     font-size: 16px;
     color: #666;
-    width: 24px;
-    height: 24px;
+    width: 23px;
+    height: 23px;
     margin: 2px;
     border: 1px solid transparent;
     border-radius: 3px;
@@ -447,7 +447,7 @@ span.CodeMirror-selectedtext { background: none; }
 
 .editor-toolbar input.icon-image {
     padding: 0 0 0 3px;
-    height: 24px;
+    height: 23px;
     width: 21px;
     vertical-align: bottom;
 }
