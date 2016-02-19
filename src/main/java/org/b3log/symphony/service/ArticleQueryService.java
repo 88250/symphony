@@ -75,7 +75,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.8.15, Dec 17, 2015
+ * @version 1.11.9.15, Feb 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -676,7 +676,7 @@ public class ArticleQueryService {
     private Query makeRecentQuery(final int currentPageNum, final int fetchSize) {
         final Query query = new Query()
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+                .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
         query.setFilter(makeArticleShowingFilter());
         return query;
     }
@@ -703,34 +703,65 @@ public class ArticleQueryService {
      *
      * @param currentPageNum the specified current page number
      * @param fetchSize the specified fetch size
-     * @return recent articles, returns an empty list if not found
+     * @return for example,      <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "articles": [{
+     *         "oId": "",
+     *         "articleTitle": "",
+     *         "articleContent": "",
+     *         ....
+     *      }, ....]
+     * }
+     * </pre>
+     *
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getRecentArticles(final int currentPageNum, final int fetchSize) throws ServiceException {
+    public JSONObject getRecentArticles(final int currentPageNum, final int fetchSize) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
         final Query query = makeRecentQuery(currentPageNum, fetchSize);
+        JSONObject result = null;
 
         try {
-            final JSONObject result = articleRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-
-            organizeArticles(ret);
-
-            for (final JSONObject article : ret) {
-                final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                final JSONObject author = userRepository.get(authorId);
-                if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
-                    article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
-                }
-            }
-
-            final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
-            genParticipants(ret, participantsCnt);
-
-            return ret;
+            result = articleRepository.get(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets latest comment articles failed", e);
+            LOGGER.log(Level.ERROR, "Gets articles failed", e);
+
             throw new ServiceException(e);
         }
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+
+        final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
+
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
+
+        final JSONArray data = result.optJSONArray(Keys.RESULTS);
+        final List<JSONObject> articles = CollectionUtils.<JSONObject>jsonArrayToList(data);
+
+        try {
+            organizeArticles(articles);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
+        genParticipants(articles, participantsCnt);
+
+        ret.put(Article.ARTICLES, (Object) articles);
+
+        return ret;
     }
 
     /**
