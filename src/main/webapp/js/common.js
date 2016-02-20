@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.9.13, Feb 18, 2016
+ * @version 1.17.10.13, Feb 20, 2016
  */
 
 /**
@@ -389,13 +389,16 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 $("#voteUp").removeClass("disabled");
-
+                var upCnt = parseInt($("#voteUp").attr('title').substr(3)),
+                        downCnt = parseInt($("#voteDown").attr('title').substr(3));   
                 if (result.sc) {
                     if (0 == result.type) { // cancel up
-                        $("#voteUp").removeClass("ft-red");
+                        $("#voteUp").removeClass("ft-red").attr('title', Label.upLabel + ' ' + (upCnt - 1));
                     } else {
-                        $("#voteUp").addClass("ft-red");
-                        $("#voteDown").removeClass("ft-red");
+                        $("#voteUp").addClass("ft-red").attr('title', Label.upLabel + ' ' + (upCnt + 1));
+                        if ($("#voteDown").hasClass('ft-red')) {
+                            $("#voteDown").removeClass("ft-red").attr('title', Label.downLabel + ' ' + (downCnt - 1));
+                        }
                     }
 
                     return;
@@ -428,13 +431,16 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 $("#voteDown").removeClass("disabled");
-
+                var upCnt = parseInt($("#voteUp").attr('title').substr(3)),
+                        downCnt = parseInt($("#voteDown").attr('title').substr(3)); 
                 if (result.sc) {
                     if (1 == result.type) { // cancel down
-                        $("#voteDown").removeClass("ft-red");
+                        $("#voteDown").removeClass("ft-red").attr('title', Label.downLabel + ' ' + (downCnt - 1));;
                     } else {
-                        $("#voteDown").addClass("ft-red");
-                        $("#voteUp").removeClass("ft-red");
+                        $("#voteDown").addClass("ft-red").attr('title', Label.downLabel + ' ' + (downCnt + 1));
+                        if ($("#voteUp").hasClass('ft-red')) {
+                            $("#voteUp").removeClass("ft-red").attr('title', Label.upLabel + ' ' + (upCnt - 1));
+                        }
                     }
 
                     return;
