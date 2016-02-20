@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.16.7, Feb 6, 2016
+ * @version 1.12.16.8, Feb 20, 2016
  */
 
 /**
@@ -163,13 +163,15 @@ var Comment = {
             },
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $("#" + id + 'Thx').text(thxed).removeAttr('onclick').removeClass('fn-none thx fn-pointer');
-                    var cnt = parseInt($("#" + id + 'RewardedCnt').text());
-                    if ($("#" + id + 'RewardedCnt').length <= 0) {
+                    $("#" + id + 'Thx').remove();
+                    var $cnt = $("#" + id + 'RewardedCnt'),
+                            cnt = parseInt($cnt.text());
+                    if ($cnt.length <= 0) {
                         $('#' + id + ' .comment-info > .fn-left .ft-smaller:last').
-                                append('&nbsp;<span class="icon-heart ft-smaller ft-fade"></span> <span class="ft-smaller ft-fade">1</span>');
+                                append('&nbsp;<span title=""><span class="icon-heart ft-smaller ft-red"></span><span class="ft-smaller ft-red"> 1</span></span>');
                     } else {
-                        $("#" + id + 'RewardedCnt').text(cnt + 1);
+                        $cnt.text(' '+ (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
+                        $cnt.prev().addClass('ft-red').removeClass('ft-fade');
                     }
                 } else {
                     alert(result.msg);
