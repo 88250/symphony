@@ -170,15 +170,22 @@
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
                                                     <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo}</span>
                                                     <#if comment.rewardedCnt gt 0>
-                                                    <span class="icon-heart ft-smaller ft-fade"></span> <span class="ft-smaller ft-fade" id='${comment.oId}RewardedCnt'>${comment.rewardedCnt}</span> 
+                                                    <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
+                                                    <#if hasRewarded>
+                                                    <span title="${thankedLabel}">
+                                                    </#if>   
+                                                        <span class="icon-heart ft-smaller <#if hasRewarded>ft-red<#else>ft-fade</#if>"></span>
+                                                        <span class="ft-smaller <#if hasRewarded>ft-red<#else>ft-fade</#if>" 
+                                                              id='${comment.oId}RewardedCnt'>${comment.rewardedCnt}</span> 
+                                                    <#if hasRewarded>
+                                                    </span>
+                                                    </#if>
                                                     </#if>
                                                 </span>
                                                 <span class="fn-right">
                                                     <#if isLoggedIn>
                                                     <#if comment.commentAuthorId != currentUser.oId>
-                                                    <#if comment.rewarded>
-                                                    <span class='ft-smaller ft-fade'>${thankedLabel}</span>
-                                                    <#else>
+                                                    <#if !comment.rewarded>
                                                     <span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'
                                                           onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}')">${thankLabel}</span>
                                                     </#if>
