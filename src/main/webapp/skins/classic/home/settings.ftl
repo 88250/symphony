@@ -31,11 +31,11 @@
         </form>
         <div class="fn-clear">
             <div>
-                <img class="avatar-big" id="avatarURL" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}"> &nbsp; 
+                <div class="avatar-big" id="avatarURL" style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp; 
                 <div class="responsive-show fn-hr5"></div>
-                <img class="avatar-mid" id="avatarURLMid" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}"> &nbsp;
+                <div class="avatar-mid" id="avatarURLMid" style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp;
                 <div class="responsive-show fn-hr5"></div>
-                <img class="avatar" id="avatarURLNor" src="${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}">
+                <div class="avatar" id="avatarURLNor" style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div>
             </div>
             <div class="fn-hr5"></div>
             <div class="fn-right">
@@ -168,9 +168,9 @@
                             return;
                         }
 
-                        $('#avatarURL').attr("src", qiniuKey);
-                        $('#avatarURLMid').attr("src", qiniuKey);
-                        $('#avatarURLNor').attr("src", qiniuKey);
+                        $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')');
+                        $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')');
+                        $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')');
                     },
                     fail: function (e, data) {
                         alert("Upload error: " + data.errorThrown);
@@ -207,9 +207,9 @@
                         }
 
                         var t = new Date().getTime();
-                        $('#avatarURL').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
-                        $('#avatarURLMid').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
-                        $('#avatarURLNor').attr("src", '${qiniuDomain}/' + qiniuKey + '?' + t);
+                        $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')');
+                        $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')');
+                        $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')');
                     },
                     fail: function (e, data) {
                         alert("Upload error: " + data.errorThrown);

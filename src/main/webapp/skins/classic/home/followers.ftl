@@ -6,7 +6,7 @@
         <#list userHomeFollowerUsers as follower>
         <li class="fn-clear">
             <a rel="nofollow" title="${follower.userName} <#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" href="/member/${follower.userName}" >
-                <img class="avatar fn-left" src="${follower.userAvatarURL}"/>
+                <div class="avatar fn-left" style="background-image:url('${follower.userAvatarURL}')"></div>
             </a>
             <div class="fn-left">
                 <h3 class="fn-inline">

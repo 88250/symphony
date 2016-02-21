@@ -20,7 +20,7 @@
                 <a href="/admin/article/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>  
             </div>
             <div class="fn-clear">
-                <img class="avatar" src="${item.articleAuthorThumbnailURL}-64.jpg?${item.articleAuthor.userUpdateTime?c}">${item.articleAuthorName} &nbsp;
+                <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL}-64.jpg?${item.articleAuthor.userUpdateTime?c}')"></div>${item.articleAuthorName} &nbsp;
                 <span class="icon-tags" title="${tagLabel}"></span>
                 <span class="tags">
                     ${item.articleTags}

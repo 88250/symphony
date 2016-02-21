@@ -5,8 +5,8 @@
             <div class="fn-clear">
                 <div class="fn-right">
                     <a href="/settings">
-                        <img class="avatar" 
-                             title="${userName}" src="${currentUser.userAvatarURL}-64.jpg?${currentUser.userUpdateTime?c}" />
+                        <div class="avatar" 
+                             title="${userName}" style="background-image:url('${currentUser.userAvatarURL}-64.jpg?${currentUser.userUpdateTime?c}')"></div>
                     </a>
                 </div>
                 <div class="fn-left">

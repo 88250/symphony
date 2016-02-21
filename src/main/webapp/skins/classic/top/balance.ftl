@@ -10,7 +10,7 @@
             <div class="fn-flex">
                 <a rel="nofollow"
                    href="/member/${user.userName}" 
-                   title="${user.userName}"><img class="avatar" src="${user.userAvatarURL}-64.jpg?${user.userUpdateTime}" /></a>
+                   title="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}-64.jpg?${user.userUpdateTime}')"></div></a>
                 <div class="has-view fn-flex-1">
                     <h2>
                         ${user_index + 1}.

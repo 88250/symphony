@@ -7,7 +7,7 @@
         <li class="fn-flex read">
             <a title="${article.articleAuthorName}"
                target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}">
-                <img class="avatar" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}"/>
+                <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div>
             </a>
             <div class="fn-flex-1 has-view">
                 <h2>

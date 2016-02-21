@@ -7,7 +7,7 @@
         <li class="fn-clear">
             <#if "" != followingTag.tagIconPath>
             <a href="/tags/${followingTag.tagTitle?url('utf-8')}">
-                <img title="${followingTag.tagTitle}" class="avatar fn-left" src="${staticServePath}/images/tags/${followingTag.tagIconPath}">
+                <div title="${followingTag.tagTitle}" class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
             </a>
             <#else>
             <a class="icon-tags fn-left" href="/tags/${followingTag.tagTitle?url('utf-8')}"></a>

@@ -7,7 +7,7 @@
         <li class="fn-flex comment-list-item">
             <a target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
                title="${comment.commentArticleAuthorName}">
-                <img class="avatar" src="${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}"/>
+                <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
             </a>
             <div class="fn-flex-1">
                 <div class="fn-flex">

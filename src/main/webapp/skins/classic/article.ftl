@@ -63,7 +63,7 @@
                     <div class="article-title fn-flex">
                         <h2 class="fn-flex-1">
                             <a rel="author" href="/member/${article.articleAuthorName}" class="ft-gray"
-                               title="${article.articleAuthorName}"><img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" /></a> &nbsp;
+                               title="${article.articleAuthorName}"><div class="avatar-small" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div></a> &nbsp;
                             <#if 1 == article.articleType>
                             <span class="icon-locked" title="${discussionLabel}"></span>
                             <#elseif 2 == article.articleType>
@@ -160,8 +160,8 @@
                                 <li id="${comment.oId}">
                                     <div class="fn-flex">
                                         <a rel="nofollow" href="/member/${comment.commentAuthorName}">
-                                            <img class="avatar" 
-                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}" />
+                                            <div class="avatar" 
+                                                 title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
                                         </a>
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">

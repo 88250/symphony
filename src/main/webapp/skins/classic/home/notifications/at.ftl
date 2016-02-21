@@ -6,7 +6,7 @@
     <li class="comment-list-item fn-flex<#if notification.hasRead> read</#if>">
         <a target="_blank" rel="nofollow" href="/member/${notification.authorName}" 
            title="${notification.authorName}">
-            <img class="avatar" src="${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}"/>
+            <div class="avatar" style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
         </a>
 
         <#if !notification.atInArticle>

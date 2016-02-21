@@ -12,8 +12,8 @@
         <#list users as item>
         <li>
             <div class="fn-clear first">
-                <img class="avatar-small" title="${item.userName}" 
-                     src="${item.userAvatarURL}"> &nbsp;
+                <div class="avatar-small" title="${item.userName}" 
+                     style="background-image:url('${item.userAvatarURL}')"></div> &nbsp;
                 <a href="/member/${item.userName}">${item.userName}</a>
                 <a href="/admin/user/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a> &nbsp;
                 <#if item.userStatus == 0>

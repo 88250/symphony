@@ -6,7 +6,7 @@
         <#list comments as item>
         <li>
             <div class="fn-clear">
-                <img class="avatar" src="${item.commentAuthorThumbnailURL}-64.jpg?${item.commenter.userUpdateTime?c}" title="${item.commentAuthorName}">
+                <div class="avatar" style="background-image:url('${item.commentAuthorThumbnailURL}-64.jpg?${item.commenter.userUpdateTime?c}')" title="${item.commentAuthorName}"></div>
                 <a href="${item.commentSharpURL}">${item.commentArticleTitle}</a> &nbsp;
                 <#if item.commentStatus == 0>
                 <span class="ft-gray">${validLabel}</span>
