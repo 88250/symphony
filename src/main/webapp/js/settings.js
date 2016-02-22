@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.3.7, Feb 6, 2016
+ * @version 1.5.3.7, Feb 22, 2016
  */
 
 /**
@@ -175,14 +175,14 @@ var Settings = {
                     "msg": Label.invalidUserIntroLabel
                 }, {
                     "target": $("#avatarURL"),
-                    "type": "imgSrc",
+                    "type": "imgStyle",
                     "msg": Label.invalidAvatarURLLabel
                 }]})) {
             return {
                 userTags: $("#userTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userURL: $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userIntro: $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, ""),
-                userAvatarURL: $("#avatarURL").attr("src")
+                userAvatarURL: $("#avatarURL").data("imageurl")
             };
         } else {
             return false;

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.10.13, Feb 20, 2016
+ * @version 1.18.10.13, Feb 22, 2016
  */
 
 /**
@@ -886,6 +886,8 @@ var Validate = {
            val = data.target.getValue();
         } else if (data.type === 'imgSrc'){
             val = data.target.attr('src');
+        } else if (data.type === 'imgStyle'){
+            val = data.target.data('imageurl');
         } else {
             val =  data.target.val().toString().replace(/(^\s*)|(\s*$)/g, "");
         }
@@ -920,12 +922,9 @@ var Validate = {
                 }
                 break;
             case "url":
-                if (val === '' || val !== "" && (!/^\w+:\/\//.test(val) || val.length > 100)) {
-                    isValidate = false;
-                }
-                break;
             case "imgSrc":
-                if (val=== '' || val !== "" && (!/^\w+:\/\//.test(val) || val.length > 100)) {
+            case "imgStyle":
+                if (val === '' || (val !== "" && (!/^\w+:\/\//.test(val) || val.length > 100))) {
                     isValidate = false;
                 }
                 break;

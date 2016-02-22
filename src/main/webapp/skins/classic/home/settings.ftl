@@ -31,11 +31,14 @@
         </form>
         <div class="fn-clear">
             <div>
-                <div class="avatar-big" id="avatarURL" style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp; 
+                <div class="avatar-big" id="avatarURL" data-imageurl="${currentUser.userAvatarURL}"
+                     style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp; 
                 <div class="responsive-show fn-hr5"></div>
-                <div class="avatar-mid" id="avatarURLMid" style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp;
+                <div class="avatar-mid" id="avatarURLMid" data-imageurl="${currentUser.userAvatarURL}"
+                     style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp;
                 <div class="responsive-show fn-hr5"></div>
-                <div class="avatar" id="avatarURLNor" style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div>
+                <div class="avatar" id="avatarURLNor" data-imageurl="${currentUser.userAvatarURL}"
+                     style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div>
             </div>
             <div class="fn-hr5"></div>
             <div class="fn-right">
@@ -168,9 +171,9 @@
                             return;
                         }
 
-                        $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')');
-                        $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')');
-                        $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')');
+                        $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+                        $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+                        $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
                     },
                     fail: function (e, data) {
                         alert("Upload error: " + data.errorThrown);
@@ -199,7 +202,6 @@
                     submit: function (e, data) {
                     },
                     done: function (e, data) {
-                        // console.log(data.result)
                         var qiniuKey = data.result.key;
                         if (!qiniuKey) {
                             alert("Upload error");
@@ -207,9 +209,9 @@
                         }
 
                         var t = new Date().getTime();
-                        $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')');
-                        $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')');
-                        $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')');
+                        $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+                        $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+                        $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
                     },
                     fail: function (e, data) {
                         alert("Upload error: " + data.errorThrown);
