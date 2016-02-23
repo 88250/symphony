@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.4, Feb 18, 2016
+ * @version 1.4.0.4, Feb 23, 2016
  * @since 0.2.5
  */
 @Service
@@ -188,6 +188,7 @@ public class NotificationQueryService {
      * @see Notification#DATA_TYPE_C_POINT_ARTICLE_REWARD
      * @see Notification#DATA_TYPE_C_POINT_CHARGE
      * @see Notification#DATA_TYPE_C_POINT_EXCHANGE
+     * @see Notification#DATA_TYPE_C_ABUSE_POINT_DEDUCT
      * @see Notification#DATA_TYPE_C_POINT_COMMENT_THANK
      * @see Notification#DATA_TYPE_C_POINT_TRANSFER
      */
@@ -203,6 +204,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_POINT_CHARGE));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_EXCHANGE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
@@ -259,6 +262,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_POINT_CHARGE));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_EXCHANGE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
@@ -327,6 +332,17 @@ public class NotificationQueryService {
                         desTemplate = desTemplate.replace("{point}", String.valueOf(sum6));
 
                         break;
+                    case Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT:
+                        desTemplate = langPropsService.get("notificationAbusePointDeductLabel");
+
+                        final JSONObject transfer7 = pointtransferRepository.get(dataId);
+                        final int sum7 = transfer7.optInt(Pointtransfer.SUM);
+                        final String memo7 = transfer7.optString(Pointtransfer.DATA_ID);
+
+                        desTemplate = desTemplate.replace("{action}", memo7);
+                        desTemplate = desTemplate.replace("{point}", String.valueOf(sum7));
+
+                        break;
                     case Notification.DATA_TYPE_C_POINT_COMMENT_THANK:
                         desTemplate = langPropsService.get("notificationCmtThankLabel");
 
@@ -350,15 +366,15 @@ public class NotificationQueryService {
                     case Notification.DATA_TYPE_C_POINT_TRANSFER:
                         desTemplate = langPropsService.get("notificationPointTransferLabel");
 
-                        final JSONObject transfer7 = pointtransferRepository.get(dataId);
-                        final String fromId6 = transfer7.optString(Pointtransfer.FROM_ID);
-                        final JSONObject user6 = userRepository.get(fromId6);
-                        final int sum7 = transfer7.optInt(Pointtransfer.SUM);
+                        final JSONObject transfer101 = pointtransferRepository.get(dataId);
+                        final String fromId101 = transfer101.optString(Pointtransfer.FROM_ID);
+                        final JSONObject user101 = userRepository.get(fromId101);
+                        final int sum101 = transfer101.optInt(Pointtransfer.SUM);
 
-                        final String userLink6 = "<a href=\"/member/" + user6.optString(User.USER_NAME) + "\">"
-                                + user6.optString(User.USER_NAME) + "</a>";
-                        desTemplate = desTemplate.replace("{user}", userLink6);
-                        desTemplate = desTemplate.replace("{amount}", String.valueOf(sum7));
+                        final String userLink101 = "<a href=\"/member/" + user101.optString(User.USER_NAME) + "\">"
+                                + user101.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", userLink101);
+                        desTemplate = desTemplate.replace("{amount}", String.valueOf(sum101));
 
                         break;
                     default:
@@ -435,7 +451,7 @@ public class NotificationQueryService {
                         addProjection(Article.ARTICLE_TITLE, String.class).
                         addProjection(Article.ARTICLE_TYPE, Integer.class).
                         setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
-                                        comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
+                                comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                 final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                 final JSONObject article = rlts.optJSONObject(0);
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
@@ -526,7 +542,7 @@ public class NotificationQueryService {
                             addProjection(Article.ARTICLE_TITLE, String.class).
                             addProjection(Article.ARTICLE_TYPE, Integer.class).
                             setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
-                                            comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
+                                    comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
                     final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
                     final JSONObject article = rlts.optJSONObject(0);
                     final String articleTitle = article.optString(Article.ARTICLE_TITLE);

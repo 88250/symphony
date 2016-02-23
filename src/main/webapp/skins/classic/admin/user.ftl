@@ -177,5 +177,26 @@
             </form>
         </div>
     </div>
+
+    <div class="module">
+        <div class="module-header">
+            <h2>${abusePointLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/user/${user.oId}/abuse-point" method="POST">
+                <label>${userNameLabel}</label>
+                <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
+
+                <label>${pointLabel}</label>
+                <input type="text" name="point" value="" />
+                
+                <label>${memoLabel}</label>
+                <input type="text" name="memo" value="" />
+
+                <br/><br/>
+                <button type="submit" class="green fn-right">${submitLabel}</button>
+            </form>
+        </div>
+    </div>
 </div>
 </@admin>

@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Feb 18, 2016
+ * @version 1.4.0.3, Feb 23, 2016
  * @since 0.2.5
  */
 @Service
@@ -142,7 +142,33 @@ public class NotificationMgmtService {
             throw new ServiceException(msg);
         }
     }
-    
+
+    /**
+     * Adds a 'abuse point deduct' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * {
+     *     "userId"; "",
+     *     "dataId": "" // transfer record id
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addAbusePointDeductNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_ABUSE_POINT_DEDUCT);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=abuse_point_deduct] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
     /**
      * Adds a 'point exchange' type notification with the specified request json object.
      *
