@@ -135,7 +135,7 @@
                                 <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
                                 <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
                                 |
-                                <a target="_blank" href="http://www.emoji-cheat-sheet.com">Emoji</a>
+                                <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
                             </span>
                             <div class="fn-right">
                                 <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
