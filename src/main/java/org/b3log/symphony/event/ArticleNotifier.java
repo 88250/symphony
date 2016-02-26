@@ -41,6 +41,7 @@ import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Emotions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -49,7 +50,7 @@ import org.jsoup.Jsoup;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Dec 4, 2015
+ * @version 1.1.1.6, Feb 26, 2016
  * @since 0.2.0
  */
 @Named
@@ -162,8 +163,9 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                     + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>")
                     .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
                             + "'>" + articleTitle + "</a>");
+            content = Emotions.convert(content);
             timeline.put(Common.CONTENT, content);
-
+            
             timelineMgmtService.addTimeline(timeline);
 
             // 'Broadcast' Notification

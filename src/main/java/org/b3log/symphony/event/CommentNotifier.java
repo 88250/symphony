@@ -53,7 +53,7 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.4.11, Sep 3, 2015
+ * @version 1.4.4.12, Feb 26, 2016
  * @since 0.2.0
  */
 @Named
@@ -162,8 +162,9 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             // Timeline
             if (!isDiscussion) {
-                final String articleTitle = StringUtils.substring(Jsoup.parse(
+                String articleTitle = StringUtils.substring(Jsoup.parse(
                         originalArticle.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
+                articleTitle = Emotions.convert(articleTitle);
                 final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
 
                 final JSONObject timeline = new JSONObject();

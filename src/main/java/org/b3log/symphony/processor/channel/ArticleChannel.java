@@ -40,6 +40,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Emotions;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -55,7 +56,7 @@ import org.jsoup.Jsoup;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.6.1, Jan 11, 2016
+ * @version 1.2.6.2, Feb 26, 2016
  * @since 1.3.0
  */
 @WebSocket
@@ -123,8 +124,9 @@ public class ArticleChannel {
         try {
             final JSONObject article = articleRepository.get(articleId);
 
-            final String articleTitle = StringUtils.substring(Jsoup.parse(
+            String articleTitle = StringUtils.substring(Jsoup.parse(
                     article.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
+            articleTitle = Emotions.convert(articleTitle);
             final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
 
             final JSONObject timeline = new JSONObject();
@@ -349,8 +351,9 @@ public class ArticleChannel {
         try {
             final JSONObject article = articleRepository.get(articleId);
 
-            final String articleTitle = StringUtils.substring(Jsoup.parse(
+            String articleTitle = StringUtils.substring(Jsoup.parse(
                     article.optString(Article.ARTICLE_TITLE)).text(), 0, 28);
+            articleTitle = Emotions.convert(articleTitle);
             final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
 
             final JSONObject timeline = new JSONObject();
