@@ -4,7 +4,7 @@
 <html>
     <head>
         <#if type == "index">
-        <@head title="${symphonyLabel} - ${adminLabel}"></@head>
+        <@head title="${symphonyLabel} - ${consoleIndexLabel}"></@head>
         </#if>
         <#if type == "users">
         <@head title="${symphonyLabel} - ${userAdminLabel}"></@head>
@@ -33,7 +33,7 @@
                 <#nested>
                 <div class="side">
                     <ul class="note-list">
-                        <li<#if type == "index"> class="current"</#if>><a href="/admin">${adminLabel}</a></li>
+                        <li<#if type == "index"> class="current"</#if>><a href="/admin">${consoleIndexLabel}</a></li>
                         <li<#if type == "users" || type == "addUser"> class="current"</#if>><a href="/admin/users">${userAdminLabel}</a></li>
                         <li<#if type == "articles"> class="current"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
                         <li<#if type == "comments"> class="current"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
