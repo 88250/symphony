@@ -15,7 +15,6 @@
  */
 package org.b3log.symphony.processor;
 
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -29,14 +28,11 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
-import org.json.JSONObject;
 
 /**
  * Timeline processor.
@@ -46,7 +42,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 19, 2015
+ * @version 1.0.0.2, Feb 26, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -56,12 +52,6 @@ public class TimelineProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TimelineProcessor.class.getName());
-
-    /**
-     * Article query service.
-     */
-    @Inject
-    private ArticleQueryService articleQueryService;
 
     /**
      * Filler.
@@ -93,11 +83,6 @@ public class TimelineProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("timeline.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
-        final int pageSize = Symphonys.getInt("indexArticlesCnt");
-
-        final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
-        dataModel.put(Common.INDEX_ARTICLES, indexArticles);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
