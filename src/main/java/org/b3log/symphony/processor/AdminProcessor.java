@@ -100,7 +100,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.2.1, Feb 23, 2016
+ * @version 1.11.2.2, Feb 26, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -172,7 +172,7 @@ public class AdminProcessor {
     private TagQueryService tagQueryService;
 
     /**
-     * Tag Management service.
+     * Tag management service.
      */
     @Inject
     private TagMgmtService tagMgmtService;
@@ -199,6 +199,11 @@ public class AdminProcessor {
      * Pagination window size.
      */
     private static final int WINDOW_SIZE = 15;
+
+    /**
+     * Pagination page size.
+     */
+    private static final int PAGE_SIZE = 20;
 
     /**
      * Shows admin index.
@@ -245,7 +250,7 @@ public class AdminProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Integer.valueOf("20");
+        final int pageSize = PAGE_SIZE;
         final int windowSize = WINDOW_SIZE;
 
         final JSONObject requestJSONObject = new JSONObject();
@@ -711,7 +716,7 @@ public class AdminProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Integer.valueOf("20");
+        final int pageSize = PAGE_SIZE;
         final int windowSize = WINDOW_SIZE;
 
         final JSONObject requestJSONObject = new JSONObject();
@@ -839,7 +844,7 @@ public class AdminProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Integer.valueOf("20");
+        final int pageSize = PAGE_SIZE;
         final int windowSize = WINDOW_SIZE;
 
         final JSONObject requestJSONObject = new JSONObject();
@@ -1024,7 +1029,7 @@ public class AdminProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Integer.valueOf("20");
+        final int pageSize = PAGE_SIZE;
         final int windowSize = WINDOW_SIZE;
 
         final JSONObject requestJSONObject = new JSONObject();
@@ -1032,7 +1037,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
-        final String tagTitle = request.getParameter("title");
+        final String tagTitle = request.getParameter(Common.TITLE);
         if (!Strings.isEmptyOrNull(tagTitle)) {
             requestJSONObject.put(Tag.TAG_TITLE, tagTitle);
         }

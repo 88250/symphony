@@ -19,10 +19,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.1.10, Feb 16, 2016
+ * @version 1.24.1.11, Feb 26, 2016
  * @since 0.2.0
  */
 public final class Common {
+    
+    /**
+     * Key of title.
+     */
+    public static final String TITLE = "title";
     
     /**
      * Key of WebSocket scheme.
