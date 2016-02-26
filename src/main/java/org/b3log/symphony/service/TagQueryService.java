@@ -465,13 +465,7 @@ public class TagQueryService {
      */
     public JSONObject getTag(final String tagId) throws ServiceException {
         try {
-            final JSONObject ret = tagRepository.get(tagId);
-
-            if (null == ret) {
-                return null;
-            }
-
-            return ret;
+            return tagRepository.get(tagId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a tag [tagId=" + tagId + "] failed", e);
             throw new ServiceException(e);
