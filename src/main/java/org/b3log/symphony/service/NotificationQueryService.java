@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.4, Feb 23, 2016
+ * @version 1.4.1.4, Feb 26, 2016
  * @since 0.2.5
  */
 @Service
@@ -577,7 +577,7 @@ public class NotificationQueryService {
                     final String thumbnailURL = avatarQueryService.getAvatarURL(articleAuthor.optString(User.USER_EMAIL));
                     atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                     atNotification.put(Common.THUMBNAIL_UPDATE_TIME, articleAuthor.optLong(UserExt.USER_UPDATE_TIME));
-                    atNotification.put(Article.ARTICLE_TITLE, article.optString(Article.ARTICLE_TITLE));
+                    atNotification.put(Article.ARTICLE_TITLE, Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                     atNotification.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
                     atNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                     atNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
@@ -687,7 +687,7 @@ public class NotificationQueryService {
                 followingUserNotification.put(Common.CONTENT, "");
                 followingUserNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURL(articleAuthorEmail));
                 followingUserNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
-                followingUserNotification.put(Article.ARTICLE_TITLE, articleTitle);
+                followingUserNotification.put(Article.ARTICLE_TITLE, Emotions.convert(articleTitle));
                 followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
                 followingUserNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                 followingUserNotification.put(Notification.NOTIFICATION_HAS_READ,
