@@ -1,5 +1,5 @@
 <div class="ft-center">
-    <div class="avatar-big" title="${user.userName}" style="background-image:url('${user.userAvatarURL}-260.jpg?${user.userUpdateTime?c}')"></div>
+    <div id="avatarURLDom" class="avatar-big" title="${user.userName}" style="background-image:url('${user.userAvatarURL}-260.jpg?${user.userUpdateTime?c}')"></div>
     <div>
         <div class="user-name">
             <a href="/member/${user.userName}">${user.userName}</a>
@@ -27,7 +27,7 @@
         </div>
 
         <#if user.userIntro!="">
-        <div class="user-intro">
+        <div class="user-intro" id="userIntroDom">
             ${user.userIntro}
         </div>
         </#if>
@@ -58,7 +58,7 @@
         </div>
         <#if user.userURL!="">
         <div class="user-info">
-            <a target="_blank" rel="friend" href="${user.userURL?html}">${user.userURL?html}</a>
+            <a id="userURLDom" target="_blank" rel="friend" href="${user.userURL?html}">${user.userURL?html}</a>
         </div>
         </#if>
         <div class="user-info">
