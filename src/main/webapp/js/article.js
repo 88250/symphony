@@ -170,7 +170,7 @@ var Comment = {
                         $('#' + id + ' .comment-info > .fn-left .ft-smaller:last').
                                 append('&nbsp;<span title=""><span class="icon-heart ft-smaller ft-red"></span><span class="ft-smaller ft-red"> 1</span></span>');
                     } else {
-                        $cnt.text(' '+ (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
+                        $cnt.text(' ' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
                         $cnt.prev().addClass('ft-red').removeClass('ft-fade');
                     }
                 } else {
@@ -216,7 +216,6 @@ var Comment = {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
                 if (result.sc) {
                     Comment.editor.setValue('');
-                    // window.location.reload();
 
                     if (window.localStorage) {
                         var emptyContent = {

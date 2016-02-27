@@ -262,8 +262,8 @@
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
-            Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
-                    Label.articleOId = "${article.oId}";
+            Label.rewardConfirmLabel = "${rewardConfirmLabel?replace('{point}', article.articleRewardPoint)}";
+            Label.articleOId = "${article.oId}";
             Label.articleTitle = "${article.articleTitle}";
             Label.articlePermalink = "${article.articlePermalink}";
             Label.recordDeniedLabel = "${recordDeniedLabel}";
@@ -273,8 +273,8 @@
             Label.downLabel = "${downLabel}";
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
-        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?4.13"></script>
-        <script src="${staticServePath}/js/lib/editor/editor.js"></script>
+        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
+        <script src="${staticServePath}/js/lib/editor/editor.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js"></script>

@@ -187,7 +187,8 @@ var Util = {
         };
     },
     /**
-     * @description 是否为移动端
+     * 是否为移动端
+     * @returns {Boolean}
      */
     isMobile: function () {
         var u = navigator.userAgent;

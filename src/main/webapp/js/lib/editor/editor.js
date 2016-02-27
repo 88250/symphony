@@ -1458,7 +1458,8 @@
             lineNumbers: false,
             autofocus: options.autofocus,
             lineWrapping: options.lineWrapping,
-            extraKeys: keyMaps
+            extraKeys: keyMaps,
+            inputStyle: 'textarea'
         });
 
         if (options.toolbar !== false) {
