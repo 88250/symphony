@@ -20,7 +20,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
-import javax.servlet.annotation.WebServlet;
+import javax.websocket.CloseReason;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -41,14 +47,6 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
@@ -56,10 +54,10 @@ import org.jsoup.Jsoup;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.6.2, Feb 26, 2016
+ * @version 2.2.6.2, Feb 28, 2016
  * @since 1.3.0
  */
-@WebSocket
+@ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
 public class ArticleChannel {
 
     /**
@@ -83,7 +81,7 @@ public class ArticleChannel {
      *
      * @param session session
      */
-    @OnWebSocketConnect
+    @OnOpen
     public void onConnect(final Session session) {
         final String articleId = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_ID);
         if (StringUtils.isBlank(articleId)) {
@@ -126,6 +124,7 @@ public class ArticleChannel {
 
             String articleTitle = Jsoup.parse(article.optString(Article.ARTICLE_TITLE)).text();
             articleTitle = Emotions.convert(articleTitle);
+
             final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
 
             final JSONObject timeline = new JSONObject();
@@ -147,11 +146,10 @@ public class ArticleChannel {
      * Called when the connection closed.
      *
      * @param session session
-     * @param statusCode status code
-     * @param reason reason
+     * @param closeReason close reason
      */
-    @OnWebSocketClose
-    public void onClose(final Session session, final int statusCode, final String reason) {
+    @OnClose
+    public void onClose(final Session session, final CloseReason closeReason) {
         removeSession(session);
     }
 
@@ -160,7 +158,7 @@ public class ArticleChannel {
      *
      * @param message message
      */
-    @OnWebSocketMessage
+    @OnMessage
     public void onMessage(final String message) {
     }
 
@@ -170,7 +168,7 @@ public class ArticleChannel {
      * @param session session
      * @param error error
      */
-    @OnWebSocketError
+    @OnError
     public void onError(final Session session, final Throwable error) {
         removeSession(session);
     }
@@ -198,7 +196,7 @@ public class ArticleChannel {
             }
 
             if (session.isOpen()) {
-                session.getRemote().sendStringByFuture(msgStr);
+                session.getAsyncRemote().sendText(msgStr);
             }
         }
     }
@@ -276,27 +274,11 @@ public class ArticleChannel {
                 }
 
                 if (session.isOpen()) {
-                    session.getRemote().sendStringByFuture(msgStr);
+                    session.getAsyncRemote().sendText(msgStr);
                 }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Notify comment error", e);
             }
-        }
-    }
-
-    /**
-     * Article channel WebSocket servlet.
-     *
-     * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.0.1, Jun 21, 2015
-     * @since 1.3.0
-     */
-    @WebServlet("/article-channel")
-    public static class ArticleChannelWebSocketServlet extends WebSocketServlet {
-
-        @Override
-        public void configure(final WebSocketServletFactory factory) {
-            factory.register(ArticleChannel.class);
         }
     }
 

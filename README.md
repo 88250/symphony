@@ -97,7 +97,7 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](https://hacpai
 
 ## 安装
 
-需求：Maven3+、MySQL5+、Jetty9+
+需求：Maven3+、MySQL5+、Jetty9+/Tomcat9+（理论上只要实现了 [JSR356](https://jcp.org/en/jsr/detail?id=356) 规范的 Servlet 容器都可以）
 
 1. [下载](https://github.com/b3log/symphony/archive/master.zip)源码
 2. 解压后修改 `src/main/resources/local.properties` 中的数据库配置，并创建数据库
@@ -108,7 +108,6 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](https://hacpai
 
 注意：
 
-* 只支持 Jetty
 * 没有数据库建表 SQL 脚本，只需要手动建库，表会在第一次启动时自动生成
 * 只能部署到 ROOT 中，线上环境建议使用反向代理
 

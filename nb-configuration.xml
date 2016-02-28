@@ -14,6 +14,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>checkin</word>
         <word>commentable</word>
         <word>commenters</word>
+        <word>configurator</word>
         <word>Deduplication</word>
         <word>desc</word>
         <word>emoj</word>

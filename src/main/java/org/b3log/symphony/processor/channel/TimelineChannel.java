@@ -18,26 +18,24 @@ package org.b3log.symphony.processor.channel;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import javax.servlet.annotation.WebServlet;
+import javax.websocket.CloseReason;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 import org.b3log.latke.logging.Logger;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.json.JSONObject;
 
 /**
  * Timeline channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Sep 11, 2015
+ * @version 2.0.1.0, Feb 28, 2016
  * @since 1.3.0
  */
-@WebSocket
+@ServerEndpoint(value = "/timeline-channel", configurator = Channels.WebSocketConfigurator.class)
 public class TimelineChannel {
 
     /**
@@ -55,7 +53,7 @@ public class TimelineChannel {
      *
      * @param session session
      */
-    @OnWebSocketConnect
+    @OnOpen
     public void onConnect(final Session session) {
         SESSIONS.add(session);
     }
@@ -64,11 +62,10 @@ public class TimelineChannel {
      * Called when the connection closed.
      *
      * @param session session
-     * @param statusCode status code
-     * @param reason reason
+     * @param closeReason close reason
      */
-    @OnWebSocketClose
-    public void onClose(final Session session, final int statusCode, final String reason) {
+    @OnClose
+    public void onClose(final Session session, final CloseReason closeReason) {
         removeSession(session);
     }
 
@@ -77,7 +74,7 @@ public class TimelineChannel {
      *
      * @param message message
      */
-    @OnWebSocketMessage
+    @OnMessage
     public void onMessage(final String message) {
     }
 
@@ -87,7 +84,7 @@ public class TimelineChannel {
      * @param session session
      * @param error error
      */
-    @OnWebSocketError
+    @OnError
     public void onError(final Session session, final Throwable error) {
         removeSession(session);
     }
@@ -107,25 +104,9 @@ public class TimelineChannel {
         synchronized (SESSIONS) {
             for (final Session session : SESSIONS) {
                 if (session.isOpen()) {
-                    session.getRemote().sendStringByFuture(msgStr);
+                    session.getAsyncRemote().sendText(msgStr);
                 }
             }
-        }
-    }
-
-    /**
-     * Timeline channel WebSocket servlet.
-     *
-     * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.0.0, Aug 18, 2015
-     * @since 1.3.0
-     */
-    @WebServlet("/timeline-channel")
-    public static class TimelineChannelWebSocketServlet extends WebSocketServlet {
-
-        @Override
-        public void configure(final WebSocketServletFactory factory) {
-            factory.register(TimelineChannel.class);
         }
     }
 

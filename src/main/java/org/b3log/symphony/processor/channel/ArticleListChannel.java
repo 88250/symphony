@@ -18,28 +18,26 @@ package org.b3log.symphony.processor.channel;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.annotation.WebServlet;
+import javax.websocket.CloseReason;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
-import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
-import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
 import org.json.JSONObject;
 
 /**
  * Article list channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Sep 11, 2015
+ * @version 2.0.1.1, Feb 28, 2016
  * @since 1.3.0
  */
-@WebSocket
+@ServerEndpoint(value = "/article-list-channel", configurator = Channels.WebSocketConfigurator.class)
 public class ArticleListChannel {
 
     /**
@@ -57,7 +55,7 @@ public class ArticleListChannel {
      *
      * @param session session
      */
-    @OnWebSocketConnect
+    @OnOpen
     public void onConnect(final Session session) {
         final String articleIds = (String) Channels.getHttpParameter(session, Article.ARTICLE_T_IDS);
         if (StringUtils.isBlank(articleIds)) {
@@ -71,11 +69,10 @@ public class ArticleListChannel {
      * Called when the connection closed.
      *
      * @param session session
-     * @param statusCode status code
-     * @param reason reason
+     * @param closeReason close reason
      */
-    @OnWebSocketClose
-    public void onClose(final Session session, final int statusCode, final String reason) {
+    @OnClose
+    public void onClose(final Session session, final CloseReason closeReason) {
         SESSIONS.remove(session);
     }
 
@@ -84,7 +81,7 @@ public class ArticleListChannel {
      *
      * @param message message
      */
-    @OnWebSocketMessage
+    @OnMessage
     public void onMessage(final String message) {
     }
 
@@ -94,7 +91,7 @@ public class ArticleListChannel {
      * @param session session
      * @param error error
      */
-    @OnWebSocketError
+    @OnError
     public void onError(final Session session, final Throwable error) {
         SESSIONS.remove(session);
     }
@@ -123,25 +120,9 @@ public class ArticleListChannel {
                 }
 
                 if (session.isOpen()) {
-                    session.getRemote().sendStringByFuture(msgStr);
+                    session.getAsyncRemote().sendText(msgStr);
                 }
             }
-        }
-    }
-
-    /**
-     * Article list channel WebSocket servlet.
-     *
-     * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.0.0, Jun 21, 2015
-     * @since 1.3.0
-     */
-    @WebServlet("/article-list-channel")
-    public static class ArticleChannelWebSocketServlet extends WebSocketServlet {
-
-        @Override
-        public void configure(final WebSocketServletFactory factory) {
-            factory.register(ArticleListChannel.class);
         }
     }
 }

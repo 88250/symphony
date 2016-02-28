@@ -18,15 +18,18 @@ package org.b3log.symphony.processor.channel;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
+import javax.websocket.HandshakeResponse;
+import javax.websocket.Session;
+import javax.websocket.server.HandshakeRequest;
+import javax.websocket.server.ServerEndpointConfig;
 import org.b3log.latke.logging.Logger;
-import org.eclipse.jetty.websocket.api.Session;
 
 /**
  * Channel utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.2, Aug 19, 2015
- * @since 1.3.0
+ * @version 2.0.2.2, Feb 28, 2016
+ * @since 1.4.0
  */
 public final class Channels {
 
@@ -36,6 +39,24 @@ public final class Channels {
     private static final Logger LOGGER = Logger.getLogger(Channels.class.getName());
 
     /**
+     * WebSocket configurator.
+     *
+     * @author <a href="http://88250.b3log.org">Liang Ding</a>
+     * @version 1.0.0.0, Feb 28, 2016
+     * @since 1.4.0
+     */
+    public static class WebSocketConfigurator extends ServerEndpointConfig.Configurator {
+
+        @Override
+        public void modifyHandshake(final ServerEndpointConfig config,
+                final HandshakeRequest request, final HandshakeResponse response) {
+            final HttpSession httpSession = (HttpSession) request.getHttpSession();
+
+            config.getUserProperties().put(HttpSession.class.getName(), httpSession);
+        }
+    }
+
+    /**
      * Gets a parameter of the specified HTTP session by the given session.
      *
      * @param session the given session
@@ -43,7 +64,7 @@ public final class Channels {
      * @return parameter value, returns {@code null} if the parameter does not exist
      */
     public static String getHttpParameter(final Session session, final String parameterName) {
-        final Map<String, List<String>> parameterMap = session.getUpgradeRequest().getParameterMap();
+        final Map<String, List<String>> parameterMap = session.getRequestParameterMap();
         for (final String key : parameterMap.keySet()) {
             if (!key.equals(parameterName)) {
                 continue;
@@ -66,7 +87,7 @@ public final class Channels {
      * @return attribute, returns {@code null} if not found or occurred exception
      */
     public static Object getHttpSessionAttribute(final Session session, final String attributeName) {
-        final HttpSession httpSession = (HttpSession) session.getUpgradeRequest().getSession();
+        final HttpSession httpSession = (HttpSession) session.getUserProperties().get(HttpSession.class.getName());
         if (null == httpSession) {
             return null;
         }
