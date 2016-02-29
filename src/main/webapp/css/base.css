@@ -528,6 +528,12 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
+.icon-points:before {
+    content: "\e900";
+}
+.icon-goods:before {
+    content: "\e904";
+}
 .icon-bold:before {
     content: "\e000";
 }
