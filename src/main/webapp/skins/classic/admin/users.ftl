@@ -7,7 +7,7 @@
         <button type="submit" class="green">${searchLabel}</button> &nbsp;
         <button type="button" class="btn red" onclick="window.location='/admin/add-user'">${addUserLabel}</button>
     </form>
-
+    <br/>
     <ul>
         <#list users as item>
         <li>

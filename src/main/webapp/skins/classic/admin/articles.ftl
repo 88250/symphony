@@ -6,7 +6,7 @@
         <input name="id" type="text" placeholder="${articleLabel} Id"/>
         <button type="submit" class="green">${searchLabel}</button>
     </form>
-
+    <br/>
     <ul>
         <#list articles as item>
         <li>

@@ -6,7 +6,7 @@
         <input name="title" type="text" placeholder="${tagLabel}"/>
         <button type="submit" class="green">${searchLabel}</button>
     </form>
-
+    <br/>
     <ul>
         <#list tags as item>
         <li>
