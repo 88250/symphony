@@ -12,7 +12,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <h2>${timelineLabel}</h2>
+                    <h2>${timelineLabel}</h2><br/>
                     <#if timelines?size <= 0>
                     <div id="emptyTimeline">${emptyTimelineLabel}</div>
                     </#if>

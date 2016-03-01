@@ -13,13 +13,11 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="fn-clear title">
-                        <#if userGeoStatus && cityFound>
-                        <h2>
-                            ${city}
-                        </h2>
-                        </#if>
-                    </div>
+                    <#if userGeoStatus && cityFound>
+                    <h2>
+                        ${city}
+                    </h2><br/>
+                    </#if>
 
                     <#if articles?size gt 0>
                     <div class="fn-clear">
