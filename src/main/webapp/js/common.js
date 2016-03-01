@@ -187,6 +187,78 @@ var Util = {
         };
     },
     /**
+     * 初始化图片上传
+     * @returns {Boolean}
+     */
+    initUpload: function (params, succCB, succCBQN) {
+        if ("" === params.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
+            $('#' + params.id).fileupload({
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                maxFileSize: 1024 * 1024, // 1M
+                multipart: true,
+                pasteZone: null,
+                dropZone: null,
+                url: "/upload",
+                formData: function (form) {
+                    var data = form.serializeArray();
+                    return data;
+                },
+                submit: function (e, data) {
+                },
+                done: function (e, data) {
+                    var qiniuKey = data.result.key;
+                    if (!qiniuKey) {
+                        alert("Upload error");
+                        return;
+                    }
+
+                    succCB(data);
+                },
+                fail: function (e, data) {
+                    alert("Upload error: " + data.errorThrown);
+                }
+            }).on('fileuploadprocessalways', function (e, data) {
+                var currentFile = data.files[data.index];
+                if (data.files.error && currentFile.error) {
+                    alert(currentFile.error);
+                }
+            });
+        } else {
+            $('#' + params.id).fileupload({
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                maxFileSize: 1024 * 1024, // 1M
+                multipart: true,
+                pasteZone: null,
+                dropZone: null,
+                url: "http://upload.qiniu.com/",
+                formData: function (form) {
+                    var data = form.serializeArray();
+                    data.push({name: 'token', value: params.qiniuUploadToken});
+                    data.push({name: 'key', value: 'avatar/' + params.userId});
+                    return data;
+                },
+                submit: function (e, data) {
+                },
+                done: function (e, data) {
+                    var qiniuKey = data.result.key;
+                    if (!qiniuKey) {
+                        alert("Upload error");
+                        return;
+                    }
+                    succCBQN(data);
+                },
+                fail: function (e, data) {
+                    alert("Upload error: " + data.errorThrown);
+                }
+            }).on('fileuploadprocessalways', function (e, data) {
+                var currentFile = data.files[data.index];
+                if (data.files.error && currentFile.error) {
+                    alert(currentFile.error);
+                }
+            });
+        }
+    },
+    /**
      * 是否为移动端
      * @returns {Boolean}
      */
