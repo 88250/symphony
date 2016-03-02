@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.10.14, Feb 27, 2016
+ * @version 1.9.10.15, Feb 27, 2016
  */
 
 /* start reset */
@@ -847,6 +847,7 @@ a[class*=" icon-"]:hover {
 .form input[type=text],
 .form input[type=password],
 .form input[type=number],
+.form select,
 .form textarea {
     border: 1px solid #CCCCCC;
     background-color: #FAFAFA;
