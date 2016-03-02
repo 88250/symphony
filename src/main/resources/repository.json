@@ -522,7 +522,8 @@
                 },
                 {
                     "name": "userAppRole",
-                    "type": "int"
+                    "type": "int",
+                    "description": "0: hacker, 1: painter"
                 },
                 {
                     "name": "userLongestCheckinStreakStart",

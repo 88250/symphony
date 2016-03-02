@@ -82,24 +82,30 @@
                 <label for="userIntro">${avatarURLLabel}</label>
                 <input type="text" id="userAvatarURL" name="userAvatarURL" value="${user.userAvatarURL}" />
 
-                <label for="userRole">${roleLabel}</label>
-                <input type="text" id="userRole" name="userRole" value="${user.userRole}" />
-
-                <label>${roleLabel}</label><br/><br/>
+                <label>${roleLabel}</label>
                 <select id="userRole" name="userRole">
                     <option value="adminRole"<#if "adminRole" == user.userRole> selected</#if>>${administratorLabel}</option>
                     <option value="defaultRole"<#if "defaultRole" == user.userRole> selected</#if>>${defaultUserLabel}</option>
                 </select>
-                <br/>
 
-                <label for="userAppRole">${appRoleLabel}</label>
-                <input type="text" id="userAppRole" name="userAppRole" value="${user.userAppRole}" />
+                <label>${appRoleLabel}</label>
+                <select id="userAppRole" name="userAppRole">
+                    <option value="0"<#if 0 == user.userAppRole> selected</#if>>${hackerLabel}</option>
+                    <option value="1"<#if 1 == user.userAppRole> selected</#if>>${painterLabel}</option>
+                </select>
 
-                <label for="userStatus">${userStatusLabel}</label>
-                <input type="text" id="userStatus" name="userStatus" value="${user.userStatus}" />
+                <label>${userStatusLabel}</label>
+                <select id="userStatus" name="userStatus">
+                    <option value="0"<#if 0 == user.userStatus> selected</#if>>${validLabel}</option>
+                    <option value="1"<#if 1 == user.userStatus> selected</#if>>${banLabel}</option>
+                    <option value="1"<#if 2 == user.userStatus> selected</#if>>${notVerifiedLabel}</option>
+                </select>
 
-                <label for="syncWithSymphonyClient">${syncWithSymphonyClientLabel}</label>
-                <input type="text" id="syncWithSymphonyClient" name="syncWithSymphonyClient" value="${user.syncWithSymphonyClient?c}"/>
+                <label>${syncWithSymphonyClientLabel}</label>
+                <select id="syncWithSymphonyClient" name="syncWithSymphonyClient">
+                    <option value="true"<#if user.syncWithSymphonyClient> selected</#if>>${yesLabel}</option>
+                    <option value="false"<#if !user.syncWithSymphonyClient> selected</#if>>${noLabel}</option>
+                </select>
 
                 <label for="userB3Key">B3 Key</label>
                 <input type="text" id="userB3Key" name="userB3Key" value="${user.userB3Key}" />
