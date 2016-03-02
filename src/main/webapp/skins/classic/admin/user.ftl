@@ -79,14 +79,18 @@
                 <label for="userIntro">${userIntroLabel}</label>
                 <input type="text" id="userIntro" name="userIntro" value="${user.userIntro}" />
 
-                <label for="userIntro">${avatarTypeLabel}</label>
-                <input type="text" id="userAvatarType" name="userAvatarType" value="${user.userAvatarType}" />
-
                 <label for="userIntro">${avatarURLLabel}</label>
                 <input type="text" id="userAvatarURL" name="userAvatarURL" value="${user.userAvatarURL}" />
 
                 <label for="userRole">${roleLabel}</label>
                 <input type="text" id="userRole" name="userRole" value="${user.userRole}" />
+
+                <label>${roleLabel}</label><br/><br/>
+                <select id="userRole" name="userRole">
+                    <option value="adminRole"<#if "adminRole" == user.userRole> selected</#if>>${administratorLabel}</option>
+                    <option value="defaultRole"<#if "defaultRole" == user.userRole> selected</#if>>${defaultUserLabel}</option>
+                </select>
+                <br/>
 
                 <label for="userAppRole">${appRoleLabel}</label>
                 <input type="text" id="userAppRole" name="userAppRole" value="${user.userAppRole}" />
@@ -189,7 +193,7 @@
 
                 <label>${pointLabel}</label>
                 <input type="text" name="point" value="" />
-                
+
                 <label>${memoLabel}</label>
                 <input type="text" name="memo" value="" />
 
