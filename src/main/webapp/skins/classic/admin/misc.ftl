@@ -9,9 +9,11 @@
         <div class="module-panel form fn-clear">
             <form action="/admin/misc" method="POST">
                 <#list options as item>
-                <label for="${item.oId}">${item.label}</label>
-                <input type="text" id="${item.oId}" name="${item.oId}" value="${item.optionValue}" />
-
+                <label>${item.label}</label>
+                <select id="${item.oId}" name="${item.oId}">
+                    <option value="0"<#if "0" == item.optionValue> selected</#if>>${yesLabel}</option>
+                    <option value="1"<#if "1" == item.optionValue> selected</#if>>${noLabel}</option>
+                </select>
                 </#list>
 
                 <br/><br/>
