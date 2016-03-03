@@ -16,7 +16,7 @@
                         <div class="icon-article"></div>
                         ${articleLabel}
                     </a>
-                    <div class="ft-fade">分享对别人有帮助的经验与见解</div>
+                    <div class="ft-fade"><span class="ft-green">提问</span>或<span class="ft-green">分享</span>对别人有帮助的经验与见解</div>
                 </div>
                 <div>
                     <a href="/post?type=3">
@@ -24,7 +24,7 @@
                         ${thoughtLabel}
                     </a>
                     <div class="ft-fade">
-                        写作过程的记录与重放，文字版的沙画表演
+                        写作过程的记录与重放，文字版的<span class="ft-red">沙画</span>表演
                         <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                         <div class="icon-locked"></div>
                         ${discussionLabel}
                     </a>
-                    <div class="ft-fade">@好友并在私密空间中进行交流</div>
+                    <div class="ft-fade">@好友并在<span class="ft-red">私密</span>空间中进行交流</div>
                 </div>
                 <div>
                     <a href="/post?type=2">
