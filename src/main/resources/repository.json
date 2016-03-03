@@ -677,7 +677,7 @@
                 {
                     "name": "articleStatus",
                     "type": "int",
-                    "description": "0: valid, 1: invalid"
+                    "description": "0: valid, 1: invalid, 2: city broadcast, 3: thought"
                 },
                 {
                     "name": "articleType",

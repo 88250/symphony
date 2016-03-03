@@ -61,14 +61,25 @@
                 <label for="articleRewardPoint">${rewardPointLabel}</label>
                 <input type="text" id="articleRewardPoint" name="articleRewardPoint" value="${article.articleRewardPoint?c}"/>
 
-                <label for="articleCommentable">${commentableLabel}</label>
-                <input type="text" id="articleCommentable" name="articleCommentable" value="${article.articleCommentable?c}" />
+                <label>${commentableLabel}</label>
+                <select id="articleCommentable" name="articleCommentable">
+                    <option value="true"<#if article.articleCommentable> selected</#if>>${yesLabel}</option>
+                    <option value="false"<#if !article.articleCommentable> selected</#if>>${noLabel}</option>
+                </select>
 
-                <label for="articleStatus">${articleStatusLabel}</label>
-                <input type="text" id="articleStatus" name="articleStatus" value="${article.articleStatus}" />
+                <label>${articleStatusLabel}</label>
+                <select id="articleStatus" name="articleStatus">
+                    <option value="0"<#if 0 == article.articleStatus> selected</#if>>${validLabel}</option>
+                    <option value="1"<#if 1 == article.articleStatus> selected</#if>>${banLabel}</option>
+                </select>
 
-                <label for="articleType">${articleTypeLabel}</label>
-                <input type="text" id="articleType" name="articleType" value="${article.articleType}" />
+                <label>${articleTypeLabel}</label>
+                <select id="articleType" name="articleType">
+                    <option value="0"<#if 0 == article.articleType> selected</#if>>${articleLabel}</option>
+                    <option value="1"<#if 1 == article.articleType> selected</#if>>${discussionLabel}</option>
+                    <option value="1"<#if 2 == article.articleType> selected</#if>>${cityBroadcastLabel}</option>
+                    <option value="1"<#if 3 == article.articleType> selected</#if>>${thoughtLabel}</option>
+                </select>
 
                 <label for="articleGoodCnt">${goodCntLabel}</label>
                 <input type="text" id="articleGoodCnt" name="articleGoodCnt" value="${article.articleGoodCnt}" />
