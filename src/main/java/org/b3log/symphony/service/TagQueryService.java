@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -48,6 +49,7 @@ import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.TagTagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,7 +58,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.5, Aug 28, 2015
+ * @version 1.5.1.5, Mar 3, 2016
  * @since 0.2.0
  */
 @Service
@@ -98,6 +100,12 @@ public class TagQueryService {
     private AvatarQueryService avatarQueryService;
 
     /**
+     * Short link query service.
+     */
+    @Inject
+    private ShortLinkQueryService shortLinkQueryService;
+
+    /**
      * Determines whether the specified tag title is reserved.
      *
      * @param tagTitle the specified tag title
@@ -116,7 +124,23 @@ public class TagQueryService {
      */
     public JSONObject getTagByTitle(final String tagTitle) throws ServiceException {
         try {
-            return tagRepository.getByTitle(tagTitle);
+            final JSONObject ret = tagRepository.getByTitle(tagTitle);
+            if (null == ret) {
+                return null;
+            }
+
+            String description = ret.optString(Tag.TAG_DESCRIPTION);
+            if (StringUtils.isNotBlank(description)) {
+                description = shortLinkQueryService.linkTag(description);
+                description = Markdowns.toHTML(description);
+                if (description.startsWith("<p>") && description.endsWith("</p>")) {
+                    description = StringUtils.substring(description, "<p>".length(), description.length() - "</p>".length() - 1);
+                }
+
+                ret.put(Tag.TAG_DESCRIPTION, description);
+            }
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tag [title=" + tagTitle + "] failed", e);
             throw new ServiceException(e);
@@ -199,7 +223,23 @@ public class TagQueryService {
 
         try {
             final JSONObject result = tagRepository.get(query);
-            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            for (final JSONObject tag : ret) {
+                String description = tag.optString(Tag.TAG_DESCRIPTION);
+
+                if (StringUtils.isNotBlank(description)) {
+                    description = shortLinkQueryService.linkTag(description);
+                    description = Markdowns.toHTML(description);
+                    if (description.startsWith("<p>") && description.endsWith("</p>")) {
+                        description = StringUtils.substring(description, "<p>".length(), description.length() - "</p>".length() - 1);
+                    }
+
+                    tag.put(Tag.TAG_DESCRIPTION, description);
+                }
+            }
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tags failed", e);
             throw new ServiceException(e);
