@@ -25,8 +25,11 @@
         </div>
         <div class="module-panel form fn-clear">
             <form action="/admin/comment/${comment.oId}" method="POST">
-                <label for="commentStatus">${commentStatusLabel}</label>
-                <input type="text" id="commentStatus" name="commentStatus" value="${comment.commentStatus}" />
+                <label>${commentStatusLabel}</label>
+                <select id="commentStatus" name="commentStatus">
+                    <option value="0"<#if 0 == comment.commentStatus> selected</#if>>${validLabel}</option>
+                    <option value="1"<#if 1 == comment.commentStatus> selected</#if>>${banLabel}</option>
+                </select>
 
                 <label for="commentContent">${commentContentLabel}</label>
                 <textarea id="commentContent" name="commentContent" rows="10">${comment.commentContent}</textarea>
