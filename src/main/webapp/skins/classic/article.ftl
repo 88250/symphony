@@ -99,10 +99,10 @@
                     <#if 3 != article.articleType>
                     <div class="content-reset article-content">${article.articleContent}</div>
                     <#else>
-                    <div id="thoughtProgress"><div></div></div>
+                    <div id="thoughtProgress"><span class="bar"></span><span class="icon-video"></span><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
                     <div class="content-reset article-content"></div>
                     </#if>
-                    
+
                     <div class="fn-clear">
                         <div class="share fn-right">
                             <span class="icon-tencent" data-type="tencent"></span>
@@ -173,11 +173,11 @@
                                                     <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
                                                     <#if hasRewarded>
                                                     <span title="${thankedLabel}">
-                                                    </#if>   
+                                                        </#if>   
                                                         <span class="icon-heart ft-smaller <#if hasRewarded>ft-red<#else>ft-fade</#if>"></span><span
                                                             class="ft-smaller <#if hasRewarded>ft-red<#else>ft-fade</#if>" 
                                                             id='${comment.oId}RewardedCnt'> ${comment.rewardedCnt}</span> 
-                                                    <#if hasRewarded>
+                                                        <#if hasRewarded>
                                                     </span>
                                                     </#if>
                                                     </#if>
@@ -211,7 +211,7 @@
                     </div>
                 </div>
                 <div class="side">
-                   
+
                     <#include 'common/person-info.ftl'/>
 
                     <div class="module">
@@ -258,7 +258,6 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <#include "footer.ftl">
-        <div id="preview" class="content-reset"></div>
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";

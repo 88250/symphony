@@ -104,10 +104,18 @@
     margin-bottom: 6px;
 }
 
-#thoughtProgress div {
+#thoughtProgress .bar {
     position: absolute;
     background-color: #e0e0e0;
     height: 2px
+}
+
+#thoughtProgress .icon-video {
+    position: absolute;
+    top: -8px;
+    left: 0;
+    cursor: pointer;
+    color: #911;
 }
 
 .comment-submit {

@@ -318,6 +318,55 @@ var Article = {
         // + 0x1F: Unit Separator (单元分隔符)
 
         var fast = 2;
+        var genThought = function (record, articleLinesList) {
+            var units = record.split("");
+            if (units.length === 3) {
+                units.splice(0, 0, '');
+            }
+            var srcLinesContent = units[0],
+                    from = units[2].split('-'),
+                    to = units[3].split('-');
+            from[0] = parseInt(from[0]);
+            from[1] = parseInt(from[1]);
+            to[0] = parseInt(to[0]);
+            to[1] = parseInt(to[1]);
+
+            if (srcLinesContent === "") {
+                // remove
+                var removeLines = [];
+                for (var n = from[1], m = 0; n <= to[1]; n++, m++) {
+                    if (from[1] === to[1]) {
+                        articleLinesList[n] = articleLinesList[n].substring(0, from[0]) +
+                                articleLinesList[n].substr(to[0]);
+                        break;
+                    }
+
+                    if (n === from[1]) {
+                        articleLinesList[n] = articleLinesList[n].substr(0, from[0]);
+                    } else if (n === to[1]) {
+                        articleLinesList[from[1]] += articleLinesList[n].substr(to[0]);
+                        articleLinesList.splice(n, 1);
+                    } else {
+                        removeLines.push(n);
+                    }
+                }
+                for (var o = 0; o < removeLines.length; o++) {
+                    articleLinesList.splice(removeLines[o] - o, 1);
+                }
+            } else {
+                var addLines = srcLinesContent.split(String.fromCharCode(29))[0],
+                        removedLines = srcLinesContent.split(String.fromCharCode(29))[1];
+
+                if (removedLines === '') {
+                    articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) +
+                            articleLinesList[to[1]].substr(to[0]);
+                }
+
+                articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) + addLines
+                        + articleLinesList[from[1]].substr(from[0]);
+            }
+            return articleLinesList;
+        };
 
         var records = articleContent.split("");
         for (var i = 0, j = 0; i < records.length; i++) {
@@ -325,51 +374,8 @@ var Article = {
                 if (!$('.article-content').data('text')) {
                     $('.article-content').data('text', '');
                 }
-                var units = records[j++].split(""),
-                        srcLinesContent = units[0],
-                        from = units[2].split('-'),
-                        to = units[3].split('-'),
-                        articleLinesList = $('.article-content').data('text').split(String.fromCharCode(10));
-                from[0] = parseInt(from[0]);
-                from[1] = parseInt(from[1]);
-                to[0] = parseInt(to[0]);
-                to[1] = parseInt(to[1]);
 
-                if (srcLinesContent === "") {
-                    // remove
-                    var removeLines = [];
-                    for (var n = from[1], m = 0; n <= to[1]; n++, m++) {
-                        if (from[1] === to[1]) {
-                            articleLinesList[n] = articleLinesList[n].substring(0, from[0]) +
-                                    articleLinesList[n].substr(to[0]);
-                            break;
-                        }
-
-                        if (n === from[1]) {
-                            articleLinesList[n] = articleLinesList[n].substr(0, from[0]);
-                        } else if (n === to[1]) {
-                            articleLinesList[from[1]] += articleLinesList[n].substr(to[0]);
-                            articleLinesList.splice(n, 1);
-                        } else {
-                            removeLines.push(n);
-                        }
-                    }
-                    for (var o = 0; o < removeLines.length; o++) {
-                        articleLinesList.splice(removeLines[o] - o, 1);
-                    }
-                } else {
-                    var addLines = srcLinesContent.split(String.fromCharCode(29))[0],
-                            removedLines = srcLinesContent.split(String.fromCharCode(29))[1];
-
-                    if (removedLines === '') {
-                        articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) +
-                                articleLinesList[to[1]].substr(to[0]);
-                    }
-
-                    articleLinesList[from[1]] = articleLinesList[from[1]].substring(0, from[0]) + addLines
-                            + articleLinesList[from[1]].substr(from[0]);
-                }
-
+                var articleLinesList = genThought(records[j++], $('.article-content').data('text').split(String.fromCharCode(10)));
 
                 var articleText = articleLinesList.join(String.fromCharCode(10));
                 var articleHTML = articleText.replace(/\n/g, "<br>")
@@ -386,14 +392,35 @@ var Article = {
                 amountTime = parseInt(records[i - 1].split("")[1]) / fast + 300;
         var interval = setInterval(function () {
             if (currentTime >= amountTime) {
-                $('#thoughtProgress div').width('100%');
+                $('#thoughtProgress .bar').width('100%');
+                $('#thoughtProgress .icon-video').css('left', '100%');
                 clearInterval(interval);
             } else {
                 currentTime += 50;
-                $('#thoughtProgress div').width((currentTime * 100 / amountTime) + '%');
+                $('#thoughtProgress .icon-video').css('left', (currentTime * 100 / amountTime) + '%');
+                $('#thoughtProgress .bar').width((currentTime * 100 / amountTime) + '%');
             }
 
         }, 50);
+
+        // preview
+        for (var v = 0, k = 0; v < records.length; v++) {
+            var articleLinesList = genThought(records[k++], $('#thoughtProgressPreview').data('text').split(String.fromCharCode(10)));
+
+            var articleText = articleLinesList.join(String.fromCharCode(10));
+            var articleHTML = articleText.replace(/\n/g, "<br>")
+                    .replace(/ /g, "&nbsp;")
+                    .replace(/	/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
+
+            $('#thoughtProgressPreview').data('text', articleText).html(articleHTML);
+        }
+        $("#thoughtProgressPreview").dialog({
+            "modal": true,
+            "hideFooter": true
+        });
+        $('#thoughtProgress .icon-video').click(function () {
+            $("#thoughtProgressPreview").dialog("open");
+        });
     }
 };
 
