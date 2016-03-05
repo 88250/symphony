@@ -48,7 +48,7 @@
         <ul class="module-list">
             <#list sideHotArticles as hotArticle>
             <li<#if !hotArticle_has_next> class="last"</#if>>
-                <a rel="nofollow" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitle}</a>
+                <a rel="nofollow" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
                 <a class="ft-gray" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
                    title="${hotArticle.articleAuthorName}">${hotArticle.articleAuthorName}</a>
             </li>
@@ -99,7 +99,7 @@
         <ul class="module-list">
             <#list sideRandomArticles as randomArticle>
             <li<#if !randomArticle_has_next> class="last"</#if>>
-                <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
+                <a rel="nofollow" title="${randomArticle.articleTitle}" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                 <a class="ft-gray" rel="nofollow" href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
             </li>
             </#list>
