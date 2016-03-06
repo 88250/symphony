@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.10.13, Feb 22, 2016
+ * @version 1.18.11.13, Mar 6, 2016
  */
 
 /**
@@ -230,7 +230,7 @@ var Util = {
                 multipart: true,
                 pasteZone: null,
                 dropZone: null,
-                url: "http://upload.qiniu.com/",
+                url: "https://up.qbox.me/",
                 formData: function (form) {
                     var data = form.serializeArray();
                     data.push({name: 'token', value: params.qiniuUploadToken});
