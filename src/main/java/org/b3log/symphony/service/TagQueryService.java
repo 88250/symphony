@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.5, Mar 3, 2016
+ * @version 1.5.2.5, Mar 6, 2016
  * @since 0.2.0
  */
 @Service
@@ -160,7 +160,23 @@ public class TagQueryService {
 
         try {
             final JSONObject result = tagRepository.get(query);
-            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            for (final JSONObject tag : ret) {
+                String description = tag.optString(Tag.TAG_DESCRIPTION);
+
+                if (StringUtils.isNotBlank(description)) {
+                    description = shortLinkQueryService.linkTag(description);
+                    description = Markdowns.toHTML(description);
+                    if (description.startsWith("<p>") && description.endsWith("</p>")) {
+                        description = StringUtils.substring(description, "<p>".length(), description.length() - "</p>".length() - 1);
+                    }
+
+                    tag.put(Tag.TAG_DESCRIPTION, description);
+                }
+            }
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets trend tags failed");
             throw new ServiceException(e);
@@ -202,7 +218,23 @@ public class TagQueryService {
 
         try {
             final JSONObject result = tagRepository.get(query);
-            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            for (final JSONObject tag : ret) {
+                String description = tag.optString(Tag.TAG_DESCRIPTION);
+
+                if (StringUtils.isNotBlank(description)) {
+                    description = shortLinkQueryService.linkTag(description);
+                    description = Markdowns.toHTML(description);
+                    if (description.startsWith("<p>") && description.endsWith("</p>")) {
+                        description = StringUtils.substring(description, "<p>".length(), description.length() - "</p>".length() - 1);
+                    }
+
+                    tag.put(Tag.TAG_DESCRIPTION, description);
+                }
+            }
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets cold tags failed", e);
             throw new ServiceException(e);
