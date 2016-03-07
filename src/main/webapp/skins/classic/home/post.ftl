@@ -72,7 +72,7 @@
                         </#if>
                     </div>
                     <div class="fn-right">
-                        <button class="red" tabindex="10" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${editLabel}<#else>${postLabel}</#if></button><br/><br/>
+                        <button class="red" tabindex="10" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
                     </div>
                 </div>
             </div>

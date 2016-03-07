@@ -138,7 +138,7 @@
                                 <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
                             </span>
                             <div class="fn-right">
-                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
+                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
                             </div>
                         </div>
 
