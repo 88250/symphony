@@ -112,12 +112,12 @@ public final class Markdowns {
      * Converts the specified markdown text to HTML.
      *
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}, returns
+     * @return converted HTML, returns an empty string "" if the specified markdown text is "" or {@code null}, returns
      * 'markdownErrorLabel' if exception
      */
     public static String toHTML(final String markdownText) {
         if (Strings.isEmptyOrNull(markdownText)) {
-            return null;
+            return "";
         }
 
         final StringWriter writer = new StringWriter();
