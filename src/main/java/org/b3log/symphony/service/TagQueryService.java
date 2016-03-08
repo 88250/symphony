@@ -133,9 +133,6 @@ public class TagQueryService {
             if (StringUtils.isNotBlank(description)) {
                 description = shortLinkQueryService.linkTag(description);
                 description = Markdowns.toHTML(description);
-                if (description.startsWith("<p>") && description.endsWith("</p>")) {
-                    description = StringUtils.substring(description, "<p>".length(), description.length() - "</p>".length() - 1);
-                }
 
                 ret.put(Tag.TAG_DESCRIPTION, description);
             }
@@ -168,9 +165,6 @@ public class TagQueryService {
                 if (StringUtils.isNotBlank(description)) {
                     description = shortLinkQueryService.linkTag(description);
                     description = Markdowns.toHTML(description);
-                    if (description.startsWith("<p>") && description.endsWith("</p>")) {
-                        description = StringUtils.substring(description, "<p>".length(), description.length() - "</p>".length() - 1);
-                    }
 
                     tag.put(Tag.TAG_DESCRIPTION, description);
                 }
@@ -226,9 +220,6 @@ public class TagQueryService {
                 if (StringUtils.isNotBlank(description)) {
                     description = shortLinkQueryService.linkTag(description);
                     description = Markdowns.toHTML(description);
-                    if (description.startsWith("<p>") && description.endsWith("</p>")) {
-                        description = StringUtils.substring(description, "<p>".length(), description.length() - "</p>".length() - 1);
-                    }
 
                     tag.put(Tag.TAG_DESCRIPTION, description);
                 }
@@ -263,9 +254,6 @@ public class TagQueryService {
                 if (StringUtils.isNotBlank(description)) {
                     description = shortLinkQueryService.linkTag(description);
                     description = Markdowns.toHTML(description);
-                    if (description.startsWith("<p>") && description.endsWith("</p>")) {
-                        description = StringUtils.substring(description, "<p>".length(), description.length() - "</p>".length() - 1);
-                    }
 
                     tag.put(Tag.TAG_DESCRIPTION, description);
                 }
