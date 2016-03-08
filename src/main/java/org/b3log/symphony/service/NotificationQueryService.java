@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.4, Feb 26, 2016
+ * @version 1.4.2.4, Mar 8, 2016
  * @since 0.2.5
  */
 @Service
@@ -556,7 +556,7 @@ public class NotificationQueryService {
                             comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                     atNotification.put(Common.THUMBNAIL_UPDATE_TIME, comment.optJSONObject(Comment.COMMENT_T_COMMENTER).
                             optLong(UserExt.USER_UPDATE_TIME));
-                    atNotification.put(Article.ARTICLE_TITLE, articleTitle);
+                    atNotification.put(Article.ARTICLE_TITLE, Emotions.convert(articleTitle));
                     atNotification.put(Article.ARTICLE_TYPE, articleType);
                     atNotification.put(Common.URL, comment.optString(Comment.COMMENT_SHARP_URL));
                     atNotification.put(Common.CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
