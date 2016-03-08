@@ -22,6 +22,20 @@
         <label>${userIntroLabel}</label><br/>
         <textarea id="userIntro">${currentUser.userIntro}</textarea>
 
+
+        <label> ${settingsLabel} </label>
+        <div class="fn-clear"></div>
+        <label>
+            ${joinBalanceRankLabel}
+            <input id="joinPointRank" <#if 0 == currentUser.userJoinPointRank> checked="checked"</#if> type="checkbox" /> 
+        </label>
+
+        <label> &nbsp; &nbsp;
+            ${joinCosumptionRankLabel}
+            <input id="joinUsedPointRank" <#if 0 == currentUser.userJoinUsedPointRank> checked="checked"</#if> type="checkbox" /> 
+        </label>
+        <div class="fn-clear"></div>
+
         <label>${avatarLabel}</label><br/>
         <div class="fn-clear"></div>
         <form class="fn-right" id="avatarUpload" method="POST" enctype="multipart/form-data">
@@ -45,19 +59,6 @@
                 ${updateAvatarTipLabel}
             </div>
         </div>
-
-        <br/><br/>
-
-        <label>
-            ${joinBalanceRankLabel}
-            <input id="joinPointRank" <#if 0 == currentUser.userJoinPointRank> checked="checked"</#if> type="checkbox" /> 
-        </label>
-
-        <label>
-            ${joinCosumptionRankLabel}
-            <input id="joinUsedPointRank" <#if 0 == currentUser.userJoinUsedPointRank> checked="checked"</#if> type="checkbox" /> 
-        </label>
-
         <br/>
         <div class="tip" id="profilesTip"></div>
         <br/>
