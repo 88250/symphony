@@ -224,7 +224,7 @@
                             <ul class="module-list">
                                 <#list sideRelevantArticles as relevantArticle>
                                 <li<#if !relevantArticle_has_next> class="last"</#if>>
-                                    <a rel="nofollow" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitle}</a>
+                                    <a rel="nofollow" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                     <a class="ft-gray" rel="nofollow" 
                                        href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
                                 </li>
