@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Validates for user point transfer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 9, 2015
+ * @version 1.0.1.0, Mar 8, 2016
  */
 @Named
 @Singleton
@@ -76,7 +76,7 @@ public class PointTransferValidation extends BeforeRequestProcessAdvice {
         }
 
         final int amount = requestJSONObject.optInt(Common.AMOUNT);
-        if (amount < 1) {
+        if (amount < 1 || amount > 5000) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("amountInvalidLabel")));
         }
 
