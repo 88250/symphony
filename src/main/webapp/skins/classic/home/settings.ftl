@@ -22,8 +22,6 @@
         <label>${userIntroLabel}</label><br/>
         <textarea id="userIntro">${currentUser.userIntro}</textarea>
 
-
-        <label> ${settingsLabel} </label>
         <div class="fn-clear"></div>
         <label>
             ${joinBalanceRankLabel}
