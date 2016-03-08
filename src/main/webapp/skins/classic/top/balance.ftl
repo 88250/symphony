@@ -32,7 +32,7 @@
                             <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
                         </div>
                     </div>
-                    <div class="cmts" title="${user.userUsedPoint?c}">
+                    <div class="cmts" title="${user.userPoint?c}">
                         <a href="/member/${user.userName}/points">
                             ${user.userPoint?c}
                         </a>
