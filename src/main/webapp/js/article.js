@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.16.8, Feb 20, 2016
+ * @version 1.13.16.8, Mar 8, 2016
  */
 
 /**
@@ -37,39 +37,54 @@ var Comment = {
             return false;
         }
 
-        Util.initCodeMirror();
+        var browser = Util.isMobile(true);
+        if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+            Comment.editor = Util.initTextarea('commentContent',
+                    function (editor) {
+                        if (window.localStorage) {
+                            window.localStorage[Label.articleOId] = JSON.stringify({
+                                commentContent: editor.$it.val()
+                            });
+                        }
+                    }
+            );
 
-        var commentEditor = new Editor({
-            element: document.getElementById('commentContent'),
-            dragDrop: false,
-            lineWrapping: true,
-            toolbar: [
-                {name: 'bold'},
-                {name: 'italic'},
-                '|',
-                {name: 'quote'},
-                {name: 'unordered-list'},
-                {name: 'ordered-list'},
-                '|',
-                {name: 'link'},
-                {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
-                '|',
-                {name: 'redo'},
-                {name: 'undo'},
-                '|',
-                {name: 'preview'}
-            ],
-            extraKeys: {
-                "Alt-/": "autocompleteUserName",
-                "Ctrl-/": "autocompleteEmoji",
-                "Alt-S": "startAudioRecord",
-                "Alt-E": "endAudioRecord"
-            },
-            status: false
-        });
-        commentEditor.render();
+        } else {
 
-        Comment.editor = commentEditor.codemirror;
+            Util.initCodeMirror();
+
+            var commentEditor = new Editor({
+                element: document.getElementById('commentContent'),
+                dragDrop: false,
+                lineWrapping: true,
+                toolbar: [
+                    {name: 'bold'},
+                    {name: 'italic'},
+                    '|',
+                    {name: 'quote'},
+                    {name: 'unordered-list'},
+                    {name: 'ordered-list'},
+                    '|',
+                    {name: 'link'},
+                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
+                    '|',
+                    {name: 'redo'},
+                    {name: 'undo'},
+                    '|',
+                    {name: 'preview'}
+                ],
+                extraKeys: {
+                    "Alt-/": "autocompleteUserName",
+                    "Ctrl-/": "autocompleteEmoji",
+                    "Alt-S": "startAudioRecord",
+                    "Alt-E": "endAudioRecord"
+                },
+                status: false
+            });
+            commentEditor.render();
+
+            Comment.editor = commentEditor.codemirror;
+        }
 
         if (window.localStorage && window.localStorage[Label.articleOId]) {
             var localData = null;
@@ -89,6 +104,11 @@ var Comment = {
                 Comment.editor.setValue(localData.commentContent);
             }
         }
+
+        if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+            return false;
+        }
+
 
         Comment.editor.on('changes', function (cm) {
             if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {

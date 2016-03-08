@@ -107,46 +107,57 @@ var AddArticle = {
      * @description 初识化发文
      */
     init: function () {
-        Util.initCodeMirror();
-        // 初始化文章编辑器
-        var addArticleEditor = new Editor({
-            element: document.getElementById('articleContent'),
-            dragDrop: false,
-            lineWrapping: true,
-            extraKeys: {
-                "Alt-/": "autocompleteUserName",
-                "Ctrl-/": "autocompleteEmoji",
-                "Alt-S": "startAudioRecord",
-                "Alt-E": "endAudioRecord",
-                "F11": function (cm) {
-                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+        var browser = Util.isMobile(true);
+        if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+            AddArticle.editor = Util.initTextarea('articleContent',
+                    function (editor) {
+                        if (window.localStorage) {
+                            window.localStorage.articleContent = editor.getValue();
+                        }
+                    }
+            );
+        } else {
+            Util.initCodeMirror();
+            // 初始化文章编辑器
+            var addArticleEditor = new Editor({
+                element: document.getElementById('articleContent'),
+                dragDrop: false,
+                lineWrapping: true,
+                extraKeys: {
+                    "Alt-/": "autocompleteUserName",
+                    "Ctrl-/": "autocompleteEmoji",
+                    "Alt-S": "startAudioRecord",
+                    "Alt-E": "endAudioRecord",
+                    "F11": function (cm) {
+                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    },
+                    "Esc": function (cm) {
+                        cm.setOption("fullScreen", false);
+                    }
                 },
-                "Esc": function (cm) {
-                    cm.setOption("fullScreen", false);
-                }
-            },
-            toolbar: [
-                {name: 'bold'},
-                {name: 'italic'},
-                '|',
-                {name: 'quote'},
-                {name: 'unordered-list'},
-                {name: 'ordered-list'},
-                '|',
-                {name: 'link'},
-                {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
-                '|',
-                {name: 'redo'},
-                {name: 'undo'},
-                '|',
-                {name: 'preview'},
-                {name: 'fullscreen'}
-            ],
-            status: false
-        });
-        addArticleEditor.render();
+                toolbar: [
+                    {name: 'bold'},
+                    {name: 'italic'},
+                    '|',
+                    {name: 'quote'},
+                    {name: 'unordered-list'},
+                    {name: 'ordered-list'},
+                    '|',
+                    {name: 'link'},
+                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
+                    '|',
+                    {name: 'redo'},
+                    {name: 'undo'},
+                    '|',
+                    {name: 'preview'},
+                    {name: 'fullscreen'}
+                ],
+                status: false
+            });
+            addArticleEditor.render();
 
-        AddArticle.editor = addArticleEditor.codemirror;
+            AddArticle.editor = addArticleEditor.codemirror;
+        }
 
         if (window.localStorage && window.localStorage.articleContent && "" === AddArticle.editor.getValue()
                 && "" !== window.localStorage.articleContent.replace(/(^\s*)|(\s*$)/g, "")) {
@@ -179,90 +190,91 @@ var AddArticle = {
         if (title && title.length > 0) {
             $("#articleTitle").val(title);
         }
-        
+
         if ($("#articleTitle").val().length <= 0) {
             $("#articleTitle").focus();
         }
+        if (!browser.mobile || !(browser.iPhone || browser.iPad || browser.windowsPhone)) {
+            AddArticle.editor.on('keydown', function (cm, evt) {
+                if (8 === evt.keyCode) {
+                    var cursor = cm.getCursor();
+                    var token = cm.getTokenAt(cursor);
 
-        AddArticle.editor.on('keydown', function (cm, evt) {
-            if (8 === evt.keyCode) {
+                    // delete the whole emoji
+                    var preCursor = CodeMirror.Pos(cursor.line, cursor.ch);
+                    token = cm.getTokenAt(preCursor);
+                    if (/^:\S+:$/.test(token.string)) {
+                        cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
+                                CodeMirror.Pos(cursor.line, token.end - 1));
+                    }
+                }
+            });
+
+            var thoughtTime = '';
+            AddArticle.editor.on('changes', function (cm, changes) {
+                if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
+                    $(".form .green").show();
+                } else {
+                    $(".form .green").hide();
+                }
+
+                if (window.localStorage) {
+                    window.localStorage.articleContent = cm.getValue();
+                }
+
+                if (!window.localStorage.thoughtContent) {
+                    window.localStorage.thoughtContent = '';
+                }
+
+                if (thoughtTime === '') {
+                    thoughtTime = (new Date()).getTime();
+                }
+
                 var cursor = cm.getCursor();
                 var token = cm.getTokenAt(cursor);
-
-                // delete the whole emoji
-                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch);
-                token = cm.getTokenAt(preCursor);
-                if (/^:\S+:$/.test(token.string)) {
-                    cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
-                            CodeMirror.Pos(cursor.line, token.end - 1));
+                if (token.string.indexOf('@') === 0) {
+                    cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
+                    return CodeMirror.Pass;
                 }
-            }
-        });
 
-        var thoughtTime = '';
-        AddArticle.editor.on('changes', function (cm, changes) {
-            if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
-                $(".form .green").show();
-            } else {
-                $(".form .green").hide();
-            }
+                var change = "",
+                        unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
+                        time = (new Date()).getTime() - thoughtTime;
 
-            if (window.localStorage) {
-                window.localStorage.articleContent = cm.getValue();
-            }
+                switch (changes[0].origin) {
+                    case "+delete":
+                        change = String.fromCharCode(24) + unitSep + time // cancel
+                                + unitSep + changes[0].from.ch + '-' + changes[0].from.line
+                                + unitSep + changes[0].to.ch + '-' + changes[0].to.line
+                                + String.fromCharCode(30);  // Record Separator (记录分隔符)
+                        break;
+                    case "*compose":
+                    case "+input":
+                    default:
 
-            if (!window.localStorage.thoughtContent) {
-                window.localStorage.thoughtContent = '';
-            }
-
-            if (thoughtTime === '') {
-                thoughtTime = (new Date()).getTime();
-            }
-
-            var cursor = cm.getCursor();
-            var token = cm.getTokenAt(cursor);
-            if (token.string.indexOf('@') === 0) {
-                cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
-                return CodeMirror.Pass;
-            }
-
-            var change = "",
-                    unitSep = String.fromCharCode(31), // Unit Separator (单元分隔符)
-                    time = (new Date()).getTime() - thoughtTime;
-
-            switch (changes[0].origin) {
-                case "+delete":
-                    change = String.fromCharCode(24) + unitSep + time // cancel
-                            + unitSep + changes[0].from.ch + '-' + changes[0].from.line
-                            + unitSep + changes[0].to.ch + '-' + changes[0].to.line
-                            + String.fromCharCode(30);  // Record Separator (记录分隔符)
-                    break;
-                case "*compose":
-                case "+input":
-                default:
-
-                    for (var i = 0; i < changes[0].text.length; i++) {
-                        if (i === changes[0].text.length - 1) {
-                            change += changes[0].text[i];
-                        } else {
-                            change += changes[0].text[i] + String.fromCharCode(10); // New Line
+                        for (var i = 0; i < changes[0].text.length; i++) {
+                            if (i === changes[0].text.length - 1) {
+                                change += changes[0].text[i];
+                            } else {
+                                change += changes[0].text[i] + String.fromCharCode(10); // New Line
+                            }
                         }
-                    }
-                    for (var j = 0; j < changes[0].removed.length; j++) {
-                        if (j === 0) {
-                            change += String.fromCharCode(29); // group separator
-                            break;
+                        for (var j = 0; j < changes[0].removed.length; j++) {
+                            if (j === 0) {
+                                change += String.fromCharCode(29); // group separator
+                                break;
+                            }
                         }
-                    }
-                    change += unitSep + time
-                            + unitSep + changes[0].from.ch + '-' + changes[0].from.line
-                            + unitSep + changes[0].to.ch + '-' + changes[0].to.line
-                            + String.fromCharCode(30);  // Record Separator (记录分隔符)
-                    break;
-            }
+                        change += unitSep + time
+                                + unitSep + changes[0].from.ch + '-' + changes[0].from.line
+                                + unitSep + changes[0].to.ch + '-' + changes[0].to.line
+                                + String.fromCharCode(30);  // Record Separator (记录分隔符)
+                        break;
+                }
 
-            window.localStorage.thoughtContent += change;
-        });
+                window.localStorage.thoughtContent += change;
+            });
+        }
 
         $("#articleTitle, #articleTags, #articleRewardPoint").keypress(function (event) {
             if (13 === event.keyCode) {
@@ -276,63 +288,67 @@ var AddArticle = {
             readOnly = 'nocursor';
         }
 
+        if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+            AddArticle.rewardEditor = Util.initTextarea('articleRewardContent');
+            $('#articleRewardContent').prop('readOnly', readOnly);
+        } else {
+            var addArticleRewardEditor = new Editor({
+                element: document.getElementById('articleRewardContent'),
+                dragDrop: false,
+                lineWrapping: true,
+                readOnly: readOnly,
+                toolbar: [
+                    {name: 'bold'},
+                    {name: 'italic'},
+                    '|',
+                    {name: 'quote'},
+                    {name: 'unordered-list'},
+                    {name: 'ordered-list'},
+                    '|',
+                    {name: 'link'},
+                    {name: 'image', html: '<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
+                    '|',
+                    {name: 'redo'},
+                    {name: 'undo'},
+                    '|',
+                    {name: 'preview'}
+                ],
+                extraKeys: {
+                    "Alt-/": "autocompleteUserName",
+                    "Ctrl-/": "autocompleteEmoji",
+                    "F11": function (cm) {
+                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    }
+                },
+                status: false
+            });
+            addArticleRewardEditor.render();
+            AddArticle.rewardEditor = addArticleRewardEditor.codemirror;
 
-        var addArticleRewardEditor = new Editor({
-            element: document.getElementById('articleRewardContent'),
-            dragDrop: false,
-            lineWrapping: true,
-            readOnly: readOnly,
-            toolbar: [
-                {name: 'bold'},
-                {name: 'italic'},
-                '|',
-                {name: 'quote'},
-                {name: 'unordered-list'},
-                {name: 'ordered-list'},
-                '|',
-                {name: 'link'},
-                {name: 'image', html: '<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
-                '|',
-                {name: 'redo'},
-                {name: 'undo'},
-                '|',
-                {name: 'preview'}
-            ],
-            extraKeys: {
-                "Alt-/": "autocompleteUserName",
-                "Ctrl-/": "autocompleteEmoji",
-                "F11": function (cm) {
-                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+            AddArticle.rewardEditor.on('keydown', function (cm, evt) {
+                if (8 === evt.keyCode) {
+                    var cursor = cm.getCursor();
+                    var token = cm.getTokenAt(cursor);
+
+                    // delete the whole emoji
+                    var preCursor = CodeMirror.Pos(cursor.line, cursor.ch);
+                    token = cm.getTokenAt(preCursor);
+                    if (/^:\S+:$/.test(token.string)) {
+                        cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
+                                CodeMirror.Pos(cursor.line, token.end - 1));
+                    }
                 }
-            },
-            status: false
-        });
-        addArticleRewardEditor.render();
-        AddArticle.rewardEditor = addArticleRewardEditor.codemirror;
+            });
 
-        AddArticle.rewardEditor.on('keydown', function (cm, evt) {
-            if (8 === evt.keyCode) {
+            AddArticle.rewardEditor.on('changes', function (cm) {
                 var cursor = cm.getCursor();
                 var token = cm.getTokenAt(cursor);
-
-                // delete the whole emoji
-                var preCursor = CodeMirror.Pos(cursor.line, cursor.ch);
-                token = cm.getTokenAt(preCursor);
-                if (/^:\S+:$/.test(token.string)) {
-                    cm.replaceRange("", CodeMirror.Pos(cursor.line, token.start),
-                            CodeMirror.Pos(cursor.line, token.end - 1));
+                if (token.string.indexOf('@') === 0) {
+                    cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
+                    return CodeMirror.Pass;
                 }
-            }
-        });
-
-        AddArticle.rewardEditor.on('changes', function (cm) {
-            var cursor = cm.getCursor();
-            var token = cm.getTokenAt(cursor);
-            if (token.string.indexOf('@') === 0) {
-                cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
-                return CodeMirror.Pass;
-            }
-        });
+            });
+        }
 
         $("#articleRewardContent").next().next().height(100);
     },
