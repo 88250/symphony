@@ -23,7 +23,7 @@
 <div class="module">
     <div class="module-header">
         <h2>
-            ${trendTagsLabel}
+            ${hotTopicLabel}
         </h2>
     </div>
     <div class="module-panel">

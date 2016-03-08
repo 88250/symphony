@@ -39,7 +39,7 @@
             </div>
 
             <div class="hot-tags">
-                ${trendTagsLabel}
+                ${hotTopicLabel}
                 <#list navTrendTags as trendTag>
                 <a rel="tag" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
                 </#list>
