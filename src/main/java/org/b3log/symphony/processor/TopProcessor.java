@@ -41,11 +41,12 @@ import org.json.JSONObject;
  *
  * <ul>
  * <li>Top balance (/top/balance), GET</li>
+ * <li>Top consumption (/top/consumption), GET</li>
  * <li>Top checkin (/top/checkin), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 13, 2015
+ * @version 1.2.0.0, Mar 8, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -91,6 +92,36 @@ public class TopProcessor {
 
         final List<JSONObject> users = pointtransferQueryService.getTopBalanceUsers(Symphonys.getInt("topBalanceCnt"));
         dataModel.put(Common.TOP_BALANCE_USERS, users);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+        filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
+    }
+
+    /**
+     * Shows consumption ranking list.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/top/consumption", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showConsumption(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+
+        renderer.setTemplateName("/top/consumption.ftl");
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final List<JSONObject> users = pointtransferQueryService.getTopConsumptionUsers(Symphonys.getInt("topConsumptionCnt"));
+        dataModel.put(Common.TOP_CONSUMPTION_USERS, users);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);

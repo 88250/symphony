@@ -795,6 +795,8 @@ public class UserProcessor {
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
+        final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
+        final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
 
         final JSONObject user = userQueryService.getCurrentUser(request);
 
@@ -803,6 +805,12 @@ public class UserProcessor {
         user.put(UserExt.USER_QQ, userQQ);
         user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
+        user.put(UserExt.USER_JOIN_POINT_RANK,
+                userJoinPointRank
+                        ? UserExt.USER_JOIN_POINT_RANK_C_JOIN : UserExt.USER_JOIN_POINT_RANK_C_NOT_JOIN);
+        user.put(UserExt.USER_JOIN_USED_POINT_RANK,
+                userJoinUsedPointRank
+                        ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
 
         if (Symphonys.getBoolean("qiniu.enabled")) {
             if (!StringUtils.contains(userAvatarURL, "qnssl.com") && !StringUtils.contains(userAvatarURL, "clouddn.com")) {

@@ -19,16 +19,21 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.1.11, Feb 26, 2016
+ * @version 1.25.1.11, Mar 8, 2016
  * @since 0.2.0
  */
 public final class Common {
-    
+
+    /**
+     * Key of money.
+     */
+    public static final String MONEY = "money";
+
     /**
      * Key of title.
      */
     public static final String TITLE = "title";
-    
+
     /**
      * Key of WebSocket scheme.
      */
@@ -543,6 +548,11 @@ public final class Common {
      * Key of top balance users.
      */
     public static final String TOP_BALANCE_USERS = "topBalanceUsers";
+
+    /**
+     * Key of top consumption users.
+     */
+    public static final String TOP_CONSUMPTION_USERS = "topConsumptionUsers";
 
     /**
      * Key of top checkin users.

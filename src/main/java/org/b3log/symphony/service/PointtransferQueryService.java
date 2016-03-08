@@ -48,6 +48,7 @@ import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.RewardRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.2.1, Mar 2, 2016
+ * @version 1.10.2.1, Mar 8, 2016
  * @since 1.3.0
  */
 @Service
@@ -151,7 +152,11 @@ public class PointtransferQueryService {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
         final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
-                .setPageSize(fetchSize);
+                .setPageSize(fetchSize).
+                setFilter(new PropertyFilter(UserExt.USER_JOIN_POINT_RANK,
+                        FilterOperator.EQUAL, UserExt.USER_JOIN_POINT_RANK_C_JOIN));
+
+        final int moneyUnit = Symphonys.getInt("pointExchangeUnit");
         try {
             final JSONObject result = userRepository.get(query);
             final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -163,12 +168,53 @@ public class PointtransferQueryService {
                     user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
                 }
 
+                user.put(Common.MONEY, (int) Math.floor(user.optInt(UserExt.USER_POINT) / moneyUnit));
+
                 avatarQueryService.fillUserAvatarURL(user);
 
                 ret.add(user);
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets top balance users error", e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets the top consumption users with the specified fetch size.
+     *
+     * @param fetchSize the specified fetch size
+     * @return users, returns an empty list if not found
+     */
+    public List<JSONObject> getTopConsumptionUsers(final int fetchSize) {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        final Query query = new Query().addSort(UserExt.USER_USED_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
+                .setPageSize(fetchSize).
+                setFilter(new PropertyFilter(UserExt.USER_JOIN_USED_POINT_RANK,
+                        FilterOperator.EQUAL, UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN));
+
+        final int moneyUnit = Symphonys.getInt("pointExchangeUnit");
+        try {
+            final JSONObject result = userRepository.get(query);
+            final List<JSONObject> users = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            for (final JSONObject user : users) {
+                if (UserExt.USER_APP_ROLE_C_HACKER == user.optInt(UserExt.USER_APP_ROLE)) {
+                    user.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(user.optInt(UserExt.USER_POINT)));
+                } else {
+                    user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
+                }
+
+                user.put(Common.MONEY, (int) Math.floor(user.optInt(UserExt.USER_USED_POINT) / moneyUnit));
+
+                avatarQueryService.fillUserAvatarURL(user);
+
+                ret.add(user);
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets top consumption users error", e);
         }
 
         return ret;
@@ -366,7 +412,7 @@ public class PointtransferQueryService {
                     case Pointtransfer.TRANSFER_TYPE_C_EXCHANGE:
                         final String exYuan = dataId;
                         desTemplate = desTemplate.replace("{yuan}", exYuan);
-                        
+
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ABUSE_DEDUCT:
                         desTemplate = desTemplate.replace("{action}", dataId);
@@ -386,7 +432,7 @@ public class PointtransferQueryService {
                 }
 
                 desTemplate = Emotions.convert(desTemplate);
-                
+
                 record.put(Common.DESCRIPTION, desTemplate);
             }
 

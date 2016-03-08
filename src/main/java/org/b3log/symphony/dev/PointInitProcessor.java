@@ -21,8 +21,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.Filter;
@@ -36,15 +34,18 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Symphonys;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Generates init pointtransfer record for existing users.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 30, 2015
+ * @version 1.0.0.1, Mar 8, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -74,7 +75,8 @@ public class PointInitProcessor {
     public void genInitPointtransferRecords(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        if (RuntimeMode.PRODUCTION == Latkes.getRuntimeMode()) {
+        final String key = request.getParameter("key");
+        if (!Symphonys.get("keyOfSymphony").equals(key)) {
             return;
         }
 
@@ -87,26 +89,21 @@ public class PointInitProcessor {
                 final String userId = user.optString(Keys.OBJECT_ID);
 
                 final List<Filter> filters = new ArrayList<Filter>();
-                filters.add(new PropertyFilter(Pointtransfer.TO_ID, FilterOperator.EQUAL, userId));
-                filters.add(new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, Pointtransfer.TRANSFER_TYPE_C_INIT));
+                filters.add(new PropertyFilter(Pointtransfer.FROM_ID, FilterOperator.EQUAL, userId));
+                filters.add(new PropertyFilter(Pointtransfer.FROM_ID, FilterOperator.EQUAL, userId));
 
                 final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-                if (pointtransferRepository.count(query) > 0) {
-                    continue;
+                final JSONArray records = pointtransferRepository.get(query).optJSONArray(Keys.RESULTS);
+
+                int usedPoint = 0;
+                for (int i = 0; i < records.length(); i++) {
+                    final int sum = records.getJSONObject(i).optInt(Pointtransfer.SUM);
+                    usedPoint += sum;
                 }
 
-                final JSONObject pointtransfer = new JSONObject();
-                pointtransfer.put(Keys.OBJECT_ID, userId);
-                pointtransfer.put(Pointtransfer.FROM_ID, Pointtransfer.ID_C_SYS);
-                pointtransfer.put(Pointtransfer.TO_ID, userId);
-                pointtransfer.put(Pointtransfer.SUM, Pointtransfer.TRANSFER_SUM_C_INIT);
-                pointtransfer.put(Pointtransfer.FROM_BALANCE, Pointtransfer.TRANSFER_SUM_C_INIT);
-                pointtransfer.put(Pointtransfer.TO_BALANCE, Pointtransfer.TRANSFER_SUM_C_INIT);
-                pointtransfer.put(Pointtransfer.TIME, Long.valueOf(userId));
-                pointtransfer.put(Pointtransfer.TYPE, Pointtransfer.TRANSFER_TYPE_C_INIT);
-                pointtransfer.put(Pointtransfer.DATA_ID, userId);
+                user.put(UserExt.USER_USED_POINT, usedPoint);
 
-                pointtransferRepository.add(pointtransfer);
+                userRepository.update(userId, user);
             }
 
             transaction.commit();

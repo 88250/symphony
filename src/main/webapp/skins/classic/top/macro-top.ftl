@@ -7,6 +7,10 @@
         <@head title="${symphonyLabel} - ${pointLabel}${balanceLabel}${rankingLabel}">
         </@head>
         </#if>
+        <#if type == "consumption">
+        <@head title="${symphonyLabel} - ${pointLabel}${consumptionLabel}${rankingLabel}">
+        </@head>
+        </#if>
         <#if type == "checkin">
         <@head title="${symphonyLabel} - ${checkinTopLabel}${rankingLabel}">
         </@head>
@@ -24,6 +28,7 @@
                         <font style="color: black;">♠</font> <a href="/top/balance">${pointLabel}${balanceLabel}</a>
                         <font style="color: red;">♥</font> <a href="/charge/point">${chargePointLabel}</a>
                         <font style="color: black;">♣</font> <a href="/top/checkin">${checkinTopLabel}</a>
+                        <font style="color: red;">♦</font> <a href="/top/consumption">${pointLabel}${consumptionLabel}</a>
                     </div>
                 </div>
                 <div class="side">

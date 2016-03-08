@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.1.9, Sep 9, 2015
+ * @version 2.15.1.9, Mar 8, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -114,6 +114,21 @@ public final class UserExt {
      * Key of user point.
      */
     public static final String USER_POINT = "userPoint";
+
+    /**
+     * Key of user used point.
+     */
+    public static final String USER_USED_POINT = "userUsedPoint";
+
+    /**
+     * Key of user join point rank.
+     */
+    public static final String USER_JOIN_POINT_RANK = "userJoinPointRank";
+
+    /**
+     * Key of user join used point rank.
+     */
+    public static final String USER_JOIN_USED_POINT_RANK = "userJoinUsedPointRank";
 
     /**
      * Key of user tags.
@@ -248,6 +263,27 @@ public final class UserExt {
      * User status - registered but not verified.
      */
     public static final int USER_STATUS_C_NOT_VERIFIED = 2;
+
+    //// Join point rank constants
+    /**
+     * User join point rank - join.
+     */
+    public static final int USER_JOIN_POINT_RANK_C_JOIN = 0;
+
+    /**
+     * User join point rank - not join.
+     */
+    public static final int USER_JOIN_POINT_RANK_C_NOT_JOIN = 1;
+
+    /**
+     * User join used point rank - join.
+     */
+    public static final int USER_JOIN_USED_POINT_RANK_C_JOIN = 0;
+
+    /**
+     * User join used point rank - not join.
+     */
+    public static final int USER_JOIN_USED_POINT_RANK_C_NOT_JOIN = 1;
 
     //// Geo Status constants
     /**

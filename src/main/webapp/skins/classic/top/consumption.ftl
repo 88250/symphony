@@ -1,11 +1,11 @@
 <#include "macro-top.ftl">
-<@top "balance">
+<@top "consumption">
 <div class="content content-reset">
-    <h2><font style="color: black;">♠</font> ${pointLabel}${balanceLabel}${rankingLabel}</h2>
+    <h2><font style="color: red;">♦</font> ${pointLabel}${consumptionLabel}${rankingLabel}</h2>
 </div>
 <div class="list top">
     <ul>
-        <#list topBalanceUsers as user>
+        <#list topConsumptionUsers as user>
         <li>
             <div class="fn-flex">
                 <a rel="nofollow"
@@ -34,7 +34,7 @@
                     </div>
                     <div class="cmts" title="${user.userUsedPoint?c}">
                         <a href="/member/${user.userName}/points">
-                            ${user.userPoint?c}
+                            ${user.userUsedPoint?c}
                         </a>
                         ~ ${yuanLabel}${user.money}
                     </div>

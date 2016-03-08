@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "2.12.4.3, Sep 19, 2015",
+    "version": "2.13.4.3, Mar 8, 2016",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
@@ -502,6 +502,20 @@
                 {
                     "name": "userPoint",
                     "type": "int"
+                },
+                {
+                    "name": "userUsedPoint",
+                    "type": "int"
+                },
+                {
+                    "name": "userJoinPointRank",
+                    "type": "int",
+                    "description": "0: join, 1: not join"
+                },
+                {
+                    "name": "userJoinUsedPointRank",
+                    "type": "int",
+                    "description": "0: join, 1: not join"
                 },
                 {
                     "name": "userLatestArticleTime",

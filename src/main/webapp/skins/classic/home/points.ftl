@@ -20,6 +20,7 @@
     <font style="color: black;">♠</font> <a href="/top/balance">${pointLabel}${balanceLabel}</a>
     <font style="color: red;">♥</font> <a href="/charge/point">${chargePointLabel}</a>
     <font style="color: black;">♣</font> <a href="/top/checkin">${checkinTopLabel}</a>
+    <font style="color: red;">♦</font> <a href="/top/consumption">${pointLabel}${consumptionLabel}</a>
 </div>
 <@pagination url="/member/${user.userName}/points"/>
 </@home>
