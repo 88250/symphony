@@ -44,9 +44,11 @@
                             </#if>
                         </span>
                     </div>
-                    <p<#if tag.tagIconPath != ""> class="description"</#if>>
+                    <#if tag.tagIconPath != "">
+                    <div class="description">
                         ${tag.tagDescription}
-                </p>
+                    </div>
+                    </#if>
                 <div class="fn-clear">
                     <br/>
                     <ul class="tags">

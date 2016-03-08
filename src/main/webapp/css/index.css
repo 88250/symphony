@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.7.10, Feb 14, 2016
+ * @version 1.2.7.11, Mar 8, 2016
  */
 /* start module */
 .index-module .index-module-list > li {
@@ -457,7 +457,7 @@
     line-height: 37px;
 }
 
-.tag-articles p.description {
+.tag-articles div.description {
     text-indent: 60px;
 }
 
