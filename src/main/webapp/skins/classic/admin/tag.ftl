@@ -34,8 +34,11 @@
                 <label for="tagIconPath">${iconPathLabel}</label>
                 <input type="text" id="tagIconPath" name="tagIconPath" value="${tag.tagIconPath}" />
 
-                <label for="tagStatus">${tagStatusLabel}</label>
-                <input type="text" id="tagStatus" name="tagStatus" value="${tag.tagStatus}" />
+                <label>${tagStatusLabel}</label>
+                <select id="tagStatus" name="tagStatus">
+                    <option value="0"<#if 0 == tag.tagStatus> selected</#if>>${validLabel}</option>
+                    <option value="1"<#if 1 == tag.tagStatus> selected</#if>>${banLabel}</option>
+                </select>
 
                 <label for="tagGoodCnt">${goodCntLabel}</label>
                 <input type="text" id="tagGoodCnt" name="tagGoodCnt" value="${tag.tagGoodCnt}" />

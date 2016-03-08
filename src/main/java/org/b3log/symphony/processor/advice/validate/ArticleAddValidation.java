@@ -17,8 +17,8 @@ package org.b3log.symphony.processor.advice.validate;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +30,7 @@ import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -38,6 +39,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.service.ArticleMgmtService;
+import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -45,18 +47,12 @@ import org.json.JSONObject;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.6, Feb 22, 2016
+ * @version 1.2.3.6, Mar 8, 2016
  * @since 0.2.0
  */
 @Named
 @Singleton
 public class ArticleAddValidation extends BeforeRequestProcessAdvice {
-
-    /**
-     * Language service.
-     */
-    @Inject
-    private static LangPropsService langPropsService;
 
     /**
      * Max article title length.
@@ -107,6 +103,10 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
      */
     public static void validateArticleFields(final HttpServletRequest request,
             final JSONObject requestJSONObject) throws RequestProcessAdviceException {
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+        final TagQueryService tagQueryService = beanManager.getReference(TagQueryService.class);
+
         final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         if (Strings.isEmptyOrNull(articleTitle) || articleTitle.length() > MAX_ARTICLE_TITLE_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
@@ -122,7 +122,6 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
         }
 
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final ArticleMgmtService articleMgmtService = beanManager.getReference(ArticleMgmtService.class);
 
         articleTags = articleTags.replaceAll("B3log Announcement", "B3logAnnouncement").
@@ -141,6 +140,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         }
 
         tagTitles = new LinkedHashSet<String>(Arrays.asList(tagTitles)).toArray(new String[0]);
+        final List<String> invalidTags = tagQueryService.getInvalidTags();
 
         final StringBuilder tagBuilder = new StringBuilder();
         for (int i = 0; i < tagTitles.length; i++) {
@@ -162,6 +162,11 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
             if (!Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))
                     && ArrayUtils.contains(Symphonys.RESERVED_TAGS, tagTitle)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagReservedLabel")
+                        + " [" + tagTitle + "]"));
+            }
+
+            if (invalidTags.contains(tagTitle)) {
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTagInvalidLabel")
                         + " [" + tagTitle + "]"));
             }
 

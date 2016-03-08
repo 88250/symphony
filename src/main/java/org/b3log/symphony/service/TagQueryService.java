@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.5, Mar 6, 2016
+ * @version 1.5.2.6, Mar 8, 2016
  * @since 0.2.0
  */
 @Service
@@ -116,6 +116,32 @@ public class TagQueryService {
     }
 
     /**
+     * Gets invalid tags.
+     *
+     * @return invalid tags, returns an empty list if not found
+     */
+    public List<String> getInvalidTags() {
+        final List<String> ret = new ArrayList<String>();
+
+        final Query query = new Query().setFilter(
+                new PropertyFilter(Tag.TAG_STATUS, FilterOperator.NOT_EQUAL, Tag.TAG_STATUS_C_VALID));
+
+        try {
+            final JSONArray records = tagRepository.get(query).optJSONArray(Keys.RESULTS);
+
+            for (int i = 0; i < records.length(); i++) {
+                final String title = records.optJSONObject(i).optString(Tag.TAG_TITLE);
+
+                ret.add(title);
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets invalid tags error", e);
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets a tag by the specified tag title.
      *
      * @param tagTitle the specified tag title
@@ -126,6 +152,10 @@ public class TagQueryService {
         try {
             final JSONObject ret = tagRepository.getByTitle(tagTitle);
             if (null == ret) {
+                return null;
+            }
+
+            if (Tag.TAG_STATUS_C_VALID != ret.optInt(Tag.TAG_STATUS)) {
                 return null;
             }
 

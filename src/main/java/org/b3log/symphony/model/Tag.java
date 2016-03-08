@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.3.3, Oct 18, 2015
+ * @version 1.5.3.3, Mar 8, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -147,6 +147,17 @@ public final class Tag {
      * Tag type - user self.
      */
     public static final int TAG_TYPE_C_USER_SELF = 2;
+
+    //// Status constants
+    /**
+     * Tag status - valid.
+     */
+    public static final int TAG_STATUS_C_VALID = 0;
+
+    /**
+     * Tag status - invalid.
+     */
+    public static final int TAG_STATUS_C_INVALID = 1;
 
     /// Validation
     /**
