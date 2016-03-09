@@ -44,8 +44,6 @@ var Util = {
             }
         };
 
-        editor.$it.attr('placeholder', '');
-
         if (keyupEvent && typeof (keyupEvent) === 'function') {
             editor.$it.keyup(function () {
                 keyupEvent(editor);

@@ -48,9 +48,7 @@ var Comment = {
                         }
                     }
             );
-
         } else {
-
             Util.initCodeMirror();
 
             var commentEditor = new Editor({
