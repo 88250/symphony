@@ -18,7 +18,7 @@
                 <a class="title" target="_blank" href="https://github.com/b3log/solo">GitHub 上 Star 数最多的 Java 博客</a>
             </li>
             <li>
-                <b class="slogan ft-blue">【Wide】</b>
+                <b class="ft-blue slogan">【Wide】</b>
                 <a class="title" target="_blank" href="https://github.com/b3log/wide">Golang 黑科技之在线 IDE </a>
             </li>
             <li class="last">
@@ -58,7 +58,7 @@
             <#list sideHotArticles as hotArticle>
             <li<#if !hotArticle_has_next> class="last"</#if>>
                 <a class="avatar-small slogan" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
-               style="background-image:url('http://symx.fangstar.net/upload/f41bd2595fd241bdac153a45def8f68d.jpeg-64.jpg?1457429779882')"
+               style="background-image:url('${hotArticle.articleAuthorThumbnailURL}-64.jpg?${hotArticle.articleAuthor.userUpdateTime?c}')"
                title="${hotArticle.articleAuthorName}"></a>
                 <a rel="nofollow" class="title" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
@@ -111,7 +111,7 @@
             <li<#if !randomArticle_has_next> class="last"</#if>>
                   <a class="avatar-small slogan" rel="nofollow" href="/member/${randomArticle.articleAuthorName}"
                title="${randomArticle.articleAuthorName}"
-               style="background-image:url('http://symx.fangstar.net/upload/f41bd2595fd241bdac153a45def8f68d.jpeg-64.jpg?1457429779882')"></a>
+               style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
                 <a class="title" rel="nofollow" title="${randomArticle.articleTitle}" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
             </li>
             </#list>

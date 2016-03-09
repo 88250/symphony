@@ -88,6 +88,9 @@ public class AvatarQueryService {
             }
 
             final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
+            if (StringUtils.isBlank(originalURL)) {
+                return DEFAULT_AVATAR_URL;
+            }
 
             if (Symphonys.getBoolean("qiniu.enabled")) {
                 if (!StringUtils.contains(originalURL, "qnssl.com") && !StringUtils.contains(originalURL, "clouddn.com")) {
