@@ -19,10 +19,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.1.11, Mar 8, 2016
+ * @version 1.26.1.11, Mar 9, 2016
  * @since 0.2.0
  */
 public final class Common {
+    
+    /**
+     * Key of key.
+     */
+    public static final String KEY = "key";
 
     /**
      * Key of money.

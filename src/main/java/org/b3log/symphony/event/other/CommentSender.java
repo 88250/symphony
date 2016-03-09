@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.symphony.event.solo;
+package org.b3log.symphony.event.other;
 
 import java.net.URL;
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.event.AbstractEventListener;
@@ -34,6 +33,7 @@ import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
@@ -46,8 +46,8 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.4, Mar 9, 2016
- * @since 0.2.0
+ * @version 1.0.0.0, Mar 9, 2016
+ * @since 1.4.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
 
@@ -79,7 +79,6 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             }
 
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
-
             if (!originalArticle.optBoolean(Article.ARTICLE_SYNC_TO_CLIENT)) {
                 return;
             }
@@ -95,14 +94,17 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userQueryService.getUser(authorId);
             final String clientURL = author.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
-
-            if (Strings.isURL(clientURL)) {
+            if (!Strings.isURL(clientURL)) {
                 return;
             }
 
             final ClientQueryService clientQueryService = beanManager.getReference(ClientQueryService.class);
             final JSONObject userClient = clientQueryService.getClientByAdminEmail(author.optString(User.USER_EMAIL));
             if (null == userClient) {
+                return;
+            }
+
+            if ("B3log Solo".equals(userClient.optString(Client.CLIENT_NAME))) {
                 return;
             }
 
@@ -114,19 +116,19 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             httpRequest.setURL(new URL(clientURL));
             httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
-            final JSONObject comment = new JSONObject(originalComment, new String[]{
-                Comment.COMMENT_AUTHOR_EMAIL,
-                Comment.COMMENT_CONTENT,
-                Keys.OBJECT_ID
-            });
+            final JSONObject comment = new JSONObject();
 
+            comment.put(Article.ARTICLE_T_ID, originalArticle.optString(Article.ARTICLE_CLIENT_ARTICLE_ID));
+            comment.put(Common.CONTENT, originalComment.optString(Article.ARTICLE_CONTENT));
             comment.put(Comment.COMMENT_T_AUTHOR_NAME, commenter.optString(User.USER_NAME));
-            comment.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
+            comment.put(Comment.COMMENT_AUTHOR_EMAIL, commenter.optString(User.USER_NAME));
             comment.put(Comment.COMMENT_T_AUTHOR_URL, commenter.optString(User.USER_URL));
-            comment.put(Comment.COMMENT_ON_ARTICLE_ID, originalArticle.optString(Article.ARTICLE_CLIENT_ARTICLE_ID));
-            comment.put(Comment.COMMENT_T_SYMPHONY_ID, originalArticle.optString(Keys.OBJECT_ID));
-
             requestJSONObject.put(Comment.COMMENT, comment);
+
+            final JSONObject client = new JSONObject();
+            client.put(Common.KEY, author.optString(UserExt.USER_B3_KEY));
+            requestJSONObject.put(Client.CLIENT, client);
+
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
 
             urlFetchService.fetchAsync(httpRequest);
@@ -134,7 +136,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             LOGGER.log(Level.ERROR, "Sends a comment to client error: {0}", e.getMessage());
         }
 
-        LOGGER.log(Level.DEBUG, "Sent a comment to client [Solo]");
+        LOGGER.log(Level.DEBUG, "Sent a comment to client");
     }
 
     /**

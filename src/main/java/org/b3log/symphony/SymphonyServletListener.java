@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.5, Feb 16, 2016
+ * @version 1.9.3.5, Mar 9, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -110,6 +110,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         eventManager.registerListener(new ArticleSender()); // Not a bean
         eventManager.registerListener(new ArticleUpdater()); // Not a bean
         eventManager.registerListener(new CommentSender()); // Not a bean
+        eventManager.registerListener(new org.b3log.symphony.event.other.CommentSender()); // Not a bean
 
         final ArticleNotifier articleNotifier = beanManager.getReference(ArticleNotifier.class);
         eventManager.registerListener(articleNotifier);
