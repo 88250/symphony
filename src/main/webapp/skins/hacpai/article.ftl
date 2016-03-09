@@ -186,7 +186,7 @@
                                 <li<#if !relevantArticle_has_next> class="last"</#if>>
                                     <a class="avatar-small slogan" rel="nofollow" 
                                        title="${relevantArticle.articleAuthorName}"
-                                       style="background-image:url('http://symx.fangstar.net/upload/f41bd2595fd241bdac153a45def8f68d.jpeg-64.jpg?1457429779882')"
+                                       style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
                                        href="/member/${relevantArticle.articleAuthorName}"></a>
                                     <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                 </li>
@@ -208,7 +208,7 @@
                                     <a class="avatar-small slogan" rel="nofollow"
                                        href="/member/${randomArticle.articleAuthorName}"
                                        title="${randomArticle.articleAuthorName}"
-                                       style="background-image:url('http://symx.fangstar.net/upload/f41bd2595fd241bdac153a45def8f68d.jpeg-64.jpg?1457429779882')"></a>
+                                       style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
                                     <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
                                 </li>
                                 </#list>

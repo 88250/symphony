@@ -224,9 +224,11 @@
                             <ul class="module-list">
                                 <#list sideRelevantArticles as relevantArticle>
                                 <li<#if !relevantArticle_has_next> class="last"</#if>>
-                                    <a rel="nofollow" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
-                                    <a class="ft-gray" rel="nofollow" 
-                                       href="/member/${relevantArticle.articleAuthorName}">${relevantArticle.articleAuthorName}</a>
+                                    <a class="avatar-small slogan" rel="nofollow" 
+                                       title="${relevantArticle.articleAuthorName}"
+                                       style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
+                                       href="/member/${relevantArticle.articleAuthorName}"></a>
+                                    <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                 </li>
                                 </#list>
                             </ul>
@@ -243,9 +245,11 @@
                             <ul class="module-list">
                                 <#list sideRandomArticles as randomArticle>
                                 <li<#if !randomArticle_has_next> class="last"</#if>>
-                                    <a rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
-                                    <a class="ft-gray" rel="nofollow"
-                                       href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
+                                    <a class="avatar-small slogan" rel="nofollow"
+                                       href="/member/${randomArticle.articleAuthorName}"
+                                       title="${randomArticle.articleAuthorName}"
+                                       style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
+                                    <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
                                 </li>
                                 </#list>
                             </ul>
