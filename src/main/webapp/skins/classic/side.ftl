@@ -5,17 +5,26 @@
     <div class="module-header nopanel">
         ${ADLabel}
     </div>
-    </div>
+</div>
 </#if>
 <div class="module">
     <div class="module-header">
         <h2>开源项目</h2>
     </div>
     <div class="module-panel">
-        <ul class="module-list">
-            <li>GitHub 上 Star 数最多的 Java 博客 <a style="text-decoration: none;" target="_blank" href="https://github.com/b3log/solo"><span style="color: orangered; font-weight: bold;">Solo</span></a></li>
-            <li>Golang 黑科技之在线 IDE <a style="text-decoration: none;" target="_blank" href="https://github.com/b3log/wide"><span style="color: #4183c4; font-weight: bold;">Wide</span></a></li>
-            <li class="last">黑客与画家的社区 <a style="text-decoration: none;" target="_blank" href="https://github.com/b3log/symphony"><span style="color: #3CB371; font-weight: bold;">Sym</span></a></li>
+        <ul class="module-list ad">
+            <li>
+                <b class="ft-red slogan">【Solo】</b>
+                <a class="title" target="_blank" href="https://github.com/b3log/solo">GitHub 上 Star 数最多的 Java 博客</a>
+            </li>
+            <li>
+                <b class="slogan ft-blue">【Wide】</b>
+                <a class="title" target="_blank" href="https://github.com/b3log/wide">Golang 黑科技之在线 IDE </a>
+            </li>
+            <li class="last">
+                <b class="ft-green slogan">【Sym】</b>
+                <a class="title" target="_blank" href="https://github.com/b3log/symphony"> 黑客与画家的社区</a>
+            </li>
         </ul>
     </div>
 </div>
@@ -48,9 +57,10 @@
         <ul class="module-list">
             <#list sideHotArticles as hotArticle>
             <li<#if !hotArticle_has_next> class="last"</#if>>
-                <a rel="nofollow" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
-                <a class="ft-gray" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
-                   title="${hotArticle.articleAuthorName}">${hotArticle.articleAuthorName}</a>
+                <a class="avatar-small slogan" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
+               style="background-image:url('http://symx.fangstar.net/upload/f41bd2595fd241bdac153a45def8f68d.jpeg-64.jpg?1457429779882')"
+               title="${hotArticle.articleAuthorName}"></a>
+                <a rel="nofollow" class="title" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
             </#list>
         </ul>
@@ -99,8 +109,10 @@
         <ul class="module-list">
             <#list sideRandomArticles as randomArticle>
             <li<#if !randomArticle_has_next> class="last"</#if>>
-                <a rel="nofollow" title="${randomArticle.articleTitle}" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
-                <a class="ft-gray" rel="nofollow" href="/member/${randomArticle.articleAuthorName}">${randomArticle.articleAuthorName}</a>
+                  <a class="avatar-small slogan" rel="nofollow" href="/member/${randomArticle.articleAuthorName}"
+               title="${randomArticle.articleAuthorName}"
+               style="background-image:url('http://symx.fangstar.net/upload/f41bd2595fd241bdac153a45def8f68d.jpeg-64.jpg?1457429779882')"></a>
+                <a class="title" rel="nofollow" title="${randomArticle.articleTitle}" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
             </li>
             </#list>
         </ul>

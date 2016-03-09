@@ -22,37 +22,29 @@
  * @version 1.2.7.12, Mar 9, 2016
  */
 /* start module */
-.index-module .index-module-list > li {
-    margin: 3px 0;
+.module-list .slogan {
+    position: absolute;
+    top: 50%;
+    margin-top: -12px;
 }
 
-.index-module li {
-    list-style: none;
+.module-list .title {
+    color: #767676;
+    margin: 5px 0 5px 36px;
+    display: block;
+    line-height: 16px;
 }
 
-.index-module .module-line li {
-    border-bottom: 1px dotted #ccc;
-    padding-bottom: 6px;
+.module-list li {
+    position: relative;
 }
 
-.index-module .module-line li.last {
-    border-bottom-width: 0;
-    padding-bottom: 0;
+.module-list.ad .title {
+    margin-left: 60px;
 }
 
-.index-module .module-line li > .fn-left {
-    width: 25px;
-}
-
-.index-module .avatar-small {
-    margin-top: 4px;
-}
-
-.index-module .comment-content {
-    float: left; 
-    margin-left: 5px;
-    width: 228px;
-    color: #999;
+.module-list.ad .slogan {
+    margin-top: -10px;
 }
 /* end module */
 

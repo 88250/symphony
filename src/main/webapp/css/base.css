@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.11.15, Mar 3, 2016
+ * @version 1.11.11.15, Mar 9, 2016
  */
 
 /* start reset */
@@ -392,6 +392,10 @@ textarea {
 
 .ft-red {
     color: #911;
+}
+
+.ft-blue {
+    color: #4183C4;
 }
 
 .ft-green {
