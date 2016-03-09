@@ -51,7 +51,7 @@
                     </#if>
                 <div class="fn-clear">
                     <br/>
-                    <ul class="tags">
+                    <ul class="tag-desc">
                         <#list tag.tagRelatedTags as relatedTag>
                         <li>
                             <span>

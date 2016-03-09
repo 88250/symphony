@@ -14,15 +14,15 @@
     <div class="module-panel">
         <ul class="module-list ad">
             <li>
-                <b class="ft-red slogan">【Solo】</b>
+                <a target="_blank" href="https://github.com/b3log/solo"><b class="ft-red slogan">【Solo】</b></a>
                 <a class="title" target="_blank" href="https://github.com/b3log/solo">GitHub 上 Star 数最多的 Java 博客</a>
             </li>
             <li>
-                <b class="ft-blue slogan">【Wide】</b>
+                <a target="_blank" href="https://github.com/b3log/wide"><b class="ft-blue slogan">【Wide】</b></a>
                 <a class="title" target="_blank" href="https://github.com/b3log/wide">Golang 黑科技之在线 IDE </a>
             </li>
             <li class="last">
-                <b class="ft-green slogan">【Sym】</b>
+                <a target="_blank" href="https://github.com/b3log/symphony"> <b class="ft-green slogan">【Sym】</b></a>
                 <a class="title" target="_blank" href="https://github.com/b3log/symphony"> 黑客与画家的社区</a>
             </li>
         </ul>
@@ -36,10 +36,10 @@
         </h2>
     </div>
     <div class="module-panel">
-        <ul class="tags fn-clear tags-no-desc">
+        <ul class="tags fn-clear">
             <#list navTrendTags as trendTag>
             <li>
-                <span><a rel="nofollow" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a></span>
+                <a class="btn small" rel="nofollow" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
             </li>
             </#list>
         </ul>
@@ -75,7 +75,7 @@
         </h2>
     </div>
     <div class="module-panel">
-        <ul class="tags fn-clear">
+        <ul class="tag-desc fn-clear">
             <#list sideTags as tag>
             <li>
                 <span>
@@ -127,10 +127,10 @@
         </h2>
     </div>
     <div class="module-panel">
-        <ul class="tags fn-clear tags-no-desc">
+        <ul class="fn-clear tags">
             <#list newTags as newTag>
             <li>
-                <span><a rel="nofollow" href="/tags/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a></span>
+                <a class="btn small" rel="nofollow" href="/tags/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a>
             </li>
             </#list>
         </ul>
