@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.8.6, Mar 8, 2016
+ * @version 2.12.8.7, Mar 9, 2016
  */
 
 /**
@@ -109,6 +109,7 @@ var AddArticle = {
     init: function () {
         var browser = Util.isMobile(true);
         if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+            $('#articleType3').hide();
             AddArticle.editor = Util.initTextarea('articleContent',
                     function (editor) {
                         if (window.localStorage) {

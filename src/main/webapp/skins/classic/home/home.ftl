@@ -25,7 +25,7 @@
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>
-            <#if isMyArticle>
+            <#if isMyArticle && 3 != article.articleType>
             <div class="cmts">
                 <a class="icon-edit" href="/update?id=${article.oId}" title="${editLabel}"></a>
             </div>
