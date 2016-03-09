@@ -373,7 +373,7 @@
 /* end register */
 
 /* start side tags */
-module-panel .tags li {
+.module-panel .tags li {
     float: left;
     list-style: none;
     line-height: 19px;
