@@ -96,7 +96,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final JSONObject author = userQueryService.getUser(authorId);
             final String clientURL = author.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
 
-            if (Strings.isURL(clientURL)) {
+            if (!Strings.isURL(clientURL)) {
                 LOGGER.warn("Invalid client URL [" + clientURL + "]");
 
                 return;
