@@ -53,12 +53,13 @@ import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.6, Mar 8, 2016
+ * @version 1.5.2.7, Mar 10, 2016
  * @since 0.2.0
  */
 @Service
@@ -160,12 +161,15 @@ public class TagQueryService {
             }
 
             String description = ret.optString(Tag.TAG_DESCRIPTION);
+            String descriptionText = ret.optString(Tag.TAG_TITLE);
             if (StringUtils.isNotBlank(description)) {
                 description = shortLinkQueryService.linkTag(description);
                 description = Markdowns.toHTML(description);
 
                 ret.put(Tag.TAG_DESCRIPTION, description);
+                descriptionText = Jsoup.parse(description).text();
             }
+            ret.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -191,13 +195,15 @@ public class TagQueryService {
 
             for (final JSONObject tag : ret) {
                 String description = tag.optString(Tag.TAG_DESCRIPTION);
-
+                String descriptionText = tag.optString(Tag.TAG_TITLE);
                 if (StringUtils.isNotBlank(description)) {
                     description = shortLinkQueryService.linkTag(description);
                     description = Markdowns.toHTML(description);
 
                     tag.put(Tag.TAG_DESCRIPTION, description);
+                    descriptionText = Jsoup.parse(description).text();
                 }
+                tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
             }
 
             return ret;
@@ -246,13 +252,15 @@ public class TagQueryService {
 
             for (final JSONObject tag : ret) {
                 String description = tag.optString(Tag.TAG_DESCRIPTION);
-
+                String descriptionText = tag.optString(Tag.TAG_TITLE);
                 if (StringUtils.isNotBlank(description)) {
                     description = shortLinkQueryService.linkTag(description);
                     description = Markdowns.toHTML(description);
 
                     tag.put(Tag.TAG_DESCRIPTION, description);
+                    descriptionText = Jsoup.parse(description).text();
                 }
+                tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
             }
 
             return ret;
@@ -280,13 +288,15 @@ public class TagQueryService {
 
             for (final JSONObject tag : ret) {
                 String description = tag.optString(Tag.TAG_DESCRIPTION);
-
+                String descriptionText = tag.optString(Tag.TAG_TITLE);
                 if (StringUtils.isNotBlank(description)) {
                     description = shortLinkQueryService.linkTag(description);
                     description = Markdowns.toHTML(description);
 
                     tag.put(Tag.TAG_DESCRIPTION, description);
+                    descriptionText = Jsoup.parse(description).text();
                 }
+                tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
             }
 
             return ret;

@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.3.3, Mar 8, 2016
+ * @version 1.6.3.3, Mar 10, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -82,6 +82,11 @@ public final class Tag {
     public static final String TAG_BAD_CNT = "tagBadCnt";
 
     //// Transient ////
+    /**
+     * Key of tag description text.
+     */
+    public static final String TAG_T_DESCRIPTION_TEXT = "tagDescriptionText";
+    
     /**
      * Key of tag create time.
      */
