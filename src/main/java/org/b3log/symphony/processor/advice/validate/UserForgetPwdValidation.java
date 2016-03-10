@@ -26,6 +26,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.processor.CaptchaProcessor;
 import org.json.JSONObject;
@@ -34,7 +35,7 @@ import org.json.JSONObject;
  * User forget password form validation.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 8, 2015
+ * @version 1.0.1.0, Mar 10, 2016
  * @since 1.4.0
  */
 @Named
@@ -53,8 +54,8 @@ public class UserForgetPwdValidation extends BeforeRequestProcessAdvice {
 
         JSONObject requestJSONObject;
         try {
-            final String json = (String) request.getParameterMap().keySet().iterator().next();
-            requestJSONObject = new JSONObject(json);
+            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            request.setAttribute(Keys.REQUEST, requestJSONObject);
         } catch (final Exception e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }

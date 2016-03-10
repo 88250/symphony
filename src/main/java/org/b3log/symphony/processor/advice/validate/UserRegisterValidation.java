@@ -27,6 +27,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
@@ -39,7 +40,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.6, Jul 13, 2015
+ * @version 1.3.1.6, Mar 10, 2016
  */
 @Named
 @Singleton
@@ -92,8 +93,8 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
 
         JSONObject requestJSONObject;
         try {
-            final String json = (String) request.getParameterMap().keySet().iterator().next();
-            requestJSONObject = new JSONObject(json);
+            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            request.setAttribute(Keys.REQUEST, requestJSONObject);
 
             // check if admin allow to register
             final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_REGISTER);

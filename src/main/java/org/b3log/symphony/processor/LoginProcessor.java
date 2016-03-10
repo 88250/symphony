@@ -75,7 +75,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.9, Jan 2, 2016
+ * @version 1.6.1.9, Mar 10, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -170,14 +170,7 @@ public class LoginProcessor {
             throws Exception {
         context.renderJSON();
 
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = new JSONObject((String) request.getParameterMap().keySet().iterator().next());
-        } catch (final JSONException e1) {
-            LOGGER.log(Level.ERROR, e1.getMessage(), e1);
-            requestJSONObject = new JSONObject();
-        }
-
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
 
         try {
@@ -257,14 +250,7 @@ public class LoginProcessor {
             throws ServletException, IOException {
         context.renderJSON();
 
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = new JSONObject((String) request.getParameterMap().keySet().iterator().next());
-        } catch (final JSONException e1) {
-            LOGGER.log(Level.ERROR, e1.getMessage(), e1);
-            requestJSONObject = new JSONObject();
-        }
-
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
         final String userId = requestJSONObject.optString(Common.USER_ID);
 
@@ -353,14 +339,7 @@ public class LoginProcessor {
             throws ServletException, IOException {
         context.renderJSON();
 
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = new JSONObject((String) request.getParameterMap().keySet().iterator().next());
-        } catch (final JSONException e1) {
-            LOGGER.log(Level.ERROR, e1.getMessage(), e1);
-            requestJSONObject = new JSONObject();
-        }
-
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String referral = requestJSONObject.optString(Common.REFERRAL);
@@ -411,13 +390,7 @@ public class LoginProcessor {
             throws ServletException, IOException {
         context.renderJSON();
 
-        JSONObject requestJSONObject;
-        try {
-            requestJSONObject = new JSONObject((String) request.getParameterMap().keySet().iterator().next());
-        } catch (final JSONException e1) {
-            LOGGER.log(Level.ERROR, e1.getMessage(), e1);
-            requestJSONObject = new JSONObject();
-        }
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
 
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
         final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
