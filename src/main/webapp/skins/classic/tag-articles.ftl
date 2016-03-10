@@ -25,53 +25,44 @@
                         </h1>
                         <#if isLoggedIn>
                         <#if !tag.isReserved || isAdminLoggedIn> &nbsp;
-                        <a class="btn small red" href="/post?tags=${tag.tagTitle?url('utf-8')}&type=0">${addArticleLabel}</a>
+                        <a class="btn red" href="/post?tags=${tag.tagTitle?url('utf-8')}&type=0">${addArticleLabel}</a>
                         </#if>
                         </#if>
                         <span class='fn-right'>
                             <#if isLoggedIn> &nbsp;
                             <#if isFollowing>
-                            <button class="red small" onclick="Util.unfollow(this, '${tag.oId}', 'tag')"> 
-                                ${unfollowLabel}
-                            </button>
+                            <span class="icon-star ft-red fn-pointer" title="${unfollowLabel}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', 'tag-articles')"></span>
                             <#else>
-                            <button class="green small" onclick="Util.follow(this, '${tag.oId}', 'tag')"> 
-                                ${followLabel}
-                            </button>
+                            <span class="icon-star ft-gray fn-pointer" title="${followLabel}" onclick="Util.follow(this, '${tag.oId}', 'tag', 'tag-articles')"></span>
                             </#if>
                             </#if>
                             <#if isAdminLoggedIn> &nbsp;
-                            <a class="ft-gray icon-setting" href="/admin/tag/${tag.oId}" title="${adminLabel}"></a>
+                            <a class="icon-setting" href="/admin/tag/${tag.oId}" title="${adminLabel}"></a>
                             </#if>
                         </span>
                     </div>
-                    <#if tag.tagIconPath != "">
-                    <div class="description">
+                    <#if tag.tagIconPath != ""><div class="description">
                         ${tag.tagDescription}
-                    </div>
-                    </#if>
-                <div class="fn-clear">
-                    <br/>
-                    <ul class="tag-desc">
-                        <#list tag.tagRelatedTags as relatedTag>
-                        <li>
-                            <span>
-                                <#if relatedTag.tagIconPath != "">
-                                <div style="background-image:url('${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" ></div></#if><a rel="tag" href="/tags/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
+                </div></#if>
+                <ul class="tag-desc fn-clear tag-articles-tag-desc">
+                    <#list tag.tagRelatedTags as relatedTag>
+                    <li>
+                        <span>
+                            <#if relatedTag.tagIconPath != "">
+                            <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if><a rel="tag" href="/tags/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
+                        </span>
+                        <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
+                            <div>${relatedTag.tagDescription}</div>
+                            <span class="fn-right">
+                                <span class="ft-gray">${referenceLabel}</span> 
+                                ${relatedTag.tagReferenceCount?c} &nbsp;
+                                <span class="ft-gray">${cmtLabel}</span>
+                                ${relatedTag.tagCommentCount?c}&nbsp;
                             </span>
-                            <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
-                                <div>${relatedTag.tagDescription}</div>
-                                <span class="fn-right">
-                                    <span class="ft-gray">${referenceLabel}</span> 
-                                    ${relatedTag.tagReferenceCount?c} &nbsp;
-                                    <span class="ft-gray">${cmtLabel}</span>
-                                    ${relatedTag.tagCommentCount?c}&nbsp;
-                                </span>
-                            </div>
-                        </li>
-                        </#list>
-                    </ul>
-                </div>
+                        </div>
+                    </li>
+                    </#list>
+                </ul>
                 <div class="fn-flex">
                     <ul class="status fn-flex fn-flex-1">
                         <li>
