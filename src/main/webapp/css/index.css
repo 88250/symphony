@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.7.12, Mar 9, 2016
+ * @version 1.3.7.12, Mar 10, 2016
  */
 /* start module */
 .module-list .slogan {
@@ -384,14 +384,15 @@
     margin: 0 0 10px 10px;    
 }
 
-.tag-desc {
-    margin: 10px;    
+.tag-desc.fn-clear {
+    margin: 10px 0 0px 10px;    
 }
 
 .tag-desc > li {
     float: left;
     position: relative;
     list-style: none;
+    margin: 0 10px 10px 0;
 }
 
 .tag-desc > li:hover > div {
@@ -401,25 +402,26 @@
 .tag-desc > li > span {
     float: left;
     padding: 3px 10px;
-    border: 1px solid transparent;
+    border: 1px solid #DDDDDD;
     position: relative;
     height: 20px;
     white-space: nowrap;
     word-wrap: normal;
+    background-color: #F7F7F7;
+    border-radius: 3px 3px 3px 3px;
+}
+
+.tag-desc > li:hover > span {
+    border-bottom-style: dotted;
+    border-radius: 3px 3px 0 0;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    z-index: 3;
 }
 
 .tag-desc > li > span > a {
     text-decoration: none;
-}
-
-.tag-desc > li:hover > span {
-    background-color: #F7F7F7;
-    border-color: #DDDDDD;
-    border-bottom-style: dotted;
-    border-radius: 3px 3px 0 0;
-    opacity: 0.9;
-    filter: alpha(opacity=90);
-    z-index: 3;
+    color: #999;
 }
 
 .tag-desc > li > span > img {
@@ -446,8 +448,13 @@
     min-width: 150px;
 }
 
-.tag-articles .tags > li > div {
+.tag-articles-tag-desc.tag-desc {
+    margin: 30px 0 0 0;
+}
+
+.tag-articles-tag-desc.tag-desc > li > div {
     left: -3px;
+    right: auto;
     border-radius: 0 3px 3px 3px;
 }
 
@@ -457,10 +464,6 @@
 
 .tag-articles div.description {
     text-indent: 60px;
-}
-
-.tag-articles .title .fn-right {
-    margin-top: 15px;
 }
 /* end side tags */
 

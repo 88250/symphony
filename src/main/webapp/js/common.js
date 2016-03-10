@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.11.13, Mar 8, 2016
+ * @version 1.19.11.14, Mar 10, 2016
  */
 
 /**
@@ -422,8 +422,9 @@ var Util = {
      * @param {BOM} it 触发事件的元素
      * @param {String} id 关注 id
      * @param {String} type 关注的类型
+     * @param {String} from 时间来源
      */
-    follow: function (it, id, type) {
+    follow: function (it, id, type, from) {
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -445,9 +446,14 @@ var Util = {
                                 (parseInt($(it).text()) + 1) + ' ').
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
                                 .attr("title", Label.uncollectLabel);
+                    } else if (from && 'tag-articles' === from) {
+                        $(it).removeClass("ft-gray").addClass("ft-red")
+                                .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', 'tag-articles')")
+                                .attr('title', Label.unfollowLabel);
                     } else {
                         $(it).removeClass("green").addClass("red")
-                            .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')").text(Label.unfollowLabel);
+                                .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
+                                .text(Label.unfollowLabel);
                     }
                 }
             },
@@ -461,8 +467,9 @@ var Util = {
      * @param {BOM} it 触发事件的元素
      * @param {String} id 关注 id
      * @param {String} type 取消关注的类型
+     * @param {String} from 时间来源
      */
-    unfollow: function (it, id, type) {
+    unfollow: function (it, id, type, from) {
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -487,10 +494,14 @@ var Util = {
                         $(it).removeClass('ft-red').html(' <span class="icon-star"></span> ' + count + ' ')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
                                 .attr("title", Label.collectLabel);
+                    } else if (from && 'tag-articles' === from) {
+                        $(it).removeClass("ft-red").addClass("ft-gray")
+                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "', 'tag-articles')")
+                                .attr('title', Label.followLabel);
                     } else {
                         $(it).removeClass("red").addClass("green")
-                            .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
-                            .text(Label.followLabel);
+                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
+                                .text(Label.followLabel);
                     }
                 }
             },
