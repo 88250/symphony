@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 9, 2016
+ * @version 1.0.1.0, Mar 10, 2016
  * @since 1.4.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -95,12 +95,16 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final JSONObject author = userQueryService.getUser(authorId);
             final String clientURL = author.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
             if (!Strings.isURL(clientURL)) {
+                LOGGER.warn("Invalid client URL [" + clientURL + "]");
+
                 return;
             }
 
             final ClientQueryService clientQueryService = beanManager.getReference(ClientQueryService.class);
             final JSONObject userClient = clientQueryService.getClientByAdminEmail(author.optString(User.USER_EMAIL));
             if (null == userClient) {
+                LOGGER.warn("Not found client [email=" + author.optString(User.USER_EMAIL) + "]");
+
                 return;
             }
 
@@ -119,10 +123,10 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final JSONObject comment = new JSONObject();
 
             comment.put(Article.ARTICLE_T_ID, originalArticle.optString(Article.ARTICLE_CLIENT_ARTICLE_ID));
-            comment.put(Common.CONTENT, originalComment.optString(Article.ARTICLE_CONTENT));
-            comment.put(Comment.COMMENT_T_AUTHOR_NAME, commenter.optString(User.USER_NAME));
-            comment.put(Comment.COMMENT_AUTHOR_EMAIL, commenter.optString(User.USER_NAME));
-            comment.put(Comment.COMMENT_T_AUTHOR_URL, commenter.optString(User.USER_URL));
+            comment.put(Common.CONTENT, originalComment.optString(Comment.COMMENT_CONTENT));
+            comment.put(Common.AUTHOR_NAME, commenter.optString(User.USER_NAME));
+            comment.put(Common.AUTHOR_EMAIL, commenter.optString(User.USER_EMAIL));
+            comment.put(Common.AUTHOR_URL, commenter.optString(User.USER_URL));
             requestJSONObject.put(Comment.COMMENT, comment);
 
             final JSONObject client = new JSONObject();

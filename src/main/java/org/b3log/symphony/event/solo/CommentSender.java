@@ -97,12 +97,16 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final String clientURL = author.optString(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL);
 
             if (Strings.isURL(clientURL)) {
+                LOGGER.warn("Invalid client URL [" + clientURL + "]");
+
                 return;
             }
 
             final ClientQueryService clientQueryService = beanManager.getReference(ClientQueryService.class);
             final JSONObject userClient = clientQueryService.getClientByAdminEmail(author.optString(User.USER_EMAIL));
             if (null == userClient) {
+                LOGGER.warn("Not found client [email=" + author.optString(User.USER_EMAIL) + "]");
+
                 return;
             }
 
