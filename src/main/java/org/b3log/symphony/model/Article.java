@@ -166,6 +166,11 @@ public final class Article {
 
     //// Transient ////
     /**
+     * Key of article preview content.
+     */
+    public static final String ARTICLE_T_PREVIEW_CONTENT = "articlePreviewContent";
+
+    /**
      * Key of article view count display format.
      */
     public static final String ARTICLE_T_VIEW_CNT_DISPLAY_FORMAT = "articleViewCntDisplayFormat";

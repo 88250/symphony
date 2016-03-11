@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -580,6 +581,70 @@ public class ArticleQueryService {
     }
 
     /**
+     * Gets preview content of the article specified with the given article id.
+     *
+     * @param articleId the given article id
+     * @param request the specified request
+     * @return preview content
+     * @throws ServiceException service exception
+     */
+    public String getArticlePreviewContent(final String articleId, final HttpServletRequest request) throws ServiceException {
+        final JSONObject article = getArticle(articleId);
+        if (null == article) {
+            return null;
+        }
+
+        return getPreviewContent(article, request);
+    }
+
+    private String getPreviewContent(final JSONObject article, final HttpServletRequest request) throws ServiceException {
+        final int length = Integer.valueOf("150");
+        String ret = article.optString(Article.ARTICLE_CONTENT);
+        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+        final JSONObject author = userQueryService.getUser(authorId);
+
+        if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
+                || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+            return langPropsService.get("articleContentBlockLabel");
+        }
+
+        final Set<String> userNames = userQueryService.getUserNames(ret);
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
+        final String authorName = author.optString(User.USER_NAME);
+        if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                && !authorName.equals(currentUserName)) {
+            boolean invited = false;
+            for (final String userName : userNames) {
+                if (userName.equals(currentUserName)) {
+                    invited = true;
+
+                    break;
+                }
+            }
+
+            if (!invited) {
+                String blockContent = langPropsService.get("articleDiscussionLabel");
+                blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
+                        + "/member/" + authorName + "'>" + authorName + "</a>");
+
+                return blockContent;
+            }
+        }
+
+        ret = Emotions.convert(ret);
+        ret = Markdowns.toHTML(ret);
+
+        ret = Jsoup.clean(ret, Whitelist.none());
+        if (ret.length() >= length) {
+            ret = StringUtils.substring(ret, 0, length)
+                    + " ....";
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets the user articles with the specified user id, page number and page size.
      *
      * @param userId the specified user id
@@ -1105,6 +1170,7 @@ public class ArticleQueryService {
      * <li>Blocks the article if need</li>
      * <li>Generates emotion images</li>
      * <li>Generates article link with article id</li>
+     * <li>Generates article abstract (preview content)</li>
      * </ul>
      *
      * @param article the specified article, for example,      <pre>
@@ -1131,6 +1197,11 @@ public class ArticleQueryService {
 
             return;
         }
+
+        String previewContent = getPreviewContent(article, request);
+        previewContent = Jsoup.parse(previewContent).text();
+        previewContent = previewContent.replaceAll("\"", "'");
+        article.put(Article.ARTICLE_T_PREVIEW_CONTENT, previewContent);
 
         String articleContent = article.optString(Article.ARTICLE_CONTENT);
         article.put(Common.DISCUSSION_VIEWABLE, true);

@@ -79,8 +79,6 @@ import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 /**
  * Article processor.
@@ -1107,63 +1105,14 @@ public class ArticleProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void getArticlePreviewContent(final HttpServletRequest request, final HttpServletResponse response,
             final HTTPRequestContext context, final String articleId) throws Exception {
-        context.renderJSON(true).renderJSONValue("html", "");
-
-        final JSONObject article = articleQueryService.getArticle(articleId);
-        if (null == article) {
+        final String content = articleQueryService.getArticlePreviewContent(articleId, request);
+        if (StringUtils.isBlank(content)) {
             context.renderFalseResult();
 
             return;
         }
 
-        final int length = Integer.valueOf("150");
-        String content = article.optString(Article.ARTICLE_CONTENT);
-        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-        final JSONObject author = userQueryService.getUser(authorId);
-
-        if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
-                || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
-            context.renderJSONValue("html", langPropsService.get("articleContentBlockLabel"));
-
-            return;
-        }
-
-        final Set<String> userNames = userQueryService.getUserNames(content);
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
-        final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
-        final String authorName = author.optString(User.USER_NAME);
-        if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
-                && !authorName.equals(currentUserName)) {
-            boolean invited = false;
-            for (final String userName : userNames) {
-                if (userName.equals(currentUserName)) {
-                    invited = true;
-
-                    break;
-                }
-            }
-
-            if (!invited) {
-                String blockContent = langPropsService.get("articleDiscussionLabel");
-                blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
-                        + "/member/" + authorName + "'>" + authorName + "</a>");
-
-                context.renderJSONValue("html", blockContent);
-
-                return;
-            }
-        }
-
-        content = Emotions.convert(content);
-        content = Markdowns.toHTML(content);
-
-        content = Jsoup.clean(content, Whitelist.none());
-        if (content.length() >= length) {
-            content = StringUtils.substring(content, 0, length)
-                    + " ....";
-        }
-
-        context.renderJSONValue("html", content);
+        context.renderJSON(true).renderJSONValue("html", content);
     }
 
     /**
