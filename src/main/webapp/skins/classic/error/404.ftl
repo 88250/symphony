@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - 404 Not Found!">
+        <@head title="404 Not Found! - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
     </head>

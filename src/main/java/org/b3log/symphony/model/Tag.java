@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.3.3, Mar 10, 2016
+ * @version 1.7.3.3, Mar 11, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -81,12 +81,27 @@ public final class Tag {
      */
     public static final String TAG_BAD_CNT = "tagBadCnt";
 
+    /**
+     * Key of tag seo title.
+     */
+    public static final String TAG_SEO_TITLE = "tagSeoTitle";
+
+    /**
+     * Key of tag seo keywords.
+     */
+    public static final String TAG_SEO_KEYWORDS = "tagSeoKeywords";
+
+    /**
+     * Key of tag seo description.
+     */
+    public static final String TAG_SEO_DESC = "tagSeoDesc";
+
     //// Transient ////
     /**
      * Key of tag description text.
      */
     public static final String TAG_T_DESCRIPTION_TEXT = "tagDescriptionText";
-    
+
     /**
      * Key of tag create time.
      */

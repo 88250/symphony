@@ -171,6 +171,18 @@ public class TagQueryService {
             }
             ret.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
 
+            if (StringUtils.isBlank(Tag.TAG_SEO_TITLE)) {
+                ret.put(Tag.TAG_SEO_TITLE, tagTitle);
+            }
+            
+            if (StringUtils.isBlank(Tag.TAG_SEO_DESC)) {
+                ret.put(Tag.TAG_SEO_DESC, descriptionText);
+            }
+            
+            if (StringUtils.isBlank(Tag.TAG_SEO_KEYWORDS)) {
+                ret.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
+            }
+
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tag [title=" + tagTitle + "] failed", e);

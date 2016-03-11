@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - Oops!">
+        <@head title="Oops! - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
     </head>

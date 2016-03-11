@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - 403 Forbidden!">
+        <@head title="403 Forbidden! - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
     </head>

@@ -45,6 +45,15 @@
 
                 <label for="tagBadCnt">${badCntLabel}</label>
                 <input type="text" id="tagBadCnt" name="tagBadCnt" value="${tag.tagBadCnt}" />
+                
+                <label for="seoTitle">${seoTitleLabel}</label>
+                <input type="text" id="seoTitle" name="tagSeoTitle" value="${tag.tagSeoTitle}" />
+                
+                <label for="seoKeywords">${seoKeywordsLabel}</label>
+                <input type="text" id="seoKeywords" name="tagSeoKeywords" value="${tag.tagSeoKeywords}" />
+                
+                <label for="seoDesc">${seoDescLabel}</label>
+                <input type="text" id="seoDesc" name="tagSeoDesc" value="${tag.tagSeoDesc}" />
 
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>

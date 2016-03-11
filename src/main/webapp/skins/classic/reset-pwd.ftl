@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - ${resetPwdLabel}">
+        <@head title="${resetPwdLabel} - ${symphonyLabel}">
         <meta name="description" content="${resetPwdLabel} ${symphonyLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />

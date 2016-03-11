@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - 500 Internal Server Error!">
+        <@head title="500 Internal Server Error! - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
     </head>

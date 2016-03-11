@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - ${searchLabel}">
+        <@head title="${searchLabel} - ${symphonyLabel}">
         </@head>
     </head>
     <body style="background-color: #FFF;">

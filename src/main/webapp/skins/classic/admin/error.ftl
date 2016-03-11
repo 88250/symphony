@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - ${msg}">
+        <@head title="${msg} - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
     </head>

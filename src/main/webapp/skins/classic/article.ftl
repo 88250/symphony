@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${article.articleTitle} - ${symphonyLabel}">
+        <@head title="${symphonyLabel} - ${article.articleTitle}">
+        <meta name="keywords" content="${article.articleTags}" />
         <meta name="description" content="${article.articleTitle}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">

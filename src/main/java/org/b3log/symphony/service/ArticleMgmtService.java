@@ -804,6 +804,9 @@ public class ArticleMgmtService {
                 tag.put(Tag.TAG_STATUS, 0);
                 tag.put(Tag.TAG_GOOD_CNT, 0);
                 tag.put(Tag.TAG_BAD_CNT, 0);
+                tag.put(Tag.TAG_SEO_TITLE, tagTitle);
+                tag.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
+                tag.put(Tag.TAG_SEO_DESC, "");
 
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
@@ -834,6 +837,9 @@ public class ArticleMgmtService {
                 tagTmp.put(Tag.TAG_ICON_PATH, tag.optString(Tag.TAG_ICON_PATH));
                 tagTmp.put(Tag.TAG_GOOD_CNT, tag.optInt(Tag.TAG_GOOD_CNT));
                 tagTmp.put(Tag.TAG_BAD_CNT, tag.optInt(Tag.TAG_BAD_CNT));
+                tagTmp.put(Tag.TAG_SEO_DESC, tag.optInt(Tag.TAG_SEO_DESC));
+                tagTmp.put(Tag.TAG_SEO_KEYWORDS, tag.optInt(Tag.TAG_SEO_KEYWORDS));
+                tagTmp.put(Tag.TAG_SEO_TITLE, tag.optInt(Tag.TAG_SEO_TITLE));
 
                 tagRepository.update(tagId, tagTmp);
 

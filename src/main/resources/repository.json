@@ -300,6 +300,21 @@
                     "name": "tagBadCnt",
                     "description": "Oppose count",
                     "type": "int"
+                },
+                {
+                    "name": "tagSeoTitle",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "tagSeoKeywords",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "tagSeoDesc",
+                    "type": "String",
+                    "length": 512
                 }
             ]
         },

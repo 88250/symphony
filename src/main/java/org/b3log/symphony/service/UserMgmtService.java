@@ -82,7 +82,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.11.7, Mar 8, 2016
+ * @version 1.11.11.7, Mar 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -844,6 +844,9 @@ public class UserMgmtService {
                 tag.put(Tag.TAG_STATUS, 0);
                 tag.put(Tag.TAG_GOOD_CNT, 0);
                 tag.put(Tag.TAG_BAD_CNT, 0);
+                tag.put(Tag.TAG_SEO_TITLE, tagTitle);
+                tag.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
+                tag.put(Tag.TAG_SEO_DESC, "");
 
                 tagId = tagRepository.add(tag);
 

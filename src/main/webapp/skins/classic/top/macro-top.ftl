@@ -4,15 +4,15 @@
 <html>
     <head>
         <#if type == "balance">
-        <@head title="${symphonyLabel} - ${pointLabel}${balanceLabel}${rankingLabel}">
+        <@head title="${pointLabel}${balanceLabel}${rankingLabel} - ${symphonyLabel}">
         </@head>
         </#if>
         <#if type == "consumption">
-        <@head title="${symphonyLabel} - ${pointLabel}${consumptionLabel}${rankingLabel}">
+        <@head title="${pointLabel}${consumptionLabel}${rankingLabel} - ${symphonyLabel}">
         </@head>
         </#if>
         <#if type == "checkin">
-        <@head title="${symphonyLabel} - ${checkinTopLabel}${rankingLabel}">
+        <@head title="${checkinTopLabel}${rankingLabel} - ${symphonyLabel}">
         </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />

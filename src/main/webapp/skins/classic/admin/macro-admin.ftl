@@ -4,25 +4,25 @@
 <html>
     <head>
         <#if type == "index">
-        <@head title="${symphonyLabel} - ${consoleIndexLabel}"></@head>
+        <@head title="${consoleIndexLabel} - ${symphonyLabel}"></@head>
         </#if>
         <#if type == "users">
-        <@head title="${symphonyLabel} - ${userAdminLabel}"></@head>
+        <@head title="${userAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
         <#if type == "addUser">
-        <@head title="${symphonyLabel} - ${addUserLabel}"></@head>
+        <@head title="${addUserLabel} - ${symphonyLabel}"></@head>
         </#if>
         <#if type == "articles">
-        <@head title="${symphonyLabel} - ${articleAdminLabel}"></@head>
+        <@head title="${articleAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
         <#if type == "comments">
-        <@head title="${symphonyLabel} - ${commentAdminLabel}"></@head>
+        <@head title="${commentAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
         <#if type == "tags">
-        <@head title="${symphonyLabel} - ${tagAdminLabel}"></@head>
+        <@head title="${tagAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
         <#if type == "misc">
-        <@head title="${symphonyLabel} - ${miscAdminLabel}"></@head>
+        <@head title="${miscAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
     </head>
