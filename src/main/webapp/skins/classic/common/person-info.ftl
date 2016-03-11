@@ -13,7 +13,7 @@
             </span>
             </#if>
             <br/><br/>
-            <a href="/member/${currentUser.userName}">${userName}</a>
+            <a href="/member/${currentUser.userName}">${userName}</a> &nbsp;
             <a href="/member/${currentUser.userName}/points" class="ft-gray" title="${pointLabel} ${currentUser.userPoint?c}">
                 <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>
         </div>

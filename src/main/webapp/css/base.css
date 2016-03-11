@@ -1407,7 +1407,7 @@ a[class*=" icon-"]:hover {
 }
 
 .person-info .info {
-    padding: 0 10px;
+    padding: 10px 10px 0;
 }
 
 .person-info .status {
