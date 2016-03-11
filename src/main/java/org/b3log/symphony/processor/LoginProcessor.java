@@ -58,7 +58,6 @@ import org.b3log.symphony.service.VerifycodeMgmtService;
 import org.b3log.symphony.service.VerifycodeQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Sessions;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -75,7 +74,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.9, Mar 10, 2016
+ * @version 1.6.2.9, Mar 11, 2016
  * @since 0.2.0
  */
 @RequestProcessor
