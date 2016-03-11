@@ -36,7 +36,7 @@
         <div class="fn-clear ranking">
             <span class="ft-red">♠</span><a href="/top/balance">${wealthLabel}${rankingLabel}</a>
             <span class="fn-right">
-                <span class="ft-blue">♦</span><a href="/top/consumption">${consumptionLabel}${rankingLabel}</a>
+                <span class="ft-green">♥</span><a href="/top/consumption">${consumptionLabel}${rankingLabel}</a>
             </span>
         </div>
     </div> 
