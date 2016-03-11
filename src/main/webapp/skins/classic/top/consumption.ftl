@@ -1,7 +1,7 @@
 <#include "macro-top.ftl">
 <@top "consumption">
 <div class="content content-reset">
-    <h2><font style="color: red;">♦</font> ${pointLabel}${consumptionLabel}${rankingLabel}</h2>
+   <h2><span class="ft-green">♥</span> ${consumptionLabel}${rankingLabel}</h2>
 </div>
 <div class="list top">
     <ul>

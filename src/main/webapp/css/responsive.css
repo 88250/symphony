@@ -17,14 +17,8 @@
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.9, Jan 12, 2016
+ * @version 1.1.1.9, Mar 11, 2016
  */
-@media (max-width: 1200px) {
-    .person-info .avatar {
-        display: none;
-    }
-}
-
 @media (max-width: 1016px) {
     .avatar-big {
         height: 140px;

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.11.15, Mar 9, 2016
+ * @version 1.12.11.15, Mar 11, 2016
  */
 
 /* start reset */
@@ -1059,7 +1059,7 @@ a[class*=" icon-"]:hover {
     color: #777;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     text-decoration: none;
-    margin: 0 5px;
+    margin: 0 3px;
     padding: 11px 5px;
     float: right;
     font-size: 20px;
@@ -1077,6 +1077,14 @@ a[class*=" icon-"]:hover {
     border-bottom: 2px solid #D26911;
     color: #222;
     padding-bottom: 15px;
+}
+
+.nav .nav-avatar {
+    padding-top: 8px;
+}
+
+.nav .nav-avatar.current {
+    padding-bottom: 11px;
 }
 
 .nav .no-msg {
@@ -1393,22 +1401,16 @@ a[class*=" icon-"]:hover {
 /* end emoji */
 
 /* start person info */
-.person-info {
-    line-height: 24px;
+.person-info .ranking {
+    padding: 10px 10px 0 10px;
+    margin-top: 10px;
+}
+
+.person-info .info {
     padding: 0 10px;
 }
 
-.person-info .fn-clear {
-    margin-bottom: 10px;
-}
-
-.person-info .avatar {
-    margin-right: 0;
-    height: 53px;
-    width: 53px;
-}
-
-.nopanel .status {
+.person-info .status {
     padding-bottom: 0;
 }
 

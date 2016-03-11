@@ -1,35 +1,21 @@
 <#if isLoggedIn>
 <div class="module">
-    <div class="module-header nopanel">
-        <div class="person-info">
-            <div class="fn-clear">
-                <div class="fn-right">
-                    <a href="/settings">
-                        <div class="avatar" 
-                             title="${userName}" style="background-image:url('${currentUser.userAvatarURL}-64.jpg?${currentUser.userUpdateTime?c}')"></div>
-                    </a>
-                </div>
-                <div class="fn-left">
-                    <div class="fn-hr5"></div>
-                    <a href="/member/${currentUser.userName}">${userName}</a>&nbsp;
-                    <a href="/member/${currentUser.userName}/points" class="ft-gray" title="${pointLabel} ${currentUser.userPoint?c}">
-                        <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>&nbsp;
-                    <a class="btn small red" href="/post?tags=Q%26A&type=0">${IHaveAQuestionLabel}</a>
-                    <br/>
-                    <#if !isDailyCheckin>
-                    <a class="btn small red" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
-                    <#else>
-                    <span class="ft-gray">
-                        ${checkinStreakLabel}
-                        ${currentUser.userCurrentCheckinStreak}/<span class="ft-red">${currentUser.userLongestCheckinStreak}</span>
-                        ${checkinStreakPart2Label}
-                    </span>
-                    </#if>
-                </div>
-            </div>
-            <div>
-                ${currentUser.userIntro}
-            </div>
+    <div class="module-header nopanel person-info">
+        <div class="info">
+            <button class="btn red" onclick="window.location = '/post?tags=Q%26A&type=0'">${IHaveAQuestionLabel}</button>&nbsp;
+            <#if !isDailyCheckin>
+            <button class="btn green" onclick="window.location = '/activity/daily-checkin'">${activityDailyCheckinLabel}</button>
+            <#else>
+            <span class="ft-gray">
+                ${checkinStreakLabel}
+                ${currentUser.userCurrentCheckinStreak}/<span class="ft-red">${currentUser.userLongestCheckinStreak}</span>
+                ${checkinStreakPart2Label}
+            </span>
+            </#if>
+            <br/><br/>
+            <a href="/member/${currentUser.userName}">${userName}</a>
+            <a href="/member/${currentUser.userName}/points" class="ft-gray" title="${pointLabel} ${currentUser.userPoint?c}">
+                <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>
         </div>
 
         <ul class="status fn-flex">
@@ -46,6 +32,13 @@
                 <span class="ft-gray">${followingArticlesLabel}</span>
             </li>
         </ul>
+
+        <div class="fn-clear ranking">
+            <span class="ft-red">♠</span><a href="/top/balance">${wealthLabel}${rankingLabel}</a>
+            <span class="fn-right">
+                <span class="ft-blue">♦</span><a href="/top/consumption">${consumptionLabel}${rankingLabel}</a>
+            </span>
+        </div>
     </div> 
 </div>
 </#if>

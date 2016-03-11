@@ -1,7 +1,7 @@
 <#include "macro-top.ftl">
 <@top "checkin">
 <div class="content content-reset">
-    <h2><font style="color: black;">♣</font> ${checkinTopLabel}${rankingLabel}</h2>
+    <h2><span class="ft-gray">♣</span> ${checkinTopLabel}</h2>
 </div>
 <div class="list top">
     <ul>
