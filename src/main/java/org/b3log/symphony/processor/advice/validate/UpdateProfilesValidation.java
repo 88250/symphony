@@ -26,8 +26,6 @@ import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.ArrayUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -38,7 +36,6 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -107,10 +104,7 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
 
         String userTags = requestJSONObject.optString(UserExt.USER_TAGS);
         if (!Strings.isEmptyOrNull(userTags)) {
-            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-            final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
-
-            userTags = userMgmtService.formatUserTags(userTags);
+            userTags = Tag.formatTags(userTags);
             String[] tagTitles = userTags.split(",");
             if (null == tagTitles || 0 == tagTitles.length) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, tagErrMsg));

@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -40,6 +41,12 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.urlfetch.HTTPHeader;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.HTTPResponse;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Common;
@@ -105,6 +112,58 @@ public class TagQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+    /**
+     * URL fetch service.
+     */
+    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
+    /**
+     * Generates tags for the specified content.
+     *
+     * @param content the specified content
+     * @param tagFetchSize the specified tag fetch size
+     * @return tags
+     */
+    public List<String> generateTags(final String content, final int tagFetchSize) {
+        final List<String> ret = new ArrayList<String>();
+        
+        final String token = Symphonys.get("boson.token");
+        if (StringUtils.isBlank(token)) {
+            return ret;
+        }
+
+        final HTTPRequest request = new HTTPRequest();
+        try {
+            request.setURL(new URL("http://api.bosonnlp.com/keywords/analysis?top_k=" + tagFetchSize));
+            request.setRequestMethod(HTTPRequestMethod.POST);
+
+            request.addHeader(new HTTPHeader("Content-Type", "application/json"));
+            request.addHeader(new HTTPHeader("Accept", "application/json"));
+            request.addHeader(new HTTPHeader("X-Token", token));
+            request.setPayload(("\"" + content + "\"").getBytes("UTF-8"));
+
+            final HTTPResponse response = urlFetchService.fetch(request);
+            final String str = new String(response.getContent(), "UTF-8");
+
+            try {
+                final JSONArray data = new JSONArray(str);
+
+                for (int i = 0; i < data.length(); i++) {
+                    final JSONArray key = data.getJSONArray(i);
+                    ret.add(key.optString(1));
+                }
+            } catch (final Exception e) {
+                final JSONObject data = new JSONObject(str);
+
+                LOGGER.log(Level.ERROR, "Boson process failed [" + data.toString(4) + "]");
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Generates tags error", e);
+        }
+
+        return ret;
+    }
 
     /**
      * Determines whether the specified tag title is reserved.
@@ -174,11 +233,11 @@ public class TagQueryService {
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_TITLE))) {
                 ret.put(Tag.TAG_SEO_TITLE, tagTitle);
             }
-            
+
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_DESC))) {
                 ret.put(Tag.TAG_SEO_DESC, descriptionText);
             }
-            
+
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_KEYWORDS))) {
                 ret.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
             }

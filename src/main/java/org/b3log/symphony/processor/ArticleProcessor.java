@@ -245,7 +245,7 @@ public class ArticleProcessor {
 
             dataModel.put(Tag.TAGS, tags);
         } else {
-            tags = articleMgmtService.formatArticleTags(tags);
+            tags = Tag.formatTags(tags);
             final String[] tagTitles = tags.split(",");
 
             final StringBuilder tagBuilder = new StringBuilder();
@@ -780,7 +780,7 @@ public class ArticleProcessor {
         final String clientArticleId = originalArticle.optString(Keys.OBJECT_ID);
 
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
-        String articleTags = articleMgmtService.formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
+        String articleTags = Tag.formatTags(originalArticle.optString(Article.ARTICLE_TAGS));
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
         final JSONObject article = new JSONObject();
@@ -956,7 +956,7 @@ public class ArticleProcessor {
         final JSONObject originalArticle = requestJSONObject.getJSONObject(Article.ARTICLE);
 
         final String articleTitle = originalArticle.optString(Article.ARTICLE_TITLE);
-        String articleTags = articleMgmtService.formatArticleTags(originalArticle.optString(Article.ARTICLE_TAGS));
+        String articleTags = Tag.formatTags(originalArticle.optString(Article.ARTICLE_TAGS));
         String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
 
         final String permalink = originalArticle.optString(Article.ARTICLE_PERMALINK);

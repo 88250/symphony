@@ -15,7 +15,12 @@
  */
 package org.b3log.symphony.model;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
+import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.util.Strings;
 
 /**
  * This class defines tag model relevant keys.
@@ -189,6 +194,59 @@ public final class Tag {
      * Tag title pattern.
      */
     public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5,\\w,\\s,&,\\+,\\-,\\.]+");
+
+    /**
+     * Formats the specified tags.
+     *
+     * <ul>
+     * <li>Trims every tag</li>
+     * <li>Deduplication</li>
+     * </ul>
+     *
+     * @param tagStr the specified article tags
+     * @return formatted tags string
+     */
+    public static String formatTags(final String tagStr) {
+        final String tagStr1 = tagStr.replaceAll("\\s+", "").replaceAll("，", ",").replaceAll("、", ",").
+                replaceAll("；", ",").replaceAll(";", ",");
+        String[] tagTitles = tagStr1.split(",");
+
+        tagTitles = Strings.trimAll(tagTitles);
+        
+        // deduplication
+        final Set<String> titles = new LinkedHashSet<String>(); 
+        for (final String tagTitle : tagTitles) {
+            if (!exists(titles, tagTitle)) {
+                titles.add(tagTitle);
+            }
+        }
+
+        tagTitles = titles.toArray(new String[0]);
+
+        final StringBuilder tagsBuilder = new StringBuilder();
+        for (final String tagTitle : tagTitles) {
+            if (StringUtils.isBlank(tagTitle.trim())) {
+                continue;
+            }
+
+            tagsBuilder.append(tagTitle.trim()).append(",");
+        }
+        if (tagsBuilder.length() > 0) {
+            tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
+        }
+
+        return tagsBuilder.toString();
+    }
+    
+    private static boolean exists(final Set<String> titles, final String title) {
+        for (final String setTitle : titles) {
+            if (setTitle.equalsIgnoreCase(title)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     /**
      * Private constructor.

@@ -22,11 +22,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -35,7 +32,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -761,41 +757,6 @@ public class UserMgmtService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Reset unverified users failed", e);
         }
-    }
-
-    /**
-     * Formats the specified user tags.
-     *
-     * <ul>
-     * <li>Trims every tag</li>
-     * <li>Deduplication</li>
-     * </ul>
-     *
-     * @param userTags the specified article tags
-     * @return formatted tags string
-     */
-    public String formatUserTags(final String userTags) {
-        final String articleTags1 = userTags.replaceAll("\\s+", ",").replaceAll("，", ",").replaceAll("、", ",").
-                replaceAll("；", ",").replaceAll(";", ",");
-        String[] tagTitles = articleTags1.split(",");
-
-        tagTitles = Strings.trimAll(tagTitles);
-        final Set<String> titles = new LinkedHashSet<String>(Arrays.asList(tagTitles)); // deduplication
-        tagTitles = titles.toArray(new String[0]);
-
-        final StringBuilder tagsBuilder = new StringBuilder();
-        for (final String tagTitle : tagTitles) {
-            if (StringUtils.isBlank(tagTitle.trim())) {
-                continue;
-            }
-
-            tagsBuilder.append(tagTitle.trim()).append(",");
-        }
-        if (tagsBuilder.length() > 0) {
-            tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
-        }
-
-        return tagsBuilder.toString();
     }
 
     /**

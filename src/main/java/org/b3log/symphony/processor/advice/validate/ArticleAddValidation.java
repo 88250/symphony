@@ -38,7 +38,6 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -122,8 +121,6 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
         }
 
-        final ArticleMgmtService articleMgmtService = beanManager.getReference(ArticleMgmtService.class);
-
         articleTags = articleTags.replaceAll("B3log Announcement", "B3logAnnouncement").
                 replaceAll("B3log Broadcast", "B3logBroadcast"); // compatible with legacy systems
 
@@ -132,7 +129,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         articleTags = articleTags.replaceAll("B3logAnnouncement", "B3log Announcement").
                 replaceAll("B3logBroadcast", "B3log Broadcast");
 
-        articleTags = articleMgmtService.formatArticleTags(articleTags);
+        articleTags = Tag.formatTags(articleTags);
 
         String[] tagTitles = articleTags.split(",");
         if (null == tagTitles || 0 == tagTitles.length) {

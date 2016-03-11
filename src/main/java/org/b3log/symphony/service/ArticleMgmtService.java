@@ -17,9 +17,7 @@ package org.b3log.symphony.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import org.apache.commons.lang.ArrayUtils;
@@ -38,7 +36,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
@@ -154,10 +151,21 @@ public class ArticleMgmtService {
     private FollowQueryService followQueryService;
 
     /**
+     * Tag query service.
+     */
+    @Inject
+    private TagQueryService tagQueryService;
+
+    /**
      * Notification management service.
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
+
+    /**
+     * Generate tag max count.
+     */
+    private static final int GEN_TAG_MAX_CNT = 4;
 
     /**
      * Increments the view count of the specified article by the given article id.
@@ -314,7 +322,24 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_CITY, city);
             }
 
-            tag(article.optString(Article.ARTICLE_TAGS).split(","), article, author);
+            String articleTags = article.optString(Article.ARTICLE_TAGS);
+            String[] tagTitles = articleTags.split(",");
+            if (tagTitles.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
+                    && Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+                final int tagGenCnt = GEN_TAG_MAX_CNT - tagTitles.length;
+                final String content = article.optString(Article.ARTICLE_TITLE)
+                        + " " + article.optString(Article.ARTICLE_CONTENT);
+                final List<String> genTags
+                        = tagQueryService.generateTags(content, tagGenCnt);
+                if (!genTags.isEmpty()) {
+                    articleTags = articleTags + "," + StringUtils.join(genTags, ",");
+                    articleTags = Tag.formatTags(articleTags);
+                }
+            }
+            article.put(Article.ARTICLE_TAGS, articleTags);
+            tagTitles = articleTags.split(",");
+
+            tag(tagTitles, article, author);
 
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
             article.put(Article.ARTICLE_IP, ip);
@@ -650,8 +675,25 @@ public class ArticleMgmtService {
             final JSONObject author) throws Exception {
         final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
         final List<JSONObject> oldTags = tagRepository.getByArticleId(oldArticleId);
-        final String tagsString = newArticle.getString(Article.ARTICLE_TAGS);
+        String tagsString = newArticle.getString(Article.ARTICLE_TAGS);
         String[] tagStrings = tagsString.split(",");
+
+        final int articleType = newArticle.optInt(Article.ARTICLE_TYPE);
+        if (tagStrings.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
+                && Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+            final int tagGenCnt = GEN_TAG_MAX_CNT - tagStrings.length;
+            final String content = newArticle.optString(Article.ARTICLE_TITLE)
+                    + " " + newArticle.optString(Article.ARTICLE_CONTENT);
+            final List<String> genTags
+                    = tagQueryService.generateTags(content, tagGenCnt);
+            if (!genTags.isEmpty()) {
+                tagsString = tagsString + "," + StringUtils.join(genTags, ",");
+                tagsString = Tag.formatTags(tagsString);
+            }
+        }
+        newArticle.put(Article.ARTICLE_TAGS, tagsString);
+        tagStrings = tagsString.split(",");
+
         final List<JSONObject> newTags = new ArrayList<JSONObject>();
 
         for (int i = 0; i < tagStrings.length; i++) {
@@ -775,7 +817,7 @@ public class ArticleMgmtService {
     /**
      * Tags the specified article with the specified tag titles.
      *
-     * @param tagTitles the specified tag titles
+     * @param tagTitles the specified (new) tag titles
      * @param article the specified article
      * @param author the specified author
      * @throws RepositoryException repository exception
@@ -837,9 +879,9 @@ public class ArticleMgmtService {
                 tagTmp.put(Tag.TAG_ICON_PATH, tag.optString(Tag.TAG_ICON_PATH));
                 tagTmp.put(Tag.TAG_GOOD_CNT, tag.optInt(Tag.TAG_GOOD_CNT));
                 tagTmp.put(Tag.TAG_BAD_CNT, tag.optInt(Tag.TAG_BAD_CNT));
-                tagTmp.put(Tag.TAG_SEO_DESC, tag.optInt(Tag.TAG_SEO_DESC));
-                tagTmp.put(Tag.TAG_SEO_KEYWORDS, tag.optInt(Tag.TAG_SEO_KEYWORDS));
-                tagTmp.put(Tag.TAG_SEO_TITLE, tag.optInt(Tag.TAG_SEO_TITLE));
+                tagTmp.put(Tag.TAG_SEO_DESC, tag.optString(Tag.TAG_SEO_DESC));
+                tagTmp.put(Tag.TAG_SEO_KEYWORDS, tag.optString(Tag.TAG_SEO_KEYWORDS));
+                tagTmp.put(Tag.TAG_SEO_TITLE, tag.optString(Tag.TAG_SEO_TITLE));
 
                 tagRepository.update(tagId, tagTmp);
 
@@ -861,41 +903,6 @@ public class ArticleMgmtService {
             userTagRelation.put(Common.TYPE, userTagType);
             userTagRepository.add(userTagRelation);
         }
-    }
-
-    /**
-     * Formats the specified article tags.
-     *
-     * <ul>
-     * <li>Trims every tag</li>
-     * <li>Deduplication</li>
-     * </ul>
-     *
-     * @param articleTags the specified article tags
-     * @return formatted tags string
-     */
-    public String formatArticleTags(final String articleTags) {
-        final String articleTags1 = articleTags.replaceAll("，", ",").replaceAll("、", ",").replaceAll("；", ",")
-                .replaceAll(";", ",");
-        String[] tagTitles = articleTags1.split(",");
-
-        tagTitles = Strings.trimAll(tagTitles);
-        final Set<String> titles = new LinkedHashSet<String>(Arrays.asList(tagTitles)); // deduplication
-        tagTitles = titles.toArray(new String[0]);
-
-        final StringBuilder tagsBuilder = new StringBuilder();
-        for (final String tagTitle : tagTitles) {
-            if (StringUtils.isBlank(tagTitle.trim())) {
-                continue;
-            }
-
-            tagsBuilder.append(tagTitle.trim()).append(",");
-        }
-        if (tagsBuilder.length() > 0) {
-            tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
-        }
-
-        return tagsBuilder.toString();
     }
 
     /**
