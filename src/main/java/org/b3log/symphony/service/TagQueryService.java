@@ -59,7 +59,7 @@ import org.jsoup.Jsoup;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.7, Mar 10, 2016
+ * @version 1.5.3.7, Mar 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -171,15 +171,15 @@ public class TagQueryService {
             }
             ret.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
 
-            if (StringUtils.isBlank(Tag.TAG_SEO_TITLE)) {
+            if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_TITLE))) {
                 ret.put(Tag.TAG_SEO_TITLE, tagTitle);
             }
             
-            if (StringUtils.isBlank(Tag.TAG_SEO_DESC)) {
+            if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_DESC))) {
                 ret.put(Tag.TAG_SEO_DESC, descriptionText);
             }
             
-            if (StringUtils.isBlank(Tag.TAG_SEO_KEYWORDS)) {
+            if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_KEYWORDS))) {
                 ret.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
             }
 
