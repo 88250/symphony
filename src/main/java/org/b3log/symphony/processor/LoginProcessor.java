@@ -250,7 +250,7 @@ public class LoginProcessor {
             throws ServletException, IOException {
         context.renderJSON();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
         final String password = requestJSONObject.optString(User.USER_PASSWORD); // Hashed
         final String userId = requestJSONObject.optString(Common.USER_ID);
 
