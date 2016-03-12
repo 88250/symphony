@@ -67,7 +67,7 @@
                         </li>
                         <#if currentUser?? && currentUser.userName == user.userName>
                         <li<#if type == "settings"> class="current"</#if>>
-                            <a href="/settings">${settingsLabel}</a>
+                            <a href="/settings"><b class="ft-red">${settingsLabel}</b></a>
                         </li>
                         </#if>
                     </ul>

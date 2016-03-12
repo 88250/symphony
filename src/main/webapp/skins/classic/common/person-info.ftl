@@ -1,22 +1,16 @@
 <#if isLoggedIn>
-<div class="module">
-    <div class="module-header nopanel person-info">
-        <div class="info">
-            <button class="btn red" onclick="window.location = '/post?tags=Q%26A&type=0'">${IHaveAQuestionLabel}</button>&nbsp;
-            <#if !isDailyCheckin>
-            <button class="btn green" onclick="window.location = '/activity/daily-checkin'">${activityDailyCheckinLabel}</button>
-            <#else>
-            <span class="ft-gray">
-                ${checkinStreakLabel}
-                ${currentUser.userCurrentCheckinStreak}/<span class="ft-red">${currentUser.userLongestCheckinStreak}</span>
-                ${checkinStreakPart2Label}
-            </span>
-            </#if>
-            <br/><br/>
-            <a href="/member/${currentUser.userName}">${userName}</a> &nbsp;
-            <a href="/member/${currentUser.userName}/points" class="ft-gray" title="${pointLabel} ${currentUser.userPoint?c}">
-                <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>
-        </div>
+<div class="module person-info">
+    <div class="info fn-clear">
+        <button class="btn red" onclick="window.location = '/post?type=0'">New!</button>
+        <#if !isDailyCheckin>
+        <a class="fn-right" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
+        <#else>
+        <a class="ft-gray fn-right" title="${checkinStreakLabel}" href="/top/checkin">
+            ${currentUser.userCurrentCheckinStreak}/<span class="ft-red">${currentUser.userLongestCheckinStreak}</span>
+        </a>
+        </#if>
+    </div>
+    <div class="module-header nopanel">
 
         <ul class="status fn-flex">
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/tags'">
@@ -35,9 +29,9 @@
 
         <div class="fn-clear ranking">
             <span class="ft-red">♠</span> <a href="/top/balance">${wealthLabel}${rankingLabel}</a>
-            <span class="fn-right">
-                <span class="ft-green">♥</span> <a href="/top/consumption">${consumptionLabel}${rankingLabel}</a>
-            </span>
+            <span class="ft-green">♥</span> <a href="/top/consumption">${consumptionLabel}${rankingLabel}</a>
+            <a href="/member/${currentUser.userName}/points" class="ft-gray fn-right" title="${pointLabel} ${currentUser.userPoint?c}">
+                <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>
         </div>
     </div> 
 </div>
