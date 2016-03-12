@@ -134,7 +134,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             comment.put(Common.IS_ARTICLE_AUTHOR,
                     originalArticle.optString(Article.ARTICLE_AUTHOR_ID)
                     .equals(commenter.optString(Keys.OBJECT_ID)));
-            comment.put(Common.TIME, comment.optLong(Comment.COMMENT_CREATE_TIME));
+            comment.put(Common.TIME, originalComment.optLong(Comment.COMMENT_CREATE_TIME));
             requestJSONObject.put(Comment.COMMENT, comment);
 
             final JSONObject client = new JSONObject();
