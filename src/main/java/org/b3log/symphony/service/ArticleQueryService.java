@@ -332,16 +332,29 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getNews(final int currentPageNum, final int pageSize) throws ServiceException {
-        JSONObject tag = null;
 
         try {
-            tag = tagRepository.getByTitle("B3log Announcement");
-            if (null == tag) {
+            JSONObject oldAnnouncementTag = tagRepository.getByTitle("B3log Announcement");
+            JSONObject currentAnnouncementTag = tagRepository.getByTitle("B3log公告");
+            if (null == oldAnnouncementTag && null == currentAnnouncementTag) {
                 return Collections.emptyList();
             }
 
+            if (null == oldAnnouncementTag) {
+                oldAnnouncementTag = new JSONObject();
+            }
+
+            if (null == currentAnnouncementTag) {
+                currentAnnouncementTag = new JSONObject();
+            }
+
             Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                    setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
+                    setFilter(CompositeFilterOperator.or(
+                            new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL,
+                                    oldAnnouncementTag.optString(Keys.OBJECT_ID)),
+                            new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL,
+                                    currentAnnouncementTag.optString(Keys.OBJECT_ID))
+                    ))
                     .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
 
             JSONObject result = tagArticleRepository.get(query);

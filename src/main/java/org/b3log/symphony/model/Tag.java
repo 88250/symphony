@@ -229,7 +229,7 @@ public final class Tag {
      * @return formatted tags string
      */
     public static String formatTags(final String tagStr) {
-        final String tagStr1 = tagStr.replaceAll("\\s+", "").replaceAll("，", ",").replaceAll("、", ",").
+        final String tagStr1 = tagStr.replaceAll("\\s+", ",").replaceAll("，", ",").replaceAll("、", ",").
                 replaceAll("；", ",").replaceAll(";", ",");
         String[] tagTitles = tagStr1.split(",");
 
