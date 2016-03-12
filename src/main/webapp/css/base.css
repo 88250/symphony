@@ -427,6 +427,8 @@ textarea {
 
 .tag:hover {
     text-decoration: none;
+    color: #333;
+    background-color: #ccc;
 }
 /* start button */
 button,

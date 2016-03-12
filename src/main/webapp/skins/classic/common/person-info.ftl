@@ -1,7 +1,7 @@
 <#if isLoggedIn>
 <div class="module person-info">
     <div class="info fn-clear">
-        <button class="btn red" onclick="window.location = '/post?type=0'">New!</button>
+        <button class="btn red" title="${addArticleLabel}" onclick="window.location = '/pre-post'">New!</button>
         <#if !isDailyCheckin>
         <a class="fn-right" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
         <#else>
@@ -11,7 +11,6 @@
         </#if>
     </div>
     <div class="module-header nopanel">
-
         <ul class="status fn-flex">
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/tags'">
                 <strong>${currentUser.followingTagCnt?c}</strong>
