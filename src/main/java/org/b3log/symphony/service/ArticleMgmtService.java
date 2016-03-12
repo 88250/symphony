@@ -335,6 +335,10 @@ public class ArticleMgmtService {
                     articleTags = Tag.useHead(articleTags, GEN_TAG_MAX_CNT);
                 }
             }
+
+            if (StringUtils.isBlank(articleTags)) {
+                articleTags = "B3log";
+            }
             article.put(Article.ARTICLE_TAGS, articleTags);
             tagTitles = articleTags.split(",");
 
@@ -688,6 +692,10 @@ public class ArticleMgmtService {
                 tagsString = Tag.formatTags(tagsString);
                 tagsString = Tag.useHead(tagsString, GEN_TAG_MAX_CNT);
             }
+        }
+
+        if (StringUtils.isBlank(tagsString)) {
+            tagsString = "B3log";
         }
         newArticle.put(Article.ARTICLE_TAGS, tagsString);
         tagStrings = tagsString.split(",");

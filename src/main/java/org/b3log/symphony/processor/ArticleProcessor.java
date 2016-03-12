@@ -512,12 +512,7 @@ public class ArticleProcessor {
                 articleTags = articleMgmtService.filterReservedTags(articleTags);
             }
 
-            if (Strings.isEmptyOrNull(articleTags)) {
-                throw new ServiceException(langPropsService.get("articleTagReservedLabel"));
-            }
-
             article.put(Article.ARTICLE_TAGS, articleTags);
-
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
 
             articleMgmtService.addArticle(article);
@@ -675,10 +670,6 @@ public class ArticleProcessor {
         }
 
         try {
-            if (Strings.isEmptyOrNull(articleTags)) {
-                throw new ServiceException(langPropsService.get("articleTagReservedLabel"));
-            }
-
             article.put(Article.ARTICLE_TAGS, articleTags);
 
             articleMgmtService.updateArticle(article);
