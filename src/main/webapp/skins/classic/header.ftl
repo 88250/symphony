@@ -31,7 +31,7 @@
             <#if "adminRole" == userRole>
             <a href="/admin" title="${adminLabel}" class="icon-userrole"></a>
             </#if>
-            <a href="/settings" title="${settingsLabel}" class="nav-avatar" style="padding-top: 8px;">
+            <a href="/member/${currentUser.userName}" title="${settingsLabel}" class="nav-avatar">
                 <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL}-64.jpg?${currentUser.userUpdateTime?c}')"></span>
             </a>
             <a href="/activities" title="${activityLabel}" class="icon-flag"></a>

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.11.15, Mar 11, 2016
+ * @version 1.13.11.15, Mar 12, 2016
  */
 
 /* start reset */
@@ -441,6 +441,7 @@ button,
     border: 1px solid #D5D5D5;
     border-bottom-color: #E1E1E1;
     box-sizing: border-box;
+    line-height: 21px;
 }
 
 button:hover,
@@ -1080,7 +1081,7 @@ a[class*=" icon-"]:hover {
 }
 
 .nav .nav-avatar {
-    padding-top: 8px;
+    padding-top: 9px;
 }
 
 .nav .nav-avatar.current {
@@ -1401,17 +1402,35 @@ a[class*=" icon-"]:hover {
 /* end emoji */
 
 /* start person info */
-.person-info .ranking {
-    padding: 10px 10px 0 10px;
-    margin-top: 10px;
+.person-info .info {
+    position: relative;
+    left: -1px;
+    top: -1px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    height: 35px;
 }
 
-.person-info .info {
-    padding: 10px 10px 0;
+.person-info .info button {
+    position: absolute;
+    border-radius: 0;
+    width: 34%;
+    box-sizing: border-box;
+}
+
+.person-info .info .fn-right {
+    margin: 9px 10px 0 0;
 }
 
 .person-info .status {
-    padding-bottom: 0;
+    border-bottom: 1px dotted #ccc;
+    border-top-width: 0;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}
+
+.person-info .status .fn-pointer:hover span {
+    color: #333;
 }
 
 .painter-point {

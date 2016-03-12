@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.5.7, Jan 28, 2016
+ * @version 1.1.5.8, Mar 12, 2016
  */
 /* start home side */
 .user-name {
@@ -122,7 +122,7 @@
     cursor: pointer;
     float: left;
     list-style: none outside none;
-    padding: 8px 9px;
+    padding: 8px;
     margin-bottom: -1px;
 }
 
