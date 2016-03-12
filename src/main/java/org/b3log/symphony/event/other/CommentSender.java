@@ -16,6 +16,7 @@
 package org.b3log.symphony.event.other;
 
 import java.net.URL;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.event.AbstractEventListener;
@@ -27,10 +28,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.urlfetch.HTTPHeader;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
@@ -46,7 +49,7 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Mar 10, 2016
+ * @version 1.0.2.0, Mar 12, 2016
  * @since 1.4.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -118,7 +121,8 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
 
             final HTTPRequest httpRequest = new HTTPRequest();
             httpRequest.setURL(new URL(clientURL));
-            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
+            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
+            httpRequest.addHeader(new HTTPHeader("User-Agent", "B3log Symphony/" + SymphonyServletListener.VERSION));
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject comment = new JSONObject();
 
@@ -127,6 +131,10 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             comment.put(Common.AUTHOR_NAME, commenter.optString(User.USER_NAME));
             comment.put(Common.AUTHOR_EMAIL, commenter.optString(User.USER_EMAIL));
             comment.put(Common.AUTHOR_URL, commenter.optString(User.USER_URL));
+            comment.put(Common.IS_ARTICLE_AUTHOR,
+                    originalArticle.optString(Article.ARTICLE_AUTHOR_ID)
+                    .equals(commenter.optString(Keys.OBJECT_ID)));
+            comment.put(Common.TIME, comment.optLong(Comment.COMMENT_CREATE_TIME));
             requestJSONObject.put(Comment.COMMENT, comment);
 
             final JSONObject client = new JSONObject();

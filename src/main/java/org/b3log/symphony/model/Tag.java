@@ -194,10 +194,10 @@ public final class Tag {
      * Tag title pattern.
      */
     public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5,\\w,\\s,&,\\+,\\-,\\.]+");
-    
+
     /**
      * Uses the head tags.
-     * 
+     *
      * @param tagStr the specified tags
      * @param num the specified used number
      * @return head tags
@@ -207,13 +207,13 @@ public final class Tag {
         if (tags.length <= num) {
             return tagStr;
         }
-        
+
         final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < num; i++) {
             sb.append(tags[i]).append(",");
         }
         sb.deleteCharAt(sb.length() - 1);
-        
+
         return sb.toString();
     }
 
@@ -234,9 +234,9 @@ public final class Tag {
         String[] tagTitles = tagStr1.split(",");
 
         tagTitles = Strings.trimAll(tagTitles);
-        
+
         // deduplication
-        final Set<String> titles = new LinkedHashSet<String>(); 
+        final Set<String> titles = new LinkedHashSet<String>();
         for (final String tagTitle : tagTitles) {
             if (!exists(titles, tagTitle)) {
                 titles.add(tagTitle);
@@ -259,14 +259,21 @@ public final class Tag {
 
         return tagsBuilder.toString();
     }
-    
+
+    /**
+     * Checks the specified title exists in the specified title set.
+     *
+     * @param titles the specified title set
+     * @param title the specified title to check
+     * @return {@code true} if exists, returns {@code false} otherwise
+     */
     private static boolean exists(final Set<String> titles, final String title) {
         for (final String setTitle : titles) {
             if (setTitle.equalsIgnoreCase(title)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
