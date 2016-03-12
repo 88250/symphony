@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.15.12, Feb 16, 2016
+ * @version 1.6.16.12, Mar 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -326,14 +326,13 @@ public class ArticleMgmtService {
             String[] tagTitles = articleTags.split(",");
             if (tagTitles.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                     && Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
-                final int tagGenCnt = GEN_TAG_MAX_CNT - tagTitles.length;
                 final String content = article.optString(Article.ARTICLE_TITLE)
                         + " " + article.optString(Article.ARTICLE_CONTENT);
-                final List<String> genTags
-                        = tagQueryService.generateTags(content, tagGenCnt);
+                final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
                 if (!genTags.isEmpty()) {
                     articleTags = articleTags + "," + StringUtils.join(genTags, ",");
                     articleTags = Tag.formatTags(articleTags);
+                    articleTags = Tag.useHead(articleTags, GEN_TAG_MAX_CNT);
                 }
             }
             article.put(Article.ARTICLE_TAGS, articleTags);
@@ -681,14 +680,13 @@ public class ArticleMgmtService {
         final int articleType = newArticle.optInt(Article.ARTICLE_TYPE);
         if (tagStrings.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                 && Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
-            final int tagGenCnt = GEN_TAG_MAX_CNT - tagStrings.length;
             final String content = newArticle.optString(Article.ARTICLE_TITLE)
                     + " " + newArticle.optString(Article.ARTICLE_CONTENT);
-            final List<String> genTags
-                    = tagQueryService.generateTags(content, tagGenCnt);
+            final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
             if (!genTags.isEmpty()) {
                 tagsString = tagsString + "," + StringUtils.join(genTags, ",");
                 tagsString = Tag.formatTags(tagsString);
+                tagsString = Tag.useHead(tagsString, GEN_TAG_MAX_CNT);
             }
         }
         newArticle.put(Article.ARTICLE_TAGS, tagsString);

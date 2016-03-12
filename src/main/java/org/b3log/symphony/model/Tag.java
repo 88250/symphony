@@ -194,6 +194,28 @@ public final class Tag {
      * Tag title pattern.
      */
     public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5,\\w,\\s,&,\\+,\\-,\\.]+");
+    
+    /**
+     * Uses the head tags.
+     * 
+     * @param tagStr the specified tags
+     * @param num the specified used number
+     * @return head tags
+     */
+    public static String useHead(final String tagStr, final int num) {
+        final String[] tags = tagStr.split(",");
+        if (tags.length <= num) {
+            return tagStr;
+        }
+        
+        final StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < num; i++) {
+            sb.append(tags[i]).append(",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        
+        return sb.toString();
+    }
 
     /**
      * Formats the specified tags.
@@ -203,7 +225,7 @@ public final class Tag {
      * <li>Deduplication</li>
      * </ul>
      *
-     * @param tagStr the specified article tags
+     * @param tagStr the specified tags
      * @return formatted tags string
      */
     public static String formatTags(final String tagStr) {
