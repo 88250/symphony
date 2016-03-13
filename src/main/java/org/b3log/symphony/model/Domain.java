@@ -83,7 +83,7 @@ public final class Domain {
     /**
      * Key of domain tags.
      */
-    public static final String DOMAIN_TAGS = "domainTags";
+    public static final String DOMAIN_T_TAGS = "domainTags";
 
     /**
      * Key of domain id.

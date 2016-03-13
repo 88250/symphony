@@ -16,13 +16,18 @@
             <h2>${tagLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
-            ....
-            
-            
+            <ul>
+                <#list domain.domainTags as tag>
+                <li>
+                    <a class="btn small" target="_blank" href="/tags/${tag.tagTitle?url('UTF-8')}">${tag.tagTitle}</a>
+                </li>
+                </#list>
+            </ul>
+
             <form method="POST" action="/admin/domain/${domain.oId}/add-tag">
                 <label form="addTag">${addTagLabel}</label>
                 <input type="text" name="tagTitle" />
-                
+
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>

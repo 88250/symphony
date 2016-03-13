@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -81,6 +83,34 @@ public class DomainQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+    /**
+     * Gets a domain's tags.
+     *
+     * @param domainId the specified domain id
+     * @return tags, returns an empty list if not found
+     */
+    public List<JSONObject> getTags(final String domainId) {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Domain.DOMAIN + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, domainId));
+        try {
+            final List<JSONObject> relations = CollectionUtils.jsonArrayToList(
+                    domainTagRepository.get(query).optJSONArray(Keys.RESULTS));
+
+            for (final JSONObject relation : relations) {
+                final String tagId = relation.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
+                final JSONObject tag = tagRepository.get(tagId);
+
+                ret.add(tag);
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets domain [id=" + domainId + "] tags error", e);
+        }
+
+        return ret;
+    }
 
     /**
      * Gets a domain by the specified domain title.
@@ -213,7 +243,11 @@ public class DomainQueryService {
      */
     public JSONObject getDomain(final String domainId) throws ServiceException {
         try {
-            return domainRepository.get(domainId);
+            final JSONObject ret = domainRepository.get(domainId);
+            final List<JSONObject> tags = getTags(domainId);
+            ret.put(Domain.DOMAIN_T_TAGS, (Object) tags);
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a domain [tagId=" + domainId + "] failed", e);
 
