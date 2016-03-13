@@ -15,7 +15,6 @@
  */
 package org.b3log.symphony.model;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Pattern;

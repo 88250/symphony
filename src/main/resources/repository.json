@@ -1,9 +1,84 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "2.13.4.3, Mar 8, 2016",
+    "version": "3.13.4.3, Mar 13, 2016",
     "authors": ["Liang Ding"],
     "since": "0.2.0",
     "repositories": [
+        {
+            "name": "domain",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "domainTitle",
+                    "type": "String",
+                    "length": 50
+                },
+                {
+                    "name": "domainURI",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "domainDescription",
+                    "type": "String",
+                    "length": 512
+                },
+                {
+                    "name": "domainIconPath",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "domainCSS",
+                    "type": "String",
+                    "length": 1048576
+                },
+                {
+                    "name": "domainStatus",
+                    "type": "int",
+                    "description": "0: valid, 1: invalid"
+                },
+                {
+                    "name": "domainSeoTitle",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "doaminSeoKeywords",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "domainSeoDesc",
+                    "type": "String",
+                    "length": 512
+                }
+            ]
+        },
+        {
+            "name": "domain_tag",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "domain_oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "tag_oId",
+                    "type": "String",
+                    "length": 19
+                }
+            ]
+        },
         {
             "name": "vote",
             "keys": [
