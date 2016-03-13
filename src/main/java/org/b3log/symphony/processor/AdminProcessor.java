@@ -44,6 +44,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
@@ -58,6 +59,8 @@ import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.DomainMgmtService;
+import org.b3log.symphony.service.DomainQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.OptionMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
@@ -92,6 +95,9 @@ import org.json.JSONObject;
  * <li>Shows comments (/admin/comments), GET</li>
  * <li>Show a comment (/admin/comment/{commentId}), GET</li>
  * <li>Updates a comment (/admin/comment/{commentId}), POST</li>
+ * <li>Shows domains (/admin/domains, GET</li>
+ * <li>Show a domain (/admin/domain/{domainId}, GET</li>
+ * <li>Updates a domain (/admin/domain/{domainId}), POST</li>
  * <li>Shows tags (/admin/tags), GET</li>
  * <li>Show a tag (/admin/tag/{tagId}), GET</li>
  * <li>Updates a tag (/admin/tag/{tagId}), POST</li>
@@ -100,7 +106,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.2.2, Feb 26, 2016
+ * @version 2.11.2.2, Mar 13, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -166,10 +172,22 @@ public class AdminProcessor {
     private OptionMgmtService optionMgmtService;
 
     /**
+     * Domain query service.
+     */
+    @Inject
+    private DomainQueryService domainQueryService;
+
+    /**
      * Tag query service.
      */
     @Inject
     private TagQueryService tagQueryService;
+
+    /**
+     * Domain management service.
+     */
+    @Inject
+    private DomainMgmtService domainMgmtService;
 
     /**
      * Tag management service.
@@ -427,8 +445,7 @@ public class AdminProcessor {
                 }
             } else if (name.equals(UserExt.SYNC_TO_CLIENT)) {
                 user.put(UserExt.SYNC_TO_CLIENT, Boolean.valueOf(value));
-            } 
-            else {
+            } else {
                 user.put(name, value);
             }
         }
@@ -1136,5 +1153,202 @@ public class AdminProcessor {
         dataModel.put(Tag.TAG, tag);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows admin domains.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/domains", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showDomains(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/domains.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageSize = PAGE_SIZE;
+        final int windowSize = WINDOW_SIZE;
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
+        final String domainTitle = request.getParameter(Common.TITLE);
+        if (!Strings.isEmptyOrNull(domainTitle)) {
+            requestJSONObject.put(Domain.DOMAIN_TITLE, domainTitle);
+        }
+
+        final Map<String, Class<?>> domainFields = new HashMap<String, Class<?>>();
+        domainFields.put(Keys.OBJECT_ID, String.class);
+        domainFields.put(Domain.DOMAIN_TITLE, String.class);
+        domainFields.put(Domain.DOMAIN_DESCRIPTION, String.class);
+        domainFields.put(Domain.DOMAIN_ICON_PATH, String.class);
+        domainFields.put(Domain.DOMAIN_STATUS, String.class);
+        domainFields.put(Domain.DOMAIN_URI, String.class);
+
+        final JSONObject result = domainQueryService.getDomains(requestJSONObject, domainFields);
+        dataModel.put(Domain.DOMAINS, CollectionUtils.jsonArrayToList(result.optJSONArray(Domain.DOMAINS)));
+
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final JSONArray pageNums = pagination.optJSONArray(Pagination.PAGINATION_PAGE_NUMS);
+        dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.opt(0));
+        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.opt(pageNums.length() - 1));
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows a domain.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param domainId the specified domain id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/domain/{domainId}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String domainId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/domain.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject domain = domainQueryService.getDomain(domainId);
+        dataModel.put(Domain.DOMAIN, domain);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Updates a domain.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param domainId the specified domain id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/domain/{domainId}", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void updateDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String domainId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/domain.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        JSONObject domain = domainQueryService.getDomain(domainId);
+        final String oldTitle = domain.optString(Domain.DOMAIN_TITLE);
+
+        final Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            final String name = parameterNames.nextElement();
+            final String value = request.getParameter(name);
+
+            domain.put(name, value);
+        }
+
+        final String newTitle = domain.optString(Domain.DOMAIN_TITLE);
+
+        if (oldTitle.equalsIgnoreCase(newTitle)) {
+            domainMgmtService.updateDomain(domainId, domain);
+        }
+
+        domain = domainQueryService.getDomain(domainId);
+        dataModel.put(Domain.DOMAIN, domain);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows add domain.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/add-domain", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showAddDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/add-domain.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Adds a domain.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/add-domain", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void addDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String domainTitle = request.getParameter(Domain.DOMAIN_TITLE);
+
+        if (null != domainQueryService.getByTitle(domainTitle)) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, langPropsService.get("duplicatedDomainLabel"));
+
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        String domainId;
+        try {
+            final JSONObject domain = new JSONObject();
+            domain.put(Domain.DOMAIN_TITLE, domainTitle);
+
+            domainId = domainMgmtService.addDomain(domain);
+        } catch (final Exception e) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, e.getMessage());
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
     }
 }

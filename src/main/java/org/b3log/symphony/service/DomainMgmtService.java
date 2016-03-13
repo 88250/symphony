@@ -1,0 +1,96 @@
+/*
+ * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.b3log.symphony.service;
+
+import javax.inject.Inject;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.annotation.Transactional;
+import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.model.Domain;
+import org.b3log.symphony.repository.DomainRepository;
+import org.json.JSONObject;
+
+/**
+ * Domain management service.
+ *
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.0, Mar 13, 2016
+ * @since 1.4.0
+ */
+@Service
+public class DomainMgmtService {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(DomainMgmtService.class.getName());
+
+    /**
+     * Domain repository.
+     */
+    @Inject
+    private DomainRepository domainRepository;
+
+    /**
+     * Adds a domain relation.
+     *
+     * @param domain the specified domain relation
+     * @return domain id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public String addDomain(final JSONObject domain) throws ServiceException {
+        try {
+            final JSONObject record = new JSONObject();
+            record.put(Domain.DOMAIN_CSS, domain.optString(Domain.DOMAIN_CSS));
+            record.put(Domain.DOMAIN_DESCRIPTION, domain.optString(Domain.DOMAIN_DESCRIPTION));
+            record.put(Domain.DOMAIN_ICON_PATH, domain.optString(Domain.DOMAIN_ICON_PATH));
+            record.put(Domain.DOMAIN_SEO_DESC, domain.optString(Domain.DOMAIN_SEO_DESC));
+            record.put(Domain.DOMAIN_SEO_KEYWORDS, domain.optString(Domain.DOMAIN_SEO_KEYWORDS));
+            record.put(Domain.DOMAIN_SEO_TITLE, domain.optString(Domain.DOMAIN_SEO_TITLE));
+            record.put(Domain.DOMAIN_STATUS, domain.optInt(Domain.DOMAIN_STATUS));
+            record.put(Domain.DOMAIN_TITLE, domain.optString(Domain.DOMAIN_TITLE));
+            record.put(Domain.DOMAIN_URI, domain.optString(Domain.DOMAIN_URI));
+
+            return domainRepository.add(record);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Adds a domain failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Updates the specified domain by the given domain id.
+     *
+     * @param domainId the given domain id
+     * @param domain the specified domain
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void updateDomain(final String domainId, final JSONObject domain) throws ServiceException {
+        try {
+            domainRepository.update(domainId, domain);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Updates a domain [id=" + domainId + "] failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
+}

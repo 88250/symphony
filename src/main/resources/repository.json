@@ -48,7 +48,7 @@
                     "length": 128
                 },
                 {
-                    "name": "doaminSeoKeywords",
+                    "name": "domainSeoKeywords",
                     "type": "String",
                     "length": 128
                 },
