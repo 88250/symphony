@@ -56,6 +56,7 @@
                             </a>
                         </li>
                     </ul>
+                    <br/>
                 </div>
                 <div class="list content">
                     <#nested>

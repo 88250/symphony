@@ -444,6 +444,7 @@ button,
     border-bottom-color: #E1E1E1;
     box-sizing: border-box;
     line-height: 21px;
+    white-space: nowrap;
 }
 
 button:hover,
@@ -1091,6 +1092,7 @@ a[class*=" icon-"]:hover {
 .nav .avatar-small {
     height: 20px;
     width: 20px;
+    vertical-align: super;
 }
 
 .nav .no-msg {
