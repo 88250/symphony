@@ -28,11 +28,9 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Option;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -60,12 +58,6 @@ public class RecentProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
-
-    /**
-     * Option query service.
-     */
-    @Inject
-    private OptionQueryService optionQueryService;
 
     /**
      * Filler.

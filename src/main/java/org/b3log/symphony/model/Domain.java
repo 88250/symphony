@@ -86,6 +86,11 @@ public final class Domain {
 
     //// Transient ////
     /**
+     * Key of domain count.
+     */
+    public static final String DOMAIN_T_COUNT = "domainCnt";
+    
+    /**
      * Key of domain tags.
      */
     public static final String DOMAIN_T_TAGS = "domainTags";

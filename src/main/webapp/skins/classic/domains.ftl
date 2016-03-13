@@ -14,8 +14,8 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <div class='domains-count'>
-                        Domains: <b>2345</b><br/>
-                        Tags: <b>32435</b>
+                        Domains: <b>${domainCnt}</b><br/>
+                        Tags: <b>${tagCnt}</b>
                     </div>
                     <div class="module">
                         <div class="module-header">

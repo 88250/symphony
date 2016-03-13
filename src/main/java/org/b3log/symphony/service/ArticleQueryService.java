@@ -58,6 +58,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
+import org.b3log.symphony.repository.DomainTagRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -76,7 +77,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.9.15, Feb 19, 2016
+ * @version 1.12.9.15, Mar 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -118,6 +119,12 @@ public class ArticleQueryService {
     private UserRepository userRepository;
 
     /**
+     * Domain tag repository.
+     */
+    @Inject
+    private DomainTagRepository domainTagRepository;
+
+    /**
      * Comment query service.
      */
     @Inject
@@ -151,6 +158,75 @@ public class ArticleQueryService {
      * Count to fetch article tags for relevant articles.
      */
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
+
+    public JSONObject getDomainArticles(final String domainId, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONArray domainTags = domainTagRepository.getByDomainId(domainId, currentPageNum, pageSize)
+                    .optJSONArray(Keys.RESULTS);
+
+            if (domainTags.length() <= 0) {
+                return ret;
+            }
+
+            final List<String> tagIds = new ArrayList<String>();
+            for (int i = 0; i < domainTags.length(); i++) {
+                tagIds.add(domainTags.optJSONObject(i).optString(Tag.TAG + "_" + Keys.OBJECT_ID));
+            }
+
+            Query query = new Query().setFilter(
+                    new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.IN, tagIds)).
+                    setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+            final JSONArray tagArticles = tagArticleRepository.get(query).optJSONArray(Keys.RESULTS);
+            if (tagArticles.length() <= 0) {
+                return ret;
+            }
+
+            final Set<String> articleIds = new HashSet<String>();
+            for (int i = 0; i < tagArticles.length(); i++) {
+                articleIds.add(tagArticles.optJSONObject(i).optString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
+            }
+
+            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+                    setPageCount(1);
+
+            final JSONObject result = articleRepository.get(query);
+            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+            final JSONObject pagination = new JSONObject();
+            ret.put(Pagination.PAGINATION, pagination);
+
+            final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
+
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
+
+            final JSONArray data = result.optJSONArray(Keys.RESULTS);
+            final List<JSONObject> articles = CollectionUtils.<JSONObject>jsonArrayToList(data);
+
+            try {
+                organizeArticles(articles);
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Organizes articles failed", e);
+
+                throw new ServiceException(e);
+            }
+
+            final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
+            genParticipants(articles, participantsCnt);
+
+            ret.put(Article.ARTICLES, (Object) articles);
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets domain articles error", e);
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets the relevant articles of the specified article with the specified fetch size.

@@ -55,7 +55,6 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
-import org.b3log.symphony.repository.DomainTagRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
@@ -1270,7 +1269,7 @@ public class AdminProcessor {
 
             domain.put(name, value);
         }
-        
+
         domain.remove(Domain.DOMAIN_T_TAGS);
 
         final String newTitle = domain.optString(Domain.DOMAIN_TITLE);
@@ -1321,6 +1320,19 @@ public class AdminProcessor {
             throws Exception {
         final String domainTitle = request.getParameter(Domain.DOMAIN_TITLE);
 
+        if (StringUtils.isBlank(domainTitle)) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, langPropsService.get("invalidDomainTitleLabel"));
+
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
         if (null != domainQueryService.getByTitle(domainTitle)) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
@@ -1338,6 +1350,9 @@ public class AdminProcessor {
         try {
             final JSONObject domain = new JSONObject();
             domain.put(Domain.DOMAIN_TITLE, domainTitle);
+            domain.put(Domain.DOMAIN_URI, domainTitle);
+            domain.put(Domain.DOMAIN_DESCRIPTION, domainTitle);
+            domain.put(Domain.DOMAIN_STATUS, Domain.DOMAIN_STATUS_C_VALID);
 
             domainId = domainMgmtService.addDomain(domain);
         } catch (final Exception e) {

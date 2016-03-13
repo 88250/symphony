@@ -101,12 +101,16 @@ public final class Tag {
     public static final String TAG_SEO_DESC = "tagSeoDesc";
 
     //// Transient ////
-    
+    /**
+     * Key of tag count.
+     */
+    public static final String TAG_T_COUNT = "tagCnt";
+
     /**
      * Key of tag id.
      */
     public static final String TAG_T_ID = "tagId";
-    
+
     /**
      * Key of tag description text.
      */
