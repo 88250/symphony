@@ -1012,7 +1012,7 @@ a[class*=" icon-"]:hover {
 
 .main {
     background-color: #FDFDFD;
-    padding: 50px 0;
+    padding: 20px 0 40px;
 }
 
 .side {
@@ -1032,16 +1032,12 @@ a[class*=" icon-"]:hover {
 
 /* start header */
 .nav {
-    height: 42px;
+    height: 28px;
     width: 100%;
-    padding: 5px 0;
+    padding: 10px 0;
     z-index: 99;
     background-color: #f5f5f5;
     border-bottom: 1px solid #e5e5e5;
-}
-
-.nav > .wrapper {
-    position: relative;
 }
 
 .nav .head-fn {
@@ -1049,6 +1045,14 @@ a[class*=" icon-"]:hover {
     flex: 2.3;
     -webkit-box-flex: 2.3;
     width: 70%;
+}
+
+.nav .head-fn h1 a {
+    height: 48px;
+    width: 48px;
+    display: block;
+    background-size: cover;
+    margin-top: -9px;
 }
 
 .nav .user-nav {
@@ -1063,9 +1067,11 @@ a[class*=" icon-"]:hover {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     text-decoration: none;
     margin: 0 3px;
-    padding: 11px 5px;
+    padding: 4px 5px;
     float: right;
     font-size: 20px;
+    line-height: 20px;
+    height: 20px;
 }
 
 .nav div > a:hover {
@@ -1079,25 +1085,22 @@ a[class*=" icon-"]:hover {
 .nav div > a.current {
     border-bottom: 2px solid #D26911;
     color: #222;
-    padding-bottom: 15px;
+    padding-bottom: 13px;
 }
 
-.nav .nav-avatar {
-    padding-top: 9px;
-}
-
-.nav .nav-avatar.current {
-    padding-bottom: 11px;
+.nav .avatar-small {
+    height: 20px;
+    width: 20px;
 }
 
 .nav .no-msg {
     background-color: #777;
-    border-radius: 5px;
+    border-radius: 3px;
     color: #FFFFFF;
-    font-size: 10px;
+    font-size: 14px;
     font-weight: normal;
-    margin: 12px 11px 0 11px;
-    padding: 3px 6px;
+    margin: 4px 8px 0 8px;
+    padding: 0px 6px;
     text-shadow: 0 0 0;
 }
 
@@ -1114,17 +1117,17 @@ a[class*=" icon-"]:hover {
     -ms-animation:spaceboots 1s infinite;
     animation:spaceboots 1s infinite;
     background-color: #D26911;
-    border-radius: 5px;
+    border-radius: 3px;
     color: #FFFFFF;
-    font-size: 10px;
+    font-size: 14px;
     font-weight: normal;
-    margin: 13px 10px 0 10px;
-    padding: 3px 6px;
+    margin: 5px 8px 0 8px;
+    padding: 0px 6px;
+    text-shadow: 0 0 0;
 }
 
-.nav a.current.msg,
 .nav a.current.no-msg{
-    padding-bottom:3px;
+    padding-bottom:0;
     background-color: #D26911;
     border-bottom-width: 0;
     -webkit-animation:none;
@@ -1311,7 +1314,7 @@ a[class*=" icon-"]:hover {
 
 /* start side module */
 .module {
-    border: 1px solid #CCC;
+    border: 1px solid #e5e5e5;
     margin-bottom: 20px;
     background-color: #FFF;
     border-radius: 3px;
@@ -1321,8 +1324,8 @@ a[class*=" icon-"]:hover {
 
 .module-header {
     border-radius: 3px 3px 0 0;
-    background-color: #f5f5f5;
-    border-bottom: 1px solid #D8D8D8;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #e5e5e5;
     padding: 9px 10px 10px;
     text-shadow: 0 1px 0 #FFFFFF;
     font-size: 14px;
@@ -1413,11 +1416,12 @@ a[class*=" icon-"]:hover {
     height: 35px;
 }
 
-.person-info .info button {
+.person-info .info button.red {
     position: absolute;
     border-radius: 0;
     width: 34%;
     box-sizing: border-box;
+    border-color: #e5e5e5;
 }
 
 .person-info .info .fn-right {

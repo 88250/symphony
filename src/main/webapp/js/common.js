@@ -701,7 +701,7 @@ var Util = {
     _initNav: function () {
         var pathname = location.pathname;
         $(".nav div > a").each(function () {
-            if (pathname.indexOf($(this).attr("href")) > -1) {
+            if (pathname.indexOf($(this).attr("href")) === 0) {
                 // 用户下面有两个页面：用户的评论及文章列表
                 $(this).addClass("current");
             } else if (pathname === "/register") {
