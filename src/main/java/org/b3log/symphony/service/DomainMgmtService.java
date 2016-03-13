@@ -18,12 +18,14 @@ package org.b3log.symphony.service;
 import javax.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.repository.DomainRepository;
+import org.b3log.symphony.repository.DomainTagRepository;
 import org.json.JSONObject;
 
 /**
@@ -46,6 +48,29 @@ public class DomainMgmtService {
      */
     @Inject
     private DomainRepository domainRepository;
+
+    /**
+     * Domain tag repository.
+     */
+    @Inject
+    private DomainTagRepository domainTagRepository;
+
+    /**
+     * Adds a domain-tag relation.
+     *
+     * @param domainTag the specified domain-tag relation
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addDomainTag(final JSONObject domainTag) throws ServiceException {
+        try {
+            domainTagRepository.add(domainTag);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Adds a domain-tag relation failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Adds a domain relation.

@@ -23,6 +23,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -33,7 +34,10 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Domain;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.DomainRepository;
+import org.b3log.symphony.repository.DomainTagRepository;
+import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.util.Markdowns;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,6 +63,18 @@ public class DomainQueryService {
      */
     @Inject
     private DomainRepository domainRepository;
+
+    /**
+     * Tag repository.
+     */
+    @Inject
+    private TagRepository tagRepository;
+
+    /**
+     * Domain tag repository.
+     */
+    @Inject
+    private DomainTagRepository domainTagRepository;
 
     /**
      * Short link query service.
@@ -109,6 +125,7 @@ public class DomainQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tag [title=" + domainTitle + "] failed", e);
+
             throw new ServiceException(e);
         }
     }
@@ -199,7 +216,40 @@ public class DomainQueryService {
             return domainRepository.get(domainId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a domain [tagId=" + domainId + "] failed", e);
+
             throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Whether a tag specified by the given tag title in a domain specified by the given domain id.
+     *
+     * @param tagTitle the given tag title
+     * @param domainId the given domain id
+     * @return {@code true} if the tag in the domain, returns {@code false} otherwise
+     */
+    public boolean containTag(final String tagTitle, final String domainId) {
+        try {
+            final JSONObject domain = domainRepository.get(domainId);
+            if (null == domain) {
+                return true;
+            }
+
+            final JSONObject tag = tagRepository.getByTitle(tagTitle);
+            if (null == tag) {
+                return true;
+            }
+
+            final Query query = new Query().setFilter(
+                    CompositeFilterOperator.and(
+                            new PropertyFilter(Domain.DOMAIN + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, domainId),
+                            new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID))));
+
+            return domainTagRepository.count(query) > 0;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Check domain tag [tagTitle=" + tagTitle + ", domainId=" + domainId + "] failed", e);
+
+            return true;
         }
     }
 }

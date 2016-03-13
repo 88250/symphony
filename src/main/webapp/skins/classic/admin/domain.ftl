@@ -10,6 +10,25 @@
             <input type="text" id="oId" value="${domain.oId}" readonly="readonly" />
         </div>
     </div>
+
+    <div class="module">
+        <div class="module-header">
+            <h2>${tagLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            ....
+            
+            
+            <form method="POST" action="/admin/domain/${domain.oId}/add-tag">
+                <label form="addTag">${addTagLabel}</label>
+                <input type="text" name="tagTitle" />
+                
+                <br/><br/>
+                <button type="submit" class="green fn-right">${submitLabel}</button>
+            </form>
+        </div>
+    </div>
+
     <div class="module">
         <div class="module-header">
             <h2>${modifiableLabel}</h2>

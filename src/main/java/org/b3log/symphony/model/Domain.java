@@ -79,6 +79,17 @@ public final class Domain {
      */
     public static final String DOMAIN_SEO_DESC = "domainSeoDesc";
 
+    //// Transient ////
+    /**
+     * Key of domain tags.
+     */
+    public static final String DOMAIN_TAGS = "domainTags";
+
+    /**
+     * Key of domain id.
+     */
+    public static final String DOMAIN_T_ID = "domainId";
+
     //// Status constants
     /**
      * Domain status - valid.
