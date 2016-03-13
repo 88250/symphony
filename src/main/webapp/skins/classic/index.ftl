@@ -15,9 +15,9 @@
                 <div class="content fn-clear">
                     <div class="domains fn-clear">
                         <a href='/domains'>All Domains</a>
-                        <a href='/domain/123'>阿萨德发</a>
-                        <a href='/domain/123' class="selected">阿萨德发</a>
-                        <a href='/domain/123'>阿萨德发</a>
+                        <#list domains as domain>
+                        <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
+                        </#list>
                     </div>
                     <@list listData=indexArticles/>
                     <div>

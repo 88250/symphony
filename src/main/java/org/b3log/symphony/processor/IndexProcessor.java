@@ -32,9 +32,11 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.DomainQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
@@ -69,12 +71,12 @@ public class IndexProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
-
+    
     /**
-     * Option query service.
+     * Domain query service.
      */
     @Inject
-    private OptionQueryService optionQueryService;
+    private DomainQueryService domainQueryService;
 
     /**
      * Filler.
@@ -110,6 +112,9 @@ public class IndexProcessor {
 
         final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
+        
+        final List<JSONObject> domains = domainQueryService.getMostTagDomain(8);
+        dataModel.put(Domain.DOMAINS, domains);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);

@@ -16,6 +16,7 @@
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -82,7 +83,25 @@ public class DomainQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
-    
+
+    /**
+     * Gets most tag domain.
+     *
+     * @param fetchSize the specified fetch size
+     * @return domains, returns an empty list if not found
+     */
+    public List<JSONObject> getMostTagDomain(final int fetchSize) {
+        final Query query = new Query().addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
+                setPageSize(fetchSize).setPageCount(1);
+        try {
+            return CollectionUtils.jsonArrayToList(domainRepository.get(query).optJSONArray(Keys.RESULTS));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets most tag domain error", e);
+
+            return Collections.emptyList();
+        }
+    }
+
     /**
      * Gets a domain's tags.
      *

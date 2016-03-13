@@ -51,6 +51,9 @@
                 <label for="domainTitle">${domainLabel}${updateCaseOnlyLabel}</label>
                 <input type="text" id="domainTitle" name="domainTitle" value="${domain.domainTitle}" />
 
+                <label for="domainURI">URI</label>
+                <input type="text" id="domainURI" name="domainURI" value="${domain.domainURI}" />
+
                 <label for="domainDescription">${descriptionLabel}</label>
                 <textarea rows="5" id="domainDescription" name="domainDescription">${domain.domainDescription}</textarea>
 
@@ -68,9 +71,6 @@
 
                 <label for="domainSeoKeywords">${seoKeywordsLabel}</label>
                 <input type="text" id="domainSeoKeywords" name="domainSeoKeywords" value="${domain.domainSeoKeywords}" />
-
-                <label for="domainSeoDesc">${seoDescLabel}</label>
-                <input type="text" id="domainSeoDesc" name="domainSeoDesc" value="${domain.domainSeoDesc}" />
 
                 <label for="domainSeoDesc">${seoDescLabel}</label>
                 <input type="text" id="domainSeoDesc" name="domainSeoDesc" value="${domain.domainSeoDesc}" />

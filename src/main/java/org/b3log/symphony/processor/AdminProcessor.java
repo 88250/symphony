@@ -1270,6 +1270,8 @@ public class AdminProcessor {
 
             domain.put(name, value);
         }
+        
+        domain.remove(Domain.DOMAIN_T_TAGS);
 
         final String newTitle = domain.optString(Domain.DOMAIN_TITLE);
 
