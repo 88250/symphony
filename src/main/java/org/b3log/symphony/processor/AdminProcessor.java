@@ -1392,7 +1392,7 @@ public class AdminProcessor {
 
             String msg = langPropsService.get("domainContainTagLabel");
             msg = msg.replace("{tag}", tagTitle);
-            
+
             dataModel.put(Keys.MSG, msg);
 
             filler.fillHeaderAndFooter(request, response, dataModel);
@@ -1405,6 +1405,46 @@ public class AdminProcessor {
         domainTag.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
 
         domainMgmtService.addDomainTag(domainTag);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
+    }
+
+    /**
+     * Removes a tag from a domain.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param domainId the specified domain id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/domain/{domainId}/remove-tag", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void removeDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String domainId)
+            throws Exception {
+        final String tagTitle = request.getParameter(Tag.TAG_TITLE);
+        final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
+
+        if (null == tag) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, langPropsService.get("invalidTagLabel"));
+
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        final JSONObject domainTag = new JSONObject();
+        domainTag.put(Domain.DOMAIN + "_" + Keys.OBJECT_ID, domainId);
+        domainTag.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
+
+        domainMgmtService.removeDomainTag(domainId, tag.optString(Keys.OBJECT_ID));
 
         response.sendRedirect(Latkes.getServePath() + "/admin/domain/" + domainId);
     }

@@ -50,6 +50,11 @@ public final class Domain {
     public static final String DOMAIN_DESCRIPTION = "domainDescription";
 
     /**
+     * Key of domain tag count.
+     */
+    public static final String DOMAIN_TAG_COUNT = "domainTagCnt";
+
+    /**
      * Key of domain icon path.
      */
     public static final String DOMAIN_ICON_PATH = "domainIconPath";

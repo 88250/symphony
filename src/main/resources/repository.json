@@ -28,6 +28,10 @@
                     "length": 512
                 },
                 {
+                    "name": "domainTagCnt",
+                    "type": "int"
+                },
+                {
                     "name": "domainIconPath",
                     "type": "String",
                     "length": 128
@@ -51,10 +55,6 @@
                     "name": "domainSeoKeywords",
                     "type": "String",
                     "length": 128
-                },
-                {
-                    "name": "domainTagCnt",
-                    "type": "int"
                 },
                 {
                     "name": "domainSeoDesc",

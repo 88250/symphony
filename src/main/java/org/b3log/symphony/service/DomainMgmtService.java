@@ -16,16 +16,22 @@
 package org.b3log.symphony.service;
 
 import javax.inject.Inject;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Domain;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.DomainRepository;
 import org.b3log.symphony.repository.DomainTagRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -56,6 +62,40 @@ public class DomainMgmtService {
     private DomainTagRepository domainTagRepository;
 
     /**
+     * Removes a domain-tag relation.
+     *
+     * @param domainId the specified domain id
+     * @param tagId the specified tag id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void removeDomainTag(final String domainId, final String tagId) throws ServiceException {
+        try {
+            final JSONObject domain = domainRepository.get(domainId);
+            domain.put(Domain.DOMAIN_TAG_COUNT, domain.optInt(Domain.DOMAIN_TAG_COUNT) - 1);
+
+            domainRepository.update(domainId, domain);
+
+            final Query query = new Query().setFilter(
+                    CompositeFilterOperator.and(
+                            new PropertyFilter(Domain.DOMAIN + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, domainId),
+                            new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)));
+
+            final JSONArray relations = domainTagRepository.get(query).optJSONArray(Keys.RESULTS);
+            if (relations.length() < 1) {
+                return;
+            }
+
+            final JSONObject relation = relations.optJSONObject(0);
+            domainTagRepository.remove(relation.optString(Keys.OBJECT_ID));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Adds a domain-tag relation failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Adds a domain-tag relation.
      *
      * @param domainTag the specified domain-tag relation
@@ -64,10 +104,12 @@ public class DomainMgmtService {
     @Transactional
     public void addDomainTag(final JSONObject domainTag) throws ServiceException {
         try {
+            final String domainId = domainTag.optString(Domain.DOMAIN + "_" + Keys.OBJECT_ID);
+            final JSONObject domain = domainRepository.get(domainId);
+            domain.put(Domain.DOMAIN_TAG_COUNT, domain.optInt(Domain.DOMAIN_TAG_COUNT) + 1);
+
+            domainRepository.update(domainId, domain);
             domainTagRepository.add(domainTag);
-            
-            
-            
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds a domain-tag relation failed", e);
 
@@ -95,6 +137,7 @@ public class DomainMgmtService {
             record.put(Domain.DOMAIN_STATUS, domain.optInt(Domain.DOMAIN_STATUS));
             record.put(Domain.DOMAIN_TITLE, domain.optString(Domain.DOMAIN_TITLE));
             record.put(Domain.DOMAIN_URI, domain.optString(Domain.DOMAIN_URI));
+            record.put(Domain.DOMAIN_TAG_COUNT, 0);
 
             return domainRepository.add(record);
         } catch (final RepositoryException e) {

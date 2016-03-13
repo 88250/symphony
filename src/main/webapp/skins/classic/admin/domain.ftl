@@ -31,6 +31,14 @@
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>
+
+            <form method="POST" action="/admin/domain/${domain.oId}/remove-tag">
+                <label form="addTag">${removeTagLabel}</label>
+                <input type="text" name="tagTitle" />
+
+                <br/><br/>
+                <button type="submit" class="green fn-right">${submitLabel}</button>
+            </form>
         </div>
     </div>
 
