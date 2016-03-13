@@ -1320,6 +1320,7 @@ a[class*=" icon-"]:hover {
     border-radius: 3px;
     width: 100%;
     word-wrap: break-word;
+    box-sizing: border-box;
 }
 
 .module-header {

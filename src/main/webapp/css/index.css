@@ -247,6 +247,20 @@
     background-color: #333;
     border-color: #333;
 }
+
+.domains-count {
+    padding: 10px 18px;
+    font-size: 18px;
+    line-height: 26px;
+    color: #1b3650;
+    text-align: center;
+    background-image: linear-gradient(#f5fbff, #e4f0ff);
+    border: 1px solid #cee0e7;
+    border-radius: 3px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
 /* start domains */
 
 /* start article list */
@@ -504,28 +518,15 @@
 .tag-articles div.description {
     text-indent: 60px;
 }
+
+.tag-articles .btn.red {
+    vertical-align: super;
+}
 /* end side tags */
 
 /* start tags.html */
-.tags-trend a,
+.tags-cold li h2,
 .tags-trend li h2 {
-    color: #cf7e7e;
-    display: inline;
-}
-
-.tags-trend .ft-small {
-    color: #e4b6b6;
-    line-height: 21px;
-} 
-
-.tags-cold .ft-small {
-    color: #a2be9e;
-    line-height: 21px;
-} 
-
-.tags-cold a,
-.tags-cold li h2 {
-    color: #85A980;
     display: inline;
 }
 /* end tags.html */

@@ -13,6 +13,10 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
+                    <div class='domains-count'>
+                        Domains: <b>2345</b><br/>
+                        Tags: <b>32435</b>
+                    </div>
                     <div class="module">
                         <div class="module-header">
                             <h2>
@@ -39,6 +43,9 @@
                             </ul>
                         </div>
                     </div>
+                </div>
+                <div class="side">
+                    <#include "common/person-info.ftl">
                 </div>
             </div>
         </div>
