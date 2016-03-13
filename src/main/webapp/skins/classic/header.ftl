@@ -2,12 +2,10 @@
     <div class="wrapper fn-clear">
         <div class="head-fn fn-clear">
             <h1 class="fn-left">
-                <a href="/">
-                    <img src="${staticServePath}/images/hacpai.png" alt="${symphonyLabel}" title="${symphonyLabel}" width="42" class="fn-pointer" />
-                </a>
+                <a href="/" style="background-image: url('${staticServePath}/images/hacpai.png')" alt="${symphonyLabel}" 
+                   title="${symphonyLabel}" width="42" class="fn-pointer"></a>
             </h1>
-            <!-- 百度站内搜索不支持 HTTPS -->
-            <!--
+            <#-- 百度站内搜索不支持 HTTPS 
             <form class="responsive-hide" target="_blank" action="https://search.hacpai.com/cse/search">
                 <span class="icon-search"></span>
                 <input class="search" type="text" name="q">
@@ -72,8 +70,7 @@
             </#if>
         </div>
     </div>
-    <!-- 百度站内搜索不支持 HTTPS -->
-    <!--
+    <#-- 百度站内搜索不支持 HTTPS
     <script type="text/javascript">(function () {
             document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));
             var bdcs = document.createElement('script');
