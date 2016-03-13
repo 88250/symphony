@@ -98,6 +98,12 @@ public class DomainProcessor {
     public void showDomainArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String domainURI)
             throws Exception {
+        if ("recent".equals(domainURI)) {
+            showRecentArticles(context, request, response);
+
+            return;
+        }
+
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("domain-articles.ftl");
@@ -117,6 +123,8 @@ public class DomainProcessor {
 
             return;
         }
+
+        dataModel.put(Domain.DOMAIN, domain);
 
         final String domainId = domain.optString(Keys.OBJECT_ID);
 
@@ -172,5 +180,44 @@ public class DomainProcessor {
         dataModel.put(Domain.DOMAIN_T_COUNT, domainCnt);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    private void showRecentArticles(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("recent.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageSize = Symphonys.getInt("latestArticlesCnt");
+
+        final JSONObject result = articleQueryService.getRecentArticles(pageNum, pageSize);
+        final List<JSONObject> latestArticles = (List<JSONObject>) result.get(Article.ARTICLES);
+        dataModel.put(Common.LATEST_ARTICLES, latestArticles);
+
+        final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final List<Integer> pageNums = (List<Integer>) pagination.get(Pagination.PAGINATION_PAGE_NUMS);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+        filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
     }
 }

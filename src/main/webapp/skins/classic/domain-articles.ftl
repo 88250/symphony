@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${recentArticleLabel} - ${symphonyLabel}">
+        <@head title="${domain.domainSeoTitle} - ${symphonyLabel}">
         <meta name="description" content="${recentArticleLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />

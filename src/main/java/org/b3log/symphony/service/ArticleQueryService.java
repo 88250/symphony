@@ -164,7 +164,7 @@ public class ArticleQueryService {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONArray domainTags = domainTagRepository.getByDomainId(domainId, currentPageNum, pageSize)
+            final JSONArray domainTags = domainTagRepository.getByDomainId(domainId, 1, Integer.MAX_VALUE)
                     .optJSONArray(Keys.RESULTS);
 
             if (domainTags.length() <= 0) {
@@ -178,7 +178,8 @@ public class ArticleQueryService {
 
             Query query = new Query().setFilter(
                     new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.IN, tagIds)).
-                    setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+                    setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
             final JSONArray tagArticles = tagArticleRepository.get(query).optJSONArray(Keys.RESULTS);
             if (tagArticles.length() <= 0) {
                 return ret;
