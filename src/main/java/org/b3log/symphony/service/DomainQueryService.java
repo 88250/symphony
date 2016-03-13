@@ -16,7 +16,6 @@
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -83,7 +82,7 @@ public class DomainQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
-
+    
     /**
      * Gets a domain's tags.
      *

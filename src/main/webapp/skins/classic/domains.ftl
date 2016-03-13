@@ -40,9 +40,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="side">
-                    <#include "side.ftl">
-                </div>
             </div>
         </div>
         <#include "footer.ftl">

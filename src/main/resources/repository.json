@@ -53,6 +53,10 @@
                     "length": 128
                 },
                 {
+                    "name": "domainTagCnt",
+                    "type": "int"
+                },
+                {
                     "name": "domainSeoDesc",
                     "type": "String",
                     "length": 512

@@ -65,6 +65,9 @@ public class DomainMgmtService {
     public void addDomainTag(final JSONObject domainTag) throws ServiceException {
         try {
             domainTagRepository.add(domainTag);
+            
+            
+            
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds a domain-tag relation failed", e);
 
