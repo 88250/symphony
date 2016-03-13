@@ -13,6 +13,12 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
+                    <div class="domains fn-clear">
+                        <a href='/domain/123'>阿萨德发</a>
+                        <a href='/domain/123'>阿萨德发</a>
+                        <a href='/domain/123' class="selected">阿萨德发</a>
+                        <a href='/domain/123'>阿萨德发</a>
+                    </div>
                     <@list listData=indexArticles/>
                     <div>
                         <br/>
