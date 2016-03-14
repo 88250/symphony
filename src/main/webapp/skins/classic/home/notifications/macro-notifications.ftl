@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${userName} - ${messageLabel} - ${symphonyLabel}">
+        <@head title="${messageLabel} - ${userName} - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
