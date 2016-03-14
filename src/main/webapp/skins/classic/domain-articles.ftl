@@ -25,7 +25,7 @@
                         <a href='/recent'>${latestLabel}</a>
                     </div>
                     <@list listData=latestArticles/>
-                    <@pagination url="/${domain.domainURI}"/>
+                    <@pagination url="/domain/${domain.domainURI}"/>
                     <br/><br/><br/>
                     <div class="module">
                         <div class="module-header">
