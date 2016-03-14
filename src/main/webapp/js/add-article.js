@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.8.8, Mar 12, 2016
+ * @version 2.13.8.8, Mar 14, 2016
  */
 
 /**
@@ -113,6 +113,9 @@ var AddArticle = {
                         }
                     }
             );
+            $('#articleContent').before('<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
+                    + Label.uploadLabel + '<input type="file"/></label></form>')
+                    .css('margin-top', 0);
         } else {
             Util.initCodeMirror();
             // 初始化文章编辑器
@@ -141,7 +144,7 @@ var AddArticle = {
                     {name: 'ordered-list'},
                     '|',
                     {name: 'link'},
-                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
+                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-image"><input type="file"/></label></form>'},
                     '|',
                     {name: 'redo'},
                     {name: 'undo'},
@@ -288,6 +291,11 @@ var AddArticle = {
         if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
             AddArticle.rewardEditor = Util.initTextarea('articleRewardContent');
             $('#articleRewardContent').prop('readOnly', readOnly);
+            if (readOnly === false) {
+                $('#articleRewardContent').before('<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
+                        + Label.uploadLabel + '<input type="file"/></label></form>')
+                        .css('margin-top', 0);
+            }
         } else {
             var addArticleRewardEditor = new Editor({
                 element: document.getElementById('articleRewardContent'),
@@ -303,7 +311,7 @@ var AddArticle = {
                     {name: 'ordered-list'},
                     '|',
                     {name: 'link'},
-                    {name: 'image', html: '<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
+                    {name: 'image', html: '<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="icon-image"><input type="file"/></label></form>'},
                     '|',
                     {name: 'redo'},
                     {name: 'undo'},

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.16.8, Mar 8, 2016
+ * @version 1.14.16.8, Mar 14, 2016
  */
 
 /**
@@ -39,6 +39,9 @@ var Comment = {
 
         var browser = Util.isMobile(true);
         if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+            $('#commentContent').before('<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
+                    + Label.uploadLabel + '<input type="file"/></label></form>')
+                    .css('margin', 0);
             Comment.editor = Util.initTextarea('commentContent',
                     function (editor) {
                         if (window.localStorage) {
@@ -64,7 +67,7 @@ var Comment = {
                     {name: 'ordered-list'},
                     '|',
                     {name: 'link'},
-                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><input type="file" class="icon-image"/></form>'},
+                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-image"><input type="file"/></label></form>'},
                     '|',
                     {name: 'redo'},
                     {name: 'undo'},

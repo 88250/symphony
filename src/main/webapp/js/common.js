@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.12.15, Mar 13, 2016
+ * @version 1.20.12.15, Mar 14, 2016
  */
 
 /**
@@ -836,8 +836,10 @@ var Util = {
                     return data;
                 },
                 submit: function (e, data) {
-                    var cursor = obj.editor.getCursor();
-                    obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
+                    if (obj.editor.replaceRange) {
+                        var cursor = obj.editor.getCursor();
+                        obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
+                    }
                 },
                 done: function (e, data) {
                     var qiniuKey = data.result.key;
@@ -849,15 +851,21 @@ var Util = {
                     
                     var filename = new Date().getTime();
 
-                    var cursor = obj.editor.getCursor();
-                    obj.editor.replaceRange('![' + filename + '](' + qiniuKey + ') \n\n',
+                    if (obj.editor.replaceRange) {
+                        var cursor = obj.editor.getCursor();
+                        obj.editor.replaceRange('![' + filename + '](' + qiniuKey + ') \n\n',
                             CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                    } else {
+                        obj.editor.$it.val(obj.editor.$it.val() + '![' + filename + '](' + qiniuKey + ') \n\n');
+                    }
                 },
                 fail: function (e, data) {
                     alert("Upload error: " + data.errorThrown);
-                    var cursor = obj.editor.getCursor();
-                    obj.editor.replaceRange('',
-                            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                    if (obj.editor.replaceRange) {
+                        var cursor = obj.editor.getCursor();
+                        obj.editor.replaceRange('',
+                                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                    }
                 }
             }).on('fileuploadprocessalways', function (e, data) {
                 var currentFile = data.files[data.index];
@@ -921,8 +929,10 @@ var Util = {
                 return data;
             },
             submit: function (e, data) {
-                var cursor = obj.editor.getCursor();
-                obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
+                if (obj.editor.replaceRange) {
+                    var cursor = obj.editor.getCursor();
+                    obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
+                }
             },
             done: function (e, data) {
                 var qiniuKey = data.result.key;
@@ -934,15 +944,19 @@ var Util = {
                 
                 var filename = new Date().getTime();
 
-                var cursor = obj.editor.getCursor();
-                obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
-                        CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                if (obj.editor.replaceRange) {
+                    var cursor = obj.editor.getCursor();
+                    obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
+                            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                }
             },
             fail: function (e, data) {
                 alert("Upload error: " + data.errorThrown);
-                var cursor = obj.editor.getCursor();
-                obj.editor.replaceRange('',
-                        CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                if (obj.editor.replaceRange) {
+                    var cursor = obj.editor.getCursor();
+                    obj.editor.replaceRange('',
+                            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                }
             }
         }).on('fileuploadprocessalways', function (e, data) {
             var currentFile = data.files[data.index];

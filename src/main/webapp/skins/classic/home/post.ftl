@@ -84,16 +84,18 @@
             <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
             <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
             <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
+            <script>
+                           Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
+                           Label.articleContentErrorLabel = "${articleContentErrorLabel}";
+                           Label.tagsErrorLabel = "${tagsErrorLabel}";
+                           Label.userName = "${userName}";
+                           Label.recordDeniedLabel = "${recordDeniedLabel}";
+                           Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
+                           Label.uploadLabel = "${uploadLabel}";
+            </script>
             <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
             <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
-
             <script>
-                            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
-                            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
-                            Label.tagsErrorLabel = "${tagsErrorLabel}";
-                            Label.userName = "${userName}";
-                            Label.recordDeniedLabel = "${recordDeniedLabel}";
-                            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
                             Util.uploadFile({
                             "id": "fileUpload",
                                     "pasteZone": $("#articleContent").next().next(),

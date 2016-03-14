@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.11.15, Mar 12, 2016
+ * @version 1.13.11.16, Mar 14, 2016
  */
 
 /* start reset */
@@ -900,6 +900,10 @@ a[class*=" icon-"]:hover {
     vertical-align: middle;
 }
 
+.form input[type=file] {
+    width: 1px;
+    opacity: 0.001;
+}
 /* end form */
 
 /* start pagination */

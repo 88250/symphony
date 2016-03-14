@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.5.8, Mar 13, 2016
+ * @version 2.1.5.9, Mar 14, 2016
  */
 /* start home side */
 .user-name {
@@ -320,11 +320,6 @@
 /* end points */
 
 /* start settings */
-#avatarUpload input {
-    width: 1px;
-    opacity: 0.001;
-}
-
 #avatarUpload {
     overflow: hidden;
 }

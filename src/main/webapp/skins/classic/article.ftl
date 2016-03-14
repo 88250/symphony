@@ -275,6 +275,7 @@
             Label.csrfToken = "${csrfToken}";
             Label.upLabel = "${upLabel}";
             Label.downLabel = "${downLabel}";
+            Label.uploadLabel = "${uploadLabel}";
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
@@ -294,7 +295,7 @@
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             // jQuery File Upload
             Util.uploadFile({
-            "type": "img",
+                    "type": "img",
                     "id": "fileUpload",
                     "pasteZone": $(".CodeMirror"),
                     "qiniuUploadToken": "${qiniuUploadToken}",

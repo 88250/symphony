@@ -397,15 +397,6 @@ span.CodeMirror-selectedtext { background: none; }
     color: #2c3e50;
 }
 /* this is the title */
-.editor-wrapper input.title {
-    font: 18px "Helvetica Neue", "Xin Gothic", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Microsoft YaHei", sans-serif;
-    background: transparent;
-    padding: 4px;
-    width: 100%;
-    border: none;
-    outline: none;
-    opacity: 0.6;
-}
 .editor-toolbar {
     position: relative;
     -webkit-user-select: none;
@@ -420,7 +411,7 @@ span.CodeMirror-selectedtext { background: none; }
     border-radius: 3px 3px 0 0;
 }
 .editor-toolbar a,
-.editor-toolbar input {
+.editor-toolbar label {
     display: inline-block;
     text-align: center;
     text-decoration: none !important;
@@ -434,26 +425,26 @@ span.CodeMirror-selectedtext { background: none; }
     cursor: pointer;
 }
 .editor-toolbar a:hover, .editor-toolbar a.active,
-.editor-toolbar input:hover,
-.editor-toolbar input.active {
+.editor-toolbar label:hover,
+.editor-toolbar label.active {
     background: #fcfcfc;
     border-color: #95a5a6;
     color: #777;
 }
 .editor-toolbar a:before,
-.editor-toolbar input:before {
+.editor-toolbar label:before {
     line-height: 24px;
 }
 
-.editor-toolbar input.icon-image {
-    padding: 0 0 0 3px;
+.editor-toolbar label.icon-image {
+    padding: 0 1px;
     height: 23px;
     width: 21px;
     vertical-align: bottom;
+    float: none;
 }
-
-.editor-toolbar input.icon-image:before {
-    line-height: 26px;
+.editor-toolbar input {
+    height: 1px;
 }
 .editor-toolbar form {
     display: inline;
