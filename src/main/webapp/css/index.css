@@ -233,6 +233,7 @@
     text-decoration: none;
     font-size: 13px;
     margin-left: -1px;
+    margin-bottom: 5px;
 }
 
 .domains a:hover {
