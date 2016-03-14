@@ -1061,6 +1061,7 @@ a[class*=" icon-"]:hover {
     -webkit-box-flex: 1;
     width: 30%;
     min-width: 236px;
+    position: relative;
 }
 
 .nav div > a {
@@ -1146,8 +1147,8 @@ a[class*=" icon-"]:hover {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 14px;
     position: absolute;
-    right: -2px;
-    top: 47px;
+    right: 0;
+    top: 38px;
     z-index: 2;
     width: 232px;
 }

@@ -20,7 +20,7 @@
                     <div class="module">
                         <div class="module-header">
                             <h2>
-                                热门话题
+                                domainname
                             </h2>
                         </div>
                         <div class="module-panel">

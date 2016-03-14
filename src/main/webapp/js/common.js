@@ -604,7 +604,7 @@ var Util = {
      * @description 页面初始化执行的函数 
      */
     showLogin: function () {
-        $(".nav .form").slideToggle();
+        $(".nav .form").toggle();
         $("#nameOrEmail").focus();
     },
     /**

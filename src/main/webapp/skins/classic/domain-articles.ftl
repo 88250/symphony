@@ -14,6 +14,12 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
+                    <div class="domains fn-clear">
+                        <a href='/domain/{domain.domainURI}'>domain.domainTitle</a>
+                        <a href='/domain/{domain.domainURI}' class="selected">domain.domainTitle</a>
+                        <a href='/domain/{domain.domainURI}'>domain.domainTitle</a>
+                        <a href='/domain/{domain.domainURI}'>domain.domainTitle</a>
+                    </div>
                     <@list listData=latestArticles/>
                     <@pagination url="/${domain.domainURI}"/>
                 </div>
