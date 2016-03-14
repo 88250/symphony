@@ -49,7 +49,7 @@ import org.jsoup.Jsoup;
  * Domain query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 13, 2016
+ * @version 1.0.0.1, Mar 14, 2016
  * @since 1.4.0
  */
 @Service
@@ -91,8 +91,9 @@ public class DomainQueryService {
      * @return domains, returns an empty list if not found
      */
     public List<JSONObject> getMostTagDomain(final int fetchSize) {
-        final Query query = new Query().addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
-                addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
+        final Query query = new Query().addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
+                addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setPageSize(fetchSize).setPageCount(1);
         try {
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(domainRepository.get(query).optJSONArray(Keys.RESULTS));
