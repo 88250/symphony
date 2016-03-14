@@ -24,28 +24,29 @@
                     <@list listData=indexArticles/>
                     <div class="fn-clear">
                         <br/>
-                        <span class="ft-gray"><a href="/recent">${moreRecentArticleLabel}</a></span>
-                        <span class="ft-gray fn-right"><a href="/domains">All Domains</a></span>
+                        <a href="/domains" class="ft-gray">All Domains</a>
+                        <a href="/recent" class="fn-right">${moreRecentArticleLabel}</a>
                         <br/> <br/>
                     </div>
-                    <div class="module">
 
+                    <#list domains as domain>
+                    <div class="module">
                         <div class="module-header">
                             <h2>
-                                ${domainLabel}
+                                <a rel="nofollow" href="/domain/${domain.domainURI}"> ${domain.domainTitle}</a>
                             </h2>
                         </div>
                         <div class="module-panel">
                             <ul class="tags fn-clear">
-                                <#list domains as domain>
                                 <li>
-                                    <a class="btn small" rel="nofollow" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
+                                    <a class="btn small" rel="nofollow" href="/domain/{domain.tag}">tag</a>
                                 </li>
-                                </#list>
                             </ul>
                         </div>
                     </div>
+                    </#list>
                 </div>
+
                 <div class="side">
                     <#include "side.ftl">
                 </div>
