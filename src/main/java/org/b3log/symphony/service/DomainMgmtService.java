@@ -28,9 +28,11 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Domain;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.DomainRepository;
 import org.b3log.symphony.repository.DomainTagRepository;
+import org.b3log.symphony.repository.OptionRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,7 +40,7 @@ import org.json.JSONObject;
  * Domain management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 13, 2016
+ * @version 1.0.0.1, Mar 14, 2016
  * @since 1.4.0
  */
 @Service
@@ -60,6 +62,12 @@ public class DomainMgmtService {
      */
     @Inject
     private DomainTagRepository domainTagRepository;
+
+    /**
+     * Option repository.
+     */
+    @Inject
+    private OptionRepository optionRepository;
 
     /**
      * Removes a domain-tag relation.
@@ -140,6 +148,11 @@ public class DomainMgmtService {
             record.put(Domain.DOMAIN_TAG_COUNT, 0);
             record.put(Domain.DOMAIN_TYPE, "");
             record.put(Domain.DOMAIN_SORT, 10);
+
+            final JSONObject domainCntOption = optionRepository.get(Option.ID_C_STATISTIC_DOMAIN_COUNT);
+            final int domainCnt = domainCntOption.optInt(Option.OPTION_VALUE);
+            domainCntOption.put(Option.OPTION_VALUE, domainCnt + 1);
+            optionRepository.update(Option.ID_C_STATISTIC_DOMAIN_COUNT, domainCntOption);
 
             return domainRepository.add(record);
         } catch (final RepositoryException e) {

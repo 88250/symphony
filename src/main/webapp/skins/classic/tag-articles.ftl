@@ -23,7 +23,7 @@
                             <a rel="tag" 
                                title="${tag.tagTitle?url('UTF-8')}" 
                                href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                        </h1> /
+                        </h1> <#if 0 < tag.tagDomains?size> /</#if>
                         <#list tag.tagDomains as domain>
                         <a class="ft-gray" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
                         </#list>

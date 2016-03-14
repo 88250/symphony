@@ -14,7 +14,7 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <div class="domains fn-clear">
-                        <a href='/' class="selected">${hotTopicLabel}</a>
+                        <a href='/' class="selected">${hotLabel}</a>
                         <#list domains as domain>
                         <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
                         <#if 10 < domain?counter>

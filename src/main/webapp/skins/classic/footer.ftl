@@ -7,6 +7,7 @@
                 <#if isLoggedIn><a class="responsive-hide" href="/city/my">${sameCityLabel}</a></#if>
                 <a href="/tags/系统公告">${symAnnouncementLabel}</a>
                 <a href="/tags/Q%26A">${qnaLabel}</a>
+                <a href="/domains">${domainLabel}</a>
                 <a href="/tags" class="last">${tagLabel}</a>
 
                 <div class="fn-right">
