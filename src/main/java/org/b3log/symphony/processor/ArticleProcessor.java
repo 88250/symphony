@@ -815,10 +815,6 @@ public class ArticleProcessor {
         }
 
         try {
-            if (Strings.isEmptyOrNull(articleTags)) {
-                throw new ServiceException(langPropsService.get("articleTagReservedLabel"));
-            }
-
             article.put(Article.ARTICLE_TAGS, articleTags);
 
             if (toAdd) {
@@ -980,10 +976,6 @@ public class ArticleProcessor {
         }
 
         try {
-            if (Strings.isEmptyOrNull(articleTags)) {
-                throw new ServiceException(langPropsService.get("articleTagReservedLabel"));
-            }
-
             article.put(Article.ARTICLE_TAGS, articleTags);
 
             articleMgmtService.updateArticle(article);
