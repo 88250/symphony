@@ -103,7 +103,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.11.27, Jan 26, 2016
+ * @version 1.13.12.27, Mar 14, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -512,6 +512,14 @@ public class ArticleProcessor {
                 articleTags = articleMgmtService.filterReservedTags(articleTags);
             }
 
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType && StringUtils.isBlank(articleTags)) {
+                articleTags = "讨论组";
+            }
+
+            if (Article.ARTICLE_TYPE_C_THOUGHT == articleType && StringUtils.isBlank(articleTags)) {
+                articleTags = "思绪";
+            }
+
             article.put(Article.ARTICLE_TAGS, articleTags);
             article.put(Article.ARTICLE_T_IS_BROADCAST, false);
 
@@ -669,8 +677,17 @@ public class ArticleProcessor {
             articleTags = articleMgmtService.filterReservedTags(articleTags);
         }
 
+        if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType && StringUtils.isBlank(articleTags)) {
+            articleTags = "讨论组";
+        }
+
+        if (Article.ARTICLE_TYPE_C_THOUGHT == articleType && StringUtils.isBlank(articleTags)) {
+            articleTags = "思绪";
+        }
+
+        article.put(Article.ARTICLE_TAGS, articleTags);
+
         try {
-            article.put(Article.ARTICLE_TAGS, articleTags);
 
             articleMgmtService.updateArticle(article);
             context.renderTrueResult();
