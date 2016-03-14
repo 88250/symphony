@@ -56,6 +56,12 @@
                 <label for="domainIconPath">${iconPathLabel}</label>
                 <input type="text" id="domainIconPath" name="domainIconPath" value="${domain.domainIconPath}" />
 
+                <label for="domainSort">${sortLabel}</label>
+                <input type="text" id="domainSort" name="domainSort" value="${domain.domainSort}" />
+
+                <label for="domainType">${typeLabel}</label>
+                <input type="text" id="domainType" name="domainType" value="${domain.domainType}" />
+
                 <label>${statusLabel}</label>
                 <select id="domainStatus" name="domainStatus">
                     <option value="0"<#if 0 == domain.domainStatus> selected</#if>>${validLabel}</option>

@@ -107,6 +107,7 @@ public class DomainQueryService {
      */
     public List<JSONObject> getMostTagDomain(final int fetchSize) {
         final Query query = new Query().addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
+                addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
                 setPageSize(fetchSize).setPageCount(1);
         try {
             return CollectionUtils.jsonArrayToList(domainRepository.get(query).optJSONArray(Keys.RESULTS));
@@ -282,6 +283,8 @@ public class DomainQueryService {
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
+                addSort(Domain.DOMAIN_TAG_COUNT, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> field : domainFields.entrySet()) {
             query.addProjection(field.getKey(), field.getValue());
