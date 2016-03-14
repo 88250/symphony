@@ -755,6 +755,7 @@ public class AdminProcessor {
         articleFields.put(Article.ARTICLE_VIEW_CNT, Integer.class);
         articleFields.put(Article.ARTICLE_COMMENT_CNT, Integer.class);
         articleFields.put(Article.ARTICLE_AUTHOR_EMAIL, String.class);
+        articleFields.put(Article.ARTICLE_AUTHOR_ID, String.class);
         articleFields.put(Article.ARTICLE_TAGS, String.class);
         articleFields.put(Article.ARTICLE_STATUS, Integer.class);
 

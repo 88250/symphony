@@ -37,7 +37,6 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DomainQueryService;
-import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -113,7 +112,7 @@ public class IndexProcessor {
         final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
         
-        final List<JSONObject> domains = domainQueryService.getMostTagDomain(8);
+        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
         dataModel.put(Domain.DOMAINS, domains);
 
         filler.fillHeaderAndFooter(request, response, dataModel);

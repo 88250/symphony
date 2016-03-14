@@ -20,7 +20,7 @@
                     <div class="module">
                         <div class="module-header">
                             <h2>
-                                domainname
+                                ${domainLabel}
                             </h2>
                         </div>
                         <div class="module-panel">
