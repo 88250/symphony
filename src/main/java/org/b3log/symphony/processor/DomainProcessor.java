@@ -176,6 +176,9 @@ public class DomainProcessor {
         final int domainCnt = domainQueryService.getDomainCount();
         dataModel.put(Domain.DOMAIN_T_COUNT, domainCnt);
 
+        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
+        dataModel.put(Domain.DOMAINS, domains);
+
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 

@@ -110,7 +110,14 @@ public class DomainQueryService {
                 addSort(Domain.DOMAIN_SORT, SortDirection.ASCENDING).
                 setPageSize(fetchSize).setPageCount(1);
         try {
-            return CollectionUtils.jsonArrayToList(domainRepository.get(query).optJSONArray(Keys.RESULTS));
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(domainRepository.get(query).optJSONArray(Keys.RESULTS));
+            for (final JSONObject domain : ret) {
+                final List<JSONObject> tags = getTags(domain.optString(Keys.OBJECT_ID));
+
+                domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
+            }
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets most tag domain error", e);
 

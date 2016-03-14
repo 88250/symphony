@@ -33,14 +33,16 @@
                     <div class="module">
                         <div class="module-header">
                             <h2>
-                                <a rel="nofollow" href="/domain/${domain.domainURI}"> ${domain.domainTitle}</a>
+                                <a rel="nofollow" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
                             </h2>
                         </div>
                         <div class="module-panel">
                             <ul class="tags fn-clear">
+                                <#list domain.domainTags as tag>
                                 <li>
-                                    <a class="btn small" rel="nofollow" href="/domain/{domain.tag}">tag</a>
+                                    <a class="btn small" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                 </li>
+                                </#list>
                             </ul>
                         </div>
                     </div>

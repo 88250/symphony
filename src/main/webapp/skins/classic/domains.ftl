@@ -13,18 +13,18 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
-                    <#list [1, 2, 3] as item>
+                    <#list domains as domain>
                     <div class="module">
                         <div class="module-header">
                             <h2>
-                                <a href="">{domainLabel}</a>
+                                <a rel="nofollow" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
                             </h2>
                         </div>
                         <div class="module-panel">
                             <ul class="tags fn-clear">
-                                <#list [1, 2, 3] as item>
+                                <#list domain.domainTags as tag>
                                 <li>
-                                    <a class="btn small" rel="nofollow" href="/tags/tag">tag</a>
+                                    <a class="btn small" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                 </li>
                                 </#list>
                             </ul>
@@ -33,11 +33,11 @@
                     </#list>
                 </div>
                 <div class="side">
+                    <#include "common/person-info.ftl">
                     <div class='domains-count'>
                         Domains: <b>${domainCnt}</b><br/>
                         Tags: <b>${tagCnt}</b>
                     </div>
-                    <#include "common/person-info.ftl">
                 </div>
             </div>
         </div>
