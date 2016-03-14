@@ -163,9 +163,7 @@ public class DomainProcessor {
     @RequestProcessing(value = "/domains", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void showDomains(final HTTPRequestContext context,
-            final HttpServletRequest request,
-            final HttpServletResponse response)
+    public void showDomains(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
@@ -173,10 +171,11 @@ public class DomainProcessor {
         renderer.setTemplateName("domains.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final int tagCnt = optionQueryService.getStatistic().optInt(Option.ID_C_STATISTIC_TAG_COUNT);
+        final JSONObject statistic = optionQueryService.getStatistic();
+        final int tagCnt = statistic.optInt(Option.ID_C_STATISTIC_TAG_COUNT);
         dataModel.put(Tag.TAG_T_COUNT, tagCnt);
 
-        final int domainCnt = domainQueryService.getDomainCount();
+        final int domainCnt = statistic.optInt(Option.ID_C_STATISTIC_DOMAIN_COUNT);
         dataModel.put(Domain.DOMAIN_T_COUNT, domainCnt);
 
         final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
@@ -227,6 +226,9 @@ public class DomainProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
+        dataModel.put(Domain.DOMAINS, domains);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);

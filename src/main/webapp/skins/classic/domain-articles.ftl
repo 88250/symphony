@@ -15,13 +15,14 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <div class="domains fn-clear">
-                        <a href='/'>${hotLabel}</a>
                         <#list domains as navDomain>
                         <a href="/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainTitle}</a>
                         <#if 10 < navDomain?counter>
                         <#break>
                         </#if>
                         </#list>
+                        <a href='/'>${hotLabel}</a>
+                        <a href='/recent'>${latestLabel}</a>
                     </div>
                     <@list listData=latestArticles/>
                     <@pagination url="/${domain.domainURI}"/>
@@ -34,9 +35,9 @@
                         <div class="module-panel">
                             <ul class="module-list">
                                 <li>
-                                <#list domain.domainTags as tag>
+                                    <#list domain.domainTags as tag>
                                     <a class="tag" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a> &nbsp;
-                                </#list>
+                                    </#list>
                                 </li>
                             </ul>
                             <div class="fn-hr5"></div>

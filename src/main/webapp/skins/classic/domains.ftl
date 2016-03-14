@@ -14,7 +14,6 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <#list domains as domain>
-                    <#if domain.domainTags?size gt 0>
                     <div class="module">
                         <div class="module-header">
                             <h2>${domain.domainTitle}</h2>
@@ -30,7 +29,6 @@
                             </ul>
                         </div>
                     </div>
-                    </#if>
                     </#list>
                 </div>
                 <div class="side">

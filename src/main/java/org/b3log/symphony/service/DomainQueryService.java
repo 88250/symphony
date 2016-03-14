@@ -85,21 +85,6 @@ public class DomainQueryService {
     private ShortLinkQueryService shortLinkQueryService;
 
     /**
-     * Gets domain count.
-     *
-     * @return domain count
-     */
-    public int getDomainCount() {
-        try {
-            return (int) domainRepository.count();
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets domain count error", e);
-
-            return 0;
-        }
-    }
-
-    /**
      * Gets most tag domain.
      *
      * @param fetchSize the specified fetch size
