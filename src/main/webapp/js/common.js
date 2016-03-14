@@ -832,13 +832,14 @@ var Util = {
                 },
                 formData: function (form) {
                     var data = form.serializeArray();
-                    
                     return data;
                 },
                 submit: function (e, data) {
                     if (obj.editor.replaceRange) {
                         var cursor = obj.editor.getCursor();
                         obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
+                    } else {
+                        $('#' + obj.id + ' input').prop('disabled', true);
                     }
                 },
                 done: function (e, data) {
@@ -857,6 +858,7 @@ var Util = {
                             CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
                     } else {
                         obj.editor.$it.val(obj.editor.$it.val() + '![' + filename + '](' + qiniuKey + ') \n\n');
+                        $('#' + obj.id + ' input').prop('disabled', false);
                     }
                 },
                 fail: function (e, data) {
@@ -865,6 +867,8 @@ var Util = {
                         var cursor = obj.editor.getCursor();
                         obj.editor.replaceRange('',
                                 CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                    } else {
+                        $('#' + obj.id + ' input').prop('disabled', false);
                     }
                 }
             }).on('fileuploadprocessalways', function (e, data) {
@@ -932,6 +936,8 @@ var Util = {
                 if (obj.editor.replaceRange) {
                     var cursor = obj.editor.getCursor();
                     obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
+                } else {
+                    $('#' + obj.id + ' input').prop('disabled', false);
                 }
             },
             done: function (e, data) {
@@ -948,6 +954,9 @@ var Util = {
                     var cursor = obj.editor.getCursor();
                     obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
                             CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                } else {
+                    obj.editor.$it.val('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n');
+                    $('#' + obj.id + ' input').prop('disabled', false);
                 }
             },
             fail: function (e, data) {
@@ -956,6 +965,8 @@ var Util = {
                     var cursor = obj.editor.getCursor();
                     obj.editor.replaceRange('',
                             CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                } else {
+                    $('#' + obj.id + ' input').prop('disabled', false);
                 }
             }
         }).on('fileuploadprocessalways', function (e, data) {
