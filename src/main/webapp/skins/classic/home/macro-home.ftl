@@ -20,19 +20,19 @@
         <meta name="description" content="${user.userName}${deLabel}${followingTagsLabel}"/>
         </@head>
         <#elseif type == "followingArticles">
-        <@head title="${user.userName} - ${symphonyLabel} - ${followingArticlesLabel}">
+        <@head title="${user.userName} - ${followingArticlesLabel} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followingArticlesLabel}"/>
         </@head>
         <#elseif type == "followers">
-        <@head title="${user.userName} - ${symphonyLabel} - ${followersLabel}">
+        <@head title="${user.userName} - ${followersLabel} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${followersLabel}"/>
         </@head>
         <#elseif type == "points">
-        <@head title="${user.userName} - ${symphonyLabel} - ${pointLabel}">
+        <@head title="${user.userName} - ${pointLabel} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${pointLabel}"/>
         </@head>
         <#elseif type == "settings">
-        <@head title="${user.userName} - ${symphonyLabel} - ${settingsLabel}">
+        <@head title="${user.userName} - ${settingsLabel} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
         </#if>

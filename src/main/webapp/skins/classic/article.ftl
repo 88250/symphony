@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel} - ${article.articleTitle}">
+        <@head title="${article.articleTitle} - ${symphonyLabel}">
         <meta name="keywords" content="${article.articleTags}" />
         <meta name="description" content="${article.articlePreviewContent}"/>
         </@head>
