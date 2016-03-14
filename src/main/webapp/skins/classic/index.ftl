@@ -16,7 +16,7 @@
                     <div class="domains fn-clear">
                         <a href='/domains'>All Domains</a>
                         <#list domains as domain>
-                        <a href='/${domain.domainURI}'>${domain.domainTitle}</a>
+                        <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
                         </#list>
                     </div>
                     <@list listData=indexArticles/>

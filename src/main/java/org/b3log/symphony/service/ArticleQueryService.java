@@ -77,7 +77,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.9.15, Mar 13, 2016
+ * @version 1.12.9.16, Mar 14, 2016
  * @since 0.2.0
  */
 @Service
@@ -159,6 +159,15 @@ public class ArticleQueryService {
      */
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
 
+    /**
+     * Gets domain articles.
+     *
+     * @param domainId the specified domain id
+     * @param currentPageNum the specified current page number
+     * @param pageSize the specified page size
+     * @return result
+     * @throws ServiceException service exception
+     */
     public JSONObject getDomainArticles(final String domainId, final int currentPageNum, final int pageSize)
             throws ServiceException {
         final JSONObject ret = new JSONObject();
@@ -180,20 +189,12 @@ public class ArticleQueryService {
                     new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.IN, tagIds)).
                     setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-            final JSONArray tagArticles = tagArticleRepository.get(query).optJSONArray(Keys.RESULTS);
+            JSONObject result = tagArticleRepository.get(query);
+            final JSONArray tagArticles = result.optJSONArray(Keys.RESULTS);
             if (tagArticles.length() <= 0) {
                 return ret;
             }
 
-            final Set<String> articleIds = new HashSet<String>();
-            for (int i = 0; i < tagArticles.length(); i++) {
-                articleIds.add(tagArticles.optJSONObject(i).optString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
-            }
-
-            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
-                    setPageCount(1);
-
-            final JSONObject result = articleRepository.get(query);
             final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
 
             final JSONObject pagination = new JSONObject();
@@ -205,8 +206,16 @@ public class ArticleQueryService {
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
-            final JSONArray data = result.optJSONArray(Keys.RESULTS);
-            final List<JSONObject> articles = CollectionUtils.<JSONObject>jsonArrayToList(data);
+            final Set<String> articleIds = new HashSet<String>();
+            for (int i = 0; i < tagArticles.length(); i++) {
+                articleIds.add(tagArticles.optJSONObject(i).optString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
+            }
+
+            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+                    setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+            final List<JSONObject> articles
+                    = CollectionUtils.<JSONObject>jsonArrayToList(articleRepository.get(query).optJSONArray(Keys.RESULTS));
 
             try {
                 organizeArticles(articles);
@@ -1159,15 +1168,15 @@ public class ArticleQueryService {
      * @throws RepositoryException repository exception
      */
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
-        final String authorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
+        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-        if (Strings.isEmptyOrNull(authorEmail)) {
+        if (Strings.isEmptyOrNull(authorId)) {
             return;
         }
 
-        final JSONObject author = userRepository.getByEmail(authorEmail);
+        final JSONObject author = userRepository.get(authorId);
 
-        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURL(authorEmail));
+        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUserId(authorId));
         article.put(Article.ARTICLE_T_AUTHOR, author);
 
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
@@ -1213,9 +1222,11 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     private List<JSONObject> getArticleLatestParticipants(final String articleId, final int fetchSize) throws ServiceException {
-        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId))
-                .addProjection(Comment.COMMENT_AUTHOR_EMAIL, String.class).addProjection(Keys.OBJECT_ID, String.class)
+                .addProjection(Comment.COMMENT_AUTHOR_EMAIL, String.class)
+                .addProjection(Keys.OBJECT_ID, String.class)
+                .addProjection(Comment.COMMENT_AUTHOR_ID, String.class)
                 .setPageCount(1).setCurrentPageNum(1).setPageSize(fetchSize);
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
@@ -1225,11 +1236,12 @@ public class ArticleQueryService {
 
             for (final JSONObject comment : comments) {
                 final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
-                final JSONObject commenter = userRepository.getByEmail(email);
+                final String userId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+                final JSONObject commenter = userRepository.get(userId);
 
                 String thumbnailURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
-                    thumbnailURL = avatarQueryService.getAvatarURL(email);
+                    thumbnailURL = avatarQueryService.getAvatarURLByUserId(userId);
                 }
 
                 final JSONObject participant = new JSONObject();

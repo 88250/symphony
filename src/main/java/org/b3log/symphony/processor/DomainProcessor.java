@@ -92,18 +92,12 @@ public class DomainProcessor {
      * @param domainURI the specified domain URI
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/{domainURI}", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/domain/{domainURI}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showDomainArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String domainURI)
             throws Exception {
-        if ("recent".equals(domainURI)) {
-            showRecentArticles(context, request, response);
-
-            return;
-        }
-
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("domain-articles.ftl");
@@ -182,7 +176,18 @@ public class DomainProcessor {
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
-    private void showRecentArticles(final HTTPRequestContext context,
+    /**
+     * Shows recent articles.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/recent", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showRecentArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
