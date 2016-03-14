@@ -17,6 +17,9 @@
                     <div class="domains fn-clear">
                         <#list domains as navDomain>
                         <a href="/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainTitle}</a>
+                        <#if 10 < navDomain?counter>
+                        <#break>
+                        </#if>
                         </#list>
                     </div>
                     <@list listData=latestArticles/>

@@ -118,9 +118,12 @@ public class DomainProcessor {
             return;
         }
 
+        final List<JSONObject> tags = domainQueryService.getTags(domain.optString(Keys.OBJECT_ID));
+        domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
+
         dataModel.put(Domain.DOMAIN, domain);
 
-        final List<JSONObject> domains = domainQueryService.getMostTagDomain(8);
+        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
         dataModel.put(Domain.DOMAINS, domains);
 
         final String domainId = domain.optString(Keys.OBJECT_ID);
