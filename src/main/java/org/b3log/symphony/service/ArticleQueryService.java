@@ -171,6 +171,12 @@ public class ArticleQueryService {
     public JSONObject getDomainArticles(final String domainId, final int currentPageNum, final int pageSize)
             throws ServiceException {
         final JSONObject ret = new JSONObject();
+        ret.put(Article.ARTICLES, (Object) Collections.emptyList());
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, 0);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) Collections.emptyList());
 
         try {
             final JSONArray domainTags = domainTagRepository.getByDomainId(domainId, 1, Integer.MAX_VALUE)
@@ -196,9 +202,6 @@ public class ArticleQueryService {
             }
 
             final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
-            final JSONObject pagination = new JSONObject();
-            ret.put(Pagination.PAGINATION, pagination);
 
             final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
 

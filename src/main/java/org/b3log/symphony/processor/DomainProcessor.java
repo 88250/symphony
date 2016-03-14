@@ -123,13 +123,13 @@ public class DomainProcessor {
         final String domainId = domain.optString(Keys.OBJECT_ID);
 
         final JSONObject result = articleQueryService.getDomainArticles(domainId, pageNum, pageSize);
-        final List<JSONObject> latestArticles = (List<JSONObject>) result.get(Article.ARTICLES);
+        final List<JSONObject> latestArticles = (List<JSONObject>) result.opt(Article.ARTICLES);
         dataModel.put(Common.LATEST_ARTICLES, latestArticles);
 
-        final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
 
-        final List<Integer> pageNums = (List<Integer>) pagination.get(Pagination.PAGINATION_PAGE_NUMS);
+        final List<Integer> pageNums = (List<Integer>) pagination.opt(Pagination.PAGINATION_PAGE_NUMS);
         if (!pageNums.isEmpty()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
