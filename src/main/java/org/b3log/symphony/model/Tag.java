@@ -25,7 +25,7 @@ import org.b3log.latke.util.Strings;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.3.3, Mar 11, 2016
+ * @version 1.8.3.3, Mar 14, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -101,6 +101,11 @@ public final class Tag {
     public static final String TAG_SEO_DESC = "tagSeoDesc";
 
     //// Transient ////
+    /**
+     * Key of tag domains.
+     */
+    public static final String TAG_T_DOMAINS = "tagDomains";
+    
     /**
      * Key of tag count.
      */

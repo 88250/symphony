@@ -50,8 +50,11 @@ import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.DomainRepository;
+import org.b3log.symphony.repository.DomainTagRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.TagTagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -100,6 +103,18 @@ public class TagQueryService {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Domain repository.
+     */
+    @Inject
+    private DomainRepository domainRepository;
+
+    /**
+     * Domain tag repository.
+     */
+    @Inject
+    private DomainTagRepository domainTagRepository;
 
     /**
      * Avatar query service.
@@ -240,6 +255,19 @@ public class TagQueryService {
 
             if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_KEYWORDS))) {
                 ret.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
+            }
+
+            final List<JSONObject> domains = new ArrayList<JSONObject>();
+            ret.put(Tag.TAG_T_DOMAINS, (Object) domains);
+
+            final Query query = new Query().setFilter(
+                    new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, ret.optString(Keys.OBJECT_ID)));
+            final JSONArray relations = domainTagRepository.get(query).optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < relations.length(); i++) {
+                final JSONObject relation = relations.optJSONObject(i);
+                final String domainId = relation.optString(Domain.DOMAIN + "_" + Keys.OBJECT_ID);
+                final JSONObject domain = domainRepository.get(domainId);
+                domains.add(domain);
             }
 
             return ret;
