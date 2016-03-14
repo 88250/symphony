@@ -23,10 +23,10 @@
                             <a rel="tag" 
                                title="${tag.tagTitle?url('UTF-8')}" 
                                href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                            <#list tag.tagDomains as domain>
-                            <a class="ft-red ft-smaller" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
-                            </#list>
-                        </h1>
+                        </h1> /
+                        <#list tag.tagDomains as domain>
+                        <a class="ft-gray" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
+                        </#list>
                         <#if isLoggedIn>
                         <#if !tag.isReserved || isAdminLoggedIn> &nbsp;
                         <a class="btn red" href="/post?tags=${tag.tagTitle?url('utf-8')}&type=0">${addArticleLabel}</a>

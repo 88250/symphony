@@ -14,6 +14,7 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <div class="domains fn-clear">
+                        <a href='/' class="selected">${hotTopicLabel}</a>
                         <#list domains as domain>
                         <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
                         <#if 10 < domain?counter>
@@ -22,31 +23,32 @@
                         </#list>
                     </div>
                     <@list listData=indexArticles/>
-                    <div class="fn-clear">
-                        <br/>
-                        <a href="/domains" class="ft-gray">All Domains</a>
-                        <a href="/recent" class="fn-right">${moreRecentArticleLabel}</a>
-                        <br/> <br/>
-                    </div>
+                    <br/>
+                    <a href="/recent" class="ft-gray">${moreRecentArticleLabel}</a>
+                    <br/> <br/> <br/> <br/>
 
-                    <#list domains as domain>
                     <div class="module">
                         <div class="module-header">
-                            <h2>
-                                <a rel="nofollow" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
-                            </h2>
+                            <h2>${symphonyLabel}/${domainLabel}</h2>
+                            <a href="/domains" class="ft-gray fn-right">All Domains</a>
                         </div>
                         <div class="module-panel">
-                            <ul class="tags fn-clear">
-                                <#list domain.domainTags as tag>
+                            <ul class="module-list domain">
+                                <#list domains as domain>
+                                <#if domain.domainTags?size gt  0>
                                 <li>
-                                    <a class="btn small" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                    <a rel="nofollow" class="slogan" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
+                                    <div class="title">
+                                        <#list domain.domainTags as tag>
+                                        <a class="tag" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a> &nbsp;
+                                        </#list>
+                                    </div>
                                 </li>
+                                </#if>
                                 </#list>
                             </ul>
                         </div>
                     </div>
-                    </#list>
                 </div>
 
                 <div class="side">

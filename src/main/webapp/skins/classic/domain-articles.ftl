@@ -24,6 +24,24 @@
                     </div>
                     <@list listData=latestArticles/>
                     <@pagination url="/${domain.domainURI}"/>
+                    <br/><br/><br/>
+                    <div class="module">
+                        <div class="module-header">
+                            <h2>${symphonyLabel}/${domain.domainTitle}</h2>
+                            <a href="/domains" class="ft-gray fn-right">All Domains</a>
+                        </div>
+                        <div class="module-panel">
+                            <ul class="module-list">
+                                <li>
+                                    <a class="tag" rel="nofollow" href="/tags/{tag.tagTitle?url('utf-8')}">{tag.tagTitle}</a> &nbsp;
+                                    <a class="tag" rel="nofollow" href="/tags/{tag.tagTitle?url('utf-8')}">{tag.tagTitle}</a> &nbsp;
+                                    <a class="tag" rel="nofollow" href="/tags/{tag.tagTitle?url('utf-8')}">{tag.tagTitle}</a> &nbsp;
+                                    <a class="tag" rel="nofollow" href="/tags/{tag.tagTitle?url('utf-8')}">{tag.tagTitle}</a> 
+                                </li>
+                            </ul>
+                            <div class="fn-hr5"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="side">
                     <#include "side.ftl">

@@ -14,22 +14,23 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <#list domains as domain>
+                    <#if domain.domainTags?size gt 0>
                     <div class="module">
                         <div class="module-header">
-                            <h2>
-                                <a rel="nofollow" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
-                            </h2>
+                            <h2>${domain.domainTitle}</h2>
+                            <a class="ft-gray fn-right" rel="nofollow" href="/domain/${domain.domainURI}">${domain.domainTags?size} Tags</a>
                         </div>
                         <div class="module-panel">
                             <ul class="tags fn-clear">
                                 <#list domain.domainTags as tag>
                                 <li>
-                                    <a class="btn small" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                    <a class="tag" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                 </li>
                                 </#list>
                             </ul>
                         </div>
                     </div>
+                    </#if>
                     </#list>
                 </div>
                 <div class="side">

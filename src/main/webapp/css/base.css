@@ -1355,9 +1355,11 @@ a[class*=" icon-"]:hover {
     border-bottom: 1px dotted #CCCCCC;
     list-style: none outside none;
     padding: 5px 10px;
+    position: relative;
 }
 
-.module-panel .module-list li.last {
+.module-panel .module-list li.last,
+.module-panel .module-list li:last-child {
     border-bottom-width: 0;
 }
 

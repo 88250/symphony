@@ -35,16 +35,22 @@
     line-height: 19px;
 }
 
-.module-list li {
-    position: relative;
-}
-
 .module-list.ad .title {
     margin-left: 60px;
 }
 
 .module-list.ad .slogan {
     margin-top: -10px;
+}
+
+.module-list.domain .slogan {
+    text-align: right;
+    margin-top: -8px;
+    width: 60px;
+}
+
+.module-list.domain .title {
+    margin-left: 80px;
 }
 /* end module */
 
@@ -215,6 +221,7 @@
 /* start domains */
 .domains {
     margin-bottom: 20px;
+    margin-left: 1px;
 }
 
 .domains a {
