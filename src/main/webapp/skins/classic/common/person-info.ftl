@@ -10,7 +10,7 @@
         </a>
         </#if>
     </div>
-    <div class="module-header nopanel">
+    <div class="module-panel">
         <ul class="status fn-flex">
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/tags'">
                 <strong>${currentUser.followingTagCnt?c}</strong>
@@ -27,8 +27,8 @@
         </ul>
 
         <div class="fn-clear ranking">
-            <span class="ft-red">♠</span> <a href="/top/balance">${wealthLabel}${rankingLabel}</a>
-            <span class="ft-green">♥</span> <a href="/top/consumption">${consumptionLabel}${rankingLabel}</a>
+            <span class="ft-red">♠</span><a href="/top/balance">${wealthLabel}${rankingLabel}</a>
+            <span class="ft-green">♥</span><a href="/top/consumption">${consumptionLabel}${rankingLabel}</a>
             <a href="/member/${currentUser.userName}/points" class="ft-gray fn-right" title="${pointLabel} ${currentUser.userPoint?c}">
                 <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>
         </div>

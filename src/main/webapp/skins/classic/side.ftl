@@ -2,7 +2,7 @@
 
 <#if ADLabel!="">
 <div class="module">
-    <div class="module-header nopanel">
+    <div class="module-panel">
         ${ADLabel}
     </div>
 </div>

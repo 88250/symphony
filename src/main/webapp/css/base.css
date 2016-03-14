@@ -1381,12 +1381,6 @@ a[class*=" icon-"]:hover {
     width: 210px;
 }
 
-.module-header.nopanel {
-    border-bottom-width: 0;
-    border-radius: 5px; 
-    background-color: #FDFDFD;
-}
-
 .module-panel.form {
     padding: 10px 20px 20px;
 }
@@ -1448,12 +1442,16 @@ a[class*=" icon-"]:hover {
 .person-info .status {
     border-bottom: 1px dotted #ccc;
     border-top-width: 0;
-    margin-top: -10px;
+    margin-top: -20px;
     margin-bottom: 15px;
 }
 
 .person-info .status .fn-pointer:hover span {
     color: #333;
+}
+
+.person-info .module-panel {
+    padding: 0 10px 10px 10px;
 }
 
 .painter-point {
