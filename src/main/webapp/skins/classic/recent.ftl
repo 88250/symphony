@@ -14,6 +14,16 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
+                    <div class="domains fn-clear">
+                        <#list domains as domain>
+                        <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
+                        <#if 10 < domain?counter>
+                        <#break>
+                        </#if>
+                        </#list>
+                        <a href='/' >${hotLabel}</a>
+                        <a href='/recent' class="selected">${latestLabel}</a>
+                    </div>
                     <@list listData=latestArticles/>
                     <@pagination url="/recent"/>
                 </div>

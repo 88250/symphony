@@ -14,13 +14,14 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <div class="domains fn-clear">
-                        <a href='/' class="selected">${hotLabel}</a>
                         <#list domains as domain>
                         <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
                         <#if 10 < domain?counter>
                         <#break>
                         </#if>
                         </#list>
+                        <a href='/' class="selected">${hotLabel}</a>
+                        <a href='/recent'>${latestLabel}</a>
                     </div>
                     <@list listData=indexArticles/>
                     <br/>
