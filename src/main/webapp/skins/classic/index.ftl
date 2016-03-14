@@ -29,13 +29,13 @@
 
                     <div class="module">
                         <div class="module-header">
-                            <h2>${symphonyLabel}/${domainLabel}</h2>
+                            <h2>${domainLabel}${navigationLabel}</h2>
                             <a href="/domains" class="ft-gray fn-right">All Domains</a>
                         </div>
                         <div class="module-panel">
                             <ul class="module-list domain">
                                 <#list domains as domain>
-                                <#if domain.domainTags?size gt  0>
+                                <#if domain.domainTags?size gt 0>
                                 <li>
                                     <a rel="nofollow" class="slogan" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
                                     <div class="title">
