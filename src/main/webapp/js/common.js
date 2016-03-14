@@ -579,7 +579,7 @@ var Util = {
                         downCnt = parseInt($("#voteDown").attr('title').substr(3)); 
                 if (result.sc) {
                     if (1 == result.type) { // cancel down
-                        $("#voteDown").removeClass("ft-red").attr('title', Label.downLabel + ' ' + (downCnt - 1));;
+                        $("#voteDown").removeClass("ft-red").attr('title', Label.downLabel + ' ' + (downCnt - 1));
                     } else {
                         $("#voteDown").addClass("ft-red").attr('title', Label.downLabel + ' ' + (downCnt + 1));
                         if ($("#voteUp").hasClass('ft-red')) {

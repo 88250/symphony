@@ -212,12 +212,6 @@ var AddArticle = {
 
             var thoughtTime = '';
             AddArticle.editor.on('changes', function (cm, changes) {
-                if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
-                    $(".form .green").show();
-                } else {
-                    $(".form .green").hide();
-                }
-
                 if (window.localStorage) {
                     window.localStorage.articleContent = cm.getValue();
                 }

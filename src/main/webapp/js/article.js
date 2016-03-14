@@ -110,7 +110,6 @@ var Comment = {
             return false;
         }
 
-
         Comment.editor.on('changes', function (cm) {
             if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
                 $(".form .green").show();

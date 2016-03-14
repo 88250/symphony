@@ -1088,12 +1088,6 @@ a[class*=" icon-"]:hover {
     margin-right: 0;
 }
 
-.nav div > a.current {
-    border-bottom: 2px solid #D26911;
-    color: #222;
-    padding-bottom: 13px;
-}
-
 .nav .avatar-small {
     height: 20px;
     width: 20px;
@@ -1133,7 +1127,7 @@ a[class*=" icon-"]:hover {
     text-shadow: 0 0 0;
 }
 
-.nav a.current.no-msg{
+.nav a.current.no-msg {
     padding-bottom:0;
     background-color: #D26911;
     border-bottom-width: 0;
