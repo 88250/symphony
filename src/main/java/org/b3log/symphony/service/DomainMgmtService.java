@@ -139,7 +139,7 @@ public class DomainMgmtService {
             record.put(Domain.DOMAIN_URI, domain.optString(Domain.DOMAIN_URI));
             record.put(Domain.DOMAIN_TAG_COUNT, 0);
             record.put(Domain.DOMAIN_TYPE, "");
-            record.put(Domain.DOMAIN_SORT, 0);
+            record.put(Domain.DOMAIN_SORT, 10);
 
             return domainRepository.add(record);
         } catch (final RepositoryException e) {
