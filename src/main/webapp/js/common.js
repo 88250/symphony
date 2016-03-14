@@ -49,7 +49,7 @@ var Util = {
                 keyupEvent(editor);
             });
         }
-        
+
         return editor;
     },
     initCodeMirror: function () {
@@ -78,7 +78,7 @@ var Util = {
             }
             var tok = cm.getTokenAt(cur);
             var autocompleteHints = [];
-            
+
             if (tok.string.indexOf('@') !== 0) {
                 return false;
             }
@@ -105,10 +105,10 @@ var Util = {
                     }
                 }
             });
-            
+
             return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
         });
-        
+
         CodeMirror.registerHelper("hint", "emoji", function (cm) {
             var word = /[\w$]+/;
             var cur = cm.getCursor(), curLine = cm.getLine(cur.line);
@@ -128,8 +128,8 @@ var Util = {
                 var text = emojis[i];
                 if (Util.startsWith(text, input)) {
                     autocompleteHints.push({
-                        displayText: '<span style="font-size: 1rem;line-height:22px"><img style="width: 1rem;margin:3px 0;float:left" src="' + Label.staticServePath + '/js/lib/emojify.js-1.0.2/images/basic/' + text + '.png"> ' + 
-                                  displayText.toString() + '</span>',
+                        displayText: '<span style="font-size: 1rem;line-height:22px"><img style="width: 1rem;margin:3px 0;float:left" src="' + Label.staticServePath + '/js/lib/emojify.js-1.0.2/images/basic/' + text + '.png"> ' +
+                                displayText.toString() + '</span>',
                         text: ":" + text + ": "
                     });
                     matchCnt++;
@@ -142,17 +142,17 @@ var Util = {
 
             return {list: autocompleteHints, from: CodeMirror.Pos(cur.line, start), to: CodeMirror.Pos(cur.line, end)};
         });
-        
+
         CodeMirror.commands.autocompleteUserName = function (cm) {
             cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
             return CodeMirror.Pass;
         };
-        
+
         CodeMirror.commands.autocompleteEmoji = function (cm) {
             cm.showHint({hint: CodeMirror.hint.emoji, completeSingle: false});
             return CodeMirror.Pass;
         };
-        
+
         CodeMirror.commands.startAudioRecord = function (cm) {
             if (!Audio.availabel) {
                 Audio.init();
@@ -165,7 +165,7 @@ var Util = {
                 cm.replaceRange(audioRecordingLabel, cursor, cursor);
             }
         };
-        
+
         CodeMirror.commands.endAudioRecord = function (cm) {
             if (!Audio.availabel) {
                 return;
@@ -206,7 +206,7 @@ var Util = {
                     }
                 });
             };
-            
+
             // trigger the read from the reader...
             reader.readAsDataURL(blob);
         };
@@ -325,32 +325,32 @@ var Util = {
         }
         $(".article-list h2 > a").hover(function () {
             var $ele = $(this);
-            
+
             if (3 === $ele.data('type')) { // 如果是思绪
                 // 不进行预览
                 return false;
             }
-            
+
             $ele.addClass("previewing");
-            
+
             var $li = $ele.closest("li"),
-                previewHTML = '<div class="preview"><span class="ico-arrow"></span><span class="ico-arrowborder"></span>';
+                    previewHTML = '<div class="preview"><span class="ico-arrow"></span><span class="ico-arrowborder"></span>';
             $(".article-list .preview").hide();
             if ($li.find('.preview').length === 1) {
                 $li.find('.preview').show();
-                
+
                 return false;
             }
-            
+
             if ($li.find('.no-preview').length === 1) {
                 return false;
             }
-            
-            setTimeout(function() {
+
+            setTimeout(function () {
                 if (!$ele.hasClass("previewing")) {
                     return false;
                 }
-                
+
                 $.ajax({
                     url: "/article/" + $ele.data('id') + "/preview",
                     type: "GET",
@@ -360,7 +360,7 @@ var Util = {
                             $li.append('<div class="no-preview"></div>');
                             return false;
                         }
-                        
+
                         $li.append(previewHTML + result.html + '</div>');
                         $li.find('.preview').show();
                     }
@@ -369,7 +369,7 @@ var Util = {
         }, function () {
             var $li = $(this).closest("li");
             $li.find('.preview').hide();
-            
+
             $(this).removeClass("previewing");
         });
     },
@@ -442,7 +442,7 @@ var Util = {
                 if (result.sc) {
                     $(it).removeClass("disabled");
                     if ("article" == type) {
-                        $(it).addClass('ft-red').html(' <span class="icon-star"></span> ' + 
+                        $(it).addClass('ft-red').html(' <span class="icon-star"></span> ' +
                                 (parseInt($(it).text()) + 1) + ' ').
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
                                 .attr("title", Label.uncollectLabel);
@@ -490,7 +490,7 @@ var Util = {
                         if (count < 0) {
                             count = 0;
                         }
-                        
+
                         $(it).removeClass('ft-red').html(' <span class="icon-star"></span> ' + count + ' ')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
                                 .attr("title", Label.collectLabel);
@@ -534,7 +534,7 @@ var Util = {
             success: function (result, textStatus) {
                 $("#voteUp").removeClass("disabled");
                 var upCnt = parseInt($("#voteUp").attr('title').substr(3)),
-                        downCnt = parseInt($("#voteDown").attr('title').substr(3));   
+                        downCnt = parseInt($("#voteDown").attr('title').substr(3));
                 if (result.sc) {
                     if (0 == result.type) { // cancel up
                         $("#voteUp").removeClass("ft-red").attr('title', Label.upLabel + ' ' + (upCnt - 1));
@@ -576,7 +576,7 @@ var Util = {
             success: function (result, textStatus) {
                 $("#voteDown").removeClass("disabled");
                 var upCnt = parseInt($("#voteUp").attr('title').substr(3)),
-                        downCnt = parseInt($("#voteDown").attr('title').substr(3)); 
+                        downCnt = parseInt($("#voteDown").attr('title').substr(3));
                 if (result.sc) {
                     if (1 == result.type) { // cancel down
                         $("#voteDown").removeClass("ft-red").attr('title', Label.downLabel + ' ' + (downCnt - 1));
@@ -613,10 +613,10 @@ var Util = {
     goRegister: function () {
         if (-1 !== location.href.indexOf("/register")) {
             window.location.reload();
-            
+
             return;
         }
-        
+
         window.location.href = "/register?goto=" + encodeURIComponent(location.href);
     },
     /**
@@ -707,7 +707,7 @@ var Util = {
             } else if (pathname === "/register") {
                 // 注册没有使用 href，对其进行特殊处理
                 $("#aRegister").addClass("current");
-            } 
+            }
         });
     },
     /**
@@ -715,16 +715,16 @@ var Util = {
      */
     login: function () {
         if (Validate.goValidate({target: $('#loginTip'),
-        data: [{
-                "target": $("#nameOrEmail"),
-                "type": "string",
-                "max": 256,
-                "msg": Label.loginNameErrorLabel
-            }, {
-                "target": $("#loginPassword"),
-                "type": "password",
-                "msg": Label.invalidPasswordLabel
-            }]})) {
+            data: [{
+                    "target": $("#nameOrEmail"),
+                    "type": "string",
+                    "max": 256,
+                    "msg": Label.loginNameErrorLabel
+                }, {
+                    "target": $("#loginPassword"),
+                    "type": "password",
+                    "msg": Label.invalidPasswordLabel
+                }]})) {
             var requestJSONObject = {
                 nameOrEmail: $("#nameOrEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userPassword: calcMD5($("#loginPassword").val())
@@ -794,7 +794,7 @@ var Util = {
      */
     uploadFile: function (obj) {
         var filename = "";
-        
+
         if ("" === obj.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
             $('#' + obj.id).fileupload({
                 multipart: true,
@@ -804,7 +804,7 @@ var Util = {
                 paramName: "file",
                 add: function (e, data) {
                     filename = data.files[0].name;
-                    
+
                     if (window.File && window.FileReader && window.FileList && window.Blob) {
                         var reader = new FileReader();
                         reader.readAsArrayBuffer(data.files[0]);
@@ -846,16 +846,16 @@ var Util = {
                     var qiniuKey = data.result.key;
                     if (!qiniuKey) {
                         alert("Upload error");
-                        
+
                         return;
                     }
-                    
+
                     var filename = new Date().getTime();
 
                     if (obj.editor.replaceRange) {
                         var cursor = obj.editor.getCursor();
                         obj.editor.replaceRange('![' + filename + '](' + qiniuKey + ') \n\n',
-                            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
                     } else {
                         obj.editor.$it.val(obj.editor.$it.val() + '![' + filename + '](' + qiniuKey + ') \n\n');
                         $('#' + obj.id + ' input').prop('disabled', false);
@@ -877,10 +877,10 @@ var Util = {
                     alert(currentFile.error);
                 }
             });
-            
+
             return;
         }
-        
+
         var ext = "";
         $('#' + obj.id).fileupload({
             multipart: true,
@@ -890,11 +890,11 @@ var Util = {
             paramName: "file",
             add: function (e, data) {
                 filename = data.files[0].name;
-                
+
                 if (!filename) {
                     ext = data.files[0].type.split("/")[1];
                 }
-                
+
                 if (window.File && window.FileReader && window.FileList && window.Blob) {
                     var reader = new FileReader();
                     reader.readAsArrayBuffer(data.files[0]);
@@ -907,10 +907,10 @@ var Util = {
 
                             return;
                         }
-                        
+
                         if (evt.target.result.byteLength > 1024 * 1024) {
                             alert("This image is too big (max: 1Mb)");
-                            
+
                             return;
                         }
 
@@ -922,14 +922,14 @@ var Util = {
             },
             formData: function (form) {
                 var data = form.serializeArray();
-                
+
                 if (filename) {
-                    ext = filename.substring(filename.lastIndexOf(".") + 1);  
+                    ext = filename.substring(filename.lastIndexOf(".") + 1);
                 }
 
                 data.push({name: 'key', value: getUUID() + "." + ext});
                 data.push({name: 'token', value: obj.qiniuUploadToken});
-                 
+
                 return data;
             },
             submit: function (e, data) {
@@ -944,10 +944,10 @@ var Util = {
                 var qiniuKey = data.result.key;
                 if (!qiniuKey) {
                     alert("Upload error");
-                    
+
                     return;
                 }
-                
+
                 var filename = new Date().getTime();
 
                 if (obj.editor.replaceRange) {
@@ -1016,13 +1016,13 @@ var Validate = {
         var isValidate = true,
                 val = '';
         if (data.type === 'editor') {
-           val = data.target.getValue();
-        } else if (data.type === 'imgSrc'){
+            val = data.target.getValue();
+        } else if (data.type === 'imgSrc') {
             val = data.target.attr('src');
-        } else if (data.type === 'imgStyle'){
+        } else if (data.type === 'imgStyle') {
             val = data.target.data('imageurl');
         } else {
-            val =  data.target.val().toString().replace(/(^\s*)|(\s*$)/g, "");
+            val = data.target.val().toString().replace(/(^\s*)|(\s*$)/g, "");
         }
         switch (data.type) {
             case "email":
@@ -1217,14 +1217,15 @@ function isWav(data1, data2) {
 
 function getUUID() {
     var d = new Date().getTime();
-    
-    var ret = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (d + Math.random()*16)%16 | 0;
-        d = Math.floor(d/16);
-        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+
+    var ret = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
-    
+
     ret = ret.replace(new RegExp("-", 'g'), "");
-    
+
     return ret;
-};
+}
+;

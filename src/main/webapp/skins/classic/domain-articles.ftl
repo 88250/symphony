@@ -33,10 +33,10 @@
                             <a href="/domain/${domain.domainURI}" class="ft-gray fn-right">${domain.domainTags?size} Tags</a>
                         </div>
                         <div class="module-panel">
-                            <ul class="module-list">
+                            <ul class="module-list domain">
                                 <li>
                                     <#list domain.domainTags as tag>
-                                    <a class="tag" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a> &nbsp;
+                                    <a class="tag" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                     </#list>
                                 </li>
                             </ul>

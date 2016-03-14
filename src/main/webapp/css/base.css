@@ -1084,6 +1084,12 @@ a[class*=" icon-"]:hover {
     color: #4183C4;
 }
 
+.nav div > a.current {
+    border-bottom: 2px solid #D26911;
+    color: #222;
+    padding-bottom: 13px;
+}
+
 .nav div > a.last {
     margin-right: 0;
 }
@@ -1136,6 +1142,13 @@ a[class*=" icon-"]:hover {
     -o-animation:none;
     -ms-animation:none;
     animation:none;
+    color: #FFF;
+}
+
+.nav a.current.msg {
+    padding-bottom:0;
+    background-color: #D26911;
+    border-bottom-width: 0;
     color: #FFF;
 }
 

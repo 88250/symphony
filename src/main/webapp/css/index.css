@@ -52,6 +52,10 @@
 .module-list.domain .title {
     margin-left: 80px;
 }
+
+.module-list.domain .tag {
+    margin-right: 10px;
+}
 /* end module */
 
 /* start article */
