@@ -28,6 +28,15 @@
                     "length": 512
                 },
                 {
+                    "name": "domainType",
+                    "type": "String",
+                    "length": 16
+                },
+                {
+                    "name": "domainSort",
+                    "type": "int"
+                },
+                {
                     "name": "domainTagCnt",
                     "type": "int"
                 },
