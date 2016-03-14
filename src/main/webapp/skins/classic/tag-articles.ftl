@@ -27,11 +27,6 @@
                         <#list tag.tagDomains as domain>
                         <a class="ft-gray" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
                         </#list>
-                        <#if isLoggedIn>
-                        <#if !tag.isReserved || isAdminLoggedIn> &nbsp;
-                        <a class="btn red" href="/post?tags=${tag.tagTitle?url('utf-8')}&type=0">${addArticleLabel}</a>
-                        </#if>
-                        </#if>
                         <span class='fn-right'>
                             <#if isLoggedIn> &nbsp;
                             <#if isFollowing>
@@ -113,6 +108,7 @@
         <#include "footer.ftl">
         <script>
             Util.initArticlePreview();
+            $('.person-info .btn.red').attr('onclick', 'window.location = "/post?tags=${tag.tagTitle?url('utf-8')}&type=0"');
         </script>
     </body>
 </html>
