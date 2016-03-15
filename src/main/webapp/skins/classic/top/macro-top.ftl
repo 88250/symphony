@@ -4,11 +4,11 @@
 <html>
     <head>
         <#if type == "balance">
-        <@head title="${pointLabel}${balanceLabel}${rankingLabel} - ${symphonyLabel}">
+        <@head title="${wealthLabel}${rankingLabel} - ${symphonyLabel}">
         </@head>
         </#if>
         <#if type == "consumption">
-        <@head title="${pointLabel}${consumptionLabel}${rankingLabel} - ${symphonyLabel}">
+        <@head title="${consumptionLabel}${rankingLabel} - ${symphonyLabel}">
         </@head>
         </#if>
         <#if type == "checkin">
