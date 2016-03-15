@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.util.Symphonys;
 
 /**
  * This class defines tag model relevant keys.
@@ -105,7 +106,7 @@ public final class Tag {
      * Key of tag domains.
      */
     public static final String TAG_T_DOMAINS = "tagDomains";
-    
+
     /**
      * Key of tag count.
      */
@@ -272,6 +273,22 @@ public final class Tag {
         }
 
         return tagsBuilder.toString();
+    }
+
+    /**
+     * Checks the specified tag string whether contains the reserved tags.
+     * 
+     * @param tagStr the specified tag string
+     * @return {@code true} if it contains, returns {@code false} otherwise
+     */
+    public static boolean containsReservedTags(final String tagStr) {
+        for (final String reservedTag : Symphonys.RESERVED_TAGS) {
+            if (StringUtils.contains(tagStr, reservedTag)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     /**

@@ -214,7 +214,9 @@ public class ArticleQueryService {
                 articleIds.add(tagArticles.optJSONObject(i).optString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
             }
 
-            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+            query = new Query().setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds),
+                    new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID))).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
             final List<JSONObject> articles

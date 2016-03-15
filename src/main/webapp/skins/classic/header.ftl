@@ -29,7 +29,7 @@
             <#if "adminRole" == userRole>
             <a href="/admin" title="${adminLabel}" class="icon-userrole"></a>
             </#if>
-            <a href="/member/${currentUser.userName}" title="${addArticleLabel}" class="nav-avatar">
+            <a href="/member/${currentUser.userName}" title="Home" class="nav-avatar">
                 <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL}-64.jpg?${currentUser.userUpdateTime?c}')"></span>
             </a>
             <a href="/activities" title="${activityLabel}" class="icon-flag"></a>

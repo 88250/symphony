@@ -325,7 +325,7 @@ public class ArticleMgmtService {
             String articleTags = article.optString(Article.ARTICLE_TAGS);
             String[] tagTitles = articleTags.split(",");
             if (tagTitles.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
-                    && Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+                    && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(articleTags)) {
                 final String content = article.optString(Article.ARTICLE_TITLE)
                         + " " + article.optString(Article.ARTICLE_CONTENT);
                 final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
@@ -683,7 +683,7 @@ public class ArticleMgmtService {
 
         final int articleType = newArticle.optInt(Article.ARTICLE_TYPE);
         if (tagStrings.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
-                && Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+                && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(tagsString)) {
             final String content = newArticle.optString(Article.ARTICLE_TITLE)
                     + " " + newArticle.optString(Article.ARTICLE_CONTENT);
             final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
