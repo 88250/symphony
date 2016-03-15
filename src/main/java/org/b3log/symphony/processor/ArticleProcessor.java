@@ -832,6 +832,8 @@ public class ArticleProcessor {
         }
 
         try {
+            articleTags = "B3log," + articleTags;
+            articleTags = Tag.formatTags(articleTags);
             article.put(Article.ARTICLE_TAGS, articleTags);
 
             if (toAdd) {
@@ -993,6 +995,8 @@ public class ArticleProcessor {
         }
 
         try {
+            articleTags = "B3log," + articleTags;
+            articleTags = Tag.formatTags(articleTags);
             article.put(Article.ARTICLE_TAGS, articleTags);
 
             articleMgmtService.updateArticle(article);

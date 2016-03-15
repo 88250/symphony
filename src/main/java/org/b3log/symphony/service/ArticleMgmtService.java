@@ -323,6 +323,7 @@ public class ArticleMgmtService {
             }
 
             String articleTags = article.optString(Article.ARTICLE_TAGS);
+            articleTags = Tag.formatTags(articleTags);
             String[] tagTitles = articleTags.split(",");
             if (tagTitles.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                     && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(articleTags)) {
@@ -339,6 +340,8 @@ public class ArticleMgmtService {
             if (StringUtils.isBlank(articleTags)) {
                 articleTags = "B3log";
             }
+
+            articleTags = Tag.formatTags(articleTags);
             article.put(Article.ARTICLE_TAGS, articleTags);
             tagTitles = articleTags.split(",");
 
@@ -679,6 +682,7 @@ public class ArticleMgmtService {
         final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
         final List<JSONObject> oldTags = tagRepository.getByArticleId(oldArticleId);
         String tagsString = newArticle.getString(Article.ARTICLE_TAGS);
+        tagsString = Tag.formatTags(tagsString);
         String[] tagStrings = tagsString.split(",");
 
         final int articleType = newArticle.optInt(Article.ARTICLE_TYPE);
@@ -697,6 +701,8 @@ public class ArticleMgmtService {
         if (StringUtils.isBlank(tagsString)) {
             tagsString = "B3log";
         }
+
+        tagsString = Tag.formatTags(tagsString);
         newArticle.put(Article.ARTICLE_TAGS, tagsString);
         tagStrings = tagsString.split(",");
 
