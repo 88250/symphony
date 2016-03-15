@@ -109,7 +109,9 @@
         <#include "footer.ftl">
         <script>
             Util.initArticlePreview();
+            <#if (isLoggedIn && !tag.isReserved) || (tag.isReserved && isAdminLoggedIn)>
             $('.person-info .btn.red').attr('onclick', 'window.location = "/post?tags=${tag.tagTitle?url('utf-8')}&type=0"');
+            </#if>
         </script>
     </body>
 </html>

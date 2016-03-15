@@ -14,7 +14,21 @@
         <div class="main">
             <div class="wrapper post">
                 <div class="form fn-flex-1 fn-clear">
+                    <#if 0 == articleType>
+                        ${articleLabel} - <span class="ft-gray"><span class="ft-green">提问</span>或<span class="ft-green">分享</span>对别人有帮助的经验与见解</span>
+                    <#elseif 1 == articleType>
+                        ${discussionLabel} - <span class="ft-gray">@好友并在<span class="ft-red">私密</span>空间中进行交流</span>
+                    <#elseif 2 == articleType>
+                        ${cityBroadcastLabel} - <span class="ft-gray">发起你所在城市的招聘、Meetup 等，仅需<i>1</i> 积分</span>
+                    <#elseif 3 == articleType>
+                        ${thoughtLabel} - 
+                        <span class="ft-gray">
+                            写作过程的记录与重放，文字版的<span class="ft-red">沙画</span>表演
+                            <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a>
+                        </span>
+                    </#if>
                     <div>
+                        <br/>
                         <input type="text" id="articleTitle" tabindex="1"
                                value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                     </div>
@@ -49,7 +63,7 @@
                                <br/><br/>
                     </div>
                     <div class="tip" id="addArticleTip"></div>
-                    <div class="fn-clear">
+                    <div class="fn-clear fn-none">
                         <#if !article??>
                         <label> &nbsp;
                             <input tabindex="6" type="radio" name="articleType" <#if 0 == articleType>checked="checked"</#if> value="0"/> 
@@ -85,13 +99,13 @@
             <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
             <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
             <script>
-                           Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
-                           Label.articleContentErrorLabel = "${articleContentErrorLabel}";
-                           Label.tagsErrorLabel = "${tagsErrorLabel}";
-                           Label.userName = "${userName}";
-                           Label.recordDeniedLabel = "${recordDeniedLabel}";
-                           Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-                           Label.uploadLabel = "${uploadLabel}";
+                            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
+                            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
+                            Label.tagsErrorLabel = "${tagsErrorLabel}";
+                            Label.userName = "${userName}";
+                            Label.recordDeniedLabel = "${recordDeniedLabel}";
+                            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
+                            Label.uploadLabel = "${uploadLabel}";
             </script>
             <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
             <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
