@@ -14,6 +14,9 @@
         <div class="main">
             <div class="wrapper post">
                 <div class="form fn-flex-1 fn-clear">
+                    <#if !articleType??>
+                    <#assign articleType=article.articleType>
+                    </#if>
                     <#if 0 == articleType>
                         ${articleLabel} - <span class="ft-gray"><span class="ft-green">提问</span>或<span class="ft-green">分享</span>对别人有帮助的经验与见解</span>
                     <#elseif 1 == articleType>
