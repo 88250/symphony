@@ -288,6 +288,8 @@ public class ArticleQueryService {
                     articleIds.add(articleId);
                     fetchedArticleIds.add(articleId);
                 }
+                
+                articleIds.remove(article.optString(Keys.OBJECT_ID));
 
                 final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
                 result = articleRepository.get(query);
