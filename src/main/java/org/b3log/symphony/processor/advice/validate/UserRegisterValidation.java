@@ -40,7 +40,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.6, Mar 10, 2016
+ * @version 1.3.1.7, Mar 17, 2016
  */
 @Named
 @Singleton
@@ -110,6 +110,11 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
         final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
         //final String password = requestJSONObject.optString(User.USER_PASSWORD);
         final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+
+        if (UserExt.isReservedUserName(name)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel")
+                    + " - " + langPropsService.get("reservedUserNameLabel")));
+        }
 
         checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
         checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");

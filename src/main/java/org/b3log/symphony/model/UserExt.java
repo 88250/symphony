@@ -15,6 +15,9 @@
  */
 package org.b3log.symphony.model;
 
+import org.apache.commons.lang.StringUtils;
+import org.b3log.symphony.util.Symphonys;
+
 /**
  * This class defines ext of user model relevant keys.
  *
@@ -379,6 +382,22 @@ public final class UserExt {
         }
 
         return hex.substring(0, 6);
+    }
+
+    /**
+     * Checks the specified user name whether is a reserved user name.
+     *
+     * @param userName the specified tag string
+     * @return {@code true} if it is, returns {@code false} otherwise
+     */
+    public static boolean isReservedUserName(final String userName) {
+        for (final String reservedUserName : Symphonys.RESERVED_USER_NAMES) {
+            if (StringUtils.equals(userName, reservedUserName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

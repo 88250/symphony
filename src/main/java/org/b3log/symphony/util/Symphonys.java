@@ -23,7 +23,7 @@ import org.b3log.latke.RuntimeMode;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Jul 13, 2015
+ * @version 1.2.0.3, Mar 17, 2016
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -38,6 +38,11 @@ public final class Symphonys {
      */
     public static final String[] RESERVED_TAGS;
 
+    /**
+     * Reserved user names.
+     */
+    public static final String[] RESERVED_USER_NAMES;
+
     static {
         final String reservedTags = CFG.getString("reservedTags");
         final String[] tags = reservedTags.split(",");
@@ -47,6 +52,16 @@ public final class Symphonys {
             final String tag = tags[i];
 
             RESERVED_TAGS[i] = tag.trim();
+        }
+
+        final String reservedUserNames = CFG.getString("reservedUserNames");
+        final String[] userNames = reservedUserNames.split(",");
+        RESERVED_USER_NAMES = new String[userNames.length];
+
+        for (int i = 0; i < userNames.length; i++) {
+            final String userName = userNames[i];
+
+            RESERVED_USER_NAMES[i] = userName.trim();
         }
     }
 
