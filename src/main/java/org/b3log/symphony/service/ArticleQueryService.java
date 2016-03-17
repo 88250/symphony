@@ -1220,6 +1220,7 @@ public class ArticleQueryService {
      * @return article participants, for example,      <pre>
      * [
      *     {
+     *         "oId": "",
      *         "articleParticipantName": "",
      *         "articleParticipantThumbnailURL": "",
      *         "articleParticipantThumbnailUpdateTime": long,
@@ -1230,7 +1231,7 @@ public class ArticleQueryService {
      *
      * @throws ServiceException service exception
      */
-    private List<JSONObject> getArticleLatestParticipants(final String articleId, final int fetchSize) throws ServiceException {
+    public List<JSONObject> getArticleLatestParticipants(final String articleId, final int fetchSize) throws ServiceException {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId))
                 .addProjection(Comment.COMMENT_AUTHOR_EMAIL, String.class)
@@ -1259,6 +1260,7 @@ public class ArticleQueryService {
                 participant.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME,
                         commenter.optLong(UserExt.USER_UPDATE_TIME));
                 participant.put(Article.ARTICLE_T_PARTICIPANT_URL, commenter.optString(User.USER_URL));
+                participant.put(Keys.OBJECT_ID, commenter.optString(Keys.OBJECT_ID));
                 participant.put(Comment.COMMENT_T_ID, comment.optString(Keys.OBJECT_ID));
 
                 ret.add(participant);

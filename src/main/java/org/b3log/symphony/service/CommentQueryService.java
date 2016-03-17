@@ -58,7 +58,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.17, Aug 18, 2015
+ * @version 1.4.4.17, Mar 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -248,8 +248,8 @@ public class CommentQueryService {
 
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
                         Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
-                                ? langPropsService.get("articleTitleBlockLabel")
-                                : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
+                        ? langPropsService.get("articleTitleBlockLabel")
+                        : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
 
@@ -409,8 +409,8 @@ public class CommentQueryService {
 
                 comment.put(Comment.COMMENT_T_ARTICLE_TITLE,
                         Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)
-                                ? langPropsService.get("articleTitleBlockLabel")
-                                : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
+                        ? langPropsService.get("articleTitleBlockLabel")
+                        : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
             }
         } catch (final RepositoryException e) {
@@ -541,6 +541,9 @@ public class CommentQueryService {
                         "@<a href='" + Latkes.getServePath()
                         + "/member/" + userName + "'>" + userName + "</a>");
             }
+
+            commentContent = commentContent.replace("@participants ",
+                    "@<a href='https://hacpai.com/article/1458053458339'>participants</a> ");
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);
         }
