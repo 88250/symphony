@@ -288,7 +288,7 @@ public class ArticleQueryService {
                     articleIds.add(articleId);
                     fetchedArticleIds.add(articleId);
                 }
-                
+
                 articleIds.remove(article.optString(Keys.OBJECT_ID));
 
                 final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
@@ -1185,7 +1185,7 @@ public class ArticleQueryService {
 
         final JSONObject author = userRepository.get(authorId);
 
-        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUserId(authorId));
+        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
         article.put(Article.ARTICLE_T_AUTHOR, author);
 
         article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
@@ -1250,7 +1250,7 @@ public class ArticleQueryService {
 
                 String thumbnailURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
-                    thumbnailURL = avatarQueryService.getAvatarURLByUserId(userId);
+                    thumbnailURL = avatarQueryService.getAvatarURLByUser(commenter);
                 }
 
                 final JSONObject participant = new JSONObject();

@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * User avatar query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.2, Mar 14, 2016
+ * @version 1.4.1.3, Mar 17, 2016
  * @since 0.3.0
  */
 @Service
@@ -77,28 +77,39 @@ public class AvatarQueryService {
     /**
      * Gets the avatar URL for the specified user id with the specified size.
      *
+     * @param user the specified user
+     * @return the avatar URL
+     */
+    public String getAvatarURLByUser(final JSONObject user) {
+        if (null == user) {
+            return DEFAULT_AVATAR_URL;
+        }
+
+        final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
+        if (StringUtils.isBlank(originalURL)) {
+            return DEFAULT_AVATAR_URL;
+        }
+
+        if (Symphonys.getBoolean("qiniu.enabled")) {
+            if (!StringUtils.contains(originalURL, "qnssl.com") && !StringUtils.contains(originalURL, "clouddn.com")) {
+                return DEFAULT_AVATAR_URL;
+            }
+        }
+
+        return StringUtils.substringBeforeLast(originalURL, "?");
+    }
+
+    /**
+     * Gets the avatar URL for the specified user id with the specified size.
+     *
      * @param userId the specified user id
      * @return the avatar URL
      */
     public String getAvatarURLByUserId(final String userId) {
         try {
             final JSONObject user = userRepository.get(userId);
-            if (null == user) {
-                return DEFAULT_AVATAR_URL;
-            }
 
-            final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
-            if (StringUtils.isBlank(originalURL)) {
-                return DEFAULT_AVATAR_URL;
-            }
-
-            if (Symphonys.getBoolean("qiniu.enabled")) {
-                if (!StringUtils.contains(originalURL, "qnssl.com") && !StringUtils.contains(originalURL, "clouddn.com")) {
-                    return DEFAULT_AVATAR_URL;
-                }
-            }
-
-            return StringUtils.substringBeforeLast(originalURL, "?");
+            return getAvatarURLByUser(user);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.WARN, "Gets user avatar error", e);
 
@@ -119,18 +130,7 @@ public class AvatarQueryService {
                 return DEFAULT_AVATAR_URL;
             }
 
-            final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
-            if (StringUtils.isBlank(originalURL)) {
-                return DEFAULT_AVATAR_URL;
-            }
-
-            if (Symphonys.getBoolean("qiniu.enabled")) {
-                if (!StringUtils.contains(originalURL, "qnssl.com") && !StringUtils.contains(originalURL, "clouddn.com")) {
-                    return DEFAULT_AVATAR_URL;
-                }
-            }
-
-            return StringUtils.substringBeforeLast(originalURL, "?");
+            return getAvatarURLByUser(user);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.WARN, "Gets user avatar error", e);
 
