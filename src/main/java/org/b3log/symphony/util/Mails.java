@@ -22,9 +22,11 @@ import java.util.List;
 import java.util.Map;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -32,7 +34,7 @@ import org.json.JSONObject;
  * Mail utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.0, Sep 17, 2015
+ * @version 1.1.2.0, Mar 17, 2016
  * @since 1.3.0
  */
 public final class Mails {
@@ -53,6 +55,11 @@ public final class Mails {
     private static final String API_KEY = Symphonys.get("sendcloud.apiKey");
 
     /**
+     * Sender email.
+     */
+    private static final String FROM = Symphonys.get("sendcloud.from");
+
+    /**
      * Sends mail.
      *
      * @param toMails to mails
@@ -69,10 +76,12 @@ public final class Mails {
         try {
             final Map<String, Object> formData = new HashMap<String, Object>();
 
+            final LangPropsService langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
+
             formData.put("api_user", API_USER);
             formData.put("api_key", API_KEY);
-            formData.put("from", "admin@" + Latkes.getServerHost());
-            formData.put("fromname", "黑客派");
+            formData.put("from", FROM);
+            formData.put("fromname", langPropsService.get("symphonyLabel"));
             formData.put("subject", subject);
             formData.put("template_invoke_name", templateName);
 
