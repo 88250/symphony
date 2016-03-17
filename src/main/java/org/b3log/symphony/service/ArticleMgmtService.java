@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.16.12, Mar 12, 2016
+ * @version 1.6.16.13, Mar 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -560,6 +560,10 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, author.optBoolean(UserExt.SYNC_TO_CLIENT));
 
             final JSONObject oldArticle = articleRepository.get(articleId);
+
+            if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+                article.put(Article.ARTICLE_TAGS, "回收站");
+            }
 
             processTagsForArticleUpdate(oldArticle, article, author);
 
