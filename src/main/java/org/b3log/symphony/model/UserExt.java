@@ -392,7 +392,7 @@ public final class UserExt {
      */
     public static boolean isReservedUserName(final String userName) {
         for (final String reservedUserName : Symphonys.RESERVED_USER_NAMES) {
-            if (StringUtils.equals(userName, reservedUserName)) {
+            if (StringUtils.equalsIgnoreCase(userName, reservedUserName)) {
                 return true;
             }
         }

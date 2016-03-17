@@ -139,6 +139,10 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
     public static boolean invalidUserName(final String name) {
+        if (UserExt.isReservedUserName(name)) {
+            return true;
+        }
+        
         final int length = name.length();
         if (length < MIN_USER_NAME_LENGTH || length > MAX_USER_NAME_LENGTH) {
             return true;

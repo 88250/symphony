@@ -283,7 +283,7 @@ public final class Tag {
      */
     public static boolean containsReservedTags(final String tagStr) {
         for (final String reservedTag : Symphonys.RESERVED_TAGS) {
-            if (StringUtils.contains(tagStr, reservedTag)) {
+            if (StringUtils.containsIgnoreCase(tagStr, reservedTag)) {
                 return true;
             }
         }
