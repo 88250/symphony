@@ -15,15 +15,22 @@
  */
 package org.b3log.symphony.repository;
 
+import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Article;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 28, 2012
+ * @version 1.1.0.0, Mar 18, 2016
  * @since 0.2.0
  */
 @Repository
@@ -34,5 +41,26 @@ public class ArticleRepository extends AbstractRepository {
      */
     public ArticleRepository() {
         super(Article.ARTICLE);
+    }
+
+    /**
+     * Gets an article by the specified article title.
+     *
+     * @param articleTitle the specified article title
+     * @return an article, {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    public JSONObject getByTitle(final String articleTitle) throws RepositoryException {
+        final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE_TITLE,
+                FilterOperator.EQUAL, articleTitle)).setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
     }
 }

@@ -234,6 +234,8 @@ public class ArticleMgmtService {
             throw new ServiceException(langPropsService.get("invalidRewardPointLabel"));
         }
 
+        String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+
         try {
             // check if admin allow to add article
             final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_ARTICLE);
@@ -264,6 +266,18 @@ public class ArticleMgmtService {
                 }
             }
 
+            final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
+            if (null != maybeExist) {
+                final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
+                final JSONObject existArticleAuthor = userRepository.get(existArticleAuthorId);
+                final String userName = existArticleAuthor.optString(User.USER_NAME);
+                String msg = langPropsService.get("duplicatedArticleTitleLabel");
+                msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
+                msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
+                        + "'>" + articleTitle + "</a>");
+
+                throw new ServiceException(msg);
+            }
         } catch (final RepositoryException e) {
             throw new ServiceException(e);
         }
@@ -278,7 +292,6 @@ public class ArticleMgmtService {
             final String clientArticleId = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
             final boolean isBroadcast = requestJSONObject.optBoolean(Article.ARTICLE_T_IS_BROADCAST);
 
-            String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
             articleTitle = Emotions.toAliases(articleTitle);
             article.put(Article.ARTICLE_TITLE, articleTitle);
 
@@ -449,12 +462,27 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public synchronized void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
+        String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+
         try {
             // check if admin allow to add article
             final JSONObject option = optionRepository.get(Option.ID_C_MISC_ALLOW_ADD_ARTICLE);
 
             if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
                 throw new ServiceException(langPropsService.get("notAllowAddArticleLabel"));
+            }
+
+            final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
+            if (null != maybeExist) {
+                final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
+                final JSONObject existArticleAuthor = userRepository.get(existArticleAuthorId);
+                final String userName = existArticleAuthor.optString(User.USER_NAME);
+                String msg = langPropsService.get("duplicatedArticleTitleLabel");
+                msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
+                msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
+                        + "'>" + articleTitle + "</a>");
+
+                throw new ServiceException(msg);
             }
         } catch (final RepositoryException e) {
             throw new ServiceException(e);
@@ -473,7 +501,6 @@ public class ArticleMgmtService {
 
             final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
 
-            String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
             articleTitle = Emotions.toAliases(articleTitle);
             oldArticle.put(Article.ARTICLE_TITLE, articleTitle);
 

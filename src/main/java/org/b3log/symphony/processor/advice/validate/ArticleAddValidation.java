@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.6, Mar 8, 2016
+ * @version 1.2.3.7, Mar 18, 2016
  * @since 0.2.0
  */
 @Named
@@ -106,10 +106,12 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
         final TagQueryService tagQueryService = beanManager.getReference(TagQueryService.class);
 
-        final String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+        String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+        articleTitle = StringUtils.trim(articleTitle);
         if (Strings.isEmptyOrNull(articleTitle) || articleTitle.length() > MAX_ARTICLE_TITLE_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
         }
+        requestJSONObject.put(Article.ARTICLE_TITLE, articleTitle);
 
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE);
         if (Article.isInvalidArticleType(articleType)) {
