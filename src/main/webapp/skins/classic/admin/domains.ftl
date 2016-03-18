@@ -12,7 +12,7 @@
         <#list domains as item>
         <li>
             <div class="fn-clear first">
-                <a href="/domains/${item.domainTitle?url('utf-8')}">${item.domainTitle}</a> &nbsp;
+                <a target="_blank" href="/domain/${item.domainURI}">${item.domainTitle}</a> &nbsp;
                 <#if item.domainStatus == 0>
                 <span class="ft-gray">${validLabel}</span>
                 <#else>
