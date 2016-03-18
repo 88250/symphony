@@ -56,12 +56,13 @@ import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.16.13, Mar 17, 2016
+ * @version 1.6.17.13, Mar 18, 2016
  * @since 0.2.0
  */
 @Service
@@ -341,7 +342,7 @@ public class ArticleMgmtService {
             if (tagTitles.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                     && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(articleTags)) {
                 final String content = article.optString(Article.ARTICLE_TITLE)
-                        + " " + article.optString(Article.ARTICLE_CONTENT);
+                        + " " + Jsoup.parse("<p>" + article.optString(Article.ARTICLE_CONTENT) + "</p>").text();
                 final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
                 if (!genTags.isEmpty()) {
                     articleTags = articleTags + "," + StringUtils.join(genTags, ",");
@@ -728,7 +729,7 @@ public class ArticleMgmtService {
         if (tagStrings.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                 && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(tagsString)) {
             final String content = newArticle.optString(Article.ARTICLE_TITLE)
-                    + " " + newArticle.optString(Article.ARTICLE_CONTENT);
+                    + " " + Jsoup.parse("<p>" + newArticle.optString(Article.ARTICLE_CONTENT) + "</p>").text();
             final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
             if (!genTags.isEmpty()) {
                 tagsString = tagsString + "," + StringUtils.join(genTags, ",");
