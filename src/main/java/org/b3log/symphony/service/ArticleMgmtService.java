@@ -410,7 +410,8 @@ public class ArticleMgmtService {
 
                 if (rewardPoint > 0) { // Enabe reward
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD,
+                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId);
                 }
 
                 if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == articleType) {
@@ -475,14 +476,17 @@ public class ArticleMgmtService {
             final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
             if (null != maybeExist) {
                 final String existArticleAuthorId = maybeExist.optString(Article.ARTICLE_AUTHOR_ID);
-                final JSONObject existArticleAuthor = userRepository.get(existArticleAuthorId);
-                final String userName = existArticleAuthor.optString(User.USER_NAME);
-                String msg = langPropsService.get("duplicatedArticleTitleLabel");
-                msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
-                msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
-                        + "'>" + articleTitle + "</a>");
 
-                throw new ServiceException(msg);
+                if (!existArticleAuthorId.equals(requestJSONObject.optString(Article.ARTICLE_AUTHOR_ID))) {
+                    final JSONObject existArticleAuthor = userRepository.get(existArticleAuthorId);
+                    final String userName = existArticleAuthor.optString(User.USER_NAME);
+                    String msg = langPropsService.get("duplicatedArticleTitleLabel");
+                    msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
+                    msg = msg.replace("{article}", "<a target='_blank' href='/article/" + maybeExist.optString(Keys.OBJECT_ID)
+                            + "'>" + articleTitle + "</a>");
+
+                    throw new ServiceException(msg);
+                }
             }
         } catch (final RepositoryException e) {
             throw new ServiceException(e);
@@ -519,10 +523,13 @@ public class ArticleMgmtService {
 
             final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
             boolean enableReward = false;
-            if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT) && 0 < rewardPoint) { // Enable reward
+            if (0 < rewardPoint) {
                 oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
                 oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
-                enableReward = true;
+
+                if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT)) {
+                    enableReward = true;
+                }
             }
 
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
@@ -546,7 +553,8 @@ public class ArticleMgmtService {
 
                 if (enableReward) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
-                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD, rewardPoint, articleId);
+                            Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD,
+                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId);
                 }
             }
 

@@ -132,6 +132,11 @@ public final class Pointtransfer {
      * Transfer type - Add Article Reward Outcome.
      */
     public static final int TRANSFER_TYPE_C_ADD_ARTICLE_REWARD = 4;
+    
+    /**
+     * Transfer sum - Add Article Reward.
+     */
+    public static final int TRANSFER_SUM_C_ADD_ARTICLE_REWARD = Symphonys.getInt("pointAddArticleReward");
 
     /**
      * Transfer type - Article Reward Income/Outcome.

@@ -173,7 +173,7 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
         final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
         if (rewardPoint < 0) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "invalidRewardPointLabel"));
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidRewardPointLabel")));
         }
 
         if (rewardPoint > 0) {

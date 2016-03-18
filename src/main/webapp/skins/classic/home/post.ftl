@@ -62,7 +62,7 @@
                     </div>
                     <div>
                         <input id="articleRewardPoint" type="number" tabindex="5" 
-                               value="<#if article?? && 0 != article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" <#if article?? && 0 < article.articleRewardPoint>readonly="readonly"</#if>/>
+                               value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" />
                                <br/><br/>
                     </div>
                     <div class="tip" id="addArticleTip"></div>

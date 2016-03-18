@@ -304,6 +304,11 @@ public class ArticleProcessor {
         }
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+
+        String rewardEditorPlaceholderLabel = langPropsService.get("rewardEditorPlaceholderLabel");
+        rewardEditorPlaceholderLabel = rewardEditorPlaceholderLabel.replace("{point}",
+                String.valueOf(Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD));
+        dataModel.put("rewardEditorPlaceholderLabel", rewardEditorPlaceholderLabel);
     }
 
     /**
@@ -588,6 +593,11 @@ public class ArticleProcessor {
         if (!Symphonys.getBoolean("qiniu.enabled")) {
             dataModel.put("qiniuUploadToken", "");
         }
+
+        String rewardEditorPlaceholderLabel = langPropsService.get("rewardEditorPlaceholderLabel");
+        rewardEditorPlaceholderLabel = rewardEditorPlaceholderLabel.replace("{point}",
+                String.valueOf(Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD));
+        dataModel.put("rewardEditorPlaceholderLabel", rewardEditorPlaceholderLabel);
     }
 
     /**
