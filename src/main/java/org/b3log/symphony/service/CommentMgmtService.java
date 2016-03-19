@@ -26,6 +26,7 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -53,7 +54,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.6.16, Feb 16, 2016
+ * @version 2.7.6.16, Mar 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -129,6 +130,39 @@ public class CommentMgmtService {
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
+
+    /**
+     * Removes a comment specified with the given comment id.
+     *
+     * @param commentId the given comment id
+     */
+    @Transactional
+    public void removeComment(final String commentId) {
+        try {
+            final JSONObject comment = commentRepository.get(commentId);
+            if (null == comment) {
+                return;
+            }
+
+            final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+            final JSONObject article = articleRepository.get(articleId);
+            article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) - 1);
+            articleRepository.update(articleId, article);
+
+            final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+            final JSONObject commenter = userRepository.get(commentAuthorId);
+            commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1);
+            userRepository.update(commentAuthorId, commenter);
+
+            commentRepository.remove(comment.optString(Keys.OBJECT_ID));
+
+            final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
+            commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - 1);
+            optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Removes a comment error [id=" + commentId + "]", e);
+        }
+    }
 
     /**
      * A user specified by the given sender id thanks the author of a comment specified by the given comment id.

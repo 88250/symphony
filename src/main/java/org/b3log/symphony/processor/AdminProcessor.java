@@ -96,6 +96,7 @@ import org.json.JSONObject;
  * <li>Shows comments (/admin/comments), GET</li>
  * <li>Show a comment (/admin/comment/{commentId}), GET</li>
  * <li>Updates a comment (/admin/comment/{commentId}), POST</li>
+ * <li>Removes a comment (/admin/remove-comment), POST</li>
  * <li>Shows domains (/admin/domains, GET</li>
  * <li>Show a domain (/admin/domain/{domainId}, GET</li>
  * <li>Updates a domain (/admin/domain/{domainId}), POST</li>
@@ -223,6 +224,25 @@ public class AdminProcessor {
      * Pagination page size.
      */
     private static final int PAGE_SIZE = 20;
+
+    /**
+     * Removes a comment.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/remove-comment", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void removeComment(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String commentId = request.getParameter(Comment.COMMENT_T_ID);
+        commentMgmtService.removeComment(commentId);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/comments");
+    }
 
     /**
      * Removes an article.

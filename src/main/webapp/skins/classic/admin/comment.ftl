@@ -39,5 +39,20 @@
             </form>
         </div>
     </div>
+
+    <div class="module">
+        <div class="module-header">
+            <h2>${removeLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/remove-comment" method="POST">
+                <label for="commentId">Id</label>
+                <input type="text" id="commentId" name="commentId" value="${comment.oId}" readonly="readonly"/>
+
+                <br/><br/>
+                <button type="submit" class="green fn-right" >${submitLabel}</button>
+            </form>
+        </div>
+    </div>
 </div>
 </@admin>
