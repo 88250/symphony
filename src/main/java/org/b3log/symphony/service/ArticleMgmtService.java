@@ -30,14 +30,19 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
@@ -47,6 +52,7 @@ import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
@@ -54,6 +60,7 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -62,7 +69,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.17.13, Mar 18, 2016
+ * @version 2.6.17.13, Mar 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -72,6 +79,12 @@ public class ArticleMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class.getName());
+
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Article repository.
@@ -167,6 +180,74 @@ public class ArticleMgmtService {
      * Generate tag max count.
      */
     private static final int GEN_TAG_MAX_CNT = 4;
+
+    /**
+     * Removes an article specified with the given article id.
+     *
+     * @param articleId the given article id
+     */
+    @Transactional
+    public void removeArticle(final String articleId) {
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+
+            if (null == article) {
+                return;
+            }
+
+            final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject author = userRepository.get(authorId);
+            author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) - 1);
+            userRepository.update(author.optString(Keys.OBJECT_ID), author);
+
+            final String city = article.optString(Article.ARTICLE_CITY);
+            final String cityStatId = city + "-ArticleCount";
+            final JSONObject cityArticleCntOption = optionRepository.get(cityStatId);
+            if (null != cityArticleCntOption) {
+                cityArticleCntOption.put(Option.OPTION_VALUE,
+                        cityArticleCntOption.optInt(Option.OPTION_VALUE) - 1);
+                optionRepository.update(cityStatId, cityArticleCntOption);
+            }
+
+            final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
+            articleCntOption.put(Option.OPTION_VALUE, articleCntOption.optInt(Option.OPTION_VALUE) - 1);
+            optionRepository.update(Option.ID_C_STATISTIC_ARTICLE_COUNT, articleCntOption);
+
+            articleRepository.remove(articleId);
+
+            final List<JSONObject> tagArticleRels = tagArticleRepository.getByArticleId(articleId);
+            for (final JSONObject tagArticleRel : tagArticleRels) {
+                final String tagId = tagArticleRel.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
+                final JSONObject tag = tagRepository.get(tagId);
+                tag.put(Tag.TAG_REFERENCE_CNT, tag.optInt(Tag.TAG_REFERENCE_CNT) - 1);
+
+                tagRepository.update(tagId, tag);
+            }
+
+            tagArticleRepository.removeByArticleId(articleId);
+
+            final Query query = new Query().setFilter(new PropertyFilter(
+                    Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).setPageCount(1);
+            final JSONArray comments = commentRepository.get(query).optJSONArray(Keys.RESULTS);
+            final int commentCnt = comments.length();
+            for (int i = 0; i < commentCnt; i++) {
+                final JSONObject comment = comments.optJSONObject(i);
+
+                final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
+                final JSONObject commenter = userRepository.get(commentAuthorId);
+                commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1);
+                userRepository.update(commentAuthorId, commenter);
+
+                commentRepository.remove(comment.optString(Keys.OBJECT_ID));
+            }
+
+            final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
+            commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - commentCnt);
+            optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Removes an article error [id=" + articleId + "]", e);
+        }
+    }
 
     /**
      * Increments the view count of the specified article by the given article id.

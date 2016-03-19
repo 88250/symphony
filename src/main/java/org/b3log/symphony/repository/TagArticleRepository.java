@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Tag-Article relation repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 28, 2012
+ * @version 1.1.0.0, Mar 19, 2016
  * @since 0.2.0
  */
 @Repository
@@ -45,6 +45,19 @@ public class TagArticleRepository extends AbstractRepository {
      */
     public TagArticleRepository() {
         super(Tag.TAG + "_" + Article.ARTICLE);
+    }
+    
+    /**
+     * Removes tag-articles relations by the specified article id.
+     * 
+     * @param articleId the specified article id
+     * @throws RepositoryException repository exception
+     */
+    public void removeByArticleId(final String articleId) throws RepositoryException {
+        final List<JSONObject> relations = getByArticleId(articleId);
+        for (final JSONObject relation : relations) {
+            remove(relation.optString(Keys.OBJECT_ID));
+        }
     }
 
     /**

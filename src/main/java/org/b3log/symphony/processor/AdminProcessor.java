@@ -92,6 +92,7 @@ import org.json.JSONObject;
  * <li>Shows articles (/admin/articles), GET</li>
  * <li>Shows an article (/admin/article/{articleId}), GET</li>
  * <li>Updates an article (/admin/article/{articleId}), POST</li>
+ * <li>Removes an article (/admin/remove-article), POST</li>
  * <li>Shows comments (/admin/comments), GET</li>
  * <li>Show a comment (/admin/comment/{commentId}), GET</li>
  * <li>Updates a comment (/admin/comment/{commentId}), POST</li>
@@ -106,7 +107,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.2.2, Mar 13, 2016
+ * @version 2.12.2.2, Mar 19, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -222,6 +223,25 @@ public class AdminProcessor {
      * Pagination page size.
      */
     private static final int PAGE_SIZE = 20;
+
+    /**
+     * Removes an article.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/remove-article", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        articleMgmtService.removeArticle(articleId);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/articles");
+    }
 
     /**
      * Shows admin index.
