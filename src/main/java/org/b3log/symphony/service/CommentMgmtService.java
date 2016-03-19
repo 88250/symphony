@@ -43,6 +43,7 @@ import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
+import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -94,6 +95,12 @@ public class CommentMgmtService {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Notification repository.
+     */
+    @Inject
+    private NotificationRepository notificationRepository;
 
     /**
      * Event manager.
@@ -159,6 +166,8 @@ public class CommentMgmtService {
             final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
             commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - 1);
             optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
+
+            notificationRepository.removeByDataId(commentId);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes a comment error [id=" + commentId + "]", e);
         }

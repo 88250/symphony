@@ -53,6 +53,7 @@ import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
+import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
@@ -121,6 +122,12 @@ public class ArticleMgmtService {
      */
     @Inject
     private OptionRepository optionRepository;
+
+    /**
+     * Notification repository.
+     */
+    @Inject
+    private NotificationRepository notificationRepository;
 
     /**
      * Tag management service.
@@ -225,6 +232,8 @@ public class ArticleMgmtService {
             }
 
             tagArticleRepository.removeByArticleId(articleId);
+            
+            notificationRepository.removeByDataId(articleId);
 
             final Query query = new Query().setFilter(new PropertyFilter(
                     Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId)).setPageCount(1);
@@ -232,13 +241,16 @@ public class ArticleMgmtService {
             final int commentCnt = comments.length();
             for (int i = 0; i < commentCnt; i++) {
                 final JSONObject comment = comments.optJSONObject(i);
+                final String commentId = comment.optString(Keys.OBJECT_ID);
 
                 final String commentAuthorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
                 final JSONObject commenter = userRepository.get(commentAuthorId);
                 commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) - 1);
                 userRepository.update(commentAuthorId, commenter);
 
-                commentRepository.remove(comment.optString(Keys.OBJECT_ID));
+                commentRepository.remove(commentId);
+                
+                notificationRepository.removeByDataId(commentId);
             }
 
             final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);

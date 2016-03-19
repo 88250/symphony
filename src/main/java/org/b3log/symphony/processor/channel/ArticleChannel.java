@@ -54,7 +54,7 @@ import org.jsoup.Jsoup;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.6.2, Feb 28, 2016
+ * @version 2.2.6.3, Mar 19, 2016
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -331,6 +331,9 @@ public class ArticleChannel {
 
         try {
             final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
+            }
 
             String articleTitle = Jsoup.parse(article.optString(Article.ARTICLE_TITLE)).text();
             articleTitle = Emotions.convert(articleTitle);
