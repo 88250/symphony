@@ -285,6 +285,12 @@ public class PointtransferQueryService {
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE:
                         final JSONObject addArticle = articleRepository.get(dataId);
+                        if (null == addArticle) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
                         final String addArticleLink = "<a href=\""
                                 + addArticle.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + addArticle.optString(Article.ARTICLE_TITLE) + "</a>";
@@ -293,6 +299,12 @@ public class PointtransferQueryService {
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE:
                         final JSONObject updateArticle = articleRepository.get(dataId);
+                        if (null == updateArticle) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
                         final String updateArticleLink = "<a href=\""
                                 + updateArticle.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + updateArticle.optString(Article.ARTICLE_TITLE) + "</a>";
@@ -301,6 +313,13 @@ public class PointtransferQueryService {
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT:
                         final JSONObject comment = commentRepository.get(dataId);
+
+                        if (null == comment) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
                         final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
                         final JSONObject commentArticle = articleRepository.get(articleId);
 
@@ -320,6 +339,12 @@ public class PointtransferQueryService {
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD:
                         final JSONObject addArticleReword = articleRepository.get(dataId);
+                        if (null == addArticleReword) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
                         final String addArticleRewordLink = "<a href=\""
                                 + addArticleReword.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + addArticleReword.optString(Article.ARTICLE_TITLE) + "</a>";
@@ -340,6 +365,12 @@ public class PointtransferQueryService {
                         desTemplate = desTemplate.replace("{user}", senderLink);
 
                         final JSONObject articleReward = articleRepository.get(rewardAArticleId);
+                        if (null == articleReward) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
                         final String articleRewardLink = "<a href=\""
                                 + articleReward.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + articleReward.optString(Article.ARTICLE_TITLE) + "</a>";
@@ -356,6 +387,12 @@ public class PointtransferQueryService {
                         }
                         final String commentId14 = reward14.optString(Reward.DATA_ID);
                         final JSONObject comment14 = commentRepository.get(commentId14);
+                        if (null == comment14) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
                         final String articleId14 = comment14.optString(Comment.COMMENT_ON_ARTICLE_ID);
 
                         final String userLink14 = "<a href=\"/member/" + user14.optString(User.USER_NAME) + "\">"
@@ -421,6 +458,12 @@ public class PointtransferQueryService {
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST:
                         final JSONObject addArticleBroadcast = articleRepository.get(dataId);
+                        if (null == addArticleBroadcast) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
                         final String addArticleBroadcastLink = "<a href=\""
                                 + addArticleBroadcast.optString(Article.ARTICLE_PERMALINK) + "\">"
                                 + addArticleBroadcast.optString(Article.ARTICLE_TITLE) + "</a>";
