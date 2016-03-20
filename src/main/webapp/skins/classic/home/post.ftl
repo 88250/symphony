@@ -88,7 +88,7 @@
                         <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/> 
                         </#if>
                     </div>
-                    <div class="fn-right">
+                    <div class="fn-right"><br/>
                         <button class="red" tabindex="10" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
                     </div>
                 </div>

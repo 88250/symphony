@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.8.12, Mar 13, 2016
+ * @version 2.4.8.12, Mar 20, 2016
  */
 /* start module */
 .module-list .slogan {
@@ -128,6 +128,11 @@
     padding-bottom: 5px;
     border-bottom: 1px solid #CCCCCC;
     margin: 20px 0 0;
+}
+
+#comments > h2 .icon-chevron-down {
+    margin: 0px 10px 0 0;
+    font-size: 24px;
 }
 
 #comments li:hover .thx {

@@ -155,7 +155,12 @@
                     </#if>
                     <div class="fn-clear">
                         <div class="list" id="comments">
-                            <h2>${article.articleCommentCount} ${cmtLabel}</h2>
+                            <h2>
+                                ${article.articleCommentCount} ${cmtLabel}
+                                <#if article.articleComments?size !=0>
+                                    <a class="icon-chevron-down fn-right" href="#cmtsBottom"></a>
+                                </#if>
+                            </h2>
                             <ul>
                                 <#list article.articleComments as comment>
                                 <li id="${comment.oId}">
@@ -208,6 +213,7 @@
                                 </#list>  
                             </ul>
                         </div>
+                        <div id="cmtsBottom"></div>
                         <@pagination url=article.articlePermalink/>
                     </div>
                 </div>

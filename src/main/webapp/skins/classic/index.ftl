@@ -26,6 +26,7 @@
                     <@list listData=indexArticles/>
                     <br/>
                     <a href="/recent" class="ft-gray">${moreRecentArticleLabel}</a>
+                    <#if domains?size != 0>
                     <br/> <br/> <br/> <br/>
 
                     <div class="module">
@@ -50,6 +51,7 @@
                             </ul>
                         </div>
                     </div>
+                    </#if>
                 </div>
 
                 <div class="side">
