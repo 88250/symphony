@@ -158,11 +158,12 @@
                             <h2>
                                 ${article.articleCommentCount} ${cmtLabel}
                                 <#if article.articleComments?size !=0>
-                                    <a class="icon-chevron-down fn-right" href="#cmtsBottom"></a>
+                                <a class="icon-chevron-down fn-right" href="#bottomComment" title="${jumpToBottomCommentLabel}"></a>
                                 </#if>
                             </h2>
                             <ul>
                                 <#list article.articleComments as comment>
+                                <#if !comment?has_next><div id="bottomComment"></div></#if>
                                 <li id="${comment.oId}">
                                     <div class="fn-flex">
                                         <a rel="nofollow" href="/member/${comment.commentAuthorName}">
@@ -213,7 +214,6 @@
                                 </#list>  
                             </ul>
                         </div>
-                        <div id="cmtsBottom"></div>
                         <@pagination url=article.articlePermalink/>
                     </div>
                 </div>
