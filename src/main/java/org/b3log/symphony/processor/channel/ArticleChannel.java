@@ -121,6 +121,9 @@ public class ArticleChannel {
 
         try {
             final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
+            }
 
             String articleTitle = Jsoup.parse(article.optString(Article.ARTICLE_TITLE)).text();
             articleTitle = Emotions.convert(articleTitle);
@@ -249,6 +252,10 @@ public class ArticleChannel {
                     final String userRole = user.optString(User.USER_ROLE);
 
                     final JSONObject article = articleRepository.get(viewingArticleId);
+                    if (null == article) {
+                        continue;
+                    }
+
                     final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                     if (!userId.equals(articleAuthorId)) {
                         final String articleContent = article.optString(Article.ARTICLE_CONTENT);
