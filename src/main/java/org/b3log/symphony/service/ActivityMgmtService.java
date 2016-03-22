@@ -46,7 +46,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.6.0, Dec 17, 2015
+ * @version 1.3.6.0, Mar 22, 2016
  * @since 1.3.0
  */
 @Service
@@ -388,7 +388,10 @@ public class ActivityMgmtService {
         }
         final int reward = yesterdayLiveness.optInt(Liveness.LIVENESS_REWARD);
         final int thank = yesterdayLiveness.optInt(Liveness.LIVENESS_THANK);
-        final int vote = yesterdayLiveness.optInt(Liveness.LIVENESS_VOTE);
+        int vote = yesterdayLiveness.optInt(Liveness.LIVENESS_VOTE);
+        if (vote > 10) {
+            vote = 10;
+        }
 
         final float activityPer = Symphonys.getFloat("activitYesterdayLivenessReward.activity.perPoint");
         final float articlePer = Symphonys.getFloat("activitYesterdayLivenessReward.article.perPoint");
