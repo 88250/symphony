@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Activity query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.0, Sep 16, 2015
+ * @version 1.4.1.0, Mar 22, 2016
  * @since 1.3.0
  */
 @Service
@@ -163,6 +163,27 @@ public class ActivityQueryService {
 
         final List<JSONObject> records = pointtransferQueryService.getLatestPointtransfers(userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT, 1);
+        if (records.isEmpty()) {
+            return false;
+        }
+
+        final JSONObject maybeToday = records.get(0);
+        final long time = maybeToday.optLong(Pointtransfer.TIME);
+
+        return DateUtils.isSameDay(now, new Date(time));
+    }
+
+    /**
+     * Did collect yesterday's liveness reward?
+     *
+     * @param userId the specified user id
+     * @return {@code true} if collected, returns {@code false} otherwise
+     */
+    public synchronized boolean isCollectedYesterdayLivenessReward(final String userId) {
+        final Date now = new Date();
+
+        final List<JSONObject> records = pointtransferQueryService.getLatestPointtransfers(userId,
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD, 1);
         if (records.isEmpty()) {
             return false;
         }

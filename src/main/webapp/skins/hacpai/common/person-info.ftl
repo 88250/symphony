@@ -20,7 +20,7 @@
                         </#if>
                     </a><br/>
                     <#if !isDailyCheckin>
-                    <a class="btn small red" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
+                    <a class="btn small red" href="/activity/daily-checkin">${dailyCheckinLabel}</a>
                     <#else>
                     <span class="ft-small">
                         ${checkinStreakLabel}

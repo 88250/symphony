@@ -21,7 +21,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines all pointtransfer model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.1.0, Feb 23, 2016
+ * @version 1.12.1.0, Mar 22, 2016
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -132,7 +132,7 @@ public final class Pointtransfer {
      * Transfer type - Add Article Reward Outcome.
      */
     public static final int TRANSFER_TYPE_C_ADD_ARTICLE_REWARD = 4;
-    
+
     /**
      * Transfer sum - Add Article Reward.
      */
@@ -227,6 +227,11 @@ public final class Pointtransfer {
      * Transfer type - Abuse Deduct.
      */
     public static final int TRANSFER_TYPE_C_ABUSE_DEDUCT = 17;
+
+    /**
+     * Transfer type - Activity - Yesterday Liveness Reward Income.
+     */
+    public static final int TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD = 18;
 
     /**
      * Private constructor.

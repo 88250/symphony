@@ -14,6 +14,7 @@
                     <h2>${activityLabel}</h2>
                     <ul>
                         <li><a href="/activity/daily-checkin">${activityDailyCheckinLabel}</a></li>
+                        <li><a href="/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
                         <li><a href="/activity/1A0001">${activity1A0001Label}</a></li>
                     </ul>
                 </div>

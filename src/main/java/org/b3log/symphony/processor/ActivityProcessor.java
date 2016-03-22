@@ -45,6 +45,7 @@ import org.b3log.symphony.processor.advice.validate.Activity1A0001CollectValidat
 import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
 import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.ActivityQueryService;
+import org.b3log.symphony.service.LivenessMgmtService;
 import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
@@ -147,6 +148,27 @@ public class ActivityProcessor {
         final String userId = user.optString(Keys.OBJECT_ID);
 
         activityMgmtService.dailyCheckin(userId);
+
+        response.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
+    }
+
+    /**
+     * Yesterday liveness reward.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/activity/yesterday-liveness-reward", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void yesterdayLivenessReward(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+
+        activityMgmtService.yesterdayLivenessReward(userId);
 
         response.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
     }

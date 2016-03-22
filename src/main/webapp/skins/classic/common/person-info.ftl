@@ -3,7 +3,7 @@
     <div class="info fn-clear">
         <button class="btn red" title="${addArticleLabel}" onclick="window.location = '/pre-post'">New!</button>
         <#if !isDailyCheckin>
-        <a class="fn-right" href="/activity/daily-checkin">${activityDailyCheckinLabel}</a>
+        <a class="fn-right" href="/activity/daily-checkin">${dailyCheckinLabel}</a>
         <#else>
         <a class="ft-gray fn-right" title="${checkinStreakLabel}" href="/top/checkin">
             ${currentUser.userCurrentCheckinStreak}/<span class="ft-red">${currentUser.userLongestCheckinStreak}</span>

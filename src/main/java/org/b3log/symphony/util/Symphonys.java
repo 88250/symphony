@@ -23,7 +23,7 @@ import org.b3log.latke.RuntimeMode;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Mar 17, 2016
+ * @version 1.3.0.3, Mar 22, 2016
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -98,6 +98,21 @@ public final class Symphonys {
         }
 
         return Boolean.valueOf(stringValue);
+    }
+
+    /**
+     * Gets a configuration float property with the specified key.
+     *
+     * @param key the specified key
+     * @return float property value corresponding to the specified key, returns {@code null} if not found
+     */
+    public static Float getFloat(final String key) {
+        final String stringValue = get(key);
+        if (null == stringValue) {
+            return null;
+        }
+
+        return Float.valueOf(stringValue);
     }
 
     /**
