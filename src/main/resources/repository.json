@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.14.4.3, Mar 21, 2016",
+    "version": "3.14.4.4, Mar 22, 2016",
     "authors": [
         "Liang Ding"
     ],
@@ -15,15 +15,25 @@
                     "length": 19
                 },
                 {
-                    "name": "livenessAddArticle",
+                    "name": "livenessUserId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "livenessDate",
+                    "type": "String",
+                    "length": 8
+                },
+                {
+                    "name": "livenessPoint",
                     "type": "int"
                 },
                 {
-                    "name": "livenessUpdateArticle",
+                    "name": "livenessArticle",
                     "type": "int"
                 },
                 {
-                    "name": "livenessAddComment",
+                    "name": "livenessComment",
                     "type": "int"
                 },
                 {
@@ -31,11 +41,15 @@
                     "type": "int"
                 },
                 {
-                    "name": "livenessThankComment",
+                    "name": "livenessThank",
                     "type": "int"
                 },
                 {
-                    "name": "livenessRewardArticle",
+                    "name": "livenessVote",
+                    "type": "int"
+                },
+                {
+                    "name": "livenessReward",
                     "type": "int"
                 },
                 {

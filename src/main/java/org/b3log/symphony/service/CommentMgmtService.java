@@ -35,6 +35,7 @@ import org.b3log.symphony.event.EventTypes;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.6.16, Mar 19, 2016
+ * @version 2.8.6.16, Mar 22, 2016
  * @since 0.2.0
  */
 @Service
@@ -137,6 +138,12 @@ public class CommentMgmtService {
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
+
+    /**
+     * Liveness management service.
+     */
+    @Inject
+    private LivenessMgmtService livenessMgmtService;
 
     /**
      * Removes a comment specified with the given comment id.
@@ -242,6 +249,8 @@ public class CommentMgmtService {
             notification.put(Notification.NOTIFICATION_DATA_ID, rewardId);
 
             notificationMgmtService.addCommentThankNotification(notification);
+
+            livenessMgmtService.incLiveness(senderId, Liveness.LIVENESS_THANK);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Thanks a comment[id=" + commentId + "] failed", e);
 
@@ -387,6 +396,8 @@ public class CommentMgmtService {
                             Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT,
                             commentId);
                 }
+
+                livenessMgmtService.incLiveness(commentAuthorId, Liveness.LIVENESS_COMMENT);
             }
 
             // Event

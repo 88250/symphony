@@ -24,6 +24,7 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Vote;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.VoteRepository;
@@ -55,6 +56,12 @@ public class VoteMgmtService {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * Liveness management service.
+     */
+    @Inject
+    private LivenessMgmtService livenessMgmtService;
 
     /**
      * Cancels the vote.
@@ -113,6 +120,8 @@ public class VoteMgmtService {
 
             throw new ServiceException(msg);
         }
+
+        livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_VOTE);
     }
 
     /**
@@ -132,6 +141,8 @@ public class VoteMgmtService {
 
             throw new ServiceException(msg);
         }
+
+        livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_VOTE);
     }
 
     /**

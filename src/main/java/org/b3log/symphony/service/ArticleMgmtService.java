@@ -45,6 +45,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
@@ -70,7 +71,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.17.13, Mar 19, 2016
+ * @version 2.7.17.13, Mar 22, 2016
  * @since 0.2.0
  */
 @Service
@@ -184,6 +185,12 @@ public class ArticleMgmtService {
     private NotificationMgmtService notificationMgmtService;
 
     /**
+     * Liveness management service.
+     */
+    @Inject
+    private LivenessMgmtService livenessMgmtService;
+
+    /**
      * Generate tag max count.
      */
     private static final int GEN_TAG_MAX_CNT = 4;
@@ -232,7 +239,7 @@ public class ArticleMgmtService {
             }
 
             tagArticleRepository.removeByArticleId(articleId);
-            
+
             notificationRepository.removeByDataId(articleId);
 
             final Query query = new Query().setFilter(new PropertyFilter(
@@ -249,7 +256,7 @@ public class ArticleMgmtService {
                 userRepository.update(commentAuthorId, commenter);
 
                 commentRepository.remove(commentId);
-                
+
                 notificationRepository.removeByDataId(commentId);
             }
 
@@ -513,6 +520,9 @@ public class ArticleMgmtService {
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST,
                             Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST, articleId);
                 }
+
+                // Liveness
+                livenessMgmtService.incLiveness(authorId, Liveness.LIVENESS_ARTICLE);
             }
 
             // Event
@@ -790,6 +800,8 @@ public class ArticleMgmtService {
             notification.put(Notification.NOTIFICATION_DATA_ID, rewardId);
 
             notificationMgmtService.addArticleRewardNotification(notification);
+
+            livenessMgmtService.incLiveness(senderId, Liveness.LIVENESS_REWARD);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Rewards an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);

@@ -33,6 +33,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Results;
@@ -96,6 +97,12 @@ public class ActivityMgmtService {
      */
     @Inject
     private TimelineMgmtService timelineMgmtService;
+
+    /**
+     * Liveness management service.
+     */
+    @Inject
+    private LivenessMgmtService livenessMgmtService;
 
     /**
      * Daily checkin.
@@ -199,6 +206,9 @@ public class ActivityMgmtService {
 
             timelineMgmtService.addTimeline(timeline);
 
+            // Liveness
+            livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
+
             return sum;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Checkin streak error", e);
@@ -248,6 +258,9 @@ public class ActivityMgmtService {
             timeline.put(Common.CONTENT, content);
 
             timelineMgmtService.addTimeline(timeline);
+
+            // Liveness
+            livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Timeline error", e);
         }

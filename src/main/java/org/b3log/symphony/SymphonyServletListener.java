@@ -373,6 +373,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             }
 
             request.setAttribute(Keys.TEMAPLTE_DIR_NAME, user.optString(UserExt.USER_SKIN));
+            request.setAttribute(User.USER, user);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);
         }

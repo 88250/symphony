@@ -51,6 +51,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
@@ -69,6 +70,7 @@ import org.b3log.symphony.service.ClientMgmtService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
+import org.b3log.symphony.service.LivenessMgmtService;
 import org.b3log.symphony.service.RewardQueryService;
 import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.UserQueryService;
@@ -103,7 +105,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.12.27, Mar 14, 2016
+ * @version 1.14.12.27, Mar 22, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -179,6 +181,12 @@ public class ArticleProcessor {
      */
     @Inject
     private VoteQueryService voteQueryService;
+
+    /**
+     * Liveness management service.
+     */
+    @Inject
+    private LivenessMgmtService livenessMgmtService;
 
     /**
      * Filler.
@@ -383,6 +391,11 @@ public class ArticleProcessor {
 
         if (!(Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
             articleMgmtService.incArticleViewCount(articleId);
+        }
+
+        final JSONObject viewer = (JSONObject) request.getAttribute(User.USER);
+        if (null != viewer) {
+            livenessMgmtService.incLiveness(viewer.optString(Keys.OBJECT_ID), Liveness.LIVENESS_PV);
         }
 
         filler.fillRelevantArticles(dataModel, article);
