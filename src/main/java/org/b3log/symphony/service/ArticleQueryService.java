@@ -77,7 +77,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.10.17, Mar 15, 2016
+ * @version 1.12.10.18, Mar 23, 2016
  * @since 0.2.0
  */
 @Service
@@ -1242,7 +1242,27 @@ public class ArticleQueryService {
 
         try {
             final JSONObject result = commentRepository.get(query);
-            final List<JSONObject> comments = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+
+            final List<JSONObject> comments = new ArrayList<JSONObject>();
+            final JSONArray records = result.optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < records.length(); i++) {
+                final JSONObject comment = records.optJSONObject(i);
+
+                boolean exist = false;
+                // deduplicate
+                for (final JSONObject c : comments) {
+                    if (comment.optString(Comment.COMMENT_AUTHOR_ID).equals(
+                            c.optString(Comment.COMMENT_AUTHOR_ID))) {
+                        exist = true;
+
+                        break;
+                    }
+                }
+
+                if (!exist) {
+                    comments.add(comment);
+                }
+            }
 
             for (final JSONObject comment : comments) {
                 final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
