@@ -1,5 +1,5 @@
 <#if isLoggedIn>
-<div class="module person-info" data-percent="100">
+<div class="module person-info" data-percent="${liveness}">
     <div class="info fn-clear">
         <button class="btn red" title="${addArticleLabel}" onclick="window.location = '/pre-post'">New!</button>
         <#if !isDailyCheckin>
