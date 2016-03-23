@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.12.15, Mar 14, 2016
+ * @version 1.21.12.15, Mar 23, 2016
  */
 
 /**
@@ -642,6 +642,52 @@ var Util = {
         }
     },
     /**
+     * 每日活跃样式
+     * @returns {undefined}
+     */
+    _initActivity: function () {
+        var $percent = $('.person-info'), 
+                percent = $percent.data('percent'),
+                bottom = 0,
+                side = 0,
+                top = 0;
+        if(percent <= 25) {
+            bottom =  parseInt(percent/0.25);
+        } else if (percent <= 75) {
+            bottom = 100;
+            side = parseInt((percent - 25) / 2 / 0.25);
+        } else if (percent <= 100){
+            bottom = 100;
+            side = 100;
+            top = parseInt((percent - 75) / 0.25);
+        }
+        
+        $percent.find('.bottom').css({
+            'width': bottom + '%',
+            'left': ((100 - bottom) / 2) + '%'
+        });
+        
+        $percent.find('.top-left').css({
+            'width': parseInt(top / 2) + '%',
+            'left': 0
+        });
+        
+        $percent.find('.top-right').css({
+            'width': parseInt(top / 2) + '%',
+            'right': 0
+        });
+        
+        $percent.find('.left').css({
+            'height': side + '%',
+            'top': (100 - side) + '%'
+        });
+        
+        $percent.find('.right').css({
+            'height': side + '%',
+            'top': (100 - side) + '%'
+        });
+    },
+    /**
      * @description 初识化前台页面
      */
     init: function () {
@@ -649,6 +695,8 @@ var Util = {
         this._kill();
         // 导航
         this._initNav();
+        // 每日活跃
+        this._initActivity();
         // 自动添加链接
         $('.content-reset').linkify();
         // 登录密码输入框回车事件
@@ -1214,7 +1262,6 @@ function isWav(data1, data2) {
 }
 
 // 结束 - 判断文件类型
-
 function getUUID() {
     var d = new Date().getTime();
 
@@ -1227,5 +1274,4 @@ function getUUID() {
     ret = ret.replace(new RegExp("-", 'g'), "");
 
     return ret;
-}
-;
+};
