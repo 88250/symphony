@@ -23,6 +23,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.repository.LivenessRepository;
 import org.json.JSONObject;
 
@@ -30,7 +31,7 @@ import org.json.JSONObject;
  * Liveness query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 22, 2016
+ * @version 1.1.0.0, Mar 23, 2016
  * @since 1.4.0
  */
 @Service
@@ -46,6 +47,29 @@ public class LivenessQueryService {
      */
     @Inject
     private LivenessRepository livenessRepository;
+
+    /**
+     * Gets point of current liveness.
+     *
+     * @param userId the specified user id
+     * @return point
+     */
+    public int getCurrentLivenessPoint(final String userId) {
+        final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");
+
+        try {
+            final JSONObject liveness = livenessRepository.getByUserAndDate(userId, date);
+            if (null == liveness) {
+                return 0;
+            }
+
+            return Liveness.calcPoint(liveness);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets current liveness point failed", e);
+
+            return 0;
+        }
+    }
 
     /**
      * Gets the yesterday's liveness.

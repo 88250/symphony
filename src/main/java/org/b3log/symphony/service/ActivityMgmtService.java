@@ -37,7 +37,6 @@ import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.util.Results;
-import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -46,7 +45,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.6.0, Mar 22, 2016
+ * @version 1.3.6.1, Mar 23, 2016
  * @since 1.3.0
  */
 @Service
@@ -379,43 +378,7 @@ public class ActivityMgmtService {
             return Integer.MIN_VALUE;
         }
 
-        final int activity = yesterdayLiveness.optInt(Liveness.LIVENESS_ACTIVITY);
-        final int article = yesterdayLiveness.optInt(Liveness.LIVENESS_ARTICLE);
-        final int comment = yesterdayLiveness.optInt(Liveness.LIVENESS_COMMENT);
-        int pv = yesterdayLiveness.optInt(Liveness.LIVENESS_PV);
-        if (pv > 500) {
-            pv = 500;
-        }
-        final int reward = yesterdayLiveness.optInt(Liveness.LIVENESS_REWARD);
-        final int thank = yesterdayLiveness.optInt(Liveness.LIVENESS_THANK);
-        int vote = yesterdayLiveness.optInt(Liveness.LIVENESS_VOTE);
-        if (vote > 10) {
-            vote = 10;
-        }
-
-        final float activityPer = Symphonys.getFloat("activitYesterdayLivenessReward.activity.perPoint");
-        final float articlePer = Symphonys.getFloat("activitYesterdayLivenessReward.article.perPoint");
-        final float commentPer = Symphonys.getFloat("activitYesterdayLivenessReward.comment.perPoint");
-        final float pvPer = Symphonys.getFloat("activitYesterdayLivenessReward.pv.perPoint");
-
-        final float rewardPer = Symphonys.getFloat("activitYesterdayLivenessReward.reward.perPoint");
-        final float thankPer = Symphonys.getFloat("activitYesterdayLivenessReward.thank.perPoint");
-        final float votePer = Symphonys.getFloat("activitYesterdayLivenessReward.vote.perPoint");
-
-        final int activityPoint = (int) (activity * activityPer);
-        final int articlePoint = (int) (article * articlePer);
-        final int commentPoint = (int) (comment * commentPer);
-        final int pvPoint = (int) (pv * pvPer);
-        final int rewardPoint = (int) (reward * rewardPer);
-        final int thankPoint = (int) (thank * thankPer);
-        final int votePoint = (int) (vote * votePer);
-
-        int sum = activityPoint + articlePoint + commentPoint + pvPoint + rewardPoint + thankPoint + votePoint;
-
-        final int max = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
-        if (sum > max) {
-            sum = max;
-        }
+        final int sum = Liveness.calcPoint(yesterdayLiveness);
 
         boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD, sum, userId);
