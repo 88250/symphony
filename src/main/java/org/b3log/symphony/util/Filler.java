@@ -34,13 +34,14 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowQueryService;
+import org.b3log.symphony.service.LivenessQueryService;
 import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
@@ -124,10 +125,10 @@ public class Filler {
     private ActivityQueryService activityQueryService;
 
     /**
-     * Activity management service.
+     * Liveness query service.
      */
     @Inject
-    private ActivityMgmtService activityMgmtService;
+    private LivenessQueryService livenessQueryService;
 
     /**
      * Fills relevant articles.
@@ -227,7 +228,7 @@ public class Filler {
             final Map<String, Object> dataModel) throws Exception {
         fillHeader(request, response, dataModel);
         fillFooter(dataModel);
-        
+
         dataModel.put(Common.WEBSOCKET_SCHEME, Symphonys.get("websocket.scheme"));
     }
 
@@ -299,6 +300,10 @@ public class Filler {
         dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);
 
         dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedinToday(userId));
+
+        final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
+        final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
+        dataModel.put(Liveness.LIVENESS, (float)currentLiveness / livenessMax * 100);
     }
 
     /**
