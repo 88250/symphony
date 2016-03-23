@@ -185,9 +185,9 @@ public class UserQueryService {
             return null;
         }
 
-        final String email = currentUser.optString(User.USER_EMAIL);
+        final String id = currentUser.optString(Keys.OBJECT_ID);
 
-        return getUserByEmail(email);
+        return getUser(id);
     }
 
     /**
@@ -466,7 +466,7 @@ public class UserQueryService {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(UserExt.USER_CITY, FilterOperator.EQUAL, city));
         final long latestTime = requestJSONObject.optLong(UserExt.USER_LATEST_LOGIN_TIME);
-        filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.GREATER_THAN_OR_EQUAL, latestTime));
+        filters.add(new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, latestTime));
 
         query.setFilter(new CompositeFilter(CompositeFilterOperator.OR, filters));
 

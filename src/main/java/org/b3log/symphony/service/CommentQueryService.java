@@ -207,7 +207,7 @@ public class CommentQueryService {
                 final String commenterEmail = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 String avatarURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(commenterEmail)) {
-                    avatarURL = avatarQueryService.getAvatarURL(commenterEmail);
+                    avatarURL = avatarQueryService.getAvatarURLByUser(commenter);
                 }
                 commenter.put(UserExt.USER_AVATAR_URL, avatarURL);
 
@@ -262,8 +262,7 @@ public class CommentQueryService {
                 final String articleAuthorURL = "/member/" + articleAuthor.optString(User.USER_NAME);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, articleAuthorURL);
-                final String articleAuthorEmail = articleAuthor.optString(User.USER_EMAIL);
-                final String articleAuthorThumbnailURL = avatarQueryService.getAvatarURL(articleAuthorEmail);
+                final String articleAuthorThumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
 
                 if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
@@ -473,8 +472,7 @@ public class CommentQueryService {
         final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
         final JSONObject author = userRepository.get(authorId);
 
-        final String userEmail = author.optString(User.USER_EMAIL);
-        final String thumbnailURL = avatarQueryService.getAvatarURL(userEmail);
+        final String thumbnailURL = avatarQueryService.getAvatarURLByUser(author);
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
         comment.put(Comment.COMMENT_T_COMMENTER, author);

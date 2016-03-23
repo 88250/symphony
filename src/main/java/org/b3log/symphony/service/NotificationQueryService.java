@@ -574,7 +574,7 @@ public class NotificationQueryService {
                     atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                     atNotification.put(Common.AUTHOR_NAME, articleAuthor.optString(User.USER_NAME));
                     atNotification.put(Common.CONTENT, "");
-                    final String thumbnailURL = avatarQueryService.getAvatarURL(articleAuthor.optString(User.USER_EMAIL));
+                    final String thumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor);
                     atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                     atNotification.put(Common.THUMBNAIL_UPDATE_TIME, articleAuthor.optLong(UserExt.USER_UPDATE_TIME));
                     atNotification.put(Article.ARTICLE_TITLE, Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
@@ -656,7 +656,7 @@ public class NotificationQueryService {
                 final Query q = new Query().setPageCount(1).
                         addProjection(Article.ARTICLE_TITLE, String.class).
                         addProjection(Article.ARTICLE_TYPE, Integer.class).
-                        addProjection(Article.ARTICLE_AUTHOR_EMAIL, String.class).
+                        addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
                         addProjection(Article.ARTICLE_PERMALINK, String.class).
                         addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
                         addProjection(Article.ARTICLE_TAGS, String.class).
@@ -672,11 +672,11 @@ public class NotificationQueryService {
                 }
 
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
-                final String articleAuthorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
-                final JSONObject author = userRepository.getByEmail(articleAuthorEmail);
+                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                final JSONObject author = userRepository.get(articleAuthorId);
 
                 if (null == author) {
-                    LOGGER.warn("Not found user[email=" + articleAuthorEmail + ']');
+                    LOGGER.warn("Not found user[id=" + articleAuthorId + ']');
 
                     continue;
                 }
@@ -685,7 +685,7 @@ public class NotificationQueryService {
                 followingUserNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 followingUserNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 followingUserNotification.put(Common.CONTENT, "");
-                followingUserNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURL(articleAuthorEmail));
+                followingUserNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
                 followingUserNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
                 followingUserNotification.put(Article.ARTICLE_TITLE, Emotions.convert(articleTitle));
                 followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
@@ -766,7 +766,7 @@ public class NotificationQueryService {
                 final Query q = new Query().setPageCount(1).
                         addProjection(Article.ARTICLE_TITLE, String.class).
                         addProjection(Article.ARTICLE_TYPE, Integer.class).
-                        addProjection(Article.ARTICLE_AUTHOR_EMAIL, String.class).
+                        addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
                         addProjection(Article.ARTICLE_PERMALINK, String.class).
                         addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
                         addProjection(Article.ARTICLE_TAGS, String.class).
@@ -782,11 +782,11 @@ public class NotificationQueryService {
                 }
 
                 final String articleTitle = article.optString(Article.ARTICLE_TITLE);
-                final String articleAuthorEmail = article.optString(Article.ARTICLE_AUTHOR_EMAIL);
-                final JSONObject author = userRepository.getByEmail(articleAuthorEmail);
+                final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                final JSONObject author = userRepository.get(articleAuthorId);
 
                 if (null == author) {
-                    LOGGER.warn("Not found user[email=" + articleAuthorEmail + ']');
+                    LOGGER.warn("Not found user[id=" + articleAuthorId + ']');
 
                     continue;
                 }
@@ -795,7 +795,7 @@ public class NotificationQueryService {
                 broadcastNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 broadcastNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 broadcastNotification.put(Common.CONTENT, "");
-                broadcastNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURL(articleAuthorEmail));
+                broadcastNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
                 broadcastNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
                 broadcastNotification.put(Article.ARTICLE_TITLE, articleTitle);
                 broadcastNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));

@@ -131,8 +131,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             chData.put(Comment.COMMENT_T_ID, commentId);
             chData.put(Comment.COMMENT_T_AUTHOR_NAME, commenterName);
 
-            final String userEmail = commenter.optString(User.USER_EMAIL);
-            chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURL(userEmail));
+            chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(commenter));
             chData.put(Common.THUMBNAIL_UPDATE_TIME, commenter.optLong(UserExt.USER_UPDATE_TIME));
 
             chData.put(Comment.COMMENT_CREATE_TIME,

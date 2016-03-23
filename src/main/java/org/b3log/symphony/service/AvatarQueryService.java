@@ -18,14 +18,10 @@ package org.b3log.symphony.service;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -43,12 +39,6 @@ public class AvatarQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AvatarQueryService.class.getName());
-
-    /**
-     * User repository.
-     */
-    @Inject
-    private UserRepository userRepository;
 
     /**
      * Default avatar URL.
@@ -97,45 +87,6 @@ public class AvatarQueryService {
         }
 
         return StringUtils.substringBeforeLast(originalURL, "?");
-    }
-
-    /**
-     * Gets the avatar URL for the specified user id with the specified size.
-     *
-     * @param userId the specified user id
-     * @return the avatar URL
-     */
-    public String getAvatarURLByUserId(final String userId) {
-        try {
-            final JSONObject user = userRepository.get(userId);
-
-            return getAvatarURLByUser(user);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "Gets user avatar error", e);
-
-            return DEFAULT_AVATAR_URL;
-        }
-    }
-
-    /**
-     * Gets the avatar URL for the specified email with the specified size.
-     *
-     * @param email the specified email
-     * @return the avatar URL
-     */
-    public String getAvatarURL(final String email) {
-        try {
-            final JSONObject user = userRepository.getByEmail(email);
-            if (null == user) {
-                return DEFAULT_AVATAR_URL;
-            }
-
-            return getAvatarURLByUser(user);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "Gets user avatar error", e);
-
-            return DEFAULT_AVATAR_URL;
-        }
     }
 
     /**
