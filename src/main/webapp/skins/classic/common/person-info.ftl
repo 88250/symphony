@@ -1,5 +1,5 @@
 <#if isLoggedIn>
-<div class="module person-info">
+<div class="module person-info" data-percent="100">
     <div class="info fn-clear">
         <button class="btn red" title="${addArticleLabel}" onclick="window.location = '/pre-post'">New!</button>
         <#if !isDailyCheckin>
@@ -33,5 +33,10 @@
                 <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>
         </div>
     </div> 
+    <div class="top-left activity-board"></div>
+    <div class="top-right activity-board"></div>
+    <div class="right activity-board"></div>
+    <div class="bottom activity-board"></div>
+    <div class="left activity-board"></div>
 </div>
 </#if>

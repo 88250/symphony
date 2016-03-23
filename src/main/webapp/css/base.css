@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.11.16, Mar 14, 2016
+ * @version 1.14.11.16, Mar 23, 2016
  */
 
 /* start reset */
@@ -1418,6 +1418,10 @@ a[class*=" icon-"]:hover {
 /* end emoji */
 
 /* start person info */
+.person-info {
+    position: relative;
+}
+
 .person-info .info {
     position: relative;
     left: -1px;
@@ -1461,6 +1465,30 @@ a[class*=" icon-"]:hover {
 
 .person-info .module-panel {
     padding: 0 10px 10px 10px;
+}
+
+.person-info .activity-board {
+    position: absolute;
+    height: 2px;
+    background-color: #b33630;
+    top: -1px;
+}
+
+.person-info .right {
+    width: 2px;
+    right: -1px;
+    left: auto;
+}
+
+.person-info .left {
+    width: 2px;
+    right: 0;
+    left: -1px;
+}
+
+.person-info .bottom {
+    top: auto;
+    bottom: -1px;
 }
 
 .painter-point {
