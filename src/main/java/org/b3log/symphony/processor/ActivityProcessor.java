@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.processor;
 
+import org.b3log.symphony.util.GeetestLib;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,6 @@ import org.b3log.symphony.processor.advice.validate.Activity1A0001CollectValidat
 import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
 import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.ActivityQueryService;
-import org.b3log.symphony.service.LivenessMgmtService;
 import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.1, Feb 16, 2016
+ * @version 1.5.1.1, Mar 23, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -132,6 +132,40 @@ public class ActivityProcessor {
     }
 
     /**
+     * Shows daily checkin page.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/activity/checkin", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showDailyCheckin(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+        if (activityQueryService.isCheckedinToday(userId)) {
+            response.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
+
+            return;
+        }
+
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/activity/checkin.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+        filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
+    }
+
+    /**
      * Daily checkin.
      *
      * @param context the specified context
@@ -147,7 +181,31 @@ public class ActivityProcessor {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final String userId = user.optString(Keys.OBJECT_ID);
 
-        activityMgmtService.dailyCheckin(userId);
+        if (!Symphonys.getBoolean("geetest.enabled")) {
+            activityMgmtService.dailyCheckin(userId);
+        } else {
+            final String challenge = request.getParameter(GeetestLib.fn_geetest_challenge);
+            final String validate = request.getParameter(GeetestLib.fn_geetest_validate);
+            final String seccode = request.getParameter(GeetestLib.fn_geetest_seccode);
+            if (StringUtils.isBlank(challenge) || StringUtils.isBlank(validate) || StringUtils.isBlank(seccode)) {
+                response.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
+
+                return;
+            }
+
+            final GeetestLib gtSdk = new GeetestLib(Symphonys.get("geetest.id"), Symphonys.get("geetest.key"));
+            final int gt_server_status_code = (Integer) request.getSession().getAttribute(gtSdk.gtServerStatusSessionKey);
+            int gtResult = 0;
+            if (gt_server_status_code == 1) {
+                gtResult = gtSdk.enhencedValidateRequest(challenge, validate, seccode, userId);
+            } else {
+                gtResult = gtSdk.failbackValidateRequest(challenge, validate, seccode);
+            }
+
+            if (gtResult == 1) {
+                activityMgmtService.dailyCheckin(userId);
+            }
+        }
 
         response.sendRedirect(Latkes.getServePath() + "/member/" + user.optString(User.USER_NAME) + "/points");
     }
