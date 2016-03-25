@@ -196,6 +196,7 @@ public class Filler {
             final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+        dataModel.put("searchEnabled", Symphonys.getBoolean("es.enabled"));
 
         fillTrendTags(dataModel);
         fillPersonalNav(request, response, dataModel);

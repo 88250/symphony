@@ -5,11 +5,13 @@
                 <a href="/" style="background-image: url('${staticServePath}/images/hacpai.png')" alt="${symphonyLabel}" 
                    title="${symphonyLabel}" width="42" class="fn-pointer"></a>
             </h1>
+            <#if searchEnabled>
             <form class="responsive-hide" target="_blank" action="/search">
                 <!--<span class="icon-search"></span>-->
                 <input class="search" type="text" name="key">
                 <input type="submit" class="fn-none" value="">
             </form>
+            </#if>
             <div class="fn-right">
                 <a href="/timeline" class="icon-clock last" title="${timelineLabel}"></a>
                 <#if isLoggedIn>
