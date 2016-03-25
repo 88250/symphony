@@ -5,15 +5,11 @@
                 <a href="/" style="background-image: url('${staticServePath}/images/hacpai.png')" alt="${symphonyLabel}" 
                    title="${symphonyLabel}" width="42" class="fn-pointer"></a>
             </h1>
-            <#-- 百度站内搜索不支持 HTTPS 
-            <form class="responsive-hide" target="_blank" action="https://search.hacpai.com/cse/search">
-                <span class="icon-search"></span>
-                <input class="search" type="text" name="q">
-                <input type="hidden" value="11228953646196486415" name="s">
-                <input type="hidden" name="cc" value="hacpai.com">
+            <form class="responsive-hide" target="_blank" action="/search">
+                <!--<span class="icon-search"></span>-->
+                <input class="search" type="text" name="key">
                 <input type="submit" class="fn-none" value="">
             </form>
-            -->
             <div class="fn-right">
                 <a href="/timeline" class="icon-clock last" title="${timelineLabel}"></a>
                 <#if isLoggedIn>

@@ -5,6 +5,7 @@
     <form method="GET" action="articles" class="form">
         <input name="id" type="text" placeholder="${articleLabel} Id"/>
         <button type="submit" class="green">${searchLabel}</button>
+        <button type="button" class="btn red" onclick="searchIndex();">${searchIndexLabel}</button>
     </form>
     <br/>
     <ul>
@@ -39,4 +40,17 @@
     </ul>
     <@pagination url="/admin/articles"/>
 </div>
+
+<script>
+    function searchIndex() {
+        $.ajax({
+            url: "/admin/search/index",
+            type: "POST",
+            cache: false,
+            success: function (result, textStatus) {
+                window.location.reload();
+            }
+        });
+    }
+</script>
 </@admin>

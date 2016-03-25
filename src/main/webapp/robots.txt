@@ -4,3 +4,4 @@ Disallow: /timeline
 Disallow: /admin/
 Disallow: /member/
 Disallow: /city
+Disallow: /search

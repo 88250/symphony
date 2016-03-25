@@ -77,7 +77,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.10.18, Mar 23, 2016
+ * @version 1.13.10.18, Mar 25, 2016
  * @since 0.2.0
  */
 @Service
@@ -158,6 +158,29 @@ public class ArticleQueryService {
      * Count to fetch article tags for relevant articles.
      */
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
+
+    /**
+     * Gets articles by the specified page number and page size.
+     *
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return articles, return an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getArticles(final int currentPageNum, final int pageSize) throws ServiceException {
+        try {
+            final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                    .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+
+            final JSONObject result = articleRepository.get(query);
+
+            return CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets articles failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets domain articles.
@@ -1198,7 +1221,7 @@ public class ArticleQueryService {
      * @param participantsCnt the specified generate size
      * @throws ServiceException service exception
      */
-    private void genParticipants(final List<JSONObject> articles, final Integer participantsCnt) throws ServiceException {
+    public void genParticipants(final List<JSONObject> articles, final Integer participantsCnt) throws ServiceException {
         for (final JSONObject article : articles) {
             final String participantName = "";
             final String participantThumbnailURL = "";
