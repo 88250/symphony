@@ -7,7 +7,7 @@
             </h1>
             <#if searchEnabled>
             <form class="responsive-hide" target="_blank" action="/search">
-                <!--<span class="icon-search"></span>-->
+                <span class="icon-search"></span>
                 <input class="search" type="text" name="key">
                 <input type="submit" class="fn-none" value="">
             </form>

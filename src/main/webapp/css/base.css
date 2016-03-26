@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.11.17, Mar 25, 2016
+ * @version 1.14.11.18, Mar 26, 2016
  */
 
 /* start reset */
@@ -711,9 +711,9 @@ a[class*=" icon-"]:hover {
 
 .icon-search {
     color: #999999;
-    left: 393px;
+    left: 86px;
     position: absolute;
-    top: 17px;
+    top: 7px;
     z-index: 2;
     cursor: pointer;
 }
@@ -1052,6 +1052,10 @@ a[class*=" icon-"]:hover {
     width: 70%;
 }
 
+.nav .head-fn form {
+    position: relative;
+}
+
 .nav .head-fn h1 a {
     height: 48px;
     width: 48px;
@@ -1175,7 +1179,7 @@ a[class*=" icon-"]:hover {
     border-radius: 3px 3px 3px 3px;
     padding: 3px 5px 3px 25px;
     width: 208px;
-    margin: 1.5px 0 0 37px;
+    margin: 2px 0 0 30px;
     float: left;
 }
 

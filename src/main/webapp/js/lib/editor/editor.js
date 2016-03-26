@@ -1531,7 +1531,9 @@
                 (function (key) {
                     var el = self.toolbar[key];
                     if (stat[key]) {
-                        el.className += ' active';
+                        if (el.className.indexOf('active') === -1) {
+                            el.className += ' active';
+                        }
                     } else {
                         el.className = el.className.replace(/\s*active\s*/g, '');
                     }
