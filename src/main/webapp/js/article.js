@@ -234,13 +234,13 @@ var Comment = {
             },
             success: function (result, textStatus) {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
-                $('.editor-preview').html('');
-                if($('.icon-preview').hasClass('active')) {
-                    $('.icon-preview').click();
-                }
+                
                 if (result.sc) {
                     Comment.editor.setValue('');
-
+                    $('.editor-preview').html('');
+                    if($('.icon-preview').hasClass('active')) {
+                        $('.icon-preview').click();
+                    }
                     if (window.localStorage) {
                         var emptyContent = {
                             commentContent: ""
