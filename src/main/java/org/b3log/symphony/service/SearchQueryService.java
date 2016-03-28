@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jan 22, 2016
+ * @version 1.1.0.1, Mar 28, 2016
  * @since 1.4.0
  */
 @Service
@@ -77,7 +77,7 @@ public class SearchQueryService {
             query.put(or);
             final JSONArray orClause = new JSONArray();
             or.put("or", orClause);
-            
+
             final JSONObject content = new JSONObject();
             content.put(Article.ARTICLE_CONTENT, keyword);
             final JSONObject matchContent = new JSONObject();
@@ -93,6 +93,12 @@ public class SearchQueryService {
             reqData.put("query", q);
             reqData.put("from", currentPage);
             reqData.put("size", pageSize);
+            final JSONArray sort = new JSONArray();
+            final JSONObject sortField = new JSONObject();
+            sort.put(sortField);
+            sortField.put(Article.ARTICLE_CREATE_TIME, "desc");
+            sort.put("_score");
+            reqData.put("sort", sort);
 
             final JSONObject highlight = new JSONObject();
             reqData.put("highlight", highlight);
@@ -102,7 +108,7 @@ public class SearchQueryService {
             highlight.put("fields", fields);
             final JSONObject contentField = new JSONObject();
             fields.put(Article.ARTICLE_CONTENT, contentField);
-            
+
             final JSONArray filter = new JSONArray();
             and.put("filter", filter);
             final JSONObject term = new JSONObject();
@@ -110,7 +116,7 @@ public class SearchQueryService {
             final JSONObject field = new JSONObject();
             term.put("term", field);
             field.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
-            
+
             LOGGER.debug(reqData.toString(4));
 
             request.setPayload(reqData.toString().getBytes("UTF-8"));
