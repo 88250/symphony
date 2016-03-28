@@ -274,7 +274,8 @@ public class UserMgmtService {
      *     "userAvatarType": int,
      *     "userAvatarURL": "",
      *     "userJoinPointRank": int,
-     *     "userJoinUsedPointRank": int
+     *     "userJoinUsedPointRank": int,
+     *     "userCommentViewMode": int
      * }
      * </pre>
      *
@@ -305,6 +306,7 @@ public class UserMgmtService {
             oldUser.put(UserExt.USER_AVATAR_URL, requestJSONObject.optString(UserExt.USER_AVATAR_URL));
             oldUser.put(UserExt.USER_JOIN_POINT_RANK, requestJSONObject.optString(UserExt.USER_JOIN_POINT_RANK));
             oldUser.put(UserExt.USER_JOIN_USED_POINT_RANK, requestJSONObject.optString(UserExt.USER_JOIN_USED_POINT_RANK));
+            oldUser.put(UserExt.USER_COMMENT_VIEW_MODE, requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE));
 
             oldUser.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
 
@@ -498,6 +500,7 @@ public class UserMgmtService {
             user.put(UserExt.SYNC_TO_CLIENT, false);
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
+            user.put(UserExt.USER_COMMENT_VIEW_MODE, UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL);
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, userNo);

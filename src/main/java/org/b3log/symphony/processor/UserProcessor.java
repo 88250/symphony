@@ -797,6 +797,7 @@ public class UserProcessor {
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
         final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
         final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
+        final int userCommentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
         final JSONObject user = userQueryService.getCurrentUser(request);
 
@@ -811,6 +812,7 @@ public class UserProcessor {
         user.put(UserExt.USER_JOIN_USED_POINT_RANK,
                 userJoinUsedPointRank
                         ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
+        user.put(UserExt.USER_COMMENT_VIEW_MODE, userCommentViewMode);
 
         if (Symphonys.getBoolean("qiniu.enabled")) {
             if (!StringUtils.contains(userAvatarURL, "qnssl.com") && !StringUtils.contains(userAvatarURL, "clouddn.com")) {

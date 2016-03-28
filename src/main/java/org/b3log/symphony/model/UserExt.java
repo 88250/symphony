@@ -22,11 +22,16 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.1.9, Mar 8, 2016
+ * @version 2.16.1.9, Mar 28, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+
+    /**
+     * Key of user comment view mode.
+     */
+    public static final String USER_COMMENT_VIEW_MODE = "userCommentViewMode";
 
     /**
      * Key of sync to client.
@@ -287,6 +292,17 @@ public final class UserExt {
      * User join used point rank - not join.
      */
     public static final int USER_JOIN_USED_POINT_RANK_C_NOT_JOIN = 1;
+
+    //// Comment View Mode constants
+    /**
+     * User comment view mode - traditional.
+     */
+    public static final int USER_COMMENT_VIEW_MODE_C_TRADITIONAL = 0;
+
+    /**
+     * User comment view mode - real time.
+     */
+    public static final int USER_COMMENT_VIEW_MODE_C_REALTIME = 1;
 
     //// Geo Status constants
     /**

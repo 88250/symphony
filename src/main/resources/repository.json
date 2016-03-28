@@ -761,6 +761,11 @@
                 {
                     "name": "syncWithSymphonyClient",
                     "type": "boolean"
+                },
+                {
+                    "name": "userCommentViewMode",
+                    "type": "int",
+                    "description": "0: traditional, 1: real time"
                 }
             ]
         },

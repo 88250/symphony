@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Validates for user profiles update.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.4, Aug 12, 2015
+ * @version 2.1.1.4, Mar 28, 2016
  */
 @Named
 @Singleton
@@ -97,6 +97,12 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         if (!Strings.isEmptyOrNull(userIntro) && userIntro.length() > MAX_USER_INTRO_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("invalidUserIntroLabel")));
+        }
+
+        final int userCommentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
+        if (userCommentViewMode != UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME
+                && userCommentViewMode != UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL) {
+            requestJSONObject.put(UserExt.USER_COMMENT_VIEW_MODE, UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL);
         }
 
         final String tagErrMsg = langPropsService.get("selfTagLabel") + langPropsService.get("colonLabel")
