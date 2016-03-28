@@ -19,7 +19,7 @@
             </h2>
             <div class="ft-gray">
                 <#list notification.articleTags?split(",") as articleTag>
-                <a class="tag" rel="tag" href="/tags/${articleTag?url('UTF-8')}">
+                <a class="tag" rel="tag" href="/tag/${articleTag?url('UTF-8')}">
                     ${articleTag}</a>
                 </#list> &nbsp;
                 <span class="icon-date"></span>

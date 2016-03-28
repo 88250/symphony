@@ -21,7 +21,7 @@
                             <div class="fn-left">
                                 <span class="icon icon-tags"></span>
                                 <#list article.articleTags?split(",") as articleTag>
-                                <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
+                                <a rel="tag" href="/tag/${articleTag?url('UTF-8')}">
                                     ${articleTag}</a><#if articleTag_has_next>, </#if>
                                 </#list>
                             </div>

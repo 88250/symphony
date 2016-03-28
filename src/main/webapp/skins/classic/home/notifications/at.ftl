@@ -41,7 +41,7 @@
             </h2>
             <p class="ft-gray">
                 <#list notification.articleTags?split(",") as articleTag>
-                <a rel="tag" class="tag" href="/tags/${notification?url('UTF-8')}">
+                <a rel="tag" class="tag" href="/tag/${notification?url('UTF-8')}">
                     ${articleTag}</a>
                 </#list>
                 &nbsp; 

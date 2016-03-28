@@ -22,7 +22,7 @@
                 </h2>
                 <span class="ft-gray">
                     <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="/tags/${articleTag?url('UTF-8')}">
+                    <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">
                         ${articleTag}</a>
                     </#list> &nbsp; 
                     <span class="icon-date"></span>

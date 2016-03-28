@@ -42,7 +42,7 @@
                                     <a rel="nofollow" class="slogan" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
                                     <div class="title">
                                         <#list domain.domainTags as tag>
-                                        <a class="tag" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                        <a class="tag" rel="nofollow" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                         </#list>
                                     </div>
                                 </li>

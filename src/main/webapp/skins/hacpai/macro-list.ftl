@@ -21,7 +21,7 @@
                     <span class="ft-small">
                         <span class="icon icon-tags"></span>
                         <#list article.articleTags?split(",") as articleTag>
-                        <a rel="tag" href="/tags/${articleTag?url('UTF-8')}">
+                        <a rel="tag" href="/tag/${articleTag?url('UTF-8')}">
                             ${articleTag}</a><#if articleTag_has_next>, </#if>
                         </#list>
                         &nbsp; <span class="icon icon-date"></span> ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}

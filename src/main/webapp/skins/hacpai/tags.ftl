@@ -25,7 +25,7 @@
                                     <#if tag.tagIconPath!="">
                                     <img class="tag-img fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}" />
                                     </#if>
-                                    <h2><a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
+                                    <h2><a rel="tag" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
                                     <span class="ft-small fn-right">
                                         ${referenceLabel} ${tag.tagReferenceCount} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount} 
@@ -52,7 +52,7 @@
                                     <#if tag.tagIconPath!="">
                                     <img class="tag-img fn-left" src="${staticServePath}/images/tags/${tag.tagIconPath}" />
                                     </#if>
-                                    <h2><a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
+                                    <h2><a rel="tag" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
                                     <span class="ft-small fn-right">
                                         ${referenceLabel} ${tag.tagReferenceCount} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount} 

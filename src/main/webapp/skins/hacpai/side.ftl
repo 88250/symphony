@@ -20,7 +20,7 @@
             <li>
                 <span>
                     <#if tag.tagIconPath!="">
-                    <img src="${staticServePath}/images/tags/${tag.tagIconPath}" /></#if><a rel="tag" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                    <img src="${staticServePath}/images/tags/${tag.tagIconPath}" /></#if><a rel="tag" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                 </span>
                 <div<#if tag.tagDescription == ''> style="width:auto"</#if>>
                     <div>${tag.tagDescription}</div>

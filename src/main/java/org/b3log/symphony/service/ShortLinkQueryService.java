@@ -132,7 +132,7 @@ public class ShortLinkQueryService {
                 final JSONObject linkTag = results.optJSONObject(0);
 
                 final String linkTitle = linkTag.optString(Tag.TAG_TITLE);
-                final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/tags/" + linkTitle + ") ";
+                final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/tag/" + linkTitle + ") ";
 
                 matcher.appendReplacement(contentBuilder, link);
             }

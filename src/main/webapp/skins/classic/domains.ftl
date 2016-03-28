@@ -23,7 +23,7 @@
                             <ul class="tags fn-clear">
                                 <#list domain.domainTags as tag>
                                 <li>
-                                    <a class="tag" rel="nofollow" href="/tags/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                    <a class="tag" rel="nofollow" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                 </li>
                                 </#list>
                             </ul>

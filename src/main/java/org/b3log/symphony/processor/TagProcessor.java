@@ -48,11 +48,11 @@ import org.json.JSONObject;
  *
  * <ul>
  * <li>Shows tags wall (/tags), GET</li>
- * <li>Shows tag articles (/tags/{tagTitle}), GET</li>
+ * <li>Shows tag articles (/tag/{tagTitle}), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.2, Aug 14, 2015
+ * @version 1.2.0.3, Mar 28, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -119,7 +119,7 @@ public class TagProcessor {
      * @param tagTitle the specified tag title
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/tags/{tagTitle}", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/tag/{tagTitle}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,

@@ -6,15 +6,15 @@
         <#list userHomeFollowingTags as followingTag>
         <li class="fn-clear">
             <#if "" != followingTag.tagIconPath>
-            <a href="/tags/${followingTag.tagTitle?url('utf-8')}">
+            <a href="/tag/${followingTag.tagTitle?url('utf-8')}">
                 <div title="${followingTag.tagTitle}" class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
             </a>
             <#else>
-            <a class="icon-tags fn-left" href="/tags/${followingTag.tagTitle?url('utf-8')}"></a>
+            <a class="icon-tags fn-left" href="/tag/${followingTag.tagTitle?url('utf-8')}"></a>
             </#if>
             <div class="fn-left">
                 <h3 class="fn-inline">
-                    <a href="/tags/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
+                    <a href="/tag/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
                 </h3>
                 &nbsp;
                 <#if isLoggedIn> 

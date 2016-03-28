@@ -22,7 +22,7 @@
                         <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
                     </h2>
                     <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a>
+                    <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
                     </#list>
                     <span class="ft-fade">&nbsp;•&nbsp;${article.timeAgo}</span>
                 </div>

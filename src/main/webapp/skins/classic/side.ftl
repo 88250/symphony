@@ -39,7 +39,7 @@
         <ul class="tags fn-clear">
             <#list navTrendTags as trendTag>
             <li>
-                <a class="btn small" rel="nofollow" href="/tags/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
+                <a class="btn small" rel="nofollow" href="/tag/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
             </li>
             </#list>
         </ul>
@@ -130,7 +130,7 @@
         <ul class="fn-clear tags">
             <#list newTags as newTag>
             <li>
-                <a class="btn small" rel="nofollow" href="/tags/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a>
+                <a class="btn small" rel="nofollow" href="/tag/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a>
             </li>
             </#list>
         </ul>

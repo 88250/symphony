@@ -19,7 +19,7 @@
                     <div class="ft-gray fn-clear article-info">
                         <div class="fn-left">
                             <#list article.articleTags?split(",") as articleTag>
-                            <a rel="tag" class="tag" href="/tags/${articleTag?url('UTF-8')}">
+                            <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">
                                 ${articleTag}
                             </a>&nbsp;
                             </#list>
