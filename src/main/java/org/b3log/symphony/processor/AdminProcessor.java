@@ -38,6 +38,9 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
@@ -1526,6 +1529,8 @@ public class AdminProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void searchIndex(final HTTPRequestContext context) throws Exception {
         context.renderJSON(true);
+
+        searchMgmtService.rebuildIndex();
 
         final JSONObject stat = optionQueryService.getStatistic();
         final int articleCount = stat.optInt(Option.ID_C_STATISTIC_ARTICLE_COUNT);

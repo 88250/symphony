@@ -59,7 +59,7 @@ public class ArticleSearchAdder extends AbstractEventListener<JSONObject> {
             return;
         }
 
-        searchMgmtService.addDocument(article, Article.ARTICLE);
+        searchMgmtService.updateDocument(article, Article.ARTICLE);
     }
 
     /**

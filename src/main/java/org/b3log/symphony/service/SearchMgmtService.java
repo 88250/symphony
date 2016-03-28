@@ -24,6 +24,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -33,7 +34,7 @@ import org.json.JSONObject;
  * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 23, 2016
+ * @version 1.0.0.2, Mar 28, 2016
  * @since 1.4.0
  */
 @Service
@@ -60,27 +61,50 @@ public class SearchMgmtService {
     private static final URLFetchService URL_FETCH_SVC = URLFetchServiceFactory.getURLFetchService();
 
     /**
-     * Adds/index the specified document.
-     *
-     * @param doc the specified document
-     * @param type the specified document type
+     * Rebuilds index.
      */
-    public void addDocument(final JSONObject doc, final String type) {
-        final HTTPRequest request = new HTTPRequest();
-        request.setRequestMethod(HTTPRequestMethod.PUT);
-        
+    public void rebuildIndex() {
         try {
-            request.setURL(new URL(SERVER + "/" + INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID)));
-            request.setPayload(doc.toString().getBytes("UTF-8"));
+            final HTTPRequest removeRequest = new HTTPRequest();
+            removeRequest.setRequestMethod(HTTPRequestMethod.DELETE);
+            removeRequest.setURL(new URL(SERVER + "/" + INDEX_NAME));
+            URL_FETCH_SVC.fetch(removeRequest);
+
+            final HTTPRequest createRequest = new HTTPRequest();
+            createRequest.setRequestMethod(HTTPRequestMethod.PUT);
+            createRequest.setURL(new URL(SERVER + "/" + INDEX_NAME));
+            URL_FETCH_SVC.fetch(createRequest);
+
+            final HTTPRequest mappingRequest = new HTTPRequest();
+            mappingRequest.setRequestMethod(HTTPRequestMethod.POST);
+            mappingRequest.setURL(new URL(SERVER + "/" + INDEX_NAME + "/" + Article.ARTICLE + "/_mapping"));
+
+            final JSONObject mapping = new JSONObject();
+            final JSONObject article = new JSONObject();
+            mapping.put(Article.ARTICLE, article);
+            final JSONObject properties = new JSONObject();
+            article.put("properties", properties);
+            final JSONObject title = new JSONObject();
+            properties.put(Article.ARTICLE_TITLE, title);
+            title.put("type", "string");
+            title.put("analyzer", "ik_smart");
+            title.put("search_analyzer", "ik_smart");
+            final JSONObject content = new JSONObject();
+            properties.put(Article.ARTICLE_CONTENT, content);
+            content.put("type", "string");
+            content.put("analyzer", "ik_smart");
+            content.put("search_analyzer", "ik_smart");
             
-            URL_FETCH_SVC.fetchAsync(request);
+            mappingRequest.setPayload(mapping.toString().getBytes("UTF-8"));
+
+            URL_FETCH_SVC.fetch(mappingRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Adds doc failed", e);
+            LOGGER.log(Level.ERROR, "Removes index failed", e);
         }
     }
 
     /**
-     * Updates/index the specified document.
+     * Updates/Adds indexing the specified document.
      *
      * @param doc the specified document
      * @param type the specified document type
@@ -88,16 +112,16 @@ public class SearchMgmtService {
     public void updateDocument(final JSONObject doc, final String type) {
         final HTTPRequest request = new HTTPRequest();
         request.setRequestMethod(HTTPRequestMethod.POST);
-        
+
         try {
             request.setURL(new URL(SERVER + "/" + INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID) + "/_update"));
-            
+
             final JSONObject payload = new JSONObject();
             payload.put("doc", doc);
             payload.put("upsert", doc);
-            
+
             request.setPayload(payload.toString().getBytes("UTF-8"));
-            
+
             URL_FETCH_SVC.fetchAsync(request);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates doc failed", e);
