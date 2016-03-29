@@ -298,7 +298,7 @@ public class UserQueryService {
                 if (null != getUserByName(maybeUserName)) { // Found a user
                     ret.add(maybeUserName);
 
-                    copy = copy.replace("@" + maybeUserName, "");
+                    copy = copy.replaceFirst("@" + maybeUserName, "");
                     idx = copy.indexOf('@');
                     if (-1 == idx) {
                         return ret;
