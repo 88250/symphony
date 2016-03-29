@@ -104,6 +104,7 @@ public class UserQueryService {
 
                 final JSONObject u = new JSONObject();
                 u.put(User.USER_NAME, user.optString(User.USER_NAME));
+                u.put(UserExt.USER_T_NAME_LOWER_CASE, user.optString(User.USER_NAME).toLowerCase());
 
                 String avatar = user.optString(UserExt.USER_AVATAR_URL);
                 if (StringUtils.isBlank(avatar)) {
@@ -117,10 +118,10 @@ public class UserQueryService {
             Collections.sort(userNames, new Comparator<JSONObject>() {
                 @Override
                 public int compare(final JSONObject u1, final JSONObject u2) {
-                    final String u1Name = u1.optString(User.USER_NAME);
-                    final String u2Name = u2.optString(User.USER_NAME);
+                    final String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
+                    final String u2Name = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
 
-                    return u2Name.compareToIgnoreCase(u1Name);
+                    return u1Name.compareTo(u2Name);
                 }
             });
         } catch (final RepositoryException e) {
@@ -142,34 +143,45 @@ public class UserQueryService {
      * </pre>
      */
     public List<JSONObject> getUserNamesByPrefix(final String namePrefix) {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-
         final JSONObject nameToSearch = new JSONObject();
-        nameToSearch.put(User.USER_NAME, namePrefix);
+        nameToSearch.put(UserExt.USER_T_NAME_LOWER_CASE, namePrefix.toLowerCase());
 
-        final int index = Collections.binarySearch(userNames, nameToSearch, new Comparator<JSONObject>() {
+        int index = Collections.binarySearch(userNames, nameToSearch, new Comparator<JSONObject>() {
             @Override
             public int compare(final JSONObject u1, final JSONObject u2) {
-                final String u1Name = u1.optString(User.USER_NAME).toLowerCase();
-                final String inputName = u2.optString(User.USER_NAME).toLowerCase();
+                String u1Name = u1.optString(UserExt.USER_T_NAME_LOWER_CASE);
+                final String inputName = u2.optString(UserExt.USER_T_NAME_LOWER_CASE);
 
-                if (u1Name.startsWith(inputName)) {
-                    return 0;
-                } else {
-                    return namePrefix.compareTo(u1Name);
+                if (u1Name.length() < inputName.length()) {
+                    return u1Name.compareTo(inputName);
                 }
+
+                u1Name = u1Name.substring(0, inputName.length());
+
+                return u1Name.compareTo(inputName);
             }
         });
-        
-        if (index >= 0) {
-            final int max = index + 5 <= userNames.size() - 1 ? index + 5 : userNames.size() - 1;
 
-            for (int i = index; i < max; i++) {
-                ret.add(userNames.get(i));
-            }
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        if (index < 0) {
+            return ret;
         }
 
-        return ret;
+        int start = index;
+        int end = index;
+
+        while (start > -1 && userNames.get(start).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
+            start--;
+        }
+
+        while (end < userNames.size() && userNames.get(end).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
+            end++;
+        }
+
+        end = start + 5 > end ? end : start + 5;
+
+        return userNames.subList(start + 1, end);
     }
 
     /**

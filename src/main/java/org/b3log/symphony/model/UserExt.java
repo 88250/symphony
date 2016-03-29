@@ -22,7 +22,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.16.1.9, Mar 28, 2016
+ * @version 2.17.1.9, Mar 29, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -233,6 +233,11 @@ public final class UserExt {
      * Key of user point in Color Code.
      */
     public static final String USER_T_POINT_CC = "userPointCC";
+
+    /**
+     * Key of user name lower case.
+     */
+    public static final String USER_T_NAME_LOWER_CASE = "userNameLowerCase";
 
     //// Default Commenter constants
     /**
