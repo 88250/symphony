@@ -35,9 +35,9 @@
                class="icon-addfile responsive-show"></a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
             <#else>
-            <a id="aRegister" href="javascript:Util.goRegister()" class="last icon-register" 
-               title="${registerLabel}"></a>
-            <a href="javascript: Util.showLogin();" class="icon-login" title="${loginLabel}"></a>
+            <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue" 
+               title="${registerLabel}">${registerLabel}</a>
+            <a href="javascript: Util.showLogin();" class="" title="${loginLabel}">${loginLabel}</a>
             <div class="form fn-none">
                 <table cellspacing="0" cellpadding="0">
                     <tr>
