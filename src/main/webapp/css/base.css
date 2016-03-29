@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.11.18, Mar 26, 2016
+ * @version 1.14.11.19, Mar 29, 2016
  */
 
 /* start reset */
@@ -543,6 +543,12 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
+.icon-exchange:before {
+    content: "\e905";
+}
+.icon-locked:before {
+    content: "\e61e";
+}
 .icon-points:before {
     content: "\e900";
 }
@@ -608,9 +614,6 @@ a[class*=" icon-"]:hover {
 }
 .icon-thumbs-up:before {
     content: "\e902";
-}
-.icon-locked:before {
-    content: "\e61e";
 }
 .icon-video:before {
     content: "\f057";
@@ -1072,6 +1075,10 @@ a[class*=" icon-"]:hover {
     position: relative;
 }
 
+.nav .user-nav a.unlogin {
+    font-size: 14px;
+}
+
 .nav div > a {
     color: #777;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -1177,10 +1184,11 @@ a[class*=" icon-"]:hover {
     background-color: #FFF;
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
-    padding: 3px 5px 3px 25px;
-    width: 208px;
-    margin: 2px 0 0 30px;
+    padding: 5px 8px;
+    width: 230px;
+    margin: 1px 0 0 20px;
     float: left;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
 }
 
 .nav input.search:focus {

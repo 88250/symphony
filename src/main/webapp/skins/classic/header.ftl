@@ -7,8 +7,7 @@
             </h1>
             <#if searchEnabled>
             <form class="responsive-hide" target="_blank" action="/search">
-                <span class="icon-search"></span>
-                <input class="search" type="text" name="key">
+                <input class="search" placeholder="Search Hacpai" type="text" name="key">
                 <input type="submit" class="fn-none" value="">
             </form>
             </#if>
@@ -35,9 +34,9 @@
                class="icon-addfile responsive-show"></a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
             <#else>
-            <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue" 
+            <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin" 
                title="${registerLabel}">${registerLabel}</a>
-            <a href="javascript: Util.showLogin();" class="" title="${loginLabel}">${loginLabel}</a>
+            <a href="javascript: Util.showLogin();" title="${loginLabel}" class="unlogin">${loginLabel}</a>
             <div class="form fn-none">
                 <table cellspacing="0" cellpadding="0">
                     <tr>

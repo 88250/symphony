@@ -130,7 +130,8 @@
     margin: 20px 0 0;
 }
 
-#comments > h2 .icon-chevron-down {
+#comments > h2 .icon-chevron-down,
+#comments > h2 .icon-exchange {
     margin: 0px 10px 0 0;
     font-size: 24px;
 }

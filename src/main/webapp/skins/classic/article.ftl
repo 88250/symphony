@@ -157,14 +157,15 @@
                         <div class="list" id="comments">
                             <h2>
                                 ${article.articleCommentCount} ${cmtLabel}
-                                <#if article.articleComments?size !=0>
+                                <#if article.articleComments?size gt 0>
                                 <a class="icon-chevron-down fn-right" href="#bottomComment" title="${jumpToBottomCommentLabel}"></a>
+                                <a class="icon-exchange fn-right fn-none" href="javascript:change()" title="{exchangeLabel}"></a>
                                 </#if>
                             </h2>
                             <ul>
                                 <#list article.articleComments as comment>
-                                <#if !comment?has_next><div id="bottomComment"></div></#if>
                                 <li id="${comment.oId}">
+                                    <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <a rel="nofollow" href="/member/${comment.commentAuthorName}">
                                             <div class="avatar" 
