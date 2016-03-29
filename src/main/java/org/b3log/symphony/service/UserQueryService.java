@@ -174,14 +174,18 @@ public class UserQueryService {
         while (start > -1 && userNames.get(start).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
             start--;
         }
+        
+        start++;
 
-        while (end < userNames.size() && userNames.get(end).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
-            end++;
+        if (start < index - 5) {
+            end = start + 5;
+        } else {
+            while (end < userNames.size() && end < index + 5 && userNames.get(end).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
+                end++;
+            }
         }
 
-        end = start + 5 > end ? end : start + 5;
-
-        return userNames.subList(start + 1, end);
+        return userNames.subList(start, end);
     }
 
     /**
