@@ -130,10 +130,15 @@
     margin: 20px 0 0;
 }
 
-#comments > h2 .icon-chevron-down,
-#comments > h2 .icon-exchange {
+#comments > h2 .icon-chevron-down {
     margin: 0px 10px 0 0;
     font-size: 24px;
+}
+
+#comments > h2 .icon-sort {
+    font-size: 17px;
+    font-weight: bold;
+    margin: 3px 10px 0 0;
 }
 
 #comments li:hover .thx {

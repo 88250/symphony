@@ -159,7 +159,7 @@
                                 ${article.articleCommentCount} ${cmtLabel}
                                 <#if article.articleComments?size gt 0>
                                 <a class="icon-chevron-down fn-right" href="#bottomComment" title="${jumpToBottomCommentLabel}"></a>
-                                <a class="icon-exchange fn-right fn-none" href="javascript:change()" title="{exchangeLabel}"></a>
+                                <a class="icon-sort fn-right" href="javascript:Comment.exchangeCmtSort(${currentUser.userCommentViewMode})" title="${exchangeCmtSortLabel}"></a>
                                 </#if>
                             </h2>
                             <ul>

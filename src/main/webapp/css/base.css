@@ -543,7 +543,7 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
-.icon-exchange:before {
+.icon-sort:before {
     content: "\e905";
 }
 .icon-locked:before {

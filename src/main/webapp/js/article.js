@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.17.8, Mar 25, 2016
+ * @version 1.15.17.8, Mar 30, 2016
  */
 
 /**
@@ -28,6 +28,14 @@
  */
 var Comment = {
     editor: undefined,
+    /**
+     * 切换评论排序模式
+     * @param {integer} type 排序模式：0 正常；1 倒序
+     * @returns {undefined}
+     */
+    exchangeCmtSort: function(type) {
+        
+    },
     init: function () {
         $("#comments").on('dblclick', 'img', function () {
             window.open($(this).attr('src'));
