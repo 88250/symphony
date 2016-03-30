@@ -1540,7 +1540,7 @@ public class AdminProcessor {
         final Index index = client.initIndex(Symphonys.get("algolia.index"));
 
         for (int pageNum = 1; pageNum <= pages; pageNum++) {
-            final List<JSONObject> articles = articleQueryService.getArticles(pageNum, 50);
+            final List<JSONObject> articles = articleQueryService.getValidArticles(pageNum, 50, Article.ARTICLE_TYPE_C_NORMAL, Article.ARTICLE_TYPE_C_CITY_BROADCAST);
 
             for (final JSONObject article : articles) {
                 article.put("objectID", article.optString(Keys.OBJECT_ID));

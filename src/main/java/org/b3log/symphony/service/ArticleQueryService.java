@@ -164,13 +164,32 @@ public class ArticleQueryService {
      *
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
+     * @param types the specified types
      * @return articles, return an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getArticles(final int currentPageNum, final int pageSize) throws ServiceException {
+    public List<JSONObject> getValidArticles(final int currentPageNum, final int pageSize, final int... types) throws ServiceException {
         try {
             final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                     .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+
+            if (null != types && types.length > 0) {
+                final List<Filter> typeFilters = new ArrayList<Filter>();
+                for (int i = 0; i < types.length; i++) {
+                    final int type = types[i];
+
+                    typeFilters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.EQUAL, type));
+                }
+
+                final CompositeFilter typeFilter = new CompositeFilter(CompositeFilterOperator.OR, typeFilters);
+                final List<Filter> filters = new ArrayList<Filter>();
+                filters.add(typeFilter);
+                filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+
+                query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+            } else {
+                query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+            }
 
             final JSONObject result = articleRepository.get(query);
 
