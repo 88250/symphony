@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.11.19, Mar 29, 2016
+ * @version 1.15.11.19, Mar 30, 2016
  */
 
 /* start reset */
@@ -1526,3 +1526,30 @@ a[class*=" icon-"]:hover {
     display: none;
 }
 /* end responsive */
+
+/* algolia */
+.algolia-autocomplete {
+}
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+}
+.algolia-autocomplete .aa-hint {
+    color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #999;
+    border-top: none;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+    cursor: pointer;
+    padding: 5px 4px;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+    background-color: #B2D7FF;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+    font-weight: bold;
+    font-style: normal;
+}
+/* end algolia */

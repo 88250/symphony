@@ -93,6 +93,6 @@
     <include path="/plugins/**/*.html" />
     <include path="/plugins/**.htm" />
     <include path="/plugins/**/*.htm" />
-    
+
     <include path="/emoji/**/*.*" />
 </static-files>

@@ -42,6 +42,38 @@
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.linkify-1.0-min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.notification-1.0.5.js"></script>
+<#if searchEnabled>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script>
+    var client = algoliasearch('${algoliaAppId}', '${algoliaSearchKey}');
+    var index = client.initIndex('${algoliaIndex}');
+    $('#search').autocomplete({hint: false}, [
+        {
+            source: function (q, cb) {
+                index.search(q, {hitsPerPage: 20}, function (error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            displayKey: 'name',
+            templates: {
+                suggestion: function (suggestion) {
+                    return suggestion._highlightResult.articleTitle.value;
+                }
+            }
+        }
+    ]).on('autocomplete:selected', function (event, suggestion, dataset) {
+        window.open("/article/" + suggestion.oId);
+    });
+    
+    // TODO: V, change .algolia style then remove this 
+    $('.algolia-autocomplete').removeAttr("style");
+</script>
+</#if>
 <script>
     Util.init();
     var Label = {

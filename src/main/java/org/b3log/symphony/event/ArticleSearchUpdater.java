@@ -15,8 +15,11 @@
  */
 package org.b3log.symphony.event;
 
+import com.algolia.search.saas.APIClient;
+import com.algolia.search.saas.Index;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -24,13 +27,14 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.service.SearchMgmtService;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
  * Sends an article to local search engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 22, 2016
+ * @version 1.1.0.0, Mar 30, 2016
  * @since 1.4.0
  */
 @Named
@@ -60,6 +64,15 @@ public class ArticleSearchUpdater extends AbstractEventListener<JSONObject> {
         }
 
         searchMgmtService.updateDocument(article, Article.ARTICLE);
+
+        final APIClient client = new APIClient(Symphonys.get("algolia.appId"), Symphonys.get("algolia.adminKey"));
+        final Index index = client.initIndex(Symphonys.get("algolia.index"));
+
+        try {
+            index.saveObject(article, article.optString(Keys.OBJECT_ID));
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Index on Algolia failed", e);
+        }
     }
 
     /**

@@ -7,7 +7,7 @@
             </h1>
             <#if searchEnabled>
             <form class="responsive-hide" target="_blank" action="/search">
-                <input class="search" placeholder="Search Hacpai" type="text" name="key">
+                <input class="search" placeholder="Search HacPai" type="text" name="key" id="search">
                 <input type="submit" class="fn-none" value="">
             </form>
             </#if>
@@ -58,7 +58,7 @@
                     <tr>
                         <td colspan="2" align="right">
                             <div id="loginTip" class="tip"></div><br/>
-                            <button class="info" onclick="window.location.href='${servePath}/forget-pwd'">${forgetPwdLabel}</button>
+                            <button class="info" onclick="window.location.href = '${servePath}/forget-pwd'">${forgetPwdLabel}</button>
                             <button class="red" onclick="Util.login()">${loginLabel}</button>
                         </td>
                     </tr>
@@ -67,15 +67,4 @@
             </#if>
         </div>
     </div>
-    <#-- 百度站内搜索不支持 HTTPS
-    <script type="text/javascript">(function () {
-            document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));
-            var bdcs = document.createElement('script');
-            bdcs.type = 'text/javascript';
-            bdcs.async = true;
-            bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=140632643792102269' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date() / 3600000);
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(bdcs, s);
-        })();</script>
-    -->
 </div>

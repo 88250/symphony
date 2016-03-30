@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony.processor;
 
+import com.algolia.search.saas.APIClient;
+import com.algolia.search.saas.Index;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
@@ -38,9 +41,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
@@ -1531,14 +1531,26 @@ public class AdminProcessor {
         context.renderJSON(true);
 
         searchMgmtService.rebuildIndex();
-
         final JSONObject stat = optionQueryService.getStatistic();
         final int articleCount = stat.optInt(Option.ID_C_STATISTIC_ARTICLE_COUNT);
 
         final int pages = (int) Math.ceil((double) articleCount / 50.0);
 
+        final APIClient client = new APIClient(Symphonys.get("algolia.appId"), Symphonys.get("algolia.adminKey"));
+        final Index index = client.initIndex(Symphonys.get("algolia.index"));
+
         for (int pageNum = 1; pageNum <= pages; pageNum++) {
             final List<JSONObject> articles = articleQueryService.getArticles(pageNum, 50);
+
+            for (final JSONObject article : articles) {
+                article.put("objectID", article.optString(Keys.OBJECT_ID));
+            }
+
+            try {
+                index.saveObjects(articles);
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Index on Algolia failed", e);
+            }
 
             for (final JSONObject article : articles) {
                 final int articleType = article.optInt(Article.ARTICLE_TYPE);

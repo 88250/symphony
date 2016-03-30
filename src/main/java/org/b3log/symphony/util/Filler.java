@@ -197,6 +197,9 @@ public class Filler {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put("searchEnabled", Symphonys.getBoolean("es.enabled"));
+        dataModel.put("algoliaAppId", Symphonys.get("algolia.appId"));
+        dataModel.put("algoliaSearchKey", Symphonys.get("algolia.searchKey"));
+        dataModel.put("algoliaIndex", Symphonys.get("algolia.index"));
 
         fillTrendTags(dataModel);
         fillPersonalNav(request, response, dataModel);

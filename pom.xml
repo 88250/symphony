@@ -111,6 +111,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.algolia</groupId>
+            <artifactId>algoliasearch</artifactId>
+            <version>[1.6.6,]</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.json</groupId>
+                    <artifactId>json</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
