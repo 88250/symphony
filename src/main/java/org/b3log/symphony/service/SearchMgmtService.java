@@ -21,7 +21,9 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.urlfetch.HTTPHeader;
 import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.HTTPResponse;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
@@ -46,14 +48,14 @@ public class SearchMgmtService {
     private static final Logger LOGGER = Logger.getLogger(SearchMgmtService.class.getName());
 
     /**
-     * Index name.
+     * Elasticsearch index name.
      */
-    public static final String INDEX_NAME = "symphony";
+    public static final String ES_INDEX_NAME = "symphony";
 
     /**
      * Elasticsearch serve address.
      */
-    public static final String SERVER = Symphonys.get("es.server");
+    public static final String ES_SERVER = Symphonys.get("es.server");
 
     /**
      * URL fetch service.
@@ -61,23 +63,23 @@ public class SearchMgmtService {
     private static final URLFetchService URL_FETCH_SVC = URLFetchServiceFactory.getURLFetchService();
 
     /**
-     * Rebuilds index.
+     * Rebuilds ES index.
      */
-    public void rebuildIndex() {
+    public void rebuildESIndex() {
         try {
             final HTTPRequest removeRequest = new HTTPRequest();
             removeRequest.setRequestMethod(HTTPRequestMethod.DELETE);
-            removeRequest.setURL(new URL(SERVER + "/" + INDEX_NAME));
+            removeRequest.setURL(new URL(ES_SERVER + "/" + ES_INDEX_NAME));
             URL_FETCH_SVC.fetch(removeRequest);
 
             final HTTPRequest createRequest = new HTTPRequest();
             createRequest.setRequestMethod(HTTPRequestMethod.PUT);
-            createRequest.setURL(new URL(SERVER + "/" + INDEX_NAME));
+            createRequest.setURL(new URL(ES_SERVER + "/" + ES_INDEX_NAME));
             URL_FETCH_SVC.fetch(createRequest);
 
             final HTTPRequest mappingRequest = new HTTPRequest();
             mappingRequest.setRequestMethod(HTTPRequestMethod.POST);
-            mappingRequest.setURL(new URL(SERVER + "/" + INDEX_NAME + "/" + Article.ARTICLE + "/_mapping"));
+            mappingRequest.setURL(new URL(ES_SERVER + "/" + ES_INDEX_NAME + "/" + Article.ARTICLE + "/_mapping"));
 
             final JSONObject mapping = new JSONObject();
             final JSONObject article = new JSONObject();
@@ -94,7 +96,7 @@ public class SearchMgmtService {
             content.put("type", "string");
             content.put("analyzer", "ik_smart");
             content.put("search_analyzer", "ik_smart");
-            
+
             mappingRequest.setPayload(mapping.toString().getBytes("UTF-8"));
 
             URL_FETCH_SVC.fetch(mappingRequest);
@@ -104,17 +106,17 @@ public class SearchMgmtService {
     }
 
     /**
-     * Updates/Adds indexing the specified document.
+     * Updates/Adds indexing the specified document in ES.
      *
      * @param doc the specified document
      * @param type the specified document type
      */
-    public void updateDocument(final JSONObject doc, final String type) {
+    public void updateESDocument(final JSONObject doc, final String type) {
         final HTTPRequest request = new HTTPRequest();
         request.setRequestMethod(HTTPRequestMethod.POST);
 
         try {
-            request.setURL(new URL(SERVER + "/" + INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID) + "/_update"));
+            request.setURL(new URL(ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID) + "/_update"));
 
             final JSONObject payload = new JSONObject();
             payload.put("doc", doc);
@@ -125,6 +127,36 @@ public class SearchMgmtService {
             URL_FETCH_SVC.fetchAsync(request);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates doc failed", e);
+        }
+    }
+
+    /**
+     * Updates/Adds indexing the specified document in Algolia.
+     *
+     * @param doc the specified document
+     */
+    public void updateAlgoliaDocument(final JSONObject doc) {
+        try {
+            final String appId = Symphonys.get("algolia.appId");
+            final String index = Symphonys.get("algolia.index");
+            final String key = Symphonys.get("algolia.adminKey");
+
+            final HTTPRequest request = new HTTPRequest();
+            request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
+            request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
+            request.setRequestMethod(HTTPRequestMethod.PUT);
+
+            final String id = doc.optString(Keys.OBJECT_ID);
+            request.setURL(new URL("https://" + appId + "-dsn.algolia.net/1/indexes/" + index + "/" + id));
+
+            request.setPayload(doc.toString().getBytes("UTF-8"));
+
+            final HTTPResponse response = URL_FETCH_SVC.fetch(request);
+            if (200 != response.getResponseCode()) {
+                LOGGER.warn(response.toString());
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Index failed", e);
         }
     }
 }
