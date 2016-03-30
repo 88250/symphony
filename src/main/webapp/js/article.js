@@ -288,6 +288,13 @@ var Article = {
     init: function () {
         this.share();
         this.parseLanguage();
+        
+        $(".content-reset.article-content").on('dblclick', 'img', function () {
+            if ($(this).hasClass('emoji')) {
+                return false;
+            }
+            window.open($(this).attr('src'));
+        });
     },
     /**
      * @description 分享按钮
