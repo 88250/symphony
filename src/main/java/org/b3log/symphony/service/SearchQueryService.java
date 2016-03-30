@@ -16,25 +16,29 @@
 package org.b3log.symphony.service;
 
 import java.net.URL;
+import java.net.URLEncoder;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.urlfetch.HTTPHeader;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.HTTPResponse;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Search query service.
  *
- * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> as the underlying engine.
+ * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> as the underlying engine. Uses
+ * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Mar 28, 2016
+ * @version 1.2.0.1, Mar 30, 2016
  * @since 1.4.0
  */
 @Service
@@ -51,7 +55,7 @@ public class SearchQueryService {
     private static final URLFetchService URL_FETCH_SVC = URLFetchServiceFactory.getURLFetchService();
 
     /**
-     * Searches.
+     * Searches by Elasticsearch.
      *
      * @param type the specified document type
      * @param keyword the specified keyword
@@ -59,7 +63,7 @@ public class SearchQueryService {
      * @param pageSize the specified page size
      * @return search result
      */
-    public JSONObject search(final String type, final String keyword, final int currentPage, final int pageSize) {
+    public JSONObject searchElasticsearch(final String type, final String keyword, final int currentPage, final int pageSize) {
         final HTTPRequest request = new HTTPRequest();
         request.setRequestMethod(HTTPRequestMethod.POST);
 
@@ -120,6 +124,46 @@ public class SearchQueryService {
             LOGGER.debug(reqData.toString(4));
 
             request.setPayload(reqData.toString().getBytes("UTF-8"));
+
+            final HTTPResponse response = URL_FETCH_SVC.fetch(request);
+
+            return new JSONObject(new String(response.getContent(), "UTF-8"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Queries failed", e);
+
+            return new JSONObject();
+        }
+    }
+
+    /**
+     * Searches by Algolia.
+     *
+     * @param keyword the specified keyword
+     * @param currentPage the specified current page number
+     * @param pageSize the specified page size
+     * @return search result
+     */
+    public JSONObject searchAlgolia(final String keyword, final int currentPage, final int pageSize) {
+        try {
+            final String appId = Symphonys.get("algolia.appId");
+            final String index = Symphonys.get("algolia.index");
+            final String key = Symphonys.get("algolia.searchKey");
+
+            final HTTPRequest request = new HTTPRequest();
+            request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
+            request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
+
+            request.setRequestMethod(HTTPRequestMethod.POST);
+            request.setURL(new URL("https://" + appId + "-dsn.algolia.net/1/indexes/" + index + "/query"));
+
+            final JSONObject params = new JSONObject();
+            params.put("params", "query=" + URLEncoder.encode(keyword, "UTF-8")
+                    + "&getRankingInfo=1&facets=*&attributesToRetrieve=*&highlightPreTag=%3Cem%3E"
+                    + "&highlightPostTag=%3C%2Fem%3E"
+                    + "&facetFilters=%5B%5D&maxValuesPerFacet=100"
+                    + "&hitsPerPage=" + pageSize + "&page=" + (currentPage - 1));
+
+            request.setPayload(params.toString().getBytes("UTF-8"));
 
             final HTTPResponse response = URL_FETCH_SVC.fetch(request);
 
