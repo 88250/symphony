@@ -196,7 +196,8 @@ public class Filler {
             final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-        dataModel.put("searchEnabled", Symphonys.getBoolean("es.enabled"));
+        dataModel.put("esEnabled", Symphonys.getBoolean("es.enabled"));
+        dataModel.put("algoliaEnabled", Symphonys.getBoolean("algolia.enabled"));
         dataModel.put("algoliaAppId", Symphonys.get("algolia.appId"));
         dataModel.put("algoliaSearchKey", Symphonys.get("algolia.searchKey"));
         dataModel.put("algoliaIndex", Symphonys.get("algolia.index"));

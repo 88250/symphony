@@ -5,7 +5,7 @@
     <form method="GET" action="articles" class="form">
         <input name="id" type="text" placeholder="${articleLabel} Id"/>
         <button type="submit" class="green">${searchLabel}</button>
-        <#if searchEnabled>
+        <#if esEnabled || algoliaEnabled>
         <button type="button" class="btn red" onclick="searchIndex();">${searchIndexLabel}</button>
         </#if>
     </form>

@@ -5,7 +5,7 @@
                 <a href="/" style="background-image: url('${staticServePath}/images/hacpai.png')" alt="${symphonyLabel}" 
                    title="${symphonyLabel}" width="42" class="fn-pointer"></a>
             </h1>
-            <#if searchEnabled>
+            <#if esEnabled || algoliaEnabled>
             <form class="responsive-hide fn-left" target="_blank" action="/search">
                 <input class="search" placeholder="Search HacPai" type="text" name="key" id="search">
                 <input type="submit" class="fn-none" value="">

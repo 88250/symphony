@@ -68,7 +68,7 @@ public class SearchQueryService {
         request.setRequestMethod(HTTPRequestMethod.POST);
 
         try {
-            request.setURL(new URL(SearchMgmtService.SERVER + "/" + SearchMgmtService.INDEX_NAME + "/" + type
+            request.setURL(new URL(SearchMgmtService.ES_SERVER + "/" + SearchMgmtService.ES_INDEX_NAME + "/" + type
                     + "/_search"));
 
             final JSONObject reqData = new JSONObject();

@@ -15,8 +15,6 @@
  */
 package org.b3log.symphony.processor;
 
-import com.algolia.search.saas.APIClient;
-import com.algolia.search.saas.Index;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -1530,41 +1528,30 @@ public class AdminProcessor {
     public void searchIndex(final HTTPRequestContext context) throws Exception {
         context.renderJSON(true);
 
-        searchMgmtService.rebuildIndex();
+        if (Symphonys.getBoolean("es.enabled")) {
+            searchMgmtService.rebuildESIndex();
+        }
+
         final JSONObject stat = optionQueryService.getStatistic();
         final int articleCount = stat.optInt(Option.ID_C_STATISTIC_ARTICLE_COUNT);
-
         final int pages = (int) Math.ceil((double) articleCount / 50.0);
-
-        final APIClient client = new APIClient(Symphonys.get("algolia.appId"), Symphonys.get("algolia.adminKey"));
-        final Index index = client.initIndex(Symphonys.get("algolia.index"));
 
         for (int pageNum = 1; pageNum <= pages; pageNum++) {
             final List<JSONObject> articles = articleQueryService.getValidArticles(pageNum, 50, Article.ARTICLE_TYPE_C_NORMAL, Article.ARTICLE_TYPE_C_CITY_BROADCAST);
 
             for (final JSONObject article : articles) {
-                article.put("objectID", article.optString(Keys.OBJECT_ID));
-            }
-
-            try {
-                index.saveObjects(articles);
-            } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Index on Algolia failed", e);
-            }
-
-            for (final JSONObject article : articles) {
-                final int articleType = article.optInt(Article.ARTICLE_TYPE);
-                if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType
-                        || Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
-                    continue;
+                if (Symphonys.getBoolean("algolia.enabled")) {
+                    searchMgmtService.updateAlgoliaDocument(article);
                 }
 
-                searchMgmtService.updateDocument(article, Article.ARTICLE);
+                if (Symphonys.getBoolean("es.enabled")) {
+                    searchMgmtService.updateESDocument(article, Article.ARTICLE);
+                }
             }
 
             LOGGER.info("Indexed page [" + pageNum + "]");
         }
-        
+
         LOGGER.info("Index finished");
     }
 }

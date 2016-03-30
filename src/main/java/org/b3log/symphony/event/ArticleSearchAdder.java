@@ -15,11 +15,8 @@
  */
 package org.b3log.symphony.event;
 
-import com.algolia.search.saas.APIClient;
-import com.algolia.search.saas.Index;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -63,15 +60,12 @@ public class ArticleSearchAdder extends AbstractEventListener<JSONObject> {
             return;
         }
 
-        searchMgmtService.updateDocument(article, Article.ARTICLE);
+        if (Symphonys.getBoolean("algolia.enabled")) {
+            searchMgmtService.updateAlgoliaDocument(article);
+        }
 
-        final APIClient client = new APIClient(Symphonys.get("algolia.appId"), Symphonys.get("algolia.adminKey"));
-        final Index index = client.initIndex(Symphonys.get("algolia.index"));
-
-        try {
-            index.saveObject(article, article.optString(Keys.OBJECT_ID));
-        } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Index on Algolia failed", e);
+        if (Symphonys.getBoolean("es.enabled")) {
+            searchMgmtService.updateESDocument(article, Article.ARTICLE);
         }
     }
 
