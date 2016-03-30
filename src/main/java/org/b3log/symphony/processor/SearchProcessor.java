@@ -124,21 +124,29 @@ public class SearchProcessor {
 
         final int pageSize = Symphonys.getInt("latestArticlesCnt");
 
-        final JSONObject result = searchQueryService.search(Article.ARTICLE, keyword, pageNum, pageSize);
-        final int status = result.optInt("status");
-        if (0 != status) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-            return;
-        }
-
-        final JSONObject hitsResult = result.optJSONObject("hits");
-        final JSONArray hits = hitsResult.optJSONArray("hits");
+//        final JSONObject result = searchQueryService.searchElasticsearch(Article.ARTICLE, keyword, pageNum, pageSize);
+//        final int status = result.optInt("status");
+//        if (0 != status) {
+//            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+//
+//            return;
+//        }
+//
+//        final JSONObject hitsResult = result.optJSONObject("hits");
+//        final JSONArray hits = hitsResult.optJSONArray("hits");
+//
+//        final List<JSONObject> articles = new ArrayList<JSONObject>();
+//
+//        for (int i = 0; i < hits.length(); i++) {
+//            final JSONObject article = hits.optJSONObject(i).optJSONObject("_source");
+//            articles.add(article);
+//        }
+        final JSONObject result = searchQueryService.searchAlgolia(keyword, pageNum, pageSize);
+        final JSONArray hits = result.optJSONArray("hits");
 
         final List<JSONObject> articles = new ArrayList<JSONObject>();
-
         for (int i = 0; i < hits.length(); i++) {
-            final JSONObject article = hits.optJSONObject(i).optJSONObject("_source");
+            final JSONObject article = hits.optJSONObject(i);
             articles.add(article);
         }
 
@@ -148,7 +156,7 @@ public class SearchProcessor {
 
         dataModel.put(Article.ARTICLES, articles);
 
-        final int total = hitsResult.optInt("total");
+        final int total = result.optInt("nbHits");
 
         final int pageCount = (int) Math.ceil(total / (double) pageSize);
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, Symphonys.getInt("defaultPaginationWindowSize"));

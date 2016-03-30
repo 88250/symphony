@@ -1564,5 +1564,7 @@ public class AdminProcessor {
 
             LOGGER.info("Indexed page [" + pageNum + "]");
         }
+        
+        LOGGER.info("Index finished");
     }
 }
