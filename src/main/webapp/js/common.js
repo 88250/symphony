@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.12.15, Mar 23, 2016
+ * @version 1.22.12.15, Mar 30, 2016
  */
 
 /**
@@ -27,6 +27,40 @@
  * @static
  */
 var Util = {
+    /**
+     * 初始化 algolia 搜索
+     * @returns {undefined}
+     */
+    initSearch: function (algoliaAppId, algoliaSearchKey, algoliaIndex) {
+        var client = algoliasearch(algoliaAppId, algoliaSearchKey);
+        var index = client.initIndex(algoliaIndex);
+        $('#search').autocomplete({
+            hint: false,
+            templates: {
+                footer: '<div class="fn-right fn-pointer" onclick="window.open(\'https://www.algolia.com/\')">' 
+                        + '<span class="ft-gray">With &hearts; from</span> <img src="https://www.algolia.com/assets/algolia128x40.png" /> </div>'
+            }
+        }, [{
+                source: function (q, cb) {
+                    index.search(q, {hitsPerPage: 20}, function (error, content) {
+                        if (error) {
+                            cb([]);
+                            return;
+                        }
+                        cb(content.hits, content);
+                    });
+                },
+                displayKey: 'name',
+                templates: {
+                    suggestion: function (suggestion) {
+                        return suggestion._highlightResult.articleTitle.value;
+                    }
+                }
+            }
+        ]).on('autocomplete:selected', function (event, suggestion, dataset) {
+            window.open("/article/" + suggestion.oId);
+        }); 
+    },
     initTextarea: function (id, keyupEvent) {
         var editor = {
             $it: $('#' + id),

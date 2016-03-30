@@ -1528,28 +1528,33 @@ a[class*=" icon-"]:hover {
 /* end responsive */
 
 /* algolia */
-.algolia-autocomplete {
-}
-.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
-}
-.algolia-autocomplete .aa-hint {
-    color: #999;
-}
 .algolia-autocomplete .aa-dropdown-menu {
-    width: 100%;
     background-color: #fff;
-    border: 1px solid #999;
-    border-top: none;
+    border: 1px solid #e5e5e5;
+    margin: 0 0 5px 19px;
 }
+
+.algolia-autocomplete .aa-dropdown-menu img {
+    height: 20px;
+}
+
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
     cursor: pointer;
     padding: 5px 4px;
+    border-bottom: 1px solid #eee;
 }
+
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
-    background-color: #B2D7FF;
+    background-color: #F7F7F7;
 }
+
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
+    color: #911;
     font-style: normal;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .fn-right {
+    margin: 5px;
 }
 /* end algolia */
