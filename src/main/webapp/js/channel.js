@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.5.4, Sep 13, 2015
+ * @version 1.5.5.4, Mar 31, 2016
  */
 
 /**
@@ -55,6 +55,10 @@ var ArticleChannel = {
 
             switch (data.type) {
                 case "comment":
+                    if (0 === Label.userCommentViewMode) { // tranditional view mode
+                        return;
+                    }
+                    
                     $("#comments > h2").text((parseInt($("#comments > h2").text()) + 1) + Label.cmtLabel);
 
                     // Append comment

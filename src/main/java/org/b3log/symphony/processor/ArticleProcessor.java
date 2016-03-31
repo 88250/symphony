@@ -394,6 +394,10 @@ public class ArticleProcessor {
             if (Strings.isEmptyOrNull(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
                 cmtViewModeStr = currentUser.optString(UserExt.USER_COMMENT_VIEW_MODE);
             }
+        } else {
+            if (Strings.isEmptyOrNull(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
+                cmtViewModeStr = "0";
+            }
         }
 
         int cmtViewMode = Integer.valueOf(cmtViewModeStr);
