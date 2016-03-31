@@ -283,6 +283,7 @@
             Label.upLabel = "${upLabel}";
             Label.downLabel = "${downLabel}";
             Label.uploadLabel = "${uploadLabel}";
+            Label.userCommentViewMode = ${userCommentViewMode};
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
@@ -302,21 +303,21 @@
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             // jQuery File Upload
             Util.uploadFile({
-                "type": "img",
-                "id": "fileUpload",
-                "pasteZone": $(".CodeMirror"),
-                "qiniuUploadToken": "${qiniuUploadToken}",
-                "editor": Comment.editor,
-                "uploadingLabel": "${uploadingLabel}",
-                "qiniuDomain": "${qiniuDomain}"
+            "type": "img",
+                    "id": "fileUpload",
+                    "pasteZone": $(".CodeMirror"),
+                    "qiniuUploadToken": "${qiniuUploadToken}",
+                    "editor": Comment.editor,
+                    "uploadingLabel": "${uploadingLabel}",
+                    "qiniuDomain": "${qiniuDomain}"
             });
             var qiniuToken = '${qiniuUploadToken}';
             var qiniuDomain = '${qiniuDomain}';
             var audioRecordingLabel = '${audioRecordingLabel}';
             var uploadingLabel = '${uploadingLabel}';
-                    < #if 3 == article.articleType >
-                    Article.playThought('${article.articleContent}');
-                    < /#if>
+            <#if 3 == article.articleType>
+                Article.playThought('${article.articleContent}');
+            </#if>
         </script>
     </body>
 </html>

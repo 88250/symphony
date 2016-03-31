@@ -258,6 +258,10 @@ var Comment = {
 
                         window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
                     }
+                    
+                    if (0 === Label.userCommentViewMode) { // 传统模式，刷新页面
+                        window.location.reload();
+                    }
                 } else {
                     $("#addCommentTip").addClass("error").html('<ul><li>' + result.msg + '</li></ul>');
                 }
