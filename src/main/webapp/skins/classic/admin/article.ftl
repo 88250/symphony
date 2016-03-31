@@ -92,7 +92,24 @@
             </form>
         </div>
     </div>
-    
+
+    <#if esEnabled || algoliaEnabled>
+    <div class="module">
+        <div class="module-header">
+            <h2>${searchIndexLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/search-index-article" method="POST">
+                <label for="articleId">Id</label>
+                <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly="readonly"/>
+
+                <br/><br/>
+                <button type="submit" class="green fn-right" >${submitLabel}</button>
+            </form>
+        </div>
+    </div>
+    </#if>
+
     <div class="module">
         <div class="module-header">
             <h2 class="ft-red">${removeLabel}</h2>

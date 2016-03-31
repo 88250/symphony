@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
@@ -108,10 +107,11 @@ import org.json.JSONObject;
  * <li>Shows miscellaneous (/admin/misc), GET</li>
  * <li>Updates miscellaneous (/admin/misc), POST</li>
  * <li>Search index (/admin/search/index), POST</li>
+ * <li>Search index one article (/admin/search-index-article), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.2.2, Mar 19, 2016
+ * @version 2.13.2.2, Mar 31, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1553,5 +1553,34 @@ public class AdminProcessor {
         }
 
         LOGGER.info("Index finished");
+    }
+
+    /**
+     * Search index one article.
+     *
+     * @param context the specified context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/search-index-article", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void searchIndexArticle(final HTTPRequestContext context) throws Exception {
+        context.renderJSON(true);
+
+        final String articleId = context.getRequest().getParameter(Article.ARTICLE_T_ID);
+        final JSONObject article = articleQueryService.getArticle(articleId);
+
+        if (null == article || Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                || Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+            return;
+        }
+
+        if (Symphonys.getBoolean("algolia.enabled")) {
+            searchMgmtService.updateAlgoliaDocument(article);
+        }
+
+        if (Symphonys.getBoolean("es.enabled")) {
+            searchMgmtService.updateESDocument(article, Article.ARTICLE);
+        }
     }
 }
