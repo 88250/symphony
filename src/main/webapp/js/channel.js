@@ -59,7 +59,7 @@ var ArticleChannel = {
                         return;
                     }
                     
-                    $("#comments > h2").text((parseInt($("#comments > h2").text()) + 1) + Label.cmtLabel);
+                    $("#comments .comment-header h2").text((parseInt($("#comments .comment-header h2").text()) + 1) + ' ' + Label.cmtLabel);
 
                     // Append comment
                     var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" +
@@ -79,7 +79,7 @@ var ArticleChannel = {
                             "<span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'" +
                             "   onclick=\"Comment.thank('${comment.oId}', '" + Label.csrfToken + "', '${comment.commentThankLabel}', '${comment.thankedLabel}')\">${comment.thankLabel}</span> " +
                             "<span class=\"icon-reply fn-pointer\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span> " +
-                            "#<i>" + parseInt($("#comments > h2").text()) + "</i>" +
+                            "#<i>" + parseInt($("#comments .comment-header h2").text()) + "</i>" +
                             "</span>    " +
                             "</div>" +
                             "<div class=\"content-reset comment\">" +

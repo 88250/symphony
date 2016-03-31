@@ -124,20 +124,20 @@
     margin-top: 20px;
 }
 
-#comments > h2 {
+#comments > .comment-header {
     padding-bottom: 5px;
     border-bottom: 1px solid #CCCCCC;
     margin: 20px 0 0;
 }
 
-#comments > h2 .icon-chevron-down {
+#comments > div.comment-header > .icon-chevron-down {
     margin: 0px 10px 0 0;
     font-size: 24px;
 }
 
-#comments > h2 .icon-sortasc,
-#comments > h2 .icon-time {
-    font-size: 15px;
+#comments > div.comment-header > .icon-sortasc,
+#comments > div.comment-header > .icon-time {
+    font-size: 16px;
     font-weight: bold;
     margin: 4px 10px 0 0;
 }
