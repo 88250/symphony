@@ -123,6 +123,7 @@
                         </#if>
                     </div>
                     </#if>
+                    <#if 1 == userCommentViewMode>
                     <#if isLoggedIn>
                     <#if discussionViewable && article.articleCommentable>
                     <div class="form fn-clear comment-wrap">
@@ -152,6 +153,7 @@
                     <div class="comment-login">
                         <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
                     </div>
+                    </#if>
                     </#if>
                     <div class="fn-clear">
                         <div class="list" id="comments">
@@ -218,6 +220,38 @@
                         </div>
                         <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
                     </div>
+                    <#if 0 == userCommentViewMode>
+                    <#if isLoggedIn>
+                    <#if discussionViewable && article.articleCommentable>
+                    <div class="form fn-clear comment-wrap">
+                        <br/>
+                        <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
+                        <div class="tip" id="addCommentTip"></div>
+
+                        <div class="fn-clear comment-submit">
+                            <span class="responsive-hide">    
+                                Markdown
+                                <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
+                                <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
+                                |
+                                <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
+                            </span>
+                            <div class="fn-right">
+                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="grammar fn-none fn-clear">
+                        ${markdwonGrammarLabel}
+                    </div>
+                    </#if>
+                    <#else>
+                    <div class="comment-login">
+                        <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
+                    </div>
+                    </#if>
+                    </#if>
                 </div>
                 <div class="side">
 
