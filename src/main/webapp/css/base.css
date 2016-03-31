@@ -543,7 +543,10 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
-.icon-sort:before {
+.icon-time:before {
+    content: "\e906";
+}
+.icon-sortasc:before {
     content: "\e905";
 }
 .icon-locked:before {

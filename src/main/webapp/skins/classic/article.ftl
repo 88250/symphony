@@ -159,7 +159,8 @@
                                 ${article.articleCommentCount} ${cmtLabel}
                                 <#if article.articleComments?size gt 0>
                                 <a class="icon-chevron-down fn-right" href="#bottomComment" title="${jumpToBottomCommentLabel}"></a>
-                                <a class="icon-sort fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})" title="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"></a>
+                                <a class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if> fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
+                                   title="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"></a>
                                 </#if>
                             </h2>
                             <ul>
