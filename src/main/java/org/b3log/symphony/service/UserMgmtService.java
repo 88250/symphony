@@ -500,7 +500,7 @@ public class UserMgmtService {
             user.put(UserExt.SYNC_TO_CLIENT, false);
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
-            user.put(UserExt.USER_COMMENT_VIEW_MODE, UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL);
+            user.put(UserExt.USER_COMMENT_VIEW_MODE, UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME);
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, userNo);
