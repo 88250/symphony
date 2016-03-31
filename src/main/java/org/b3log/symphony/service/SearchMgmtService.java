@@ -16,6 +16,7 @@
 package org.b3log.symphony.service;
 
 import java.net.URL;
+import java.net.UnknownHostException;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
  * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Mar 28, 2016
+ * @version 1.0.0.3, Mar 31, 2016
  * @since 1.4.0
  */
 @Service
@@ -136,27 +137,47 @@ public class SearchMgmtService {
      * @param doc the specified document
      */
     public void updateAlgoliaDocument(final JSONObject doc) {
-        try {
-            final String appId = Symphonys.get("algolia.appId");
-            final String index = Symphonys.get("algolia.index");
-            final String key = Symphonys.get("algolia.adminKey");
+        int retries = 3;
 
-            final HTTPRequest request = new HTTPRequest();
-            request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
-            request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
-            request.setRequestMethod(HTTPRequestMethod.PUT);
+        while (retries > 0) {
+            try {
+                final String appId = Symphonys.get("algolia.appId");
+                final String index = Symphonys.get("algolia.index");
+                final String key = Symphonys.get("algolia.adminKey");
 
-            final String id = doc.optString(Keys.OBJECT_ID);
-            request.setURL(new URL("https://" + appId + "-dsn.algolia.net/1/indexes/" + index + "/" + id));
+                final HTTPRequest request = new HTTPRequest();
+                request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
+                request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
+                request.setRequestMethod(HTTPRequestMethod.PUT);
 
-            request.setPayload(doc.toString().getBytes("UTF-8"));
+                final String id = doc.optString(Keys.OBJECT_ID);
+                request.setURL(new URL("https://" + appId + "-dsn.algolia.net/1/indexes/" + index + "/" + id));
 
-            final HTTPResponse response = URL_FETCH_SVC.fetch(request);
-            if (200 != response.getResponseCode()) {
-                LOGGER.warn(response.toString());
+                request.setPayload(doc.toString().getBytes("UTF-8"));
+
+                final HTTPResponse response = URL_FETCH_SVC.fetch(request);
+                if (200 != response.getResponseCode()) {
+                    LOGGER.warn(response.toString());
+                }
+
+                break;
+            } catch (final UnknownHostException e) {
+                LOGGER.log(Level.ERROR, "Index failed", e);
+
+                retries--;
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Index failed", e);
+
+                break;
             }
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Index failed", e);
+
+            try {
+                Thread.sleep(1000);
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Sleep error", e);
+
+                break;
+            }
         }
     }
 }
