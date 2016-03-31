@@ -73,6 +73,7 @@ import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.LivenessMgmtService;
 import org.b3log.symphony.service.RewardQueryService;
 import org.b3log.symphony.service.ShortLinkQueryService;
+import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.service.VoteQueryService;
 import org.b3log.symphony.util.Emotions;
@@ -145,6 +146,12 @@ public class ArticleProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
+
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Client management service.
@@ -394,14 +401,12 @@ public class ArticleProcessor {
             if (Strings.isEmptyOrNull(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
                 cmtViewModeStr = currentUser.optString(UserExt.USER_COMMENT_VIEW_MODE);
             }
-        } else {
-            if (Strings.isEmptyOrNull(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
-                cmtViewModeStr = "0";
-            }
+        } else if (Strings.isEmptyOrNull(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
+            cmtViewModeStr = "0";
         }
 
         int cmtViewMode = Integer.valueOf(cmtViewModeStr);
-        
+
         dataModel.put(UserExt.USER_COMMENT_VIEW_MODE, cmtViewMode);
 
         if (!(Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
@@ -785,7 +790,7 @@ public class ArticleProcessor {
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
-        final String userB3Key = requestJSONObject.getString(UserExt.USER_B3_KEY);
+        final String clientB3Key = requestJSONObject.getString(UserExt.USER_B3_KEY);
         final String symphonyKey = requestJSONObject.getString(Common.SYMPHONY_KEY);
         final String clientAdminEmail = requestJSONObject.getString(Client.CLIENT_ADMIN_EMAIL);
         final String clientName = requestJSONObject.getString(Client.CLIENT_NAME);
@@ -809,9 +814,17 @@ public class ArticleProcessor {
 
         final String userName = user.optString(User.USER_NAME);
 
-        if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-            LOGGER.log(Level.WARN, "B3 key not match, ignored update article [name={0}, email={1}, host={2}, userSymKey={3}, userClientKey={4}]",
-                    userName, clientAdminEmail, clientHost, user.optString(UserExt.USER_B3_KEY), userB3Key);
+        String userKey = user.optString(UserExt.USER_B3_KEY);
+        if (StringUtils.isBlank(userKey) || (Strings.isNumeric(userKey) && userKey.length() == clientB3Key.length())) {
+            userKey = clientB3Key;
+
+            user.put(UserExt.USER_B3_KEY, userKey);
+            userMgmtService.updateUser(userKey, user);
+        }
+
+        if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !userKey.equals(clientB3Key)) {
+            LOGGER.log(Level.WARN, "B3 key not match, ignored add article [name={0}, email={1}, host={2}, userSymKey={3}, userClientKey={4}]",
+                    userName, clientAdminEmail, clientHost, user.optString(UserExt.USER_B3_KEY), clientB3Key);
 
             return;
         }
@@ -961,7 +974,7 @@ public class ArticleProcessor {
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
-        final String userB3Key = requestJSONObject.getString(UserExt.USER_B3_KEY);
+        final String clientB3Key = requestJSONObject.getString(UserExt.USER_B3_KEY);
         final String symphonyKey = requestJSONObject.getString(Common.SYMPHONY_KEY);
         final String clientAdminEmail = requestJSONObject.getString(Client.CLIENT_ADMIN_EMAIL);
         final String clientName = requestJSONObject.getString(Client.CLIENT_NAME);
@@ -985,9 +998,17 @@ public class ArticleProcessor {
 
         final String userName = user.optString(User.USER_NAME);
 
-        if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !user.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-            LOGGER.log(Level.WARN, "B3 key not match, ignored update article [name={0}, host={1}, userSymKey={2}, userClientKey={3}]",
-                    userName, clientHost, user.optString(UserExt.USER_B3_KEY), userB3Key);
+        String userKey = user.optString(UserExt.USER_B3_KEY);
+        if (StringUtils.isBlank(userKey) || (Strings.isNumeric(userKey) && userKey.length() == clientB3Key.length())) {
+            userKey = clientB3Key;
+
+            user.put(UserExt.USER_B3_KEY, userKey);
+            userMgmtService.updateUser(userKey, user);
+        }
+
+        if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !userKey.equals(clientB3Key)) {
+            LOGGER.log(Level.WARN, "B3 key not match, ignored update article [name={0}, email={1}, host={2}, userSymKey={3}, userClientKey={4}]",
+                    userName, clientAdminEmail, clientHost, user.optString(UserExt.USER_B3_KEY), clientB3Key);
 
             return;
         }
