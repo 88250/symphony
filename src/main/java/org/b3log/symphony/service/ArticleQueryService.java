@@ -1101,7 +1101,8 @@ public class ArticleQueryService {
      */
     private List<JSONObject> getAllComments(final String articleId) throws ServiceException, JSONException, RepositoryException {
         final List<JSONObject> commments = new ArrayList<JSONObject>();
-        final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, 1, Integer.MAX_VALUE);
+        final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, 1, Integer.MAX_VALUE,
+                UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL);
         for (final JSONObject ac : articleComments) {
             final JSONObject comment = new JSONObject();
             final JSONObject author = userRepository.get(ac.optString(Comment.COMMENT_AUTHOR_ID));

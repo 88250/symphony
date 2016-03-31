@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.17.8, Mar 30, 2016
+ * @version 1.15.17.9, Mar 31, 2016
  */
 
 /**
@@ -30,11 +30,13 @@ var Comment = {
     editor: undefined,
     /**
      * 切换评论排序模式
-     * @param {integer} type 排序模式：0 正常；1 倒序
+     * @param {integer} mode 排序模式：0 传统模式，正序；1 实时模式，倒序
      * @returns {undefined}
      */
-    exchangeCmtSort: function(type) {
+    exchangeCmtSort: function (mode) {
+        mode = 0 === mode ? 1 : 0;
         
+        window.location.href = window.location.pathname + "?m=" + mode;
     },
     init: function () {
         $("#comments").on('dblclick', 'img', function () {
@@ -242,11 +244,11 @@ var Comment = {
             },
             success: function (result, textStatus) {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
-                
+
                 if (result.sc) {
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');
-                    if($('.icon-preview').hasClass('active')) {
+                    if ($('.icon-preview').hasClass('active')) {
                         $('.icon-preview').click();
                     }
                     if (window.localStorage) {
@@ -288,7 +290,7 @@ var Article = {
     init: function () {
         this.share();
         this.parseLanguage();
-        
+
         $(".content-reset.article-content").on('dblclick', 'img', function () {
             if ($(this).hasClass('emoji')) {
                 return false;

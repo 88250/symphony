@@ -105,7 +105,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.12.27, Mar 22, 2016
+ * @version 1.15.12.27, Mar 31, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -367,6 +367,9 @@ public class ArticleProcessor {
         articleQueryService.processArticleContent(article, request);
 
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+
+        String cmtViewModeStr = request.getParameter("m");
+
         JSONObject currentUser;
         String currentUserId = null;
         if (isLoggedIn) {
@@ -387,7 +390,15 @@ public class ArticleProcessor {
                 article.put(Common.REWARDED,
                         rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_ARTICLE));
             }
+
+            if (Strings.isEmptyOrNull(cmtViewModeStr) || !Strings.isNumeric(cmtViewModeStr)) {
+                cmtViewModeStr = currentUser.optString(UserExt.USER_COMMENT_VIEW_MODE);
+            }
         }
+
+        int cmtViewMode = Integer.valueOf(cmtViewModeStr);
+        
+        dataModel.put(UserExt.USER_COMMENT_VIEW_MODE, cmtViewMode);
 
         if (!(Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
             articleMgmtService.incArticleViewCount(articleId);
@@ -428,7 +439,8 @@ public class ArticleProcessor {
         final int pageSize = Symphonys.getInt("articleCommentsPageSize");
         final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
 
-        final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, pageNum, pageSize);
+        final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, pageNum, pageSize,
+                cmtViewMode);
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         // Fill reward(thank)

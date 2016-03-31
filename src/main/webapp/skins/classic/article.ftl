@@ -1,5 +1,5 @@
 <#include "macro-head.ftl">
-<#include "macro-pagination.ftl">
+<#include "macro-pagination-query.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -159,7 +159,7 @@
                                 ${article.articleCommentCount} ${cmtLabel}
                                 <#if article.articleComments?size gt 0>
                                 <a class="icon-chevron-down fn-right" href="#bottomComment" title="${jumpToBottomCommentLabel}"></a>
-                                <a class="icon-sort fn-right" href="javascript:Comment.exchangeCmtSort(${currentUser.userCommentViewMode})" title="${exchangeCmtSortLabel}"></a>
+                                <a class="icon-sort fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})" title="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"></a>
                                 </#if>
                             </h2>
                             <ul>
@@ -203,7 +203,7 @@
                                                     <#if isAdminLoggedIn>
                                                     <a class="icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
                                                     </#if>
-                                                    #<i>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</i>
+                                                    #<i><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
                                                 </span>    
                                             </div>
                                             <div class="content-reset comment">
@@ -215,7 +215,7 @@
                                 </#list>  
                             </ul>
                         </div>
-                        <@pagination url=article.articlePermalink/>
+                        <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
                     </div>
                 </div>
                 <div class="side">
@@ -233,9 +233,9 @@
                                 <#list sideRelevantArticles as relevantArticle>
                                 <li<#if !relevantArticle_has_next> class="last"</#if>>
                                     <a class="avatar-small slogan" rel="nofollow" 
-                                       title="${relevantArticle.articleAuthorName}"
-                                       style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
-                                       href="/member/${relevantArticle.articleAuthorName}"></a>
+                                   title="${relevantArticle.articleAuthorName}"
+                                   style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
+                                   href="/member/${relevantArticle.articleAuthorName}"></a>
                                     <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                 </li>
                                 </#list>
@@ -254,9 +254,9 @@
                                 <#list sideRandomArticles as randomArticle>
                                 <li<#if !randomArticle_has_next> class="last"</#if>>
                                     <a class="avatar-small slogan" rel="nofollow"
-                                       href="/member/${randomArticle.articleAuthorName}"
-                                       title="${randomArticle.articleAuthorName}"
-                                       style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
+                                   href="/member/${randomArticle.articleAuthorName}"
+                                   title="${randomArticle.articleAuthorName}"
+                                   style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
                                     <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                                 </li>
                                 </#list>
@@ -302,21 +302,21 @@
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             // jQuery File Upload
             Util.uploadFile({
-                    "type": "img",
-                    "id": "fileUpload",
-                    "pasteZone": $(".CodeMirror"),
-                    "qiniuUploadToken": "${qiniuUploadToken}",
-                    "editor": Comment.editor,
-                    "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}"
+                "type": "img",
+                "id": "fileUpload",
+                "pasteZone": $(".CodeMirror"),
+                "qiniuUploadToken": "${qiniuUploadToken}",
+                "editor": Comment.editor,
+                "uploadingLabel": "${uploadingLabel}",
+                "qiniuDomain": "${qiniuDomain}"
             });
             var qiniuToken = '${qiniuUploadToken}';
             var qiniuDomain = '${qiniuDomain}';
             var audioRecordingLabel = '${audioRecordingLabel}';
             var uploadingLabel = '${uploadingLabel}';
-            <#if 3 == article.articleType>
+                    < #if 3 == article.articleType >
                     Article.playThought('${article.articleContent}');
-            </#if>
+                    < /#if>
         </script>
     </body>
 </html>

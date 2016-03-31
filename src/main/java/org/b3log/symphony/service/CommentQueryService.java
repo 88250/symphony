@@ -313,14 +313,22 @@ public class CommentQueryService {
      * @param articleId the specified article id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
+     * @param sortMode the specified sort mode (traditional: 0, real time: 1)
      * @return comments, return an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getArticleComments(final String articleId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
-        final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
+    public List<JSONObject> getArticleComments(final String articleId, final int currentPageNum, final int pageSize,
+            final int sortMode) throws ServiceException {
+        final Query query = new Query()
                 .setPageCount(1).setCurrentPageNum(currentPageNum).setPageSize(pageSize)
                 .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId));
+
+        if (UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME == sortMode) {
+            query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        } else {
+            query.addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
+        }
+
         try {
             final JSONObject result = commentRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
