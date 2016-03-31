@@ -1565,8 +1565,6 @@ public class AdminProcessor {
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void searchIndexArticle(final HTTPRequestContext context) throws Exception {
-        context.renderJSON(true);
-
         final String articleId = context.getRequest().getParameter(Article.ARTICLE_T_ID);
         final JSONObject article = articleQueryService.getArticle(articleId);
 
@@ -1582,5 +1580,7 @@ public class AdminProcessor {
         if (Symphonys.getBoolean("es.enabled")) {
             searchMgmtService.updateESDocument(article, Article.ARTICLE);
         }
+
+        context.getResponse().sendRedirect(Latkes.getServePath() + "/admin/articles");
     }
 }
