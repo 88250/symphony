@@ -71,7 +71,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.18.13, Apr 1, 2016
+ * @version 2.7.19.13, Apr 1, 2016
  * @since 0.2.0
  */
 @Service
@@ -1073,13 +1073,17 @@ public class ArticleMgmtService {
         }
 
         final String[] tags = articleTags.split(",");
+        final StringBuilder builder = new StringBuilder();
         for (final String tagTitle : tags) {
             final JSONObject tag = tagRepository.getByTitle(tagTitle);
 
-            articleTags = articleTags.replaceAll("(?i)" + Pattern.quote(tagTitle), tag.optString(Tag.TAG_TITLE));
+            builder.append(tag.optString(Tag.TAG_TITLE)).append(",");
+        }
+        if (builder.length() > 0) {
+            builder.deleteCharAt(builder.length() - 1);
         }
 
-        article.put(Article.ARTICLE_TAGS, articleTags);
+        article.put(Article.ARTICLE_TAGS, builder.toString());
     }
 
     /**
