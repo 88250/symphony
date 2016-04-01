@@ -98,7 +98,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.7.15, Feb 16, 2016
+ * @version 1.14.7.15, Apr 1, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -973,7 +973,7 @@ public class UserProcessor {
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final String password = requestJSONObject.optString(User.USER_PASSWORD);
         final String clientHost = requestJSONObject.optString(Client.CLIENT_HOST);
-        final String b3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
+        final String clientB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
         final String addArticleURL = clientHost + "/apis/symphony/article";
         final String updateArticleURL = clientHost + "/apis/symphony/article";
         final String addCommentURL = clientHost + "/apis/symphony/comment";
@@ -998,7 +998,7 @@ public class UserProcessor {
             user.put(User.USER_NAME, name);
             user.put(User.USER_EMAIL, email);
             user.put(User.USER_PASSWORD, password);
-            user.put(UserExt.USER_B3_KEY, b3Key);
+            user.put(UserExt.USER_B3_KEY, clientB3Key);
             user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
             user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
@@ -1020,9 +1020,17 @@ public class UserProcessor {
             return;
         }
 
-        if (!user.optString(UserExt.USER_B3_KEY).equals(b3Key)) {
+        String userKey = user.optString(UserExt.USER_B3_KEY);
+        if (StringUtils.isBlank(userKey) || (Strings.isNumeric(userKey) && userKey.length() == clientB3Key.length())) {
+            userKey = clientB3Key;
+
+            user.put(UserExt.USER_B3_KEY, userKey);
+            userMgmtService.updateUser(userKey, user);
+        }
+
+        if (!userKey.equals(clientB3Key)) {
             LOGGER.log(Level.WARN, "Sync update user[name={0}, email={1}, host={2}] B3Key dismatch [sym={3}, solo={4}]",
-                    name, email, clientHost, user.optString(UserExt.USER_B3_KEY), b3Key);
+                    name, email, clientHost, user.optString(UserExt.USER_B3_KEY), clientB3Key);
 
             return;
         }
@@ -1030,7 +1038,7 @@ public class UserProcessor {
         user.put(User.USER_NAME, name);
         user.put(User.USER_EMAIL, email);
         user.put(User.USER_PASSWORD, password);
-        user.put(UserExt.USER_B3_KEY, b3Key);
+        user.put(UserExt.USER_B3_KEY, clientB3Key);
         user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
         user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
         user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
