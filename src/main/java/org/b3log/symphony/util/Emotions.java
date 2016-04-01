@@ -975,14 +975,18 @@ public final class Emotions {
             ret = ret.replace('[' + emotionName + ']',
                     "<img src='" + Latkes.getStaticServePath() + "/images/emotions/ease/" + emotionName + ".png" + "' />");
         }
-
+        
         for (final String emojiCode : EMOJIS) {
             final String emoji = ":" + emojiCode + ":";
             ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
                     + Latkes.getStaticServePath() + "/js/lib/emojify.js-1.0.2/images/basic/" + emojiCode
                     + ".png\" title=\"" + emoji + "\"></img>");
         }
-
+        
+//        ret = ret.replaceAll("\ufe0f", "");
+//        ret = ret.replaceAll("\ufffd", "");
+//        ret = ret.replaceAll("⃣", "");
+        
         return ret;
     }
 

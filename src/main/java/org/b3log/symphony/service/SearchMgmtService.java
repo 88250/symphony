@@ -162,7 +162,7 @@ public class SearchMgmtService {
 
                 break;
             } catch (final UnknownHostException e) {
-                LOGGER.log(Level.ERROR, "Index failed", e);
+                LOGGER.log(Level.ERROR, "Index failed [UnknownHostException]");
 
                 retries--;
             } catch (final Exception e) {

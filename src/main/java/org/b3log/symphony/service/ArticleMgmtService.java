@@ -465,7 +465,10 @@ public class ArticleMgmtService {
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
             article.put(Article.ARTICLE_IP, ip);
 
-            final String ua = requestJSONObject.optString(Article.ARTICLE_UA);
+            String ua = requestJSONObject.optString(Article.ARTICLE_UA);
+            if (StringUtils.length(ua) > 128) {
+                ua = StringUtils.substring(ua, 0, 128);
+            }
             article.put(Article.ARTICLE_UA, ua);
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
@@ -644,7 +647,10 @@ public class ArticleMgmtService {
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
             oldArticle.put(Article.ARTICLE_IP, ip);
 
-            final String ua = requestJSONObject.optString(Article.ARTICLE_UA);
+            String ua = requestJSONObject.optString(Article.ARTICLE_UA);
+            if (StringUtils.length(ua) > 128) {
+                ua = StringUtils.substring(ua, 0, 128);
+            }
             oldArticle.put(Article.ARTICLE_UA, ua);
 
             articleRepository.update(articleId, oldArticle);
