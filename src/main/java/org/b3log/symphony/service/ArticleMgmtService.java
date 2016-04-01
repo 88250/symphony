@@ -71,7 +71,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.17.13, Mar 22, 2016
+ * @version 2.7.18.13, Apr 1, 2016
  * @since 0.2.0
  */
 @Service
@@ -1025,7 +1025,6 @@ public class ArticleMgmtService {
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 final String title = tag.optString(Tag.TAG_TITLE);
-                articleTags = articleTags.replaceAll("(?i)" + Pattern.quote(tagTitle), title);
 
                 tagTmp.put(Tag.TAG_TITLE, title);
                 tagTmp.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + articleCmtCnt);
@@ -1045,8 +1044,6 @@ public class ArticleMgmtService {
                 userTagType = Tag.TAG_TYPE_C_ARTICLE;
             }
 
-            article.put(Article.ARTICLE_TAGS, articleTags);
-
             // Tag-Article relation
             final JSONObject tagArticleRelation = new JSONObject();
             tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID, tagId);
@@ -1060,6 +1057,15 @@ public class ArticleMgmtService {
             userTagRelation.put(Common.TYPE, userTagType);
             userTagRepository.add(userTagRelation);
         }
+
+        final String[] tags = articleTags.split(",");
+        for (final String tagTitle : tags) {
+            final JSONObject tag = tagRepository.getByTitle(tagTitle);
+
+            articleTags = articleTags.replaceAll("(?i)" + Pattern.quote(tagTitle), tag.optString(Tag.TAG_TITLE));
+        }
+
+        article.put(Article.ARTICLE_TAGS, articleTags);
     }
 
     /**

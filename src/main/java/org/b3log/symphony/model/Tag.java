@@ -26,7 +26,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.3, Mar 14, 2016
+ * @version 1.9.3.3, Apr 1, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -203,7 +203,12 @@ public final class Tag {
     /**
      * Max tag title length.
      */
-    public static final int MAX_TAG_TITLE_LENGTH = 50;
+    public static final int MAX_TAG_TITLE_LENGTH = 9;
+
+    /**
+     * Max tag count.
+     */
+    public static final int MAX_TAG_COUNT = 4;
 
     /**
      * Tag title pattern.
@@ -244,7 +249,7 @@ public final class Tag {
      * @return formatted tags string
      */
     public static String formatTags(final String tagStr) {
-        final String tagStr1 = tagStr.replaceAll("\\s+", ",").replaceAll("，", ",").replaceAll("、", ",").
+        final String tagStr1 = tagStr.replaceAll("\\s+", "").replaceAll("，", ",").replaceAll("、", ",").
                 replaceAll("；", ",").replaceAll(";", ",");
         String[] tagTitles = tagStr1.split(",");
 
@@ -260,13 +265,28 @@ public final class Tag {
 
         tagTitles = titles.toArray(new String[0]);
 
+        int count = 0;
         final StringBuilder tagsBuilder = new StringBuilder();
         for (final String tagTitle : tagTitles) {
-            if (StringUtils.isBlank(tagTitle.trim())) {
+            final String title = tagTitle.trim();
+            if (StringUtils.isBlank(title)) {
                 continue;
             }
 
-            tagsBuilder.append(tagTitle.trim()).append(",");
+            if (StringUtils.length(title) > MAX_TAG_TITLE_LENGTH) {
+                continue;
+            }
+
+            if (!TAG_TITLE_PATTERN.matcher(title).matches()) {
+                continue;
+            }
+
+            tagsBuilder.append(title).append(",");
+            count++;
+
+            if (count >= MAX_TAG_COUNT) {
+                break;
+            }
         }
         if (tagsBuilder.length() > 0) {
             tagsBuilder.deleteCharAt(tagsBuilder.length() - 1);
@@ -277,7 +297,7 @@ public final class Tag {
 
     /**
      * Checks the specified tag string whether contains the reserved tags.
-     * 
+     *
      * @param tagStr the specified tag string
      * @return {@code true} if it contains, returns {@code false} otherwise
      */
@@ -287,7 +307,7 @@ public final class Tag {
                 return true;
             }
         }
-        
+
         return false;
     }
 
