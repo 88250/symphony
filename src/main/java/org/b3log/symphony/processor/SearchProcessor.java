@@ -108,6 +108,13 @@ public class SearchProcessor {
         context.setRenderer(renderer);
 
         renderer.setTemplateName("search-articles.ftl");
+
+        if (!Symphonys.getBoolean("es.enabled") && !Symphonys.getBoolean("algolia.enabled")) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final String keyword = request.getParameter("key");
@@ -123,31 +130,44 @@ public class SearchProcessor {
         dataModel.put(Domain.DOMAINS, domains);
 
         final int pageSize = Symphonys.getInt("latestArticlesCnt");
-
-//        final JSONObject result = searchQueryService.searchElasticsearch(Article.ARTICLE, keyword, pageNum, pageSize);
-//        final int status = result.optInt("status");
-//        if (0 != status) {
-//            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-//
-//            return;
-//        }
-//
-//        final JSONObject hitsResult = result.optJSONObject("hits");
-//        final JSONArray hits = hitsResult.optJSONArray("hits");
-//
-//        final List<JSONObject> articles = new ArrayList<JSONObject>();
-//
-//        for (int i = 0; i < hits.length(); i++) {
-//            final JSONObject article = hits.optJSONObject(i).optJSONObject("_source");
-//            articles.add(article);
-//        }
-        final JSONObject result = searchQueryService.searchAlgolia(keyword, pageNum, pageSize);
-        final JSONArray hits = result.optJSONArray("hits");
-
         final List<JSONObject> articles = new ArrayList<JSONObject>();
-        for (int i = 0; i < hits.length(); i++) {
-            final JSONObject article = hits.optJSONObject(i);
-            articles.add(article);
+        int total = 0;
+
+        if (Symphonys.getBoolean("es.enabled")) {
+            final JSONObject result = searchQueryService.searchElasticsearch(Article.ARTICLE, keyword, pageNum, pageSize);
+            if (null == result || 0 != result.optInt("status")) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
+            }
+
+            final JSONObject hitsResult = result.optJSONObject("hits");
+            final JSONArray hits = hitsResult.optJSONArray("hits");
+
+            for (int i = 0; i < hits.length(); i++) {
+                final JSONObject article = hits.optJSONObject(i).optJSONObject("_source");
+                articles.add(article);
+            }
+
+            total = result.optInt("total");
+        }
+
+        if (Symphonys.getBoolean("algolia.enabled")) {
+            final JSONObject result = searchQueryService.searchAlgolia(keyword, pageNum, pageSize);
+            if (null == result) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
+            }
+
+            final JSONArray hits = result.optJSONArray("hits");
+
+            for (int i = 0; i < hits.length(); i++) {
+                final JSONObject article = hits.optJSONObject(i);
+                articles.add(article);
+            }
+
+            total = result.optInt("nbHits");
         }
 
         articleQueryService.organizeArticles(articles);
@@ -155,8 +175,6 @@ public class SearchProcessor {
         articleQueryService.genParticipants(articles, participantsCnt);
 
         dataModel.put(Article.ARTICLES, articles);
-
-        final int total = result.optInt("nbHits");
 
         final int pageCount = (int) Math.ceil(total / (double) pageSize);
         final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, Symphonys.getInt("defaultPaginationWindowSize"));

@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Mar 30, 2016
+ * @version 1.2.1.1, Apr 1, 2016
  * @since 1.4.0
  */
 @Service
@@ -61,7 +61,7 @@ public class SearchQueryService {
      * @param keyword the specified keyword
      * @param currentPage the specified current page number
      * @param pageSize the specified page size
-     * @return search result
+     * @return search result, returns {@code null} if not found
      */
     public JSONObject searchElasticsearch(final String type, final String keyword, final int currentPage, final int pageSize) {
         final HTTPRequest request = new HTTPRequest();
@@ -131,7 +131,7 @@ public class SearchQueryService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Queries failed", e);
 
-            return new JSONObject();
+            return null;
         }
     }
 
@@ -141,7 +141,7 @@ public class SearchQueryService {
      * @param keyword the specified keyword
      * @param currentPage the specified current page number
      * @param pageSize the specified page size
-     * @return search result
+     * @return search result, returns {@code null} if not found
      */
     public JSONObject searchAlgolia(final String keyword, final int currentPage, final int pageSize) {
         try {
@@ -167,11 +167,17 @@ public class SearchQueryService {
 
             final HTTPResponse response = URL_FETCH_SVC.fetch(request);
 
-            return new JSONObject(new String(response.getContent(), "UTF-8"));
+            final JSONObject ret = new JSONObject(new String(response.getContent(), "UTF-8"));
+            if (200 != response.getResponseCode()) {
+                LOGGER.warn(ret.toString(4));
+                return null;
+            }
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Queries failed", e);
 
-            return new JSONObject();
+            return null;
         }
     }
 }
