@@ -485,7 +485,8 @@ public class AdminProcessor {
             final String name = parameterNames.nextElement();
             final String value = request.getParameter(name);
 
-            if (name.equals(UserExt.USER_POINT) || name.equals(UserExt.USER_APP_ROLE) || name.equals(UserExt.USER_STATUS)) {
+            if (name.equals(UserExt.USER_POINT) || name.equals(UserExt.USER_APP_ROLE) || name.equals(UserExt.USER_STATUS)
+                    || name.equals(UserExt.USER_COMMENT_VIEW_MODE)) {
                 user.put(name, Integer.valueOf(value));
             } else if (name.equals(User.USER_PASSWORD)) {
                 final String oldPwd = (String) user.getString(name);

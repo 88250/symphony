@@ -82,6 +82,12 @@
                 <label for="userIntro">${avatarURLLabel}</label>
                 <input type="text" id="userAvatarURL" name="userAvatarURL" value="${user.userAvatarURL}" />
 
+                <label>${cmtViewModeLabel}</label>
+                <select id="userCommentViewMode" name="userCommentViewMode">
+                    <option value="0"<#if 0 == user.userCommentViewMode> selected</#if>>${traditionLabel}</option>
+                    <option value="1"<#if 1 == user.userCommentViewMode> selected</#if>>${realTimeLabel}</option>
+                </select>
+
                 <label>${roleLabel}</label>
                 <select id="userRole" name="userRole">
                     <option value="adminRole"<#if "adminRole" == user.userRole> selected</#if>>${administratorLabel}</option>

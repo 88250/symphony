@@ -38,6 +38,12 @@
 
             <label for="articleEditorType">${eidotrTypeLabel}</label>
             <input type="text" id="articleEditorType" name="articleEditorType" value="${article.articleEditorType}" readonly="readonly" />
+
+            <label for="articleIP">IP</label>
+            <input type="text" id="articleIP" name="articleIP" value="${article.articleIP}" readonly="readonly" />
+
+            <label for="articleUA">UA</label>
+            <input type="text" id="articleUA" name="articleUA" value="${article.articleUA}" readonly="readonly" />
         </div>
     </div>
     <div class="module">

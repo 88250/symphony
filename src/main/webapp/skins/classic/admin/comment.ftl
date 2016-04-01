@@ -17,6 +17,12 @@
 
             <label for="commentSharpURL">URL</label>
             <input type="text" id="commentSharpURL" name="commentSharpURL" value="${comment.commentSharpURL}" readonly="readonly" />
+
+            <label for="commentIP">IP</label>
+            <input type="text" id="commentIP" name="commentIP" value="${comment.commentIP}" readonly="readonly" />
+
+            <label for="commentUA">UA</label>
+            <input type="text" id="commentUA" name="commentUA" value="${comment.commentUA}" readonly="readonly" />
         </div>
     </div>
     <div class="module">
