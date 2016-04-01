@@ -174,7 +174,7 @@ public class TagQueryService {
                 LOGGER.log(Level.ERROR, "Boson process failed [" + data.toString(4) + "]");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Generates tags error", e);
+            LOGGER.log(Level.ERROR, "Generates tags error: " + content, e);
         }
 
         return ret;
