@@ -399,6 +399,12 @@
                     "name": "commentIP",
                     "type": "String",
                     "length": 128
+                },
+                {
+                    "name": "commentUA",
+                    "type": "String",
+                    "length": 128,
+                    "description": "User-Agent"
                 }
             ]
         },
@@ -896,6 +902,12 @@
                     "name": "articleIP",
                     "type": "String",
                     "length": 128
+                },
+                {
+                    "name": "articleUA",
+                    "type": "String",
+                    "length": 128,
+                    "description": "User-Agent"
                 }
             ]
         },

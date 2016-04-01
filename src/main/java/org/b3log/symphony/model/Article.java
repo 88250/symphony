@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.11, Sep 19, 2015
+ * @version 1.10.0.11, Apr 1, 2016
  * @since 0.2.0
  */
 public final class Article {
@@ -163,6 +163,11 @@ public final class Article {
      * Key of article IP.
      */
     public static final String ARTICLE_IP = "articleIP";
+
+    /**
+     * Key of article UA.
+     */
+    public static final String ARTICLE_UA = "articleUA";
 
     //// Transient ////
     /**

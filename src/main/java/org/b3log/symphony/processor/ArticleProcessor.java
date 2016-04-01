@@ -525,6 +525,7 @@ public class ArticleProcessor {
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final String ip = Requests.getRemoteAddr(request);
+        final String ua = request.getHeader("User-Agent");
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -537,6 +538,10 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_IP, "");
         if (StringUtils.isNotBlank(ip)) {
             article.put(Article.ARTICLE_IP, ip);
+        }
+        article.put(Article.ARTICLE_UA, "");
+        if (StringUtils.isNotBlank(ua)) {
+            article.put(Article.ARTICLE_UA, ua);
         }
 
         try {
@@ -689,6 +694,7 @@ public class ArticleProcessor {
         final String articleRewardContent = requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT);
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final String ip = Requests.getRemoteAddr(request);
+        final String ua = request.getHeader("User-Agent");
 
         final JSONObject article = new JSONObject();
         article.put(Keys.OBJECT_ID, id);
@@ -702,6 +708,10 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_IP, "");
         if (StringUtils.isNotBlank(ip)) {
             article.put(Article.ARTICLE_IP, ip);
+        }
+        article.put(Article.ARTICLE_UA, "");
+        if (StringUtils.isNotBlank(ua)) {
+            article.put(Article.ARTICLE_UA, ua);
         }
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);

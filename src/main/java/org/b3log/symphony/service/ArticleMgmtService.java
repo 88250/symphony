@@ -317,7 +317,8 @@ public class ArticleMgmtService {
      *     "articleType": int, // optional, default to 0
      *     "articleRewardContent": "", // optional, default to ""
      *     "articleRewardPoint": int, // optional, default to 0
-     *     "articleIP": "" // optional, default to ""
+     *     "articleIP": "", // optional, default to ""
+     *     "articleUA": "", // optional, default to ""
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -464,6 +465,9 @@ public class ArticleMgmtService {
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
             article.put(Article.ARTICLE_IP, ip);
 
+            final String ua = requestJSONObject.optString(Article.ARTICLE_UA);
+            article.put(Article.ARTICLE_UA, ua);
+
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
             articleCntOption.put(Option.OPTION_VALUE, articleCnt + 1);
@@ -560,7 +564,8 @@ public class ArticleMgmtService {
      *     "articleType": int // optional, default to 0
      *     "articleRewardContent": "", // optional, default to ""
      *     "articleRewardPoint": int, // optional, default to 0
-     *     "articleIP": "" // optional, default to ""
+     *     "articleIP": "", // optional, default to ""
+     *     "articleUA": "" // optional, default to ""
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -638,6 +643,9 @@ public class ArticleMgmtService {
 
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
             oldArticle.put(Article.ARTICLE_IP, ip);
+
+            final String ua = requestJSONObject.optString(Article.ARTICLE_UA);
+            oldArticle.put(Article.ARTICLE_UA, ua);
 
             articleRepository.update(articleId, oldArticle);
 

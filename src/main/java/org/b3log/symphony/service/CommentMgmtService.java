@@ -273,7 +273,8 @@ public class CommentMgmtService {
      *     "commenter": {
      *         // User model
      *     },
-     *     "commentIP": "" // optional, default to ""
+     *     "commentIP": "", // optional, default to ""
+     *     "commentUA": "" // optional, default to ""
      * }
      * </pre>, see {@link Comment} for more details
      *
@@ -287,6 +288,7 @@ public class CommentMgmtService {
         final boolean fromClient = requestJSONObject.has(Comment.COMMENT_CLIENT_COMMENT_ID);
         final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
         final String ip = requestJSONObject.optString(Comment.COMMENT_IP);
+        final String ua = requestJSONObject.optString(Comment.COMMENT_UA);
 
         if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
                 && !Role.ADMIN_ROLE.equals(commenter.optString(User.USER_ROLE))
@@ -357,6 +359,7 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_SHARP_URL, "/article/" + articleId + "#" + ret);
             comment.put(Comment.COMMENT_STATUS, Comment.COMMENT_STATUS_C_VALID);
             comment.put(Comment.COMMENT_IP, ip);
+            comment.put(Comment.COMMENT_UA, ua);
 
             final JSONObject cmtCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
             final int cmtCnt = cmtCntOption.optInt(Option.OPTION_VALUE);

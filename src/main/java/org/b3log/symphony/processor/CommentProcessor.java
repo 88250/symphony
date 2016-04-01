@@ -140,6 +140,7 @@ public class CommentProcessor {
         final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
         final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
         final String ip = Requests.getRemoteAddr(request);
+        final String ua = request.getHeader("User-Agent");
 
         final JSONObject comment = new JSONObject();
         comment.put(Comment.COMMENT_CONTENT, commentContent);
@@ -147,6 +148,10 @@ public class CommentProcessor {
         comment.put(Comment.COMMENT_IP, "");
         if (StringUtils.isNotBlank(ip)) {
             comment.put(Comment.COMMENT_IP, ip);
+        }
+        comment.put(Comment.COMMENT_UA, "");
+        if (StringUtils.isNotBlank(ua)) {
+            comment.put(Comment.COMMENT_UA, ua);
         }
 
         try {
@@ -282,6 +287,7 @@ public class CommentProcessor {
         final JSONObject originalCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
         final String ip = Requests.getRemoteAddr(request);
+        final String ua = request.getHeader("User-Agent");
 
         final JSONObject defaultCommenter = userQueryService.getDefaultCommenter();
         final JSONObject comment = new JSONObject();
@@ -294,6 +300,10 @@ public class CommentProcessor {
         comment.put(Comment.COMMENT_IP, "");
         if (StringUtils.isNotBlank(ip)) {
             comment.put(Comment.COMMENT_IP, ip);
+        }
+        comment.put(Comment.COMMENT_UA, "");
+        if (StringUtils.isNotBlank(ua)) {
+            comment.put(Comment.COMMENT_UA, ua);
         }
 
         comment.put(Comment.COMMENT_T_AUTHOR_NAME, originalCmt.optString(Comment.COMMENT_T_AUTHOR_NAME));

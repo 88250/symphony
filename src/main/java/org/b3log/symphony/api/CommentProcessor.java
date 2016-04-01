@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -132,6 +132,7 @@ public class CommentProcessor {
         final String httpBody = getBody(request);
         final String content = httpBody.substring("comment[body]=".length());
         final String ip = Requests.getRemoteAddr(request);
+        final String ua = request.getHeader("User-Agent");
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
@@ -145,6 +146,10 @@ public class CommentProcessor {
         comment.put(Comment.COMMENT_IP, "");
         if (StringUtils.isNotBlank(ip)) {
             comment.put(Comment.COMMENT_IP, ip);
+        }
+        comment.put(Comment.COMMENT_UA, "");
+        if (StringUtils.isNotBlank(ua)) {
+            comment.put(Comment.COMMENT_UA, ua);
         }
 
         try {
