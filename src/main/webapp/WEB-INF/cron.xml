@@ -33,7 +33,7 @@
         <url>/cron/article/stick-expire?key=dev_key</url>
         <description>Expire sticked article</description>
         <schedule>every 1 minutes</schedule>
-    </cron>F
+    </cron>
     
     <!-- Disabled on Dev environment -->
     <!--
