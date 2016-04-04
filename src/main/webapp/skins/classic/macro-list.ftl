@@ -5,7 +5,7 @@
         <#list listData as article>
         <#assign articleIds = articleIds + article.oId>
         <#if article_has_next><#assign articleIds = articleIds + ","></#if>
-        <li>
+        <li<#if article.articleStickRemains gt 0 && articleStickCheck??> class="stick"</#if>>
             <div class="fn-flex">
                 <a rel="nofollow" class="ft-gray"
                    href="/member/${article.articleAuthorName}" 
@@ -19,7 +19,12 @@
                         <#elseif 3 == article.articleType>
                         <span class="icon-video" title="${thoughtLabel}"></span>
                         </#if>
-                        <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                        <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark"
+                           href="${article.articlePermalink}">${article.articleTitleEmoj}
+                        </a>
+                        <#if articleStickCheck??>&nbsp;
+                        <sup><span class="ft-smaller ft-red stick-remains fn-none">${stickLabel}${remainsLabel} ${article.articleStickRemains?c} ${minuteLabel}</span></sup>
+                        </#if>
                     </h2>
                     <#list article.articleTags?split(",") as articleTag>
                     <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">${articleTag}</a>

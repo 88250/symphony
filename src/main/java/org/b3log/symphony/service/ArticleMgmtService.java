@@ -17,8 +17,9 @@ package org.b3log.symphony.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Set;
 import javax.inject.Inject;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -71,7 +72,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.19.13, Apr 1, 2016
+ * @version 2.8.19.13, Apr 2, 2016
  * @since 0.2.0
  */
 @Service
@@ -471,6 +472,8 @@ public class ArticleMgmtService {
             }
             article.put(Article.ARTICLE_UA, ua);
 
+            article.put(Article.ARTICLE_STICK, 0L);
+
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
             articleCntOption.put(Option.OPTION_VALUE, articleCnt + 1);
@@ -819,6 +822,100 @@ public class ArticleMgmtService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Rewards an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Sticks an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws ServiceException service exception
+     */
+    public synchronized void stick(final String articleId) throws ServiceException {
+        final Transaction transaction = articleRepository.beginTransaction();
+
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
+            }
+
+            final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject author = userRepository.get(authorId);
+            final int balance = author.optInt(UserExt.USER_POINT);
+
+            if (balance - Pointtransfer.TRANSFER_SUM_C_STICK_ARTICLE < 0) {
+                throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
+            }
+
+            final Query query = new Query().
+                    setFilter(new PropertyFilter(Article.ARTICLE_STICK, FilterOperator.GREATER_THAN, 0L));
+            final JSONArray articles = articleRepository.get(query).optJSONArray(Keys.RESULTS);
+            if (articles.length() > 1) {
+                final Set<String> ids = new HashSet<String>();
+                for (int i = 0; i < articles.length(); i++) {
+                    ids.add(articles.optJSONObject(i).optString(Keys.OBJECT_ID));
+                }
+
+                if (!ids.contains(articleId)) {
+                    throw new ServiceException(langPropsService.get("stickExistLabel"));
+                }
+            }
+
+            article.put(Article.ARTICLE_STICK, System.currentTimeMillis());
+
+            articleRepository.update(articleId, article);
+
+            transaction.commit();
+
+            final boolean succ = null != pointtransferMgmtService.transfer(article.optString(Article.ARTICLE_AUTHOR_ID),
+                    Pointtransfer.ID_C_SYS, Pointtransfer.TRANSFER_TYPE_C_STICK_ARTICLE,
+                    Pointtransfer.TRANSFER_SUM_C_STICK_ARTICLE, articleId);
+            if (!succ) {
+                throw new ServiceException(langPropsService.get("stickFailedLabel"));
+            }
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Sticks an article[id=" + articleId + "] failed", e);
+
+            throw new ServiceException(langPropsService.get("stickFailedLabel"));
+        }
+    }
+
+    /**
+     * Expires sticked articles.
+     *
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void expireStick() throws ServiceException {
+        try {
+            final Query query = new Query().
+                    setFilter(new PropertyFilter(Article.ARTICLE_STICK, FilterOperator.GREATER_THAN, 0L));
+            final JSONArray articles = articleRepository.get(query).optJSONArray(Keys.RESULTS);
+            if (articles.length() < 1) {
+                return;
+            }
+
+            final long stepTime = Symphonys.getLong("stickArticleTime");
+            final long now = System.currentTimeMillis();
+
+            for (int i = 0; i < articles.length(); i++) {
+                final JSONObject article = articles.optJSONObject(i);
+                final long expired = article.optLong(Article.ARTICLE_STICK) + stepTime;
+
+                if (expired < now) {
+                    article.put(Article.ARTICLE_STICK, 0L);
+                    articleRepository.update(article.optString(Keys.OBJECT_ID), article);
+                }
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Expires sticked articles failed", e);
+
+            throw new ServiceException();
         }
     }
 

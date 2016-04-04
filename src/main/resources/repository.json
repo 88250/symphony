@@ -908,6 +908,10 @@
                     "type": "String",
                     "length": 128,
                     "description": "User-Agent"
+                },
+                {
+                    "name": "articleStick",
+                    "type": "long"
                 }
             ]
         },

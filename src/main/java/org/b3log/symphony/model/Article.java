@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.11, Apr 1, 2016
+ * @version 1.11.0.11, Apr 2, 2016
  * @since 0.2.0
  */
 public final class Article {
@@ -169,7 +169,27 @@ public final class Article {
      */
     public static final String ARTICLE_UA = "articleUA";
 
+    /**
+     * Key of article stick.
+     */
+    public static final String ARTICLE_STICK = "articleStick";
+
     //// Transient ////
+    /**
+     * Key of article stick check.
+     */
+    public static final String ARTICLE_T_STICK_CHECK = "articleStickCheck";
+    
+    /**
+     * Key of article stick flag.
+     */
+    public static final String ARTICLE_T_IS_STICK = "articleIsStick";
+    
+    /**
+     * Key of article stick remains.
+     */
+    public static final String ARTICLE_T_STICK_REMAINS = "articleStickRemains";
+
     /**
      * Key of article preview content.
      */

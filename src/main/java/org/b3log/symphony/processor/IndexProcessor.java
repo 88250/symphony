@@ -31,6 +31,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
+import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -70,7 +71,7 @@ public class IndexProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
-    
+
     /**
      * Domain query service.
      */
@@ -112,6 +113,12 @@ public class IndexProcessor {
         final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
         
+        dataModel.put(Article.ARTICLE_T_STICK_CHECK, true);
+
+        for (final JSONObject article : indexArticles) {
+            article.put(Article.ARTICLE_T_IS_STICK, article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0);
+        }
+
         final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
         dataModel.put(Domain.DOMAINS, domains);
 

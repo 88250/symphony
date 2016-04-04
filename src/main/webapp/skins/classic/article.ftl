@@ -90,6 +90,12 @@
                             <a href="/update?id=${article.oId}" title="${editLabel}" class="icon-edit"></a>
                             &nbsp;
                             </#if>
+                            <#if article.isMyArticle>
+                            <span id="stick" class="fn-pointer" title="${stickLabel}" onclick="Article.stick('${article.oId}')">
+                                <span class="icon-chevron-up" ></span>
+                            </span>
+                            &nbsp;
+                            </#if>
                             <#if isAdminLoggedIn>
                             &nbsp;
                             <a class="icon-setting" href="/admin/article/${article.oId}" title="${adminLabel}"></a>
@@ -311,14 +317,15 @@
             Label.rewardConfirmLabel = "${rewardConfirmLabel?replace('{point}', article.articleRewardPoint)}";
             Label.articleOId = "${article.oId}";
             Label.articleTitle = "${article.articleTitle}";
-            Label.articlePermalink = "${article.articlePermalink}";
+                    Label.articlePermalink = "${article.articlePermalink}";
             Label.recordDeniedLabel = "${recordDeniedLabel}";
             Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
             Label.csrfToken = "${csrfToken}";
             Label.upLabel = "${upLabel}";
             Label.downLabel = "${downLabel}";
             Label.uploadLabel = "${uploadLabel}";
-            Label.userCommentViewMode = ${userCommentViewMode};
+                    Label.userCommentViewMode = ${userCommentViewMode};
+            Label.stickConfirmLabel = "${stickConfirmLabel}";
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
@@ -338,21 +345,21 @@
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             // jQuery File Upload
             Util.uploadFile({
-            "type": "img",
-                    "id": "fileUpload",
-                    "pasteZone": $(".CodeMirror"),
-                    "qiniuUploadToken": "${qiniuUploadToken}",
-                    "editor": Comment.editor,
-                    "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}"
+                "type": "img",
+                "id": "fileUpload",
+                "pasteZone": $(".CodeMirror"),
+                "qiniuUploadToken": "${qiniuUploadToken}",
+                "editor": Comment.editor,
+                "uploadingLabel": "${uploadingLabel}",
+                "qiniuDomain": "${qiniuDomain}"
             });
             var qiniuToken = '${qiniuUploadToken}';
             var qiniuDomain = '${qiniuDomain}';
             var audioRecordingLabel = '${audioRecordingLabel}';
             var uploadingLabel = '${uploadingLabel}';
-            <#if 3 == article.articleType>
-                Article.playThought('${article.articleContent}');
-            </#if>
+                    <#if 3 == article.articleType >
+                    Article.playThought('${article.articleContent}');
+                    </#if>
         </script>
     </body>
 </html>

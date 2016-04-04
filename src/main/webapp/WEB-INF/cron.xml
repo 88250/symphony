@@ -18,7 +18,7 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.5.0.4, Jan 8, 2016
+    Version: 1.6.0.4, Apr 2, 2016
     Author: Liang Ding
 -->
 <cronentries>
@@ -28,6 +28,12 @@
         <description>Loads usernames</description>
         <schedule>every 30 minutes</schedule>
     </cron>
+
+    <cron>
+        <url>/cron/article/stick-expire?key=dev_key</url>
+        <description>Expire sticked article</description>
+        <schedule>every 1 minutes</schedule>
+    </cron>F
     
     <!-- Disabled on Dev environment -->
     <!--

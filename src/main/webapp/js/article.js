@@ -35,7 +35,7 @@ var Comment = {
      */
     exchangeCmtSort: function (mode) {
         mode = 0 === mode ? 1 : 0;
-        
+
         window.location.href = window.location.pathname + "?m=" + mode;
     },
     init: function () {
@@ -258,7 +258,7 @@ var Comment = {
 
                         window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
                     }
-                    
+
                     if (0 === Label.userCommentViewMode) { // 传统模式，刷新页面
                         window.location.reload();
                     }
@@ -350,6 +350,25 @@ var Article = {
                     }
 
                     alert(result.msg);
+                }
+            });
+        }
+    },
+    /**
+     * @description 置顶
+     */
+    stick: function (articleId) {
+        var r = confirm(Label.stickConfirmLabel);
+
+        if (r) {
+            $.ajax({
+                url: "/article/stick?articleId=" + articleId,
+                type: "POST",
+                cache: false,
+                success: function (result, textStatus) {
+                    alert(result.msg);
+                    
+                    window.location.href = "/";
                 }
             });
         }

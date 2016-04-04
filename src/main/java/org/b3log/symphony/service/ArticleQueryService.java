@@ -77,7 +77,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.10.18, Mar 25, 2016
+ * @version 1.14.10.18, Apr 2, 2016
  * @since 0.2.0
  */
 @Service
@@ -905,6 +905,7 @@ public class ArticleQueryService {
      */
     private Query makeTopQuery(final int currentPageNum, final int fetchSize) {
         final Query query = new Query()
+                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
                 .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
                 .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
@@ -1141,6 +1142,7 @@ public class ArticleQueryService {
      * <li>generates article heat</li>
      * <li>generates article view count display format(1k+/1.5k+...)</li>
      * <li>generates time ago text</li>
+     * <li>generates stick remains minutes</li>
      * </ul>
      *
      * @param articles the specified articles
@@ -1163,6 +1165,7 @@ public class ArticleQueryService {
      * <li>generates article heat</li>
      * <li>generates article view count display format(1k+/1.5k+...)</li>
      * <li>generates time ago text</li>
+     * <li>generates stick remains minutes</li>
      * </ul>
      *
      * @param article the specified article
@@ -1197,6 +1200,17 @@ public class ArticleQueryService {
         if (views >= 1) {
             final DecimalFormat df = new DecimalFormat("#.#");
             article.put(Article.ARTICLE_T_VIEW_CNT_DISPLAY_FORMAT, df.format(views) + "K");
+        }
+
+        final long stick = article.optLong(Article.ARTICLE_STICK);
+        long expired = 0L;
+        if (stick > 0) {
+            expired = stick + Symphonys.getLong("stickArticleTime");
+            final long remainsMills = Math.abs(System.currentTimeMillis() - expired);
+
+            article.put(Article.ARTICLE_T_STICK_REMAINS, (int) Math.floor((double) remainsMills / 1000 / 60));
+        } else {
+            article.put(Article.ARTICLE_T_STICK_REMAINS, 0);
         }
     }
 

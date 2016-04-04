@@ -98,6 +98,7 @@ import org.json.JSONObject;
  * <li>Markdowns text (/markdown), POST</li>
  * <li>Rewards an article (/article/reward), POST</li>
  * <li>Gets an article preview content (/article/{articleId}/preview), GET</li>
+ * <li>Sticks an article (/article/stick), POST</li>
  * </ul>
  *
  * <p>
@@ -106,7 +107,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.12.27, Mar 31, 2016
+ * @version 1.16.12.27, Apr 2, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -481,6 +482,10 @@ public class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Common.ARTICLE_COMMENTS_PAGE_SIZE, pageSize);
+        
+        String stickConfirmLabel =langPropsService.get("stickConfirmLabel");
+        stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
+        dataModel.put("stickConfirmLabel", stickConfirmLabel);
     }
 
     /**
@@ -1235,5 +1240,83 @@ public class ArticleProcessor {
 
         context.renderTrueResult().
                 renderJSONValue(Article.ARTICLE_REWARD_CONTENT, article.optString(Article.ARTICLE_REWARD_CONTENT));
+    }
+
+    /**
+     * Sticks an article.
+     *
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @param context the specified HTTP request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/article/stick", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void stickArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        if (Strings.isEmptyOrNull(articleId)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+
+            return;
+        }
+
+        final JSONObject article = articleQueryService.getArticle(articleId);
+        if (null == article) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
+        if (!currentUser.optString(Keys.OBJECT_ID).equals(article.optString(Article.ARTICLE_AUTHOR_ID))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        context.renderJSON();
+        
+        try {
+            articleMgmtService.stick(articleId);
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+
+            return;
+        }
+
+        context.renderTrueResult().renderMsg(langPropsService.get("stickSuccLabel"));
+    }
+    
+     /**
+     * Expires a sticked article.
+     *
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @param context the specified HTTP request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/cron/article/stick-expire", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void expireStickArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final String key = Symphonys.get("keyOfSymphony");
+        if (!key.equals(request.getParameter("key"))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+        
+        articleMgmtService.expireStick();
+        
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 }

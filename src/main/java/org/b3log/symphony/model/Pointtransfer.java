@@ -21,7 +21,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines all pointtransfer model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.1.0, Mar 22, 2016
+ * @version 1.13.1.0, Apr 2, 2016
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -232,6 +232,16 @@ public final class Pointtransfer {
      * Transfer type - Activity - Yesterday Liveness Reward Income.
      */
     public static final int TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD = 18;
+
+    /**
+     * Transfer type - Stick Article.
+     */
+    public static final int TRANSFER_TYPE_C_STICK_ARTICLE = 19;
+
+    /**
+     * Transfer sum - Stick Article.
+     */
+    public static final int TRANSFER_SUM_C_STICK_ARTICLE = Symphonys.getInt("pointStickArticle");
 
     /**
      * Private constructor.
