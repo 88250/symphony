@@ -22,8 +22,8 @@
                         <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark"
                            href="${article.articlePermalink}">${article.articleTitleEmoj}
                         </a>
-                        <#if articleStickCheck??>&nbsp;
-                        <sup><span class="ft-smaller ft-red stick-remains fn-none">${stickLabel}${remainsLabel} ${article.articleStickRemains?c} ${minuteLabel}</span></sup>
+                        <#if articleStickCheck??>
+                        <span class="ft-smaller ft-red stick-remains fn-none">${stickLabel}${remainsLabel} ${article.articleStickRemains?c} ${minuteLabel}</span>
                         </#if>
                     </h2>
                     <#list article.articleTags?split(",") as articleTag>

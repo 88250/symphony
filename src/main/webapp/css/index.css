@@ -66,11 +66,6 @@
     border-radius: 3px;
 }
 
-#stick {
-    padding: 3px 3px 0;
-    border-radius: 3px;
-}
-
 #heatBar {
     position: fixed;
     top: 2px;
@@ -295,6 +290,10 @@
 /* start article list */
 .article-list li.stick {
     background-color: #F7F7F7;
+}
+
+.article-list li.stick .stick-remains {
+    vertical-align: top;
 }
 
 .article-list li.stick:hover .stick-remains {

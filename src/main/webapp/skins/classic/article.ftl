@@ -88,13 +88,11 @@
                             <#if article.isMyArticle && 3 != article.articleType>
                             &nbsp;
                             <a href="/update?id=${article.oId}" title="${editLabel}" class="icon-edit"></a>
-                            &nbsp;
                             </#if>
                             <#if article.isMyArticle>
-                            <span id="stick" class="fn-pointer" title="${stickLabel}" onclick="Article.stick('${article.oId}')">
-                                <span class="icon-chevron-up" ></span>
-                            </span>
                             &nbsp;
+                            <a class="icon-chevron-up" title="${stickLabel}" 
+                               href="javascript:Article.stick('${article.oId}')"></a>
                             </#if>
                             <#if isAdminLoggedIn>
                             &nbsp;
