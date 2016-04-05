@@ -48,7 +48,7 @@
                         <li>
                             <span>
                                 <#if relatedTag.tagIconPath != "">
-                                <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" /></#if><a rel="tag" href="/tags/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
+                                <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" /></#if><a rel="tag" href="/tag/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
                             </span>
                             <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
                                 <div>${relatedTag.tagDescription}</div>
