@@ -167,7 +167,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
 
             cc = cc.replace("@participants ",
-                    "@<a href='https://hacpai.com/article/1458053458339'>participants</a> ");
+                    "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
 
             chData.put(Comment.COMMENT_CONTENT, cc);
 
