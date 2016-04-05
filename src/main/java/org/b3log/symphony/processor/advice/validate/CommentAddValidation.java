@@ -31,13 +31,14 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
 
 /**
  * Validates for comment adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Apr 3, 2015
+ * @version 1.2.0.1, Apr 5, 2016
  */
 @Named
 @Singleton
@@ -54,6 +55,12 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
 
     /**
      * Max comment content length.
@@ -75,6 +82,10 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
         final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
         if (Strings.isEmptyOrNull(commentContent) || commentContent.length() > MAX_COMMENT_CONTENT_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentErrorLabel")));
+        }
+
+        if (optionQueryService.containReservedWord(commentContent)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
         }
 
         try {
