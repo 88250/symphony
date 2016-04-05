@@ -60,7 +60,7 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](https://hacpai
 
 * 文章：普通的帖子，注重作者分享经验和见解
 * 思绪：记录写作过程，实例请看[这里](https://hacpai.com/article/1442568741454)
-* 讨论组：邀请好友进行私密交流，其他用户看不到具体内容和评论
+* 小黑屋：邀请好友进行私密交流，其他用户看不到具体内容和评论
 * 同城广播：发起你所在城市的招聘、Meetup 等
 
 ![发布选择](https://cloud.githubusercontent.com/assets/873584/10239716/6ebcf5f8-6904-11e5-9f7c-e16cd5afe0ac.png)

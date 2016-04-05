@@ -107,7 +107,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.16.12.27, Apr 2, 2016
+ * @version 1.16.13.27, Apr 5, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -562,7 +562,7 @@ public class ArticleProcessor {
             }
 
             if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType && StringUtils.isBlank(articleTags)) {
-                articleTags = "讨论组";
+                articleTags = "小黑屋";
             }
 
             if (Article.ARTICLE_TYPE_C_THOUGHT == articleType && StringUtils.isBlank(articleTags)) {
@@ -737,7 +737,7 @@ public class ArticleProcessor {
         }
 
         if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType && StringUtils.isBlank(articleTags)) {
-            articleTags = "讨论组";
+            articleTags = "小黑屋";
         }
 
         if (Article.ARTICLE_TYPE_C_THOUGHT == articleType && StringUtils.isBlank(articleTags)) {

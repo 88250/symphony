@@ -49,7 +49,6 @@
         </#list>
     </ul>
 </div>
-
 <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>

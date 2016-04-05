@@ -39,7 +39,7 @@
                                value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
                         <br/><br/>
                     </div>
-                    <button id="showReward" onclick="$(this).next().show();$(this).hide()">
+                    <button id="showReward" onclick="$(this).next().show(); $(this).hide()">
                         ${rewardEditorPlaceholderLabel} &dtrif;
                     </button>
                     <div class="fn-none">
@@ -50,7 +50,7 @@
                         <div>
                             <input id="articleRewardPoint" type="number" tabindex="5" min="1"
                                    value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" />
-                                   <br/><br/>
+                            <br/><br/>
                         </div>
                     </div>
                     <div class="tip" id="addArticleTip"></div>
@@ -94,11 +94,11 @@
                             <#elseif 3 == articleType>
                             <span class="icon-video"></span> ${thoughtLabel}
                             <span class="ft-gray">(写作过程的记录与重放，文字版的<span class="ft-red">沙画</span>表演
-                                    <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a>)</span>
+                                <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a>)</span>
                             </#if>
                         </div>
-                        
-                        <button class="red fn-right" tabindex="10" onclick="AddArticle.add(<#if article??>'${article.oId}'<#else>null</#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
+
+                        <button class="red fn-right" tabindex="10" onclick="AddArticle.add( < #if article?? > '${article.oId}' < # else > null < /#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
                     </div>
                     <br/>
                 </div>

@@ -178,7 +178,7 @@ var AddArticle = {
             var username = getParameterByName("at");
             $("#articleTitle").val("Hi, " + username);
 
-            var tagTitles = "讨论组";
+            var tagTitles = "小黑屋";
             var tags = getParameterByName("tags");
             if ("" !== tags) {
                 tagTitles += "," + tags;
