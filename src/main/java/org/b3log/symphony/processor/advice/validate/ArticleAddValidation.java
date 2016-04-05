@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -46,7 +48,7 @@ import org.json.JSONObject;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.7, Mar 18, 2016
+ * @version 1.3.3.7, Apr 5, 2016
  * @since 0.2.0
  */
 @Named
@@ -105,12 +107,17 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
         final TagQueryService tagQueryService = beanManager.getReference(TagQueryService.class);
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
 
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
         articleTitle = StringUtils.trim(articleTitle);
         if (Strings.isEmptyOrNull(articleTitle) || articleTitle.length() > MAX_ARTICLE_TITLE_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("articleTitleErrorLabel")));
         }
+        if (optionQueryService.containReservedWord(articleTitle)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+        }
+
         requestJSONObject.put(Article.ARTICLE_TITLE, articleTitle);
 
         final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE);
@@ -120,6 +127,10 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
 
         String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
         articleTags = Tag.formatTags(articleTags);
+
+        if (optionQueryService.containReservedWord(articleTags)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
+        }
 
         if (StringUtils.isNotBlank(articleTags)) {
             String[] tagTitles = articleTags.split(",");
@@ -169,6 +180,10 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
                 || articleContent.length() < MIN_ARTICLE_CONTENT_LENGTH) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG,
                     langPropsService.get("articleContentErrorLabel")));
+        }
+
+        if (optionQueryService.containReservedWord(articleContent)) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("contentContainReservedWordLabel")));
         }
 
         final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);

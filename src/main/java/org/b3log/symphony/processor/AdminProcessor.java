@@ -111,7 +111,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.13.2.2, Mar 31, 2016
+ * @version 2.14.2.2, Apr 5, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -233,6 +233,183 @@ public class AdminProcessor {
      * Pagination page size.
      */
     private static final int PAGE_SIZE = 20;
+
+    /**
+     * Adds a reserved word.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/add-reserved-word", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void addReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        String word = request.getParameter(Common.WORD);
+        word = StringUtils.trim(word);
+        if (StringUtils.isBlank(word)) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, langPropsService.get("invalidReservedWordLabel"));
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        if (optionQueryService.existReservedWord(word)) {
+            response.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
+
+            return;
+        }
+
+        try {
+            final JSONObject reservedWord = new JSONObject();
+            reservedWord.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_RESERVED_WORDS);
+            reservedWord.put(Option.OPTION_VALUE, word);
+
+            optionMgmtService.addOption(reservedWord);
+        } catch (final Exception e) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, e.getMessage());
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
+    }
+
+    /**
+     * Shows add reserved word.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/add-reserved-word", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showAddReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/add-reserved-word.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Updates a reserved word.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param id the specified reserved wordid
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/reserved-word/{id}", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void updateReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String id) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/reserved-word.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject word = optionQueryService.getOption(id);
+        dataModel.put(Common.WORD, word);
+
+        final Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            final String name = parameterNames.nextElement();
+            final String value = request.getParameter(name);
+
+            word.put(name, value);
+        }
+
+        optionMgmtService.updateOption(id, word);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows reserved words.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/reserved-words", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showReservedWords(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/reserved-words.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModel.put(Common.WORDS, optionQueryService.getReservedWords());
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows a reserved word.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param id the specified reserved word id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/reserved-word/{id}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String id) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/reserved-word.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject word = optionQueryService.getOption(id);
+        dataModel.put(Common.WORD, word);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Removes a reserved word.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/remove-reserved-word", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void removeReservedWord(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String id = request.getParameter("id");
+        optionMgmtService.removeOption(id);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/reserved-words");
+    }
 
     /**
      * Removes a comment.

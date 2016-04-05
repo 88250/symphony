@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.2, Mar 14, 2016
+ * @version 2.3.0.2, Apr 5, 2016
  * @since 0.2.0
  */
 public final class Option {
@@ -100,6 +100,11 @@ public final class Option {
      * Miscellaneous.
      */
     public static final String CATEGORY_C_MISC = "misc";
+    
+    /**
+     * Reserved words.
+     */
+    public static final String CATEGORY_C_RESERVED_WORDS = "reserved-words";
 
     /**
      * Private constructor.

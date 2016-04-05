@@ -17,9 +17,11 @@ package org.b3log.symphony.service;
 
 import java.util.List;
 import javax.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -45,7 +47,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.4, Feb 16, 2016
+ * @version 1.3.0.4, Apr 5, 2016
  * @since 0.2.0
  */
 @Service
@@ -129,6 +131,74 @@ public class OptionQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets statistic failed", e);
             throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Checks whether the specified content contains reserved words.
+     *
+     * @param content the specified content
+     * @return {@code true} if it contains reserved words, returns {@code false} otherwise
+     */
+    public boolean containReservedWord(final String content) {
+        if (StringUtils.isBlank(content)) {
+            return false;
+        }
+
+        try {
+            final List<JSONObject> reservedWords = getReservedWords();
+
+            for (final JSONObject reservedWord : reservedWords) {
+                if (content.contains(reservedWord.optString(Option.OPTION_VALUE))) {
+                    return true;
+                }
+            }
+
+            return false;
+        } catch (final Exception e) {
+            return true;
+        }
+    }
+
+    /**
+     * Gets the reserved words.
+     *
+     * @return reserved words
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getReservedWords() throws ServiceException {
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_RESERVED_WORDS));
+        try {
+            final JSONObject result = optionRepository.get(query);
+            final JSONArray options = result.optJSONArray(Keys.RESULTS);
+
+            return CollectionUtils.jsonArrayToList(options);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets reserved words failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Checks whether the specified word is a reserved word.
+     *
+     * @param word the specified word
+     * @return {@code true} if it is a reserved word, returns {@code false} otherwise
+     */
+    public boolean existReservedWord(final String word) {
+        final Query query = new Query().
+                setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Option.OPTION_VALUE, FilterOperator.EQUAL, word),
+                        new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_RESERVED_WORDS)
+                ));
+        try {
+            return optionRepository.count(query) > 0;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Checks reserved word failed", e);
+
+            return true;
         }
     }
 

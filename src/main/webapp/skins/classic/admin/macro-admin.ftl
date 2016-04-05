@@ -27,6 +27,12 @@
         <#if type == "tags">
         <@head title="${tagAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "reservedWords">
+        <@head title="${reservedWordAdminLabel} - ${symphonyLabel}"></@head>
+        </#if>
+        <#if type == "addReservedWord">
+        <@head title="${allReservedWordLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <#if type == "misc">
         <@head title="${miscAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
@@ -44,6 +50,7 @@
                         <li<#if type == "comments"> class="current"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
                         <li<#if type == "domains" || type == "addDomain"> class="current"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
                         <li<#if type == "tags"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
+                        <li<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>><a href="/admin/reserved-words">${reservedWordAdminLabel}</a></li>
                         <li<#if type == "misc"> class="current"</#if>><a href="/admin/misc">${miscAdminLabel}</a></li>
                     </ul>
                     <br/>
@@ -57,6 +64,7 @@
                         <li<#if type == "comments"> class="current"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
                         <li<#if type == "domains" || type == "addDomain"> class="current"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
                         <li<#if type == "tags"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
+                        <li<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>><a href="/admin/reserved-words">${reservedWordAdminLabel}</a></li>
                         <li<#if type == "misc"> class="current"</#if>><a href="/admin/misc">${miscAdminLabel}</a></li>
                     </ul>
                 </div>
