@@ -98,7 +98,7 @@
                             </#if>
                         </div>
 
-                        <button class="red fn-right" tabindex="10" onclick="AddArticle.add( < #if article?? > '${article.oId}' < # else > null < /#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
+                        <button class="red fn-right" tabindex="10" onclick="AddArticle.add(<#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
                     </div>
                     <br/>
                 </div>
