@@ -116,6 +116,7 @@ var Util = {
             if (tok.string.indexOf('@') !== 0) {
                 return false;
             }
+            
             $.ajax({
                 async: false,
                 url: "/users/names?name=" + tok.string.substring(1),
@@ -135,6 +136,14 @@ var Util = {
                             displayText: "<span style='font-size: 1rem;line-height:22px'><img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='" + avatar
                                     + "-64.jpg?" + updateTime + "'> " + name + "</span>",
                             text: name + " "
+                        });
+                    }
+                    
+                    if ('comment' === cm['for']) {
+                         autocompleteHints.push({
+                            displayText: "<span style='font-size: 1rem;line-height:22px'>"
+                            + "<img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='/images/user-thumbnail.png'> @参与者</span>",
+                            text: "participants "
                         });
                     }
                 }
