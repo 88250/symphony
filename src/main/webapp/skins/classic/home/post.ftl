@@ -39,7 +39,7 @@
                                value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
                         <br/><br/>
                     </div>
-                    <button id="showReward" onclick="$(this).next().show(); $(this).hide()">
+                    <button id="showReward" class="fn-ellipsis" onclick="$(this).next().show(); $(this).hide()">
                         ${rewardEditorPlaceholderLabel} &dtrif;
                     </button>
                     <div class="fn-none">
@@ -50,9 +50,9 @@
                         <div>
                             <input id="articleRewardPoint" type="number" tabindex="5" min="1"
                                    value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" />
-                            <br/><br/>
                         </div>
                     </div>
+                    <br/>
                     <div class="tip" id="addArticleTip"></div>
                     <div class="fn-clear fn-none">
                         <#if !article??>

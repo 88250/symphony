@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.4, Apri 6, 2016
+ * @version 1.5.6.4, Apr 6, 2016
  */
 
 /**
