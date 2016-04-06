@@ -171,7 +171,7 @@
                             </div>
                             <ul>
                                 <#list article.articleComments as comment>
-                                <li id="${comment.oId}">
+                                <li id="${comment.oId}"<#if comment.commentStatus == 1>class="shield"</#if>>
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <a rel="nofollow" href="/member/${comment.commentAuthorName}">
