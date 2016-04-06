@@ -46,8 +46,7 @@
         </div>
         <#include "../footer.ftl">
         <script>
-            var browser = Util.isMobile(true);
-            if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+            if ($.ua.device.type === 'mobile') {
                 $('.pre-post > div:last').hide();
             }   
         </script>

@@ -158,6 +158,10 @@
     .nav .user-nav {
         width: 100%;
     }
+    
+    .content {
+        max-width: 100%;
+    }
 
     .article-title,
     .tag-articles .content > .fn-flex,

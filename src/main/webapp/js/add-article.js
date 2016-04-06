@@ -103,8 +103,7 @@ var AddArticle = {
      * @description 初识化发文
      */
     init: function () {
-        var browser = Util.isMobile(true);
-        if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+        if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             $('#articleType3').hide();
             AddArticle.editor = Util.initTextarea('articleContent',
                     function (editor) {
@@ -194,7 +193,7 @@ var AddArticle = {
         if ($("#articleTitle").val().length <= 0) {
             $("#articleTitle").focus();
         }
-        if (!browser.mobile || !(browser.iPhone || browser.iPad || browser.windowsPhone)) {
+        if ($.ua.device.type !== 'mobile' || ($.ua.device.vendor !== 'Apple' && $.ua.device.vendor !== 'Nokia')) {
             AddArticle.editor.on('keydown', function (cm, evt) {
                 if (8 === evt.keyCode) {
                     var cursor = cm.getCursor();
@@ -282,7 +281,7 @@ var AddArticle = {
             readOnly = 'nocursor';
         }
 
-        if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+        if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             AddArticle.rewardEditor = Util.initTextarea('articleRewardContent');
             $('#articleRewardContent').prop('readOnly', readOnly);
             if (readOnly === false) {

@@ -38,6 +38,23 @@ var Comment = {
 
         window.location.href = window.location.pathname + "?m=" + mode;
     },
+    /**
+     * 设置评论来源
+     * @returns {Boolean}
+     */
+    _setCmtVia: function () {
+        $('.cmt-via').each(function () {
+            var ua = $(this).data('ua'),
+            name = Util.getDeviceByUa(ua);
+            if (name !== '') {
+                $(this).html('via ' + name);
+            }
+        });
+    },
+    /**
+     * 评论初始化
+     * @returns {Boolean}
+     */
     init: function () {
         $("#comments").on('dblclick', 'img', function () {
             window.open($(this).attr('src'));
@@ -47,8 +64,7 @@ var Comment = {
             return false;
         }
 
-        var browser = Util.isMobile(true);
-        if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+        if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             $('#commentContent').before('<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
                     + Label.uploadLabel + '<input type="file"/></label></form>')
                     .css('margin', 0);
@@ -118,7 +134,7 @@ var Comment = {
             }
         }
 
-        if (browser.mobile && (browser.iPhone || browser.iPad || browser.windowsPhone)) {
+        if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             return false;
         }
 
@@ -167,6 +183,8 @@ var Comment = {
                 }
             }
         });
+        
+        this._setCmtVia();
     },
     /**
      * @description 感谢.

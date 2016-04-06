@@ -28,6 +28,19 @@
  */
 var Util = {
     /**
+     * 通过 UA 获取设备 
+     * @param {String} ua user agent
+     * @returns {String} 设备
+     */
+    getDeviceByUa: function (ua) {
+        $.ua.set(ua);
+        var name = $.ua.device.model ? $.ua.device.model : $.ua.os.name;
+        if (name === 'Windows') {
+            name = '';
+        }
+        return name;
+    },
+    /**
      * 初始化 algolia 搜索
      * @returns {undefined}
      */
@@ -327,41 +340,10 @@ var Util = {
         }
     },
     /**
-     * 是否为移动端
-     * @returns {Boolean}
-     */
-    isMobile: function (get) {
-        var u = navigator.userAgent;
-        var browser = {//移动终端浏览器版本信息
-            windowsPhone: u.indexOf('IEMobile') > -1, //手机版IE内核
-            trident: u.indexOf('Trident') > -1, //IE内核
-            presto: u.indexOf('Presto') > -1, //opera内核
-            webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-            gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') === -1, //火狐内核
-            mobile: !!u.match(/AppleWebKit.*Mobile.*/) || !!u.match(/AppleWebKit/) || !!u.match(/IEMobile/), //是否为移动终端
-            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-            android: u.indexOf('Android') > -1 || u.indexOf('UCBrowser') > -1, //android终端或者uc浏览器
-            iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
-            iPad: u.indexOf('iPad') > -1, //是否iPad
-            webApp: u.indexOf('Safari') === -1 //是否web应该程序，没有头部与底部
-        };
-        if (get) {
-            return browser;
-        }
-        if (browser.mobile) {
-            if (browser.android || browser.iPhone || browser.iPad || browser.windowsPhone) {
-                return true;
-            }
-            return false;
-        }
-        return false;
-
-    },
-    /**
      * @description 鼠标移动到文章列表标题上时，显示其开头内容
      */
     initArticlePreview: function () {
-        if (Util.isMobile()) {
+        if ($.ua.device.type === 'mobile') {
             $('.commenters').remove();
             $('.cmts').css('display', 'inline-block');
             return false;
