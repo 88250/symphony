@@ -78,7 +78,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.11.7, Mar 11, 2016
+ * @version 1.11.12.7, Apr 6, 2016
  * @since 0.2.0
  */
 @Service
@@ -564,7 +564,7 @@ public class UserMgmtService {
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Generates avatar error", e);
 
-                    user.put(UserExt.USER_AVATAR_URL, "");
+                    user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
                 }
 
                 final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
