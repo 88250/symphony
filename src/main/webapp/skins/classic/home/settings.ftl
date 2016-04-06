@@ -12,7 +12,7 @@
         <input id="userTags" type="text" value="${currentUser.userTags}" placeholder="${selfDescriptionLabel}"/>
 
         <label>URL</label><br/>
-        <input id="userURL" type="text" value="${currentUser.userURL}"/>
+        <input id="userURL" type="text" value="${currentUser.userURL}" placeholder="${selfURLLabel}"/>
 
         <!--
         <label>QQ</label><br/>
@@ -20,7 +20,7 @@
         -->
 
         <label>${userIntroLabel}</label><br/>
-        <textarea id="userIntro">${currentUser.userIntro}</textarea>
+        <textarea id="userIntro" placeholder="${selfIntroLabel}">${currentUser.userIntro}</textarea>
 
         <label>${commentViewModeLabel}</label><br/>
         <select id="userCommentViewMode" name="userCommentViewMode">
