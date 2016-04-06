@@ -126,10 +126,8 @@
 .tab > li {
     border: 1px solid transparent;
     border-bottom: 0;
-    cursor: pointer;
     float: left;
     list-style: none outside none;
-    padding: 8px;
     margin-bottom: -1px;
 }
 
@@ -145,6 +143,8 @@
     color: #666666;
     line-height: 20px;
     text-decoration: none;
+    padding: 8px;
+    display: block;
 }
 /* end home */
 
