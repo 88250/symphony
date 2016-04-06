@@ -131,13 +131,13 @@
     margin: 20px 0 0;
 }
 
-#comments > div.comment-header > .icon-chevron-down {
+#comments > div.comment-header .icon-chevron-down {
     margin: 0px 10px 0 0;
     font-size: 24px;
 }
 
-#comments > div.comment-header > .icon-sortasc,
-#comments > div.comment-header > .icon-time {
+#comments > div.comment-header .icon-sortasc,
+#comments > div.comment-header .icon-time {
     font-size: 16px;
     font-weight: bold;
     margin: 4px 10px 0 0;

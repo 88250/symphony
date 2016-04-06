@@ -163,11 +163,11 @@
                         <div class="list" id="comments">
                             <div class="fn-clear comment-header">
                                 <h2 class="fn-left">${article.articleCommentCount} ${cmtLabel}</h2>
-                                <#if article.articleComments?size gt 0>
-                                <a class="icon-chevron-down fn-right" href="#bottomComment" title="${jumpToBottomCommentLabel}"></a>
-                                <a class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if> fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
-                                   title="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"></a>
-                                </#if>
+                                <span<#if article.articleComments?size == 0> class="fn-none"</#if>>
+                                    <a class="icon-chevron-down fn-right" href="#bottomComment" title="${jumpToBottomCommentLabel}"></a>
+                                    <a class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if> fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
+                                       title="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"></a>
+                                </span>
                             </div>
                             <ul>
                                 <#list article.articleComments as comment>

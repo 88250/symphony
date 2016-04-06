@@ -249,10 +249,16 @@ var Comment = {
 
                 if (result.sc) {
                     Comment.editor.setValue('');
+                    // reset comment editor
                     $('.editor-preview').html('');
                     if ($('.icon-preview').hasClass('active')) {
                         $('.icon-preview').click();
                     }
+                    // first comment, pls add icon
+                    if ($('#comments > ul li').length === 0) {
+                        $('#comments > div > span').show();
+                    }
+                    
                     if (window.localStorage) {
                         var emptyContent = {
                             commentContent: ""
