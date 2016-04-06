@@ -74,6 +74,10 @@
     width: 100%;
 }
 
+#articltVia {
+    margin: 21px 0 0 10px;
+}
+
 .article-title {
     margin: 10px 0;
 }

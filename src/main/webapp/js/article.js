@@ -45,7 +45,7 @@ var Comment = {
     _setCmtVia: function () {
         $('.cmt-via').each(function () {
             var ua = $(this).data('ua'),
-            name = Util.getDeviceByUa(ua);
+                    name = Util.getDeviceByUa(ua);
             if (name !== '') {
                 $(this).html('via ' + name);
             }
@@ -183,7 +183,7 @@ var Comment = {
                 }
             }
         });
-        
+
         this._setCmtVia();
     },
     /**
@@ -276,7 +276,7 @@ var Comment = {
                     if ($('#comments > ul li').length === 0) {
                         $('#comments > div > span').show();
                     }
-                    
+
                     if (window.localStorage) {
                         var emptyContent = {
                             commentContent: ""
@@ -327,6 +327,13 @@ var Article = {
             }
             window.open($(this).attr('src'));
         });
+
+        var ua = $('#articltVia').data('ua'),
+                name = Util.getDeviceByUa(ua);
+        if (name !== '') {
+            $('#articltVia').text('via ' + name);
+        }
+
     },
     /**
      * @description 分享按钮

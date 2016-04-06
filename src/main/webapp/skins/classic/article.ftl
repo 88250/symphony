@@ -109,6 +109,7 @@
                     </#if>
 
                     <div class="fn-clear">
+                        <span id="articltVia" data-ua="${article.articleUA}" class="ft-gray ft-smaller fn-right"></span>
                         <div class="share fn-right">
                             <span class="icon-tencent" data-type="tencent"></span>
                             <span class="icon-weibo" data-type="weibo"></span>

@@ -102,7 +102,9 @@ var ArticleChannel = {
                     template = replaceAll(template, "${comment.thankLabel}", data.thankLabel);
                     template = replaceAll(template, "${comment.thankedLabel}", data.thankedLabel);
                     template = replaceAll(template, "${comment.commentThankLabel}", data.commentThankLabel);
-
+                    
+                    // TODO: add data.commentUA
+                    
                     $("#comments > ul").prepend(template);
 
                     $("#comments > ul > li:first").linkify();
