@@ -179,12 +179,12 @@ public final class Article {
      * Key of article stick check.
      */
     public static final String ARTICLE_T_STICK_CHECK = "articleStickCheck";
-    
+
     /**
      * Key of article stick flag.
      */
     public static final String ARTICLE_T_IS_STICK = "articleIsStick";
-    
+
     /**
      * Key of article stick remains.
      */

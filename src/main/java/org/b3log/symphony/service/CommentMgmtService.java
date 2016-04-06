@@ -361,9 +361,9 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_STATUS, Comment.COMMENT_STATUS_C_VALID);
             comment.put(Comment.COMMENT_IP, ip);
 
-            if (StringUtils.length(ua) > 128) {
+            if (StringUtils.length(ua) > Common.MAX_LENGTH_UA) {
                 LOGGER.log(Level.WARN, "UA is too long [" + ua + "]");
-                ua = StringUtils.substring(ua, 0, 128);
+                ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
             }
             comment.put(Comment.COMMENT_UA, ua);
 

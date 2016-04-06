@@ -19,16 +19,21 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.30.1.11, Apr 5, 2016
+ * @version 1.31.1.11, Apr 6, 2016
  * @since 0.2.0
  */
 public final class Common {
-    
+
+    /**
+     * Max length of UA.
+     */
+    public static final int MAX_LENGTH_UA = 255;
+
     /**
      * Key of words.
      */
     public static final String WORDS = "words";
-    
+
     /**
      * Key of word.
      */
@@ -198,7 +203,7 @@ public final class Common {
      * Key of is daily checkin.
      */
     public static final String IS_DAILY_CHECKIN = "isDailyCheckin";
-    
+
     /**
      * Key of use captcha checkin.
      */

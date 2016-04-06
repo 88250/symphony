@@ -467,8 +467,8 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_IP, ip);
 
             String ua = requestJSONObject.optString(Article.ARTICLE_UA);
-            if (StringUtils.length(ua) > 128) {
-                ua = StringUtils.substring(ua, 0, 128);
+            if (StringUtils.length(ua) > Common.MAX_LENGTH_UA) {
+                ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
             }
             article.put(Article.ARTICLE_UA, ua);
 
@@ -651,8 +651,8 @@ public class ArticleMgmtService {
             oldArticle.put(Article.ARTICLE_IP, ip);
 
             String ua = requestJSONObject.optString(Article.ARTICLE_UA);
-            if (StringUtils.length(ua) > 128) {
-                ua = StringUtils.substring(ua, 0, 128);
+            if (StringUtils.length(ua) > Common.MAX_LENGTH_UA) {
+                ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
             }
             oldArticle.put(Article.ARTICLE_UA, ua);
 
