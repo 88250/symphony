@@ -35,12 +35,14 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
@@ -54,7 +56,7 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.4.12, Feb 26, 2016
+ * @version 1.5.4.12, Apr 5, 2016
  * @since 0.2.0
  */
 @Named
@@ -107,6 +109,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     @Inject
     private TimelineMgmtService timelineMgmtService;
 
+    /**
+     * Pointtransfer management service.
+     */
+    @Inject
+    private PointtransferMgmtService pointtransferMgmtService;
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
@@ -157,10 +165,10 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             } catch (final ServiceException e) {
                 LOGGER.log(Level.ERROR, "Generates @username home URL for comment content failed", e);
             }
-            
+
             cc = cc.replace("@participants ",
-                    "@<a href='https://hacpai.com/article/1458053458339'>participants</a> ");
-            
+                    "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
+
             chData.put(Comment.COMMENT_CONTENT, cc);
 
             ArticleChannel.notifyComment(chData);
@@ -198,9 +206,20 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final boolean commenterIsArticleAuthor = articleAuthorId.equals(commenterId);
 
             // 1. '@participants' Notification
-            if (commentContent.contains("@participants ") && commenterIsArticleAuthor) {
+            if (commentContent.contains("@participants ")) {
                 final List<JSONObject> participants
                         = articleQueryService.getArticleLatestParticipants(articleId, Integer.MAX_VALUE);
+                final int count = participants.size();
+                if (count < 1) {
+                    return;
+                }
+
+                final int sum = count * Pointtransfer.TRANSFER_SUM_C_AT_PARTICIPANTS;
+                final boolean succ = null != pointtransferMgmtService.transfer(commenterId, Pointtransfer.ID_C_SYS,
+                        Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS, sum, commentId);
+                if (!succ) {
+                    return;
+                }
 
                 for (final JSONObject participant : participants) {
                     final String participantId = participant.optString(Keys.OBJECT_ID);

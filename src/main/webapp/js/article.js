@@ -94,6 +94,8 @@ var Comment = {
             });
             commentEditor.render();
 
+            commentEditor.codemirror['for'] = 'comment';
+
             Comment.editor = commentEditor.codemirror;
         }
 
@@ -367,7 +369,7 @@ var Article = {
                 cache: false,
                 success: function (result, textStatus) {
                     alert(result.msg);
-                    
+
                     window.location.href = "/";
                 }
             });
