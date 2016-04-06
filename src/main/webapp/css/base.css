@@ -1038,6 +1038,7 @@ a[class*=" icon-"]:hover {
     flex: 2.3;
     -webkit-box-flex: 2.3; 
     width: 70%;
+    max-width: 70%;
 }
 /* end framework */
 
