@@ -107,6 +107,51 @@ public class SearchMgmtService {
     }
 
     /**
+     * Rebuilds Algolia index.
+     */
+    public void rebuildAlgoliaIndex() {
+        int retries = 3;
+
+        while (retries > 0) {
+            try {
+                final String appId = Symphonys.get("algolia.appId");
+                final String index = Symphonys.get("algolia.index");
+                final String key = Symphonys.get("algolia.adminKey");
+
+                final HTTPRequest request = new HTTPRequest();
+                request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
+                request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
+                request.setRequestMethod(HTTPRequestMethod.POST);
+
+                request.setURL(new URL("https://" + appId + "-dsn.algolia.net/1/indexes/" + index + "/clear"));
+
+                final HTTPResponse response = URL_FETCH_SVC.fetch(request);
+                if (200 != response.getResponseCode()) {
+                    LOGGER.warn(response.toString());
+                }
+
+                break;
+            } catch (final UnknownHostException e) {
+                LOGGER.log(Level.ERROR, "Clear index failed [UnknownHostException]");
+
+                retries--;
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Clear index failed", e);
+
+                break;
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Sleep error", e);
+
+                break;
+            }
+        }
+    }
+
+    /**
      * Updates/Adds indexing the specified document in ES.
      *
      * @param doc the specified document

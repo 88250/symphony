@@ -1710,6 +1710,10 @@ public class AdminProcessor {
             searchMgmtService.rebuildESIndex();
         }
 
+        if (Symphonys.getBoolean("algolia.enabled")) {
+            searchMgmtService.rebuildAlgoliaIndex();
+        }
+
         final JSONObject stat = optionQueryService.getStatistic();
         final int articleCount = stat.optInt(Option.ID_C_STATISTIC_ARTICLE_COUNT);
         final int pages = (int) Math.ceil((double) articleCount / 50.0);
