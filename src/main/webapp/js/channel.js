@@ -64,6 +64,10 @@ var ArticleChannel = {
                     if ($('#comments > ul li').length === 0) {
                         bottomCmt = '<div id="bottomComment"></div>';
                     }
+                    var UAName = Util.getDeviceByUa(data.commentUA);
+                    if (UAName !== '') {
+                        UAName = ' <span class="cmt-via">via ' + UAName + '</span>';
+                    }
                     // Append comment
                     var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" + bottomCmt +
                             "<div class=\"fn-flex\">" +
@@ -76,7 +80,7 @@ var ArticleChannel = {
                             "<span class=\"fn-left\">" +
                             "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\"" +
                             "title=\"${comment.commentAuthorName}\">${comment.commentAuthorName}</a>" +
-                            "<span class=\"ft-fade ft-smaller\">&nbsp;•&nbsp;${comment.timeAgo}</span>" +
+                            "<span class=\"ft-fade ft-smaller\">&nbsp;•&nbsp;${comment.timeAgo}" + UAName + "</span>" +
                             "</span>" +
                             "<span class=\"fn-right\">" +
                             "<span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'" +
@@ -102,8 +106,6 @@ var ArticleChannel = {
                     template = replaceAll(template, "${comment.thankLabel}", data.thankLabel);
                     template = replaceAll(template, "${comment.thankedLabel}", data.thankedLabel);
                     template = replaceAll(template, "${comment.commentThankLabel}", data.commentThankLabel);
-                    
-                    // TODO: add data.commentUA
                     
                     $("#comments > ul").prepend(template);
 
