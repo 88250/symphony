@@ -16,6 +16,7 @@
 package org.b3log.symphony.event.other;
 
 import java.net.URL;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
@@ -41,7 +42,10 @@ import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ClientQueryService;
+import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Networks;
 import org.json.JSONObject;
 
@@ -49,7 +53,7 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.0, Mar 12, 2016
+ * @version 1.1.2.0, Apr 7, 2016
  * @since 1.4.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -93,6 +97,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
 
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+            final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
 
             final String authorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
             final JSONObject author = userQueryService.getUser(authorId);
@@ -126,8 +131,17 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject comment = new JSONObject();
 
+            final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
+            String cc = shortLinkQueryService.linkArticle(commentContent);
+            cc = shortLinkQueryService.linkTag(cc);
+            cc = Emotions.convert(cc);
+            comment.put(Common.CONTENT, cc); // Markdown format
+            cc = Markdowns.toHTML(cc);
+            cc = Markdowns.clean(cc, "");
+            comment.put(Common.CONTENT_HTML, cc); // HTML format
+            comment.put(Common.IP, originalComment.optString(Comment.COMMENT_IP));
+            comment.put(Common.UA, originalComment.optString(Comment.COMMENT_UA));
             comment.put(Article.ARTICLE_T_ID, originalArticle.optString(Article.ARTICLE_CLIENT_ARTICLE_ID));
-            comment.put(Common.CONTENT, originalComment.optString(Comment.COMMENT_CONTENT));
             comment.put(Common.AUTHOR_NAME, commenter.optString(User.USER_NAME));
             comment.put(Common.AUTHOR_EMAIL, commenter.optString(User.USER_EMAIL));
             comment.put(Common.AUTHOR_URL, commenter.optString(User.USER_URL));
