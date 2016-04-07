@@ -58,7 +58,7 @@ var ArticleChannel = {
                     if (0 === Label.userCommentViewMode) { // tranditional view mode
                         return;
                     }
-                    
+
                     $("#comments .comment-header h2").text((parseInt($("#comments .comment-header h2").text()) + 1) + ' ' + Label.cmtLabel);
                     var bottomCmt = '';
                     if ($('#comments > ul li').length === 0) {
@@ -76,7 +76,8 @@ var ArticleChannel = {
                             "<span class=\"fn-left\">" +
                             "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\"" +
                             "title=\"${comment.commentAuthorName}\">${comment.commentAuthorName}</a>" +
-                            "<span class=\"ft-fade ft-smaller\">&nbsp;•&nbsp;${comment.timeAgo}</span>" +
+                            "<span class=\"ft-fade ft-smaller\">&nbsp;•&nbsp;${comment.timeAgo} " +
+                            "<span class=\"cmt-via\" data-ua=\"${comment.commentUA}\">${via}</span>" +
                             "</span>" +
                             "<span class=\"fn-right\">" +
                             "<span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'" +
@@ -102,9 +103,17 @@ var ArticleChannel = {
                     template = replaceAll(template, "${comment.thankLabel}", data.thankLabel);
                     template = replaceAll(template, "${comment.thankedLabel}", data.thankedLabel);
                     template = replaceAll(template, "${comment.commentThankLabel}", data.commentThankLabel);
+                    template = replaceAll(template, "${comment.commentUA}", data.commentUA);
                     
+                    var name = Util.getDeviceByUa(data.commentUA);
+                    if ('' !== name) {
+                        template = replaceAll(template, "${via}", 'via ' + name);
+                    } else {
+                        template = replaceAll(template, "${via}", '');
+                    }
+
                     // TODO: add data.commentUA
-                    
+
                     $("#comments > ul").prepend(template);
 
                     $("#comments > ul > li:first").linkify();

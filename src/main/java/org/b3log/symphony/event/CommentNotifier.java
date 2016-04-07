@@ -56,7 +56,7 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.12, Apr 5, 2016
+ * @version 1.5.4.13, Apr 7, 2016
  * @since 0.2.0
  */
 @Named
@@ -170,6 +170,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                     "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
 
             chData.put(Comment.COMMENT_CONTENT, cc);
+            chData.put(Comment.COMMENT_UA, originalComment.optString(Comment.COMMENT_UA));
 
             ArticleChannel.notifyComment(chData);
 
