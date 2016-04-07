@@ -64,6 +64,7 @@ var Comment = {
             return false;
         }
 
+        $.ua.set(navigator.userAgent);
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             $('#commentContent').before('<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
                     + Label.uploadLabel + '<input type="file"/></label></form>')

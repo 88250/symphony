@@ -103,6 +103,7 @@ var AddArticle = {
      * @description 初识化发文
      */
     init: function () {
+        $.ua.set(navigator.userAgent);
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             $('#articleType3').hide();
             AddArticle.editor = Util.initTextarea('articleContent',
