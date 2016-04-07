@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Mar 31, 2016
+ * @version 1.1.0.3, Apr 7, 2016
  * @since 1.4.0
  */
 @Service
@@ -132,6 +132,25 @@ public class SearchMgmtService {
     }
 
     /**
+     * Removes the specified document in ES.
+     *
+     * @param doc the specified document
+     * @param type the specified document type
+     */
+    public void removeESDocument(final JSONObject doc, final String type) {
+        final HTTPRequest request = new HTTPRequest();
+        request.setRequestMethod(HTTPRequestMethod.DELETE);
+
+        try {
+            request.setURL(new URL(ES_SERVER + "/" + ES_INDEX_NAME + "/" + type + "/" + doc.optString(Keys.OBJECT_ID)));
+
+            URL_FETCH_SVC.fetchAsync(request);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Updates doc failed", e);
+        }
+    }
+
+    /**
      * Updates/Adds indexing the specified document in Algolia.
      *
      * @param doc the specified document
@@ -167,6 +186,56 @@ public class SearchMgmtService {
                 retries--;
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Index failed", e);
+
+                break;
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Sleep error", e);
+
+                break;
+            }
+        }
+    }
+
+    /**
+     * Removes the specified document in Algolia.
+     *
+     * @param doc the specified document
+     */
+    public void removeAlgoliaDocument(final JSONObject doc) {
+        int retries = 3;
+
+        while (retries > 0) {
+            try {
+                final String appId = Symphonys.get("algolia.appId");
+                final String index = Symphonys.get("algolia.index");
+                final String key = Symphonys.get("algolia.adminKey");
+
+                final HTTPRequest request = new HTTPRequest();
+                request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
+                request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
+                request.setRequestMethod(HTTPRequestMethod.DELETE);
+
+                final String id = doc.optString(Keys.OBJECT_ID);
+                request.setURL(new URL("https://" + appId + "-dsn.algolia.net/1/indexes/" + index + "/" + id));
+
+                request.setPayload(doc.toString().getBytes("UTF-8"));
+
+                final HTTPResponse response = URL_FETCH_SVC.fetch(request);
+                if (200 != response.getResponseCode()) {
+                    LOGGER.warn(response.toString());
+                }
+
+                break;
+            } catch (final UnknownHostException e) {
+                LOGGER.log(Level.ERROR, "Remove object failed [UnknownHostException]");
+
+                retries--;
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Remove object failed", e);
 
                 break;
             }
