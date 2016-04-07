@@ -333,7 +333,6 @@ var Article = {
         if (name !== '') {
             $('#articltVia').text('via ' + name);
         }
-
     },
     /**
      * @description 分享按钮

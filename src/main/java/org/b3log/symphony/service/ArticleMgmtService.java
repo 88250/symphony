@@ -72,7 +72,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.8.19.13, Apr 2, 2016
+ * @version 2.8.19.14, Apr 7, 2016
  * @since 0.2.0
  */
 @Service
@@ -192,6 +192,12 @@ public class ArticleMgmtService {
     private LivenessMgmtService livenessMgmtService;
 
     /**
+     * Search management service.
+     */
+    @Inject
+    private SearchMgmtService searchMgmtService;
+
+    /**
      * Generate tag max count.
      */
     private static final int GEN_TAG_MAX_CNT = 4;
@@ -264,6 +270,14 @@ public class ArticleMgmtService {
             final JSONObject commentCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
             commentCntOption.put(Option.OPTION_VALUE, commentCntOption.optInt(Option.OPTION_VALUE) - commentCnt);
             optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, commentCntOption);
+
+            if (Symphonys.getBoolean("algolia.enabled")) {
+                searchMgmtService.removeAlgoliaDocument(article);
+            }
+
+            if (Symphonys.getBoolean("es.enabled")) {
+                searchMgmtService.removeESDocument(article, Article.ARTICLE);
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes an article error [id=" + articleId + "]", e);
         }

@@ -35,7 +35,8 @@ var Util = {
     getDeviceByUa: function (ua) {
         $.ua.set(ua);
         var name = $.ua.device.model ? $.ua.device.model : $.ua.os.name;
-        if (name === 'Windows') {
+        
+        if (!name || name === 'Windows') {
             name = '';
         }
         return name;
