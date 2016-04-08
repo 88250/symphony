@@ -59,7 +59,7 @@
                 <input type="text" id="articleTags" name="articleTags" value="${article.articleTags}" />
 
                 <label for="articleContent">${contentLabel}</label>
-                <textarea name="articleContent">${article.articleContent}</textarea>
+                <textarea name="articleContent" rows="28">${article.articleContent}</textarea>
 
                 <label for="articleRewardContent">${rewardContentLabel}</label>
                 <textarea name="articleRewardContent">${article.articleRewardContent}</textarea>
