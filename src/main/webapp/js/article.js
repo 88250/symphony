@@ -308,8 +308,11 @@ var Comment = {
      */
     replay: function (userName) {
         Comment.editor.focus();
+        if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
+            
+            return false;
+        }
         var cursor = Comment.editor.getCursor();
-
         Comment.editor.doc.replaceRange(userName, cursor, cursor);
     }
 };
