@@ -5,7 +5,8 @@
 <html>
     <head>
         <@head title="${domain.domainSeoTitle} - ${symphonyLabel}">
-        <meta name="description" content="${recentArticleLabel}"/>
+        <meta name="keywords" content="${domain.domainSeoKeywords}" />
+        <meta name="description" content="${domain.domainSeoDesc}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
