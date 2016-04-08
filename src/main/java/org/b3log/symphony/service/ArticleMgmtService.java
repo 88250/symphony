@@ -327,8 +327,9 @@ public class ArticleMgmtService {
      *     "articleAuthorId": "",
      *     "articleCommentable": boolean, // optional, default to true
      *     "syncWithSymphonyClient": boolean, // optional
-     *     "clientArticleId": "" // optional
-     *     "isBroadcast": boolean, // Client broadcast
+     *     "clientArticleId": "", // optional
+     *     "clientArticlePermalink": "", // optional
+     *     "isBroadcast": boolean, // Client broadcast, optional
      *     "articleType": int, // optional, default to 0
      *     "articleRewardContent": "", // optional, default to ""
      *     "articleRewardPoint": int, // optional, default to 0
@@ -407,6 +408,7 @@ public class ArticleMgmtService {
             article.put(Keys.OBJECT_ID, ret);
 
             final String clientArticleId = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_ID, ret);
+            final String clientArticlePermalink = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK);
             final boolean isBroadcast = requestJSONObject.optBoolean(Article.ARTICLE_T_IS_BROADCAST);
 
             articleTitle = Emotions.toAliases(articleTitle);
@@ -439,6 +441,7 @@ public class ArticleMgmtService {
             } else {
                 article.put(Article.ARTICLE_CLIENT_ARTICLE_ID, clientArticleId);
             }
+            article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, clientArticlePermalink);
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
             article.put(Article.REDDIT_SCORE, 0);
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
@@ -581,6 +584,7 @@ public class ArticleMgmtService {
      *     "articleContent": "",
      *     "articleEditorType": "",
      *     "articleCommentable": boolean, // optional, default to true
+     *     "clientArticlePermalink": "", // optional
      *     "articleType": int // optional, default to 0
      *     "articleRewardContent": "", // optional, default to ""
      *     "articleRewardPoint": int, // optional, default to 0
@@ -669,6 +673,9 @@ public class ArticleMgmtService {
                 ua = StringUtils.substring(ua, 0, Common.MAX_LENGTH_UA);
             }
             oldArticle.put(Article.ARTICLE_UA, ua);
+
+            final String clientArticlePermalink = requestJSONObject.optString(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK);
+            oldArticle.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, clientArticlePermalink);
 
             articleRepository.update(articleId, oldArticle);
 

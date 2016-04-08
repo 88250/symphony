@@ -482,8 +482,8 @@ public class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Common.ARTICLE_COMMENTS_PAGE_SIZE, pageSize);
-        
-        String stickConfirmLabel =langPropsService.get("stickConfirmLabel");
+
+        String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
         stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
         dataModel.put("stickConfirmLabel", stickConfirmLabel);
     }
@@ -893,6 +893,7 @@ public class ArticleProcessor {
         }
 
         article.put(Article.ARTICLE_CONTENT, articleContent);
+        article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, clientHost + permalink);
 
         if (!Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE))) {
             articleTags = articleMgmtService.filterReservedTags(articleTags);
@@ -1064,6 +1065,7 @@ public class ArticleProcessor {
         article.put(Article.ARTICLE_AUTHOR_ID, authorId);
         article.put(Article.ARTICLE_AUTHOR_EMAIL, clientAdminEmail.toLowerCase().trim());
         article.put(Article.ARTICLE_T_IS_BROADCAST, false);
+        article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, clientHost + permalink);
 
         if (!Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE))) {
             articleTags = articleMgmtService.filterReservedTags(articleTags);
@@ -1283,7 +1285,7 @@ public class ArticleProcessor {
         }
 
         context.renderJSON();
-        
+
         try {
             articleMgmtService.stick(articleId);
         } catch (final ServiceException e) {
@@ -1294,8 +1296,8 @@ public class ArticleProcessor {
 
         context.renderTrueResult().renderMsg(langPropsService.get("stickSuccLabel"));
     }
-    
-     /**
+
+    /**
      * Expires a sticked article.
      *
      * @param request the specified HTTP servlet request
@@ -1314,9 +1316,9 @@ public class ArticleProcessor {
 
             return;
         }
-        
+
         articleMgmtService.expireStick();
-        
+
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }

@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.0.11, Apr 2, 2016
+ * @version 1.12.0.11, Apr 8, 2016
  * @since 0.2.0
  */
 public final class Article {
@@ -118,6 +118,11 @@ public final class Article {
      * Key of client article id.
      */
     public static final String ARTICLE_CLIENT_ARTICLE_ID = "clientArticleId";
+    
+    /**
+     * Key of client article permalink.
+     */
+    public static final String ARTICLE_CLIENT_ARTICLE_PERMALINK = "clientArticlePermalink";
 
     /**
      * Key of article editor type.
