@@ -36,11 +36,11 @@
     line-height: 19px;
 }
 
-.module-list.ad .title {
+.module-list.open-source .title {
     margin-left: 60px;
 }
 
-.module-list.ad .slogan {
+.module-list.open-source .slogan {
     margin-top: -10px;
 }
 
@@ -56,6 +56,18 @@
 
 .module-list.domain .tag {
     margin-right: 10px;
+}
+
+.module-panel.ad {
+    padding: 10px;
+}
+
+.module-panel.ad .header {
+    color: #333;
+}
+
+.module-panel.ad img {
+    margin: 3px 0 5px;
 }
 /* end module */
 
