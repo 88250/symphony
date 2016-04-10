@@ -1,20 +1,7 @@
 <#include 'common/person-info.ftl'/>
 
 <#if ADLabel!="">
-<div class="module">
-    <div class="module-header">
-        <h2>广告投放 <a href="野狗实时后端云" class="fn-right ft-13 ft-gray">我要投放</a></h2>
-    </div>
-    <div class="module-panel ad fn-clear">
-        <a href="野狗实时后端云" class="header">野狗实时后端云</a><br/>
-        <a href="野狗实时后端云"><img src="//cdn.v2ex.co/friends/wilddog/wilddog_201604_small.jpg" border="0" width="120" height="90" alt="野狗科技"></a>
-        <div class="ft-gray ft-smaller">国内领先的实时后端云<br>野狗 API 可用于开发即时聊天、网络游戏、实时定位等实时场景<br>传输快！响应快！入门快！</div>
-        <span class="fn-right ft-smaller">
-            <span class="ft-fade">Promoted by</span>
-            <a href="https://www.wilddog.com/?utm_source=v2ex&amp;utm_medium=banner3&amp;utm_campaign=orangemarch%C2%A0" target="_blank">野狗科技</a>
-        </span>
-    </div>
-</div>
+${ADLabel}
 </#if>
 <div class="module">
     <div class="module-header">
