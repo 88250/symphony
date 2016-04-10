@@ -263,7 +263,8 @@
                 <div class="side">
 
                     <#include 'common/person-info.ftl'/>
-
+                    
+                    <#if sideRelevantArticles?size != 0>
                     <div class="module">
                         <div class="module-header">
                             <h2>
@@ -284,6 +285,7 @@
                             </ul>
                         </div>
                     </div>
+                    </#if>
 
                     <div class="module">
                         <div class="module-header">
