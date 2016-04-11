@@ -18,6 +18,7 @@ package org.b3log.symphony.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
  * Geography utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.1, Apr 8, 2016
+ * @version 1.2.2.1, Apr 11, 2016
  * @since 1.3.0
  */
 public final class Geos {
@@ -106,6 +107,10 @@ public final class Geos {
             ret.put(Common.CITY, city);
 
             return ret;
+        } catch (final SocketTimeoutException e) {
+            LOGGER.log(Level.ERROR, "Get location from Baidu timeout [ip=" + ip + "]");
+
+            return null;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Can't get location from Baidu [ip=" + ip + "]", e);
 
@@ -168,6 +173,10 @@ public final class Geos {
             ret.put(Common.CITY, city);
 
             return ret;
+        } catch (final SocketTimeoutException e) {
+            LOGGER.log(Level.ERROR, "Get location from Sina timeout [ip=" + ip + "]");
+
+            return null;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Can't get location from Sina [ip=" + ip + "]", e);
 
