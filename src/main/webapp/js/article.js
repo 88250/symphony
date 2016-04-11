@@ -60,11 +60,13 @@ var Comment = {
             window.open($(this).attr('src'));
         });
 
+        this._setCmtVia();
+        $.ua.set(navigator.userAgent);
+        
         if (!isLoggedIn) {
             return false;
         }
 
-        $.ua.set(navigator.userAgent);
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             $('#commentContent').before('<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
                     + Label.uploadLabel + '<input type="file"/></label></form>')
@@ -184,8 +186,6 @@ var Comment = {
                 }
             }
         });
-
-        this._setCmtVia();
     },
     /**
      * @description 感谢.
@@ -308,6 +308,7 @@ var Comment = {
      */
     replay: function (userName) {
         Comment.editor.focus();
+        $.ua.set(navigator.userAgent);
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             var $it = $('#commentContent'),
                     it = $it[0],
