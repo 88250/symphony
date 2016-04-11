@@ -35,6 +35,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Oct 29, 2012
+ * @since 0.2.0
  */
 @Named
 @Singleton

@@ -41,6 +41,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.3.1.7, Mar 17, 2016
+ * @since 0.2.0
  */
 @Named
 @Singleton
