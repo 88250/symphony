@@ -91,11 +91,12 @@ public class TimelineChannel {
     }
 
     /**
-     * Notifies the specified comment message to browsers.
+     * Notifies the specified timeline message to browsers.
      *
      * @param message the specified message, for example      <pre>
      * {
-     *     "commentContent": ""
+     *     "type": "article",
+     *     "content": timelineArticleLabel
      * }
      * </pre>
      */

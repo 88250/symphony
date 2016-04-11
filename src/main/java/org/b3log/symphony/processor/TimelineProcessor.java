@@ -38,7 +38,7 @@ import org.b3log.symphony.util.Symphonys;
  * Timeline processor.
  *
  * <ul>
- * <li>Shows index (/timeline), GET</li>
+ * <li>Shows timeline (/timeline), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>

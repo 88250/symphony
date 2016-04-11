@@ -40,7 +40,12 @@ public class TimelineMgmtService {
     /**
      * Adds the specified timeline.
      *
-     * @param timeline the specified timeline
+     * @param timeline the specified timeline, for example,      <pre>
+     * {
+     *     "type": "article",
+     *     "content": timelineArticleLabel
+     * }
+     * </pre>
      */
     public void addTimeline(final JSONObject timeline) {
         TimelineChannel.notifyTimeline(timeline);
