@@ -95,7 +95,8 @@ public class ChatRoomChannel {
      *
      * @param message the specified message, for example      <pre>
      * {
-     *     "": ""
+     *     "userName": "",
+     *     "content": ""
      * }
      * </pre>
      */

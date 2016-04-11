@@ -15,12 +15,16 @@
  */
 package org.b3log.symphony.processor;
 
+import java.io.IOException;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -28,17 +32,21 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
-import org.b3log.symphony.service.TimelineMgmtService;
+import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
+import org.b3log.symphony.processor.channel.ChatRoomChannel;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONObject;
 
 /**
  * Chat room processor.
  *
  * <ul>
- * <li>Shows char room (/timeline), GET</li>
+ * <li>Shows char room (/chat-room), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -58,6 +66,59 @@ public class ChatRoomProcessor {
      */
     @Inject
     private Filler filler;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
+     * Adds a chat message.
+     *
+     * <p>
+     * The request json object (a chat message):
+     * <pre>
+     * {
+     *     "content": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws IOException io exception
+     * @throws ServletException servlet exception
+     */
+    @RequestProcessing(value = "/chat-room/send", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {ChatMsgAddValidation.class})
+    public void addChatRoomMsg(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException, ServletException {
+        context.renderJSON();
+
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        final String content = requestJSONObject.optString(Common.CONTENT);
+
+        try {
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            if (null == currentUser) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+                return;
+            }
+
+            final JSONObject msg = new JSONObject();
+            msg.put(User.USER_NAME, currentUser.optString(User.USER_NAME));
+            msg.put(Common.CONTENT, content);
+
+            ChatRoomChannel.notifyChat(msg);
+
+            context.renderTrueResult();
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
 
     /**
      * Shows chat room.

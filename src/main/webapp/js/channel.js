@@ -293,13 +293,17 @@ var ChatRoomChannel = {
         };
 
         ChatRoomChannel.ws.onmessage = function (evt) {
+            console.log(evt);
             var data = JSON.parse(evt.data);
 
-            console.log(data);
+            var content = $("#chatRoom").val();
+            content = content + "\n" + data.userName + ": " + data.content;
+            console.log(content);
+            $("#chatRoom").val(content);
         };
 
         ChatRoomChannel.ws.onclose = function () {
-            TimelineChannel.ws.close();
+            ChatRoomChannel.ws.close();
         };
 
         ChatRoomChannel.ws.onerror = function (err) {

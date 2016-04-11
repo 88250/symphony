@@ -13,6 +13,35 @@
             <div class="wrapper">
                 <div class="content">
                     <h2>${chatRoomLabel}</h2><br/>
+
+                    <textarea id="chatRoom" rows="40">room</textarea>
+
+                    <textarea id="chatMsgEditor" rows="10">
+editor
+                    </textarea>
+
+                    <button id="sendBtn" onclick="sendMsg()">${postLabel}</button>
+
+                    <script>
+                        function sendMsg() {
+                            var content = $("#chatMsgEditor").val();
+                            var requestJSONObject = {
+                                content: content
+                            };
+
+                            $.ajax({
+                                url: "/chat-room/send",
+                                type: "POST",
+                                cache: false,
+                                data: JSON.stringify(requestJSONObject),
+                                beforeSend: function () {
+                                },
+                                success: function (result, textStatus) {
+                                }
+                            });
+                        }
+                    </script>
+
                 </div>
                 <div class="side">
                     <#include "side.ftl">
@@ -26,10 +55,9 @@
         <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
-
-            // Init [ChatRoom] channel
-            TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}/chat-room-channel");
+                        WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
+                        // Init [ChatRoom] channel
+                        ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}/chat-room-channel");
         </script>
     </body>
 </html>
