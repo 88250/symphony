@@ -845,7 +845,7 @@ public class ArticleProcessor {
         }
 
         if (UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)) {
-            LOGGER.log(Level.WARN, "The user[name={0}, host={1}] has been forbidden", userName, clientHost);
+            LOGGER.log(Level.WARN, "The user[name={0}, email={1}, host={2}] has been forbidden", userName, clientAdminEmail, clientHost);
 
             return;
         }
@@ -1030,7 +1030,7 @@ public class ArticleProcessor {
         }
 
         if (UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)) {
-            LOGGER.log(Level.WARN, "The user[name={0}, host={1}] has been forbidden", userName, clientHost);
+            LOGGER.log(Level.WARN, "The user[name={0}, email={1}, host={2}] has been forbidden", userName, clientAdminEmail, clientHost);
 
             return;
         }
