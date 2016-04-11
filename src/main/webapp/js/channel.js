@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.4, Apr 6, 2016
+ * @version 1.6.6.4, Apr 11, 2016
  */
 
 /**
@@ -263,6 +263,46 @@ var TimelineChannel = {
         };
 
         TimelineChannel.ws.onerror = function (err) {
+            console.log("ERROR", err)
+        };
+    }
+};
+
+/**
+ * @description Char room channel.
+ * @static
+ */
+var ChatRoomChannel = {
+    /**
+     * WebSocket instance.
+     * 
+     * @type WebSocket
+     */
+    ws: undefined,
+    /**
+     * @description Initializes message channel
+     */
+    init: function (channelServer) {
+        ChatRoomChannel.ws = new ReconnectingWebSocket(channelServer);
+        ChatRoomChannel.ws.reconnectInterval = 10000;
+
+        ChatRoomChannel.ws.onopen = function () {
+            setInterval(function () {
+                ChatRoomChannel.ws.send('-hb-');
+            }, 1000 * 60 * 3);
+        };
+
+        ChatRoomChannel.ws.onmessage = function (evt) {
+            var data = JSON.parse(evt.data);
+
+            console.log(data);
+        };
+
+        ChatRoomChannel.ws.onclose = function () {
+            TimelineChannel.ws.close();
+        };
+
+        ChatRoomChannel.ws.onerror = function (err) {
             console.log("ERROR", err)
         };
     }
