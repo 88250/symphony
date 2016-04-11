@@ -17,6 +17,7 @@ package org.b3log.symphony.processor.channel;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
@@ -32,7 +33,7 @@ import org.json.JSONObject;
  * Timeline channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.0, Feb 28, 2016
+ * @version 2.0.2.0, Apr 11, 2016
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/timeline-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -102,7 +103,10 @@ public class TimelineChannel {
         final String msgStr = message.toString();
 
         synchronized (SESSIONS) {
-            for (final Session session : SESSIONS) {
+            final Iterator<Session> i = SESSIONS.iterator();
+            while (i.hasNext()) {
+                final Session session = i.next();
+
                 if (session.isOpen()) {
                     session.getAsyncRemote().sendText(msgStr);
                 }
