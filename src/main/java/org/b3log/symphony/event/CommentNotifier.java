@@ -56,7 +56,7 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.13, Apr 7, 2016
+ * @version 1.5.4.14, Apr 12, 2016
  * @since 0.2.0
  */
 @Named
@@ -224,7 +224,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
                 for (final JSONObject participant : participants) {
                     final String participantId = participant.optString(Keys.OBJECT_ID);
-                    if (participantId.equals(articleAuthorId)) {
+                    if (participantId.equals(articleAuthorId) || participantId.equals(commenterId)) {
                         continue;
                     }
 
