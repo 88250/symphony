@@ -11,8 +11,22 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content">
-                    <h2>${timelineLabel}</h2><br/>
+                <div class="content fn-clear">
+                    <div class="domains fn-clear">
+                        <#list domains as navDomain>
+                        <a href="/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
+                        <#if 10 < navDomain?counter>
+                        <#break>
+                        </#if>
+                        </#list>
+                        <a href="/">${hotLabel}</a>
+                        <a href="/recent">${latestLabel}</a>
+                        <#if isLoggedIn && "" != currentUser.userCity>
+                        <a href="/city/my">${currentUser.userCity}</a>
+                        </#if>
+                        <a href="/timeline" class="selected">${timelineLabel}</a>
+                    </div>
+
                     <#if timelines?size <= 0>
                     <div id="emptyTimeline">${emptyTimelineLabel}</div>
                     </#if>
@@ -40,8 +54,11 @@
 
             // Init [Timeline] channel
             TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}/timeline-channel");
-            
-            var timelineCnt = ${timelineCnt};
+
+            var timelineCnt = ${
+                timelineCnt
+            }
+            ;
         </script>
     </body>
 </html>

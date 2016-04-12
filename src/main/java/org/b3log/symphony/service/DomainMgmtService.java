@@ -179,4 +179,22 @@ public class DomainMgmtService {
             throw new ServiceException(e);
         }
     }
+
+    /**
+     * Removes the specified domain by the given domain id.
+     *
+     * @param domainId the given domain id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void removeDomain(final String domainId) throws ServiceException {
+        try {
+            domainTagRepository.removeByDomainId(domainId);
+            domainRepository.remove(domainId);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Updates a domain [id=" + domainId + "] failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
 }

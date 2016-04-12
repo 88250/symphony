@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Oct 2, 2015
+ * @version 1.1.0.2, Apr 12, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -111,6 +111,7 @@ public class CityProcessor {
         filler.fillHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+        filler.fillDomainNav(dataModel);
 
         List<JSONObject> articles = new ArrayList<JSONObject>();
         dataModel.put(Article.ARTICLES, articles);

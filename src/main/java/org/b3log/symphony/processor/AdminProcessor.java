@@ -1599,6 +1599,25 @@ public class AdminProcessor {
     }
 
     /**
+     * Removes a domain.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/remove-domain", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void removeDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String domainId = request.getParameter(Domain.DOMAIN_T_ID);
+        domainMgmtService.removeDomain(domainId);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/domains");
+    }
+
+    /**
      * Adds a tag into a domain.
      *
      * @param context the specified context

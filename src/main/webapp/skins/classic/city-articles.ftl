@@ -12,12 +12,21 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content">
-                    <#if userGeoStatus && cityFound>
-                    <h2>
-                        ${city}
-                    </h2><br/>
-                    </#if>
+                <div class="content fn-clear">
+                    <div class="domains fn-clear">
+                        <#list domains as navDomain>
+                        <a href="/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
+                        <#if 10 < navDomain?counter>
+                        <#break>
+                        </#if>
+                        </#list>
+                        <a href="/">${hotLabel}</a>
+                        <a href="/recent">${latestLabel}</a>
+                        <#if isLoggedIn && "" != currentUser.userCity>
+                        <a href="/city/my" class="selected">${currentUser.userCity}</a>
+                        </#if>
+                        <a href="/timeline">${timelineLabel}</a>
+                    </div>
 
                     <#if articles?size gt 0>
                     <div class="fn-clear">

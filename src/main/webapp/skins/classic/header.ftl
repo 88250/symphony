@@ -11,13 +11,13 @@
                 <input type="submit" class="fn-none" value="">
             </form>
             </#if>
-            <div class="fn-right">
+<!--            <div class="fn-right">
                 <a href="/timeline" class="icon-clock last" title="${timelineLabel}"></a>
                 <#if isLoggedIn>
                 <a href="/city/my" class="icon-compass" title="${sameCityLabel}"></a>
                 </#if>
                 <a href="/recent" class="icon-refresh" title="${recentArticleLabel}"></a>
-            </div>
+            </div>-->
         </div>
 
         <div class="fn-clear user-nav">

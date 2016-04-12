@@ -33,7 +33,6 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -55,7 +54,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.1.9, Aug 29, 2015
+ * @version 1.3.1.10, Apr 12, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -112,16 +111,14 @@ public class IndexProcessor {
 
         final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
-        
+
         dataModel.put(Article.ARTICLE_T_STICK_CHECK, true);
 
         for (final JSONObject article : indexArticles) {
             article.put(Article.ARTICLE_T_IS_STICK, article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0);
         }
 
-        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
-        dataModel.put(Domain.DOMAINS, domains);
-
+        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillHotArticles(dataModel);

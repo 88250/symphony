@@ -85,5 +85,20 @@
             </form>
         </div>
     </div>
+
+    <div class="module">
+        <div class="module-header">
+            <h2 class="ft-red">${removeLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/remove-domain" method="POST" onsubmit="return window.confirm('Sure?')">
+                <label for="domainId">Id</label>
+                <input type="text" id="domainId" name="domainId" value="${domain.oId}" readonly="readonly"/>
+
+                <br/><br/>
+                <button type="submit" class="green fn-right" >${submitLabel}</button>
+            </form>
+        </div>
+    </div>
 </div>
 </@admin>

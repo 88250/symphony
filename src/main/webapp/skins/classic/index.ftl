@@ -20,8 +20,12 @@
                         <#break>
                         </#if>
                         </#list>
-                        <a href='/' class="selected">${hotLabel}</a>
-                        <a href='/recent'>${latestLabel}</a>
+                        <a href="/" class="selected">${hotLabel}</a>
+                        <a href="/recent">${latestLabel}</a>
+                        <#if isLoggedIn && "" != currentUser.userCity>
+                        <a href="/city/my">${currentUser.userCity}</a>
+                        </#if>
+                        <a href="/timeline">${timelineLabel}</a>
                     </div>
                     <@list listData=indexArticles/>
                     <br/>

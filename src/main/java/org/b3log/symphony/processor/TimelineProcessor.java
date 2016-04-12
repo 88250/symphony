@@ -84,6 +84,7 @@ public class TimelineProcessor {
         renderer.setTemplateName("timeline.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillHotArticles(dataModel);

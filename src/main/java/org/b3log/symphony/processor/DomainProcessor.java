@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 13, 2016
+ * @version 1.0.0.1, Apr 12, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -123,9 +123,6 @@ public class DomainProcessor {
 
         dataModel.put(Domain.DOMAIN, domain);
 
-        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
-        dataModel.put(Domain.DOMAINS, domains);
-
         final String domainId = domain.optString(Keys.OBJECT_ID);
 
         final JSONObject result = articleQueryService.getDomainArticles(domainId, pageNum, pageSize);
@@ -145,6 +142,7 @@ public class DomainProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
+        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillHotArticles(dataModel);
@@ -178,9 +176,7 @@ public class DomainProcessor {
         final int domainCnt = statistic.optInt(Option.ID_C_STATISTIC_DOMAIN_COUNT);
         dataModel.put(Domain.DOMAIN_T_COUNT, domainCnt);
 
-        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
-        dataModel.put(Domain.DOMAINS, domains);
-
+        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
@@ -227,9 +223,7 @@ public class DomainProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
-        dataModel.put(Domain.DOMAINS, domains);
-
+        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillHotArticles(dataModel);

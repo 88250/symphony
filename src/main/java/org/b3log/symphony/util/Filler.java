@@ -18,6 +18,7 @@ package org.b3log.symphony.util;
 import org.b3log.symphony.service.AvatarQueryService;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Notification;
@@ -40,6 +42,7 @@ import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.DomainQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.LivenessQueryService;
 import org.b3log.symphony.service.NotificationQueryService;
@@ -53,7 +56,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.10, Feb 16, 2016
+ * @version 1.6.1.10, Apr 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -129,6 +132,22 @@ public class Filler {
      */
     @Inject
     private LivenessQueryService livenessQueryService;
+
+    /**
+     * Domain query service.
+     */
+    @Inject
+    private DomainQueryService domainQueryService;
+
+    /**
+     * Fills domain navigation.
+     *
+     * @param dataModel the specified data model
+     */
+    public void fillDomainNav(final Map<String, Object> dataModel) {
+        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
+        dataModel.put(Domain.DOMAINS, domains);
+    }
 
     /**
      * Fills relevant articles.

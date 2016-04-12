@@ -24,13 +24,14 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Tag;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Domain-Tag relation repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 13, 2016
+ * @version 1.1.0.0, Apr 12, 2016
  * @since 1.4.0
  */
 @Repository
@@ -71,6 +72,22 @@ public class DomainTagRepository extends AbstractRepository {
                 setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
 
         return get(query);
+    }
+
+    /**
+     * Removes domain-tag relations by the specified domain id.
+     *
+     * @param domainId the specified domain id
+     * @throws RepositoryException repository exception
+     */
+    public void removeByDomainId(final String domainId) throws RepositoryException {
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Domain.DOMAIN + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, domainId));
+        final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
+        for (int i = 0; i < relations.length(); i++) {
+            final JSONObject rel = relations.optJSONObject(i);
+            remove(rel.optString(Keys.OBJECT_ID));
+        }
     }
 
     /**

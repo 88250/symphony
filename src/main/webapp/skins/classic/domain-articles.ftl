@@ -22,8 +22,12 @@
                         <#break>
                         </#if>
                         </#list>
-                        <a href='/'>${hotLabel}</a>
-                        <a href='/recent'>${latestLabel}</a>
+                        <a href="/">${hotLabel}</a>
+                        <a href="/recent">${latestLabel}</a>
+                        <#if isLoggedIn && "" != currentUser.userCity>
+                        <a href="/city/my">${currentUser.userCity}</a>
+                        </#if>
+                        <a href="/timeline">${timelineLabel}</a>
                     </div>
                     <@list listData=latestArticles/>
                     <@pagination url="/domain/${domain.domainURI}"/>

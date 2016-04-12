@@ -36,7 +36,6 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -55,7 +54,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 22, 2016
+ * @version 1.0.0.0, Apr 12, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -126,9 +125,6 @@ public class SearchProcessor {
             pageNum = Integer.valueOf(p);
         }
 
-        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
-        dataModel.put(Domain.DOMAINS, domains);
-
         final int pageSize = Symphonys.getInt("latestArticlesCnt");
         final List<JSONObject> articles = new ArrayList<JSONObject>();
         int total = 0;
@@ -187,6 +183,7 @@ public class SearchProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
+        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
         filler.fillHotArticles(dataModel);
