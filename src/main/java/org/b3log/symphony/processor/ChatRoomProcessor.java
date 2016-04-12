@@ -22,9 +22,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -33,12 +33,13 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
 import org.b3log.symphony.processor.channel.ChatRoomChannel;
 import org.b3log.symphony.service.TuringQueryService;
-import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -73,6 +74,12 @@ public class ChatRoomProcessor {
      */
     @Inject
     private TuringQueryService turingQueryService;
+
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Adds a chat message.
@@ -123,6 +130,13 @@ public class ChatRoomProcessor {
         }
 
         context.renderTrueResult();
+
+        currentUser.put(UserExt.USER_LATEST_CMT_TIME, System.currentTimeMillis());
+        try {
+            userMgmtService.updateUser(currentUser.optString(Keys.OBJECT_ID), currentUser);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Update user latest comment time failed", e);
+        }
     }
 
     /**

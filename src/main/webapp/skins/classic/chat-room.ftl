@@ -34,7 +34,7 @@
                                 },
                                 success: function (result, textStatus) {
                                     if (result.sc) {
-                                        
+                                        $("#chatMsgEditor").val('');
                                     } else {
                                         alert(result.msg);
                                     }
