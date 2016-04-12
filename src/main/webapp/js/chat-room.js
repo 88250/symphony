@@ -27,10 +27,10 @@
  */
 var ChatRoom = {
     init: function () {
-        $('.list ul').height($(window).height() - $('.nav').height() - $('.reply').height() - 100).css('overflow', 'auto');
+        $('.list').height($(window).height() - $('.nav').height() - $('.reply').height() - 100).css('overflow', 'auto');
 
         $(window).resize(function () {
-            $('.list ul').height($(window).height() - $('.nav').height() - $('.reply').height() - 120);
+            $('.list').height($(window).height() - $('.nav').height() - $('.reply').height() - 120);
         });
 
         if ($('#chatContent').length === 0) {

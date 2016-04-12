@@ -13,31 +13,33 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <h2>${chatRoomLabel} <span id="onlineCnt" class="ft-smaller">${onlineVisitorCnt}</span></h2><br/>
-                    <div class="list form">
-                        <ul>
-                            <#list messages as msg>
-                            <li>
-                                <div class="fn-flex">
-                                    <a rel="nofollow" href="/member/${msg.userName}">
-                                        <div class="avatar" 
-                                             title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}-64.jpg')"></div>
-                                    </a>
-                                    <div class="fn-flex-1">
-                                        <div class="fn-clear">
-                                            <span class="fn-left">
-                                                <a rel="nofollow" href="/member/${msg.userName}"
-                                                   title="${msg.userName}">${msg.userName}</a>
-                                            </span>
-                                        </div>
-                                        <div class="content-reset">
-                                            ${msg.content}
+                    <h2>${chatRoomLabel} <span id="onlineCnt" class="ft-smaller ft-red">${onlineVisitorCnt}</span></h2><br/>
+                    <div class="form">
+                        <div class="list">
+                            <ul>
+                                <#list messages as msg>
+                                <li>
+                                    <div class="fn-flex">
+                                        <a rel="nofollow" href="/member/${msg.userName}">
+                                            <div class="avatar" 
+                                                 title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}-64.jpg')"></div>
+                                        </a>
+                                        <div class="fn-flex-1">
+                                            <div class="fn-clear">
+                                                <span class="fn-left">
+                                                    <a rel="nofollow" href="/member/${msg.userName}"
+                                                       title="${msg.userName}">${msg.userName}</a>
+                                                </span>
+                                            </div>
+                                            <div class="content-reset">
+                                                ${msg.content}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                            </#list>  
-                        </ul>
+                                </li>
+                                </#list>  
+                            </ul>
+                        </div>
                         <div class="reply">
                             <#if isLoggedIn>
                             <textarea id="chatContent" rows="10" placeholder="Say sth...."></textarea>

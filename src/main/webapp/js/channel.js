@@ -300,7 +300,32 @@ var ChatRoomChannel = {
                     $("#onlineCnt").text(data.onlineVisitorCnt);
                     break;
                 case "msg":
-                    // TODO
+                    var liHTML = '<li>'
+                               + '<div class="fn-flex">'
+                                    + '<a rel="nofollow" href="/member/' + data.userName + '">'
+                                        + '<div class="avatar" '
+                                             + 'title="' + data.userName + '" style="background-image:url(' + data.userAvatarURL + '-64.jpg)"></div>'
+                                    + '</a>'
+                                    + '<div class="fn-flex-1">'
+                                        + '<div class="fn-clear">'
+                                            + '<span class="fn-left">'
+                                                + '<a rel="nofollow" href="/member/' + data.userName + '" '
+                                                   + 'title="' + data.userName + '">' + data.userName + '</a>'
+                                            + '</span>'
+                                        + '</div>'
+                                        + '<div class="content-reset">'
+                                            + data.content
+                                        + '</div>'
+                                    + '</div>'
+                                + '</div>'
+                            + '</li>';
+                    $('.form ul li:last').after(liHTML);
+                    
+                    
+                    if ($('.form ul').height() - $('.form .list').scrollTop() - $('.form .list').height() < $('.form li').outerHeight() * 2) {
+                        $('.form .list').animate({'scrollTop': $('.form ul').height() - $('.form .list').height()}, 500);
+                        //$('.form .list').scrollTop($('.form ul').height());
+                    }
                     break;
             }
         };
