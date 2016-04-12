@@ -27,12 +27,14 @@
  */
 var ChatRoom = {
     init: function () {
+        // 聊天窗口高度设置
         $('.list').height($(window).height() - $('.nav').height() - $('.reply').height() - 100).css('overflow', 'auto');
 
         $(window).resize(function () {
             $('.list').height($(window).height() - $('.nav').height() - $('.reply').height() - 120);
         });
-
+        
+        // 没用登陆就不需要编辑起初始化了 
         if ($('#chatContent').length === 0) {
             return false;
         }
@@ -84,7 +86,7 @@ var ChatRoom = {
             ChatRoom.editor = commentEditor.codemirror;
         }
 
-
+        // 页面刷新需要保存输入框内容
         if (window.localStorage && window.localStorage.chatRoom) {
             if ("" !== window.localStorage.chatRoom.replace(/(^\s*)|(\s*$)/g, "")) {
                 ChatRoom.editor.setValue(window.localStorage.chatRoom);
@@ -94,7 +96,8 @@ var ChatRoom = {
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             return false;
         }
-
+        
+        // at 及本地保存输入框内容
         ChatRoom.editor.on('changes', function (cm) {
             $("#chatContentTip").removeClass("error succ").html('');
 
@@ -110,6 +113,7 @@ var ChatRoom = {
             }
         });
 
+        // ctrl ＋ enter 快速提交
         ChatRoom.editor.on('keypress', function (cm, evt) {
             if (evt.ctrlKey && 10 === evt.charCode) {
                 ChatRoom.send();
@@ -132,6 +136,10 @@ var ChatRoom = {
             }
         });
     },
+    /**
+     * 发送聊天内容
+     * @returns {undefined}
+     */
     send: function () {
         var content = ChatRoom.editor.getValue();
         var requestJSONObject = {
