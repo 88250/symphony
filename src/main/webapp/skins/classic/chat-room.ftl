@@ -13,7 +13,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <h2>${chatRoomLabel}</h2><br/>
+                    <h2>${chatRoomLabel} <span id="onlineCnt" class="ft-smaller">${onlineVisitorCnt}</span></h2><br/>
                     <div class="list form">
                         <ul>
                             <#list messages as msg>
@@ -21,7 +21,7 @@
                                 <div class="fn-flex">
                                     <a rel="nofollow" href="/member/${msg.userName}">
                                         <div class="avatar" 
-                                             title="${msg.userName}" style="background-image:url('{comment.commentAuthorThumbnailURL}-64.jpg?{comment.commenter.userUpdateTime?c}')"></div>
+                                             title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}-64.jpg')"></div>
                                     </a>
                                     <div class="fn-flex-1">
                                         <div class="fn-clear">

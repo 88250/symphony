@@ -66,6 +66,11 @@ public class TuringQueryService {
      * Robot name.
      */
     public static final String ROBOT_NAME = Symphonys.get("turing.name");
+    
+    /**
+     * Robot avatar.
+     */
+    public static final String ROBOT_AVATAR = Symphonys.get("turing.avatar");
 
     /**
      * URL fetch service.

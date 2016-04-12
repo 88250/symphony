@@ -27,13 +27,14 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import org.b3log.latke.logging.Logger;
+import org.b3log.symphony.model.Common;
 import org.json.JSONObject;
 
 /**
  * Char room channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 11, 2016
+ * @version 1.0.0.1, Apr 12, 2016
  * @since 1.4.0
  */
 @ServerEndpoint(value = "/chat-room-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -57,6 +58,18 @@ public class ChatRoomChannel {
     @OnOpen
     public void onConnect(final Session session) {
         SESSIONS.add(session);
+
+        synchronized (SESSIONS) {
+            final Iterator<Session> i = SESSIONS.iterator();
+            while (i.hasNext()) {
+                final Session s = i.next();
+
+                if (s.isOpen()) {
+                    final String msgStr = new JSONObject().put(Common.ONLINE_VISITOR_CNT, SESSIONS.size()).put(Common.TYPE, "online").toString();
+                    s.getAsyncRemote().sendText(msgStr);
+                }
+            }
+        }
     }
 
     /**
@@ -101,6 +114,7 @@ public class ChatRoomChannel {
      * </pre>
      */
     public static void notifyChat(final JSONObject message) {
+        message.put(Common.TYPE, "msg");
         final String msgStr = message.toString();
 
         synchronized (SESSIONS) {
@@ -122,5 +136,17 @@ public class ChatRoomChannel {
      */
     private void removeSession(final Session session) {
         SESSIONS.remove(session);
+
+        synchronized (SESSIONS) {
+            final Iterator<Session> i = SESSIONS.iterator();
+            while (i.hasNext()) {
+                final Session s = i.next();
+
+                if (s.isOpen()) {
+                    final String msgStr = new JSONObject().put(Common.ONLINE_VISITOR_CNT, SESSIONS.size()).put(Common.TYPE, "online").toString();
+                    s.getAsyncRemote().sendText(msgStr);
+                }
+            }
+        }
     }
 }
