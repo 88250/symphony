@@ -16,6 +16,7 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -49,10 +50,11 @@ import org.json.JSONObject;
  *
  * <ul>
  * <li>Shows char room (/chat-room), GET</li>
+ * <li>Sends chat message (/chat-room/send), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 11, 2016
+ * @version 1.0.0.1, Apr 12, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -80,6 +82,11 @@ public class ChatRoomProcessor {
      */
     @Inject
     private UserMgmtService userMgmtService;
+
+    /**
+     * Chat messages.
+     */
+    private LinkedList<JSONObject> messages = new LinkedList<JSONObject>();
 
     /**
      * Adds a chat message.
@@ -117,6 +124,12 @@ public class ChatRoomProcessor {
 
         ChatRoomChannel.notifyChat(msg);
 
+        messages.addFirst(msg);
+        final int maxCnt = Symphonys.getInt("chatRoom.msgCnt");
+        if (messages.size() > maxCnt) {
+            messages.remove(maxCnt);
+        }
+
         if (content.contains("@" + TuringQueryService.ROBOT_NAME)) {
             content = content.replaceAll("@" + TuringQueryService.ROBOT_NAME, "");
             final String xiaoVSaid = turingQueryService.chat(currentUser.optString(Keys.OBJECT_ID), content);
@@ -126,6 +139,11 @@ public class ChatRoomProcessor {
                 xiaoVMsg.put(Common.CONTENT, "@" + userName + ", " + xiaoVSaid);
 
                 ChatRoomChannel.notifyChat(xiaoVMsg);
+
+                messages.addFirst(msg);
+                if (messages.size() > maxCnt) {
+                    messages.remove(maxCnt);
+                }
             }
         }
 
@@ -157,6 +175,9 @@ public class ChatRoomProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("chat-room.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModel.put(Common.MESSAGES, messages);
+        dataModel.put("chatRoomMsgCnt", Symphonys.getInt("chatRoom.msgCnt"));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);

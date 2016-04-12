@@ -61,6 +61,8 @@
                         WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
                         // Init [ChatRoom] channel
                         ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}/chat-room-channel");
+                        
+                        var chatRoomMsgCnt = ${chatRoomMsgCnt};
         </script>
     </body>
 </html>

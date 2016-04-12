@@ -298,7 +298,7 @@ var ChatRoomChannel = {
 
             var content = $("#chatRoom").val();
             content = content + "\n" + data.userName + ": " + data.content;
-            console.log(content);
+            console.log(content, chatRoomMsgCnt);
             $("#chatRoom").val(content);
         };
 
