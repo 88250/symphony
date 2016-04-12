@@ -21,7 +21,7 @@
                                 <div class="fn-flex">
                                     <a rel="nofollow" href="/member/${msg.userName}">
                                         <div class="avatar" 
-                                             title="${msg.userName}" style="background-image:url('{comment.commentAuthorThumbnailURL}-64.jpg?{comment.commenter.userUpdateTime?c}')"></div>
+                                             title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}-64.jpg')"></div>
                                     </a>
                                     <div class="fn-flex-1">
                                         <div class="fn-clear">

@@ -40,9 +40,12 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
 import org.b3log.symphony.processor.channel.ChatRoomChannel;
+import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.TuringQueryService;
 import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -85,6 +88,12 @@ public class ChatRoomProcessor {
     private UserMgmtService userMgmtService;
 
     /**
+     * Short link query service.
+     */
+    @Inject
+    private ShortLinkQueryService shortLinkQueryService;
+
+    /**
      * Chat messages.
      */
     private LinkedList<JSONObject> messages = new LinkedList<JSONObject>();
@@ -116,11 +125,18 @@ public class ChatRoomProcessor {
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         String content = requestJSONObject.optString(Common.CONTENT);
 
+        content = shortLinkQueryService.linkArticle(content);
+        content = shortLinkQueryService.linkTag(content);
+        content = Emotions.convert(content);
+        content = Markdowns.toHTML(content);
+        content = Markdowns.clean(content, "");
+
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userName = currentUser.optString(User.USER_NAME);
 
         final JSONObject msg = new JSONObject();
         msg.put(User.USER_NAME, userName);
+        msg.put(UserExt.USER_AVATAR_URL, currentUser.optString(UserExt.USER_AVATAR_URL));
         msg.put(Common.CONTENT, content);
 
         ChatRoomChannel.notifyChat(msg);
@@ -137,11 +153,12 @@ public class ChatRoomProcessor {
             if (null != xiaoVSaid) {
                 final JSONObject xiaoVMsg = new JSONObject();
                 xiaoVMsg.put(User.USER_NAME, TuringQueryService.ROBOT_NAME);
-                xiaoVMsg.put(Common.CONTENT, "@" + userName + ", " + xiaoVSaid);
+                xiaoVMsg.put(UserExt.USER_AVATAR_URL, TuringQueryService.ROBOT_AVATAR);
+                xiaoVMsg.put(Common.CONTENT, "<p>@" + userName + ", " + xiaoVSaid + "</p>");
 
                 ChatRoomChannel.notifyChat(xiaoVMsg);
 
-                messages.addFirst(msg);
+                messages.addFirst(xiaoVMsg);
                 if (messages.size() > maxCnt) {
                     messages.remove(maxCnt);
                 }
