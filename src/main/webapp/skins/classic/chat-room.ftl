@@ -14,7 +14,7 @@
             <div class="wrapper">
                 <div class="content">
                     <h2>${chatRoomLabel}</h2><br/>
-                    <div class="list">
+                    <div class="list form">
                         <ul>
                             <#list messages as msg>
                             <li>
@@ -38,29 +38,29 @@
                             </li>
                             </#list>  
                         </ul>
-                    </div>
-
-                    <#if isLoggedIn>
-                    <textarea id="chatContent" rows="10" placeholder="reply...."></textarea>
-                    <div class="tip" id="chatContentTip"></div>
-                    <div class="fn-clear comment-submit">
-                        <span class="responsive-hide">    
-                            Markdown
-                            <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                            <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                            |
-                            <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
-                        </span>
-                        <div class="fn-right">
-                            <button class="red" onclick="ChatRoom.send()">${postLabel}</button>
+                        <div class="reply">
+                            <#if isLoggedIn>
+                            <textarea id="chatContent" rows="10" placeholder="reply...."></textarea>
+                            <div class="tip" id="chatContentTip"></div>
+                            <div class="fn-clear comment-submit">
+                                <span class="responsive-hide">    
+                                    Markdown
+                                    <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
+                                    <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
+                                    |
+                                    <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
+                                </span>
+                                <div class="fn-right">
+                                    <button class="red" onclick="ChatRoom.send()">${postLabel}</button>
+                                </div>
+                            </div>
+                            <#else>
+                            <div class="comment-login">
+                                <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
+                            </div>
+                            </#if>
                         </div>
                     </div>
-                    <#else>
-                    <div class="comment-login">
-                        <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
-                    </div>
-                    </#if>
-
                 </div>
                 <div class="side">
                     <#include "side.ftl">
@@ -85,10 +85,7 @@
             // Init [ChatRoom] channel
             ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}/chat-room-channel");
 
-            var chatRoomMsgCnt = ${
-                chatRoomMsgCnt
-            }
-            ;
+            var chatRoomMsgCnt = ${chatRoomMsgCnt};
             Util.uploadFile({
                 "type": "img",
                 "id": "fileUpload",

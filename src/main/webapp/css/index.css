@@ -214,12 +214,14 @@
     display: inline-block;
 }
 
-#commentContent {
+#commentContent,
+#chatContent {
     background-color: #FAFAFA;
-    margin: 50px 0 0 0;
+    margin: 51px 0 0 0;
     overflow: hidden;
     padding: 4px;
     height: 88px;
+    width: 100%;
 }
 
 .share {

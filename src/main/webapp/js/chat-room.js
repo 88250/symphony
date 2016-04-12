@@ -27,10 +27,16 @@
  */
 var ChatRoom = {
     init: function () {
+        $('.list ul').height($(window).height() - $('.nav').height() - $('.reply').height() - 100).css('overflow', 'auto');
+
+        $(window).resize(function () {
+            $('.list ul').height($(window).height() - $('.nav').height() - $('.reply').height() - 120);
+        });
+
         if ($('#chatContent').length === 0) {
             return false;
         }
-        
+
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             // editor 不支持时，使用 textarea
             $('#chatContent').before('<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
@@ -78,7 +84,7 @@ var ChatRoom = {
             ChatRoom.editor = commentEditor.codemirror;
         }
 
-        
+
         if (window.localStorage && window.localStorage.chatRoom) {
             if ("" !== window.localStorage.chatRoom.replace(/(^\s*)|(\s*$)/g, "")) {
                 ChatRoom.editor.setValue(window.localStorage.chatRoom);
@@ -144,7 +150,7 @@ var ChatRoom = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $("#chatContentTip").removeClass("error succ").html('');
-                     
+
                     ChatRoom.editor.setValue('');
                     // reset comment editor
                     $('.editor-preview').html('');
@@ -169,5 +175,4 @@ var ChatRoom = {
         });
     }
 };
-
 ChatRoom.init();
