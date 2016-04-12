@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 12, 2016
+ * @version 1.0.0.2, Apr 12, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -201,6 +201,8 @@ public class ChatRoomProcessor {
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
         dataModel.put("qiniuUploadToken", auth.uploadToken(Symphonys.get("qiniu.bucket")));
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
+
+        dataModel.put(Common.ONLINE_VISITOR_CNT, ChatRoomChannel.SESSIONS.size());
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);

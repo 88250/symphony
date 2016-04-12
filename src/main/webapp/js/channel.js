@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.6.4, Apr 11, 2016
+ * @version 1.7.6.4, Apr 12, 2016
  */
 
 /**
@@ -293,13 +293,16 @@ var ChatRoomChannel = {
         };
 
         ChatRoomChannel.ws.onmessage = function (evt) {
-            console.log(evt);
             var data = JSON.parse(evt.data);
-
-            var content = $("#chatRoom").val();
-            content = content + "\n" + data.userName + ": " + data.content;
-            console.log(content, chatRoomMsgCnt);
-            $("#chatRoom").val(content);
+            
+            switch (data.type) {
+                case "online":
+                    $("#onlineCnt").text(data.onlineVisitorCnt);
+                    break;
+                case "msg":
+                    // TODO
+                    break;
+            }
         };
 
         ChatRoomChannel.ws.onclose = function () {

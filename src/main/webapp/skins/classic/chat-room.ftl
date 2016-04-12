@@ -13,7 +13,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <h2>${chatRoomLabel}</h2><br/>
+                    <h2>${chatRoomLabel} <span id="onlineCnt" class="ft-smaller">${onlineVisitorCnt}</span></h2><br/>
                     <div class="list">
                         <ul>
                             <#list messages as msg>

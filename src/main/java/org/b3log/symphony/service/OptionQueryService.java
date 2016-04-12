@@ -34,6 +34,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
+import org.b3log.symphony.processor.channel.ChatRoomChannel;
 import org.b3log.symphony.processor.channel.TimelineChannel;
 import org.b3log.symphony.repository.OptionRepository;
 import org.json.JSONArray;
@@ -47,7 +48,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.4, Apr 5, 2016
+ * @version 1.3.0.5, Apr 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -76,7 +77,8 @@ public class OptionQueryService {
      * @return online visitor count
      */
     public int getOnlineVisitorCount() {
-        final int ret = ArticleChannel.SESSIONS.size() + ArticleListChannel.SESSIONS.size() + TimelineChannel.SESSIONS.size();
+        final int ret = ArticleChannel.SESSIONS.size() + ArticleListChannel.SESSIONS.size() + TimelineChannel.SESSIONS.size()
+                + ChatRoomChannel.SESSIONS.size();
 
         try {
             final JSONObject maxOnlineMemberCntRecord = optionRepository.get(Option.ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT);
