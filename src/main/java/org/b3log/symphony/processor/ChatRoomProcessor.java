@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.processor;
 
+import com.qiniu.util.Auth;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Map;
@@ -178,6 +179,11 @@ public class ChatRoomProcessor {
 
         dataModel.put(Common.MESSAGES, messages);
         dataModel.put("chatRoomMsgCnt", Symphonys.getInt("chatRoom.msgCnt"));
+
+        // Qiniu file upload authenticate
+        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+        dataModel.put("qiniuUploadToken", auth.uploadToken(Symphonys.get("qiniu.bucket")));
+        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
