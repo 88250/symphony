@@ -142,12 +142,6 @@ var Comment = {
         }
 
         Comment.editor.on('changes', function (cm) {
-            if (cm.getValue().replace(/(^\s*)|(\s*$)/g, "") !== "") {
-                $(".form .green").show();
-            } else {
-                $(".form .green").hide();
-            }
-
             $("#addCommentTip").removeClass("error succ").html('');
 
             if (window.localStorage) {

@@ -329,6 +329,7 @@
             Label.uploadLabel = "${uploadLabel}";
                     Label.userCommentViewMode = ${userCommentViewMode};
             Label.stickConfirmLabel = "${stickConfirmLabel}";
+            Label.audioRecordingLabel = '${audioRecordingLabel}';
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
@@ -343,7 +344,7 @@
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
+            var WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
             // Init [Article] channel
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             // jQuery File Upload
@@ -356,10 +357,6 @@
                 "uploadingLabel": "${uploadingLabel}",
                 "qiniuDomain": "${qiniuDomain}"
             });
-            var qiniuToken = '${qiniuUploadToken}';
-            var qiniuDomain = '${qiniuDomain}';
-            var audioRecordingLabel = '${audioRecordingLabel}';
-            var uploadingLabel = '${uploadingLabel}';
                     <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');
                     </#if>

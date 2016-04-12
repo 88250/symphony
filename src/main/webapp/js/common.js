@@ -219,7 +219,7 @@ var Util = {
                 Audio.handleStartRecording();
 
                 var cursor = cm.getCursor();
-                cm.replaceRange(audioRecordingLabel, cursor, cursor);
+                cm.replaceRange(Label.audioRecordingLabel, cursor, cursor);
             }
         };
 
@@ -231,7 +231,7 @@ var Util = {
             Audio.handleStopRecording();
 
             var cursor = cm.getCursor();
-            cm.replaceRange(uploadingLabel, CodeMirror.Pos(cursor.line, cursor.ch - audioRecordingLabel.length), cursor);
+            cm.replaceRange(uploadingLabel, CodeMirror.Pos(cursor.line, cursor.ch - Label.audioRecordingLabel.length), cursor);
 
             var blob = Audio.wavFileBlob.getDataBlob();
             var key = Math.floor(Math.random() * 100) + "" + new Date().getTime() + ""

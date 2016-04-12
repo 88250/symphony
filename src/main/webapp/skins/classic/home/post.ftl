@@ -119,6 +119,7 @@
                         Label.recordDeniedLabel = "${recordDeniedLabel}";
                         Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
                         Label.uploadLabel = "${uploadLabel}";
+                        Label.audioRecordingLabel = '${audioRecordingLabel}';
         </script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
@@ -139,10 +140,6 @@
                                 "uploadingLabel": "${uploadingLabel}",
                                 "qiniuDomain": "${qiniuDomain}"
                         });
-                        var qiniuToken = '${qiniuUploadToken}';
-                        var qiniuDomain = '${qiniuDomain}';
-                        var audioRecordingLabel = '${audioRecordingLabel}';
-                        var uploadingLabel = '${uploadingLabel}';
         </script>
     </body>
 </html>
