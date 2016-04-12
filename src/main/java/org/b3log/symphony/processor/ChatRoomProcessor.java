@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Apr 12, 2016
+ * @version 1.0.0.3, Apr 13, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -141,10 +141,10 @@ public class ChatRoomProcessor {
 
         ChatRoomChannel.notifyChat(msg);
 
-        messages.addFirst(msg);
+        messages.addLast(msg);
         final int maxCnt = Symphonys.getInt("chatRoom.msgCnt");
         if (messages.size() > maxCnt) {
-            messages.remove(maxCnt);
+            messages.remove(0);
         }
 
         if (content.contains("@" + TuringQueryService.ROBOT_NAME)) {
@@ -158,9 +158,9 @@ public class ChatRoomProcessor {
 
                 ChatRoomChannel.notifyChat(xiaoVMsg);
 
-                messages.addFirst(xiaoVMsg);
+                messages.addLast(xiaoVMsg);
                 if (messages.size() > maxCnt) {
-                    messages.remove(maxCnt);
+                    messages.remove(0);
                 }
             }
         }
