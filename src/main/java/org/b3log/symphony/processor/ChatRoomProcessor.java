@@ -37,6 +37,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
 import org.b3log.symphony.processor.channel.ChatRoomChannel;
+import org.b3log.symphony.service.TuringQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
@@ -68,10 +69,10 @@ public class ChatRoomProcessor {
     private Filler filler;
 
     /**
-     * User query service.
+     * Turing query service.
      */
     @Inject
-    private UserQueryService userQueryService;
+    private TuringQueryService turingQueryService;
 
     /**
      * Adds a chat message.
@@ -98,26 +99,30 @@ public class ChatRoomProcessor {
         context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
-        final String content = requestJSONObject.optString(Common.CONTENT);
+        String content = requestJSONObject.optString(Common.CONTENT);
 
-        try {
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
-            if (null == currentUser) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userName = currentUser.optString(User.USER_NAME);
 
-                return;
+        final JSONObject msg = new JSONObject();
+        msg.put(User.USER_NAME, userName);
+        msg.put(Common.CONTENT, content);
+
+        ChatRoomChannel.notifyChat(msg);
+
+        if (content.contains("@" + TuringQueryService.ROBOT_NAME)) {
+            content = content.replaceAll("@" + TuringQueryService.ROBOT_NAME, "");
+            final String xiaoVSaid = turingQueryService.chat(currentUser.optString(Keys.OBJECT_ID), content);
+            if (null != xiaoVSaid) {
+                final JSONObject xiaoVMsg = new JSONObject();
+                xiaoVMsg.put(User.USER_NAME, TuringQueryService.ROBOT_NAME);
+                xiaoVMsg.put(Common.CONTENT, "@" + userName + ", " + xiaoVSaid);
+
+                ChatRoomChannel.notifyChat(xiaoVMsg);
             }
-
-            final JSONObject msg = new JSONObject();
-            msg.put(User.USER_NAME, currentUser.optString(User.USER_NAME));
-            msg.put(Common.CONTENT, content);
-
-            ChatRoomChannel.notifyChat(msg);
-
-            context.renderTrueResult();
-        } catch (final ServiceException e) {
-            context.renderMsg(e.getMessage());
         }
+
+        context.renderTrueResult();
     }
 
     /**

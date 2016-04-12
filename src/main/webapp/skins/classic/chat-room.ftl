@@ -14,12 +14,8 @@
                 <div class="content">
                     <h2>${chatRoomLabel}</h2><br/>
 
-                    <textarea id="chatRoom" rows="40">room</textarea>
-
-                    <textarea id="chatMsgEditor" rows="10">
-editor
-                    </textarea>
-
+                    <textarea id="chatRoom" rows="40" placeholder=""></textarea>
+                    <textarea id="chatMsgEditor" rows="10" placeholder="reply...."></textarea>
                     <button id="sendBtn" onclick="sendMsg()">${postLabel}</button>
 
                     <script>
@@ -37,6 +33,13 @@ editor
                                 beforeSend: function () {
                                 },
                                 success: function (result, textStatus) {
+                                    if (result.sc) {
+                                        
+                                    } else {
+                                        alert(result.msg);
+                                    }
+                                },
+                                complete: function (jqXHR, textStatus) {
                                 }
                             });
                         }

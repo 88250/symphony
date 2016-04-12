@@ -20,8 +20,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -34,13 +36,14 @@ import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
  * Validates for chat message adding.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 11, 2016
+ * @version 1.0.0.1, Apr 12, 2016
  * @since 1.4.0
  */
 @Named
@@ -54,16 +57,16 @@ public class ChatMsgAddValidation extends BeforeRequestProcessAdvice {
     private LangPropsService langPropsService;
 
     /**
-     * Article query service.
-     */
-    @Inject
-    private ArticleQueryService articleQueryService;
-
-    /**
      * Option query service.
      */
     @Inject
     private OptionQueryService optionQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Max content length.
@@ -78,6 +81,13 @@ public class ChatMsgAddValidation extends BeforeRequestProcessAdvice {
         try {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             request.setAttribute(Keys.REQUEST, requestJSONObject);
+
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            if (null == currentUser) {
+                throw new Exception(langPropsService.get("reloginLabel"));
+            }
+
+            request.setAttribute(User.USER, currentUser);
         } catch (final Exception e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }

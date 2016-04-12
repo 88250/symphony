@@ -300,6 +300,7 @@ var ChatRoomChannel = {
             content = content + "\n" + data.userName + ": " + data.content;
             console.log(content);
             $("#chatRoom").val(content);
+            $("#chatMsgEditor").val('');
         };
 
         ChatRoomChannel.ws.onclose = function () {
