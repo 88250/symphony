@@ -40,16 +40,9 @@
                         </ul>
                         <div class="reply">
                             <#if isLoggedIn>
-                            <textarea id="chatContent" rows="10" placeholder="reply...."></textarea>
+                            <textarea id="chatContent" rows="10" placeholder="Say sth...."></textarea>
                             <div class="tip" id="chatContentTip"></div>
                             <div class="fn-clear comment-submit">
-                                <span class="responsive-hide">    
-                                    Markdown
-                                    <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                                    <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                                    |
-                                    <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
-                                </span>
                                 <div class="fn-right">
                                     <button class="red" onclick="ChatRoom.send()">${postLabel}</button>
                                 </div>

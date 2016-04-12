@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Chat room processor.
  *
  * <ul>
- * <li>Shows char room (/chat-room), GET</li>
+ * <li>Shows char room (/cr), GET</li>
  * <li>Sends chat message (/chat-room/send), POST</li>
  * </ul>
  *
@@ -183,7 +183,7 @@ public class ChatRoomProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/chat-room", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/cr", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showChatRoom(final HTTPRequestContext context,

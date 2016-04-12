@@ -5,4 +5,4 @@ Disallow: /admin/
 Disallow: /member/
 Disallow: /city
 Disallow: /search
-Disallow: /chat-room
+Disallow: /cr
