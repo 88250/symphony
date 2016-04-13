@@ -358,9 +358,9 @@
                     "uploadingLabel": "${uploadingLabel}",
                     "qiniuDomain": "${qiniuDomain}"
             });
-            < #if 3 == article.articleType >
+            <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');
-            < /#if>
+            </#if>
         </script>
     </body>
 </html>
