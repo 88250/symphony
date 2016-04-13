@@ -70,7 +70,7 @@ public class ArticleSearchUpdater extends AbstractEventListener<JSONObject> {
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     * Gets the event type {@linkplain EventTypes#UPDATE_ARTICLE}.
      *
      * @return event type
      */

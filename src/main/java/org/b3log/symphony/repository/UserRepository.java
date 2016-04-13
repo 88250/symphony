@@ -16,6 +16,7 @@
 package org.b3log.symphony.repository;
 
 import java.util.List;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
@@ -27,6 +28,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.symphony.cache.UserCache;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -34,17 +36,43 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Jun 20, 2015
+ * @version 2.1.0.3, Apr 13, 2016
  * @since 0.2.0
  */
 @Repository
 public class UserRepository extends AbstractRepository {
 
     /**
+     * User cache.
+     */
+    @Inject
+    private UserCache userCache;
+
+    /**
      * Public constructor.
      */
     public UserRepository() {
         super(User.USER);
+    }
+
+    @Override
+    public JSONObject get(final String id) throws RepositoryException {
+        final JSONObject ret = super.get(id);
+
+        if (null == ret) {
+            return null;
+        }
+
+        userCache.putUser(ret);
+
+        return ret;
+    }
+
+    @Override
+    public void update(final String id, final JSONObject user) throws RepositoryException {
+        super.update(id, user);
+
+        userCache.putUser(user);
     }
 
     /**

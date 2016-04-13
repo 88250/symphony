@@ -38,6 +38,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
+import org.b3log.symphony.cache.UserCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
@@ -58,7 +59,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.5.17, Mar 28, 2016
+ * @version 2.4.5.17, Apr 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -110,6 +111,12 @@ public class CommentQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+    /**
+     * User cache.
+     */
+    @Inject
+    private UserCache userCache;
 
     /**
      * Gets a comment with {@link #organizeComment(org.json.JSONObject)} by the specified comment id.
@@ -478,7 +485,10 @@ public class CommentQueryService {
         comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
 
         final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-        final JSONObject author = userRepository.get(authorId);
+        JSONObject author = userCache.getUser(authorId);
+        if (null == author) {
+            author = userRepository.get(authorId);
+        }
 
         final String thumbnailURL = avatarQueryService.getAvatarURLByUser(author);
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);

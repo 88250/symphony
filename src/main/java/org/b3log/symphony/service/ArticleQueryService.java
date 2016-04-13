@@ -51,6 +51,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.UserCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
@@ -78,7 +79,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.10.18, Apr 2, 2016
+ * @version 2.14.10.18, Apr 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -154,6 +155,12 @@ public class ArticleQueryService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * User cache.
+     */
+    @Inject
+    private UserCache userCache;
 
     /**
      * Count to fetch article tags for relevant articles.
@@ -1001,7 +1008,12 @@ public class ArticleQueryService {
             try {
                 for (final JSONObject article : ret) {
                     final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                    final JSONObject author = userRepository.get(authorId);
+
+                    JSONObject author = userCache.getUser(authorId);
+                    if (null == author) {
+                        author = userRepository.get(authorId);
+                    }
+
                     if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
                         article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
                     }
@@ -1253,7 +1265,11 @@ public class ArticleQueryService {
         Stopwatchs.start("Generates article author");
         try {
             final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-            final JSONObject author = userRepository.get(authorId);
+
+            JSONObject author = userCache.getUser(authorId);
+            if (null == author) {
+                author = userRepository.get(authorId);
+            }
 
             article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
             article.put(Article.ARTICLE_T_AUTHOR, author);
@@ -1340,7 +1356,11 @@ public class ArticleQueryService {
             for (final JSONObject comment : comments) {
                 final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 final String userId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-                final JSONObject commenter = userRepository.get(userId);
+
+                JSONObject commenter = userCache.getUser(userId);
+                if (null == commenter) {
+                    commenter = userRepository.get(userId);
+                }
 
                 String thumbnailURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
