@@ -144,10 +144,10 @@ public class ChatRoomProcessor {
 
         ChatRoomChannel.notifyChat(msg);
 
-        messages.addLast(msg);
+        messages.addFirst(msg);
         final int maxCnt = Symphonys.getInt("chatRoom.msgCnt");
         if (messages.size() > maxCnt) {
-            messages.remove(0);
+            messages.remove(maxCnt);
         }
 
         if (content.contains("@" + TuringQueryService.ROBOT_NAME)) {
@@ -161,9 +161,9 @@ public class ChatRoomProcessor {
 
                 ChatRoomChannel.notifyChat(xiaoVMsg);
 
-                messages.addLast(xiaoVMsg);
+                messages.addFirst(xiaoVMsg);
                 if (messages.size() > maxCnt) {
-                    messages.remove(0);
+                    messages.remove(maxCnt);
                 }
             }
         }
@@ -216,7 +216,7 @@ public class ChatRoomProcessor {
                 }
             }
         }
-        
+
         dataModel.put(Common.ONLINE_VISITOR_CNT, cnt);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
