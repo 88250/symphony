@@ -52,7 +52,7 @@ var Util = {
             hint: false,
             templates: {
                 footer: '<div class="fn-right fn-pointer" onclick="window.open(\'https://www.algolia.com/\')">'
-                        + '<span class="ft-gray">With &hearts; from</span> <img src="https://www.algolia.com/assets/algolia128x40.png" /> </div>'
+                        + '<span class="ft-gray">With &hearts; from</span> <img src="' + Label.staticServePath + '/images/services/algolia128x40.png" /> </div>'
             }
         }, [{
                 source: function (q, cb) {
