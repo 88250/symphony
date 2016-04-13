@@ -17,12 +17,14 @@ package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.Session;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -40,6 +42,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
 import org.b3log.symphony.processor.channel.ChatRoomChannel;
+import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
 import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.TuringQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -58,7 +61,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Apr 13, 2016
+ * @version 1.0.1.3, Apr 13, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -202,7 +205,19 @@ public class ChatRoomProcessor {
         dataModel.put("qiniuUploadToken", auth.uploadToken(Symphonys.get("qiniu.bucket")));
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
-        dataModel.put(Common.ONLINE_VISITOR_CNT, ChatRoomChannel.SESSIONS.size());
+        int cnt = 0;
+        synchronized (SESSIONS) {
+            final Iterator<Session> i = SESSIONS.iterator();
+            while (i.hasNext()) {
+                final Session s = i.next();
+
+                if (s.isOpen()) {
+                    cnt++;
+                }
+            }
+        }
+        
+        dataModel.put(Common.ONLINE_VISITOR_CNT, cnt);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
