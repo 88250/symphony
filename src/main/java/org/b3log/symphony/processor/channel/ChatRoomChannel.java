@@ -143,7 +143,7 @@ public class ChatRoomChannel {
                 final Session s = i.next();
 
                 if (s.isOpen()) {
-                    final String msgStr = new JSONObject().put(Common.ONLINE_VISITOR_CNT, SESSIONS.size()).put(Common.TYPE, "online").toString();
+                    final String msgStr = new JSONObject().put(Common.ONLINE_CHAT_CNT, SESSIONS.size()).put(Common.TYPE, "online").toString();
                     s.getAsyncRemote().sendText(msgStr);
                 }
             }
