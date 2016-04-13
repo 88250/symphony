@@ -154,7 +154,7 @@ public class ChatRoomProcessor {
                 final JSONObject xiaoVMsg = new JSONObject();
                 xiaoVMsg.put(User.USER_NAME, TuringQueryService.ROBOT_NAME);
                 xiaoVMsg.put(UserExt.USER_AVATAR_URL, TuringQueryService.ROBOT_AVATAR);
-                xiaoVMsg.put(Common.CONTENT, "<p>@" + userName + ", " + xiaoVSaid + "</p>");
+                xiaoVMsg.put(Common.CONTENT, "<p>@" + userName + " " + xiaoVSaid + "</p>");
 
                 ChatRoomChannel.notifyChat(xiaoVMsg);
 
