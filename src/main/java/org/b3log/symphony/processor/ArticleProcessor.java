@@ -1189,7 +1189,7 @@ public class ArticleProcessor {
             final HTTPRequestContext context, final String articleId) throws Exception {
         final String content = articleQueryService.getArticlePreviewContent(articleId, request);
         if (StringUtils.isBlank(content)) {
-            context.renderFalseResult();
+            context.renderJSON().renderFalseResult();
 
             return;
         }
