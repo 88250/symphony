@@ -3,12 +3,12 @@
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
                 <a rel="help" href="https://hacpai.com/article/1440573175609">${aboutLabel}</a>
-                <a class="responsive-hide" href="/timeline">${timelineLabel}</a>
-                <#if isLoggedIn><a class="responsive-hide" href="/city/my">${sameCityLabel}</a></#if>
+                <a href="https://hacpai.com/article/1457158841475">API</a>
                 <a href="/tag/系统公告">${symAnnouncementLabel}</a>
                 <a href="/tag/Q%26A">${qnaLabel}</a>
                 <a href="/domains">${domainLabel}</a>
                 <a href="/tags" class="last">${tagLabel}</a>
+                <a href="https://hacpai.com/article/1460083956075" class="last">${adDeliveryLabel}</a>
 
                 <div class="fn-right">
                     <span class="ft-gray">&COPY; ${year}</span>
