@@ -60,6 +60,7 @@
 
 .module-panel.ad {
     padding: 10px;
+    text-align: center;
 }
 
 .module-panel.ad .header {
@@ -68,7 +69,6 @@
 
 .module-panel.ad img {
     margin-bottom: 5px;
-    width: 100%;
 }
 /* end module */
 
