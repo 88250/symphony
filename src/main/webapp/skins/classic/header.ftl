@@ -11,22 +11,22 @@
                 <input type="submit" class="fn-none" value="">
             </form>
             </#if>
-<!--            <div class="fn-right">
+            <#--        
+            <div class="fn-right">
                 <a href="/timeline" class="icon-clock last" title="${timelineLabel}"></a>
                 <#if isLoggedIn>
                 <a href="/city/my" class="icon-compass" title="${sameCityLabel}"></a>
                 </#if>
                 <a href="/recent" class="icon-refresh" title="${recentArticleLabel}"></a>
-            </div>-->
+            </div> -->
         </div>
 
         <div class="fn-clear user-nav">
             <#if isLoggedIn>
-            <a id="logout" href="${logoutURL}" title="${logoutLabel}" class="last icon-logout"></a>
             <#if "adminRole" == userRole>
-            <a href="/admin" title="${adminLabel}" class="icon-userrole"></a>
+            <a href="/admin" title="${adminLabel}" class="last icon-userrole"></a>
             </#if>
-            <a href="/member/${currentUser.userName}" title="Home" class="nav-avatar">
+            <a href="/member/${currentUser.userName}" title="Home" class="<#if 'adminRole' != userRole>last </#if>nav-avatar">
                 <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL}-64.jpg?${currentUser.userUpdateTime?c}')"></span>
             </a>
             <a href="/activities" title="${activityLabel}" class="icon-flag"></a>

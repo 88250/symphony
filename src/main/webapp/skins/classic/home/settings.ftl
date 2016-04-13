@@ -14,7 +14,7 @@
         <label>URL</label><br/>
         <input id="userURL" type="text" value="${currentUser.userURL}" placeholder="${selfURLLabel}"/>
 
-        <!--
+        <#--
         <label>QQ</label><br/>
         <input id="userQQ" type="text" value="${currentUser.userQQ}" />
         -->
@@ -66,6 +66,7 @@
         <br/>
         <div class="tip" id="profilesTip"></div>
         <br/>
+        <button class="red fn-left" onclick="Util.logout()">${logoutLabel}</button>
         <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>

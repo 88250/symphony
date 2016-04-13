@@ -763,10 +763,6 @@ var Util = {
             setInterval(function () {
                 Util.setUnreadNotificationCount();
             }, 60000);
-
-            $("#logout").click(function () { // Register logout click event handler
-                Util.logout();
-            });
         }
 
 
@@ -849,10 +845,10 @@ var Util = {
     logout: function () {
         if (window.localStorage) {
             // Clear localStorage
-            window.localStorage.articleContent = "";
-            window.localStorage.commentContent = "";
+            window.localStorage.clear();
             window.localStorage.unreadNotificationCount = 0;
         }
+        window.location.href = '/logout?goto=' + location.protocol + '//' + location.host;
     },
     /**
      * @description 获取字符串开始位置     
