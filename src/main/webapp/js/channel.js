@@ -297,7 +297,7 @@ var ChatRoomChannel = {
 
             switch (data.type) {
                 case "online":
-                    $("#onlineCnt").text(data.onlineVisitorCnt);
+                    $("#onlineCnt").text(data.onlineChatCnt);
                     break;
                 case "msg":
                     var liHTML = '<li class="fn-none">'

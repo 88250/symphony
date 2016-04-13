@@ -530,6 +530,11 @@ public final class Common {
     public static final String ONLINE_VISITOR_CNT = "onlineVisitorCnt";
 
     /**
+     * Key of online chat count.
+     */
+    public static final String ONLINE_CHAT_CNT = "onlineChatCnt";
+
+    /**
      * Key of article channel count.
      */
     public static final String ARTICLE_CHANNEL_CNT = "articleChannelCnt";

@@ -205,19 +205,7 @@ public class ChatRoomProcessor {
         dataModel.put("qiniuUploadToken", auth.uploadToken(Symphonys.get("qiniu.bucket")));
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
-        int cnt = 0;
-        synchronized (SESSIONS) {
-            final Iterator<Session> i = SESSIONS.iterator();
-            while (i.hasNext()) {
-                final Session s = i.next();
-
-                if (s.isOpen()) {
-                    cnt++;
-                }
-            }
-        }
-
-        dataModel.put(Common.ONLINE_VISITOR_CNT, cnt);
+        dataModel.put(Common.ONLINE_CHAT_CNT, SESSIONS.size());
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
