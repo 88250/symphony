@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.11.19, Mar 30, 2016
+ * @version 1.16.11.19, Apr 13, 2016
  */
 
 /* start reset */
@@ -543,6 +543,10 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
+
+.icon-wechat:before {
+    content: "\e907";
+}
 .icon-time:before {
     content: "\e906";
 }

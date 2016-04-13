@@ -111,6 +111,8 @@
                     <div class="fn-clear">
                         <span id="articltVia" data-ua="${article.articleUA}" class="ft-gray ft-smaller fn-right"></span>
                         <div class="share fn-right">
+                            <div id="qrCode" class="fn-none"></div>
+                            <span class="icon-wechat" data-type="wechat"></span>
                             <span class="icon-tencent" data-type="tencent"></span>
                             <span class="icon-weibo" data-type="weibo"></span>
                             <span class="icon-twitter" data-type="twitter"></span>
@@ -341,6 +343,7 @@
         <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.qrcode.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>

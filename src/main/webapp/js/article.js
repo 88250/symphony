@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.19.9, Apr 10, 2016
+ * @version 1.16.19.9, Apr 13, 2016
  */
 
 /**
@@ -62,7 +62,7 @@ var Comment = {
 
         this._setCmtVia();
         $.ua.set(navigator.userAgent);
-        
+
         if (!isLoggedIn) {
             return false;
         }
@@ -368,8 +368,14 @@ var Article = {
      * @description 分享按钮
      */
     share: function () {
+        $('#qrCode').qrcode({width: 90, height: 90, text: location.protocol + '//' + location.host + location.pathname});
+
         $(".share span").click(function () {
             var key = $(this).data("type");
+            if (key === 'wechat') {
+                $('#qrCode').slideToggle();
+                return false;
+            }
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
                     url = "https://hacpai.com" + Label.articlePermalink,
                     pic = $(".content-reset img").attr("src");
@@ -381,6 +387,10 @@ var Article = {
             urls.google = "https://plus.google.com/share?url=" + url;
             urls.twitter = "https://twitter.com/intent/tweet?status=" + title + " " + url;
             window.open(urls[key], "_blank", "top=100,left=200,width=648,height=618");
+        });
+        
+        $('#qrCode').click(function () {
+            $(this).hide();
         });
     },
     /*

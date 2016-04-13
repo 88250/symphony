@@ -4,6 +4,32 @@
 		{
 			"icon": {
 				"paths": [
+					"M331.429 263.429q0-23.429-14.286-37.714t-37.714-14.286q-24.571 0-43.429 14.571t-18.857 37.429q0 22.286 18.857 36.857t43.429 14.571q23.429 0 37.714-14t14.286-37.429zM756 553.143q0-16-14.571-28.571t-37.429-12.571q-15.429 0-28.286 12.857t-12.857 28.286q0 16 12.857 28.857t28.286 12.857q22.857 0 37.429-12.571t14.571-29.143zM621.143 263.429q0-23.429-14-37.714t-37.429-14.286q-24.571 0-43.429 14.571t-18.857 37.429q0 22.286 18.857 36.857t43.429 14.571q23.429 0 37.429-14t14-37.429zM984 553.143q0-16-14.857-28.571t-37.143-12.571q-15.429 0-28.286 12.857t-12.857 28.286q0 16 12.857 28.857t28.286 12.857q22.286 0 37.143-12.571t14.857-29.143zM832 326.286q-17.714-2.286-40-2.286-96.571 0-177.714 44t-127.714 119.143-46.571 164.286q0 44.571 13.143 86.857-20 1.714-38.857 1.714-14.857 0-28.571-0.857t-31.429-3.714-25.429-4-31.143-6-28.571-6l-144.571 72.571 41.143-124.571q-165.714-116-165.714-280 0-96.571 55.714-177.714t150.857-127.714 207.714-46.571q100.571 0 190 37.714t149.714 104.286 78 148.857zM1170.286 646.857q0 66.857-39.143 127.714t-106 110.571l31.429 103.429-113.714-62.286q-85.714 21.143-124.571 21.143-96.571 0-177.714-40.286t-127.714-109.429-46.571-150.857 46.571-150.857 127.714-109.429 177.714-40.286q92 0 173.143 40.286t130 109.714 48.857 150.571z"
+				],
+				"attrs": [],
+				"isMulticolor": false,
+				"width": 1170,
+				"tags": [
+					"wechat",
+					"weixin"
+				],
+				"grid": 14
+			},
+			"attrs": [],
+			"properties": {
+				"order": 1,
+				"id": 0,
+				"prevSize": 28,
+				"code": 59655,
+				"name": "wechat"
+			},
+			"setIdx": 0,
+			"setId": 8,
+			"iconIdx": 0
+		},
+		{
+			"icon": {
+				"paths": [
 					"M479.087 638.77l-112.283-112.308c-9.896-9.893-23.061-15.347-37.052-15.347-14.004 0-27.155 5.457-37.035 15.348-9.894 9.895-15.351 23.062-15.355 37.060-0.004 14.009 5.44 27.16 15.326 37.030l149.332 149.339c9.896 9.896 23.058 15.351 37.045 15.351 12.175 0 23.715-4.13 33.028-11.723l3.315-0.009 2.353-5.277 234.067-234.035c20.386-20.418 20.386-53.643-0.006-74.076-9.897-9.896-23.063-15.352-37.057-15.352s-27.16 5.447-37.057 15.353l-198.621 198.645z",
 					"M846.717 438.045c7.788 21.634 13.405 44 16.821 66.768l2.281 15.131 108.674-3.964-2.467-18.658c-4.338-33.052-12.193-65.556-23.509-96.883l-5.917-16.269-101.626 37.938 5.733 15.938z",
 					"M784.243 328.908l3.23 4.213c2.666 4.855 6.037 9.264 9.963 13.111 11.425 15.368 21.666 31.653 30.477 48.666l6.974 13.521 101.912-38.087-8.371-17.005c-11.325-22.979-24.56-44.997-39.538-65.802-7.72-21.54-28.309-36.944-52.499-36.944-30.798 0-55.77 24.971-55.77 55.77 0 7.774 1.595 15.174 4.468 21.894l-0.848 0.662z",
@@ -12,22 +38,22 @@
 				],
 				"attrs": [],
 				"isMulticolor": false,
-				"grid": 0,
 				"tags": [
 					"iconfont-iconfonttime"
-				]
+				],
+				"grid": 0
 			},
 			"attrs": [],
 			"properties": {
 				"order": 59,
-				"id": 3,
+				"id": 0,
 				"prevSize": 32,
 				"code": 59654,
 				"name": "time"
 			},
-			"setIdx": 0,
-			"setId": 3,
-			"iconIdx": 1
+			"setIdx": 1,
+			"setId": 7,
+			"iconIdx": 0
 		},
 		{
 			"icon": {
@@ -36,10 +62,10 @@
 				],
 				"attrs": [],
 				"isMulticolor": false,
-				"grid": 0,
 				"tags": [
 					"iconfont-sortnumericasc"
-				]
+				],
+				"grid": 0
 			},
 			"attrs": [],
 			"properties": {
@@ -49,9 +75,9 @@
 				"code": 59653,
 				"name": "sortasc"
 			},
-			"setIdx": 0,
-			"setId": 3,
-			"iconIdx": 2
+			"setIdx": 1,
+			"setId": 7,
+			"iconIdx": 1
 		},
 		{
 			"icon": {
@@ -74,8 +100,8 @@
 				"code": 58910,
 				"name": "locked"
 			},
-			"setIdx": 1,
-			"setId": 1,
+			"setIdx": 2,
+			"setId": 6,
 			"iconIdx": 0
 		},
 		{
@@ -98,8 +124,8 @@
 				"code": 59648,
 				"name": "points"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 0
 		},
 		{
@@ -128,8 +154,8 @@
 				"code": 59652,
 				"name": "goods"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 1
 		},
 		{
@@ -154,8 +180,8 @@
 				"code": 57344,
 				"name": "bold"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 2
 		},
 		{
@@ -177,8 +203,8 @@
 				"code": 57345,
 				"name": "italic"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 3
 		},
 		{
@@ -200,8 +226,8 @@
 				"code": 57347,
 				"name": "quote"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 4
 		},
 		{
@@ -223,8 +249,8 @@
 				"code": 57348,
 				"name": "unordered-list"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 5
 		},
 		{
@@ -246,8 +272,8 @@
 				"code": 57349,
 				"name": "ordered-list"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 6
 		},
 		{
@@ -269,8 +295,8 @@
 				"code": 57350,
 				"name": "link"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 7
 		},
 		{
@@ -292,8 +318,8 @@
 				"code": 57351,
 				"name": "image"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 8
 		},
 		{
@@ -315,8 +341,8 @@
 				"code": 57352,
 				"name": "play"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 9
 		},
 		{
@@ -338,8 +364,8 @@
 				"code": 57353,
 				"name": "music"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 10
 		},
 		{
@@ -361,8 +387,8 @@
 				"code": 57354,
 				"name": "contract"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 11
 		},
 		{
@@ -384,8 +410,8 @@
 				"code": 57355,
 				"name": "fullscreen"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 12
 		},
 		{
@@ -407,8 +433,8 @@
 				"code": 57356,
 				"name": "question"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 13
 		},
 		{
@@ -430,8 +456,8 @@
 				"code": 57357,
 				"name": "info"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 14
 		},
 		{
@@ -453,8 +479,8 @@
 				"code": 57358,
 				"name": "undo"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 15
 		},
 		{
@@ -476,8 +502,8 @@
 				"code": 57359,
 				"name": "redo"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 16
 		},
 		{
@@ -499,8 +525,8 @@
 				"code": 57361,
 				"name": "code"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 17
 		},
 		{
@@ -522,8 +548,8 @@
 				"code": 57346,
 				"name": "preview"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 18
 		},
 		{
@@ -546,8 +572,8 @@
 				"code": 59651,
 				"name": "navigation"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 19
 		},
 		{
@@ -570,8 +596,8 @@
 				"code": 59649,
 				"name": "thumbs-down"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 20
 		},
 		{
@@ -594,8 +620,8 @@
 				"code": 59650,
 				"name": "thumbs-up"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 21
 		},
 		{
@@ -619,8 +645,8 @@
 				"code": 61527,
 				"name": "video"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 22
 		},
 		{
@@ -647,8 +673,8 @@
 				"code": 58911,
 				"name": "feed"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 23
 		},
 		{
@@ -671,8 +697,8 @@
 				"code": 58909,
 				"name": "article"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 24
 		},
 		{
@@ -704,8 +730,8 @@
 				"code": 58880,
 				"name": "star"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 25
 		},
 		{
@@ -738,8 +764,8 @@
 				"code": 58881,
 				"name": "heart"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 26
 		},
 		{
@@ -772,8 +798,8 @@
 				"code": 58882,
 				"name": "register"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 27
 		},
 		{
@@ -805,8 +831,8 @@
 				"code": 58883,
 				"name": "logout"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 28
 		},
 		{
@@ -838,8 +864,8 @@
 				"code": 58884,
 				"name": "setting"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 29
 		},
 		{
@@ -871,8 +897,8 @@
 				"code": 58885,
 				"name": "google"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 30
 		},
 		{
@@ -904,8 +930,8 @@
 				"code": 58886,
 				"name": "search"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 31
 		},
 		{
@@ -937,8 +963,8 @@
 				"code": 58887,
 				"name": "weibo"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 32
 		},
 		{
@@ -970,8 +996,8 @@
 				"code": 58888,
 				"name": "date"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 33
 		},
 		{
@@ -1003,8 +1029,8 @@
 				"code": 58889,
 				"name": "view"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 34
 		},
 		{
@@ -1036,8 +1062,8 @@
 				"code": 58890,
 				"name": "cmts"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 35
 		},
 		{
@@ -1069,8 +1095,8 @@
 				"code": 58891,
 				"name": "refresh"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 36
 		},
 		{
@@ -1102,8 +1128,8 @@
 				"code": 58892,
 				"name": "up"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 37
 		},
 		{
@@ -1135,8 +1161,8 @@
 				"code": 58893,
 				"name": "twitter"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 38
 		},
 		{
@@ -1168,8 +1194,8 @@
 				"code": 58894,
 				"name": "edit"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 39
 		},
 		{
@@ -1201,8 +1227,8 @@
 				"code": 58895,
 				"name": "tencent"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 40
 		},
 		{
@@ -1234,8 +1260,8 @@
 				"code": 58896,
 				"name": "tag"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 41
 		},
 		{
@@ -1268,8 +1294,8 @@
 				"code": 58897,
 				"name": "tags"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 42
 		},
 		{
@@ -1301,8 +1327,8 @@
 				"code": 58898,
 				"name": "addfile"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 43
 		},
 		{
@@ -1334,8 +1360,8 @@
 				"code": 58899,
 				"name": "login"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 44
 		},
 		{
@@ -1367,8 +1393,8 @@
 				"code": 58900,
 				"name": "articles"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 45
 		},
 		{
@@ -1401,8 +1427,8 @@
 				"code": 58901,
 				"name": "userrole"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 46
 		},
 		{
@@ -1434,8 +1460,8 @@
 				"code": 58902,
 				"name": "email"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 47
 		},
 		{
@@ -1467,8 +1493,8 @@
 				"code": 58903,
 				"name": "flag"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 48
 		},
 		{
@@ -1501,8 +1527,8 @@
 				"code": 58904,
 				"name": "chevron-down"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 49
 		},
 		{
@@ -1535,8 +1561,8 @@
 				"code": 58905,
 				"name": "chevron-up"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 50
 		},
 		{
@@ -1568,8 +1594,8 @@
 				"code": 58906,
 				"name": "reply"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 51
 		},
 		{
@@ -1601,8 +1627,8 @@
 				"code": 58907,
 				"name": "clock"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 52
 		},
 		{
@@ -1634,8 +1660,8 @@
 				"code": 58908,
 				"name": "compass"
 			},
-			"setIdx": 2,
-			"setId": 0,
+			"setIdx": 3,
+			"setId": 5,
 			"iconIdx": 53
 		}
 	],

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.9.13, Apr 13, 2016
+ * @version 2.7.9.13, Apr 14, 2016
  */
 
 /* start module */
@@ -227,6 +227,18 @@
 
 .share {
     margin-top: 20px;
+    position: relative;
+}
+
+.share #qrCode {
+    position: absolute;
+    bottom: 30px;
+    right: 0;
+    border: 5px solid #e5e5e5;
+    z-index: 1;
+    height: 90px;
+    border-radius: 3px;
+    width: 90px;
 }
 
 .share [class^="icon-"] {
