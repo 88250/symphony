@@ -261,9 +261,10 @@
                     </#if>
                 </div>
                 <div class="side">
-
                     <#include 'common/person-info.ftl'/>
-                    
+                    <#if ADLabel!="">
+                    ${ADLabel}
+                    </#if>
                     <#if sideRelevantArticles?size != 0>
                     <div class="module">
                         <div class="module-header">
@@ -320,14 +321,14 @@
             Label.rewardConfirmLabel = "${rewardConfirmLabel?replace('{point}', article.articleRewardPoint)}";
             Label.articleOId = "${article.oId}";
             Label.articleTitle = "${article.articleTitle}";
-                    Label.articlePermalink = "${article.articlePermalink}";
+            Label.articlePermalink = "${article.articlePermalink}";
             Label.recordDeniedLabel = "${recordDeniedLabel}";
             Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
             Label.csrfToken = "${csrfToken}";
             Label.upLabel = "${upLabel}";
             Label.downLabel = "${downLabel}";
             Label.uploadLabel = "${uploadLabel}";
-                    Label.userCommentViewMode = ${userCommentViewMode};
+            Label.userCommentViewMode = ${userCommentViewMode};
             Label.stickConfirmLabel = "${stickConfirmLabel}";
             Label.audioRecordingLabel = '${audioRecordingLabel}';
         </script>
@@ -349,17 +350,17 @@
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             // jQuery File Upload
             Util.uploadFile({
-                "type": "img",
-                "id": "fileUpload",
-                "pasteZone": $(".CodeMirror"),
-                "qiniuUploadToken": "${qiniuUploadToken}",
-                "editor": Comment.editor,
-                "uploadingLabel": "${uploadingLabel}",
-                "qiniuDomain": "${qiniuDomain}"
+            "type": "img",
+                    "id": "fileUpload",
+                    "pasteZone": $(".CodeMirror"),
+                    "qiniuUploadToken": "${qiniuUploadToken}",
+                    "editor": Comment.editor,
+                    "uploadingLabel": "${uploadingLabel}",
+                    "qiniuDomain": "${qiniuDomain}"
             });
-                    <#if 3 == article.articleType>
+            < #if 3 == article.articleType >
                     Article.playThought('${article.articleContent}');
-                    </#if>
+            < /#if>
         </script>
     </body>
 </html>
