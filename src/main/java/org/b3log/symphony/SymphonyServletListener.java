@@ -205,8 +205,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         if (!isStatic) {
             Stopwatchs.end();
 
-            final String timingStat = Stopwatchs.getTimingStat();
-            LOGGER.log(Level.INFO, "\n" + timingStat);
+            LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
         }
 
         Stopwatchs.release();

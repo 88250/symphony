@@ -1250,18 +1250,18 @@ public class ArticleQueryService {
      * @throws RepositoryException repository exception
      */
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
-        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+        Stopwatchs.start("Generates article author");
+        try {
+            final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject author = userRepository.get(authorId);
 
-        if (Strings.isEmptyOrNull(authorId)) {
-            return;
+            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
+            article.put(Article.ARTICLE_T_AUTHOR, author);
+
+            article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+        } finally {
+            Stopwatchs.end();
         }
-
-        final JSONObject author = userRepository.get(authorId);
-
-        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
-        article.put(Article.ARTICLE_T_AUTHOR, author);
-
-        article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
     }
 
     /**
