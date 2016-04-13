@@ -17,7 +17,7 @@
                         <h2 class="fn-left">${chatRoomLabel}</h2>
                         <span class="fn-right ft-smaller online-cnt">
                             <span class="ft-red" id="onlineCnt">${onlineVisitorCnt}</span>
-                            <span class="ft-gray">人在线</span>
+                            <span class="ft-gray">${onlineLabel}</span>
                         </span>
                     </div>
                     <div class="form">
