@@ -28,6 +28,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
+import org.b3log.symphony.processor.channel.ChatRoomChannel;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -42,7 +43,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Jan 2, 2016
+ * @version 1.1.0.2, Apr 13, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -82,6 +83,7 @@ public class StatusProcessor {
         context.renderJSON(ret);
 
         ret.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
+        ret.put(Common.ONLINE_CHAT_CNT, ChatRoomChannel.SESSIONS.size());
         ret.put(Common.ARTICLE_CHANNEL_CNT, ArticleChannel.SESSIONS.size());
         ret.put(Common.ARTICLE_LIST_CHANNEL_CNT, ArticleListChannel.SESSIONS.size());
 
