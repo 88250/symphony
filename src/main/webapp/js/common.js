@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.22.12.15, Mar 30, 2016
+ * @version 1.23.12.15, Apr 13, 2016
  */
 
 /**
@@ -35,7 +35,7 @@ var Util = {
     getDeviceByUa: function (ua) {
         $.ua.set(ua);
         var name = $.ua.device.model ? $.ua.device.model : $.ua.os.name;
-        
+
         if (!name || name === 'Windows') {
             name = '';
         }
@@ -51,7 +51,7 @@ var Util = {
         $('#search').autocomplete({
             hint: false,
             templates: {
-                footer: '<div class="fn-right fn-pointer" onclick="window.open(\'https://www.algolia.com/\')">' 
+                footer: '<div class="fn-right fn-pointer" onclick="window.open(\'https://www.algolia.com/\')">'
                         + '<span class="ft-gray">With &hearts; from</span> <img src="https://www.algolia.com/assets/algolia128x40.png" /> </div>'
             }
         }, [{
@@ -73,7 +73,7 @@ var Util = {
             }
         ]).on('autocomplete:selected', function (event, suggestion, dataset) {
             window.open("/article/" + suggestion.oId);
-        }); 
+        });
     },
     initTextarea: function (id, keyupEvent) {
         var editor = {
@@ -130,7 +130,7 @@ var Util = {
             if (tok.string.indexOf('@') !== 0) {
                 return false;
             }
-            
+
             $.ajax({
                 async: false,
                 url: "/users/names?name=" + tok.string.substring(1),
@@ -152,11 +152,11 @@ var Util = {
                             text: name + " "
                         });
                     }
-                    
+
                     if ('comment' === cm['for']) {
-                         autocompleteHints.push({
+                        autocompleteHints.push({
                             displayText: "<span style='font-size: 1rem;line-height:22px'>"
-                            + "<img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='/images/user-thumbnail.png'> @参与者</span>",
+                                    + "<img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='/images/user-thumbnail.png'> @参与者</span>",
                             text: "participants "
                         });
                     }
@@ -672,42 +672,42 @@ var Util = {
      * @returns {undefined}
      */
     _initActivity: function () {
-        var $percent = $('.person-info'), 
+        var $percent = $('.person-info'),
                 percent = $percent.data('percent'),
                 bottom = 0,
                 side = 0,
                 top = 0;
-        if(percent <= 25) {
-            bottom =  parseInt(percent/0.25);
+        if (percent <= 25) {
+            bottom = parseInt(percent / 0.25);
         } else if (percent <= 75) {
             bottom = 100;
             side = parseInt((percent - 25) / 2 / 0.25);
-        } else if (percent <= 100){
+        } else if (percent <= 100) {
             bottom = 100;
             side = 100;
             top = parseInt((percent - 75) / 0.25);
         }
-        
+
         $percent.find('.bottom').css({
             'width': bottom + '%',
             'left': ((100 - bottom) / 2) + '%'
         });
-        
+
         $percent.find('.top-left').css({
             'width': parseInt(top / 2) + '%',
             'left': 0
         });
-        
+
         $percent.find('.top-right').css({
             'width': parseInt(top / 2) + '%',
             'right': 0
         });
-        
+
         $percent.find('.left').css({
             'height': side + '%',
             'top': (100 - side) + '%'
         });
-        
+
         $percent.find('.right').css({
             'height': side + '%',
             'top': (100 - side) + '%'
@@ -768,6 +768,13 @@ var Util = {
                 Util.logout();
             });
         }
+
+
+        console && console.log("%cCopyright \xa9 2012-%s, b3log.org & hacpai.com\n\n%cHacPai%c 平等、自由、奔放",
+                'font-size:12px;color:#999999;', (new Date).getFullYear(),
+                'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:64px;color:#404040;-webkit-text-fill-color:#404040;-webkit-text-stroke: 1px #777;',
+                'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999; font-style:italic;'
+                );
     },
     /**
      * @description 设置导航状态
@@ -1300,4 +1307,5 @@ function getUUID() {
     ret = ret.replace(new RegExp("-", 'g'), "");
 
     return ret;
-};
+}
+;
