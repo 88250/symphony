@@ -365,7 +365,7 @@ public class Filler {
      * @param dataModel the specified data model
      */
     private void fillSideAd(final Map<String, Object> dataModel) {
-        if (Math.random() > 0.5) {
+        if (Math.random() > 0.8) {
             dataModel.put("ADLabel", langPropsService.get("ADImgLabel"));
         }
     }
