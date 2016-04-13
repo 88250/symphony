@@ -206,9 +206,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
             Stopwatchs.end();
 
             final String timingStat = Stopwatchs.getTimingStat();
-            LOGGER.log(Level.INFO, timingStat);
+            LOGGER.log(Level.INFO, "\n" + timingStat);
         }
-        
+
         Stopwatchs.release();
     }
 
