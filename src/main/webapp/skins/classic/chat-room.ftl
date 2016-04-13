@@ -12,9 +12,31 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content">
-                    <h2>${chatRoomLabel} <span id="onlineCnt" class="ft-smaller ft-red">${onlineVisitorCnt}</span></h2><br/>
+                <div class="content chat-room">
+                    <div class="fn-clear">
+                        <h2 class="fn-left">${chatRoomLabel}</h2>
+                        <span class="fn-right ft-smaller online-cnt">
+                            <span class="ft-red" id="onlineCnt">${onlineVisitorCnt}</span>
+                            <span class="ft-gray">人在线</span>
+                        </span>
+                    </div>
                     <div class="form">
+                        <div class="reply">
+                            <#if isLoggedIn>
+                            <textarea id="chatContent" rows="10" placeholder="Say sth...."></textarea>
+                            <div class="tip" id="chatContentTip"></div>
+                            <div class="fn-clear comment-submit">
+                                <div class="fn-right">
+                                    <button class="red" onclick="ChatRoom.send()">${postLabel}</button>
+                                </div>
+                            </div>
+                            <#else>
+                            <div class="comment-login">
+                                <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
+                            </div>
+                            </#if>
+                        </div>
+                        <br/>
                         <div class="list">
                             <ul>
                                 <#list messages as msg>
@@ -39,21 +61,6 @@
                                 </li>
                                 </#list>  
                             </ul>
-                        </div>
-                        <div class="reply">
-                            <#if isLoggedIn>
-                            <textarea id="chatContent" rows="10" placeholder="Say sth...."></textarea>
-                            <div class="tip" id="chatContentTip"></div>
-                            <div class="fn-clear comment-submit">
-                                <div class="fn-right">
-                                    <button class="red" onclick="ChatRoom.send()">${postLabel}</button>
-                                </div>
-                            </div>
-                            <#else>
-                            <div class="comment-login">
-                                <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
-                            </div>
-                            </#if>
                         </div>
                     </div>
                 </div>

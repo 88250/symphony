@@ -28,11 +28,7 @@
 var ChatRoom = {
     init: function () {
         // 聊天窗口高度设置
-        $('.list').height($(window).height() - $('.nav').height() - $('.reply').height() - 100).css('overflow', 'auto');
-
-        $(window).resize(function () {
-            $('.list').height($(window).height() - $('.nav').height() - $('.reply').height() - 120);
-        });
+        $('.list').height($('.side').height() - $('.reply').height() + 173);
         
         // 没用登陆就不需要编辑起初始化了 
         if ($('#chatContent').length === 0) {

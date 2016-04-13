@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.6.4, Apr 12, 2016
+ * @version 1.7.6.5, Apr 13, 2016
  */
 
 /**
@@ -294,38 +294,41 @@ var ChatRoomChannel = {
 
         ChatRoomChannel.ws.onmessage = function (evt) {
             var data = JSON.parse(evt.data);
-            
+
             switch (data.type) {
                 case "online":
                     $("#onlineCnt").text(data.onlineVisitorCnt);
                     break;
                 case "msg":
-                    var liHTML = '<li>'
-                               + '<div class="fn-flex">'
-                                    + '<a rel="nofollow" href="/member/' + data.userName + '">'
-                                        + '<div class="avatar" '
-                                             + 'title="' + data.userName + '" style="background-image:url(' + data.userAvatarURL + '-64.jpg)"></div>'
-                                    + '</a>'
-                                    + '<div class="fn-flex-1">'
-                                        + '<div class="fn-clear">'
-                                            + '<span class="fn-left">'
-                                                + '<a rel="nofollow" href="/member/' + data.userName + '" '
-                                                   + 'title="' + data.userName + '">' + data.userName + '</a>'
-                                            + '</span>'
-                                        + '</div>'
-                                        + '<div class="content-reset">'
-                                            + data.content
-                                        + '</div>'
-                                    + '</div>'
-                                + '</div>'
+                    var liHTML = '<li class="fn-none">'
+                            + '<div class="fn-flex">'
+                            + '<a rel="nofollow" href="/member/' + data.userName + '">'
+                            + '<div class="avatar" '
+                            + 'title="' + data.userName + '" style="background-image:url(' + data.userAvatarURL + '-64.jpg)"></div>'
+                            + '</a>'
+                            + '<div class="fn-flex-1">'
+                            + '<div class="fn-clear">'
+                            + '<span class="fn-left">'
+                            + '<a rel="nofollow" href="/member/' + data.userName + '" '
+                            + 'title="' + data.userName + '">' + data.userName + '</a>'
+                            + '</span>'
+                            + '</div>'
+                            + '<div class="content-reset">'
+                            + data.content
+                            + '</div>'
+                            + '</div>'
+                            + '</div>'
                             + '</li>';
-                    $('.form ul li:last').after(liHTML);
-                    
-                    
-                    if ($('.form ul').height() - $('.form .list').scrollTop() - $('.form .list').height() < $('.form li').outerHeight() * 2) {
-                        $('.form .list').animate({'scrollTop': $('.form ul').height() - $('.form .list').height()}, 500);
-                        //$('.form .list').scrollTop($('.form ul').height());
+                    if ($('.form ul li').length === 0) {
+                        $('.form ul li').html(liHTML);
+                    } else {
+                        $('.form ul li:first').before(liHTML);
                     }
+
+                    if ($('.form .list').scrollTop() < $('.form li').outerHeight() * 2) {
+                        $('.form .list').animate({'scrollTop': 0}, 500);
+                    }
+                    $(".form ul li:first").fadeIn(2000);
                     break;
             }
         };
