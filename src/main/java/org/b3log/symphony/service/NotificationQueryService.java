@@ -35,6 +35,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
@@ -128,22 +129,27 @@ public class NotificationQueryService {
      * @return count of unread notifications, returns {@code 0} if occurs exception
      */
     public int getUnreadNotificationCount(final String userId) {
-        final List<Filter> filters = new ArrayList<Filter>();
-
-        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
-        filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
-
-        final Query query = new Query();
-        query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addProjection(Keys.OBJECT_ID, String.class);
-
+        Stopwatchs.start("Gets unread notification count");
         try {
-            final JSONObject result = notificationRepository.get(query);
+            final List<Filter> filters = new ArrayList<Filter>();
 
-            return result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets unread notification count failed [userId=" + userId + "]", e);
+            filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+            filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
 
-            return 0;
+            final Query query = new Query();
+            query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addProjection(Keys.OBJECT_ID, String.class);
+
+            try {
+                final JSONObject result = notificationRepository.get(query);
+
+                return result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Gets unread notification count failed [userId=" + userId + "]", e);
+
+                return 0;
+            }
+        } finally {
+            Stopwatchs.end();
         }
     }
 

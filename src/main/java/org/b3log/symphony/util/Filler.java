@@ -32,6 +32,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Domain;
@@ -145,8 +146,13 @@ public class Filler {
      * @param dataModel the specified data model
      */
     public void fillDomainNav(final Map<String, Object> dataModel) {
-        final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
-        dataModel.put(Domain.DOMAINS, domains);
+        Stopwatchs.start("Fills domain nav");
+        try {
+            final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
+            dataModel.put(Domain.DOMAINS, domains);
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -168,8 +174,13 @@ public class Filler {
      * @throws Exception exception
      */
     public void fillLatestCmts(final Map<String, Object> dataModel) throws Exception {
-        // dataModel.put(Common.SIDE_LATEST_CMTS, commentQueryService.getLatestComments(Symphonys.getInt("sizeLatestCmtsCnt")));
-        dataModel.put(Common.SIDE_LATEST_CMTS, (Object) Collections.emptyList());
+        Stopwatchs.start("Fills latest comments");
+        try {
+            // dataModel.put(Common.SIDE_LATEST_CMTS, commentQueryService.getLatestComments(Symphonys.getInt("sizeLatestCmtsCnt")));
+            dataModel.put(Common.SIDE_LATEST_CMTS, (Object) Collections.emptyList());
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -179,7 +190,12 @@ public class Filler {
      * @throws Exception exception
      */
     public void fillRandomArticles(final Map<String, Object> dataModel) throws Exception {
-        dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(Symphonys.getInt("sideRandomArticlesCnt")));
+        Stopwatchs.start("Fills random articles");
+        try {
+            dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(Symphonys.getInt("sideRandomArticlesCnt")));
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -189,7 +205,12 @@ public class Filler {
      * @throws Exception exception
      */
     public void fillHotArticles(final Map<String, Object> dataModel) throws Exception {
-        dataModel.put(Common.SIDE_HOT_ARTICLES, articleQueryService.getHotArticles(Symphonys.getInt("sideHotArticlesCnt")));
+        Stopwatchs.start("Fills hot articles");
+        try {
+            dataModel.put(Common.SIDE_HOT_ARTICLES, articleQueryService.getHotArticles(Symphonys.getInt("sideHotArticlesCnt")));
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -199,8 +220,13 @@ public class Filler {
      * @throws Exception exception
      */
     public void fillSideTags(final Map<String, Object> dataModel) throws Exception {
-        dataModel.put(Common.SIDE_TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
-        fillNewTags(dataModel);
+        Stopwatchs.start("Fills side tags");
+        try {
+            dataModel.put(Common.SIDE_TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
+            fillNewTags(dataModel);
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -251,8 +277,19 @@ public class Filler {
      */
     public void fillHeaderAndFooter(final HttpServletRequest request, final HttpServletResponse response,
             final Map<String, Object> dataModel) throws Exception {
-        fillHeader(request, response, dataModel);
-        fillFooter(dataModel);
+        Stopwatchs.start("Fills header");
+        try {
+            fillHeader(request, response, dataModel);
+        } finally {
+            Stopwatchs.end();
+        }
+
+        Stopwatchs.start("Fills footer");
+        try {
+            fillFooter(dataModel);
+        } finally {
+            Stopwatchs.end();
+        }
 
         dataModel.put(Common.WEBSOCKET_SCHEME, Symphonys.get("websocket.scheme"));
     }
@@ -266,70 +303,75 @@ public class Filler {
      */
     private void fillPersonalNav(final HttpServletRequest request, final HttpServletResponse response,
             final Map<String, Object> dataModel) {
-        dataModel.put(Common.IS_LOGGED_IN, false);
-        dataModel.put(Common.IS_ADMIN_LOGGED_IN, false);
-
-        if (null == Sessions.currentUser(request) && !userMgmtService.tryLogInWithCookie(request, response)) {
-            dataModel.put("loginLabel", langPropsService.get("loginLabel"));
-
-            return;
-        }
-
-        JSONObject curUser = null;
-
+        Stopwatchs.start("Fills personal nav");
         try {
-            curUser = userQueryService.getCurrentUser(request);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "Gets the current user failed", e);
+            dataModel.put(Common.IS_LOGGED_IN, false);
+            dataModel.put(Common.IS_ADMIN_LOGGED_IN, false);
+
+            if (null == Sessions.currentUser(request) && !userMgmtService.tryLogInWithCookie(request, response)) {
+                dataModel.put("loginLabel", langPropsService.get("loginLabel"));
+
+                return;
+            }
+
+            JSONObject curUser = null;
+
+            try {
+                curUser = userQueryService.getCurrentUser(request);
+            } catch (final ServiceException e) {
+                LOGGER.log(Level.ERROR, "Gets the current user failed", e);
+            }
+
+            if (null == curUser) {
+                dataModel.put("loginLabel", langPropsService.get("loginLabel"));
+
+                return;
+            }
+
+            dataModel.put(Common.IS_LOGGED_IN, true);
+            dataModel.put(Common.LOGOUT_URL, userQueryService.getLogoutURL("/"));
+
+            dataModel.put("logoutLabel", langPropsService.get("logoutLabel"));
+
+            final String userName = curUser.optString(User.USER_NAME);
+            dataModel.put(User.USER_NAME, userName);
+            final String userRole = curUser.optString(User.USER_ROLE);
+            dataModel.put(User.USER_ROLE, userRole);
+            dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ADMIN_ROLE.equals(userRole));
+
+            avatarQueryService.fillUserAvatarURL(curUser);
+
+            final String userId = curUser.optString(Keys.OBJECT_ID);
+
+            final long followingArticleCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_ARTICLE);
+            final long followingTagCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_TAG);
+            final long followingUserCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_USER);
+
+            curUser.put(Common.FOLLOWING_ARTICLE_CNT, followingArticleCnt);
+            curUser.put(Common.FOLLOWING_TAG_CNT, followingTagCnt);
+            curUser.put(Common.FOLLOWING_USER_CNT, followingUserCnt);
+            final int point = curUser.optInt(UserExt.USER_POINT);
+            final int appRole = curUser.optInt(UserExt.USER_APP_ROLE);
+            if (UserExt.USER_APP_ROLE_C_HACKER == appRole) {
+                curUser.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(point));
+            } else {
+                curUser.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(point));
+            }
+
+            dataModel.put(Common.CURRENT_USER, curUser);
+
+            final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
+            dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);
+
+            dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedinToday(userId));
+            dataModel.put(Common.USE_CAPTCHA_CHECKIN, Symphonys.getBoolean("geetest.enabled"));
+
+            final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
+            final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
+            dataModel.put(Liveness.LIVENESS, (float) currentLiveness / livenessMax * 100);
+        } finally {
+            Stopwatchs.end();
         }
-
-        if (null == curUser) {
-            dataModel.put("loginLabel", langPropsService.get("loginLabel"));
-
-            return;
-        }
-
-        dataModel.put(Common.IS_LOGGED_IN, true);
-        dataModel.put(Common.LOGOUT_URL, userQueryService.getLogoutURL("/"));
-
-        dataModel.put("logoutLabel", langPropsService.get("logoutLabel"));
-
-        final String userName = curUser.optString(User.USER_NAME);
-        dataModel.put(User.USER_NAME, userName);
-        final String userRole = curUser.optString(User.USER_ROLE);
-        dataModel.put(User.USER_ROLE, userRole);
-        dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ADMIN_ROLE.equals(userRole));
-
-        avatarQueryService.fillUserAvatarURL(curUser);
-
-        final String userId = curUser.optString(Keys.OBJECT_ID);
-
-        final long followingArticleCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_ARTICLE);
-        final long followingTagCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_TAG);
-        final long followingUserCnt = followQueryService.getFollowingCount(userId, Follow.FOLLOWING_TYPE_C_USER);
-
-        curUser.put(Common.FOLLOWING_ARTICLE_CNT, followingArticleCnt);
-        curUser.put(Common.FOLLOWING_TAG_CNT, followingTagCnt);
-        curUser.put(Common.FOLLOWING_USER_CNT, followingUserCnt);
-        final int point = curUser.optInt(UserExt.USER_POINT);
-        final int appRole = curUser.optInt(UserExt.USER_APP_ROLE);
-        if (UserExt.USER_APP_ROLE_C_HACKER == appRole) {
-            curUser.put(UserExt.USER_T_POINT_HEX, Integer.toHexString(point));
-        } else {
-            curUser.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(point));
-        }
-
-        dataModel.put(Common.CURRENT_USER, curUser);
-
-        final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
-        dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);
-
-        dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedinToday(userId));
-        dataModel.put(Common.USE_CAPTCHA_CHECKIN, Symphonys.getBoolean("geetest.enabled"));
-
-        final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
-        final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
-        dataModel.put(Liveness.LIVENESS, (float) currentLiveness / livenessMax * 100);
     }
 
     /**
@@ -356,7 +398,12 @@ public class Filler {
      * @param dataModel the specified data model
      */
     private void fillLangs(final Map<String, Object> dataModel) {
-        dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
+        Stopwatchs.start("Fills lang");
+        try {
+            dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -377,7 +424,12 @@ public class Filler {
      * @throws Exception exception
      */
     private void fillTrendTags(final Map<String, Object> dataModel) throws Exception {
-        dataModel.put(Common.NAV_TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
+        Stopwatchs.start("Fills trend tags");
+        try {
+            dataModel.put(Common.NAV_TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**

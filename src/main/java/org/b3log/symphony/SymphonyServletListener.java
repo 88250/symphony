@@ -122,10 +122,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         final CommentNotifier commentNotifier = beanManager.getReference(CommentNotifier.class);
         eventManager.registerListener(commentNotifier);
-        
+
         final ArticleSearchAdder articleSearchAdder = beanManager.getReference(ArticleSearchAdder.class);
         eventManager.registerListener(articleSearchAdder);
-        
+
         final ArticleSearchUpdater articleSearchUpdater = beanManager.getReference(ArticleSearchUpdater.class);
         eventManager.registerListener(articleSearchUpdater);
 
@@ -186,6 +186,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
             return;
         }
 
+        Stopwatchs.start("Request initialized");
+
         // Gets the session of this request
         final HttpSession session = httpServletRequest.getSession();
         LOGGER.log(Level.TRACE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
@@ -198,6 +200,15 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         super.requestDestroyed(servletRequestEvent);
+
+        final boolean isStatic = (Boolean) servletRequestEvent.getServletRequest().getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);
+        if (!isStatic) {
+            Stopwatchs.end();
+
+            final String timingStat = Stopwatchs.getTimingStat();
+            LOGGER.log(Level.INFO, timingStat);
+        }
+        
         Stopwatchs.release();
     }
 

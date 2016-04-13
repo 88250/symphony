@@ -33,6 +33,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.FollowRepository;
@@ -325,18 +326,23 @@ public class FollowQueryService {
      * @return count
      */
     public long getFollowingCount(final String followerId, final int followingType) {
-        final List<Filter> filters = new ArrayList<Filter>();
-        filters.add(new PropertyFilter(Follow.FOLLOWER_ID, FilterOperator.EQUAL, followerId));
-        filters.add(new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, followingType));
-
-        final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
+        Stopwatchs.start("Gets following count [" + followingType + "]");
         try {
-            return followRepository.count(query);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Counts following count error", e);
+            final List<Filter> filters = new ArrayList<Filter>();
+            filters.add(new PropertyFilter(Follow.FOLLOWER_ID, FilterOperator.EQUAL, followerId));
+            filters.add(new PropertyFilter(Follow.FOLLOWING_TYPE, FilterOperator.EQUAL, followingType));
 
-            return 0;
+            final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+            try {
+                return followRepository.count(query);
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Counts following count error", e);
+
+                return 0;
+            }
+        } finally {
+            Stopwatchs.end();
         }
     }
 

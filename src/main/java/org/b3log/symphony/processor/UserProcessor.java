@@ -1145,7 +1145,7 @@ public class UserProcessor {
 
         userQueryService.loadUserNames();
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        context.renderJSON().renderTrueResult();
     }
 
     /**

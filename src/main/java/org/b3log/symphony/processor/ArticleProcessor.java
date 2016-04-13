@@ -1320,6 +1320,6 @@ public class ArticleProcessor {
 
         articleMgmtService.expireStick();
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        context.renderJSON().renderTrueResult();
     }
 }

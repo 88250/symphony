@@ -72,7 +72,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.8.19.14, Apr 7, 2016
+ * @version 2.8.19.15, Apr 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -300,6 +300,8 @@ public class ArticleMgmtService {
 
             final int viewCnt = article.optInt(Article.ARTICLE_VIEW_CNT);
             article.put(Article.ARTICLE_VIEW_CNT, viewCnt + 1);
+            
+            article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
             articleRepository.update(articleId, article);
 

@@ -29,6 +29,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.UserRepository;
@@ -110,25 +111,30 @@ public class ActivityQueryService {
      * @return {@code true} if checkin succeeded, returns {@code false} otherwise
      */
     public synchronized boolean isCheckedinToday(final String userId) {
-        final Calendar calendar = Calendar.getInstance();
-        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        if (hour < Symphonys.getInt("activityDailyCheckinTimeMin")
-                || hour > Symphonys.getInt("activityDailyCheckinTimeMax")) {
-            return true;
+        Stopwatchs.start("Checks checkin");
+        try {
+            final Calendar calendar = Calendar.getInstance();
+            final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            if (hour < Symphonys.getInt("activityDailyCheckinTimeMin")
+                    || hour > Symphonys.getInt("activityDailyCheckinTimeMax")) {
+                return true;
+            }
+
+            final Date now = new Date();
+
+            final List<JSONObject> records = pointtransferQueryService.getLatestPointtransfers(userId,
+                    Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN, 1);
+            if (records.isEmpty()) {
+                return false;
+            }
+
+            final JSONObject maybeToday = records.get(0);
+            final long time = maybeToday.optLong(Pointtransfer.TIME);
+
+            return DateUtils.isSameDay(now, new Date(time));
+        } finally {
+            Stopwatchs.end();
         }
-
-        final Date now = new Date();
-
-        final List<JSONObject> records = pointtransferQueryService.getLatestPointtransfers(userId,
-                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN, 1);
-        if (records.isEmpty()) {
-            return false;
-        }
-
-        final JSONObject maybeToday = records.get(0);
-        final long time = maybeToday.optLong(Pointtransfer.TIME);
-
-        return DateUtils.isSameDay(now, new Date(time));
     }
 
     /**

@@ -15,13 +15,17 @@
  */
 package org.b3log.symphony.repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Article;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,10 +41,61 @@ import org.json.JSONObject;
 public class ArticleRepository extends AbstractRepository {
 
     /**
+     * Random range.
+     */
+    private static final double RANDOM_RANGE = 0.1D;
+
+    /**
      * Public constructor.
      */
     public ArticleRepository() {
         super(Article.ARTICLE);
+    }
+
+    @Override
+    public List<JSONObject> getRandomly(final int fetchSize) throws RepositoryException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        if (0 == count()) {
+            return ret;
+        }
+
+        final double mid = Math.random() + RANDOM_RANGE;
+
+        Query query = new Query().setFilter(
+                CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
+                        new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
+                        new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID)))
+                .setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+
+        final JSONObject result1 = get(query);
+        final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
+
+        final List<JSONObject> list1 = CollectionUtils.<JSONObject>jsonArrayToList(array1);
+
+        ret.addAll(list1);
+
+        final int reminingSize = fetchSize - array1.length();
+
+        if (0 != reminingSize) { // Query for remains
+            query = new Query();
+            query.setFilter(
+                    CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
+                            new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
+                            new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID)));
+            query.setCurrentPageNum(1);
+            query.setPageSize(reminingSize);
+            query.setPageCount(1);
+
+            final JSONObject result2 = get(query);
+            final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
+
+            final List<JSONObject> list2 = CollectionUtils.<JSONObject>jsonArrayToList(array2);
+
+            ret.addAll(list2);
+        }
+
+        return ret;
     }
 
     /**

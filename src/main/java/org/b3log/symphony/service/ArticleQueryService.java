@@ -49,6 +49,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
@@ -996,16 +997,26 @@ public class ArticleQueryService {
 
             organizeArticles(ret);
 
-            for (final JSONObject article : ret) {
-                final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-                final JSONObject author = userRepository.get(authorId);
-                if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
-                    article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+            Stopwatchs.start("Checks author status");
+            try {
+                for (final JSONObject article : ret) {
+                    final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+                    final JSONObject author = userRepository.get(authorId);
+                    if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
+                        article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+                    }
                 }
+            } finally {
+                Stopwatchs.end();
             }
 
-            final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
-            genParticipants(ret, participantsCnt);
+            Stopwatchs.start("Generates participants");
+            try {
+                final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
+                genParticipants(ret, participantsCnt);
+            } finally {
+                Stopwatchs.end();
+            }
 
             return ret;
         } catch (final RepositoryException e) {
@@ -1149,8 +1160,13 @@ public class ArticleQueryService {
      * @throws RepositoryException repository exception
      */
     public void organizeArticles(final List<JSONObject> articles) throws RepositoryException {
-        for (final JSONObject article : articles) {
-            organizeArticle(article);
+        Stopwatchs.start("Organize articles");
+        try {
+            for (final JSONObject article : articles) {
+                organizeArticle(article);
+            }
+        } finally {
+            Stopwatchs.end();
         }
     }
 

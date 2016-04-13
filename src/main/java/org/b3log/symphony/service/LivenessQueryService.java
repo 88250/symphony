@@ -23,6 +23,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.repository.LivenessRepository;
 import org.json.JSONObject;
@@ -55,19 +56,24 @@ public class LivenessQueryService {
      * @return point
      */
     public int getCurrentLivenessPoint(final String userId) {
-        final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");
-
+        Stopwatchs.start("Gets liveness");
         try {
-            final JSONObject liveness = livenessRepository.getByUserAndDate(userId, date);
-            if (null == liveness) {
+            final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");
+
+            try {
+                final JSONObject liveness = livenessRepository.getByUserAndDate(userId, date);
+                if (null == liveness) {
+                    return 0;
+                }
+
+                return Liveness.calcPoint(liveness);
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Gets current liveness point failed", e);
+
                 return 0;
             }
-
-            return Liveness.calcPoint(liveness);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets current liveness point failed", e);
-
-            return 0;
+        } finally {
+            Stopwatchs.end();
         }
     }
 
