@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.10, Apr 12, 2016
+ * @version 1.6.1.11, Apr 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -225,6 +225,7 @@ public class Filler {
         fillPersonalNav(request, response, dataModel);
 
         fillLangs(dataModel);
+        fillSideAd(dataModel);
     }
 
     /**
@@ -356,6 +357,17 @@ public class Filler {
      */
     private void fillLangs(final Map<String, Object> dataModel) {
         dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
+    }
+
+    /**
+     * Fills the side ad labels.
+     *
+     * @param dataModel the specified data model
+     */
+    private void fillSideAd(final Map<String, Object> dataModel) {
+        if (Math.random() > 0.5) {
+            dataModel.put("ADLabel", langPropsService.get("ADImgLabel"));
+        }
     }
 
     /**

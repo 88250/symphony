@@ -105,7 +105,7 @@ ${ADLabel}
         <ul class="module-list">
             <#list sideRandomArticles as randomArticle>
             <li<#if !randomArticle_has_next> class="last"</#if>>
-                  <a class="avatar-small slogan" rel="nofollow" href="/member/${randomArticle.articleAuthorName}"
+                <a class="avatar-small slogan" rel="nofollow" href="/member/${randomArticle.articleAuthorName}"
                title="${randomArticle.articleAuthorName}"
                style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
                 <a class="title" rel="nofollow" title="${randomArticle.articleTitle}" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
