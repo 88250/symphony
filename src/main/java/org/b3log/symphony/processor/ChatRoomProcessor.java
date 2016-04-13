@@ -17,14 +17,12 @@ package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.Session;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -61,7 +59,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Apr 13, 2016
+ * @version 1.0.2.3, Apr 13, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -150,8 +148,8 @@ public class ChatRoomProcessor {
             messages.remove(maxCnt);
         }
 
-        if (content.contains("@" + TuringQueryService.ROBOT_NAME)) {
-            content = content.replaceAll("@" + TuringQueryService.ROBOT_NAME, "");
+        if (content.contains("@" + TuringQueryService.ROBOT_NAME + " ")) {
+            content = content.replaceAll("@" + TuringQueryService.ROBOT_NAME + " ", "");
             final String xiaoVSaid = turingQueryService.chat(currentUser.optString(Keys.OBJECT_ID), content);
             if (null != xiaoVSaid) {
                 final JSONObject xiaoVMsg = new JSONObject();
