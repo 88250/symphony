@@ -67,7 +67,8 @@
 }
 
 .module-panel.ad img {
-    margin: 3px 0 5px;
+    margin-bottom: 5px;
+    width: 100%;
 }
 /* end module */
 
