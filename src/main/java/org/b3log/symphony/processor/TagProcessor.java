@@ -31,6 +31,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
@@ -52,7 +53,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Mar 28, 2016
+ * @version 1.3.0.3, Apr 14, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -81,6 +82,37 @@ public class TagProcessor {
      */
     @Inject
     private Filler filler;
+
+    /**
+     * Tag cache.
+     */
+    @Inject
+    private TagCache tagCache;
+
+    /**
+     * Caches icon tags.
+     *
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @param context the specified HTTP request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/cron/tag/cache-icon-tags", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void cacheIconTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final String key = Symphonys.get("keyOfSymphony");
+        if (!key.equals(request.getParameter("key"))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        tagCache.loadIconTags();
+
+        context.renderJSON().renderTrueResult();
+    }
 
     /**
      * Shows tags wall.

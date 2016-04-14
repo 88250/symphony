@@ -49,6 +49,7 @@ import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
+import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Tag;
@@ -69,7 +70,7 @@ import org.jsoup.Jsoup;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.7, Mar 12, 2016
+ * @version 1.5.4.8, Apr 14, 2016
  * @since 0.2.0
  */
 @Service
@@ -132,6 +133,12 @@ public class TagQueryService {
      * URL fetch service.
      */
     private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
+    /**
+     * Tag cache.
+     */
+    @Inject
+    private TagCache tagCache;
 
     /**
      * Generates tags for the specified content.
@@ -377,60 +384,7 @@ public class TagQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getTags(final int fetchSize) throws ServiceException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-
-        final double mid = Math.random();
-
-        Query query = new Query().setFilter(
-                CompositeFilterOperator.and(new PropertyFilter(Tag.TAG_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
-                        new PropertyFilter(Tag.TAG_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                        new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID)))
-                .setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
-
-        try {
-            final JSONObject result1 = tagRepository.get(query);
-            final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
-
-            final List<JSONObject> list1 = CollectionUtils.<JSONObject>jsonArrayToList(array1);
-
-            ret.addAll(list1);
-
-            final int reminingSize = fetchSize - array1.length();
-
-            if (0 != reminingSize) { // Query for remains
-                query = new Query().setFilter(
-                        CompositeFilterOperator.and(new PropertyFilter(Tag.TAG_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
-                                new PropertyFilter(Tag.TAG_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                                new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID)));
-                query.setCurrentPageNum(1).setPageSize(reminingSize).setPageCount(1);
-
-                final JSONObject result2 = tagRepository.get(query);
-                final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
-
-                final List<JSONObject> list2 = CollectionUtils.<JSONObject>jsonArrayToList(array2);
-
-                ret.addAll(list2);
-            }
-
-            for (final JSONObject tag : ret) {
-                String description = tag.optString(Tag.TAG_DESCRIPTION);
-                String descriptionText = tag.optString(Tag.TAG_TITLE);
-                if (StringUtils.isNotBlank(description)) {
-                    description = shortLinkQueryService.linkTag(description);
-                    description = Markdowns.toHTML(description);
-
-                    tag.put(Tag.TAG_DESCRIPTION, description);
-                    descriptionText = Jsoup.parse(description).text();
-                }
-
-                tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
-            }
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets tags failed", e);
-            throw new ServiceException(e);
-        }
+        return tagCache.getIconTags(fetchSize);
     }
 
     /**

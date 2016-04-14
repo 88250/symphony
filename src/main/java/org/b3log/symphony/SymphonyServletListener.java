@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +43,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.event.ArticleBaiduSender;
 import org.b3log.symphony.event.ArticleNotifier;
 import org.b3log.symphony.event.ArticleSearchAdder;
@@ -129,6 +129,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         final ArticleSearchUpdater articleSearchUpdater = beanManager.getReference(ArticleSearchUpdater.class);
         eventManager.registerListener(articleSearchUpdater);
+
+        // Load icon tags
+        final TagCache tagCache = beanManager.getReference(TagCache.class);
+        tagCache.loadIconTags();
 
         LOGGER.info("Initialized the context");
 

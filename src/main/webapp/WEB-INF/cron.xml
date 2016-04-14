@@ -18,7 +18,7 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.6.0.4, Apr 2, 2016
+    Version: 1.7.0.4, Apr 14, 2016
     Author: Liang Ding
 -->
 <cronentries>
@@ -33,6 +33,12 @@
         <url>/cron/article/stick-expire?key=dev_key</url>
         <description>Expire sticked article</description>
         <schedule>every 1 minutes</schedule>
+    </cron>
+    
+    <cron>
+        <url>/cron/tag/cache-icon-tags?key=dev_key</url>
+        <description>Cache icon tags</description>
+        <schedule>every 30 minutes</schedule>
     </cron>
     
     <!-- Disabled on Dev environment -->
