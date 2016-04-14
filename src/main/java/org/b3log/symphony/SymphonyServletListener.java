@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -201,11 +202,14 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         super.requestDestroyed(servletRequestEvent);
 
-        final boolean isStatic = (Boolean) servletRequestEvent.getServletRequest().getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);
+        final HttpServletRequest request = (HttpServletRequest) servletRequestEvent.getServletRequest();
+        final boolean isStatic = (Boolean) request.getAttribute(Keys.HttpRequest.IS_REQUEST_STATIC_RESOURCE);
         if (!isStatic) {
             Stopwatchs.end();
 
-            LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+            if ("/".equals(request.getRequestURI())) {
+                LOGGER.log(Level.INFO, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+            }
         }
 
         Stopwatchs.release();
