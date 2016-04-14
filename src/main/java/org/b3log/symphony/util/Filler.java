@@ -425,7 +425,8 @@ public class Filler {
     private void fillTrendTags(final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills trend tags");
         try {
-            dataModel.put(Common.NAV_TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
+            // dataModel.put(Common.NAV_TREND_TAGS, tagQueryService.getTrendTags(Symphonys.getInt("trendTagsCnt")));
+            dataModel.put(Common.NAV_TREND_TAGS, Collections.emptyList());
         } finally {
             Stopwatchs.end();
         }
