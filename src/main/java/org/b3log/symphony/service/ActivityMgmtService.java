@@ -45,7 +45,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.6.1, Mar 23, 2016
+ * @version 1.3.6.2, Apr 14, 2016
  * @since 1.3.0
  */
 @Service
@@ -190,6 +190,8 @@ public class ActivityMgmtService {
 
                 user.put(UserExt.USER_LONGEST_CHECKIN_STREAK, currentStreakDays);
             }
+
+            user.put(UserExt.USER_CHECKIN_TIME, today.getTime());
 
             userMgmtService.updateUser(userId, user);
 

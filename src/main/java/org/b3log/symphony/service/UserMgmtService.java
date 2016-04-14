@@ -78,7 +78,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.12.7, Apr 6, 2016
+ * @version 1.11.12.8, Apr 14, 2016
  * @since 0.2.0
  */
 @Service
@@ -480,6 +480,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_LATEST_CMT_TIME, 0L);
             user.put(UserExt.USER_LATEST_LOGIN_TIME, 0L);
             user.put(UserExt.USER_LATEST_LOGIN_IP, "");
+            user.put(UserExt.USER_CHECKIN_TIME, 0);
             user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_START, 0);
             user.put(UserExt.USER_CURRENT_CHECKIN_STREAK_END, 0);
             user.put(UserExt.USER_LONGEST_CHECKIN_STREAK_START, 0);
