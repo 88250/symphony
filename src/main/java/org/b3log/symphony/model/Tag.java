@@ -26,7 +26,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.3, Apr 1, 2016
+ * @version 1.10.3.3, Apr 14, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -100,6 +100,11 @@ public final class Tag {
      * Key of tag seo description.
      */
     public static final String TAG_SEO_DESC = "tagSeoDesc";
+
+    /**
+     * Key of tag random double value.
+     */
+    public static final String TAG_RANDOM_DOUBLE = "tagRandomDouble";
 
     //// Transient ////
     /**

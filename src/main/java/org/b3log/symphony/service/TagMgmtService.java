@@ -69,6 +69,8 @@ public class TagMgmtService {
         final Transaction transaction = tagRepository.beginTransaction();
 
         try {
+            tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
+            
             tagRepository.update(tagId, tag);
 
             transaction.commit();

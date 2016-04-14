@@ -377,13 +377,40 @@ public class TagQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getTags(final int fetchSize) throws ServiceException {
-        final Query query = new Query().addSort(" RAND() " /* MySQL navtive dialect here*/, SortDirection.ASCENDING).
-                setFilter(new PropertyFilter(Tag.TAG_ICON_PATH, FilterOperator.NOT_EQUAL, "")).
-                setPageCount(1).setPageSize(fetchSize);
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        final double mid = Math.random();
+
+        Query query = new Query().setFilter(
+                CompositeFilterOperator.and(new PropertyFilter(Tag.TAG_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
+                        new PropertyFilter(Tag.TAG_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
+                        new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID)))
+                .setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
 
         try {
-            final JSONObject result = tagRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            final JSONObject result1 = tagRepository.get(query);
+            final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
+
+            final List<JSONObject> list1 = CollectionUtils.<JSONObject>jsonArrayToList(array1);
+
+            ret.addAll(list1);
+
+            final int reminingSize = fetchSize - array1.length();
+
+            if (0 != reminingSize) { // Query for remains
+                query = new Query().setFilter(
+                        CompositeFilterOperator.and(new PropertyFilter(Tag.TAG_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
+                                new PropertyFilter(Tag.TAG_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
+                                new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID)));
+                query.setCurrentPageNum(1).setPageSize(reminingSize).setPageCount(1);
+
+                final JSONObject result2 = tagRepository.get(query);
+                final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
+
+                final List<JSONObject> list2 = CollectionUtils.<JSONObject>jsonArrayToList(array2);
+
+                ret.addAll(list2);
+            }
 
             for (final JSONObject tag : ret) {
                 String description = tag.optString(Tag.TAG_DESCRIPTION);
@@ -395,6 +422,7 @@ public class TagQueryService {
                     tag.put(Tag.TAG_DESCRIPTION, description);
                     descriptionText = Jsoup.parse(description).text();
                 }
+
                 tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
             }
 

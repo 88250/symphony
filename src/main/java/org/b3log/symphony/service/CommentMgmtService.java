@@ -380,6 +380,8 @@ public class CommentMgmtService {
                 final String tagTitle = tagStrings[i].trim();
                 final JSONObject tag = tagRepository.getByTitle(tagTitle);
                 tag.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + 1);
+                tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
+                
                 tagRepository.update(tag.optString(Keys.OBJECT_ID), tag);
             }
 

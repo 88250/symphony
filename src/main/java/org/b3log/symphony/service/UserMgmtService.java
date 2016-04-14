@@ -811,6 +811,7 @@ public class UserMgmtService {
                 tag.put(Tag.TAG_SEO_TITLE, tagTitle);
                 tag.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
                 tag.put(Tag.TAG_SEO_DESC, "");
+                tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
 
                 tagId = tagRepository.add(tag);
 

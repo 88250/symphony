@@ -241,6 +241,7 @@ public class ArticleMgmtService {
                 final String tagId = tagArticleRel.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
                 tag.put(Tag.TAG_REFERENCE_CNT, tag.optInt(Tag.TAG_REFERENCE_CNT) - 1);
+                tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
 
                 tagRepository.update(tagId, tag);
             }
@@ -1027,6 +1028,7 @@ public class ArticleMgmtService {
             tagDropped.put(Tag.TAG_REFERENCE_CNT, refCnt - 1);
             final int tagCmtCnt = tagDropped.getInt(Tag.TAG_COMMENT_CNT);
             tagDropped.put(Tag.TAG_COMMENT_CNT, tagCmtCnt - articleCmtCnt);
+            tagDropped.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
 
             tagRepository.update(tagId, tagDropped);
         }
@@ -1140,6 +1142,7 @@ public class ArticleMgmtService {
                 tag.put(Tag.TAG_SEO_TITLE, tagTitle);
                 tag.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
                 tag.put(Tag.TAG_SEO_DESC, "");
+                tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
 
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
@@ -1172,6 +1175,7 @@ public class ArticleMgmtService {
                 tagTmp.put(Tag.TAG_SEO_DESC, tag.optString(Tag.TAG_SEO_DESC));
                 tagTmp.put(Tag.TAG_SEO_KEYWORDS, tag.optString(Tag.TAG_SEO_KEYWORDS));
                 tagTmp.put(Tag.TAG_SEO_TITLE, tag.optString(Tag.TAG_SEO_TITLE));
+                tagTmp.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
 
                 tagRepository.update(tagId, tagTmp);
 

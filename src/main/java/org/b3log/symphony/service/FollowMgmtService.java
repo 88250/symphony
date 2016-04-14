@@ -199,6 +199,7 @@ public class FollowMgmtService {
             }
 
             tag.put(Tag.TAG_FOLLOWER_CNT, tag.optInt(Tag.TAG_FOLLOWER_CNT) + 1);
+            tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
 
             tagRepository.update(followingId, tag);
         } else if (Follow.FOLLOWING_TYPE_C_ARTICLE == followingType) {
@@ -246,6 +247,8 @@ public class FollowMgmtService {
             if (tag.optInt(Tag.TAG_FOLLOWER_CNT) < 0) {
                 tag.put(Tag.TAG_FOLLOWER_CNT, 0);
             }
+            
+            tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
 
             tagRepository.update(followingId, tag);
         } else if (Follow.FOLLOWING_TYPE_C_ARTICLE == followingType) {

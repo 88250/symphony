@@ -41,11 +41,6 @@ import org.json.JSONObject;
 public class ArticleRepository extends AbstractRepository {
 
     /**
-     * Random range.
-     */
-    private static final double RANDOM_RANGE = 0.1D;
-
-    /**
      * Public constructor.
      */
     public ArticleRepository() {
@@ -56,11 +51,7 @@ public class ArticleRepository extends AbstractRepository {
     public List<JSONObject> getRandomly(final int fetchSize) throws RepositoryException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
-        if (0 == count()) {
-            return ret;
-        }
-
-        final double mid = Math.random() + RANDOM_RANGE;
+        final double mid = Math.random();
 
         Query query = new Query().setFilter(
                 CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
