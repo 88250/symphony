@@ -79,7 +79,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.10.18, Apr 13, 2016
+ * @version 2.14.11.18, Apr 14, 2016
  * @since 0.2.0
  */
 @Service
@@ -417,6 +417,7 @@ public class ArticleQueryService {
             articleFields.put(Article.ARTICLE_TITLE, String.class);
             articleFields.put(Article.ARTICLE_PERMALINK, String.class);
             articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
+            articleFields.put(Article.ARTICLE_AUTHOR_ID, String.class);
 
             final List<JSONObject> ret = new ArrayList<JSONObject>();
 
