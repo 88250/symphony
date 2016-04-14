@@ -34,6 +34,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.SymphonyServletListener;
+import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Follow;
@@ -43,7 +44,6 @@ import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.DomainQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.LivenessQueryService;
 import org.b3log.symphony.service.NotificationQueryService;
@@ -135,10 +135,10 @@ public class Filler {
     private LivenessQueryService livenessQueryService;
 
     /**
-     * Domain query service.
+     * Domain cache.
      */
     @Inject
-    private DomainQueryService domainQueryService;
+    private DomainCache domainCache;
 
     /**
      * Fills domain navigation.
@@ -148,8 +148,7 @@ public class Filler {
     public void fillDomainNav(final Map<String, Object> dataModel) {
         Stopwatchs.start("Fills domain nav");
         try {
-            final List<JSONObject> domains = domainQueryService.getMostTagDomain(Integer.MAX_VALUE);
-            dataModel.put(Domain.DOMAINS, domains);
+            dataModel.put(Domain.DOMAINS, domainCache.getDomains(Integer.MAX_VALUE));
         } finally {
             Stopwatchs.end();
         }

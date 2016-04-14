@@ -43,6 +43,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.event.ArticleBaiduSender;
 import org.b3log.symphony.event.ArticleNotifier;
@@ -130,9 +131,13 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final ArticleSearchUpdater articleSearchUpdater = beanManager.getReference(ArticleSearchUpdater.class);
         eventManager.registerListener(articleSearchUpdater);
 
-        // Load icon tags
+        // Load icon tags to cache
         final TagCache tagCache = beanManager.getReference(TagCache.class);
         tagCache.loadIconTags();
+
+        // Load domains to cache
+        final DomainCache domainCache = beanManager.getReference(DomainCache.class);
+        domainCache.loadDomains();
 
         LOGGER.info("Initialized the context");
 

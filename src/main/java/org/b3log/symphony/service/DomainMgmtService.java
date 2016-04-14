@@ -27,6 +27,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * Domain management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 14, 2016
+ * @version 1.0.0.2, Apr 14, 2016
  * @since 1.4.0
  */
 @Service
@@ -70,6 +71,12 @@ public class DomainMgmtService {
     private OptionRepository optionRepository;
 
     /**
+     * Domain cache.
+     */
+    @Inject
+    private DomainCache domainCache;
+
+    /**
      * Removes a domain-tag relation.
      *
      * @param domainId the specified domain id
@@ -96,6 +103,9 @@ public class DomainMgmtService {
 
             final JSONObject relation = relations.optJSONObject(0);
             domainTagRepository.remove(relation.optString(Keys.OBJECT_ID));
+
+            // Refresh cache
+            domainCache.loadDomains();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds a domain-tag relation failed", e);
 
@@ -118,6 +128,9 @@ public class DomainMgmtService {
 
             domainRepository.update(domainId, domain);
             domainTagRepository.add(domainTag);
+
+            // Refresh cache
+            domainCache.loadDomains();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds a domain-tag relation failed", e);
 
@@ -173,6 +186,9 @@ public class DomainMgmtService {
     public void updateDomain(final String domainId, final JSONObject domain) throws ServiceException {
         try {
             domainRepository.update(domainId, domain);
+
+            // Refresh cache
+            domainCache.loadDomains();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Updates a domain [id=" + domainId + "] failed", e);
 

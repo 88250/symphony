@@ -40,7 +40,13 @@
         <description>Cache icon tags</description>
         <schedule>every 30 minutes</schedule>
     </cron>
-    
+
+    <cron>
+        <url>/cron/domain/cache-domains?key=dev_key</url>
+        <description>Cache domains</description>
+        <schedule>every 6 hours</schedule>
+    </cron>
+        
     <!-- Disabled on Dev environment -->
     <!--
     <cron>

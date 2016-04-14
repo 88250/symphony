@@ -30,6 +30,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Domain;
@@ -82,6 +83,37 @@ public class DomainProcessor {
      */
     @Inject
     private Filler filler;
+    
+    /**
+     * Domain cache.
+     */
+    @Inject
+    private DomainCache domainCache;
+    
+    /**
+     * Caches domains.
+     *
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @param context the specified HTTP request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/cron/domain/cache-domains", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void cacheDomains(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final String key = Symphonys.get("keyOfSymphony");
+        if (!key.equals(request.getParameter("key"))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        domainCache.loadDomains();
+
+        context.renderJSON().renderTrueResult();
+    }
 
     /**
      * Shows domain articles.
