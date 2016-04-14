@@ -1232,7 +1232,7 @@ public class ArticleQueryService {
         }
 
         final long stick = article.optLong(Article.ARTICLE_STICK);
-        long expired = 0L;
+        long expired;
         if (stick > 0) {
             expired = stick + Symphonys.getLong("stickArticleTime");
             final long remainsMills = Math.abs(System.currentTimeMillis() - expired);

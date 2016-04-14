@@ -16,13 +16,14 @@
 package org.b3log.symphony.util;
 
 import com.vdurmont.emoji.EmojiParser;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 
 /**
  * Emotions utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Jun 7, 2015
+ * @version 1.1.1.1, Apr 14, 2016
  * @since 0.2.0
  */
 public final class Emotions {
@@ -962,6 +963,8 @@ public final class Emotions {
      * @return converted content
      */
     public static String convert(final String content) {
+        final String staticServePath = Latkes.getStaticServePath();
+
         String ret = content;
 
         String emotionName;
@@ -973,20 +976,23 @@ public final class Emotions {
             }
 
             ret = ret.replace('[' + emotionName + ']',
-                    "<img src='" + Latkes.getStaticServePath() + "/images/emotions/ease/" + emotionName + ".png" + "' />");
+                    "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
         }
-        
+
+        if (!StringUtils.contains(ret, ":")) {
+            return ret;
+        }
+
         for (final String emojiCode : EMOJIS) {
             final String emoji = ":" + emojiCode + ":";
             ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                    + Latkes.getStaticServePath() + "/js/lib/emojify.js-1.0.2/images/basic/" + emojiCode
+                    + staticServePath + "/js/lib/emojify.js-1.0.2/images/basic/" + emojiCode
                     + ".png\" title=\"" + emoji + "\"></img>");
         }
-        
+
 //        ret = ret.replaceAll("\ufe0f", "");
 //        ret = ret.replaceAll("\ufffd", "");
 //        ret = ret.replaceAll("⃣", "");
-        
         return ret;
     }
 
