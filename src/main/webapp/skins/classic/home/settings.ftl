@@ -6,6 +6,7 @@
         <a rel="nofollow" href="/member/${currentUser.userName}" target="_blank">${currentUser.userName}</a>
         <h2>${profilesLabel}</h2>
         <span>(${currentUser.userEmail})</span>
+        <a class="ft-red fn-right" href="javascript:Util.logout()">${logoutLabel}</a>
     </div>
     <div class="module-panel form fn-clear">
         <label>${selfTagLabel}</label><br/>
@@ -66,7 +67,6 @@
         <br/>
         <div class="tip" id="profilesTip"></div>
         <br/>
-        <button class="red fn-left" onclick="Util.logout()">${logoutLabel}</button>
         <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
