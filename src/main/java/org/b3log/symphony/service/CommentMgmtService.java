@@ -332,7 +332,8 @@ public class CommentMgmtService {
 
         try {
             article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) + 1);
-            article.put(Article.ARTICLE_LATEST_CMT_TIME, System.currentTimeMillis());
+            article.put(Article.ARTICLE_LATEST_CMTER_NAME, commenter.optString(User.USER_NAME));
+            article.put(Article.ARTICLE_LATEST_CMT_TIME, currentTimeMillis);
 
             final String ret = Ids.genTimeMillisId();
             final JSONObject comment = new JSONObject();
@@ -371,7 +372,7 @@ public class CommentMgmtService {
             final int cmtCnt = cmtCntOption.optInt(Option.OPTION_VALUE);
             cmtCntOption.put(Option.OPTION_VALUE, String.valueOf(cmtCnt + 1));
 
-            articleRepository.update(articleId, article); // Updates article comment count
+            articleRepository.update(articleId, article); // Updates article comment count, latest commenter name and time
             optionRepository.update(Option.ID_C_STATISTIC_CMT_COUNT, cmtCntOption); // Updates global comment count
             // Updates tag comment count and User-Tag relation
             final String tagsString = article.optString(Article.ARTICLE_TAGS);
@@ -381,7 +382,7 @@ public class CommentMgmtService {
                 final JSONObject tag = tagRepository.getByTitle(tagTitle);
                 tag.put(Tag.TAG_COMMENT_CNT, tag.optInt(Tag.TAG_COMMENT_CNT) + 1);
                 tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
-                
+
                 tagRepository.update(tag.optString(Keys.OBJECT_ID), tag);
             }
 

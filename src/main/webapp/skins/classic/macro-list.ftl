@@ -30,6 +30,9 @@
                     <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
                     </#list>
                     <span class="ft-fade">&nbsp;•&nbsp;${article.timeAgo}</span>
+                    <#if "" != article.articleLatestCmterName>
+                    <span class="ft-fade">&nbsp;•&nbsp;${latestCmtFromLabel}</span> <a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}">${article.articleLatestCmterName}</a>
+                    </#if>
                 </div>
             </div>
             <#if article.articleCommentCount != 0>
@@ -37,6 +40,7 @@
                 <a class="count ft-gray" href="${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
+            <#--
             <div class="commenters">
                 <#list article.articleParticipants as comment>
                 <a rel="nofollow" href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}">
@@ -44,6 +48,7 @@
                 </a>
                 </#list>
             </div>
+            -->
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </li>
         </#list>

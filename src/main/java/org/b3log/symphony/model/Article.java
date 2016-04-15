@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.0.11, Apr 8, 2016
+ * @version 1.13.0.11, Apr 15, 2016
  * @since 0.2.0
  */
 public final class Article {
@@ -100,6 +100,11 @@ public final class Article {
     public static final String ARTICLE_LATEST_CMT_TIME = "articleLatestCmtTime";
 
     /**
+     * Key of article latest commenter name.
+     */
+    public static final String ARTICLE_LATEST_CMTER_NAME = "articleLatestCmterName";
+
+    /**
      * Key of article random double value.
      */
     public static final String ARTICLE_RANDOM_DOUBLE = "articleRandomDouble";
@@ -118,7 +123,7 @@ public final class Article {
      * Key of client article id.
      */
     public static final String ARTICLE_CLIENT_ARTICLE_ID = "clientArticleId";
-    
+
     /**
      * Key of client article permalink.
      */

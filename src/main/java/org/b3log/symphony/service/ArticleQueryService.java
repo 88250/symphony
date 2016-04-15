@@ -429,6 +429,7 @@ public class ArticleQueryService {
                     article.remove(Article.ARTICLE_T_PARTICIPANT_NAME);
                     article.remove(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL);
                     article.remove(Article.ARTICLE_LATEST_CMT_TIME);
+                    article.remove(Article.ARTICLE_LATEST_CMTER_NAME);
                     article.remove(Article.ARTICLE_UPDATE_TIME);
                     article.remove(Article.ARTICLE_T_HEAT);
                     article.remove(Article.ARTICLE_T_TITLE_EMOJI);
@@ -1029,9 +1030,8 @@ public class ArticleQueryService {
                 Stopwatchs.end();
             }
 
-            final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
-            genParticipants(ret, participantsCnt);
-
+//            final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
+//            genParticipants(ret, participantsCnt);
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets index articles failed", e);
@@ -1288,8 +1288,7 @@ public class ArticleQueryService {
         Stopwatchs.start("Generates participants");
         try {
             for (final JSONObject article : articles) {
-                final String participantName = "";
-                final String participantThumbnailURL = "";
+                article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) Collections.emptyList());
 
                 if (article.optInt(Article.ARTICLE_COMMENT_CNT) < 1) {
                     continue;
@@ -1298,9 +1297,6 @@ public class ArticleQueryService {
                 final List<JSONObject> articleParticipants
                         = getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
                 article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
-
-                article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
-                article.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, participantThumbnailURL);
             }
         } finally {
             Stopwatchs.end();

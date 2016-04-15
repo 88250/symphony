@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.10, Jan 2, 2016
+ * @version 1.2.1.11, Apr 15, 2016
  * @since 0.2.0
  */
 @RequestProcessor
