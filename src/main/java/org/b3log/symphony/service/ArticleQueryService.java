@@ -1000,8 +1000,14 @@ public class ArticleQueryService {
         final Query query = makeTopQuery(1, fetchSize);
 
         try {
-            final JSONObject result = articleRepository.get(query);
-            final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            List<JSONObject> ret;
+            Stopwatchs.start("Query articles");
+            try {
+                final JSONObject result = articleRepository.get(query);
+                ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            } finally {
+                Stopwatchs.end();
+            }
 
             organizeArticles(ret);
 
@@ -1023,13 +1029,8 @@ public class ArticleQueryService {
                 Stopwatchs.end();
             }
 
-            Stopwatchs.start("Generates participants");
-            try {
-                final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
-                genParticipants(ret, participantsCnt);
-            } finally {
-                Stopwatchs.end();
-            }
+            final Integer participantsCnt = Symphonys.getInt("indexArticleParticipantsCnt");
+            genParticipants(ret, participantsCnt);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -1284,16 +1285,25 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public void genParticipants(final List<JSONObject> articles, final Integer participantsCnt) throws ServiceException {
-        for (final JSONObject article : articles) {
-            final String participantName = "";
-            final String participantThumbnailURL = "";
+        Stopwatchs.start("Generates participants");
+        try {
+            for (final JSONObject article : articles) {
+                final String participantName = "";
+                final String participantThumbnailURL = "";
 
-            final List<JSONObject> articleParticipants
-                    = getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
-            article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
+                if (article.optInt(Article.ARTICLE_COMMENT_CNT) < 1) {
+                    continue;
+                }
 
-            article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
-            article.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, participantThumbnailURL);
+                final List<JSONObject> articleParticipants
+                        = getArticleLatestParticipants(article.optString(Keys.OBJECT_ID), participantsCnt);
+                article.put(Article.ARTICLE_T_PARTICIPANTS, (Object) articleParticipants);
+
+                article.put(Article.ARTICLE_T_PARTICIPANT_NAME, participantName);
+                article.put(Article.ARTICLE_T_PARTICIPANT_THUMBNAIL_URL, participantThumbnailURL);
+            }
+        } finally {
+            Stopwatchs.end();
         }
     }
 
