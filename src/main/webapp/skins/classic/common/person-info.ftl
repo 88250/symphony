@@ -1,7 +1,7 @@
 <#if isLoggedIn>
 <div class="module person-info" data-percent="${liveness}">
     <div class="info fn-clear">
-        <button class="btn red" title="${addArticleLabel}" onclick="window.location = '/pre-post'">New!</button>
+        <button class="btn red" title="${addArticleLabel}" onclick="window.location = '/pre-post'">${postArticleLabel}</button>
         <#if !isDailyCheckin>
         <a class="fn-right" href="<#if useCaptchaCheckin>/activity/checkin<#else>/activity/daily-checkin</#if>">${dailyCheckinLabel}</a>
         <#else>
