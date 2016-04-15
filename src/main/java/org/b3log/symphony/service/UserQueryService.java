@@ -174,7 +174,7 @@ public class UserQueryService {
         while (start > -1 && userNames.get(start).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
             start--;
         }
-        
+
         start++;
 
         if (start < index - 5) {
@@ -475,19 +475,17 @@ public class UserQueryService {
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setCurrentPageNum(currentPageNum).setPageSize(pageSize);
-
         final String city = requestJSONObject.optString(UserExt.USER_CITY);
-        final List<Filter> filters = new ArrayList<Filter>();
-        filters.add(new PropertyFilter(UserExt.USER_CITY, FilterOperator.EQUAL, city));
         final long latestTime = requestJSONObject.optLong(UserExt.USER_LATEST_LOGIN_TIME);
-        filters.add(new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, latestTime));
 
-        query.setFilter(new CompositeFilter(CompositeFilterOperator.OR, filters));
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setCurrentPageNum(currentPageNum).setPageSize(pageSize)
+                .setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(UserExt.USER_CITY, FilterOperator.EQUAL, city),
+                        new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, latestTime)
+                ));
 
         JSONObject result = null;
-
         try {
             result = userRepository.get(query);
         } catch (final RepositoryException e) {
