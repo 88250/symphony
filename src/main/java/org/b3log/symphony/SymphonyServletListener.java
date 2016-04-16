@@ -186,8 +186,12 @@ public final class SymphonyServletListener extends AbstractServletListener {
         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         httpServletRequest.setAttribute(Common.IS_MOBILE, false);
 
-        final UserAgent userAgent = UserAgent.parseUserAgentString(httpServletRequest.getHeader("User-Agent"));
+        final String userAgentStr = httpServletRequest.getHeader("User-Agent");
+        
+        final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         final BrowserType browserType = userAgent.getBrowser().getBrowserType();
+        
+        LOGGER.log(Level.WARN, browserType.getName() + ", UA: " + userAgentStr);
 
         if (BrowserType.ROBOT == browserType) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
