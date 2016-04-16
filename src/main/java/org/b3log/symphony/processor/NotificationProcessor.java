@@ -174,7 +174,6 @@ public class NotificationProcessor {
             return;
         }
 
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/notifications/point.ftl");
@@ -265,7 +264,6 @@ public class NotificationProcessor {
             return;
         }
 
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/notifications/commented.ftl");
@@ -328,7 +326,6 @@ public class NotificationProcessor {
             return;
         }
 
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/notifications/at.ftl");
@@ -392,7 +389,6 @@ public class NotificationProcessor {
             return;
         }
 
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/notifications/following-user.ftl");
@@ -456,7 +452,6 @@ public class NotificationProcessor {
             return;
         }
 
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/notifications/broadcast.ftl");

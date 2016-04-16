@@ -189,7 +189,6 @@ public class ChatRoomProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showChatRoom(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("chat-room.ftl");

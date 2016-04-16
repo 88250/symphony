@@ -78,7 +78,6 @@ public class TimelineProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTimeline(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("timeline.ftl");

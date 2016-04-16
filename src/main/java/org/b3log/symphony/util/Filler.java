@@ -238,7 +238,7 @@ public class Filler {
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    public void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
+    private void fillHeader(final HttpServletRequest request, final HttpServletResponse response,
             final Map<String, Object> dataModel) throws Exception {
         fillMinified(dataModel);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
@@ -261,7 +261,7 @@ public class Filler {
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    public void fillFooter(final Map<String, Object> dataModel) throws Exception {
+    private void fillFooter(final Map<String, Object> dataModel) throws Exception {
         fillSysInfo(dataModel);
 
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
@@ -280,6 +280,9 @@ public class Filler {
             final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills header");
         try {
+            final boolean isMobile = (Boolean) request.getAttribute(Common.IS_MOBILE);
+            dataModel.put(Common.IS_MOBILE, isMobile);
+
             fillHeader(request, response, dataModel);
         } finally {
             Stopwatchs.end();
@@ -454,7 +457,9 @@ public class Filler {
         dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
         dataModel.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
 
-        final JSONObject statistic = optionQueryService.getStatistic();
-        dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
+        if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
+            final JSONObject statistic = optionQueryService.getStatistic();
+            dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
+        }
     }
 }

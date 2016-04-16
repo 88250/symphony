@@ -102,9 +102,6 @@ public class IndexProcessor {
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final boolean isMobile = (Boolean) request.getAttribute(Common.IS_MOBILE);
-        dataModel.put(Common.IS_MOBILE, isMobile);
-
         final int pageSize = Symphonys.getInt("indexArticlesCnt");
 
         final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
@@ -118,9 +115,9 @@ public class IndexProcessor {
 
         Stopwatchs.start("Fills");
         try {
-            filler.fillDomainNav(dataModel);
             filler.fillHeaderAndFooter(request, response, dataModel);
-            if (!isMobile) {
+            filler.fillDomainNav(dataModel);
+            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
                 filler.fillRandomArticles(dataModel);
             }
             filler.fillHotArticles(dataModel);
@@ -144,8 +141,6 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showAbout(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
-
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("about.ftl");
@@ -171,8 +166,6 @@ public class IndexProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showB3log(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
-
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("b3log.ftl");

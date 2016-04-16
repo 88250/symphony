@@ -139,13 +139,6 @@
                         <div class="tip" id="addCommentTip"></div>
 
                         <div class="fn-clear comment-submit">
-                            <span class="responsive-hide">    
-                                Markdown
-                                <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                                <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                                |
-                                <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
-                            </span>
                             <div class="fn-right">
                                 <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
                             </div>
@@ -238,13 +231,6 @@
                         <div class="tip" id="addCommentTip"></div>
 
                         <div class="fn-clear comment-submit">
-                            <span class="responsive-hide">    
-                                Markdown
-                                <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                                <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                                |
-                                <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
-                            </span>
                             <div class="fn-right">
                                 <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
                             </div>

@@ -5,20 +5,6 @@
                 <a href="/" style="background-image: url('${staticServePath}/images/hacpai.png')" alt="${symphonyLabel}" 
                    title="${symphonyLabel}" width="42" class="fn-pointer"></a>
             </h1>
-            <#if esEnabled || algoliaEnabled>
-            <form class="responsive-hide fn-left" target="_blank" action="/search">
-                <input class="search" placeholder="Search HacPai" type="text" name="key" id="search" value="<#if key??>${key}</#if>" >
-                <input type="submit" class="fn-none" value="">
-            </form>
-            </#if>
-            <#--        
-            <div class="fn-right">
-                <a href="/timeline" class="icon-clock last" title="${timelineLabel}"></a>
-                <#if isLoggedIn>
-                <a href="/city/my" class="icon-compass" title="${sameCityLabel}"></a>
-                </#if>
-                <a href="/recent" class="icon-refresh" title="${recentArticleLabel}"></a>
-            </div> -->
         </div>
 
         <div class="fn-clear user-nav">
