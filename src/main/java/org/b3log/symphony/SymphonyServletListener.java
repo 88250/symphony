@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony;
 
+import eu.bitwalker.useragentutils.BrowserType;
+import eu.bitwalker.useragentutils.UserAgent;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -39,7 +41,6 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.MD5;
-import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
@@ -54,6 +55,7 @@ import org.b3log.symphony.event.solo.ArticleSender;
 import org.b3log.symphony.event.solo.ArticleUpdater;
 import org.b3log.symphony.event.solo.CommentSender;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
@@ -68,7 +70,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.10.3.5, Mar 30, 2016
+ * @version 2.11.3.5, Apr 16, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -183,7 +185,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
 
-        if (Requests.searchEngineBotRequest(httpServletRequest)) {
+        final UserAgent userAgent = UserAgent.parseUserAgentString(httpServletRequest.getHeader("User-Agent"));
+        final BrowserType browserType = userAgent.getBrowser().getBrowserType();
+
+        if (BrowserType.ROBOT == browserType) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
 
@@ -197,6 +202,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         }
 
         Stopwatchs.start("Request initialized");
+
+        httpServletRequest.setAttribute(Common.IS_MOBILE, BrowserType.MOBILE_BROWSER == browserType);
 
         // Gets the session of this request
         final HttpSession session = httpServletRequest.getSession();
@@ -403,7 +410,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
                 }
             }
 
-            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, user.optString(UserExt.USER_SKIN));
+            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, (Boolean) request.getAttribute(Common.IS_MOBILE)
+                    ? "mobile" : user.optString(UserExt.USER_SKIN));
             request.setAttribute(User.USER, user);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);

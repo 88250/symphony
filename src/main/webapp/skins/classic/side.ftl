@@ -24,6 +24,7 @@ ${ADLabel}
         </ul>
     </div>
 </div>
+<#--
 <#if navTrendTags?size!=0>
 <div class="module">
     <div class="module-header">
@@ -42,6 +43,7 @@ ${ADLabel}
     </div>
 </div>
 </#if>
+-->
 <#if sideHotArticles?size!=0>
 <div class="module">
     <div class="module-header">

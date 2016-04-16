@@ -55,7 +55,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.1.10, Apr 12, 2016
+ * @version 1.3.1.11, Apr 16, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -71,12 +71,6 @@ public class IndexProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
-
-    /**
-     * Domain query service.
-     */
-    @Inject
-    private DomainQueryService domainQueryService;
 
     /**
      * Filler.
@@ -108,6 +102,9 @@ public class IndexProcessor {
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        final boolean isMobile = (Boolean) request.getAttribute(Common.IS_MOBILE);
+        dataModel.put(Common.IS_MOBILE, isMobile);
+
         final int pageSize = Symphonys.getInt("indexArticlesCnt");
 
         final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
@@ -123,7 +120,9 @@ public class IndexProcessor {
         try {
             filler.fillDomainNav(dataModel);
             filler.fillHeaderAndFooter(request, response, dataModel);
-            filler.fillRandomArticles(dataModel);
+            if (!isMobile) {
+                filler.fillRandomArticles(dataModel);
+            }
             filler.fillHotArticles(dataModel);
             filler.fillSideTags(dataModel);
             filler.fillLatestCmts(dataModel);

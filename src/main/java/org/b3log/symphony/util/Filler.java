@@ -18,7 +18,6 @@ package org.b3log.symphony.util;
 import org.b3log.symphony.service.AvatarQueryService;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -222,7 +221,10 @@ public class Filler {
         Stopwatchs.start("Fills side tags");
         try {
             dataModel.put(Common.SIDE_TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
-            fillNewTags(dataModel);
+
+            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
+                fillNewTags(dataModel);
+            }
         } finally {
             Stopwatchs.end();
         }
@@ -246,7 +248,7 @@ public class Filler {
         dataModel.put("algoliaSearchKey", Symphonys.get("algolia.searchKey"));
         dataModel.put("algoliaIndex", Symphonys.get("algolia.index"));
 
-        fillTrendTags(dataModel);
+        // fillTrendTags(dataModel);
         fillPersonalNav(request, response, dataModel);
 
         fillLangs(dataModel);

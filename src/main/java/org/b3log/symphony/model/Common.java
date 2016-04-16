@@ -19,10 +19,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.33.1.11, Apr 12, 2016
+ * @version 1.34.1.11, Apr 16, 2016
  * @since 0.2.0
  */
 public final class Common {
+    
+    /**
+     * Key of is mobile device.
+     */
+    public static final String IS_MOBILE = "isMobile";
 
     /**
      * Key of messages.
