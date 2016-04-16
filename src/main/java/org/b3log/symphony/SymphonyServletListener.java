@@ -184,6 +184,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
 
         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
+        httpServletRequest.setAttribute(Common.IS_MOBILE, false);
 
         final UserAgent userAgent = UserAgent.parseUserAgentString(httpServletRequest.getHeader("User-Agent"));
         final BrowserType browserType = userAgent.getBrowser().getBrowserType();
