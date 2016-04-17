@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.3.5, Apr 16, 2016
+ * @version 2.11.4.5, Apr 17, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -187,10 +187,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
         httpServletRequest.setAttribute(Common.IS_MOBILE, false);
 
         final String userAgentStr = httpServletRequest.getHeader("User-Agent");
-        
+
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         final BrowserType browserType = userAgent.getBrowser().getBrowserType();
-        
+
         LOGGER.log(Level.WARN, browserType.getName() + ", UA: " + userAgentStr);
 
         if (BrowserType.ROBOT == browserType) {
@@ -375,6 +375,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
      * @param request the specified HTTP servlet request
      */
     private void resolveSkinDir(final HttpServletRequest request) {
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, (Boolean) request.getAttribute(Common.IS_MOBILE)
+                ? "mobile" : "classic");
+        
         try {
             final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
             final UserRepository userRepository = beanManager.getReference(UserRepository.class);
