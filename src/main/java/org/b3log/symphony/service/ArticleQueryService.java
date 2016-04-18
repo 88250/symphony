@@ -759,50 +759,56 @@ public class ArticleQueryService {
     }
 
     private String getPreviewContent(final JSONObject article, final HttpServletRequest request) throws ServiceException {
-        final int length = Integer.valueOf("150");
-        String ret = article.optString(Article.ARTICLE_CONTENT);
-        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
-        final JSONObject author = userQueryService.getUser(authorId);
+        Stopwatchs.start("Get preview content");
 
-        if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
-                || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
-            return langPropsService.get("articleContentBlockLabel");
-        }
+        try {
+            final int length = Integer.valueOf("150");
+            String ret = article.optString(Article.ARTICLE_CONTENT);
+            final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject author = userQueryService.getUser(authorId);
 
-        final Set<String> userNames = userQueryService.getUserNames(ret);
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
-        final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
-        final String authorName = author.optString(User.USER_NAME);
-        if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
-                && !authorName.equals(currentUserName)) {
-            boolean invited = false;
-            for (final String userName : userNames) {
-                if (userName.equals(currentUserName)) {
-                    invited = true;
+            if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
+                    || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+                return langPropsService.get("articleContentBlockLabel");
+            }
 
-                    break;
+            final Set<String> userNames = userQueryService.getUserNames(ret);
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
+            final String authorName = author.optString(User.USER_NAME);
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                    && !authorName.equals(currentUserName)) {
+                boolean invited = false;
+                for (final String userName : userNames) {
+                    if (userName.equals(currentUserName)) {
+                        invited = true;
+
+                        break;
+                    }
+                }
+
+                if (!invited) {
+                    String blockContent = langPropsService.get("articleDiscussionLabel");
+                    blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
+                            + "/member/" + authorName + "'>" + authorName + "</a>");
+
+                    return blockContent;
                 }
             }
 
-            if (!invited) {
-                String blockContent = langPropsService.get("articleDiscussionLabel");
-                blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
-                        + "/member/" + authorName + "'>" + authorName + "</a>");
+            ret = Emotions.convert(ret);
+            ret = Markdowns.toHTML(ret);
 
-                return blockContent;
+            ret = Jsoup.clean(ret, Whitelist.none());
+            if (ret.length() >= length) {
+                ret = StringUtils.substring(ret, 0, length)
+                        + " ....";
             }
+
+            return ret;
+        } finally {
+            Stopwatchs.end();
         }
-
-        ret = Emotions.convert(ret);
-        ret = Markdowns.toHTML(ret);
-
-        ret = Jsoup.clean(ret, Whitelist.none());
-        if (ret.length() >= length) {
-            ret = StringUtils.substring(ret, 0, length)
-                    + " ....";
-        }
-
-        return ret;
     }
 
     /**

@@ -28,6 +28,7 @@ import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.ArticleRepository;
@@ -79,33 +80,39 @@ public class ShortLinkQueryService {
      * @return processed content
      */
     public String linkArticle(final String content) {
-        final Matcher matcher = ID_PATTERN.matcher(content);
-        final StringBuffer contentBuilder = new StringBuffer();
+        Stopwatchs.start("Link article");
 
         try {
-            while (matcher.find()) {
-                final String linkId = StringUtils.substringBetween(matcher.group(), "[", "]");
+            final Matcher matcher = ID_PATTERN.matcher(content);
+            final StringBuffer contentBuilder = new StringBuffer();
 
-                final Query query = new Query().addProjection(Article.ARTICLE_TITLE, String.class)
-                        .setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, linkId));
-                final JSONArray results = articleRepository.get(query).optJSONArray(Keys.RESULTS);
-                if (0 == results.length()) {
-                    continue;
+            try {
+                while (matcher.find()) {
+                    final String linkId = StringUtils.substringBetween(matcher.group(), "[", "]");
+
+                    final Query query = new Query().addProjection(Article.ARTICLE_TITLE, String.class)
+                            .setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL, linkId));
+                    final JSONArray results = articleRepository.get(query).optJSONArray(Keys.RESULTS);
+                    if (0 == results.length()) {
+                        continue;
+                    }
+
+                    final JSONObject linkArticle = results.optJSONObject(0);
+
+                    final String linkTitle = linkArticle.optString(Article.ARTICLE_TITLE);
+                    final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/article/" + linkId + ") ";
+
+                    matcher.appendReplacement(contentBuilder, link);
                 }
-
-                final JSONObject linkArticle = results.optJSONObject(0);
-
-                final String linkTitle = linkArticle.optString(Article.ARTICLE_TITLE);
-                final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/article/" + linkId + ") ";
-
-                matcher.appendReplacement(contentBuilder, link);
+                matcher.appendTail(contentBuilder);
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Generates article link error", e);
             }
-            matcher.appendTail(contentBuilder);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Generates article link error", e);
-        }
 
-        return contentBuilder.toString();
+            return contentBuilder.toString();
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -115,32 +122,38 @@ public class ShortLinkQueryService {
      * @return processed content
      */
     public String linkTag(final String content) {
-        final Matcher matcher = TAG_TITLE_PATTERN.matcher(content);
-        final StringBuffer contentBuilder = new StringBuffer();
+        Stopwatchs.start("Link tag");
 
         try {
-            while (matcher.find()) {
-                final String linkTagTitle = StringUtils.substringBetween(matcher.group(), "[", "]");
+            final Matcher matcher = TAG_TITLE_PATTERN.matcher(content);
+            final StringBuffer contentBuilder = new StringBuffer();
 
-                final Query query = new Query().addProjection(Tag.TAG_TITLE, String.class)
-                        .setFilter(new PropertyFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, linkTagTitle));
-                final JSONArray results = tagRepository.get(query).optJSONArray(Keys.RESULTS);
-                if (0 == results.length()) {
-                    continue;
+            try {
+                while (matcher.find()) {
+                    final String linkTagTitle = StringUtils.substringBetween(matcher.group(), "[", "]");
+
+                    final Query query = new Query().addProjection(Tag.TAG_TITLE, String.class)
+                            .setFilter(new PropertyFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, linkTagTitle));
+                    final JSONArray results = tagRepository.get(query).optJSONArray(Keys.RESULTS);
+                    if (0 == results.length()) {
+                        continue;
+                    }
+
+                    final JSONObject linkTag = results.optJSONObject(0);
+
+                    final String linkTitle = linkTag.optString(Tag.TAG_TITLE);
+                    final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/tag/" + linkTitle + ") ";
+
+                    matcher.appendReplacement(contentBuilder, link);
                 }
-
-                final JSONObject linkTag = results.optJSONObject(0);
-
-                final String linkTitle = linkTag.optString(Tag.TAG_TITLE);
-                final String link = " [" + linkTitle + "](" + Latkes.getServePath() + "/tag/" + linkTitle + ") ";
-
-                matcher.appendReplacement(contentBuilder, link);
+                matcher.appendTail(contentBuilder);
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Generates tag link error", e);
             }
-            matcher.appendTail(contentBuilder);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Generates tag link error", e);
-        }
 
-        return contentBuilder.toString();
+            return contentBuilder.toString();
+        } finally {
+            Stopwatchs.end();
+        }
     }
 }

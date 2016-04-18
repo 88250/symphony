@@ -45,6 +45,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
@@ -275,55 +276,61 @@ public class UserQueryService {
      * @throws ServiceException service exception
      */
     public Set<String> getUserNames(final String text) throws ServiceException {
-        final Set<String> ret = new HashSet<String>();
+        Stopwatchs.start("Get usernames");
 
-        int idx = text.indexOf('@');
+        try {
+            final Set<String> ret = new HashSet<String>();
 
-        if (-1 == idx) {
-            return ret;
-        }
+            int idx = text.indexOf('@');
 
-        String copy = text.trim();
-        copy = copy.replaceAll("\\n", " ");
-        copy = copy.replaceAll("(?=\\pP)[^@]", " ");
-        String[] uNames = StringUtils.substringsBetween(copy, "@", " ");
-        String tail = StringUtils.substringAfterLast(copy, "@");
-
-        if (tail.contains(" ")) {
-            tail = null;
-        }
-
-        if (null != tail) {
-            if (null == uNames) {
-                uNames = new String[1];
-                uNames[0] = tail;
-            } else {
-                uNames = Arrays.copyOf(uNames, uNames.length + 1);
-                uNames[uNames.length - 1] = tail;
+            if (-1 == idx) {
+                return ret;
             }
-        }
 
-        if (null == uNames) {
-            return ret;
-        }
+            String copy = text.trim();
+            copy = copy.replaceAll("\\n", " ");
+            copy = copy.replaceAll("(?=\\pP)[^@]", " ");
+            String[] uNames = StringUtils.substringsBetween(copy, "@", " ");
+            String tail = StringUtils.substringAfterLast(copy, "@");
 
-        for (int i = 0; i < uNames.length; i++) {
-            final String maybeUserName = uNames[i];
+            if (tail.contains(" ")) {
+                tail = null;
+            }
 
-            if (!UserRegisterValidation.invalidUserName(maybeUserName)) { // A string match the user name pattern
-                if (null != getUserByName(maybeUserName)) { // Found a user
-                    ret.add(maybeUserName);
+            if (null != tail) {
+                if (null == uNames) {
+                    uNames = new String[1];
+                    uNames[0] = tail;
+                } else {
+                    uNames = Arrays.copyOf(uNames, uNames.length + 1);
+                    uNames[uNames.length - 1] = tail;
+                }
+            }
 
-                    copy = copy.replaceFirst("@" + maybeUserName, "");
-                    idx = copy.indexOf('@');
-                    if (-1 == idx) {
-                        return ret;
+            if (null == uNames) {
+                return ret;
+            }
+
+            for (int i = 0; i < uNames.length; i++) {
+                final String maybeUserName = uNames[i];
+
+                if (!UserRegisterValidation.invalidUserName(maybeUserName)) { // A string match the user name pattern
+                    if (null != getUserByName(maybeUserName)) { // Found a user
+                        ret.add(maybeUserName);
+
+                        copy = copy.replaceFirst("@" + maybeUserName, "");
+                        idx = copy.indexOf('@');
+                        if (-1 == idx) {
+                            return ret;
+                        }
                     }
                 }
             }
-        }
 
-        return ret;
+            return ret;
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**

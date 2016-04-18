@@ -16,6 +16,7 @@
 package org.b3log.symphony.util;
 
 import com.vdurmont.emoji.EmojiParser;
+import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 
@@ -37,6 +38,11 @@ public final class Emotions {
      * Ten.
      */
     private static final int TEN = 10;
+
+    /**
+     * Emoji pattern.
+     */
+    public static final Pattern EMOJI_PATTERN = Pattern.compile(":.+:");
 
     /**
      * Emoji list.
@@ -979,7 +985,7 @@ public final class Emotions {
                     "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
         }
 
-        if (!StringUtils.contains(ret, ":")) {
+        if (!EMOJI_PATTERN.matcher(ret).find()) {
             return ret;
         }
 
