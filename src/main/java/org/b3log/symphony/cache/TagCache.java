@@ -35,6 +35,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.service.ShortLinkQueryService;
+import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Markdowns;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -104,8 +105,7 @@ public class TagCache {
             final List<JSONObject> tags = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             final List<JSONObject> toUpdateTags = new ArrayList();
             for (final JSONObject tag : tags) {
-                final String[] names = CollectionUtils.jsonArrayToArray(tag.names(), String[].class);
-                toUpdateTags.add(new JSONObject(tag, names));
+                toUpdateTags.add(JSONs.clone(tag));
             }
 
             for (final JSONObject tag : tags) {

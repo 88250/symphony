@@ -29,6 +29,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.cache.UserCache;
+import org.b3log.symphony.util.JSONs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -58,6 +59,10 @@ public class UserRepository extends AbstractRepository {
     @Override
     public JSONObject get(final String id) throws RepositoryException {
         JSONObject ret = userCache.getUser(id);
+        if (null != ret) {
+            return JSONs.clone(ret);
+        }
+
         if (null == ret) {
             ret = super.get(id);
         }
