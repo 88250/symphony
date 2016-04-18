@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.4, Mar 8, 2016
+ * @version 1.4.2.5, Apr 18, 2016
  * @since 0.2.5
  */
 @Service
@@ -131,18 +131,14 @@ public class NotificationQueryService {
     public int getUnreadNotificationCount(final String userId) {
         Stopwatchs.start("Gets unread notification count");
         try {
-            final List<Filter> filters = new ArrayList<Filter>();
-
-            filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
-            filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
-
             final Query query = new Query();
-            query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addProjection(Keys.OBJECT_ID, String.class);
+            query.setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId),
+                    new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false)
+            ));
 
             try {
-                final JSONObject result = notificationRepository.get(query);
-
-                return result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
+                return (int) notificationRepository.count(query);
             } catch (final RepositoryException e) {
                 LOGGER.log(Level.ERROR, "Gets unread notification count failed [userId=" + userId + "]", e);
 

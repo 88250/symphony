@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.3, Apr 13, 2016
+ * @version 2.1.0.4, Apr 18, 2016
  * @since 0.2.0
  */
 @Repository
@@ -57,7 +57,10 @@ public class UserRepository extends AbstractRepository {
 
     @Override
     public JSONObject get(final String id) throws RepositoryException {
-        final JSONObject ret = super.get(id);
+        JSONObject ret = userCache.getUser(id);
+        if (null == ret) {
+            ret = super.get(id);
+        }
 
         if (null == ret) {
             return null;
