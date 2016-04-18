@@ -70,9 +70,7 @@ public class ArticleRepository extends AbstractRepository {
             return JSONs.clone(ret);
         }
 
-        if (null == ret) {
-            ret = super.get(id);
-        }
+        ret = super.get(id);
 
         if (null == ret) {
             return null;

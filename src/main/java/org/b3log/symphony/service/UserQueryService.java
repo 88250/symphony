@@ -314,15 +314,13 @@ public class UserQueryService {
             for (int i = 0; i < uNames.length; i++) {
                 final String maybeUserName = uNames[i];
 
-                if (!UserRegisterValidation.invalidUserName(maybeUserName)) { // A string match the user name pattern
-                    if (null != getUserByName(maybeUserName)) { // Found a user
-                        ret.add(maybeUserName);
+                if (null != getUserByName(maybeUserName)) { // Found a user
+                    ret.add(maybeUserName);
 
-                        copy = copy.replaceFirst("@" + maybeUserName, "");
-                        idx = copy.indexOf('@');
-                        if (-1 == idx) {
-                            return ret;
-                        }
+                    copy = copy.replaceFirst("@" + maybeUserName, "");
+                    idx = copy.indexOf('@');
+                    if (-1 == idx) {
+                        return ret;
                     }
                 }
             }

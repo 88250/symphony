@@ -63,9 +63,7 @@ public class UserRepository extends AbstractRepository {
             return JSONs.clone(ret);
         }
 
-        if (null == ret) {
-            ret = super.get(id);
-        }
+        ret = super.get(id);
 
         if (null == ret) {
             return null;
@@ -91,6 +89,11 @@ public class UserRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public JSONObject getByName(final String name) throws RepositoryException {
+        JSONObject ret = userCache.getUserByName(name);
+        if (null != ret) {
+            return JSONs.clone(ret);
+        }
+
         final Query query = new Query().setPageCount(1);
         query.setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, name));
 
@@ -101,7 +104,11 @@ public class UserRepository extends AbstractRepository {
             return null;
         }
 
-        return array.optJSONObject(0);
+        ret = array.optJSONObject(0);
+
+        userCache.putUser(ret);
+
+        return ret;
     }
 
     /**

@@ -19,22 +19,28 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Named;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.User;
 import org.json.JSONObject;
 
 /**
  * User cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 13, 2016
+ * @version 1.0.0.1, Apr 18, 2016
  * @since 1.4.0
  */
 @Named
 public class UserCache {
 
     /**
-     * Users.
+     * Id, User.
      */
-    private static final Map<String, JSONObject> USERS = new HashMap<String, JSONObject>();
+    private static final Map<String, JSONObject> ID_CACHE = new HashMap<String, JSONObject>();
+
+    /**
+     * Name, User.
+     */
+    private static final Map<String, JSONObject> NAME_CACHE = new HashMap<String, JSONObject>();
 
     /**
      * Gets a user by the specified user id.
@@ -43,7 +49,17 @@ public class UserCache {
      * @return user, returns {@code null} if not found
      */
     public JSONObject getUser(final String userId) {
-        return USERS.get(userId);
+        return ID_CACHE.get(userId);
+    }
+
+    /**
+     * Gets a user by the specified user name.
+     *
+     * @param userName the specified user name
+     * @return user, returns {@code null} if not found
+     */
+    public JSONObject getUserByName(final String userName) {
+        return NAME_CACHE.get(userName);
     }
 
     /**
@@ -52,6 +68,7 @@ public class UserCache {
      * @param user the specified user
      */
     public void putUser(final JSONObject user) {
-        USERS.put(user.optString(Keys.OBJECT_ID), user);
+        ID_CACHE.put(user.optString(Keys.OBJECT_ID), user);
+        NAME_CACHE.put(user.optString(User.USER_NAME), user);
     }
 }
