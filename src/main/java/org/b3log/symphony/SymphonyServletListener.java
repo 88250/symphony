@@ -191,8 +191,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         final BrowserType browserType = userAgent.getBrowser().getBrowserType();
 
-        LOGGER.log(Level.WARN, browserType.getName() + ", UA: " + userAgentStr);
-
         if (BrowserType.ROBOT == browserType) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
@@ -377,7 +375,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     private void resolveSkinDir(final HttpServletRequest request) {
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, (Boolean) request.getAttribute(Common.IS_MOBILE)
                 ? "mobile" : "classic");
-        
+
         try {
             final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
             final UserRepository userRepository = beanManager.getReference(UserRepository.class);
