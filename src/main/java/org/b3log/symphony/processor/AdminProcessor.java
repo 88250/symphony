@@ -111,7 +111,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.2.2, Apr 5, 2016
+ * @version 2.14.2.3, Apr 18, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1052,7 +1052,15 @@ public class AdminProcessor {
             final String name = parameterNames.nextElement();
             final String value = request.getParameter(name);
 
-            article.put(name, value);
+            if (name.equals(Article.ARTICLE_REWARD_POINT)
+                    || name.equals(Article.ARTICLE_STATUS)
+                    || name.equals(Article.ARTICLE_TYPE)
+                    || name.equals(Article.ARTICLE_GOOD_CNT)
+                    || name.equals(Article.ARTICLE_BAD_CNT)) {
+                article.put(name, Integer.valueOf(value));
+            } else {
+                article.put(name, value);
+            }
         }
 
         final String articleTags = Tag.formatTags(article.optString(Article.ARTICLE_TAGS));
