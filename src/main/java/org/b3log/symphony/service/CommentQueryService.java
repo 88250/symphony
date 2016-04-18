@@ -38,6 +38,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.cache.UserCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
@@ -326,6 +327,8 @@ public class CommentQueryService {
      */
     public List<JSONObject> getArticleComments(final String articleId, final int currentPageNum, final int pageSize,
             final int sortMode) throws ServiceException {
+        Stopwatchs.start("Get comments");
+
         final Query query = new Query()
                 .setPageCount(1).setCurrentPageNum(currentPageNum).setPageSize(pageSize)
                 .setFilter(new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId));
@@ -346,6 +349,8 @@ public class CommentQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets article [" + articleId + "] comments failed", e);
             throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
         }
     }
 

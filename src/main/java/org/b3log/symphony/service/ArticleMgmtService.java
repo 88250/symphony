@@ -301,7 +301,7 @@ public class ArticleMgmtService {
 
             final int viewCnt = article.optInt(Article.ARTICLE_VIEW_CNT);
             article.put(Article.ARTICLE_VIEW_CNT, viewCnt + 1);
-            
+
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
             articleRepository.update(articleId, article);

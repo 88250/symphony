@@ -17,6 +17,7 @@ package org.b3log.symphony.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.CompositeFilterOperator;
@@ -26,7 +27,9 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.util.JSONs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -34,17 +37,57 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Mar 18, 2016
+ * @version 1.1.0.1, Apr 18, 2016
  * @since 0.2.0
  */
 @Repository
 public class ArticleRepository extends AbstractRepository {
 
     /**
+     * Article cache.
+     */
+    @Inject
+    private ArticleCache articleCache;
+
+    /**
      * Public constructor.
      */
     public ArticleRepository() {
         super(Article.ARTICLE);
+    }
+
+    @Override
+    public void remove(final String id) throws RepositoryException {
+        super.remove(id);
+
+        articleCache.removeArticle(id);
+    }
+
+    @Override
+    public JSONObject get(final String id) throws RepositoryException {
+        JSONObject ret = articleCache.getArticle(id);
+        if (null != ret) {
+            return JSONs.clone(ret);
+        }
+
+        if (null == ret) {
+            ret = super.get(id);
+        }
+
+        if (null == ret) {
+            return null;
+        }
+
+        articleCache.putArticle(ret);
+
+        return ret;
+    }
+
+    @Override
+    public void update(final String id, final JSONObject user) throws RepositoryException {
+        super.update(id, user);
+
+        articleCache.putArticle(user);
     }
 
     @Override

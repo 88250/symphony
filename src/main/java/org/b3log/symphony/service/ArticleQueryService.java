@@ -700,6 +700,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public JSONObject getArticleById(final String articleId) throws ServiceException {
+        Stopwatchs.start("Get article by id");
         try {
             final JSONObject ret = articleRepository.get(articleId);
 
@@ -713,6 +714,8 @@ public class ArticleQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets an article [articleId=" + articleId + "] failed", e);
             throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
         }
     }
 
@@ -1414,84 +1417,90 @@ public class ArticleQueryService {
      */
     public void processArticleContent(final JSONObject article, final HttpServletRequest request)
             throws ServiceException {
-        final JSONObject author = article.optJSONObject(Article.ARTICLE_T_AUTHOR);
-        if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
-                || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
-            article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
-            article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
-            article.put(Article.ARTICLE_T_PREVIEW_CONTENT, langPropsService.get("articleContentBlockLabel"));
+        Stopwatchs.start("Process content");
 
-            article.put(Article.ARTICLE_REWARD_CONTENT, "");
-            article.put(Article.ARTICLE_REWARD_POINT, 0);
-
-            return;
-        }
-
-        String previewContent = getPreviewContent(article, request);
-        previewContent = Jsoup.parse(previewContent).text();
-        previewContent = previewContent.replaceAll("\"", "'");
-        article.put(Article.ARTICLE_T_PREVIEW_CONTENT, previewContent);
-
-        String articleContent = article.optString(Article.ARTICLE_CONTENT);
-        article.put(Common.DISCUSSION_VIEWABLE, true);
-
-        final Set<String> userNames = userQueryService.getUserNames(articleContent);
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
-        final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
-        final String currentRole = null == currentUser ? "" : currentUser.optString(User.USER_ROLE);
-        final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
-        if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
-                && !authorName.equals(currentUserName) && !Role.ADMIN_ROLE.equals(currentRole)) {
-            boolean invited = false;
-            for (final String userName : userNames) {
-                if (userName.equals(currentUserName)) {
-                    invited = true;
-
-                    break;
-                }
-            }
-
-            if (!invited) {
-                String blockContent = langPropsService.get("articleDiscussionLabel");
-                blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
-                        + "/member/" + authorName + "'>" + authorName + "</a>");
-
-                article.put(Article.ARTICLE_CONTENT, blockContent);
-                article.put(Common.DISCUSSION_VIEWABLE, false);
+        try {
+            final JSONObject author = article.optJSONObject(Article.ARTICLE_T_AUTHOR);
+            if (null != author && UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)
+                    || Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+                article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
+                article.put(Article.ARTICLE_CONTENT, langPropsService.get("articleContentBlockLabel"));
+                article.put(Article.ARTICLE_T_PREVIEW_CONTENT, langPropsService.get("articleContentBlockLabel"));
 
                 article.put(Article.ARTICLE_REWARD_CONTENT, "");
                 article.put(Article.ARTICLE_REWARD_POINT, 0);
 
                 return;
             }
-        }
 
-        for (final String userName : userNames) {
-            articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
-                    + "/member/" + userName + "'>" + userName + "</a>");
-        }
+            String previewContent = getPreviewContent(article, request);
+            previewContent = Jsoup.parse(previewContent).text();
+            previewContent = previewContent.replaceAll("\"", "'");
+            article.put(Article.ARTICLE_T_PREVIEW_CONTENT, previewContent);
 
-        articleContent = shortLinkQueryService.linkArticle(articleContent);
-        articleContent = shortLinkQueryService.linkTag(articleContent);
+            String articleContent = article.optString(Article.ARTICLE_CONTENT);
+            article.put(Common.DISCUSSION_VIEWABLE, true);
 
-        articleContent = Emotions.convert(articleContent);
-        article.put(Article.ARTICLE_CONTENT, articleContent);
+            final Set<String> userNames = userQueryService.getUserNames(articleContent);
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            final String currentUserName = null == currentUser ? "" : currentUser.optString(User.USER_NAME);
+            final String currentRole = null == currentUser ? "" : currentUser.optString(User.USER_ROLE);
+            final String authorName = article.optString(Article.ARTICLE_T_AUTHOR_NAME);
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                    && !authorName.equals(currentUserName) && !Role.ADMIN_ROLE.equals(currentRole)) {
+                boolean invited = false;
+                for (final String userName : userNames) {
+                    if (userName.equals(currentUserName)) {
+                        invited = true;
 
-        if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
-            String articleRewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
+                        break;
+                    }
+                }
 
-            final Set<String> rewordContentUserNames = userQueryService.getUserNames(articleRewardContent);
+                if (!invited) {
+                    String blockContent = langPropsService.get("articleDiscussionLabel");
+                    blockContent = blockContent.replace("{user}", "<a href='" + Latkes.getServePath()
+                            + "/member/" + authorName + "'>" + authorName + "</a>");
 
-            for (final String userName : rewordContentUserNames) {
-                articleRewardContent = articleRewardContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
+                    article.put(Article.ARTICLE_CONTENT, blockContent);
+                    article.put(Common.DISCUSSION_VIEWABLE, false);
+
+                    article.put(Article.ARTICLE_REWARD_CONTENT, "");
+                    article.put(Article.ARTICLE_REWARD_POINT, 0);
+
+                    return;
+                }
+            }
+
+            for (final String userName : userNames) {
+                articleContent = articleContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
                         + "/member/" + userName + "'>" + userName + "</a>");
             }
 
-            articleRewardContent = Emotions.convert(articleRewardContent);
-            article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
-        }
+            articleContent = shortLinkQueryService.linkArticle(articleContent);
+            articleContent = shortLinkQueryService.linkTag(articleContent);
 
-        markdown(article);
+            articleContent = Emotions.convert(articleContent);
+            article.put(Article.ARTICLE_CONTENT, articleContent);
+
+            if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
+                String articleRewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
+
+                final Set<String> rewordContentUserNames = userQueryService.getUserNames(articleRewardContent);
+
+                for (final String userName : rewordContentUserNames) {
+                    articleRewardContent = articleRewardContent.replace('@' + userName, "@<a href='" + Latkes.getServePath()
+                            + "/member/" + userName + "'>" + userName + "</a>");
+                }
+
+                articleRewardContent = Emotions.convert(articleRewardContent);
+                article.put(Article.ARTICLE_REWARD_CONTENT, articleRewardContent);
+            }
+
+            markdown(article);
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**

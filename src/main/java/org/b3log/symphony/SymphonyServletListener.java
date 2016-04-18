@@ -226,7 +226,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         if (!isStatic) {
             Stopwatchs.end();
 
-            if ("/".equals(request.getRequestURI())) {
+            final String requestURI = request.getRequestURI();
+            if ("/".equals(requestURI) || requestURI.startsWith("/article/")) {
                 LOGGER.log(Level.INFO, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
             }
         }
@@ -373,6 +374,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
      * @param request the specified HTTP servlet request
      */
     private void resolveSkinDir(final HttpServletRequest request) {
+        Stopwatchs.start("Resolve skin");
+
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, (Boolean) request.getAttribute(Common.IS_MOBILE)
                 ? "mobile" : "classic");
 
@@ -421,6 +424,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
             request.setAttribute(User.USER, user);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);
+        } finally {
+            Stopwatchs.end();
         }
     }
 }
