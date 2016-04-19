@@ -78,7 +78,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.12.8, Apr 14, 2016
+ * @version 1.11.13.8, Apr 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -304,8 +304,8 @@ public class UserMgmtService {
             oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
             oldUser.put(UserExt.USER_AVATAR_TYPE, requestJSONObject.optString(UserExt.USER_AVATAR_TYPE));
             oldUser.put(UserExt.USER_AVATAR_URL, requestJSONObject.optString(UserExt.USER_AVATAR_URL));
-            oldUser.put(UserExt.USER_JOIN_POINT_RANK, requestJSONObject.optString(UserExt.USER_JOIN_POINT_RANK));
-            oldUser.put(UserExt.USER_JOIN_USED_POINT_RANK, requestJSONObject.optString(UserExt.USER_JOIN_USED_POINT_RANK));
+            oldUser.put(UserExt.USER_JOIN_POINT_RANK, requestJSONObject.optInt(UserExt.USER_JOIN_POINT_RANK));
+            oldUser.put(UserExt.USER_JOIN_USED_POINT_RANK, requestJSONObject.optInt(UserExt.USER_JOIN_USED_POINT_RANK));
             oldUser.put(UserExt.USER_COMMENT_VIEW_MODE, requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE));
 
             oldUser.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
