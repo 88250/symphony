@@ -78,6 +78,7 @@ public class UserRepository extends AbstractRepository {
     public void update(final String id, final JSONObject user) throws RepositoryException {
         super.update(id, user);
 
+        user.put(Keys.OBJECT_ID, id);
         userCache.putUser(user);
     }
 

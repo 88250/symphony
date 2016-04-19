@@ -82,10 +82,11 @@ public class ArticleRepository extends AbstractRepository {
     }
 
     @Override
-    public void update(final String id, final JSONObject user) throws RepositoryException {
-        super.update(id, user);
+    public void update(final String id, final JSONObject article) throws RepositoryException {
+        super.update(id, article);
 
-        articleCache.putArticle(user);
+        article.put(Keys.OBJECT_ID, id);
+        articleCache.putArticle(article);
     }
 
     @Override
