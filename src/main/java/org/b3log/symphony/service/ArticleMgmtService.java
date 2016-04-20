@@ -50,6 +50,7 @@ import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
@@ -57,6 +58,7 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.repository.OptionRepository;
+import org.b3log.symphony.repository.RevisionRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -72,7 +74,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.8.19.15, Apr 13, 2016
+ * @version 2.9.19.15, Apr 20, 2016
  * @since 0.2.0
  */
 @Service
@@ -130,6 +132,12 @@ public class ArticleMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Revision repository.
+     */
+    @Inject
+    private RevisionRepository revisionRepository;
 
     /**
      * Tag management service.
@@ -526,6 +534,20 @@ public class ArticleMgmtService {
 
             final String articleId = articleRepository.add(article);
 
+            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+                // Revision
+                final JSONObject revision = new JSONObject();
+                revision.put(Revision.REVISION_AUTHOR_ID, authorId);
+                final JSONObject revisionData = new JSONObject();
+                revisionData.put(Article.ARTICLE_TITLE, articleTitle);
+                revisionData.put(Article.ARTICLE_CONTENT, articleContent);
+                revision.put(Revision.REVISION_DATA, revisionData.toString());
+                revision.put(Revision.REVISION_DATA_ID, articleId);
+                revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_ARTICLE);
+
+                revisionRepository.add(revision);
+            }
+
             transaction.commit();
 
             // Grows the tag graph
@@ -601,6 +623,13 @@ public class ArticleMgmtService {
      */
     public synchronized void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+        final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
+
+        String articleId;
+        JSONObject oldArticle;
+        String authorId;
+        JSONObject author;
+        int updatePointSum;
 
         try {
             // check if admin allow to add article
@@ -608,6 +637,25 @@ public class ArticleMgmtService {
 
             if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
                 throw new ServiceException(langPropsService.get("notAllowAddArticleLabel"));
+            }
+
+            articleId = requestJSONObject.optString(Keys.OBJECT_ID);
+            oldArticle = articleRepository.get(articleId);
+            authorId = oldArticle.optString(Article.ARTICLE_AUTHOR_ID);
+            author = userRepository.get(authorId);
+
+            final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
+            int addition = (int) Math.round(Math.sqrt(followerCnt));
+            final long collectCnt = followQueryService.getFollowerCount(articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
+            addition += collectCnt * 2;
+            updatePointSum = Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition;
+
+            if (!fromClient) {
+                // Point
+                final int balance = author.optInt(UserExt.USER_POINT);
+                if (balance - updatePointSum < 0) {
+                    throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
+                }
             }
 
             final JSONObject maybeExist = articleRepository.getByTitle(articleTitle);
@@ -629,26 +677,20 @@ public class ArticleMgmtService {
             throw new ServiceException(e);
         }
 
+        final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
+
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
-            final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
-            final JSONObject oldArticle = articleRepository.get(articleId);
-            final String authorId = oldArticle.optString(Article.ARTICLE_AUTHOR_ID);
-            final JSONObject author = userRepository.get(authorId);
-
             processTagsForArticleUpdate(oldArticle, requestJSONObject, author);
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
-
-            final boolean fromClient = requestJSONObject.has(Article.ARTICLE_CLIENT_ARTICLE_ID);
 
             articleTitle = Emotions.toAliases(articleTitle);
             oldArticle.put(Article.ARTICLE_TITLE, articleTitle);
 
             oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
             oldArticle.put(Article.ARTICLE_COMMENTABLE, requestJSONObject.optBoolean(Article.ARTICLE_COMMENTABLE, true));
-            oldArticle.put(Article.ARTICLE_TYPE,
-                    requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL));
+            oldArticle.put(Article.ARTICLE_TYPE, articleType);
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
             articleContent = Emotions.toAliases(articleContent);
@@ -683,18 +725,27 @@ public class ArticleMgmtService {
 
             articleRepository.update(articleId, oldArticle);
 
+            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+                // Revision
+                final JSONObject revision = new JSONObject();
+                revision.put(Revision.REVISION_AUTHOR_ID, authorId);
+                final JSONObject revisionData = new JSONObject();
+                revisionData.put(Article.ARTICLE_TITLE, articleTitle);
+                revisionData.put(Article.ARTICLE_CONTENT, articleContent);
+                revision.put(Revision.REVISION_DATA, revisionData.toString());
+                revision.put(Revision.REVISION_DATA_ID, articleId);
+                revision.put(Revision.REVISION_DATA_TYPE, Revision.DATA_TYPE_C_ARTICLE);
+
+                revisionRepository.add(revision);
+            }
+
             transaction.commit();
 
             if (!fromClient) {
                 if (currentTimeMillis - createTime > 1000 * 60 * 5) {
-                    final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
-                    int addition = (int) Math.round(Math.sqrt(followerCnt));
-                    final long collectCnt = followQueryService.getFollowerCount(articleId, Follow.FOLLOWING_TYPE_C_ARTICLE);
-                    addition += collectCnt * 2;
-
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
-                            Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition, articleId);
+                            updatePointSum, articleId);
                 }
 
                 if (enableReward) {
