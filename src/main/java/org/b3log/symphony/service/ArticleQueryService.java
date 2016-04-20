@@ -573,9 +573,6 @@ public class ArticleQueryService {
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(ret);
 
-            final Integer participantsCnt = Symphonys.getInt("tagArticleParticipantsCnt");
-            genParticipants(ret, participantsCnt);
-
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles by tags [tagLength=" + tags.length + "] failed", e);
