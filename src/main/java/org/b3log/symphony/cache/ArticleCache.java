@@ -20,6 +20,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -49,7 +50,12 @@ public class ArticleCache {
      * @return article, returns {@code null} if not found
      */
     public JSONObject getArticle(final String id) {
-        return (JSONObject) cache.get(id);
+        final JSONObject article = (JSONObject) cache.get(id);
+        if (null == article) {
+            return null;
+        }
+
+        return JSONs.clone(article);
     }
 
     /**
@@ -58,7 +64,7 @@ public class ArticleCache {
      * @param article the specified article
      */
     public void putArticle(final JSONObject article) {
-        cache.put(article.optString(Keys.OBJECT_ID), article);
+        cache.put(article.optString(Keys.OBJECT_ID), JSONs.clone(article));
     }
 
     /**

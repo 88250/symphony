@@ -251,7 +251,7 @@ public class UserMgmtService {
 
             transaction.commit();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Updates user online status failed", e);
+            LOGGER.log(Level.ERROR, "Updates user online status failed [id=" + userId + "]", e);
 
             if (null != transaction && transaction.isActive()) {
                 transaction.rollback();

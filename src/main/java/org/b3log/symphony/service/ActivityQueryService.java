@@ -129,10 +129,7 @@ public class ActivityQueryService {
 
             final Date now = new Date();
 
-            JSONObject user = userCache.getUser(userId);
-            if (null == user) {
-                user = userRepository.get(userId);
-            }
+            final JSONObject user = userRepository.get(userId);
 
             final long time = user.optLong(UserExt.USER_CHECKIN_TIME);
             return DateUtils.isSameDay(now, new Date(time));

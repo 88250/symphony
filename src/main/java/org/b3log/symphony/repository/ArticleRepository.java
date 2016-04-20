@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Apr 18, 2016
+ * @version 1.1.1.1, Apr 20, 2016
  * @since 0.2.0
  */
 @Repository
@@ -67,7 +67,7 @@ public class ArticleRepository extends AbstractRepository {
     public JSONObject get(final String id) throws RepositoryException {
         JSONObject ret = articleCache.getArticle(id);
         if (null != ret) {
-            return JSONs.clone(ret);
+            return ret;
         }
 
         ret = super.get(id);

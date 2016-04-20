@@ -29,7 +29,6 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.cache.UserCache;
-import org.b3log.symphony.util.JSONs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -37,7 +36,7 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.4, Apr 18, 2016
+ * @version 2.1.1.4, Apr 20, 2016
  * @since 0.2.0
  */
 @Repository
@@ -60,7 +59,7 @@ public class UserRepository extends AbstractRepository {
     public JSONObject get(final String id) throws RepositoryException {
         JSONObject ret = userCache.getUser(id);
         if (null != ret) {
-            return JSONs.clone(ret);
+            return ret;
         }
 
         ret = super.get(id);
@@ -92,7 +91,7 @@ public class UserRepository extends AbstractRepository {
     public JSONObject getByName(final String name) throws RepositoryException {
         JSONObject ret = userCache.getUserByName(name);
         if (null != ret) {
-            return JSONs.clone(ret);
+            return ret;
         }
 
         final Query query = new Query().setPageCount(1);

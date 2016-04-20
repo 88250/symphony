@@ -490,10 +490,7 @@ public class CommentQueryService {
         comment.put(Comment.COMMENT_CREATE_TIME, new Date(comment.optLong(Comment.COMMENT_CREATE_TIME)));
 
         final String authorId = comment.optString(Comment.COMMENT_AUTHOR_ID);
-        JSONObject author = userCache.getUser(authorId);
-        if (null == author) {
-            author = userRepository.get(authorId);
-        }
+        final JSONObject author = userRepository.get(authorId);
 
         final String thumbnailURL = avatarQueryService.getAvatarURLByUser(author);
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);

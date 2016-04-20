@@ -1026,10 +1026,7 @@ public class ArticleQueryService {
                 for (final JSONObject article : ret) {
                     final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-                    JSONObject author = userCache.getUser(authorId);
-                    if (null == author) {
-                        author = userRepository.get(authorId);
-                    }
+                    final JSONObject author = userRepository.get(authorId);
 
                     if (UserExt.USER_STATUS_C_INVALID == author.optInt(UserExt.USER_STATUS)) {
                         article.put(Article.ARTICLE_TITLE, langPropsService.get("articleTitleBlockLabel"));
@@ -1275,10 +1272,7 @@ public class ArticleQueryService {
     private void genArticleAuthor(final JSONObject article) throws RepositoryException {
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-        JSONObject author = userCache.getUser(authorId);
-        if (null == author) {
-            author = userRepository.get(authorId);
-        }
+        final JSONObject author = userRepository.get(authorId);
 
         article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
         article.put(Article.ARTICLE_T_AUTHOR, author);
@@ -1368,10 +1362,7 @@ public class ArticleQueryService {
                 final String email = comment.optString(Comment.COMMENT_AUTHOR_EMAIL);
                 final String userId = comment.optString(Comment.COMMENT_AUTHOR_ID);
 
-                JSONObject commenter = userCache.getUser(userId);
-                if (null == commenter) {
-                    commenter = userRepository.get(userId);
-                }
+                final JSONObject commenter = userRepository.get(userId);
 
                 String thumbnailURL = Symphonys.get("defaultThumbnailURL");
                 if (!UserExt.DEFAULT_CMTER_EMAIL.equals(email)) {
