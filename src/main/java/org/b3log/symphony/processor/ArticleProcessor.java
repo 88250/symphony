@@ -107,7 +107,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.16.14.27, Apr 11, 2016
+ * @version 1.16.15.27, Apr 20, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -835,7 +835,7 @@ public class ArticleProcessor {
             userKey = clientB3Key;
 
             user.put(UserExt.USER_B3_KEY, userKey);
-            userMgmtService.updateUser(userKey, user);
+            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
         }
 
         if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !userKey.equals(clientB3Key)) {
@@ -1020,7 +1020,7 @@ public class ArticleProcessor {
             userKey = clientB3Key;
 
             user.put(UserExt.USER_B3_KEY, userKey);
-            userMgmtService.updateUser(userKey, user);
+            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
         }
 
         if (!Symphonys.get("keyOfSymphony").equals(symphonyKey) || !userKey.equals(clientB3Key)) {

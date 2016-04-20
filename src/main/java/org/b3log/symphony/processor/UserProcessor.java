@@ -98,7 +98,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.7.15, Apr 1, 2016
+ * @version 1.14.8.15, Apr 20, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1017,7 +1017,7 @@ public class UserProcessor {
             userKey = clientB3Key;
 
             user.put(UserExt.USER_B3_KEY, userKey);
-            userMgmtService.updateUser(userKey, user);
+            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
         }
 
         if (!userKey.equals(clientB3Key)) {

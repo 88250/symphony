@@ -51,7 +51,6 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
-import org.b3log.symphony.cache.UserCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
@@ -79,7 +78,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.11.18, Apr 14, 2016
+ * @version 2.14.11.19, Apr 20, 2016
  * @since 0.2.0
  */
 @Service
@@ -155,12 +154,6 @@ public class ArticleQueryService {
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * User cache.
-     */
-    @Inject
-    private UserCache userCache;
 
     /**
      * Count to fetch article tags for relevant articles.
