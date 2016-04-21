@@ -78,7 +78,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.11.19, Apr 20, 2016
+ * @version 2.14.11.20, Apr 21, 2016
  * @since 0.2.0
  */
 @Service
@@ -1420,8 +1420,7 @@ public class ArticleQueryService {
                 return;
             }
 
-            final String metaDescription = getArticleMetaDesc(article);
-            article.put(Article.ARTICLE_T_PREVIEW_CONTENT, metaDescription);
+            article.put(Article.ARTICLE_T_PREVIEW_CONTENT, article.optString(Article.ARTICLE_TITLE));
 
             String articleContent = article.optString(Article.ARTICLE_CONTENT);
             article.put(Common.DISCUSSION_VIEWABLE, true);
@@ -1483,6 +1482,8 @@ public class ArticleQueryService {
             }
 
             markdown(article);
+
+            article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));
         } finally {
             Stopwatchs.end();
         }
@@ -1581,33 +1582,39 @@ public class ArticleQueryService {
      * @param article the specified article content
      */
     private void markdown(final JSONObject article) {
-        String content = article.optString(Article.ARTICLE_CONTENT);
+        Stopwatchs.start("Markdown");
 
-        final int articleType = article.optInt(Article.ARTICLE_TYPE);
-        if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
-            content = Markdowns.toHTML(content);
-            content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-        } else {
-            final Document.OutputSettings outputSettings = new Document.OutputSettings();
-            outputSettings.prettyPrint(false);
+        try {
+            String content = article.optString(Article.ARTICLE_CONTENT);
 
-            content = Jsoup.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK),
-                    Whitelist.relaxed().addAttributes(":all", "id", "target", "class").
-                    addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
-                    .addAttributes("audio", "controls", "src"), outputSettings);
+            final int articleType = article.optInt(Article.ARTICLE_TYPE);
+            if (Article.ARTICLE_TYPE_C_THOUGHT != articleType) {
+                content = Markdowns.toHTML(content);
+                content = Markdowns.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+            } else {
+                final Document.OutputSettings outputSettings = new Document.OutputSettings();
+                outputSettings.prettyPrint(false);
 
-            content = content.replace("\n", "\\n").replace("'", "\\'")
-                    .replace("\"", "\\\"");
-        }
+                content = Jsoup.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK),
+                        Whitelist.relaxed().addAttributes(":all", "id", "target", "class").
+                        addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
+                        .addAttributes("audio", "controls", "src"), outputSettings);
 
-        article.put(Article.ARTICLE_CONTENT, content);
+                content = content.replace("\n", "\\n").replace("'", "\\'")
+                        .replace("\"", "\\\"");
+            }
 
-        if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
-            String rewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
-            rewardContent = Markdowns.toHTML(rewardContent);
-            rewardContent = Markdowns.clean(rewardContent,
-                    Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
-            article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
+            article.put(Article.ARTICLE_CONTENT, content);
+
+            if (article.optInt(Article.ARTICLE_REWARD_POINT) > 0) {
+                String rewardContent = article.optString(Article.ARTICLE_REWARD_CONTENT);
+                rewardContent = Markdowns.toHTML(rewardContent);
+                rewardContent = Markdowns.clean(rewardContent,
+                        Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
+                article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
+            }
+        } finally {
+            Stopwatchs.end();
         }
     }
 
@@ -1618,27 +1625,24 @@ public class ArticleQueryService {
      * @return meta description
      */
     private String getArticleMetaDesc(final JSONObject article) {
-        final int length = Integer.valueOf("150");
-        String ret = article.optString(Article.ARTICLE_TITLE);
+        Stopwatchs.start("Meta Desc");
 
-        if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
-                || Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+        try {
+            final int length = Integer.valueOf("150");
+
+            String ret = article.optString(Article.ARTICLE_CONTENT);
+            ret = Jsoup.clean(ret, Whitelist.none());
+            if (ret.length() >= length) {
+                ret = StringUtils.substring(ret, 0, length)
+                        + " ....";
+            }
+
+            ret = Jsoup.parse(ret).text();
+            ret = ret.replaceAll("\"", "'");
+
             return ret;
+        } finally {
+            Stopwatchs.end();
         }
-
-        ret = article.optString(Article.ARTICLE_CONTENT);
-        ret = Emotions.convert(ret);
-        ret = Markdowns.toHTML(ret);
-
-        ret = Jsoup.clean(ret, Whitelist.none());
-        if (ret.length() >= length) {
-            ret = StringUtils.substring(ret, 0, length)
-                    + " ....";
-        }
-
-        ret = Jsoup.parse(ret).text();
-        ret = ret.replaceAll("\"", "'");
-
-        return ret;
     }
 }

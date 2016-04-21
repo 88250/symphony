@@ -19,6 +19,7 @@ import com.vdurmont.emoji.EmojiParser;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.util.Stopwatchs;
 
 /**
  * Emotions utilities.
@@ -969,37 +970,43 @@ public final class Emotions {
      * @return converted content
      */
     public static String convert(final String content) {
-        final String staticServePath = Latkes.getStaticServePath();
+        Stopwatchs.start("Emoj convert");
 
-        String ret = content;
+        try {
+            final String staticServePath = Latkes.getStaticServePath();
 
-        String emotionName;
-        for (int i = 0; i < EMOTION_CNT; i++) {
-            if (i < TEN) {
-                emotionName = "em0" + i;
-            } else {
-                emotionName = "em" + i;
+            String ret = content;
+
+            String emotionName;
+            for (int i = 0; i < EMOTION_CNT; i++) {
+                if (i < TEN) {
+                    emotionName = "em0" + i;
+                } else {
+                    emotionName = "em" + i;
+                }
+
+                ret = ret.replace('[' + emotionName + ']',
+                        "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
             }
 
-            ret = ret.replace('[' + emotionName + ']',
-                    "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
-        }
+            if (!EMOJI_PATTERN.matcher(ret).find()) {
+                return ret;
+            }
 
-        if (!EMOJI_PATTERN.matcher(ret).find()) {
-            return ret;
-        }
-
-        for (final String emojiCode : EMOJIS) {
-            final String emoji = ":" + emojiCode + ":";
-            ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                    + staticServePath + "/js/lib/emojify.js-1.0.2/images/basic/" + emojiCode
-                    + ".png\" title=\"" + emoji + "\"></img>");
-        }
+            for (final String emojiCode : EMOJIS) {
+                final String emoji = ":" + emojiCode + ":";
+                ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
+                        + staticServePath + "/js/lib/emojify.js-1.0.2/images/basic/" + emojiCode
+                        + ".png\" title=\"" + emoji + "\"></img>");
+            }
 
 //        ret = ret.replaceAll("\ufe0f", "");
 //        ret = ret.replaceAll("\ufffd", "");
 //        ret = ret.replaceAll("⃣", "");
-        return ret;
+            return ret;
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
