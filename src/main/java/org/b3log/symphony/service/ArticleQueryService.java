@@ -836,7 +836,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getHotArticles(final int fetchSize) throws ServiceException {
-        final String id = String.valueOf(DateUtils.addDays(new Date(), -15).getTime());
+        final String id = String.valueOf(DateUtils.addDays(new Date(), -7).getTime());
 
         try {
             final Query query = new Query().addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
