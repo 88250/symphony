@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -37,6 +38,8 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.Times;
+import org.json.JSONObject;
 
 /**
  * Data statistic processor.
@@ -95,7 +98,7 @@ public class StatisticProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final Date end = new Date();
-        final Date start = DateUtils.addDays(end, -30);
+        final Date dayStart = DateUtils.addDays(end, -30);
 
         final List<String> monthDays = new ArrayList<String>();
         dataModel.put("monthDays", monthDays);
@@ -107,14 +110,52 @@ public class StatisticProcessor {
         dataModel.put("commentCnts", commentCnts);
 
         for (int i = 0; i < 31; i++) {
-            final Date day = DateUtils.addDays(start, i);
+            final Date day = DateUtils.addDays(dayStart, i);
             monthDays.add(DateFormatUtils.format(day, "yyyy-MM-dd"));
+
             final int userCnt = userQueryService.getUserCntInDay(day);
             userCnts.add(userCnt);
+
             final int articleCnt = articleQueryService.getArticleCntInDay(day);
             articleCnts.add(articleCnt);
+
             final int commentCnt = commentQueryService.getCommentCntInDay(day);
             commentCnts.add(commentCnt);
+        }
+
+        final List<String> months = new ArrayList<String>();
+        dataModel.put("months", months);
+        final List<Integer> historyUserCnts = new ArrayList<Integer>();
+        dataModel.put("historyUserCnts", historyUserCnts);
+        final List<Integer> historyArticleCnts = new ArrayList<Integer>();
+        dataModel.put("historyArticleCnts", historyArticleCnts);
+        final List<Integer> historyCommentCnts = new ArrayList<Integer>();
+        dataModel.put("historyCommentCnts", historyCommentCnts);
+
+        final JSONObject firstAdmin = userQueryService.getAdmins().get(0);
+        final long monthStartTime = Times.getMonthStartTime(firstAdmin.optLong(Keys.OBJECT_ID));
+        final Date monthStart = new Date(monthStartTime);
+
+        int i = 1;
+        while (true) {
+            final Date month = DateUtils.addMonths(monthStart, i);
+
+            if (month.after(end)) {
+                break;
+            }
+
+            i++;
+
+            months.add(DateFormatUtils.format(month, "yyyy-MM"));
+
+            final int userCnt = userQueryService.getUserCntInMonth(month);
+            historyUserCnts.add(userCnt);
+
+            final int articleCnt = articleQueryService.getArticleCntInMonth(month);
+            historyArticleCnts.add(articleCnt);
+
+            final int commentCnt = commentQueryService.getCommentCntInMonth(month);
+            historyCommentCnts.add(commentCnt);
         }
 
         filler.fillHeaderAndFooter(request, response, dataModel);

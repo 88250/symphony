@@ -76,7 +76,7 @@ public final class Times {
         final Map<String, String> langs = langService.getAll(locale);
 
         final long diff = System.currentTimeMillis() - time;
-        long r = 0;
+        long r;
 
         if (diff > YEAR_UNIT) {
             r = diff / YEAR_UNIT;
@@ -152,6 +152,25 @@ public final class Times {
         return cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA)
                 && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
                 && cal1.get(Calendar.WEEK_OF_YEAR) == cal2.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    /**
+     * Determines whether the specified date1 is the same month with the specified date2.
+     *
+     * @param date1 the specified date1
+     * @param date2 the specified date2
+     * @return {@code true} if it is the same month, returns {@code false} otherwise
+     */
+    public static boolean isSameMonth(final Date date1, final Date date2) {
+        final Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+
+        final Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+
+        return cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA)
+                && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
+                && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH);
     }
 
     /**
@@ -243,6 +262,43 @@ public final class Times {
 
         end.setTimeInMillis(time);
         end.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        end.set(Calendar.HOUR, 23);
+        end.set(Calendar.MINUTE, 59);
+        end.set(Calendar.SECOND, 59);
+        end.set(Calendar.MILLISECOND, 999);
+
+        return end.getTime().getTime();
+    }
+
+    /**
+     * Gets the month start time with the specified time.
+     *
+     * @param time the specified time
+     * @return month start time
+     */
+    public static long getMonthStartTime(final long time) {
+        final Calendar start = Calendar.getInstance();
+
+        start.setTimeInMillis(time);
+        int year = start.get(Calendar.YEAR);
+        int month = start.get(Calendar.MONTH);
+        start.set(year, month, 1, 0, 0, 0);
+        start.set(Calendar.MILLISECOND, 0);
+
+        return start.getTime().getTime();
+    }
+
+    /**
+     * Gets the month end time with the specified time.
+     *
+     * @param time the specified time
+     * @return month end time
+     */
+    public static long getMonthEndTime(final long time) {
+        final Calendar end = Calendar.getInstance();
+
+        end.setTimeInMillis(time);
+        end.set(Calendar.DAY_OF_MONTH, end.getActualMaximum(Calendar.DAY_OF_MONTH));
         end.set(Calendar.HOUR, 23);
         end.set(Calendar.MINUTE, 59);
         end.set(Calendar.SECOND, 59);

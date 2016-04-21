@@ -28,7 +28,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -49,7 +48,6 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Times;
@@ -101,13 +99,40 @@ public class UserQueryService {
 
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, start),
-                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end)
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end),
+                new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)
         ));
 
         try {
             return (int) userRepository.count(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Count day user failed", e);
+
+            return 1;
+        }
+    }
+
+    /**
+     * Gets user count of the specified month.
+     *
+     * @param month the specified month
+     * @return user count
+     */
+    public int getUserCntInMonth(final Date month) {
+        final long time = month.getTime();
+        final long start = Times.getMonthStartTime(time);
+        final long end = Times.getMonthEndTime(time);
+
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, start),
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end),
+                new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)
+        ));
+
+        try {
+            return (int) userRepository.count(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Count month user failed", e);
 
             return 1;
         }

@@ -14,7 +14,9 @@
                     <h1>${communityLabel}${dataStatLabel}</h1>
                     <i class="ft-gray">${dataStatSubLabel}</i>
                     <br><br>
-                    <div id="chart" style="height:400px"></div>
+                    <div id="chart30" style="height:400px"></div>
+                    <br><br>
+                    <div id="chartHistory" style="height:400px"></div>
                 </div>
                 <div class="side">
                     <#include "side.ftl">
@@ -37,11 +39,10 @@
                         'echarts/chart/line'
                     ],
                     function (ec) {
-                        var myChart = ec.init(document.getElementById('chart'), 'infographic');
-
                         var fontFamily = '"Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif';
-
-                        option = {
+                        
+                        var chart30 = ec.init(document.getElementById('chart30'), 'infographic');
+                        option30 = {
                             title: {
                                 text: '${last30DaysLabel}',
                                 textStyle: {
@@ -78,7 +79,7 @@
                                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
                                     data: [
                                         <#list userCnts as userCnt>
-                                        '${userCnt}'<#if userCnt?has_next>,</#if>
+                                        '${userCnt?c}'<#if userCnt?has_next>,</#if>
                                         </#list>
                                     ]
                                 },
@@ -89,7 +90,7 @@
                                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
                                     data: [
                                         <#list articleCnts as articleCnt>
-                                        '${articleCnt}'<#if articleCnt?has_next>,</#if>
+                                        '${articleCnt?c}'<#if articleCnt?has_next>,</#if>
                                         </#list>
                                     ]
                                 },
@@ -100,14 +101,83 @@
                                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
                                     data: [
                                         <#list commentCnts as commentCnt>
-                                        '${commentCnt}'<#if commentCnt?has_next>,</#if>
+                                        '${commentCnt?c}'<#if commentCnt?has_next>,</#if>
                                         </#list>
                                     ]
                                 }
                             ]
                         };
 
-                        myChart.setOption(option);
+                        chart30.setOption(option30);
+                        
+                        var chartHistory = ec.init(document.getElementById('chartHistory'), 'infographic');
+                        optionHistory = {
+                            title: {
+                                text: '${historyLabel}',
+                                textStyle: {
+                                    fontFamily: fontFamily
+                                },
+                            },
+                            tooltip: {
+                                trigger: 'axis'
+                            },
+                            legend: {
+                                data: ['${statUserLabel}', '${statPostLabel}', '${statCmtLabel}']
+                            },
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: [
+                                        <#list months as month>
+                                        '${month}'<#if month?has_next>,</#if>
+                                        </#list>
+                                    ]
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type: 'value'
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: '${statUserLabel}',
+                                    type: 'line',
+                                    smooth: true,
+                                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                                    data: [
+                                        <#list historyUserCnts as userCnt>
+                                        '${userCnt?c}'<#if userCnt?has_next>,</#if>
+                                        </#list>
+                                    ]
+                                },
+                                {
+                                    name: '${statPostLabel}',
+                                    type: 'line',
+                                    smooth: true,
+                                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                                    data: [
+                                        <#list historyArticleCnts as articleCnt>
+                                        '${articleCnt?c}'<#if articleCnt?has_next>,</#if>
+                                        </#list>
+                                    ]
+                                },
+                                {
+                                    name: '${statCmtLabel}',
+                                    type: 'line',
+                                    smooth: true,
+                                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                                    data: [
+                                        <#list historyCommentCnts as commentCnt>
+                                        '${commentCnt?c}'<#if commentCnt?has_next>,</#if>
+                                        </#list>
+                                    ]
+                                }
+                            ]
+                        };
+
+                        chartHistory.setOption(optionHistory);
                     }
             );
         </script>

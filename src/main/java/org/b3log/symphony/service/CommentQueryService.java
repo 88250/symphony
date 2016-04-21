@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -41,7 +40,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.cache.UserCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
@@ -128,13 +126,40 @@ public class CommentQueryService {
 
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, start),
-                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end)
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end),
+                new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
         ));
 
         try {
             return (int) commentRepository.count(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Count day comment failed", e);
+
+            return 1;
+        }
+    }
+
+    /**
+     * Gets comment count of the specified month.
+     *
+     * @param day the specified month
+     * @return comment count
+     */
+    public int getCommentCntInMonth(final Date day) {
+        final long time = day.getTime();
+        final long start = Times.getMonthStartTime(time);
+        final long end = Times.getMonthEndTime(time);
+
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, start),
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end),
+                new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
+        ));
+
+        try {
+            return (int) commentRepository.count(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Count month comment failed", e);
 
             return 1;
         }
