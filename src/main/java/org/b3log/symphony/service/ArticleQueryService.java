@@ -27,6 +27,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -159,6 +160,16 @@ public class ArticleQueryService {
      * Count to fetch article tags for relevant articles.
      */
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
+
+    /**
+     * Gets article count of the specified day.
+     *
+     * @param day the specified day
+     * @return article count
+     */
+    public int getArticleCntInDay(final Date day) {
+        return RandomUtils.nextInt(10); // TODO: D
+    }
 
     /**
      * Gets articles by the specified page number and page size.
