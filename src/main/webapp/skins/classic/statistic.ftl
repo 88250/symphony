@@ -11,6 +11,9 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content content-reset">
+                    <h1>${communityLabel}${dataStatLabel}</h1>
+                    <i class="ft-gray">${dataStatSubLabel}</i>
+                    <br><br>
                     <div id="chart" style="height:400px"></div>
                 </div>
                 <div class="side">
@@ -34,20 +37,16 @@
                         'echarts/chart/line'
                     ],
                     function (ec) {
-                        var myChart = ec.init(document.getElementById('chart'));
+                        var myChart = ec.init(document.getElementById('chart'), 'infographic');
 
                         var fontFamily = '"Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif';
 
                         option = {
                             title: {
-                                text: '${communityLabel}${dataStatLabel}',
+                                text: '${last30DaysLabel}',
                                 textStyle: {
                                     fontFamily: fontFamily
                                 },
-                                subtext: '${dataStatSubLabel}',
-                                subtextStyle: {
-                                    fontFamily: fontFamily
-                                }
                             },
                             tooltip: {
                                 trigger: 'axis'
@@ -61,7 +60,7 @@
                                     boundaryGap: false,
                                     data: [
                                         <#list monthDays as day>
-                                        '${day}'<#if !day?has_next>,</#if>
+                                        '${day}'<#if day?has_next>,</#if>
                                         </#list>
                                     ]
                                 }
@@ -77,21 +76,33 @@
                                     type: 'line',
                                     smooth: true,
                                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                                    data: [10, 12, 21, 54, 260, 830, 710]
+                                    data: [
+                                        <#list userCnts as userCnt>
+                                        '${userCnt}'<#if userCnt?has_next>,</#if>
+                                        </#list>
+                                    ]
                                 },
                                 {
                                     name: '${statPostLabel}',
                                     type: 'line',
                                     smooth: true,
                                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                                    data: [30, 182, 434, 791, 390, 30, 10]
+                                    data: [
+                                        <#list articleCnts as articleCnt>
+                                        '${articleCnt}'<#if articleCnt?has_next>,</#if>
+                                        </#list>
+                                    ]
                                 },
                                 {
                                     name: '${statCmtLabel}',
                                     type: 'line',
                                     smooth: true,
                                     itemStyle: {normal: {areaStyle: {type: 'default'}}},
-                                    data: [1320, 1132, 601, 234, 120, 90, 20]
+                                    data: [
+                                        <#list commentCnts as commentCnt>
+                                        '${commentCnt}'<#if commentCnt?has_next>,</#if>
+                                        </#list>
+                                    ]
                                 }
                             ]
                         };

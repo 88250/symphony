@@ -28,6 +28,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -51,6 +52,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.Times;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -58,7 +60,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.3.5, Dec 29, 2015
+ * @version 1.6.3.5, Apr 21, 2016
  * @since 0.2.0
  */
 @Service
@@ -85,6 +87,31 @@ public class UserQueryService {
      * All usernames.
      */
     private List<JSONObject> userNames = Collections.synchronizedList(new ArrayList<JSONObject>());
+
+    /**
+     * Gets user count of the specified day.
+     *
+     * @param day the specified day
+     * @return user count
+     */
+    public int getUserCntInDay(final Date day) {
+        final long time = day.getTime();
+        final long start = Times.getDayStartTime(time);
+        final long end = Times.getDayEndTime(time);
+
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, start),
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end)
+        ));
+
+        try {
+            return (int) userRepository.count(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Count day user failed", e);
+
+            return 1;
+        }
+    }
 
     /**
      * Loads all usernames from database.

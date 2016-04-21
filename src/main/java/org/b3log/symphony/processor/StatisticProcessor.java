@@ -34,6 +34,8 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 
 /**
@@ -51,10 +53,22 @@ import org.b3log.symphony.util.Filler;
 public class StatisticProcessor {
 
     /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * Filler.
@@ -84,13 +98,24 @@ public class StatisticProcessor {
         final Date start = DateUtils.addDays(end, -30);
 
         final List<String> monthDays = new ArrayList<String>();
+        dataModel.put("monthDays", monthDays);
+        final List<Integer> userCnts = new ArrayList<Integer>();
+        dataModel.put("userCnts", userCnts);
+        final List<Integer> articleCnts = new ArrayList<Integer>();
+        dataModel.put("articleCnts", articleCnts);
+        final List<Integer> commentCnts = new ArrayList<Integer>();
+        dataModel.put("commentCnts", commentCnts);
+
         for (int i = 0; i < 31; i++) {
             final Date day = DateUtils.addDays(start, i);
             monthDays.add(DateFormatUtils.format(day, "yyyy-MM-dd"));
-
+            final int userCnt = userQueryService.getUserCntInDay(day);
+            userCnts.add(userCnt);
+            final int articleCnt = articleQueryService.getArticleCntInDay(day);
+            articleCnts.add(articleCnt);
+            final int commentCnt = commentQueryService.getCommentCntInDay(day);
+            commentCnts.add(commentCnt);
         }
-
-        dataModel.put("monthDays", monthDays);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
