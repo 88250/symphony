@@ -29,9 +29,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.processor.SkinRenderer;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
@@ -39,7 +37,7 @@ import org.json.JSONObject;
  * User block check. Gets user from request attribute named "user".
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Jul 24, 2015
+ * @version 1.1.2.1, Apr 21, 2016
  * @since 0.2.5
  */
 @Named
@@ -84,15 +82,9 @@ public class UserBlockCheck extends BeforeRequestProcessAdvice {
                 throw new RequestProcessAdviceException(exception);
             }
 
-            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-            context.setRenderer(renderer);
-
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
-                renderer.setTemplateName("/home/block.ftl");
-
-                exception.put(Keys.STATUS_CODE, HttpServletResponse.SC_OK);
-
-                return;
+                exception.put(Keys.MSG, "Blocked User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
+                throw new RequestProcessAdviceException(exception);
             }
 
             request.setAttribute(User.USER, user);
