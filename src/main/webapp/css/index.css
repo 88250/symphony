@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.9.14, Apr 15, 2016
+ * @version 2.7.9.15, Apr 21, 2016
  */
 
 /* start module */
@@ -282,7 +282,7 @@
 
 .domains a {
     float: left;
-    padding: 4px 7px;
+    padding: 5px 10px;
     color: #333;
     border: 1px solid #e5e5e5;
     line-height: 18px;

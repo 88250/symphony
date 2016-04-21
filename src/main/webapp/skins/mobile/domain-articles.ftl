@@ -8,7 +8,6 @@
         <meta name="keywords" content="${domain.domainSeoKeywords}" />
         <meta name="description" content="${domain.domainSeoDesc}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">

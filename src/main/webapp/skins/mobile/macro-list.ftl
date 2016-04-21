@@ -29,7 +29,7 @@
                     <#list article.articleTags?split(",") as articleTag>
                     <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
                     </#list>
-                    <div class="ft-smaller" style="margin: 5px 0 0 0">
+                    <div class="ft-smaller">
                     <span class="ft-fade">${article.timeAgo}</span>
                     <#if "" != article.articleLatestCmterName>
                     <span class="ft-fade">•&nbsp;${latestCmtFromLabel}</span> <a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}">${article.articleLatestCmterName}</a>

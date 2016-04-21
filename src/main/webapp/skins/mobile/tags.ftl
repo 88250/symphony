@@ -5,7 +5,6 @@
         <@head title="${tagLabel} - ${symphonyLabel}">
         <meta name="description" content="${symphonyLabel} ${trendTagsLabel},${symphonyLabel} ${coldTagsLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
@@ -21,15 +20,18 @@
                         <div class="module-panel list">
                             <ul class="tags-trend">
                                 <#list trendTags as tag>
-                                <li class="fn-clear<#if !tag_has_next> last</#if>"> 
+                                <li class="<#if !tag_has_next>last</#if>"> 
+                                    <div class="fn-clear">
                                     <#if tag.tagIconPath!="">
-                                    <div class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                                    <div class="avatar-small fn-left" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
+                                    &nbsp;
                                     </#if>
                                     <h2><a class="ft-red" rel="tag" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
                                     <span class="ft-gray fn-right">
                                         ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount?c} 
                                     </span>
+                                    </div>
                                     <div class="content-reset">${tag.tagDescription}</div>
                                 </li>
                                 </#list>

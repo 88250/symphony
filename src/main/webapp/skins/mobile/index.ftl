@@ -6,7 +6,6 @@
         <@head title="${symphonyLabel}">
         <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
@@ -28,10 +27,9 @@
                         <a href="/timeline">${timelineLabel}</a>
                     </div>
                     <@list listData=indexArticles/>
-                    <br/>
-                    <a href="/recent" class="ft-gray">${moreRecentArticleLabel}</a>
+                    <a href="/recent" class="ft-gray fn-right">${moreRecentArticleLabel}</a>
                     <#if domains?size != 0>
-                    <br/> <br/> <br/> <br/>
+                    <br/> <br/> 
 
                     <div class="module">
                         <div class="module-header">

@@ -5,7 +5,6 @@
         <@head title="${chatRoomLabel} - ${symphonyLabel}">
         <meta name="description" content="${timelineLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
     </head>
     <body>

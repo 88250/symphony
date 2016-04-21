@@ -7,7 +7,6 @@
         <@head title="${recentArticleLabel} - ${symphonyLabel}">
         <meta name="description" content="${recentArticleLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">

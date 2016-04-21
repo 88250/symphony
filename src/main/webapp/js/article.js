@@ -167,6 +167,11 @@ var Comment = {
         });
 
         Comment.editor.on('keydown', function (cm, evt) {
+            // mac command + enter add article
+            if ($.ua.os.name.indexOf('Mac OS') > -1 && evt.metaKey && evt.keyCode === 13) {
+                Comment.add(Label.articleOId, Label.csrfToken);
+                return false;
+            }
             if (8 === evt.keyCode) {
                 var cursor = cm.getCursor();
                 var token = cm.getTokenAt(cursor);
