@@ -1420,10 +1420,8 @@ public class ArticleQueryService {
                 return;
             }
 
-            String previewContent = getPreviewContent(article, request);
-            previewContent = Jsoup.parse(previewContent).text();
-            previewContent = previewContent.replaceAll("\"", "'");
-            article.put(Article.ARTICLE_T_PREVIEW_CONTENT, previewContent);
+            final String metaDescription = getArticleMetaDesc(article);
+            article.put(Article.ARTICLE_T_PREVIEW_CONTENT, metaDescription);
 
             String articleContent = article.optString(Article.ARTICLE_CONTENT);
             article.put(Common.DISCUSSION_VIEWABLE, true);
@@ -1611,5 +1609,36 @@ public class ArticleQueryService {
                     Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK));
             article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
         }
+    }
+
+    /**
+     * Gets meta description content of the specified article.
+     *
+     * @param article the specified article
+     * @return meta description
+     */
+    private String getArticleMetaDesc(final JSONObject article) {
+        final int length = Integer.valueOf("150");
+        String ret = article.optString(Article.ARTICLE_TITLE);
+
+        if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                || Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+            return ret;
+        }
+
+        ret = article.optString(Article.ARTICLE_CONTENT);
+        ret = Emotions.convert(ret);
+        ret = Markdowns.toHTML(ret);
+
+        ret = Jsoup.clean(ret, Whitelist.none());
+        if (ret.length() >= length) {
+            ret = StringUtils.substring(ret, 0, length)
+                    + " ....";
+        }
+
+        ret = Jsoup.parse(ret).text();
+        ret = ret.replaceAll("\"", "'");
+
+        return ret;
     }
 }
