@@ -140,6 +140,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         // Load domains to cache
         final DomainCache domainCache = beanManager.getReference(DomainCache.class);
         domainCache.loadDomains();
+        
+        JdbcRepository.dispose();
 
         LOGGER.info("Initialized the context");
 
