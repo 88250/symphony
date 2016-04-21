@@ -323,12 +323,11 @@ textarea {
 /* start function */
 .fn-flex {
     display: flex;
-    display: -webkit-box;
 }
 
 .fn-flex-1 {
     flex: 1;
-    -webkit-box-flex: 1; 
+    min-width: 1px;
 }
 
 .fn-pointer {
@@ -1019,9 +1018,7 @@ a[class*=" icon-"]:hover {
     width: 75%;
     margin: 0 auto;
     display: flex;
-    display: -webkit-box;
     min-width: 720px;
-    flex-wrap: wrap;
     max-width: 1300px;
 }
 
@@ -1031,18 +1028,14 @@ a[class*=" icon-"]:hover {
 }
 
 .side {
-    flex: 1;
-    -webkit-box-flex: 1; 
-    width: 30%;
+    width: 28%;
     min-width: 236px;
 }
 
 .content {
     margin-right: 50px;
-    flex: 2.3;
-    -webkit-box-flex: 2.3; 
-    width: 70%;
-    max-width: 70%;
+    flex: 1;
+    min-width: 1px;
 }
 /* end framework */
 
