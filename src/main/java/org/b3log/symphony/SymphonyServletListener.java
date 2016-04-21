@@ -204,7 +204,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             return;
         }
 
-        Stopwatchs.start("Request initialized");
+        Stopwatchs.start("Request initialized [" + httpServletRequest.getRequestURI() + "]");
 
         httpServletRequest.setAttribute(Common.IS_MOBILE, BrowserType.MOBILE_BROWSER == browserType);
 
