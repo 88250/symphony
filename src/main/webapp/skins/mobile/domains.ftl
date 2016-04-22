@@ -6,12 +6,16 @@
         <@head title="${symphonyLabel}">
         <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
+
+                <div class='domains-count'>
+                    Domains: <b>${domainCnt}</b><br/>
+                    Tags: <b>${tagCnt}</b>
+                </div>
                 <div class="content fn-clear">
                     <#list domains as domain>
                     <div class="module">
@@ -33,10 +37,6 @@
                 </div>
                 <div class="side">
                     <#include "common/person-info.ftl">
-                    <div class='domains-count'>
-                        Domains: <b>${domainCnt}</b><br/>
-                        Tags: <b>${tagCnt}</b>
-                    </div>
                 </div>
             </div>
         </div>

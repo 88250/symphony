@@ -5,7 +5,6 @@
         <@head title="${registerLabel} - ${symphonyLabel}">
         <meta name="description" content="${registerLabel} ${symphonyLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
@@ -56,7 +55,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" align="right"><br/>
+                                <td colspan="2" align="right">
                                     <div id="registerTip" class="tip"></div><br/>
                                     <button class="green" onclick="Register.register2()">${registerLabel}</button>
                                     <input id="referral" type="hidden" value="${referral}">
@@ -66,7 +65,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="intro fn-flex-1 content-reset">
+                <div class="intro content-reset">
+                    <br/>
                     ${introLabel}
                 </div>
             </div>

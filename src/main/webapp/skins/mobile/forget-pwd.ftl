@@ -5,7 +5,6 @@
         <@head title="${forgetPwdLabel} - ${symphonyLabel}">
         <meta name="description" content="${forgetPwdLabel} ${symphonyLabel}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
@@ -32,7 +31,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" align="right"><br/>
+                                <td colspan="2" align="right">
                                     <div id="registerTip" class="tip"></div><br/>
                                     <button class="green" onclick="Register.forgetPwd()">${forgetPwdLabel}</button>
                                 </td>
@@ -40,6 +39,7 @@
                         </tbody>
                     </table>
                 </div>
+                <br/>
                 <div class="intro fn-flex-1  content-reset">
                     ${introLabel}
                 </div>

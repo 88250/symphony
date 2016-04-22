@@ -1,13 +1,13 @@
 <div class="nav"> 
     <div class="wrapper fn-clear">
-        <div class="head-fn fn-clear">
-            <h1 class="fn-left">
+        <div class="head-fn fn-left">
+            <h1>
                 <a href="/" style="background-image: url('${staticServePath}/images/hacpai.png')" alt="${symphonyLabel}" 
                    title="${symphonyLabel}" width="42" class="fn-pointer"></a>
             </h1>
         </div>
 
-        <div class="fn-clear user-nav">
+        <div class="fn-right user-nav">
             <#if isLoggedIn>
             <#if "adminRole" == userRole>
             <a href="/admin" title="${adminLabel}" class="last icon-userrole"></a>

@@ -8,7 +8,6 @@
         <meta name="description" content="${article.articlePreviewContent}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
     </head>
     <body>
@@ -16,16 +15,16 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="ft-gray fn-clear article-info">
-                        <div class="fn-left">
+                    <div class="ft-gray article-info">
+                        <div>
                             <#list article.articleTags?split(",") as articleTag>
                             <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">
                                 ${articleTag}
                             </a>&nbsp;
                             </#list>
                         </div>
-                        <div class="responsive-show fn-hr5"></div>
-                        <div class="fn-right">
+                        <div class="fn-hr5"></div>
+                        <div>
                             <span class="icon-date"></span>
                             ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;
                             <a title="${cmtLabel}" rel="nofollow" href="#comments">
@@ -61,8 +60,8 @@
                             </#if>
                         </div>
                     </div>
-                    <div class="article-title fn-flex">
-                        <h2 class="fn-flex-1">
+                    <div class="article-title fn-clear">
+                        <h2>
                             <a rel="author" href="/member/${article.articleAuthorName}" class="ft-gray"
                                title="${article.articleAuthorName}"><div class="avatar-small" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div></a> &nbsp;
                             <#if 1 == article.articleType>
@@ -77,7 +76,7 @@
                             </a> &nbsp;
                         </h2> 
                         <div class="responsive-show fn-hr5"></div>
-                        <span>
+                        <span class="fn-right">
                             <#if isLoggedIn>
                             <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
                                 <span class="icon-thumbs-up"></span></span>&nbsp;

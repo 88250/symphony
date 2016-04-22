@@ -15,8 +15,6 @@
         <@head title="${checkinTopLabel}${rankingLabel} - ${symphonyLabel}">
         </@head>
         </#if>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/responsive${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">

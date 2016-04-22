@@ -8,7 +8,6 @@
         <meta name="keywords" content="${tag.tagSeoKeywords}"/>
         <meta name="description" content="${tag.tagSeoDesc}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
@@ -63,8 +62,8 @@
                         </li>
                         </#list>
                     </ul>
-                    <div class="fn-flex">
-                        <ul class="status fn-flex fn-flex-1">
+                    <div>
+                        <ul class="status fn-flex">
                             <li>
                                 <strong>${tag.tagReferenceCount?c}</strong>
                                 <span class="ft-gray">${referenceLabel}</span>
