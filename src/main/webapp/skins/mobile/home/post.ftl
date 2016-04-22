@@ -5,7 +5,6 @@
         <@head title="${addArticleLabel} - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
     </head>
@@ -13,6 +12,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper post">
+                <br/>
                 <div class="form fn-flex-1 fn-clear">
                     <div>
                         <input type="text" id="articleTitle" tabindex="1"
@@ -75,10 +75,9 @@
                         <#else>
                         <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/> 
                         </#if>
-                    </div>
+                    </div><br/>
+                    <button class="red fn-right" tabindex="10" onclick="AddArticle.add(<#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
                     <div class="fn-clear">
-                        <br/>
-                        <div class="fn-left">
                             <#if !articleType??>
                             <#assign articleType=article.articleType>
                             </#if>
@@ -96,9 +95,6 @@
                             <span class="ft-gray">写作过程的记录与重放，文字版的<span class="ft-red">沙画</span>表演
                                 <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
                             </#if>
-                        </div>
-
-                        <button class="red fn-right" tabindex="10" onclick="AddArticle.add(<#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
                     </div>
                     <br/>
                 </div>

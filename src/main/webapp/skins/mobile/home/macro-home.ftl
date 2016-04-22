@@ -36,7 +36,6 @@
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
         </#if>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">

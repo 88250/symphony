@@ -35,14 +35,14 @@
                 <#else>
                 ${defaultUserLabel}
                 </#if>
-                <span class="fn-right ft-gray">
+                <div class="ft-gray">
                     <span class="icon-articles" title="${articleCountLabel}"></span>
                     ${item.userArticleCount} &nbsp;
                     <span class="icon-cmts" title="${commentCountLabel}"></span>
                     ${item.userCommentCount} &nbsp;
                     <span class="icon-date" title="${createTimeLabel}"></span>
                     ${item.userCreateTime?string('yyyy-MM-dd HH:mm')}
-                </span>
+                </div>
             </div>
         </li>
         </#list>

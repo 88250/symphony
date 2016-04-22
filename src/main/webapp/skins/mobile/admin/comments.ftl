@@ -14,7 +14,7 @@
                 <font class="ft-red">${banLabel}</font>
                 </#if>
                 <a href="/admin/comment/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
-                <span class="icon-date fn-right ft-gray" title="${createTimeLabel}"> ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;</span>
+                <div class="icon-date ft-gray" title="${createTimeLabel}"> ${item.commentCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;</div>
             </div>
             <div class="content-reset">
                  ${item.commentContent}

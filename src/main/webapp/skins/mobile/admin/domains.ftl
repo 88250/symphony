@@ -7,7 +7,6 @@
         <button type="submit" class="green">${searchLabel}</button>
     <button type="button" class="btn red" onclick="window.location = '/admin/add-domain'">${addDomainLabel}</button>
     </form>
-    <br/>
     <ul>
         <#list domains as item>
         <li>

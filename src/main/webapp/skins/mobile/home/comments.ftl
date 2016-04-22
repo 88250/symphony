@@ -10,8 +10,8 @@
                 <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
             </a>
             <div class="fn-flex-1">
-                <div class="fn-flex">
-                    <h2 class="fn-flex-1">
+                <div>
+                    <h2>
                         <#if comment.commentArticleType == 1>
                         <span class="icon-locked" title="${discussionLabel}"></span>
                         <#elseif comment.commentArticleType == 2>

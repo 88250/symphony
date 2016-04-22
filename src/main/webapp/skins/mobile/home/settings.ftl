@@ -52,19 +52,17 @@
             <div>
                 <div class="avatar-big" id="avatarURL" data-imageurl="${currentUser.userAvatarURL}"
                      style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp; 
-                <div class="responsive-show fn-hr5"></div>
+                <div class="fn-hr5"></div> 
                 <div class="avatar-mid" id="avatarURLMid" data-imageurl="${currentUser.userAvatarURL}"
                      style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp;
-                <div class="responsive-show fn-hr5"></div>
                 <div class="avatar" id="avatarURLNor" data-imageurl="${currentUser.userAvatarURL}"
                      style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div>
             </div>
             <div class="fn-hr5"></div>
-            <div class="fn-right">
+            <div class="content-reset">
                 ${updateAvatarTipLabel}
             </div>
         </div>
-        <br/>
         <div class="tip" id="profilesTip"></div>
         <br/>
         <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>

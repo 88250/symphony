@@ -75,7 +75,6 @@
                                 ${article.articleTitleEmoj}
                             </a> &nbsp;
                         </h2> 
-                        <div class="responsive-show fn-hr5"></div>
                         <span class="fn-right">
                             <#if isLoggedIn>
                             <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">

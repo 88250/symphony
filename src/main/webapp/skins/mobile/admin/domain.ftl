@@ -16,6 +16,7 @@
             <h2>${tagLabel}</h2>
         </div>
         <div class="module-panel form fn-clear">
+            <br/>
             <#list domain.domainTags as tag>
             <a class="tag" target="_blank" href="/tag/${tag.tagTitle?url('UTF-8')}">${tag.tagTitle}</a>
             </#list>

@@ -24,7 +24,7 @@
                     <#list article.articleTags?split(",") as articleTag>
                     <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">
                         ${articleTag}</a>
-                    </#list> &nbsp; 
+                    </#list><br/>
                     <span class="icon-date"></span>
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span> 

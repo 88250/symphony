@@ -11,8 +11,8 @@
 
         <#if !notification.atInArticle>
         <div class="fn-flex-1">
-            <div class="fn-flex">
-                <h2 class="fn-flex-1">
+            <div>
+                <h2>
                     <#if notification.articleType == 1>
                     <span class="icon-locked" title="${discussionLabel}"></span>
                     <#elseif notification.articleType == 2>

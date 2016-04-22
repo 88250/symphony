@@ -7,13 +7,12 @@
         <@head title="${messageLabel} - ${userName} - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="responsive-show">
+                <div>
                     <ul class="tab fn-clear">
                         <li<#if type == "commented"> class="current"</#if>>
                             <a href="/notifications/commented">
@@ -56,7 +55,6 @@
                             </a>
                         </li>
                     </ul>
-                    <br/>
                 </div>
                 <div class="list content">
                     <#nested>

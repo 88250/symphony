@@ -35,7 +35,6 @@
     </#list>
 </ul>
 <#else>
-<div class="responsive-show fn-hr5"></div>
 ${noMessageLabel}
 </#if>
 

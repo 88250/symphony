@@ -9,8 +9,8 @@
             <div class="avatar" style="background-image:url('${notification.commentAuthorThumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
         </a>
         <div class="fn-flex-1">
-            <div class="fn-flex">
-                <h2 class="fn-flex-1">
+            <div>
+                <h2>
                     <#if notification.commentArticleType == 1>
                     <span class="icon-locked" title="${discussionLabel}"></span>
                     <#elseif notification.commentArticleType == 2>

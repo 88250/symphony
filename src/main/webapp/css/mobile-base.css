@@ -806,10 +806,10 @@ a[class*=" icon-"]:hover {
 }
 
 .avatar-big {
-    border: 15px solid #EEEEEE;
+    border: 10px solid #EEEEEE;
     height: 210px;
     width: 210px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .avatar-mid {
@@ -1359,7 +1359,7 @@ a[class*=" icon-"]:hover {
 }
 
 .module-panel.form {
-    padding: 10px 20px 20px;
+    padding: 0 10px 10px;
 }
 /* end side module */
 
@@ -2162,3 +2162,316 @@ code .dec { color: initial; } /* decimal - blue */
     overflow: auto;
 }
 /* end chat room */
+
+/**
+ * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * 后台样式.
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 2.2.6.9, Apr 6, 2016
+ */
+
+/* start home side */
+.user-name {
+    border-bottom: 1px dotted #CCCCCC;
+    font-size: 25px;
+    margin: 10px 0 10px;
+    padding-bottom: 10px;
+}
+
+.user-info {
+    line-height: 26px;
+    font-size: 12px;
+    color: #666666;
+}
+
+.user-intro {
+    line-height: 26px;
+}
+/* end home side */
+
+/* start add article */
+.pre-post > div {
+    margin: 20px 0px;
+    font-size: 30px;
+}
+
+.pre-post > div > a {
+    color: #404040;
+    display: block;
+}
+
+.pre-post a:hover {
+    text-decoration: none;
+    color: #4183C4;
+}
+
+.pre-post a div {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.pre-post div.ft-fade {
+    font-size: 15px;
+}
+
+#articleContent {
+    height: 332px;
+    margin: 30px 0 20px 0;
+    padding: 4px;
+}
+
+#articleRewardContent {
+    margin: 30px 0 20px 0;
+    padding: 4px;
+}
+
+#tip {
+    position: inherit;
+    white-space: pre-wrap;
+}
+
+.tip-add-article {
+    color: #777777;
+    list-style: circle outside none;
+    margin-left: 20px;
+    line-height: 22px;
+}
+
+.article-content {
+    width: 100%;
+    position: relative;
+}
+
+.grammar {
+    position: absolute;
+    right: 1px;
+    top: 33px;
+    background-color: #FFF;
+    z-index: 3;
+    height: 328px;
+    border-left: 1px solid rgba(0, 0, 0, 0.075);
+    line-height: 17px;
+}
+
+#showReward {
+    color: #999;
+    width: 100%;
+    display: block;
+}
+/* end add article */
+
+/* start home */
+.tab {
+    border-bottom: 1px solid #DDD;
+}
+
+.tab > li {
+    border: 1px solid transparent;
+    border-bottom: 0;
+    float: left;
+    list-style: none outside none;
+    margin-bottom: -1px;
+}
+
+.tab > li.current {
+    font-weight: bold;
+}
+
+.tab > li > a {
+    color: #666666;
+    line-height: 20px;
+    text-decoration: none;
+    padding: 2px;
+    display: block;
+}
+/* end home */
+
+/* start notifications */
+.note-list {
+    background-image: linear-gradient(to right, #F6F6F6 0%, #FDFDFD 8px);
+    box-shadow: 1px 0 0 #EEEEEE inset;
+    list-style: none;
+    padding: 15px 0;
+}
+
+.note-list li a {
+    cursor: pointer;
+    margin: 5px 0;
+    display: block;
+    padding: 8px 10px;
+    text-decoration: none;
+}
+
+.note-list li a:hover {
+    box-shadow: 2px 0 0 #CCC inset;
+}
+
+.note-list li a > span.counter {
+    background-color: #EEEEEE;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 0 -1px 0 #E3E3E3 inset;
+    color: #999999;
+    float: right;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 5px;
+}
+
+.note-list li.current a {
+    background: none repeat scroll 0 0 #FDFDFD;    
+    box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    font-weight: bold;
+    position: relative;
+    border: 1px solid #EEE;
+    border-left-width: 0;
+}
+
+.note-list li.current a:after {
+    background-image: linear-gradient(#D26911, #BA5D0F);
+    bottom: -1px;
+    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1) inset;
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    width: 3px;
+}
+
+.notification .read {
+    background-color: #FAFAFA;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+.notification li {
+    background-color: #F8F8FF;
+}
+/* end notifications */
+
+/* start follow */
+.follow li {
+    position: relative;
+    border-bottom: 1px solid #EEEEEE;
+    margin: 10px auto;
+    padding: 0 0px 10px;
+    width: 95%;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+.follow .user-online {
+    position: absolute;
+    left: 45px;
+    top: 45px;
+}
+
+.follow button {
+    margin-bottom: 7px;
+}
+
+.follow .icon-tags {
+    font-size: 48px;
+    margin-right: 10px;
+}
+/* end follow */
+
+/* start admin */
+.admin .avatar {
+    height: 17px;
+    width: 17px;
+}
+
+.admin .tags {
+    display: inline-block; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.admin .domains {
+    display: inline-block; 
+    width: 50%; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.admin .form input[type=text] {
+    width: 50%;
+    margin-right: 10px;
+}
+/* end admin */
+
+/* start points */
+.points {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.points td {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.points .even {
+    background-color: #F7F7F7;
+}
+
+.points .date {
+    width: 75px;
+    padding: 10px;
+}
+
+.points .name {
+    padding: 5px;
+    word-break: break-all;
+}
+
+.points .type {
+    width: 60px;
+    padding: 0 10px;
+}
+
+.points .sum {
+    text-align: center;
+    width: 35px;
+    padding: 0 10px;
+    color: #f37800;
+    font-weight: 700;
+}
+
+.points .sum.plus {
+    color: #53a000;
+}
+
+.points .balance {
+    width: 40px;
+    padding: 0 10px;
+}
+/* end points */
+
+/* start settings */
+#avatarUpload {
+    overflow: hidden;
+}
+/* end settings */

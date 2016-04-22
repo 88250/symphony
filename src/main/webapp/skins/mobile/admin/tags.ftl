@@ -19,19 +19,19 @@
                 </#if>
                 <a href="/admin/tag/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
             </div>
-            <div class="fn-clear">
+            <div>
                 <#if item.tagIconPath != ''>
                 <div class="avatar" style="background-image:url('${staticServePath}/images/tags/${item.tagIconPath}')"></div>
                 </#if>
-                <span class="tags">${item.tagDescription}</span>
-                <span class="fn-right ft-gray">
+                ${item.tagDescription}
+                <div class="ft-gray">
                     <span class="icon-view" title="${refCountLabel}"></span>
                     ${item.tagReferenceCount} &nbsp;
                     <span class="icon-cmts" title="${commentCountLabel}"></span>
                     ${item.tagCommentCount} &nbsp;
                     <span class="icon-date" title="${createTimeLabel}"></span>
                     ${item.tagCreateTime?string('yyyy-MM-dd HH:mm')}
-                </span>
+                </div>
             </div>
         </li>
         </#list>

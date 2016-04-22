@@ -21,7 +21,7 @@
                 <#list notification.articleTags?split(",") as articleTag>
                 <a class="tag" rel="tag" href="/tag/${articleTag?url('UTF-8')}">
                     ${articleTag}</a>
-                </#list> &nbsp;
+                </#list> <br/>
                 <span class="icon-date"></span>
                 ${notification.createTime?string('yyyy-MM-dd HH:mm')}
             </div> 
