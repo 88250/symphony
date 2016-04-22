@@ -28,6 +28,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -39,7 +40,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.cache.UserCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
@@ -60,7 +60,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.5.17, Apr 13, 2016
+ * @version 2.5.5.17, Apr 21, 2016
  * @since 0.2.0
  */
 @Service
@@ -114,10 +114,56 @@ public class CommentQueryService {
     private ShortLinkQueryService shortLinkQueryService;
 
     /**
-     * User cache.
+     * Gets comment count of the specified day.
+     *
+     * @param day the specified day
+     * @return comment count
      */
-    @Inject
-    private UserCache userCache;
+    public int getCommentCntInDay(final Date day) {
+        final long time = day.getTime();
+        final long start = Times.getDayStartTime(time);
+        final long end = Times.getDayEndTime(time);
+
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, start),
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end),
+                new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
+        ));
+
+        try {
+            return (int) commentRepository.count(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Count day comment failed", e);
+
+            return 1;
+        }
+    }
+
+    /**
+     * Gets comment count of the specified month.
+     *
+     * @param day the specified month
+     * @return comment count
+     */
+    public int getCommentCntInMonth(final Date day) {
+        final long time = day.getTime();
+        final long start = Times.getMonthStartTime(time);
+        final long end = Times.getMonthEndTime(time);
+
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, start),
+                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN, end),
+                new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
+        ));
+
+        try {
+            return (int) commentRepository.count(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Count month comment failed", e);
+
+            return 1;
+        }
+    }
 
     /**
      * Gets a comment with {@link #organizeComment(org.json.JSONObject)} by the specified comment id.
