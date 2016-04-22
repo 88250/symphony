@@ -74,7 +74,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.2.9, Mar 11, 2016
+ * @version 1.6.3.9, Apr 22, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -294,7 +294,7 @@ public class LoginProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put(Common.REFERRAL, "");
         String referral = request.getParameter("r");
-        if (!Strings.isEmptyOrNull(referral)) {
+        if (!UserRegisterValidation.invalidUserName(referral)) {
             dataModel.put(Common.REFERRAL, referral);
         }
 
