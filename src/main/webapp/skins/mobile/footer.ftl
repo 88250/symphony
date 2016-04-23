@@ -6,9 +6,9 @@
                 <a class="ft-gray" href="/tag/系统公告">${symAnnouncementLabel}</a>
                 <a class="ft-gray" href="/tag/Q%26A">${qnaLabel}</a>
                 <a class="ft-gray" href="/domains">${domainLabel}</a>
-                <a class="ft-gray" href="/tags" class="last">${tagLabel}</a>
-                <a class="ft-gray" rel="nofollow" href="/cr" class="last">${chatRoomLabel}</a>
-                <a class="ft-gray" href="https://hacpai.com/article/1460083956075" class="last">${adDeliveryLabel}</a>
+                <a class="ft-gray" href="/tags">${tagLabel}</a>
+                <a class="ft-gray" rel="nofollow" href="/cr">${chatRoomLabel}</a>
+                <a class="ft-gray last" href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
 
                 <div>
                     <span class="ft-fade">&COPY; ${year}</span>

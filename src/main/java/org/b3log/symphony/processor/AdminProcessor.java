@@ -468,6 +468,11 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+
+        if ((Boolean) dataModel.get(Common.IS_MOBILE)) {
+            final JSONObject statistic = optionQueryService.getStatistic();
+            dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
+        }
     }
 
     /**
