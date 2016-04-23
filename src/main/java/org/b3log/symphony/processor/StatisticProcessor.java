@@ -137,7 +137,12 @@ public class StatisticProcessor {
 
         monthDays.clear();
         userCnts.clear();
+        articleCnts.clear();
         commentCnts.clear();
+        months.clear();
+        historyArticleCnts.clear();
+        historyCommentCnts.clear();
+        historyUserCnts.clear();
 
         for (int i = 0; i < 31; i++) {
             final Date day = DateUtils.addDays(dayStart, i);
