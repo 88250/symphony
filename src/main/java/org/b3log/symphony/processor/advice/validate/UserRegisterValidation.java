@@ -21,6 +21,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.7, Mar 17, 2016
+ * @version 1.3.2.7, Apr 23, 2016
  * @since 0.2.0
  */
 @Named
@@ -140,6 +141,10 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
     public static boolean invalidUserName(final String name) {
+        if (StringUtils.isBlank(name)) {
+            return true;
+        }
+        
         if (UserExt.isReservedUserName(name)) {
             return true;
         }
