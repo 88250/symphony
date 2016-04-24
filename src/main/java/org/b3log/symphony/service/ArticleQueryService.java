@@ -801,7 +801,7 @@ public class ArticleQueryService {
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, articleId),
                 new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
-        )).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
 
         try {
             final List<JSONObject> ret = CollectionUtils.jsonArrayToList(revisionRepository.get(query).optJSONArray(Keys.RESULTS));

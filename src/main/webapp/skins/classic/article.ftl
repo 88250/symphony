@@ -9,7 +9,7 @@
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
-        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
     </head>
     <body>
         <#include "header.ftl">
@@ -84,7 +84,7 @@
                             <span id="voteDown" class="fn-pointer<#if 1==vote> ft-red</#if>" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
                                 <span class="icon-thumbs-down"></span></span>
                             </#if>
-
+                            <span onclick="Article.revision('${article.oId}')" class="fn-none">revisions</span>
                             <#if article.isMyArticle && 3 != article.articleType>
                             &nbsp;
                             <a href="/update?id=${article.oId}" title="${editLabel}" class="icon-edit"></a>
@@ -316,6 +316,7 @@
         <div id="heatBar">
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
+        <div id="revision"><div id="revisions"></div></div>
         <#include "footer.ftl">
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";

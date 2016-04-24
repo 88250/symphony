@@ -5,7 +5,7 @@
         <@head title="${chatRoomLabel} - ${symphonyLabel}">
         <meta name="description" content="${timelineLabel}"/>
         </@head>
-        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
     </head>
     <body>
         <#include "header.ftl">

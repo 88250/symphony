@@ -6,7 +6,7 @@
         <meta name="description" content="${timelineLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
-        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
     </head>
     <body>
         <#include "header.ftl">

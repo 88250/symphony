@@ -8,7 +8,7 @@
         <meta name="description" content="${article.articlePreviewContent}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
-        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
     </head>
     <body>
         <#include "header.ftl">
@@ -42,7 +42,7 @@
                             ${article.articleCollectCnt}
                         </span>
                         </#if>
-
+                        
                         <#if article.isMyArticle && 3 != article.articleType>
                         &nbsp;
                         <a href="/update?id=${article.oId}" title="${editLabel}" class="icon-edit"></a>
