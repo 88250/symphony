@@ -10,6 +10,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
+        <br/>
             <div class="wrapper">
                 <div class="content chat-room">
                     <div class="fn-clear">
@@ -63,6 +64,7 @@
                         </div>
                     </div>
                 </div>
+                <br/>
                 <div class="side">
                     <#include "side.ftl">
                 </div>

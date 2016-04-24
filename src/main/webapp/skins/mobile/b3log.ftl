@@ -134,6 +134,7 @@
                         这个特性方便用户进行知识管理，体验社区协作与分享。
                     </p>
                 </div>
+                <br/>
                 <div class="side">
                     <#include "side.ftl">
                 </div>

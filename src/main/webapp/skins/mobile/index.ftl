@@ -10,27 +10,25 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper">
-                <div class="content fn-clear">
-                    <div class="domains fn-clear">
-                        <#list domains as domain>
-                        <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
-                        <#if 10 < domain?counter>
-                        <#break>
-                        </#if>
-                        </#list>
-                        <a href="/" class="selected">${hotLabel}</a>
-                        <a href="/recent">${latestLabel}</a>
-                        <#if isLoggedIn && "" != currentUser.userCity>
-                        <a href="/city/my">${currentUser.userCity}</a>
-                        </#if>
-                        <a href="/timeline">${timelineLabel}</a>
-                    </div>
-                    <@list listData=indexArticles/>
-                    <a href="/recent" class="ft-gray fn-right">${moreRecentArticleLabel}</a>
-                    <#if domains?size != 0>
-                    <br/> <br/> 
-
+            <div class="content fn-clear">
+                <div class="domains fn-clear">
+                    <#list domains as domain>
+                    <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
+                    <#if 10 < domain?counter>
+                    <#break>
+                    </#if>
+                    </#list>
+                    <a href="/" class="selected">${hotLabel}</a>
+                    <a href="/recent">${latestLabel}</a>
+                    <#if isLoggedIn && "" != currentUser.userCity>
+                    <a href="/city/my">${currentUser.userCity}</a>
+                    </#if>
+                    <a href="/timeline">${timelineLabel}</a>
+                </div>
+                <@list listData=indexArticles/>
+                <a href="/recent" class="ft-gray more-article">${moreRecentArticleLabel}</a>
+                <#if domains?size != 0>
+                <div class="wrapper">
                     <div class="module">
                         <div class="module-header">
                             <h2>${domainLabel}${navigationLabel}</h2>
@@ -55,10 +53,9 @@
                     </div>
                     </#if>
                 </div>
-
-                <div class="side">
-                    <#include "side.ftl">
-                </div>
+            </div>
+            <div class="side wrapper">
+                <#include "side.ftl">
             </div>
         </div>
         <#include "footer.ftl">
