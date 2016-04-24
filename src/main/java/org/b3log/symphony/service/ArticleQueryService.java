@@ -54,12 +54,14 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.DomainTagRepository;
+import org.b3log.symphony.repository.RevisionRepository;
 import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -78,7 +80,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.11.20, Apr 21, 2016
+ * @version 2.15.11.20, Apr 24, 2016
  * @since 0.2.0
  */
 @Service
@@ -124,6 +126,12 @@ public class ArticleQueryService {
      */
     @Inject
     private DomainTagRepository domainTagRepository;
+
+    /**
+     * Revision repository.
+     */
+    @Inject
+    private RevisionRepository revisionRepository;
 
     /**
      * Comment query service.
@@ -780,6 +788,41 @@ public class ArticleQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets an article [articleId=" + articleId + "] failed", e);
             throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets article revisions.
+     *
+     * @param articleId the specified article id
+     * @return article revisions, returns an empty list if not found
+     */
+    public List<JSONObject> getArticleRevisions(final String articleId) {
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Revision.REVISION_DATA_ID, FilterOperator.EQUAL, articleId),
+                new PropertyFilter(Revision.REVISION_DATA_TYPE, FilterOperator.EQUAL, Revision.DATA_TYPE_C_ARTICLE)
+        )).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+        try {
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(revisionRepository.get(query).optJSONArray(Keys.RESULTS));
+            for (final JSONObject rev : ret) {
+                final JSONObject data = new JSONObject(rev.optString(Revision.REVISION_DATA));
+                String articleTitle = data.optString(Article.ARTICLE_TITLE);
+                articleTitle = articleTitle.replace("<", "&lt;").replace(">", "&gt;");
+                articleTitle = Markdowns.clean(articleTitle, "");
+                data.put(Article.ARTICLE_TITLE, articleTitle);
+
+                String articleContent = data.optString(Article.ARTICLE_CONTENT);
+                articleContent = Markdowns.toHTML(articleContent);
+                articleContent = Markdowns.clean(articleContent, "");
+                data.put(Article.ARTICLE_CONTENT, articleContent);
+            }
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Get article revisions failed", e);
+
+            return Collections.emptyList();
         }
     }
 

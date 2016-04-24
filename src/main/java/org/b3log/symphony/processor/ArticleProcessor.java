@@ -53,6 +53,7 @@ import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
@@ -107,7 +108,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.16.15.27, Apr 20, 2016
+ * @version 1.17.15.27, Apr 24, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -201,6 +202,28 @@ public class ArticleProcessor {
      */
     @Inject
     private Filler filler;
+
+    /**
+     * Gets article revisions.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param articleId the specified article id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/article/{articleId}/revisions", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {StopwatchEndAdvice.class})
+    public void getArticleRevisions(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String articleId) throws Exception {
+        final List<JSONObject> revisions = articleQueryService.getArticleRevisions(articleId);
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.STATUS_CODE, true);
+        ret.put(Revision.REVISIONS, revisions);
+
+        context.renderJSON(ret);
+    }
 
     /**
      * Shows pre-add article.
