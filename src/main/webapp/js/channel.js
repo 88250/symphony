@@ -320,7 +320,7 @@ var ChatRoomChannel = {
                             + '</div>'
                             + '</li>';
                     if ($('.form ul li').length === 0) {
-                        $('.form ul li').html(liHTML);
+                        $('.form ul').html(liHTML);
                     } else {
                         $('.form ul li:first').before(liHTML);
                     }

@@ -122,6 +122,9 @@ var ChatRoom = {
         });
 
         ChatRoom.editor.on('keydown', function (cm, evt) {
+            if ($.ua.os.name.indexOf('Mac OS') > -1 && evt.metaKey && evt.keyCode === 13) {
+                ChatRoom.send();
+            }
             if (8 === evt.keyCode) {
                 var cursor = cm.getCursor();
                 var token = cm.getTokenAt(cursor);
