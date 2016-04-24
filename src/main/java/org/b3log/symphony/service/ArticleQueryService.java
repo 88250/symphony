@@ -816,6 +816,7 @@ public class ArticleQueryService {
                 articleContent = Markdowns.toHTML(articleContent);
                 articleContent = Markdowns.clean(articleContent, "");
                 data.put(Article.ARTICLE_CONTENT, articleContent);
+                rev.put(Revision.REVISION_DATA, data);
             }
 
             return ret;

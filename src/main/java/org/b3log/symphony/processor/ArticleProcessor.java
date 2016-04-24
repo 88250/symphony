@@ -220,7 +220,7 @@ public class ArticleProcessor {
         final List<JSONObject> revisions = articleQueryService.getArticleRevisions(articleId);
         final JSONObject ret = new JSONObject();
         ret.put(Keys.STATUS_CODE, true);
-        ret.put(Revision.REVISIONS, revisions);
+        ret.put(Revision.REVISIONS, (Object) revisions);
 
         context.renderJSON(ret);
     }
