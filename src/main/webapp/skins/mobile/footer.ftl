@@ -1,19 +1,6 @@
 <div class="footer">
     <div class="wrapper">
             <div class="footer-nav">
-<<<<<<< HEAD
-=======
-                <a class="ft-gray" rel="help" href="https://hacpai.com/article/1440573175609">${aboutLabel}</a>
-                <a class="ft-gray" href="https://hacpai.com/article/1457158841475">API</a>
-                <a class="ft-gray" href="/tag/系统公告">${symAnnouncementLabel}</a>
-                <a class="ft-gray" href="/tag/Q%26A">${qnaLabel}</a>
-                <a class="ft-gray" href="/domains">${domainLabel}</a>
-                <a class="ft-gray" href="/tags">${tagLabel}</a>
-                <a class="ft-gray" rel="nofollow" href="/cr">${chatRoomLabel}</a>
-                <a class="ft-gray last" href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
-
-                <div>
->>>>>>> origin/master
                     <span class="ft-fade">&COPY; ${year}</span>
                     <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
                     ${visionLabel}
