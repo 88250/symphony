@@ -1265,8 +1265,8 @@ a[class*=" icon-"]:hover {
 }
 
 .CodeMirror,
-.CodeMirror-hints {
-    font-family: Consolas, 'Courier New', monospace;
+ul.CodeMirror-hints {
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
 }
 
 .CodeMirror-hints .ico {

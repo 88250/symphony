@@ -39,9 +39,12 @@
                         </#if>
                     </span>
                 </div>
-                <#if tag.tagIconPath != ""><div class="description">
+                <#if tag.tagIconPath != "">
+                <div class="fn-hr10"></div>
+                <div class="wrapper content-reset">
                     ${tag.tagDescription}
-                </div></#if>
+                </div>
+                </#if>
                 <ul class="tag-desc fn-clear tag-articles-tag-desc">
                     <#list tag.tagRelatedTags as relatedTag>
                     <li>
