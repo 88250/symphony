@@ -41,24 +41,26 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="tab-current fn-clear">
-                <#if type == "index">
-                ${consoleIndexLabel}
-                <#elseif type == "users" || type == "addUser">
-                ${userAdminLabel}
-                <#elseif type == "articles">
-                ${articleAdminLabel}
-                <#elseif type == "comments">
-                ${commentAdminLabel}
-                <#elseif type == "domains" || type == "addDomain">
-                ${domainAdminLabel}
-                <#elseif type == "tags">
-                ${tagAdminLabel}
-                <#elseif type == "reservedWords" || type == "addReservedWord">
-                ${reservedWordAdminLabel}
-                <#elseif type == "misc">
-                ${miscAdminLabel}
-                </#if>
-                <span class="icon-chevron-down fn-right" onclick="$(this).next().next().toggle()"></span>
+                <div onclick="$(this).next().next().toggle()">
+                    <#if type == "index">
+                    ${consoleIndexLabel}
+                    <#elseif type == "users" || type == "addUser">
+                    ${userAdminLabel}
+                    <#elseif type == "articles">
+                    ${articleAdminLabel}
+                    <#elseif type == "comments">
+                    ${commentAdminLabel}
+                    <#elseif type == "domains" || type == "addDomain">
+                    ${domainAdminLabel}
+                    <#elseif type == "tags">
+                    ${tagAdminLabel}
+                    <#elseif type == "reservedWords" || type == "addReservedWord">
+                    ${reservedWordAdminLabel}
+                    <#elseif type == "misc">
+                    ${miscAdminLabel}
+                    </#if>
+                    <span class="icon-chevron-down fn-right"></span>
+                </div>
                 <div class="fn-hr5"></div>
                 <ul class="tab fn-clear fn-none">
                     <li<#if type == "index"> class="fn-none"</#if>><a href="/admin">${consoleIndexLabel}</a></li>

@@ -2303,8 +2303,9 @@ code .dec { color: initial; } /* decimal - blue */
     color: #767676;
 }
 
-.tab > li {
+.tab > li a {
     padding: 5px 0;
+    display: block;
 }
 /* end home */
 

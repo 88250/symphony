@@ -12,18 +12,20 @@
         <#include "../../header.ftl">
         <div class="main">
             <div class="tab-current fn-clear">
-                <#if type == "commented">
-                ${notificationCommentedLabel}
-                <#elseif type == "at">
-                ${notificationAtLabel}
-                <#elseif type == "followingUser">
-                ${notificationFollowingUserLabel}
-                <#elseif type == "point">
-                ${pointLabel}
-                <#elseif type == "broadcast">
-                ${sameCityLabel}
-                </#if>
-                <span class="icon-chevron-down fn-right" onclick="$(this).next().next().toggle()"></span>
+                <div onclick="$(this).next().next().toggle()">
+                    <#if type == "commented">
+                    ${notificationCommentedLabel}
+                    <#elseif type == "at">
+                    ${notificationAtLabel}
+                    <#elseif type == "followingUser">
+                    ${notificationFollowingUserLabel}
+                    <#elseif type == "point">
+                    ${pointLabel}
+                    <#elseif type == "broadcast">
+                    ${sameCityLabel}
+                    </#if>
+                    <span class="icon-chevron-down fn-right"></span>
+                </div>
                 <div class="fn-hr5"></div>
                 <ul class="tab fn-clear fn-none">
                     <li<#if type == "commented"> class="fn-none"</#if>>
