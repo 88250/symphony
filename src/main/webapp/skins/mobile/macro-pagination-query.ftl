@@ -20,7 +20,6 @@
     </div>
 </div>
 <#else>
-<div class="fn-hr5"></div>
-<div class="fn-hr5"></div>
+<div class="fn-hr10"></div>
 </#if>
 </#macro>

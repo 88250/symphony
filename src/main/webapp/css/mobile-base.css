@@ -369,6 +369,11 @@ textarea {
     height: 5px;
 }
 
+.fn-hr10 {
+    display: block;
+    height: 10px;
+}
+
 .ft-13 {
     font-size: 13px;
 }
@@ -824,7 +829,6 @@ a[class*=" icon-"]:hover {
 .status {
     border-top: 1px dotted #CCCCCC;
     list-style: none;
-    margin-top: 5px;
     padding: 10px 0;
 }
 
@@ -1181,7 +1185,6 @@ a[class*=" icon-"]:hover {
 .list h2 {
     font-size: 14px;
     font-weight: normal;
-    line-height: 16px;
 }
 
 .list > ul {
@@ -1516,6 +1519,18 @@ a[class*=" icon-"]:hover {
 }
 /* end algolia */
 
+/* start ranking-tag*/
+.ranking {
+    text-align: center;
+    margin: 10px;
+}
+
+.ranking-title {
+    font-size: 18px;
+    text-align: center;
+}
+/* end ranking-tag*/
+
 /**
  * Copyright (c) 2012-2016, b3log.org & hacpai.com
  *
@@ -1541,7 +1556,7 @@ a[class*=" icon-"]:hover {
  */
 
 .more-article {
-        display: block;
+    display: block;
     text-align: center;
     padding: 5px;
     background-color: #f6f6f6;
@@ -1558,7 +1573,7 @@ a[class*=" icon-"]:hover {
 
 .module-list .title {
     color: #767676;
-    margin: 5px 0 5px 36px;
+    margin: 5px 0 5px 30px;
     display: block;
     line-height: 19px;
 }
@@ -1568,17 +1583,17 @@ a[class*=" icon-"]:hover {
 }
 
 .module-list.open-source .slogan {
-    margin-top: -10px;
+    margin-top: -11px;
 }
 
 .module-list.domain .slogan {
     text-align: center;
-    margin-top: -8px;
-    width: 60px;
+    margin-top: -10px;
+    width: 30px;
 }
 
 .module-list.domain .title {
-    margin-left: 80px;
+    margin-left: 50px;
 }
 
 .module-list.domain .tag {
@@ -1804,15 +1819,13 @@ h2.article-title {
 .domains a {
     float: left;
     padding: 4px 8px;
-    color: #333;
+    color: #999;
     text-decoration: none;
-    text-align: center;
-    box-sizing: border-box;
-    border-radius: 2px;
+    border-radius: 3px;
     margin: 5px;
-    font-size: 12px;
-    line-height: 16px;
-    background-color: #f6f6f6;
+    line-height: 20px;
+    background-color: #f7f7f7;
+    border: 1px solid #DDD;
 }
 
 .domains a.selected {
@@ -2031,15 +2044,15 @@ h2.article-title {
 
 .tag-desc > li > span {
     float: left;
-    padding: 2px 5px;
+    padding: 4px 8px;
     border: 1px solid #DDDDDD;
     position: relative;
     height: 20px;
     white-space: nowrap;
     word-wrap: normal;
     background-color: #F7F7F7;
-    border-radius: 3px 3px 3px 3px;
-    line-height: 21px;
+    border-radius: 3px;
+    line-height: 20px;
 }
 
 .tag-desc > li:hover > span {
@@ -2085,6 +2098,10 @@ h2.article-title {
     border-radius: 0 3px 3px 3px;
 }
 
+.tag-articles .content {
+    margin-top: 10px;
+}
+
 .tag-articles h1.fn-inline {
     line-height: 28px;
     font-size: 20px;
@@ -2109,9 +2126,8 @@ h2.article-title {
 
 /* start tag-article.html */
 .tag-artile-user {
-    margin-bottom: 5px;
     border-bottom: 1px dotted #CCCCCC;
-    padding-bottom: 10px;
+    padding: 0 0px 10px 10px;
 }
 /* end tag-article.html */
 
@@ -2199,8 +2215,14 @@ code .dec { color: initial; } /* decimal - blue */
 
 /* start add article */
 .pre-post > div {
-    margin: 20px 0px;
     font-size: 30px;
+    border-bottom: 1px solid #eee;
+    padding: 20px 10px;
+    text-align: center;
+}
+
+.pre-post > div:last-child {
+    border-bottom-width: 0;
 }
 
 .pre-post > div > a {
@@ -2269,28 +2291,20 @@ code .dec { color: initial; } /* decimal - blue */
 /* end add article */
 
 /* start home */
-.tab {
-    border-bottom: 1px solid #DDD;
-}
-
-.tab > li {
-    border: 1px solid transparent;
-    border-bottom: 0;
-    float: left;
-    list-style: none outside none;
-    margin-bottom: -1px;
-}
-
-.tab > li.current {
+.tab-current {
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+    padding: 10px 10px 5px;
+    font-size: 14px;
     font-weight: bold;
 }
 
-.tab > li > a {
-    color: #666666;
-    line-height: 20px;
-    text-decoration: none;
-    padding: 2px;
-    display: block;
+.tab-current > span {
+    color: #767676;
+}
+
+.tab > li {
+    padding: 5px 0;
 }
 /* end home */
 
@@ -2361,9 +2375,7 @@ code .dec { color: initial; } /* decimal - blue */
 .follow li {
     position: relative;
     border-bottom: 1px solid #EEEEEE;
-    margin: 10px auto;
-    padding: 0 0px 10px;
-    width: 95%;
+    padding: 10px;
     list-style: none;
     box-sizing: border-box;
 }
@@ -2434,7 +2446,6 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .points .name {
-    padding: 5px;
     word-break: break-all;
 }
 

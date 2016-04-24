@@ -30,21 +30,22 @@
             </div>
         </div>
         <#else>
-        <div class="fn-flex-1 has-view">
+        <div class="fn-flex-1">
             <h2>
                 <#if notification.articleType == 1>
-                    <span class="icon-locked" title="${discussionLabel}"></span>
-                    <#elseif notification.articleType == 2>
-                    <span class="icon-feed" title="${cityBroadcastLabel}"></span>
-                    </#if>
+                <span class="icon-locked" title="${discussionLabel}"></span>
+                <#elseif notification.articleType == 2>
+                <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                </#if>
                 <a rel="bookmark" href="${notification.url}"> ${notification.articleTitle}</a>
             </h2>
+
             <p class="ft-gray">
                 <#list notification.articleTags?split(",") as articleTag>
                 <a rel="tag" class="tag" href="/tag/${notification?url('UTF-8')}">
                     ${articleTag}</a>
                 </#list>
-                &nbsp; 
+                <br/>
                 <span class="icon-date"></span>
                 ${notification.createTime?string('yyyy-MM-dd HH:mm')}
             </p>

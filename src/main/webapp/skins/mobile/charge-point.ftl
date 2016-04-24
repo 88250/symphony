@@ -12,7 +12,8 @@
                 <div class="content content-reset">
                     <h2><span class="ft-blue">♦</span> ${chargePointLabel}</h2>
                     ${chargePointContentLabel} 
-                </div><br/>
+                </div>
+                <div class="fn-hr10"></div>
                 <div class="side">
                     <#include "side.ftl">
                 </div>

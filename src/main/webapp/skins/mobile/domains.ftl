@@ -11,7 +11,6 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-
                 <div class='domains-count'>
                     Domains: <b>${domainCnt}</b><br/>
                     Tags: <b>${tagCnt}</b>

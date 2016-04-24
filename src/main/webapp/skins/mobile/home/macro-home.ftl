@@ -40,43 +40,60 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper">
-                <div class="content">
-                    <ul class="tab fn-clear">
-                        <li<#if type == "home"> class="current"</#if>>
-                            <a href="/member/${user.userName}">${articleLabel}</a>
-                        </li>
-                        <li<#if type == "comments"> class="current"</#if>>
-                            <a href="/member/${user.userName}/comments">${cmtLabel}</a>
-                        </li>
-                        <li<#if type == "followingUsers"> class="current"</#if>>
-                            <a href="/member/${user.userName}/following/users">${followingUsersLabel}</a>
-                        </li>
-                        <li<#if type == "followingTags"> class="current"</#if>>
-                            <a href="/member/${user.userName}/following/tags">${followingTagsLabel}</a>
-                        </li>
-                        <li<#if type == "followingArticles"> class="current"</#if>>
-                            <a href="/member/${user.userName}/following/articles">${followingArticlesLabel}</a>
-                        </li>
-                        <li<#if type == "followers"> class="current"</#if>>
-                            <a href="/member/${user.userName}/followers">${followersLabel}</a>
-                        </li>
-                        <li<#if type == "points"> class="current"</#if>>
-                            <a href="/member/${user.userName}/points">${pointLabel}</a>
-                        </li>
-                        <#if currentUser?? && currentUser.userName == user.userName>
-                        <li<#if type == "settings"> class="current"</#if>>
-                            <a href="/settings"><b class="ft-red">${settingsLabel}</b></a>
-                        </li>
-                        </#if>
-                    </ul>
-                    <div class="fn-clear">
-                        <#nested>
-                    </div>
-                </div>
-                <div class="side">
-                    <#include "home-side.ftl">
-                </div>
+            <div class="tab-current fn-clear">
+                <#if type == "home">
+                ${articleLabel}
+                <#elseif type == "comments">
+                ${cmtLabel}
+                <#elseif type == "followingUsers">
+                ${followingUsersLabel}
+                <#elseif type == "followingTags">
+                ${followingTagsLabel}
+                <#elseif type == "followingArticles">
+                ${followingArticlesLabel}
+                <#elseif type == "followers">
+                ${followersLabel}
+                <#elseif type == "points">
+                ${pointLabel}
+                <#elseif type == "settings">
+                ${settingsLabel}
+                </#if>
+                <span class="icon-chevron-down fn-right" onclick="$(this).next().next().toggle()"></span>
+                <div class="fn-hr5"></div>
+                <ul class="tab fn-clear fn-none">
+                    <li<#if type == "home"> class="fn-none"</#if>>
+                        <a href="/member/${user.userName}">${articleLabel}</a>
+                    </li>
+                    <li<#if type == "comments"> class="fn-none"</#if>>
+                        <a href="/member/${user.userName}/comments">${cmtLabel}</a>
+                    </li>
+                    <li<#if type == "followingUsers"> class="fn-none"</#if>>
+                        <a href="/member/${user.userName}/following/users">${followingUsersLabel}</a>
+                    </li>
+                    <li<#if type == "followingTags"> class="fn-none"</#if>>
+                        <a href="/member/${user.userName}/following/tags">${followingTagsLabel}</a>
+                    </li>
+                    <li<#if type == "followingArticles"> class="fn-none"</#if>>
+                        <a href="/member/${user.userName}/following/articles">${followingArticlesLabel}</a>
+                    </li>
+                    <li<#if type == "followers"> class="fn-none"</#if>>
+                        <a href="/member/${user.userName}/followers">${followersLabel}</a>
+                    </li>
+                    <li<#if type == "points"> class="fn-none"</#if>>
+                        <a href="/member/${user.userName}/points">${pointLabel}</a>
+                    </li>
+                    <#if currentUser?? && currentUser.userName == user.userName>
+                    <li<#if type == "settings"> class="fn-none"</#if>>
+                        <a href="/settings"><b class="ft-red">${settingsLabel}</b></a>
+                    </li>
+                    </#if>
+                </ul>
+            </div>
+            <div class="fn-clear">
+                <#nested>
+            </div>
+            <div class="side">
+                <#include "home-side.ftl">
             </div>
         </div>
         <#include "../footer.ftl">

@@ -10,8 +10,8 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-        <br/>
             <div class="wrapper">
+                <div class="fn-hr10"></div>
                 <div class="content chat-room">
                     <div class="fn-clear">
                         <h2 class="fn-left">${chatRoomLabel}</h2>
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                 </div>
-                <br/>
+                <div class="fn-hr10"></div>
                 <div class="side">
                     <#include "side.ftl">
                 </div>

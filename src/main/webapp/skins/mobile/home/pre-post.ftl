@@ -9,7 +9,7 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper pre-post">
+            <div class="pre-post">
                 <div>
                     <a href="/post?type=0">
                         <div class="icon-article"> ${articleLabel}</div>

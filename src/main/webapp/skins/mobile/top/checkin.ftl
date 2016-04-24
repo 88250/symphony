@@ -1,8 +1,6 @@
 <#include "macro-top.ftl">
 <@top "checkin">
-<div class="content content-reset">
-    <h2><span class="ft-gray">♣</span> ${checkinTopLabel}</h2>
-</div>
+<h2 class="ranking-title"><span class="ft-gray">♣</span> ${checkinTopLabel}</h2>
 <div class="list top">
     <ul>
         <#list topCheckinUsers as user>
@@ -11,11 +9,16 @@
                 <a rel="nofollow"
                    href="/member/${user.userName}" 
                    title="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}-64.jpg?${user.userUpdateTime}')"></div></a>
-                <div class="has-view fn-flex-1">
-                    <h2>
-                        ${user_index + 1}.
-                        <a rel="bookmark" href="/member/${user.userName}">${user.userName}</a>
-                    </h2>
+                <div class="fn-flex-1">
+                    <div class="fn-clear">
+                        <h2 class="fn-left">
+                            ${user_index + 1}.
+                            <a rel="bookmark" href="/member/${user.userName}">${user.userName}</a>
+                        </h2>
+                        <div class="fn-right">
+                            ${user.userCurrentCheckinStreak}/<span class="ft-red">${user.userLongestCheckinStreak}</span>
+                        </div>
+                    </div>
                     <div class="ft-gray">
                         <#if user.userIntro!="">
                         <div>
@@ -32,14 +35,11 @@
                             <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
                         </div>
                     </div>
-                    <div class="cmts" title="${user.userPoint?c}">
-                        ${user.userCurrentCheckinStreak}/<span class="ft-red">${user.userLongestCheckinStreak}</span>
-                    </div>
                 </div>
             </div>
         </li>
         </#list>
     </ul>
-    <br/>
+    <div class="fn-hr10"></div>
 </div>
 </@top>
