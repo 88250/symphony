@@ -2,7 +2,8 @@
 <#include "../macro-pagination.ftl">
 <@admin "domains">
 <div class="list content admin">
-    <form method="GET" action="domains" class="form">
+    <div class="fn-hr10"></div>
+    <form method="GET" action="domains" class="form wrapper">
         <input name="title" type="text" placeholder="${domainLabel}"/>
         <button type="submit" class="green">${searchLabel}</button>
     <button type="button" class="btn red" onclick="window.location = '/admin/add-domain'">${addDomainLabel}</button>
@@ -23,7 +24,7 @@
                 <#if item.domainIconPath != ''>
                 <div class="avatar" style="background-image:url('${staticServePath}/images/domains/${item.domainIconPath}')"></div>
                 </#if>
-                <span class="domains">${item.domainDescription}</span>
+                ${item.domainDescription}
             </div>
         </li>
         </#list>

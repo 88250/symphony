@@ -1,6 +1,7 @@
 <#include "macro-admin.ftl">
 <@admin "index">
-<div class="content">
+<div class="wrapper">
+    <div class="fn-hr10"></div>
     <div>
         ${onlineVisitorCountLabel} ${onlineVisitorCnt?c}${commaLabel}${maxOnlineVisitorCountLabel} ${statistic.statisticMaxOnlineVisitorCount?c}${commaLabel}${memberLabel} ${statistic.statisticMemberCount?c}${commaLabel}${articleLabel} ${statistic.statisticArticleCount?c}${commaLabel}${tagLabel} ${statistic.statisticTagCount?c}${commaLabel}${cmtLabel} ${statistic.statisticCmtCount?c}
     </div>
