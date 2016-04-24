@@ -152,6 +152,7 @@ img {
     max-width: 100%;
     vertical-align: middle;
     border: 0;
+    height: auto;
     -ms-interpolation-mode: bicubic;
 }
 
