@@ -1,6 +1,7 @@
 <#include "macro-admin.ftl">
 <@admin "addUser">
-<div class="content">
+<div class="wrapper">
+    <div class="fn-hr10"></div>
     <div class="module">
         <div class="module-header">
             <h2>${addUserLabel}</h2>
@@ -16,8 +17,8 @@
                 <label>${passwordLabel}</label>
                 <input name="userPassword" type="text" />
 
-                <label><input name="userAppRole" type="radio" value="0" checked="checked" />${programmerLabel}&nbsp;&nbsp;</label>
-                <label><input name="userAppRole" type="radio" value="1" />${designerLabel}</label>
+                <label><input name="userAppRole" type="radio" value="0" checked="checked" /> ${programmerLabel}&nbsp;&nbsp;</label>
+                <label><input name="userAppRole" type="radio" value="1" /> ${designerLabel}</label>
 
                 <br/><br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>

@@ -19,12 +19,10 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper">
-                <div class="content fn-clear">
-                    <#nested>
-                    <#include "../common/ranking.ftl">
-                </div>
-                <div class="side">
+            <div>
+                <#include "../common/ranking.ftl">
+                <#nested>
+                <div class="side wrapper">
                     <#include "../side.ftl">
                 </div>
             </div>

@@ -10,6 +10,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
+                <div class="fn-hr10"></div>
                 <div class="content">
                     <h2>500 Internal Server Error!</h2>
                     <br/>

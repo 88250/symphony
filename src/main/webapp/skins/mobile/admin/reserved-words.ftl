@@ -2,10 +2,10 @@
 <#include "../macro-pagination.ftl">
 <@admin "reservedWords">
 <div class="list content admin">
-    <div class="form">
+    <div class="fn-hr10"></div>
+    <div class="form wrapper">
         <button type="button" class="btn red" onclick="window.location = '/admin/add-reserved-word'">${allReservedWordLabel}</button>
     </div>
-    <br/>
     <ul>
         <#list words as item>
         <li>

@@ -71,7 +71,7 @@
             ${user.userCurrentCheckinStreak?c}
             <span class="ft-gray">${checkinStreakPart2Label}</span>
         </div>
-
+        <div class="fn-hr10"></div>
         <ul class="status fn-flex">
             <li>
                 <strong>${user.userTagCount?c}</strong>

@@ -7,9 +7,10 @@
                 <a href="/tag/系统公告">${symAnnouncementLabel}</a>
                 <a href="/tag/Q%26A">${qnaLabel}</a>
                 <a href="/domains">${domainLabel}</a>
-                <a href="/tags" class="last">${tagLabel}</a>
-                <a rel="nofollow" href="/cr" class="last">${chatRoomLabel}</a>
-                <a href="https://hacpai.com/article/1460083956075" class="last">${adDeliveryLabel}</a>
+                <a href="/tags">${tagLabel}</a>
+                <a rel="nofollow" href="/cr">${chatRoomLabel}</a>
+                <a href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
+                <a href="/statistic" class="last">${dataStatLabel}</a>
 
                 <div class="fn-right">
                     <span class="ft-gray">&COPY; ${year}</span>

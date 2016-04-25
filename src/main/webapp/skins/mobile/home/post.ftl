@@ -5,14 +5,14 @@
         <@head title="${addArticleLabel} - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
     </head>
     <body>
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper post">
-                <br/>
+                <div class="fn-hr10"></div>
                 <div class="form fn-flex-1 fn-clear">
                     <div>
                         <input type="text" id="articleTitle" tabindex="1"
@@ -96,7 +96,6 @@
                                 <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
                             </#if>
                     </div>
-                    <br/>
                 </div>
             </div>
         </div>

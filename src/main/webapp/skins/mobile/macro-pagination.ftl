@@ -6,10 +6,13 @@
         <a rel="prev" href="${url}"><<1</a>
         </#if>
         <#list paginationPageNums as nums>
+        
+        <#if 8 gt nums_index >
         <#if nums=paginationCurrentPageNum>
         <span class="current">${nums}</span>
         <#else>
         <a href="${url}?p=${nums}">${nums}</a>
+        </#if>
         </#if>
         </#list>
         <#if paginationLastPageNum!=paginationPageCount>
@@ -17,5 +20,7 @@
         </#if>
     </div>
 </div>
+<#else>
+<div class="fn-hr10"></div>
 </#if>
 </#macro>

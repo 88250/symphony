@@ -11,33 +11,28 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper">
-                <div class="content fn-clear">
-                    <div class="domains fn-clear">
-                        <#list domains as domain>
-                        <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
-                        <#if 10 < domain?counter>
-                        <#break>
-                        </#if>
-                        </#list>
-                        <a href="/">${hotLabel}</a>
-                        <a href="/recent" class="selected">${latestLabel}</a>
-                        <#if isLoggedIn && "" != currentUser.userCity>
-                        <a href="/city/my">${currentUser.userCity}</a>
-                        </#if>
-                        <a href="/timeline">${timelineLabel}</a>
-                    </div>
-                    <@list listData=latestArticles/>
-                    <@pagination url="/recent"/>
+            <div class="content fn-clear">
+                <div class="domains fn-clear">
+                    <#list domains as domain>
+                    <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
+                    <#if 10 < domain?counter>
+                    <#break>
+                    </#if>
+                    </#list>
+                    <a href="/">${hotLabel}</a>
+                    <a href="/recent" class="selected">${latestLabel}</a>
+                    <#if isLoggedIn && "" != currentUser.userCity>
+                    <a href="/city/my">${currentUser.userCity}</a>
+                    </#if>
+                    <a href="/timeline">${timelineLabel}</a>
                 </div>
-                <div class="side">
-                    <#include "side.ftl">
-                </div>
+                <@list listData=latestArticles/>
+                <@pagination url="/recent"/>
+            </div>
+            <div class="side wrapper">
+                <#include "side.ftl">
             </div>
         </div>
         <#include "footer.ftl">
-        <script>
-            Util.initArticlePreview();
-        </script>
     </body>
 </html>

@@ -1,5 +1,3 @@
-<#include 'common/person-info.ftl'/>
-
 <#if ADLabel!="">
 ${ADLabel}
 </#if>

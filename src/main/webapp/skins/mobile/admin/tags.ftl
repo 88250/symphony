@@ -2,11 +2,11 @@
 <#include "../macro-pagination.ftl">
 <@admin "tags">
 <div class="list content admin">
-    <form method="GET" action="tags" class="form">
+    <div class="fn-hr10"></div>
+    <form method="GET" action="tags" class="form wrapper">
         <input name="title" type="text" placeholder="${tagLabel}"/>
         <button type="submit" class="green">${searchLabel}</button>
     </form>
-    <br/>
     <ul>
         <#list tags as item>
         <li>
@@ -24,11 +24,9 @@
                 <div class="avatar" style="background-image:url('${staticServePath}/images/tags/${item.tagIconPath}')"></div>
                 </#if>
                 ${item.tagDescription}
-                <div class="ft-gray">
-                    <span class="icon-view" title="${refCountLabel}"></span>
-                    ${item.tagReferenceCount} &nbsp;
-                    <span class="icon-cmts" title="${commentCountLabel}"></span>
-                    ${item.tagCommentCount} &nbsp;
+                <div class="ft-gray fn-clear">
+                    <span class="icon-view fn-right" title="${refCountLabel}">${item.tagReferenceCount}</span>
+                    <span class="icon-cmts fn-right" title="${commentCountLabel}"> ${item.tagCommentCount} &nbsp;</span>
                     <span class="icon-date" title="${createTimeLabel}"></span>
                     ${item.tagCreateTime?string('yyyy-MM-dd HH:mm')}
                 </div>

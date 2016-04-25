@@ -1,6 +1,7 @@
 <#include "macro-admin.ftl">
 <@admin "comments">
-<div class="content">
+<div class="wrapper">
+    <div class="fn-hr10"></div>
     <div class="module">
         <div class="module-header">
             <h2>${unmodifiableLabel}</h2>
@@ -38,7 +39,7 @@
                 </select>
 
                 <label for="commentContent">${commentContentLabel}</label>
-                <textarea id="commentContent" name="commentContent" rows="10">${comment.commentContent}</textarea>
+                <textarea name="commentContent" rows="10">${comment.commentContent}</textarea>
 
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>

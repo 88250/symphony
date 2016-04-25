@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 21, 2016
+ * @version 1.0.0.1, Apr 23, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -80,34 +80,69 @@ public class StatisticProcessor {
     private Filler filler;
 
     /**
-     * Shows data statistic.
+     * Month days.
+     */
+    private final List<String> monthDays = new ArrayList<String>();
+
+    /**
+     * User counts.
+     */
+    private final List<Integer> userCnts = new ArrayList<Integer>();
+
+    /**
+     * Article counts.
+     */
+    private final List<Integer> articleCnts = new ArrayList<Integer>();
+
+    /**
+     * Comment counts.
+     */
+    private final List<Integer> commentCnts = new ArrayList<Integer>();
+
+    /**
+     * History months.
+     */
+    private final List<String> months = new ArrayList<String>();
+
+    /**
+     * History user counts.
+     */
+    private final List<Integer> historyUserCnts = new ArrayList<Integer>();
+
+    /**
+     * History article counts.
+     */
+    private final List<Integer> historyArticleCnts = new ArrayList<Integer>();
+
+    /**
+     * History comment counts.
+     */
+    private final List<Integer> historyCommentCnts = new ArrayList<Integer>();
+
+    /**
+     * Loads statistic data.
      *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @param context the specified HTTP request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/statistic", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/cron/stat", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void showStatistic(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("statistic.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
+    public void loadStatData(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
         final Date end = new Date();
         final Date dayStart = DateUtils.addDays(end, -30);
 
-        final List<String> monthDays = new ArrayList<String>();
-        dataModel.put("monthDays", monthDays);
-        final List<Integer> userCnts = new ArrayList<Integer>();
-        dataModel.put("userCnts", userCnts);
-        final List<Integer> articleCnts = new ArrayList<Integer>();
-        dataModel.put("articleCnts", articleCnts);
-        final List<Integer> commentCnts = new ArrayList<Integer>();
-        dataModel.put("commentCnts", commentCnts);
+        monthDays.clear();
+        userCnts.clear();
+        articleCnts.clear();
+        commentCnts.clear();
+        months.clear();
+        historyArticleCnts.clear();
+        historyCommentCnts.clear();
+        historyUserCnts.clear();
 
         for (int i = 0; i < 31; i++) {
             final Date day = DateUtils.addDays(dayStart, i);
@@ -122,15 +157,6 @@ public class StatisticProcessor {
             final int commentCnt = commentQueryService.getCommentCntInDay(day);
             commentCnts.add(commentCnt);
         }
-
-        final List<String> months = new ArrayList<String>();
-        dataModel.put("months", months);
-        final List<Integer> historyUserCnts = new ArrayList<Integer>();
-        dataModel.put("historyUserCnts", historyUserCnts);
-        final List<Integer> historyArticleCnts = new ArrayList<Integer>();
-        dataModel.put("historyArticleCnts", historyArticleCnts);
-        final List<Integer> historyCommentCnts = new ArrayList<Integer>();
-        dataModel.put("historyCommentCnts", historyCommentCnts);
 
         final JSONObject firstAdmin = userQueryService.getAdmins().get(0);
         final long monthStartTime = Times.getMonthStartTime(firstAdmin.optLong(Keys.OBJECT_ID));
@@ -157,6 +183,35 @@ public class StatisticProcessor {
             final int commentCnt = commentQueryService.getCommentCntInMonth(month);
             historyCommentCnts.add(commentCnt);
         }
+    }
+
+    /**
+     * Shows data statistic.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/statistic", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showStatistic(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("statistic.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModel.put("monthDays", monthDays);
+        dataModel.put("userCnts", userCnts);
+        dataModel.put("articleCnts", articleCnts);
+        dataModel.put("commentCnts", commentCnts);
+
+        dataModel.put("months", months);
+        dataModel.put("historyUserCnts", historyUserCnts);
+        dataModel.put("historyArticleCnts", historyArticleCnts);
+        dataModel.put("historyCommentCnts", historyCommentCnts);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);

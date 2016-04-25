@@ -9,11 +9,11 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content activity">
-                    <div class="content-reset">
-                        <div id="captcha"></div>
-                    </div>
+                <div class="fn-hr10"></div>
+                <div class="content">
+                    <div id="captcha"></div>
                 </div>
+                <div class="fn-hr10"></div>
                 <div class="side">
                     <#include "../side.ftl">
                 </div>

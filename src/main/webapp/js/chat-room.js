@@ -28,8 +28,12 @@
 var ChatRoom = {
     init: function () {
         // 聊天窗口高度设置
-        $('.list').height($('.side').height() - $('.reply').height() + 173);
-        
+        if ($.ua.device.type !== 'mobile') {
+            $('.list').height($('.side').height() - $('.reply').height() + 173);
+        } else {
+            $('.list').height($(window).height() - 173);
+        }
+
         // 没用登陆就不需要编辑起初始化了 
         if ($('#chatContent').length === 0) {
             return false;
@@ -92,7 +96,7 @@ var ChatRoom = {
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             return false;
         }
-        
+
         // at 及本地保存输入框内容
         ChatRoom.editor.on('changes', function (cm) {
             $("#chatContentTip").removeClass("error succ").html('');
@@ -118,6 +122,9 @@ var ChatRoom = {
         });
 
         ChatRoom.editor.on('keydown', function (cm, evt) {
+            if ($.ua.os.name.indexOf('Mac OS') > -1 && evt.metaKey && evt.keyCode === 13) {
+                ChatRoom.send();
+            }
             if (8 === evt.keyCode) {
                 var cursor = cm.getCursor();
                 var token = cm.getTokenAt(cursor);

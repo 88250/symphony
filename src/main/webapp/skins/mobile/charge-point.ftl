@@ -4,7 +4,6 @@
     <head>
         <@head title="${chargePointLabel} - ${symphonyLabel}">
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "header.ftl">
@@ -13,7 +12,8 @@
                 <div class="content content-reset">
                     <h2><span class="ft-blue">♦</span> ${chargePointLabel}</h2>
                     ${chargePointContentLabel} 
-                </div><br/>
+                </div>
+                <div class="fn-hr10"></div>
                 <div class="side">
                     <#include "side.ftl">
                 </div>

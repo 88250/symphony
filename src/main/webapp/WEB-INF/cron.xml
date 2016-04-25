@@ -18,7 +18,7 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.7.0.4, Apr 14, 2016
+    Version: 1.8.0.4, Apr 23, 2016
     Author: Liang Ding
 -->
 <cronentries>
@@ -46,7 +46,13 @@
         <description>Cache domains</description>
         <schedule>every 6 hours</schedule>
     </cron>
-        
+    
+    <cron>
+        <url>/cron/stat?key=dev_key</url>
+        <description>Load statistic data</description>
+        <schedule>every 30 minutes</schedule>
+    </cron>
+    
     <!-- Disabled on Dev environment -->
     <!--
     <cron>

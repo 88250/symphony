@@ -5,12 +5,13 @@
         <@head title="${chatRoomLabel} - ${symphonyLabel}">
         <meta name="description" content="${timelineLabel}"/>
         </@head>
-        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.css">
+        <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
     </head>
     <body>
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
+                <div class="fn-hr10"></div>
                 <div class="content chat-room">
                     <div class="fn-clear">
                         <h2 class="fn-left">${chatRoomLabel}</h2>
@@ -63,6 +64,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="fn-hr10"></div>
                 <div class="side">
                     <#include "side.ftl">
                 </div>

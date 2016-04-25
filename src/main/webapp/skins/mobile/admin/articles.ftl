@@ -2,20 +2,20 @@
 <#include "../macro-pagination.ftl">
 <@admin "articles">
 <div class="list content admin">
-    <form method="GET" action="articles" class="form">
+    <div class="fn-hr10"></div>
+    <form method="GET" action="articles" class="form wrapper">
         <input name="id" type="text" placeholder="${articleLabel} Id"/>
         <button type="submit" class="green">${searchLabel}</button>
         <#if esEnabled || algoliaEnabled>
         <button type="button" class="btn red" onclick="searchIndex();">${searchIndexLabel}</button>
         </#if>
     </form>
-    <br/>
     <ul>
         <#list articles as item>
         <li>
             <div class="fn-clear first">
                 <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL}-64.jpg?${item.articleAuthor.userUpdateTime?c}')"></div>
-                <a href="${item.articlePermalink}">${item.articleTitle}</a> &nbsp;
+                <a href="${item.articlePermalink}">${item.articleTitle}</a> 
                 <#if item.articleStatus == 0>
                 <span class="ft-gray">${validLabel}</span>
                 <#else>
@@ -23,21 +23,21 @@
                 </#if>
                 <a href="/admin/article/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>  
             </div>
+            <div class="fn-hr5"></div>
             <div>
                 <span class="icon-tags" title="${tagLabel}"></span>
                 <span class="tags">
                     ${item.articleTags}
                 </span> 
-                </div>
-                <div class="ft-gray">
-                    <span class="icon-view" title="${viewCountLabel}"></span>
-                    ${item.articleViewCount} &nbsp;
-                    <span class="icon-cmts" title="${commentCountLabel}"></span>
-                    ${item.articleCommentCount} &nbsp;
-                    <span class="icon-date" title="${createTimeLabel}"></span>
-                    ${item.articleCreateTime?string('yyyy-MM-dd HH:mm')}
-                </div>
-            
+            </div>
+            <div class="fn-hr5"></div>
+            <div class="ft-gray fn-clear">
+                <span class="icon-view fn-right" title="${viewCountLabel}"> ${item.articleViewCount}</span>
+                <span class="icon-cmts fn-right" title="${commentCountLabel}"> ${item.articleCommentCount} &nbsp;</span>
+                <span class="icon-date" title="${createTimeLabel}"></span>
+                ${item.articleCreateTime?string('yyyy-MM-dd HH:mm')}
+            </div>
+
         </li>
         </#list>
     </ul>

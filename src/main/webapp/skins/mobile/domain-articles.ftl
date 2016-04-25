@@ -12,25 +12,24 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper">
-                <div class="content fn-clear">
-                    <div class="domains fn-clear">
-                        <#list domains as navDomain>
-                        <a href="/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainTitle}</a>
-                        <#if 10 < navDomain?counter>
-                        <#break>
-                        </#if>
-                        </#list>
-                        <a href="/">${hotLabel}</a>
-                        <a href="/recent">${latestLabel}</a>
-                        <#if isLoggedIn && "" != currentUser.userCity>
-                        <a href="/city/my">${currentUser.userCity}</a>
-                        </#if>
-                        <a href="/timeline">${timelineLabel}</a>
-                    </div>
-                    <@list listData=latestArticles/>
-                    <@pagination url="/domain/${domain.domainURI}"/>
-                    <br/><br/><br/>
+            <div class="content fn-clear">
+                <div class="domains fn-clear">
+                    <#list domains as navDomain>
+                    <a href="/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainTitle}</a>
+                    <#if 10 < navDomain?counter>
+                    <#break>
+                    </#if>
+                    </#list>
+                    <a href="/">${hotLabel}</a>
+                    <a href="/recent">${latestLabel}</a>
+                    <#if isLoggedIn && "" != currentUser.userCity>
+                    <a href="/city/my">${currentUser.userCity}</a>
+                    </#if>
+                    <a href="/timeline">${timelineLabel}</a>
+                </div>
+                <@list listData=latestArticles/>
+                <@pagination url="/domain/${domain.domainURI}"/>
+                <div class="wrapper">
                     <div class="module">
                         <div class="module-header">
                             <h2>${domain.domainTitle}</h2>
@@ -48,14 +47,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="side">
-                    <#include "side.ftl">
-                </div>
+            </div>
+            <div class="side wrapper">
+                <#include "side.ftl">
             </div>
         </div>
         <#include "footer.ftl">
-        <script>
-            Util.initArticlePreview();
-        </script>
     </body>
 </html>
