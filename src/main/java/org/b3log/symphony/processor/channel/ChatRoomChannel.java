@@ -16,9 +16,9 @@
 package org.b3log.symphony.processor.channel;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Char room channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 12, 2016
+ * @version 1.0.1.1, Apr 25, 2016
  * @since 1.4.0
  */
 @ServerEndpoint(value = "/chat-room-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -48,7 +48,7 @@ public class ChatRoomChannel {
     /**
      * Session set.
      */
-    public static final Set<Session> SESSIONS = Collections.synchronizedSet(new HashSet<Session>());
+    public static final Set<Session> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
 
     /**
      * Called when the socket connection with the browser is established.

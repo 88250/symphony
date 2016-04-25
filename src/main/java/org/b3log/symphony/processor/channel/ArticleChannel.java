@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -54,7 +54,7 @@ import org.jsoup.Jsoup;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.7.4, Apr 7, 2016
+ * @version 2.2.7.5, Apr 25, 2016
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -68,7 +68,7 @@ public class ArticleChannel {
     /**
      * Session set.
      */
-    public static final Set<Session> SESSIONS = new CopyOnWriteArraySet<Session>();
+    public static final Set<Session> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
 
     /**
      * Article viewing map &lt;articleId, count&gt;.

@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -33,7 +34,7 @@ import org.json.JSONObject;
  * Timeline channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.2.0, Apr 11, 2016
+ * @version 2.0.3.0, Apr 25, 2016
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/timeline-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -47,7 +48,7 @@ public class TimelineChannel {
     /**
      * Session set.
      */
-    public static final Set<Session> SESSIONS = Collections.synchronizedSet(new HashSet<Session>());
+    public static final Set<Session> SESSIONS = Collections.newSetFromMap(new ConcurrentHashMap());
 
     /**
      * Called when the socket connection with the browser is established.
@@ -103,14 +104,12 @@ public class TimelineChannel {
     public static void notifyTimeline(final JSONObject message) {
         final String msgStr = message.toString();
 
-        synchronized (SESSIONS) {
-            final Iterator<Session> i = SESSIONS.iterator();
-            while (i.hasNext()) {
-                final Session session = i.next();
+        final Iterator<Session> i = SESSIONS.iterator();
+        while (i.hasNext()) {
+            final Session session = i.next();
 
-                if (session.isOpen()) {
-                    session.getAsyncRemote().sendText(msgStr);
-                }
+            if (session.isOpen()) {
+                session.getAsyncRemote().sendText(msgStr);
             }
         }
     }

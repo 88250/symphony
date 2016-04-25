@@ -15,11 +15,8 @@
  */
 package org.b3log.symphony.processor.channel;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -36,7 +33,7 @@ import org.json.JSONObject;
  * Article list channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.2.1, Apr 11, 2016
+ * @version 2.0.3.1, Apr 25, 2016
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/article-list-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -50,7 +47,7 @@ public class ArticleListChannel {
     /**
      * Session articles &lt;session, "articleId1,articleId2"&gt;.
      */
-    public static final Map<Session, String> SESSIONS = Collections.synchronizedMap(new HashMap<Session, String>());
+    public static final Map<Session, String> SESSIONS = new ConcurrentHashMap<Session, String>();
 
     /**
      * Called when the socket connection with the browser is established.
@@ -112,22 +109,16 @@ public class ArticleListChannel {
         final String articleId = message.optString(Article.ARTICLE_T_ID);
         final String msgStr = message.toString();
 
-        final Set<Session> keySet = SESSIONS.keySet();
+        for (final Map.Entry<Session, String> entry : SESSIONS.entrySet()) {
+            final Session session = entry.getKey();
+            final String articleIds = entry.getValue();
 
-        synchronized (SESSIONS) {
-            final Iterator<Session> i = keySet.iterator();
+            if (!StringUtils.contains(articleIds, articleId)) {
+                continue;
+            }
 
-            while (i.hasNext()) {
-                final Session session = i.next();
-                final String articleIds = SESSIONS.get(session);
-
-                if (!StringUtils.contains(articleIds, articleId)) {
-                    continue;
-                }
-
-                if (session.isOpen()) {
-                    session.getAsyncRemote().sendText(msgStr);
-                }
+            if (session.isOpen()) {
+                session.getAsyncRemote().sendText(msgStr);
             }
         }
     }
