@@ -54,7 +54,9 @@ public class AvatarQueryService {
         final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
 
         if (Symphonys.getBoolean("qiniu.enabled")) {
-            if (!StringUtils.contains(originalURL, "qnssl.com") && !StringUtils.contains(originalURL, "clouddn.com")) {
+            final String qiniuDomain = Symphonys.get("qiniu.domain");
+
+            if (!StringUtils.startsWith(originalURL, qiniuDomain)) {
                 user.put(UserExt.USER_AVATAR_URL, DEFAULT_AVATAR_URL);
 
                 return;
@@ -81,7 +83,9 @@ public class AvatarQueryService {
         }
 
         if (Symphonys.getBoolean("qiniu.enabled")) {
-            if (!StringUtils.contains(originalURL, "qnssl.com") && !StringUtils.contains(originalURL, "clouddn.com")) {
+            final String qiniuDomain = Symphonys.get("qiniu.domain");
+
+            if (!StringUtils.startsWith(originalURL, qiniuDomain)) {
                 return DEFAULT_AVATAR_URL;
             }
         }

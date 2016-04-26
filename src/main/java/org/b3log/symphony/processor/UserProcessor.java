@@ -98,7 +98,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.8.15, Apr 20, 2016
+ * @version 1.14.8.16, Apr 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -807,10 +807,12 @@ public class UserProcessor {
         user.put(UserExt.USER_COMMENT_VIEW_MODE, userCommentViewMode);
 
         if (Symphonys.getBoolean("qiniu.enabled")) {
-            if (!StringUtils.contains(userAvatarURL, "qnssl.com") && !StringUtils.contains(userAvatarURL, "clouddn.com")) {
+            final String qiniuDomain = Symphonys.get("qiniu.domain");
+
+            if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {
                 user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
             } else {
-                user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + user.optString(Keys.OBJECT_ID)
+                user.put(UserExt.USER_AVATAR_URL, qiniuDomain + "/avatar/" + user.optString(Keys.OBJECT_ID)
                         + "?" + new Date().getTime());
             }
         } else {
