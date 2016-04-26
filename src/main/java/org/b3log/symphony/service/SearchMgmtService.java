@@ -242,6 +242,12 @@ public class SearchMgmtService {
                 break;
             }
         }
+
+        try {
+            Thread.sleep(100);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Sleep error", e);
+        }
     }
 
     /**

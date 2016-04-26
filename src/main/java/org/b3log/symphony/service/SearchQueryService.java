@@ -180,6 +180,8 @@ public class SearchQueryService {
 
                     return null;
                 }
+
+                return ret;
             } catch (final UnknownHostException e) {
                 LOGGER.log(Level.ERROR, "Queries failed [UnknownHostException=" + host + "]");
 
