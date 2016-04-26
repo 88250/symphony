@@ -34,10 +34,11 @@ import org.json.JSONObject;
 /**
  * Search management service.
  *
- * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> as the underlying engine.
+ * Uses <a href="https://www.elastic.co/products/elasticsearch">Elasticsearch</a> or
+ * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Apr 7, 2016
+ * @version 1.1.1.3, Apr 26, 2016
  * @since 1.4.0
  */
 @Service
@@ -110,20 +111,23 @@ public class SearchMgmtService {
      * Rebuilds Algolia index.
      */
     public void rebuildAlgoliaIndex() {
-        int retries = 3;
+        final int maxRetries = 3;
+        int retries = 1;
 
-        while (retries > 0) {
+        final String appId = Symphonys.get("algolia.appId");
+        final String index = Symphonys.get("algolia.index");
+        final String key = Symphonys.get("algolia.adminKey");
+
+        while (retries <= maxRetries) {
+            String host = appId + "-" + retries + ".algolianet.com";
+
             try {
-                final String appId = Symphonys.get("algolia.appId");
-                final String index = Symphonys.get("algolia.index");
-                final String key = Symphonys.get("algolia.adminKey");
-
                 final HTTPRequest request = new HTTPRequest();
                 request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
                 request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
                 request.setRequestMethod(HTTPRequestMethod.POST);
 
-                request.setURL(new URL("https://" + appId + "-dsn.algolia.net/1/indexes/" + index + "/clear"));
+                request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/clear"));
 
                 final HTTPResponse response = URL_FETCH_SVC.fetch(request);
                 if (200 != response.getResponseCode()) {
@@ -132,19 +136,15 @@ public class SearchMgmtService {
 
                 break;
             } catch (final UnknownHostException e) {
-                LOGGER.log(Level.ERROR, "Clear index failed [UnknownHostException]");
+                LOGGER.log(Level.ERROR, "Clear index failed [UnknownHostException=" + host + "]");
 
-                retries--;
+                retries++;
+
+                if (retries > maxRetries) {
+                    LOGGER.log(Level.ERROR, "Clear index failed [UnknownHostException]");
+                }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Clear index failed", e);
-
-                break;
-            }
-
-            try {
-                Thread.sleep(1000);
-            } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Sleep error", e);
 
                 break;
             }
@@ -201,21 +201,24 @@ public class SearchMgmtService {
      * @param doc the specified document
      */
     public void updateAlgoliaDocument(final JSONObject doc) {
-        int retries = 3;
+        final int maxRetries = 3;
+        int retries = 1;
 
-        while (retries > 0) {
+        final String appId = Symphonys.get("algolia.appId");
+        final String index = Symphonys.get("algolia.index");
+        final String key = Symphonys.get("algolia.adminKey");
+
+        while (retries <= maxRetries) {
+            String host = appId + "-" + retries + ".algolianet.com";
+
             try {
-                final String appId = Symphonys.get("algolia.appId");
-                final String index = Symphonys.get("algolia.index");
-                final String key = Symphonys.get("algolia.adminKey");
-
                 final HTTPRequest request = new HTTPRequest();
                 request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
                 request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
                 request.setRequestMethod(HTTPRequestMethod.PUT);
 
                 final String id = doc.optString(Keys.OBJECT_ID);
-                request.setURL(new URL("https://" + appId + "-dsn.algolia.net/1/indexes/" + index + "/" + id));
+                request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/" + id));
 
                 request.setPayload(doc.toString().getBytes("UTF-8"));
 
@@ -226,19 +229,15 @@ public class SearchMgmtService {
 
                 break;
             } catch (final UnknownHostException e) {
-                LOGGER.log(Level.ERROR, "Index failed [UnknownHostException]");
+                LOGGER.log(Level.ERROR, "Index failed [UnknownHostException=" + host + "]");
 
-                retries--;
+                retries++;
+
+                if (retries > maxRetries) {
+                    LOGGER.log(Level.ERROR, "Index failed [UnknownHostException]");
+                }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Index failed", e);
-
-                break;
-            }
-
-            try {
-                Thread.sleep(1000);
-            } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Sleep error", e);
 
                 break;
             }
@@ -251,21 +250,24 @@ public class SearchMgmtService {
      * @param doc the specified document
      */
     public void removeAlgoliaDocument(final JSONObject doc) {
-        int retries = 3;
+        final int maxRetries = 3;
+        int retries = 1;
 
-        while (retries > 0) {
+        final String appId = Symphonys.get("algolia.appId");
+        final String index = Symphonys.get("algolia.index");
+        final String key = Symphonys.get("algolia.adminKey");
+
+        while (retries <= maxRetries) {
+            String host = appId + "-" + retries + ".algolianet.com";
+
             try {
-                final String appId = Symphonys.get("algolia.appId");
-                final String index = Symphonys.get("algolia.index");
-                final String key = Symphonys.get("algolia.adminKey");
-
                 final HTTPRequest request = new HTTPRequest();
                 request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
                 request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
                 request.setRequestMethod(HTTPRequestMethod.DELETE);
 
                 final String id = doc.optString(Keys.OBJECT_ID);
-                request.setURL(new URL("https://" + appId + "-dsn.algolia.net/1/indexes/" + index + "/" + id));
+                request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/" + id));
 
                 request.setPayload(doc.toString().getBytes("UTF-8"));
 
@@ -276,19 +278,15 @@ public class SearchMgmtService {
 
                 break;
             } catch (final UnknownHostException e) {
-                LOGGER.log(Level.ERROR, "Remove object failed [UnknownHostException]");
+                LOGGER.log(Level.WARN, "Remove object failed [UnknownHostException=" + host + "]");
 
-                retries--;
+                retries++;
+
+                if (retries > maxRetries) {
+                    LOGGER.log(Level.ERROR, "Remove object failed [UnknownHostException]");
+                }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Remove object failed", e);
-
-                break;
-            }
-
-            try {
-                Thread.sleep(1000);
-            } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Sleep error", e);
 
                 break;
             }

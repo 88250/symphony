@@ -17,6 +17,7 @@ package org.b3log.symphony.service;
 
 import java.net.URL;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
@@ -144,40 +145,56 @@ public class SearchQueryService {
      * @return search result, returns {@code null} if not found
      */
     public JSONObject searchAlgolia(final String keyword, final int currentPage, final int pageSize) {
-        try {
-            final String appId = Symphonys.get("algolia.appId");
-            final String index = Symphonys.get("algolia.index");
-            final String key = Symphonys.get("algolia.searchKey");
+        final int maxRetries = 3;
+        int retries = 1;
 
-            final HTTPRequest request = new HTTPRequest();
-            request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
-            request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
+        final String appId = Symphonys.get("algolia.appId");
+        final String index = Symphonys.get("algolia.index");
+        final String key = Symphonys.get("algolia.adminKey");
 
-            request.setRequestMethod(HTTPRequestMethod.POST);
-            request.setURL(new URL("https://" + appId + "-dsn.algolia.net/1/indexes/" + index + "/query"));
+        while (retries <= maxRetries) {
+            String host = appId + "-" + retries + ".algolianet.com";
 
-            final JSONObject params = new JSONObject();
-            params.put("params", "query=" + URLEncoder.encode(keyword, "UTF-8")
-                    + "&getRankingInfo=1&facets=*&attributesToRetrieve=*&highlightPreTag=%3Cem%3E"
-                    + "&highlightPostTag=%3C%2Fem%3E"
-                    + "&facetFilters=%5B%5D&maxValuesPerFacet=100"
-                    + "&hitsPerPage=" + pageSize + "&page=" + (currentPage - 1));
+            try {
+                final HTTPRequest request = new HTTPRequest();
+                request.addHeader(new HTTPHeader("X-Algolia-API-Key", key));
+                request.addHeader(new HTTPHeader("X-Algolia-Application-Id", appId));
 
-            request.setPayload(params.toString().getBytes("UTF-8"));
+                request.setRequestMethod(HTTPRequestMethod.POST);
+                request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/query"));
 
-            final HTTPResponse response = URL_FETCH_SVC.fetch(request);
+                final JSONObject params = new JSONObject();
+                params.put("params", "query=" + URLEncoder.encode(keyword, "UTF-8")
+                        + "&getRankingInfo=1&facets=*&attributesToRetrieve=*&highlightPreTag=%3Cem%3E"
+                        + "&highlightPostTag=%3C%2Fem%3E"
+                        + "&facetFilters=%5B%5D&maxValuesPerFacet=100"
+                        + "&hitsPerPage=" + pageSize + "&page=" + (currentPage - 1));
 
-            final JSONObject ret = new JSONObject(new String(response.getContent(), "UTF-8"));
-            if (200 != response.getResponseCode()) {
-                LOGGER.warn(ret.toString(4));
-                return null;
+                request.setPayload(params.toString().getBytes("UTF-8"));
+
+                final HTTPResponse response = URL_FETCH_SVC.fetch(request);
+
+                final JSONObject ret = new JSONObject(new String(response.getContent(), "UTF-8"));
+                if (200 != response.getResponseCode()) {
+                    LOGGER.warn(ret.toString(4));
+
+                    return null;
+                }
+            } catch (final UnknownHostException e) {
+                LOGGER.log(Level.ERROR, "Queries failed [UnknownHostException=" + host + "]");
+
+                retries++;
+
+                if (retries > maxRetries) {
+                    LOGGER.log(Level.ERROR, "Queries failed [UnknownHostException]");
+                }
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Queries failed", e);
+
+                break;
             }
-
-            return ret;
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Queries failed", e);
-
-            return null;
         }
+
+        return null;
     }
 }
