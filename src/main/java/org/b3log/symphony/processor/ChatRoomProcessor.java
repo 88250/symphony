@@ -150,7 +150,7 @@ public class ChatRoomProcessor {
 
         if (content.contains("@" + TuringQueryService.ROBOT_NAME + " ")) {
             content = content.replaceAll("@" + TuringQueryService.ROBOT_NAME + " ", "");
-            final String xiaoVSaid = turingQueryService.chat(currentUser.optString(Keys.OBJECT_ID), content);
+            final String xiaoVSaid = turingQueryService.chat(currentUser.optString(User.USER_NAME), content);
             if (null != xiaoVSaid) {
                 final JSONObject xiaoVMsg = new JSONObject();
                 xiaoVMsg.put(User.USER_NAME, TuringQueryService.ROBOT_NAME);

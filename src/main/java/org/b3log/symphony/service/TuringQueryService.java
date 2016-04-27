@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Turing query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 12, 2016
+ * @version 1.0.0.1, Apr 27, 2016
  * @since 1.4.0
  */
 @Service
@@ -66,7 +66,7 @@ public class TuringQueryService {
      * Robot name.
      */
     public static final String ROBOT_NAME = Symphonys.get("turing.name");
-    
+
     /**
      * Robot avatar.
      */
@@ -86,12 +86,12 @@ public class TuringQueryService {
     /**
      * Chat with Turing Robot.
      *
-     * @param userId the specified user id
+     * @param userName the specified user name
      * @param msg the specified message
      * @return robot returned message, return {@code null} if not found
      */
-    public String chat(final String userId, final String msg) {
-        if (StringUtils.isBlank(userId) || StringUtils.isBlank(msg) || !TURING_ENABLED) {
+    public String chat(final String userName, final String msg) {
+        if (StringUtils.isBlank(userName) || StringUtils.isBlank(msg) || !TURING_ENABLED) {
             return null;
         }
 
@@ -101,11 +101,9 @@ public class TuringQueryService {
         try {
             request.setURL(new URL(TURING_API));
 
-            final String key = URLEncoder.encode(TURING_KEY, "UTF-8");
-            final String info = URLEncoder.encode(msg, "UTF-8");
-            final String userid = URLEncoder.encode(userId, "UTF-8");
-
-            final String body = "key=" + key + "&info=" + info + "&userid=" + userid;
+            final String body = "key=" + URLEncoder.encode(TURING_KEY, "UTF-8")
+                    + "&info=" + URLEncoder.encode(msg, "UTF-8")
+                    + "&userid=" + URLEncoder.encode(userName, "UTF-8");
             request.setPayload(body.getBytes("UTF-8"));
 
             final HTTPResponse response = URL_FETCH_SVC.fetch(request);
