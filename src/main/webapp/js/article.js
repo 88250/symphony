@@ -460,6 +460,11 @@ var Article = {
                 $('#qrCode').slideToggle();
                 return false;
             }
+
+            if (key === 'copy') {
+                return false;
+            }
+
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
                     url = location.protocol + '//' + location.host + Label.articlePermalink + userName,
                     pic = $(".content-reset img").attr("src");
@@ -477,7 +482,12 @@ var Article = {
             $(this).hide();
         });
 
-        new ZeroClipboard(document.getElementById("shareClipboard"));
+        var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
+        shareClipboard.on("ready", function (readyEvent) {
+            shareClipboard.on("aftercopy", function (event) {
+                $('#shareClipboard').attr('title', Label.copiedLabel)
+            });
+        });
     },
     /*
      * @description 解析语法高亮

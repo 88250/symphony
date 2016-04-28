@@ -12,33 +12,34 @@
     </head>
     <body>
         <#include "header.ftl">
+        <div class="domains">
+            <div class="wrapper fn-clear">
+                <#list domains as navDomain>
+                <a href="/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainTitle}</a>
+                <#if 10 < navDomain?counter>
+                <#break>
+                </#if>
+                </#list>
+                <a href="/">${latestLabel}</a>
+                <a href="/hot">${hotLabel}</a>
+                <#if isLoggedIn && "" != currentUser.userCity>
+                <a href="/city/my">${currentUser.userCity}</a>
+                </#if>
+                <a href="/timeline">${timelineLabel}</a>
+            </div>
+        </div>
         <div class="main">
             <div class="wrapper">
-                <div class="content fn-clear">
-                    <div class="domains fn-clear">
-                        <#list domains as navDomain>
-                        <a href="/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainTitle}</a>
-                        <#if 10 < navDomain?counter>
-                        <#break>
-                        </#if>
-                        </#list>
-                        <a href="/">${latestLabel}</a>
-                        <a href="/hot">${hotLabel}</a>
-                        <#if isLoggedIn && "" != currentUser.userCity>
-                        <a href="/city/my">${currentUser.userCity}</a>
-                        </#if>
-                        <a href="/timeline">${timelineLabel}</a>
-                    </div>
-                    <div class="domain-tags">
+                <div class="content">
+                    <div class="domain-tags fn-clear">
                         <#list domains as navDomain>
                         <#if 10 < navDomain?counter>
                         <#break>
                         </#if>
                         <#if navDomain.domainURI == domain.domainURI>
-                            <#list navDomain.domainTags as tag>
-                            <a rel="nofollow" class="ft-gray" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>  
-                            <#if tag?has_next><span class="ft-fade">•</span></#if>
-                            </#list>
+                        <#list navDomain.domainTags as tag>
+                        <a rel="nofollow" class="ft-gray" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>  
+                        </#list>
                         </#if>
                         </#list>
                     </div>

@@ -117,13 +117,10 @@
                             <span class="icon-weibo" data-type="weibo"></span>
                             <span class="icon-twitter" data-type="twitter"></span>
                             <span class="icon-google" data-type="google"></span>
+                            <span id="shareClipboard" class="icon-copy ft-red" 
+                                  data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"
+                                  data-type="copy" title="${copyLabel}"></span>
                         </div>
-                    </div>
-                    <div class="form">
-                        <input type="text" readonly  onclick="this.select()"
-                               value="${serverHost}:${serverPort}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>">
-                        <button class="red" id="shareClipboard"
-                                data-clipboard-text="${serverHost}:${serverPort}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>">${copyLabel}</button>
                     </div>
                     <#if 0 < article.articleRewardPoint>
                     <div class="content-reset" id="articleRewardContent"<#if !article.rewarded> class="reward"</#if>>
@@ -340,6 +337,7 @@
             Label.userCommentViewMode = ${userCommentViewMode};
             Label.stickConfirmLabel = "${stickConfirmLabel}";
             Label.audioRecordingLabel = '${audioRecordingLabel}';
+            Label.copiedLabel = '${copiedLabel}';
             <#if isLoggedIn>
             Label.currentUserName = '${currentUser.userName}';
             </#if>

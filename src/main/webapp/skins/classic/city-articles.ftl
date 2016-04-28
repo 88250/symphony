@@ -10,24 +10,25 @@
     </head>
     <body>
         <#include "header.ftl">
+        <div class="domains fn-clear">
+            <div class="wrapper fn-clear">
+                <#list domains as domain>
+                <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
+                <#if 10 < domain?counter>
+                <#break>
+                </#if>
+                </#list>
+                <a href="/">${latestLabel}</a>
+                <a href="/hot">${hotLabel}</a>
+                <#if isLoggedIn && "" != currentUser.userCity>
+                <a href="/city/my" class="selected">${currentUser.userCity}</a>
+                </#if>
+                <a href="/timeline">${timelineLabel}</a>
+            </div>
+        </div>
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
-                    <div class="domains fn-clear">
-                        <#list domains as navDomain>
-                        <a href="/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
-                        <#if 10 < navDomain?counter>
-                        <#break>
-                        </#if>
-                        </#list>
-                        <a href="/">${latestLabel}</a>
-                        <a href="/hot">${hotLabel}</a>
-                        <#if isLoggedIn && "" != currentUser.userCity>
-                        <a href="/city/my" class="selected">${currentUser.userCity}</a>
-                        </#if>
-                        <a href="/timeline">${timelineLabel}</a>
-                    </div>
-
                     <#if articles?size gt 0>
                     <div class="fn-clear">
                         <@list listData=articles/>

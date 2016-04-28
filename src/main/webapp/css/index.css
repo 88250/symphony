@@ -256,14 +256,6 @@
     color: #4183c4;
 }
 
-#shareClipboard {
-    position: absolute;
-    right: 0;
-    top: 0px;
-    padding: 5px 12px 5px;
-    border-radius: 0 3px 3px 0;
-}
-
 .grammar dl {
     float: left;
     height: 70px;
@@ -284,48 +276,57 @@
 /* end article */
 
 /* start domains */
+.domains {
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+    padding-top: 30px;
+}
+
 .domains a {
     float: left;
-    padding: 5px 0px;
+    padding: 5px 15px 6px;
+    color: #666;
+    white-space: nowrap;
+    border: solid transparent;
+    border-width: 3px 1px 1px;
+    border-radius: 3px 3px 0 0;
+    text-decoration: none;
+}
+
+.domains a.selected {
+    margin-bottom: -1px;
+    background-color: #FFF;
+    border-color: #d26911 #e5e5e5 transparent;
+    color: #111;
+}
+
+.domain-tags a {
+    float: left;
+    padding: 5px 10px;
     color: #333;
     border: 1px solid #e5e5e5;
     line-height: 18px;
     text-decoration: none;
     font-size: 13px;
     margin-left: -1px;
-    margin-bottom: 5px;
-    width: 10%;
-    text-align: center;
+    margin-bottom: 10px;
     box-sizing: border-box;
 }
 
-.domains a:hover {
-    background-color: #f7f7f7;
+.domain-tags a:hover {
+    color: #FFF;
+    background-color: #4078c0;
+    border-color: #4078c0;
 }
 
-.domains a:first-child {
+.domain-tags a:first-child {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
 }
 
-.domains a:last-child {
+.domain-tags a:last-child {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
-}
-
-.domains a.selected {
-    color: #fff;
-    background-color: #333;
-    border-color: #333;
-}
-
-.domain-tags {
-    font-size: 13px;
-    margin: 5px 0px 10px 0px;
-}
-
-.domain-tags a {
-    white-space: nowrap;
 }
 
 .domains-count {

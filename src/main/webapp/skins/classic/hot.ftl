@@ -11,23 +11,25 @@
     </head>
     <body>
         <#include "header.ftl">
+        <div class="domains fn-clear">
+            <div class="wrapper fn-clear">
+                <#list domains as domain>
+                <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
+                <#if 10 < domain?counter>
+                <#break>
+                </#if>
+                </#list>
+                <a href="/">${latestLabel}</a>
+                <a href="/hot" class="selected">${hotLabel}</a>
+                <#if isLoggedIn && "" != currentUser.userCity>
+                <a href="/city/my">${currentUser.userCity}</a>
+                </#if>
+                <a href="/timeline">${timelineLabel}</a>
+            </div>
+        </div>
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
-                    <div class="domains fn-clear">
-                        <#list domains as domain>
-                        <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
-                        <#if 10 < domain?counter>
-                        <#break>
-                        </#if>
-                        </#list>
-                        <a href="/">${latestLabel}</a>
-                        <a href="/hot" class="selected">${hotLabel}</a>
-                        <#if isLoggedIn && "" != currentUser.userCity>
-                        <a href="/city/my">${currentUser.userCity}</a>
-                        </#if>
-                        <a href="/timeline">${timelineLabel}</a>
-                    </div>
                     <@list listData=indexArticles/>
                     <@pagination url="/hot"/>
                     <br>

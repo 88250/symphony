@@ -543,9 +543,8 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
-
-.icon-wechat:before {
-    content: "\e907";
+.icon-copy:before {
+    content: "\e908";
 }
 .icon-time:before {
     content: "\e906";
@@ -717,6 +716,9 @@ a[class*=" icon-"]:hover {
 }
 .icon-compass:before {
     content: "\e61c";
+}
+.icon-wechat:before {
+    content: "\e907";
 }
 
 .icon-search {
