@@ -128,7 +128,7 @@ ${ADLabel}
         <ul class="fn-clear tags">
             <#list newTags as newTag>
             <li>
-                <a class="btn small" rel="nofollow" href="/tag/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a>
+                <a class="tag" rel="nofollow" href="/tag/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a>
             </li>
             </#list>
         </ul>

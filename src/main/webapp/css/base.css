@@ -1217,8 +1217,8 @@ a[class*=" icon-"]:hover {
 }
 
 .footer-nav > a {
-    margin-right: 15px;
-    padding-right: 15px;
+    margin-right: 5px;
+    padding-right: 10px;
 }
 /* end footer */
 

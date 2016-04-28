@@ -29,17 +29,16 @@
                         </#if>
                         <a href="/timeline">${timelineLabel}</a>
                     </div>
-                    <div>
+                    <div class="domain-tags">
                         <#list domains as navDomain>
                         <#if 10 < navDomain?counter>
                         <#break>
                         </#if>
                         <#if navDomain.domainURI == domain.domainURI>
-                        <div class="domains-tags fn-clear">
                             <#list navDomain.domainTags as tag>
-                            <a rel="nofollow" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                            <a rel="nofollow" class="ft-gray" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>  
+                            <#if tag?has_next><span class="ft-fade">•</span></#if>
                             </#list>
-                        </div>
                         </#if>
                         </#list>
                     </div>
@@ -48,18 +47,24 @@
                     <br/><br/><br/>
                     <div class="module">
                         <div class="module-header">
-                            <h2>${domain.domainTitle}</h2>
-                            <a href="/domain/${domain.domainURI}" class="ft-gray fn-right">${domain.domainTags?size} Tags</a>
+                            <h2>${domainLabel}${navigationLabel}</h2>
+                            <a href="/domains" class="ft-gray fn-right">All Domains</a>
                         </div>
                         <div class="module-panel">
                             <ul class="module-list domain">
+                                <#list domains as domain>
+                                <#if domain.domainTags?size gt 0>
                                 <li>
-                                    <#list domain.domainTags as tag>
-                                    <a class="tag" rel="nofollow" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                                    </#list>
+                                    <a rel="nofollow" class="slogan" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
+                                    <div class="title">
+                                        <#list domain.domainTags as tag>
+                                        <a class="tag" rel="nofollow" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                        </#list>
+                                    </div>
                                 </li>
+                                </#if>
+                                </#list>
                             </ul>
-                            <div class="fn-hr5"></div>
                         </div>
                     </div>
                 </div>

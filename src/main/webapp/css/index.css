@@ -284,35 +284,9 @@
 /* end article */
 
 /* start domains */
-.domains {
-    margin-bottom: 10px;
-    border-bottom: 1px solid #eee;
-}
-
 .domains a {
-    text-decoration: none;
-    padding: 5px 0px 4px;
-    color: #666;
-    white-space: nowrap;
-    border: solid transparent;
-    border-width: 3px 1px 1px;
-    border-radius: 3px 3px 0 0;
-    width: 10%;
-    text-align: center;
-    box-sizing: border-box;
     float: left;
-    margin-bottom: -1px;
-}
-
-.domains a.selected {
-    color: #111;
-    background-color: #fff;
-    border-color: #d26911 #e5e5e5 transparent;
-}
-
-.domains-tags a {
-    float: left;
-    padding: 5px 10px;
+    padding: 5px 0px;
     color: #333;
     border: 1px solid #e5e5e5;
     line-height: 18px;
@@ -320,26 +294,38 @@
     font-size: 13px;
     margin-left: -1px;
     margin-bottom: 5px;
+    width: 10%;
+    text-align: center;
+    box-sizing: border-box;
 }
 
-.domains-tags a:hover {
+.domains a:hover {
     background-color: #f7f7f7;
 }
 
-.domains-tags a:first-child {
+.domains a:first-child {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
 }
 
-.domains-tags a:last-child {
+.domains a:last-child {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
 
-.domains-tags a.selected {
+.domains a.selected {
     color: #fff;
     background-color: #333;
     border-color: #333;
+}
+
+.domain-tags {
+    font-size: 13px;
+    margin: 5px 0px 10px 0px;
+}
+
+.domain-tags a {
+    white-space: nowrap;
 }
 
 .domains-count {
@@ -534,7 +520,7 @@
     float: left;
     list-style: none;
     line-height: 19px;
-    margin: 10px 10px 0 0;
+    margin: 5px 10px 0 0;
 }
 
 .module-panel .tags {
