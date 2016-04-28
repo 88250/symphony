@@ -59,6 +59,16 @@ public final class Referral {
      */
     public static final String REFERRAL_CLICK = "referralClick";
 
+    /**
+     * Key of referral user has point.
+     */
+    public static final String REFERRAL_USER_HAS_POINT = "referralUserHasPoint";
+
+    /**
+     * Key of referral author has point.
+     */
+    public static final String REFERRAL_AUTHOR_HAS_POINT = "referralAuthorHasPoint";
+
     // Type constants
     /**
      * Type - Article.

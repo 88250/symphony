@@ -37,6 +37,14 @@
                 {
                     "name": "referralClick",
                     "type": "int"
+                },
+                {
+                    "name": "referralUserHasPoint",
+                    "type": "boolean"
+                },
+                {
+                    "name": "referralAuthorHasPoint",
+                    "type": "boolean"
                 }
             ]
         },
