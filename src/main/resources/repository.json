@@ -1,11 +1,45 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.16.4.7, Apr 20, 2016",
+    "version": "3.17.4.7, Apr 20, 2016",
     "authors": [
         "Liang Ding"
     ],
     "since": "0.2.0",
     "repositories": [
+        {
+            "name": "referral",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "referralUser",
+                    "type": "String",
+                    "length": 19,
+                    "description": "referral user name"
+                },
+                {
+                    "name": "referralDataId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "referralType",
+                    "type": "int"
+                },
+                {
+                    "name": "referralIP",
+                    "type": "String",
+                    "length": 128
+                },
+                {
+                    "name": "referralClick",
+                    "type": "int"
+                }
+            ]
+        },
         {
             "name": "revision",
             "keys": [

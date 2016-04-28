@@ -29,7 +29,6 @@ import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.cache.ArticleCache;
 import org.b3log.symphony.model.Article;
-import org.b3log.symphony.util.JSONs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

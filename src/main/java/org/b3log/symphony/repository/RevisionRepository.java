@@ -35,5 +35,4 @@ public class RevisionRepository extends AbstractRepository {
     public RevisionRepository() {
         super(Revision.REVISION);
     }
-
 }

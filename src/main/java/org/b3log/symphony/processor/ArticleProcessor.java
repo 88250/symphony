@@ -44,6 +44,8 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.thread.ThreadService;
+import org.b3log.latke.thread.ThreadServiceFactory;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
@@ -53,6 +55,7 @@ import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Referral;
 import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
@@ -65,6 +68,7 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ArticleAddValidation;
 import org.b3log.symphony.processor.advice.validate.ArticleUpdateValidation;
+import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.ClientMgmtService;
@@ -72,6 +76,7 @@ import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.LivenessMgmtService;
+import org.b3log.symphony.service.ReferralMgmtService;
 import org.b3log.symphony.service.RewardQueryService;
 import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -108,7 +113,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.15.27, Apr 24, 2016
+ * @version 1.18.15.27, Apr 28, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -196,6 +201,12 @@ public class ArticleProcessor {
      */
     @Inject
     private LivenessMgmtService livenessMgmtService;
+
+    /**
+     * Referral management service.
+     */
+    @Inject
+    private ReferralMgmtService referralMgmtService;
 
     /**
      * Filler.
@@ -510,6 +521,26 @@ public class ArticleProcessor {
         String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
         stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
         dataModel.put("stickConfirmLabel", stickConfirmLabel);
+
+        // Referral statistic
+        final String referralUserName = request.getParameter("r");
+        if (!UserRegisterValidation.invalidUserName(referralUserName)) {
+            final JSONObject referralUser = userQueryService.getUserByName(referralUserName);
+            if (null == referralUser) {
+                return;
+            }
+
+            final String viewerIP = Requests.getRemoteAddr(request);
+
+            final JSONObject referral = new JSONObject();
+            referral.put(Referral.REFERRAL_CLICK, 1);
+            referral.put(Referral.REFERRAL_DATA_ID, articleId);
+            referral.put(Referral.REFERRAL_IP, viewerIP);
+            referral.put(Referral.REFERRAL_TYPE, Referral.REFERRAL_TYPE_C_ARTICLE);
+            referral.put(Referral.REFERRAL_USER, referralUserName);
+
+            referralMgmtService.updateReferral(referral);
+        }
     }
 
     /**
