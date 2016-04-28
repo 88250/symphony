@@ -184,6 +184,12 @@
                 $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
                 $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
             });
-            
-            new ZeroClipboard(document.getElementById("shareClipboard"));
+
+            var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
+
+            shareClipboard.on("ready", function (readyEvent) {
+                shareClipboard.on("aftercopy", function (event) {
+                    $("#shareClipboard").text('${copiedLabel}');
+                });
+            });
 </script>
