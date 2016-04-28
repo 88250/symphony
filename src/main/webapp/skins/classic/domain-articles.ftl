@@ -23,7 +23,7 @@
                         </#if>
                         </#list>
                         <a href="/">${latestLabel}</a>
-                        <a href="/top">${hotLabel}</a>
+                        <a href="/hot">${hotLabel}</a>
                         <#if isLoggedIn && "" != currentUser.userCity>
                         <a href="/city/my">${currentUser.userCity}</a>
                         </#if>
