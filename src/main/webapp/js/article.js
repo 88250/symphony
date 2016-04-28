@@ -397,7 +397,7 @@ var Article = {
                                     result.revisions.length + '</span><a>>></a>' +
                                     '</div></div>');
                     Article.mergeEditor = CodeMirror.MergeView(document.getElementById('revisions'), {
-                        value: result.revisions[result.revisions.length - 1].revisionData.articleTitle + 
+                        value: result.revisions[result.revisions.length - 1].revisionData.articleTitle +
                                 '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
                         origLeft: result.revisions[result.revisions.length - 2].revisionData.articleTitle +
                                 '\n\n' + result.revisions[result.revisions.length - 2].revisionData.articleContent,
@@ -426,21 +426,21 @@ var Article = {
                 return false;
             }
             $('#revision .current').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
-            Article.mergeEditor.edit.setValue(revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' + 
+            Article.mergeEditor.edit.setValue(revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
                     revisions[prevVersion - 1].revisionData.articleContent);
-            Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion - 2].revisionData.articleTitle + '\n\n' + 
+            Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion - 2].revisionData.articleTitle + '\n\n' +
                     revisions[prevVersion - 2].revisionData.articleContent);
         });
-        
+
         $('#revision a').last().click(function () {
             var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
             if (prevVersion > revisions.length - 2) {
                 return false;
             }
             $('#revision .current').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
-            Article.mergeEditor.edit.setValue(revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' + 
+            Article.mergeEditor.edit.setValue(revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' +
                     revisions[prevVersion + 1].revisionData.articleContent);
-            Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion].revisionData.articleTitle + '\n\n' + 
+            Article.mergeEditor.leftOriginal().setValue(revisions[prevVersion].revisionData.articleTitle + '\n\n' +
                     revisions[prevVersion].revisionData.articleContent);
         });
     },
@@ -448,7 +448,11 @@ var Article = {
      * @description 分享按钮
      */
     share: function () {
-        $('#qrCode').qrcode({width: 90, height: 90, text: location.protocol + '//' + location.host + location.pathname});
+        var userName = Label.currentUserName ? '?r=' + Label.currentUserName : '';
+        $('#qrCode').qrcode({
+            width: 90, height: 90,
+            text: location.protocol + '//' + location.host + Label.articlePermalink + userName
+        });
 
         $(".share span").click(function () {
             var key = $(this).data("type");
@@ -457,7 +461,7 @@ var Article = {
                 return false;
             }
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
-                    url = "https://hacpai.com" + Label.articlePermalink,
+                    url = location.protocol + '//' + location.host + Label.articlePermalink + userName,
                     pic = $(".content-reset img").attr("src");
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
@@ -472,6 +476,8 @@ var Article = {
         $('#qrCode').click(function () {
             $(this).hide();
         });
+
+        new ZeroClipboard(document.getElementById("shareClipboard"));
     },
     /*
      * @description 解析语法高亮

@@ -227,6 +227,7 @@
 
 .share {
     margin-top: 20px;
+    margin-bottom: 5px;
     position: relative;
 }
 
@@ -253,6 +254,14 @@
     transform: rotate(360deg);
     -webkit-transform: rotate(360deg);
     color: #4183c4;
+}
+
+#shareClipboard {
+    position: absolute;
+    right: 0;
+    top: 0px;
+    padding: 5px 12px 5px;
+    border-radius: 0 3px 3px 0;
 }
 
 .grammar dl {

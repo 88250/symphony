@@ -330,4 +330,12 @@
 #avatarUpload {
     overflow: hidden;
 }
+
+#shareClipboard {
+    position: absolute;
+    right: 20px;
+    top: 68px;
+    padding: 5px 12px 5px;
+    border-radius: 0 3px 3px 0;
+}
 /* end settings */

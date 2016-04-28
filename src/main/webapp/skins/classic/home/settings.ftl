@@ -79,6 +79,8 @@
     <div class="module-panel form fn-clear">
         ${inviteTipLabel}<br><br>
         <input type="text" value="${serverScheme}://${serverHost}/register?r=${currentUser.userName}" onclick="this.select()"/>
+        <button class="red" id="shareClipboard"
+                data-clipboard-text="${serverScheme}://${serverHost}/register?r=${currentUser.userName}">${copyLabel}</button>
     </div>
 </div>
 
@@ -163,6 +165,7 @@
     </div>
 </div>
 </@home>
+<script type="text/javascript" src="${staticServePath}/js/lib/zeroclipboard/ZeroClipboard.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
 <script>
             Util.initUpload({
@@ -181,4 +184,6 @@
                 $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
                 $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
             });
+            
+            new ZeroClipboard(document.getElementById("shareClipboard"));
 </script>

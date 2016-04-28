@@ -119,6 +119,12 @@
                             <span class="icon-google" data-type="google"></span>
                         </div>
                     </div>
+                    <div class="form">
+                        <input type="text" readonly  onclick="this.select()"
+                               value="${serverHost}:${serverPort}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>">
+                        <button class="red" id="shareClipboard"
+                                data-clipboard-text="${serverHost}:${serverPort}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>">${copyLabel}</button>
+                    </div>
                     <#if 0 < article.articleRewardPoint>
                     <div class="content-reset" id="articleRewardContent"<#if !article.rewarded> class="reward"</#if>>
                          <#if !article.rewarded>
@@ -334,6 +340,9 @@
             Label.userCommentViewMode = ${userCommentViewMode};
             Label.stickConfirmLabel = "${stickConfirmLabel}";
             Label.audioRecordingLabel = '${audioRecordingLabel}';
+            <#if isLoggedIn>
+            Label.currentUserName = '${currentUser.userName}';
+            </#if>
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
@@ -345,6 +354,7 @@
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.qrcode.min.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/zeroclipboard/ZeroClipboard.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>

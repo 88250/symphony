@@ -262,12 +262,5 @@ var Settings = {
             return data;
         }
         return false;
-    },
-    /**
-     * @description 初识化设置页面
-     */
-    init: function () {
     }
 };
-
-Settings.init();
