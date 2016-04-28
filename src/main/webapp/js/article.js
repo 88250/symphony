@@ -482,12 +482,14 @@ var Article = {
             $(this).hide();
         });
 
-        var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
-        shareClipboard.on("ready", function (readyEvent) {
-            shareClipboard.on("aftercopy", function (event) {
-                $('#shareClipboard').attr('title', Label.copiedLabel)
+        if (typeof(ZeroClipboard) !== "undefined") {
+            var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
+            shareClipboard.on("ready", function (readyEvent) {
+                shareClipboard.on("aftercopy", function (event) {
+                    $('#shareClipboard').attr('title', Label.copiedLabel)
+                });
             });
-        });
+        }
     },
     /*
      * @description 解析语法高亮
