@@ -155,7 +155,7 @@ var ChatRoom = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             beforeSend: function () {
-                $("button.red").attr("disabled", "disabled").css("opacity", "0.3");
+                $(".form button.red").attr("disabled", "disabled").css("opacity", "0.3");
                 ChatRoom.editor.setOption("readOnly", "nocursor");
             },
             success: function (result, textStatus) {
@@ -180,7 +180,7 @@ var ChatRoom = {
                 $("#chatContentTip").addClass("error").html('<ul><li>' + result.statusText + '</li></ul>');
             },
             complete: function (jqXHR, textStatus) {
-                $("button.red").removeAttr("disabled").css("opacity", "1");
+                $(".form button.red").removeAttr("disabled").css("opacity", "1");
                 ChatRoom.editor.setOption("readOnly", false);
             }
         });
