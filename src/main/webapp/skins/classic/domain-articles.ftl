@@ -29,6 +29,20 @@
                         </#if>
                         <a href="/timeline">${timelineLabel}</a>
                     </div>
+                    <div>
+                        <#list domains as navDomain>
+                        <#if 10 < navDomain?counter>
+                        <#break>
+                        </#if>
+                        <#if navDomain.domainURI == domain.domainURI>
+                        <div class="domains-tags fn-clear">
+                            <#list navDomain.domainTags as tag>
+                            <a rel="nofollow" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                            </#list>
+                        </div>
+                        </#if>
+                        </#list>
+                    </div>
                     <@list listData=latestArticles/>
                     <@pagination url="/domain/${domain.domainURI}"/>
                     <br/><br/><br/>

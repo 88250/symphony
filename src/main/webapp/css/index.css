@@ -276,11 +276,32 @@
 
 /* start domains */
 .domains {
-    margin-bottom: 15px;
-    margin-left: 1px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
 }
 
 .domains a {
+    text-decoration: none;
+    padding: 5px 0px 4px;
+    color: #666;
+    white-space: nowrap;
+    border: solid transparent;
+    border-width: 3px 1px 1px;
+    border-radius: 3px 3px 0 0;
+    width: 10%;
+    text-align: center;
+    box-sizing: border-box;
+    float: left;
+    margin-bottom: -1px;
+}
+
+.domains a.selected {
+    color: #111;
+    background-color: #fff;
+    border-color: #d26911 #e5e5e5 transparent;
+}
+
+.domains-tags a {
     float: left;
     padding: 5px 10px;
     color: #333;
@@ -292,21 +313,21 @@
     margin-bottom: 5px;
 }
 
-.domains a:hover {
+.domains-tags a:hover {
     background-color: #f7f7f7;
 }
 
-.domains a:first-child {
+.domains-tags a:first-child {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
 }
 
-.domains a:last-child {
+.domains-tags a:last-child {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
 
-.domains a.selected {
+.domains-tags a.selected {
     color: #fff;
     background-color: #333;
     border-color: #333;
@@ -360,7 +381,7 @@
 }
 
 .article-list li:hover .cmts {
-/*    display: none; */
+    /*    display: none; */
 }
 
 .article-list li:hover .commenters {
