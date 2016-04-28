@@ -1,5 +1,6 @@
 <#include "macro-head.ftl">
 <#include "macro-list.ftl">
+<#include "macro-pagination.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,16 +21,15 @@
                         <#break>
                         </#if>
                         </#list>
-                        <a href="/" class="selected">${hotLabel}</a>
-                        <a href="/recent">${latestLabel}</a>
+                        <a href="/" class="selected">${latestLabel}</a>
+                        <a href="/hot">${hotLabel}</a>
                         <#if isLoggedIn && "" != currentUser.userCity>
                         <a href="/city/my">${currentUser.userCity}</a>
                         </#if>
                         <a href="/timeline">${timelineLabel}</a>
                     </div>
-                    <@list listData=indexArticles/>
-                    <br/>
-                    <a href="/recent" class="ft-gray">${moreRecentArticleLabel}</a>
+                    <@list listData=latestArticles/>
+                    <@pagination url="/"/>
                     <#if domains?size != 0>
                     <br/> <br/> <br/> <br/>
 

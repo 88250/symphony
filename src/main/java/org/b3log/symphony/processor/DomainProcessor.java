@@ -29,6 +29,7 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.Article;
@@ -83,13 +84,13 @@ public class DomainProcessor {
      */
     @Inject
     private Filler filler;
-    
+
     /**
      * Domain cache.
      */
     @Inject
     private DomainCache domainCache;
-    
+
     /**
      * Caches domains.
      *
@@ -213,53 +214,46 @@ public class DomainProcessor {
     }
 
     /**
-     * Shows recent articles.
+     * Shows hot articles.
      *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/recent", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/hot", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showRecentArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
-        renderer.setTemplateName("recent.ftl");
+        renderer.setTemplateName("hot.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        String pageNumStr = request.getParameter("p");
-        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
-            pageNumStr = "1";
+        final int pageSize = Symphonys.getInt("indexArticlesCnt");
+
+        final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
+        dataModel.put(Common.INDEX_ARTICLES, indexArticles);
+
+        dataModel.put(Article.ARTICLE_T_STICK_CHECK, true);
+
+        for (final JSONObject article : indexArticles) {
+            article.put(Article.ARTICLE_T_IS_STICK, article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0);
         }
 
-        final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Symphonys.getInt("latestArticlesCnt");
-
-        final JSONObject result = articleQueryService.getRecentArticles(pageNum, pageSize);
-        final List<JSONObject> latestArticles = (List<JSONObject>) result.get(Article.ARTICLES);
-        dataModel.put(Common.LATEST_ARTICLES, latestArticles);
-
-        final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
-        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
-
-        final List<Integer> pageNums = (List<Integer>) pagination.get(Pagination.PAGINATION_PAGE_NUMS);
-        if (!pageNums.isEmpty()) {
-            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
-            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        Stopwatchs.start("Fills");
+        try {
+            filler.fillHeaderAndFooter(request, response, dataModel);
+            filler.fillDomainNav(dataModel);
+            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
+                filler.fillRandomArticles(dataModel);
+            }
+            filler.fillHotArticles(dataModel);
+            filler.fillSideTags(dataModel);
+            filler.fillLatestCmts(dataModel);
+        } finally {
+            Stopwatchs.end();
         }
-
-        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
-        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-        filler.fillDomainNav(dataModel);
-        filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
     }
 }

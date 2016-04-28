@@ -21,15 +21,17 @@
                         <#break>
                         </#if>
                         </#list>
-                        <a href="/">${hotLabel}</a>
-                        <a href="/recent" class="selected">${latestLabel}</a>
+                        <a href="/">${latestLabel}</a>
+                        <a href="/hot" class="selected">${hotLabel}</a>
                         <#if isLoggedIn && "" != currentUser.userCity>
                         <a href="/city/my">${currentUser.userCity}</a>
                         </#if>
                         <a href="/timeline">${timelineLabel}</a>
                     </div>
-                    <@list listData=latestArticles/>
-                    <@pagination url="/recent"/>
+                    <@list listData=indexArticles/>
+                    <@pagination url="/hot"/>
+                    <br>
+                    <a href="/" class="ft-gray">${moreRecentArticleLabel}</a>
                 </div>
                 <div class="side">
                     <#include "side.ftl">

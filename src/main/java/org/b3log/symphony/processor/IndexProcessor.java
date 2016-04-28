@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -31,7 +32,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -48,13 +49,12 @@ import org.json.JSONObject;
  * <li>Shows index (/), GET</li>
  * <li>Shows about (/about), GET</li>
  * <li>Shows b3log (/b3log), GET</li>
- * <li>Shows Baidu search header (/search-header), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.1.11, Apr 16, 2016
+ * @version 1.3.1.12, Apr 28, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -101,30 +101,37 @@ public class IndexProcessor {
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final int pageSize = Symphonys.getInt("indexArticlesCnt");
-
-        final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
-        dataModel.put(Common.INDEX_ARTICLES, indexArticles);
-
-        dataModel.put(Article.ARTICLE_T_STICK_CHECK, true);
-
-        for (final JSONObject article : indexArticles) {
-            article.put(Article.ARTICLE_T_IS_STICK, article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0);
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
         }
 
-        Stopwatchs.start("Fills");
-        try {
-            filler.fillHeaderAndFooter(request, response, dataModel);
-            filler.fillDomainNav(dataModel);
-            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-                filler.fillRandomArticles(dataModel);
-            }
-            filler.fillHotArticles(dataModel);
-            filler.fillSideTags(dataModel);
-            filler.fillLatestCmts(dataModel);
-        } finally {
-            Stopwatchs.end();
+        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageSize = Symphonys.getInt("latestArticlesCnt");
+
+        final JSONObject result = articleQueryService.getRecentArticles(pageNum, pageSize);
+        final List<JSONObject> latestArticles = (List<JSONObject>) result.get(Article.ARTICLES);
+        dataModel.put(Common.LATEST_ARTICLES, latestArticles);
+
+        final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final List<Integer> pageNums = (List<Integer>) pagination.get(Pagination.PAGINATION_PAGE_NUMS);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
         }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillDomainNav(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
+        filler.fillRandomArticles(dataModel);
+        filler.fillHotArticles(dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
     }
 
     /**
@@ -168,31 +175,6 @@ public class IndexProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("b3log.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
-    }
-
-    /**
-     * Shows search header.
-     *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/search-header", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void showSearchHeader(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("search-header.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);

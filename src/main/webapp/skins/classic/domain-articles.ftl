@@ -22,8 +22,8 @@
                         <#break>
                         </#if>
                         </#list>
-                        <a href="/">${hotLabel}</a>
-                        <a href="/recent">${latestLabel}</a>
+                        <a href="/">${latestLabel}</a>
+                        <a href="/top">${hotLabel}</a>
                         <#if isLoggedIn && "" != currentUser.userCity>
                         <a href="/city/my">${currentUser.userCity}</a>
                         </#if>
