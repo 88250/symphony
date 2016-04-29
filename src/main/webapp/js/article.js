@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.16.19.9, Apr 13, 2016
+ * @version 1.17.19.9, Apr 28, 2016
  */
 
 /**
@@ -390,6 +390,11 @@ var Article = {
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
+                    if (result.revisions.length === 1) {
+                        $('#revisions').html('<h1>no revision</h1>');
+                        return false;
+                    }
+                    
                     $('#revisions').data('revisions', result.revisions).
                             before('<div class="fn-clear"><div class="pagination">' +
                                     '<a href="javascript:void(0)"><<</a><span class="current">' +

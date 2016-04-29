@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.9.15, Apr 21, 2016
+ * @version 2.7.10.15, Apr 29, 2016
  */
 
 /* start module */
@@ -73,11 +73,16 @@
 /* end module */
 
 /* start article */
-#voteUp,
-#voteDown {
+.article-action .fn-right > a,
+.article-action .fn-right > span {
     border: 1px solid #e0e0e0;
-    padding: 3px 3px 0;
-    border-radius: 3px;
+    padding: 4px 8px;
+    border-radius: 2px;
+    display: inline-block;
+    line-height: 16px;
+    float: left;
+    margin-left: 10px;
+    text-decoration: none;
 }
 
 #heatBar {
@@ -87,35 +92,17 @@
     width: 100%;
 }
 
-#articltVia {
-    margin: 21px 0 0 10px;
-}
-
-.article-title {
-    margin: 10px 0;
-}
-
-.article-title h2 {
+h2.article-title {
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
+    margin: 10px 0;
 }
 
-.article-title > span {
-    margin-top: 4px;
-    display: block;
-}
-
-.article-info > .fn-right a {
-    text-decoration: none;
-}
-
-.article-info > .fn-right a:hover {
-    color: #4183C4;
-}
-
-.article-info .tag {
-    margin-top: 0;
+.article-info .fn-flex-1 {
+    font-size: 12px;
+    line-height: 22px;
+    margin-bottom: 15px;
 }
 
 #thoughtProgress {

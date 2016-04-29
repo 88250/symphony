@@ -383,6 +383,11 @@ textarea {
     font-size: 12px;
 }
 
+.ft-black,
+a.ft-black {
+    color: #333;
+}
+
 .ft-gray,
 .ft-gray a {
     color: #999;
@@ -544,7 +549,6 @@ a[class*=" icon-"]:hover {
     text-decoration: none;
     color: #4183c4;
 }
-
 
 .icon-wechat:before {
     content: "\e907";
@@ -1616,12 +1620,31 @@ ul.CodeMirror-hints {
 /* end module */
 
 /* start article */
-.article-info .fn-pointer {
+.article-action .fn-right > a,
+.article-action .fn-right > span {
     border: 1px solid #e0e0e0;
-    padding: 3px 3px 0;
-    border-radius: 3px;
+    padding: 4px 8px;
+    border-radius: 2px;
     display: inline-block;
-    margin-bottom: 5px;
+    line-height: 16px;
+    float: left;
+    margin-left: 5px;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.article-info {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.article-info > div {
+    position: absolute;
+    top: 0;
+    left: 40px;
+    font-size: 12px;
+    min-height: 30px;
+    line-height: 15px;
 }
 
 #heatBar {
@@ -1631,26 +1654,11 @@ ul.CodeMirror-hints {
     width: 100%;
 }
 
-#articltVia {
-    margin: 1px 0 0 10px;
-}
-
 h2.article-title {
     word-break: break-all;
     font-size: 16px;
     font-weight: normal;
-}
-
-.article-info {
-    padding-top: 10px;
-}
-
-.article-info > .fn-right a {
-    text-decoration: none;
-}
-
-.article-info .tag {
-    margin-top: 0;
+    margin: 10px 0;
 }
 
 #thoughtProgress {
@@ -1822,11 +1830,12 @@ h2.article-title {
     padding: 4px 8px;
     color: #999;
     text-decoration: none;
-    border-radius: 3px;
+    border-radius: 2px;
     margin: 5px;
-    line-height: 20px;
     background-color: #f7f7f7;
     border: 1px solid #DDD;
+    font-size: 12px;
+    line-height: 16px;
 }
 
 .domains a.selected {

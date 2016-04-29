@@ -16,31 +16,14 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="ft-gray fn-clear article-info">
-                        <div class="fn-left">
-                            <#list article.articleTags?split(",") as articleTag>
-                            <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">
-                                ${articleTag}
-                            </a>&nbsp;
-                            </#list>
-                        </div>
-                        <div class="responsive-show fn-hr5"></div>
-                        <div class="fn-right">
-                            <span class="icon-date"></span>
-                            ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')} &nbsp;
-                            <a title="${cmtLabel}" rel="nofollow" href="#comments">
-                                <span class="icon-cmts"></span>
-                                ${article.articleCommentCount}
-                            </a> &nbsp;
-                            <span title="${viewLabel}"> 
-                                <span class="icon-view"></span>
-                                <#if article.articleViewCount < 1000>
-                                ${article.articleViewCount}
-                                <#else>
-                                ${article.articleViewCntDisplayFormat}
-                                </#if>
-                            </span>
-                            &nbsp;
+                    <div class="fn-clear article-action">
+                        <span class="fn-right">
+                            <#if isLoggedIn>
+                            <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
+                                <span class="icon-thumbs-up"></span></span>
+                            <span id="voteDown" class="fn-pointer<#if 1==vote> ft-red</#if>" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
+                                <span class="icon-thumbs-down"></span></span>
+                            </#if>
                             <#if isLoggedIn>
                             <#if isFollowing>
                             <span class="ft-red fn-pointer" title="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
@@ -59,46 +42,63 @@
                                 ${article.articleCollectCnt}
                             </span>
                             </#if>
-                        </div>
-                    </div>
-                    <div class="article-title fn-flex">
-                        <h2 class="fn-flex-1">
-                            <a rel="author" href="/member/${article.articleAuthorName}" class="ft-gray"
-                               title="${article.articleAuthorName}"><div class="avatar-small" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div></a> &nbsp;
-                            <#if 1 == article.articleType>
-                            <span class="icon-locked" title="${discussionLabel}"></span>
-                            <#elseif 2 == article.articleType>
-                            <span class="icon-feed" title="${cityBroadcastLabel}"></span>
-                            <#elseif 3 == article.articleType>
-                            <span class="icon-video" title="${thoughtLabel}"></span>
-                            </#if>
-                            <a href="${article.articlePermalink}" rel="bookmark">
-                                ${article.articleTitleEmoj}
-                            </a> &nbsp;
-                        </h2> 
-                        <div class="responsive-show fn-hr5"></div>
-                        <span>
-                            <#if isLoggedIn>
-                            <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
-                                <span class="icon-thumbs-up"></span></span>&nbsp;
-                            <span id="voteDown" class="fn-pointer<#if 1==vote> ft-red</#if>" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
-                                <span class="icon-thumbs-down"></span></span>
-                            </#if>
-                            <span onclick="Article.revision('${article.oId}')" class="fn-none">revisions</span>
+                            <span onclick="Article.revision('${article.oId}')" title="${historyLabel}"
+                                  class="fn-pointer icon-refresh"></span>
                             <#if article.isMyArticle && 3 != article.articleType>
-                            &nbsp;
                             <a href="/update?id=${article.oId}" title="${editLabel}" class="icon-edit"></a>
                             </#if>
                             <#if article.isMyArticle>
-                            &nbsp;
                             <a class="icon-chevron-up" title="${stickLabel}" 
                                href="javascript:Article.stick('${article.oId}')"></a>
                             </#if>
                             <#if isAdminLoggedIn>
-                            &nbsp;
                             <a class="icon-setting" href="/admin/article/${article.oId}" title="${adminLabel}"></a>
                             </#if>
                         </span>
+                    </div>
+
+                    <h2 class="article-title">
+                        <#if 1 == article.articleType>
+                        <span class="icon-locked" title="${discussionLabel}"></span>
+                        <#elseif 2 == article.articleType>
+                        <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                        <#elseif 3 == article.articleType>
+                        <span class="icon-video" title="${thoughtLabel}"></span>
+                        </#if>
+                        <a href="${article.articlePermalink}" rel="bookmark">
+                            ${article.articleTitleEmoj}
+                        </a>
+                    </h2> 
+                    <div class="article-info fn-flex">
+                        <a rel="author" href="/member/${article.articleAuthorName}"
+                           title="${article.articleAuthorName}"><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div></a> 
+                        <div class="fn-flex-1">
+                            <a rel="author" href="/member/${article.articleAuthorName}" class="ft-black"
+                               title="${article.articleAuthorName}"><strong>${article.articleAuthorName}</strong></a>
+                            <span class="ft-gray">
+                            •
+                            ${article.timeAgo}   
+                            •
+                            ${viewLabel}
+                            <#if article.articleViewCount < 1000>
+                            ${article.articleViewCount}
+                            <#else>
+                            ${article.articleViewCntDisplayFormat}
+                            </#if>
+                            •
+                            </span>
+                            <a title="${cmtLabel}" rel="nofollow" class="ft-gray" href="#comments">
+                                <strong>${cmtLabel}
+                                    ${article.articleCommentCount}</strong>
+                            </a> 
+                            <br/>
+                            <#list article.articleTags?split(",") as articleTag>
+                            <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">
+                                ${articleTag}
+                            </a>&nbsp;
+                            </#list>
+                            <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>
+                        </div>
                     </div>
 
                     <#if 3 != article.articleType>
@@ -109,7 +109,6 @@
                     </#if>
 
                     <div class="fn-clear">
-                        <span id="articltVia" data-ua="${article.articleUA}" class="ft-gray ft-smaller fn-right"></span>
                         <div class="share fn-right">
                             <div id="qrCode" class="fn-none"></div>
                             <span class="icon-wechat" data-type="wechat"></span>
@@ -339,7 +338,7 @@
             Label.audioRecordingLabel = '${audioRecordingLabel}';
             Label.copiedLabel = '${copiedLabel}';
             <#if isLoggedIn>
-            Label.currentUserName = '${currentUser.userName}';
+                    Label.currentUserName = '${currentUser.userName}';
             </#if>
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
