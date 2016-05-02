@@ -337,6 +337,7 @@
             Label.stickConfirmLabel = "${stickConfirmLabel}";
             Label.audioRecordingLabel = '${audioRecordingLabel}';
             Label.copiedLabel = '${copiedLabel}';
+            Label.noRevisionLabel = "${noRevisionLabel}";
             <#if isLoggedIn>
                     Label.currentUserName = '${currentUser.userName}';
             </#if>

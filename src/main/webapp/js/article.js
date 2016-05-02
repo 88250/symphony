@@ -350,7 +350,7 @@ var Comment = {
 
 var Article = {
     /**
-     * @description 初识化文章
+     * @description 初始化文章
      */
     init: function () {
         this.share();
@@ -370,8 +370,8 @@ var Article = {
         }
 
         $('#revision').dialog({
-            "width": 800,
-            "height": 500,
+            "width": $(window).width(),
+            "height": $(window).height(),
             "modal": true,
             "hideFooter": true
         });
@@ -390,16 +390,17 @@ var Article = {
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
-                    if (result.revisions.length === 1) {
-                        $('#revisions').html('<h1>no revision</h1>');
+                    if (0 === result.revisions.length /* legacy data */
+                            || 1 === result.revisions.length) {
+                        $('#revisions').html('<b>' + Label.noRevisionLabel + '</b>');
                         return false;
                     }
-                    
+
                     $('#revisions').data('revisions', result.revisions).
-                            before('<div class="fn-clear"><div class="pagination">' +
-                                    '<a href="javascript:void(0)"><<</a><span class="current">' +
+                            before('<div class="fn-clear"><div style="float: left;margin: 20px 0 10px 0;">Esc to exit</div><div class="pagination" style="margin-right: 15px">' +
+                                    '<a href="javascript:void(0)">&lt;</a><span class="current">' +
                                     (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
-                                    result.revisions.length + '</span><a>>></a>' +
+                                    result.revisions.length + '</span><a>&gt;</a>' +
                                     '</div></div>');
                     Article.mergeEditor = CodeMirror.MergeView(document.getElementById('revisions'), {
                         value: result.revisions[result.revisions.length - 1].revisionData.articleTitle +
@@ -487,7 +488,7 @@ var Article = {
             $(this).hide();
         });
 
-        if (typeof(ZeroClipboard) !== "undefined") {
+        if (typeof (ZeroClipboard) !== "undefined") {
             var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
             shareClipboard.on("ready", function (readyEvent) {
                 shareClipboard.on("aftercopy", function (event) {
