@@ -88,8 +88,7 @@
                             •
                             </span>
                             <a title="${cmtLabel}" rel="nofollow" class="ft-gray" href="#comments">
-                                <strong>${cmtLabel}
-                                    ${article.articleCommentCount}</strong>
+                                ${cmtLabel} ${article.articleCommentCount}
                             </a> 
                             <br/>
                             <#list article.articleTags?split(",") as articleTag>

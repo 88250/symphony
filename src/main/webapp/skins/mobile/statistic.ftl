@@ -11,7 +11,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content content-reset">
-                    <h1>${communityLabel}${dataStatLabel}</h1>
+                    <h1>${dataStatLabel}</h1>
                     <i class="ft-gray">${dataStatSubLabel}</i>
                     <br><br>
                     <div id="chart30" style="height:400px"></div>
