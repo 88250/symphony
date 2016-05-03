@@ -26,7 +26,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.3.3, Apr 14, 2016
+ * @version 1.10.3.4, May 3, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -216,9 +216,14 @@ public final class Tag {
     public static final int MAX_TAG_COUNT = 4;
 
     /**
+     * Tag title pattern string.
+     */
+    public static final String TAG_TITLE_PATTERN_STR = "[\\u4e00-\\u9fa5,\\w,\\s,&,\\+,\\-,\\.]+";
+
+    /**
      * Tag title pattern.
      */
-    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile("[\\u4e00-\\u9fa5,\\w,\\s,&,\\+,\\-,\\.]+");
+    public static final Pattern TAG_TITLE_PATTERN = Pattern.compile(TAG_TITLE_PATTERN_STR);
 
     /**
      * Uses the head tags.
