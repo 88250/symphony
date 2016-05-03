@@ -8,6 +8,7 @@
         <#if esEnabled || algoliaEnabled>
         <button type="button" class="btn red" onclick="searchIndex();">${searchIndexLabel}</button>
         </#if>
+        <button type="button" class="btn red" onclick="window.location='/admin/add-article'">${addArticleLabel}</button>
     </form>
     <br/>
     <ul>

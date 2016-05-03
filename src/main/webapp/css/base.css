@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.16.12.20, Apr 29, 2016
+ * @version 1.16.12.21, May 3, 2016
  */
 
 /* start reset */
@@ -876,6 +876,8 @@ a[class*=" icon-"]:hover {
 }
 
 .form input[type=text],
+.form input[type=datetime],
+.form input[type=datetime-local],
 .form input[type=password],
 .form input[type=number],
 .form select,

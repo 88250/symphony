@@ -33,6 +33,9 @@
         <#if type == "addReservedWord">
         <@head title="${allReservedWordLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "addArticle">
+        <@head title="${addArticleLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <#if type == "misc">
         <@head title="${miscAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
@@ -46,7 +49,7 @@
                     <ul class="tab fn-clear">
                         <li<#if type == "index"> class="current"</#if>><a href="/admin">${consoleIndexLabel}</a></li>
                         <li<#if type == "users" || type == "addUser"> class="current"</#if>><a href="/admin/users">${userAdminLabel}</a></li>
-                        <li<#if type == "articles"> class="current"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
+                        <li<#if type == "articles" || type == "addArticle"> class="current"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
                         <li<#if type == "comments"> class="current"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
                         <li<#if type == "domains" || type == "addDomain"> class="current"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
                         <li<#if type == "tags"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
@@ -60,7 +63,7 @@
                     <ul class="note-list responsive-hide">
                         <li<#if type == "index"> class="current"</#if>><a href="/admin">${consoleIndexLabel}</a></li>
                         <li<#if type == "users" || type == "addUser"> class="current"</#if>><a href="/admin/users">${userAdminLabel}</a></li>
-                        <li<#if type == "articles"> class="current"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
+                        <li<#if type == "articles" || type == "addArticle"> class="current"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
                         <li<#if type == "comments"> class="current"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
                         <li<#if type == "domains" || type == "addDomain"> class="current"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
                         <li<#if type == "tags"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>

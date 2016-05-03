@@ -16,6 +16,7 @@
 package org.b3log.symphony.processor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +25,10 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
@@ -94,6 +97,8 @@ import org.json.JSONObject;
  * <li>Shows an article (/admin/article/{articleId}), GET</li>
  * <li>Updates an article (/admin/article/{articleId}), POST</li>
  * <li>Removes an article (/admin/remove-article), POST</li>
+ * <li>Shows add article (/admin/add-article), GET</li>
+ * <li>Adds an article (/admin/add-article), POST</li>
  * <li>Shows comments (/admin/comments), GET</li>
  * <li>Show a comment (/admin/comment/{commentId}), GET</li>
  * <li>Updates a comment (/admin/comment/{commentId}), POST</li>
@@ -111,7 +116,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.2.3, Apr 18, 2016
+ * @version 2.15.2.3, May 3, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -233,6 +238,93 @@ public class AdminProcessor {
      * Pagination page size.
      */
     private static final int PAGE_SIZE = 20;
+
+    /**
+     * Shows add article.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/add-article", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showAddArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/add-article.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Adds an article.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/add-article", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void addArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String userName = request.getParameter(User.USER_NAME);
+        final JSONObject author = userQueryService.getUserByName(userName);
+        if (null == author) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, langPropsService.get("notFoundUserLabel"));
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        final String timeStr = request.getParameter(Common.TIME);
+        final String articleTitle = request.getParameter(Article.ARTICLE_TITLE);
+        final String articleTags = request.getParameter(Article.ARTICLE_TAGS);
+        final String articleContent = request.getParameter(Article.ARTICLE_CONTENT);
+
+        long time = System.currentTimeMillis();
+
+        try {
+            final Date date = DateUtils.parseDate(timeStr, new String[]{"yyyy-MM-dd'T'HH:mm"});
+
+            time = date.getTime();
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Parse time failed, using current time instead");
+        }
+
+        final JSONObject article = new JSONObject();
+        article.put(Article.ARTICLE_TITLE, articleTitle);
+        article.put(Article.ARTICLE_TAGS, articleTags);
+        article.put(Article.ARTICLE_CONTENT, articleContent);
+        article.put(User.USER_NAME, userName);
+        article.put(Common.TIME, time);
+
+        try {
+            articleMgmtService.addArticleByAdmin(article);
+        } catch (final ServiceException e) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, e.getMessage());
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/articles");
+    }
 
     /**
      * Adds a reserved word.

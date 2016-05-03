@@ -33,6 +33,9 @@
         <#if type == "addReservedWord">
         <@head title="${allReservedWordLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "addArticle">
+        <@head title="${addArticleLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <#if type == "misc">
         <@head title="${miscAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
@@ -46,7 +49,7 @@
                     ${consoleIndexLabel}
                     <#elseif type == "users" || type == "addUser">
                     ${userAdminLabel}
-                    <#elseif type == "articles">
+                    <#elseif type == "articles" || type == "addArticle">
                     ${articleAdminLabel}
                     <#elseif type == "comments">
                     ${commentAdminLabel}
@@ -65,7 +68,7 @@
                 <ul class="tab fn-clear fn-none">
                     <li<#if type == "index"> class="fn-none"</#if>><a href="/admin">${consoleIndexLabel}</a></li>
                     <li<#if type == "users" || type == "addUser"> class="fn-none"</#if>><a href="/admin/users">${userAdminLabel}</a></li>
-                    <li<#if type == "articles"> class="fn-none"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
+                    <li<#if type == "articles" || type == "addArticle"> class="fn-none"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
                     <li<#if type == "comments"> class="fn-none"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
                     <li<#if type == "domains" || type == "addDomain"> class="fn-none"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
                     <li<#if type == "tags"> class="fn-none"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
