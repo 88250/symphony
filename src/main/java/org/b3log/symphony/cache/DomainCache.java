@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * Domain cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 14, 2016
+ * @version 1.0.1.0, May 3, 2016
  * @since 1.4.0
  */
 @Named
@@ -61,7 +61,7 @@ public class DomainCache {
             return Collections.emptyList();
         }
 
-        final int end = fetchSize >= DOMAINS.size() ? DOMAINS.size() - 1 : fetchSize;
+        final int end = fetchSize >= DOMAINS.size() ? DOMAINS.size() : fetchSize;
 
         return DOMAINS.subList(0, end);
     }

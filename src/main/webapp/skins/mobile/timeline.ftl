@@ -13,9 +13,6 @@
                 <div class="domains fn-clear">
                     <#list domains as navDomain>
                     <a href="/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
-                    <#if 10 < navDomain?counter>
-                    <#break>
-                    </#if>
                     </#list>
                     <a href="/">${latestLabel}</a>
                     <a href="/hot">${hotLabel}</a>

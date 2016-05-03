@@ -15,9 +15,6 @@
                 <div class="domains fn-clear">
                     <#list domains as domain>
                     <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
-                    <#if 10 < domain?counter>
-                    <#break>
-                    </#if>
                     </#list>
                     <a href="/" class="selected">${latestLabel}</a>
                     <a href="/hot">${hotLabel}</a>

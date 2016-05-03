@@ -16,9 +16,6 @@
             <div class="wrapper fn-clear">
                 <#list domains as navDomain>
                 <a href="/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainTitle}</a>
-                <#if 10 < navDomain?counter>
-                <#break>
-                </#if>
                 </#list>
                 <a href="/">${latestLabel}</a>
                 <a href="/hot">${hotLabel}</a>
@@ -33,9 +30,6 @@
                 <div class="content">
                     <div class="domain-tags fn-clear">
                         <#list domains as navDomain>
-                        <#if 10 < navDomain?counter>
-                        <#break>
-                        </#if>
                         <#if navDomain.domainURI == domain.domainURI>
                         <#list navDomain.domainTags as tag>
                         <a rel="nofollow" class="ft-gray" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>  
