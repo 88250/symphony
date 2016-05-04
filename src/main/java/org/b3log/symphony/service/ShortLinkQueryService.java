@@ -60,7 +60,7 @@ public class ShortLinkQueryService {
      * Article pattern - full.
      */
     private static final Pattern ARTICLE_PATTERN_FULL
-            = Pattern.compile(Latkes.getServePath() + "/article/" + "\\d{13,15}");
+            = Pattern.compile("(?:^|[^\"'])(" + Latkes.getServePath() + "/article/\\d{13,15}(\\b|$))");
 
     /**
      * Tag title pattern.
