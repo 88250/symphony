@@ -80,7 +80,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.11.20, Apr 24, 2016
+ * @version 2.15.11.21, May 6, 2016
  * @since 0.2.0
  */
 @Service
@@ -996,6 +996,7 @@ public class ArticleQueryService {
      */
     private Query makeRecentQuery(final int currentPageNum, final int fetchSize) {
         final Query query = new Query()
+                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
         query.setFilter(makeArticleShowingFilter());
@@ -1011,7 +1012,6 @@ public class ArticleQueryService {
      */
     private Query makeTopQuery(final int currentPageNum, final int fetchSize) {
         final Query query = new Query()
-                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
                 .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
                 .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
                 .setPageCount(1).setPageSize(fetchSize).setCurrentPageNum(currentPageNum);

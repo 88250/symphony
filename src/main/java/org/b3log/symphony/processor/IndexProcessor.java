@@ -54,7 +54,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.1.12, Apr 28, 2016
+ * @version 1.3.1.13, May 6, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -112,6 +112,12 @@ public class IndexProcessor {
         final JSONObject result = articleQueryService.getRecentArticles(pageNum, pageSize);
         final List<JSONObject> latestArticles = (List<JSONObject>) result.get(Article.ARTICLES);
         dataModel.put(Common.LATEST_ARTICLES, latestArticles);
+
+        dataModel.put(Article.ARTICLE_T_STICK_CHECK, true);
+
+        for (final JSONObject article : latestArticles) {
+            article.put(Article.ARTICLE_T_IS_STICK, article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0);
+        }
 
         final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);

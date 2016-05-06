@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 12, 2016
+ * @version 1.0.0.2, May 6, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -235,12 +235,6 @@ public class DomainProcessor {
 
         final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
-
-        dataModel.put(Article.ARTICLE_T_STICK_CHECK, true);
-
-        for (final JSONObject article : indexArticles) {
-            article.put(Article.ARTICLE_T_IS_STICK, article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0);
-        }
 
         Stopwatchs.start("Fills");
         try {
