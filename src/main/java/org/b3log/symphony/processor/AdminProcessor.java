@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -116,7 +117,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.2.3, May 3, 2016
+ * @version 2.15.2.4, May 6, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -298,6 +299,8 @@ public class AdminProcessor {
             final Date date = DateUtils.parseDate(timeStr, new String[]{"yyyy-MM-dd'T'HH:mm"});
 
             time = date.getTime();
+            final int random = RandomUtils.nextInt(9999);
+            time += random;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Parse time failed, using current time instead");
         }
