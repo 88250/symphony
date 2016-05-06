@@ -44,8 +44,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.thread.ThreadService;
-import org.b3log.latke.thread.ThreadServiceFactory;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
@@ -113,7 +111,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.15.27, Apr 28, 2016
+ * @version 1.18.15.28, May 6, 2016
  * @since 0.2.0
  */
 @RequestProcessor
