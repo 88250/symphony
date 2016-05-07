@@ -8,9 +8,7 @@ Sym 是一个用 Java 写的实时论坛，欢迎来[体验](https://hacpai.com/
 
 ### 作者
 
-Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219) ，欢迎互粉。
-
-另外，该项目的所有贡献者可以在[这里](https://github.com/b3log/symphony/graphs/contributors)看到。
+Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/symphony/graphs/contributors)看到。
 
 ### 初衷
 
