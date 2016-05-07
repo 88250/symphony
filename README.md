@@ -6,6 +6,12 @@ Sym 是一个用 Java 写的实时论坛，欢迎来[体验](https://hacpai.com/
 
 如果你需要搭建一个企业内网论坛，请使用 [SymX](https://github.com/FangStarNet/symphonyx)。
 
+### 作者
+
+Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219) ，欢迎互粉。
+
+另外，该项目的所有贡献者可以在[这里](https://github.com/b3log/symphony/graphs/contributors)看到。
+
 ### 初衷
 
 Sym 的诞生是有如下几点原因：
