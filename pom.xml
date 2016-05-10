@@ -28,7 +28,8 @@
         <slf4j.version>1.7.5</slf4j.version>
         <mysql-connector-java.version>5.1.36</mysql-connector-java.version>
         <jsoup.version>1.7.1</jsoup.version>
-        <markdownpapers-core.version>1.4.2</markdownpapers-core.version>
+        <markdownpapers-core.version>1.4.3</markdownpapers-core.version>
+        <pegdown.version>1.6.0</pegdown.version>
         <qiniu.version>7.0.4.1</qiniu.version>
         <jodd.version>3.6.6</jodd.version>
         <emoji-java.version>1.1.1</emoji-java.version>
@@ -190,6 +191,12 @@
             <groupId>org.tautua.markdownpapers</groupId>
             <artifactId>markdownpapers-core</artifactId>
             <version>${markdownpapers-core.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+            <version>${pegdown.version}</version>
         </dependency>
         
         <dependency>

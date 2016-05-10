@@ -15,8 +15,6 @@
  */
 package org.b3log.symphony.util;
 
-import java.io.StringReader;
-import java.io.StringWriter;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
@@ -29,8 +27,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
-import org.tautua.markdownpapers.Markdown;
-import org.tautua.markdownpapers.parser.ParseException;
+import org.pegdown.Extensions;
+import org.pegdown.PegDownProcessor;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
@@ -40,7 +38,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.3.8, Apr 26, 2016
+ * @version 1.6.3.8, May 9, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -122,17 +120,19 @@ public final class Markdowns {
             return "";
         }
 
-        final StringWriter writer = new StringWriter();
-        final Markdown markdown = new Markdown();
-
-        try {
-            markdown.transform(new StringReader(markdownText), writer);
-        } catch (final ParseException e) {
-            // LOGGER.log(Level.WARN, "Markdown error[text={0}]", markdownText);
-            return markdownText;
-        }
-
-        return writer.toString();
+//        final StringWriter writer = new StringWriter();
+//        final Markdown markdown = new Markdown();
+//
+//        try {
+//            markdown.transform(new StringReader(markdownText), writer);
+//        } catch (final ParseException e) {
+//            // LOGGER.log(Level.WARN, "Markdown error[text={0}]", markdownText);
+//            return markdownText;
+//        }
+//
+//        return writer.toString();
+        final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL, 5000);
+        return pegDownProcessor.markdownToHtml(markdownText);
     }
 
     /**
