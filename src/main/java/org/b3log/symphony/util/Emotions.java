@@ -17,7 +17,6 @@ package org.b3log.symphony.util;
 
 import com.vdurmont.emoji.EmojiParser;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.util.Stopwatchs;
 
@@ -25,7 +24,7 @@ import org.b3log.latke.util.Stopwatchs;
  * Emotions utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Apr 14, 2016
+ * @version 1.1.1.2, May 10, 2016
  * @since 0.2.0
  */
 public final class Emotions {
@@ -996,7 +995,7 @@ public final class Emotions {
             for (final String emojiCode : EMOJIS) {
                 final String emoji = ":" + emojiCode + ":";
                 ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                        + staticServePath + "/js/lib/emojify.js-1.0.2/images/basic/" + emojiCode
+                        + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode
                         + ".png\" title=\"" + emoji + "\"></img>");
             }
 
