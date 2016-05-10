@@ -713,6 +713,11 @@ public class UserProcessor {
             dataModel.put("qiniuUploadToken", "");
         }
 
+        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        dataModel.put("imgMaxSize", imgMaxSize);
+        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        dataModel.put("fileMaxSize", fileMaxSize);
+
         filler.fillHeaderAndFooter(request, response, dataModel);
 
         String inviteTipLabel = (String) dataModel.get("inviteTipLabel");

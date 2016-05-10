@@ -171,7 +171,8 @@
             Util.initUpload({
                 id: 'avatarUpload',
                 qiniuUploadToken: '${qiniuUploadToken}',
-                userId: '${currentUser.oId}'
+                userId: '${currentUser.oId}',
+                maxSize: ${imgMaxSize?c}
             }, function (data) {
                 var qiniuKey = data.result.key;
                 $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);

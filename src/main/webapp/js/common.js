@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.12.15, Apr 13, 2016
+ * @version 1.23.12.16, May 10, 2016
  */
 
 /**
@@ -269,14 +269,15 @@ var Util = {
         };
     },
     /**
-     * 初始化图片上传
+     * 初始化个人设置中的头像图片上传.
+     * 
      * @returns {Boolean}
      */
     initUpload: function (params, succCB, succCBQN) {
         if ("" === params.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
             $('#' + params.id).fileupload({
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 1024 * 1024, // 1M
+                maxFileSize: params.maxSize,
                 multipart: true,
                 pasteZone: null,
                 dropZone: null,
@@ -308,7 +309,7 @@ var Util = {
         } else {
             $('#' + params.id).fileupload({
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: 1024 * 1024, // 1M
+                maxFileSize: params.maxSize,
                 multipart: true,
                 pasteZone: null,
                 dropZone: null,
@@ -889,20 +890,20 @@ var Util = {
                             var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
                             var mime = isImage(fileBuf);
 
-                            if (null == mime) {
+                            if (null === mime) {
                                 alert("Image only~");
 
                                 return;
                             }
 
-                            if (evt.target.result.byteLength > 1024 * 1024) {
-                                alert("This image is too big (max: 1Mb)");
+                            if (evt.target.result.byteLength > obj.imgMaxSize) {
+                                alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
 
                                 return;
                             }
 
                             data.submit();
-                        }
+                        };
                     } else {
                         data.submit();
                     }
@@ -986,7 +987,7 @@ var Util = {
                         }
 
                         if (evt.target.result.byteLength > 1024 * 1024) {
-                            alert("This image is too big (max: 1Mb)");
+                            alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
 
                             return;
                         }

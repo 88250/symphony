@@ -95,7 +95,9 @@
                 "editor": ChatRoom.editor,
                 "qiniuUploadToken": "${qiniuUploadToken}",
                 "uploadingLabel": "${uploadingLabel}",
-                "qiniuDomain": "${qiniuDomain}"
+                "qiniuDomain": "${qiniuDomain}",
+                "imgMaxSize": ${imgMaxSize?c},
+                "fileMaxSize": ${fileMaxSize?c}               
             });
         </script>
     </body>

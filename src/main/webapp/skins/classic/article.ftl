@@ -186,8 +186,7 @@
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
-                                                       title="${comment.commentAuthorName}">${comment.commentAuthorName}</a>
-                                                    <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
+                                                       title="${comment.commentAuthorName}">${comment.commentAuthorName}</a><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
                                                         <span class="cmt-via" data-ua="${comment.commentUA}"></span>
                                                     </span>
                                                     <#if comment.rewardedCnt gt 0>
@@ -367,7 +366,9 @@
                     "qiniuUploadToken": "${qiniuUploadToken}",
                     "editor": Comment.editor,
                     "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}"
+                    "qiniuDomain": "${qiniuDomain}",
+                    "imgMaxSize": ${imgMaxSize?c},
+                    "fileMaxSize": ${fileMaxSize?c}
             });
             <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');

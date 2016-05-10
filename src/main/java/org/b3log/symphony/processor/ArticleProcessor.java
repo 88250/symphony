@@ -287,6 +287,11 @@ public class ArticleProcessor {
             dataModel.put("qiniuUploadToken", "");
         }
 
+        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        dataModel.put("imgMaxSize", imgMaxSize);
+        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        dataModel.put("fileMaxSize", fileMaxSize);
+
         String tags = request.getParameter(Tag.TAGS);
         if (StringUtils.isBlank(tags)) {
             tags = "";
@@ -465,6 +470,11 @@ public class ArticleProcessor {
         if (!Symphonys.getBoolean("qiniu.enabled")) {
             dataModel.put("qiniuUploadToken", "");
         }
+
+        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        dataModel.put("imgMaxSize", imgMaxSize);
+        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        dataModel.put("fileMaxSize", fileMaxSize);
 
         dataModel.put(Common.DISCUSSION_VIEWABLE, article.optBoolean(Common.DISCUSSION_VIEWABLE));
         if (!article.optBoolean(Common.DISCUSSION_VIEWABLE)) {
@@ -690,6 +700,11 @@ public class ArticleProcessor {
         if (!Symphonys.getBoolean("qiniu.enabled")) {
             dataModel.put("qiniuUploadToken", "");
         }
+
+        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        dataModel.put("imgMaxSize", imgMaxSize);
+        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        dataModel.put("fileMaxSize", fileMaxSize);
 
         String rewardEditorPlaceholderLabel = langPropsService.get("rewardEditorPlaceholderLabel");
         rewardEditorPlaceholderLabel = rewardEditorPlaceholderLabel.replace("{point}",

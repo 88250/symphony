@@ -202,6 +202,11 @@ public class ChatRoomProcessor {
         dataModel.put("qiniuUploadToken", auth.uploadToken(Symphonys.get("qiniu.bucket")));
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
+        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        dataModel.put("imgMaxSize", imgMaxSize);
+        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        dataModel.put("fileMaxSize", fileMaxSize);
+
         dataModel.put(Common.ONLINE_CHAT_CNT, SESSIONS.size());
 
         filler.fillHeaderAndFooter(request, response, dataModel);
