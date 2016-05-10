@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Short link query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.4.1, May 3, 2016
+ * @version 1.1.5.1, May 10, 2016
  * @since 1.3.0
  */
 @Service
@@ -60,7 +60,7 @@ public class ShortLinkQueryService {
      * Article pattern - full.
      */
     private static final Pattern ARTICLE_PATTERN_FULL
-            = Pattern.compile("(?:^|[^\"'])(" + Latkes.getServePath() + "/article/\\d{13,15}(\\b|$))");
+            = Pattern.compile("(?:^|[^\"'\\](])(" + Latkes.getServePath() + "/article/\\d{13,15}(\\b|$))");
 
     /**
      * Tag title pattern.
