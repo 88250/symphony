@@ -31,7 +31,7 @@
         <pegdown.version>1.6.0</pegdown.version>
         <qiniu.version>7.0.4.1</qiniu.version>
         <jodd.version>3.6.6</jodd.version>
-        <emoji-java.version>3.1.1</emoji-java.version>
+        <emoji-java.version>3.0.0</emoji-java.version>
         <user-agent-utils.version>1.19</user-agent-utils.version>
 
         <!-- maven plugin -->
