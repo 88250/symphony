@@ -547,6 +547,9 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
+.icon-close:before {
+    content: "\e909";
+}
 .icon-copy:before {
     content: "\e908";
 }
@@ -987,10 +990,10 @@ a[class*=" icon-"]:hover {
 .dialog-background {
     background-color: #000000;
     display: none;
-    filter: alpha(opacity=30);
+    filter: alpha(opacity=50);
     height: 100%;
     left: 0;
-    opacity: .3;
+    opacity: .5;
     position: absolute;
     top: 0;
     width: 100%;
@@ -1001,24 +1004,34 @@ a[class*=" icon-"]:hover {
     display: none;
     position: fixed;
     z-index: 100;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,0.25);
+    border-radius: 5px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.4);
 }
 
-.dialog-close-icon {
-    background: url("../images/close.png") no-repeat scroll -2px -3px transparent;
-    cursor: pointer;
+.dialog-header-bg {
+    padding: 15px;
+    font-size: 18px;
+    font-weight: normal;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.dialog-header-bg .icon-close {
+    color: rgba(0, 0, 0, 0.25);
+    font-size: 12px;
     float: right;
-    height: 25px;
-    margin-right: -13px;
-    margin-top: -12px;
-    padding: 3px;
-    width: 25px;
+    font-weight: bold;
+}
+
+.dialog-header-bg .icon-close:hover {
+    color: #333;
 }
 
 .dialog-main {
-    background-color: #FFFFFF;
-    border: 1px solid #777;
-    padding: 12px;
+    padding: 15px;
+    box-sizing: content-box;
 }
 /* end dialog */
 
@@ -1409,23 +1422,14 @@ ul.CodeMirror-hints {
 /* end side module */
 
 /* start kill-browser */
-#killBrowser .module {
-    height: 235px;
-    width: 520px;
-}
-
-#killBrowser p {
-    margin: 10px 0;
-}
-
-#killBrowser ul {
-    margin-left: 30px;
-}
-
 #killBrowser img {
     position: absolute;
     right: 36px;
     top: 58px;
+}
+
+#killBrowser .module {
+    margin-bottom: 0;
 }
 /* end kill-browser */
 

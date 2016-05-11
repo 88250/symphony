@@ -660,8 +660,8 @@ var Util = {
                     $("#killBrowser").dialog({
                         "modal": true,
                         "hideFooter": true,
-                        "height": 258,
-                        "width": 530
+                        "height": 345,
+                        "width": 600
                     });
                     $("#killBrowser").dialog("open");
                 }

@@ -125,6 +125,10 @@ h2.article-title {
     color: #911;
 }
 
+#revision .pagination {
+    margin-top: 0;
+}
+
 .comment-submit {
     margin-top: 20px;
 }
