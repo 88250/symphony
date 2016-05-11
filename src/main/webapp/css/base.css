@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.16.12.21, May 3, 2016
+ * @version 1.16.12.22, May 11, 2016
  */
 
 /* start reset */
@@ -1196,7 +1196,7 @@ a[class*=" icon-"]:hover {
     border-radius: 3px 3px 3px 3px;
     padding: 5px 8px;
     width: 230px;
-    margin: 1px 0 0 20px;
+    margin: 0 0 0 20px;
     float: left;
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
 }
