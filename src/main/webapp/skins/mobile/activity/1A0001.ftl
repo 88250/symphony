@@ -33,17 +33,21 @@
                     </#if>
                     </div>
                     <#if participated || closed || closed1A0001 || collected || end>
-                        <div id="tip" class="tip succ"><ul><li>${msg}</li></ul></div><br/>
+                        <div id="tip" class="tip succ"><ul><li>${msg}</li></ul></div>
+                        <div class="fn-hr10"></div>
                         <#if participated && hour?? && hour gt 15>
                         <div class="fn-clear">
                             <button id="collectBtn" class="red fn-right" onclick="Activity.collect1A0001()">${activityCollectLabel}</button>
                         </div>
+                        <div class="fn-hr10"></div>
                         </#if>
                     <#else>
-                    <div id="tip" class="tip"></div><br/>
+                    <div id="tip" class="tip"></div>
+                    <div class="fn-hr10"></div>
                     <div class="fn-clear">
                         <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001('${csrfToken}')">${activityBetLabel}</button>
                     </div>
+                    <div class="fn-hr10"></div>
                     </#if>
                 </div>
                 <div class="side">
