@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.20.9, May 11, 2016
+ * @version 1.17.21.9, May 12, 2016
  */
 
 /**
@@ -402,6 +402,9 @@ var Article = {
                                     (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
                                     result.revisions.length + '</span><a class="fn-none">&gt;</a>' +
                                     '</div></div>');
+                    if (result.revisions.length <= 2) {
+                        $('#revision a').first().hide();
+                    }
                     Article.mergeEditor = CodeMirror.MergeView(document.getElementById('revisions'), {
                         value: result.revisions[result.revisions.length - 1].revisionData.articleTitle +
                                 '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
@@ -438,7 +441,7 @@ var Article = {
             }
 
             $('#revision a').last().show();
-            
+
             $('#revision .current').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
             Article.mergeEditor.edit.setValue(revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
                     revisions[prevVersion - 1].revisionData.articleContent);
