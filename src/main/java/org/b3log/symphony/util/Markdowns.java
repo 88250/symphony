@@ -38,7 +38,7 @@ import org.pegdown.PegDownProcessor;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.3.8, May 9, 2016
+ * @version 1.7.3.8, May 12, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -62,16 +62,14 @@ public final class Markdowns {
 
         final String tmp = Jsoup.clean(content, baseURI, Whitelist.relaxed().
                 addAttributes(":all", "id", "target", "class").
-                addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
-                .addAttributes("audio", "controls", "src"), outputSettings);
+                addTags("span", "hr").
+                addAttributes("iframe", "src", "width", "height", "border", "marginwidth", "marginheight").
+                addAttributes("audio", "controls", "src").
+                addAttributes("object", "width", "height", "data", "type").
+                addAttributes("param", "name", "value").
+                addAttributes("embed", "src", "type", "width", "height", "wmode", "allowNetworking"),
+                outputSettings);
         final Document doc = Jsoup.parse(tmp, baseURI, Parser.xmlParser());
-        final Elements iframes = doc.getElementsByTag("iframe");
-        for (final Element iframe : iframes) {
-            final String src = iframe.attr("src");
-            if (!src.startsWith("https://wide.b3log.org")) {
-                iframe.remove();
-            }
-        }
 
         final Elements ps = doc.getElementsByTag("p");
         for (final Element p : ps) {
