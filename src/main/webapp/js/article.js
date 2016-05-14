@@ -390,7 +390,7 @@ var Article = {
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
-                    if (0 === result.revisions.length /* legacy data */
+                    if (0 === result.revisions.length // for legacy data
                             || 1 === result.revisions.length) {
                         $('#revisions').html('<b>' + Label.noRevisionLabel + '</b>');
                         return false;
