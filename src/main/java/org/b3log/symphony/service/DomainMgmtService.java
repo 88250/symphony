@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Domain management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, May 3, 2016
+ * @version 1.0.2.2, May 12, 2016
  * @since 1.4.0
  */
 @Service
@@ -168,10 +168,10 @@ public class DomainMgmtService {
             optionRepository.update(Option.ID_C_STATISTIC_DOMAIN_COUNT, domainCntOption);
 
             final String ret = domainRepository.add(record);
-            
+
             // Refresh cache
             domainCache.loadDomains();
-            
+
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds a domain failed", e);
@@ -212,6 +212,9 @@ public class DomainMgmtService {
         try {
             domainTagRepository.removeByDomainId(domainId);
             domainRepository.remove(domainId);
+
+            // Refresh cache
+            domainCache.loadDomains();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Updates a domain [id=" + domainId + "] failed", e);
 

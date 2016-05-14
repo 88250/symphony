@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.19.9, Apr 28, 2016
+ * @version 1.17.21.9, May 12, 2016
  */
 
 /**
@@ -370,8 +370,8 @@ var Article = {
         }
 
         $('#revision').dialog({
-            "width": $(window).width(),
-            "height": $(window).height(),
+            "width": $(window).width() - 50,
+            "height": $(window).height() - 50,
             "modal": true,
             "hideFooter": true
         });
@@ -397,11 +397,14 @@ var Article = {
                     }
 
                     $('#revisions').data('revisions', result.revisions).
-                            before('<div class="fn-clear"><div style="float: left;margin: 20px 0 10px 0;">Esc to exit</div><div class="pagination" style="margin-right: 15px">' +
+                            before('<div class="fn-clear"><div class="pagination">' +
                                     '<a href="javascript:void(0)">&lt;</a><span class="current">' +
                                     (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
-                                    result.revisions.length + '</span><a>&gt;</a>' +
+                                    result.revisions.length + '</span><a class="fn-none">&gt;</a>' +
                                     '</div></div>');
+                    if (result.revisions.length <= 2) {
+                        $('#revision a').first().hide();
+                    }
                     Article.mergeEditor = CodeMirror.MergeView(document.getElementById('revisions'), {
                         value: result.revisions[result.revisions.length - 1].revisionData.articleTitle +
                                 '\n\n' + result.revisions[result.revisions.length - 1].revisionData.articleContent,
@@ -428,9 +431,17 @@ var Article = {
         var revisions = $('#revisions').data('revisions');
         $('#revision a').first().click(function () {
             var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
+            if (prevVersion <= 2) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
             if (prevVersion < 2) {
                 return false;
             }
+
+            $('#revision a').last().show();
+
             $('#revision .current').html((prevVersion - 1) + '~' + prevVersion + '/' + revisions.length);
             Article.mergeEditor.edit.setValue(revisions[prevVersion - 1].revisionData.articleTitle + '\n\n' +
                     revisions[prevVersion - 1].revisionData.articleContent);
@@ -440,9 +451,15 @@ var Article = {
 
         $('#revision a').last().click(function () {
             var prevVersion = parseInt($('#revision .current').text().split('~')[0]);
+            if (prevVersion > revisions.length - 3) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
             if (prevVersion > revisions.length - 2) {
                 return false;
             }
+            $('#revision a').first().show();
             $('#revision .current').html((prevVersion + 1) + '~' + (prevVersion + 2) + '/' + revisions.length);
             Article.mergeEditor.edit.setValue(revisions[prevVersion + 1].revisionData.articleTitle + '\n\n' +
                     revisions[prevVersion + 1].revisionData.articleContent);

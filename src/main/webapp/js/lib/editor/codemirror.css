@@ -378,12 +378,8 @@ li.CodeMirror-hint-active {
     margin-bottom: 0;
 }
 
-#revision .CodeMirror-scroll {
-    max-height: 440px;
-}
-
 .CodeMirror-merge-2pane .CodeMirror-merge-pane { 
-    width: 48%;
+    width: 49%;
     border: 1px solid #CCC;
     border-radius: 3px;
 }
@@ -397,9 +393,7 @@ li.CodeMirror-hint-active {
   vertical-align: top;
 }
 .CodeMirror-merge-pane-rightmost {
-  position: absolute;
-  left: 50%;
-  z-index: 1;
+  float: right;
 }
 
 .CodeMirror-merge-gap {
