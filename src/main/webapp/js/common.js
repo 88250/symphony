@@ -990,7 +990,7 @@ var Util = {
                     reader.readAsArrayBuffer(data.files[0]);
                     reader.onload = function (evt) {
                         var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
-                        var isImg = isImage(fileBuf);
+                        isImg = isImage(fileBuf);
 
                         if (isImg && evt.target.result.byteLength > obj.imgMaxSize) {
                             alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
