@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.12.17, May 12, 2016
+ * @version 1.23.12.18, May 15, 2016
  */
 
 /**
@@ -773,7 +773,7 @@ var Util = {
                 'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999; font-style:italic;'
                 );
         console && console.log("欢迎将你的开源项目提交到 B3log：https://github.com/b3log，我们一同构建中国最好的开源组织！\n细节请看：https://hacpai.com/article/1463025124998");
-        
+
     },
     /**
      * @description 设置导航状态
@@ -890,9 +890,9 @@ var Util = {
                         reader.readAsArrayBuffer(data.files[0]);
                         reader.onload = function (evt) {
                             var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
-                            var mime = isImage(fileBuf);
+                            var isImg = isImage(fileBuf);
 
-                            if (null === mime) {
+                            if (!isImg) {
                                 alert("Image only~");
 
                                 return;
@@ -980,9 +980,9 @@ var Util = {
                     reader.readAsArrayBuffer(data.files[0]);
                     reader.onload = function (evt) {
                         var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
-                        var mime = isImage(fileBuf);
+                        var isImg = isImage(fileBuf);
 
-                        if (null == mime) {
+                        if (!isImg) {
                             alert("Image only~");
 
                             return;
@@ -1214,6 +1214,10 @@ function arrayEquals(arr1, arr2) {
 }
 
 function isImage(buf) {
+    return null !== getImageMime(buf);
+}
+
+function getImageMime(buf) {
     if (buf == null || buf == 'undefined' || buf.length < 8) {
         return null;
     }
