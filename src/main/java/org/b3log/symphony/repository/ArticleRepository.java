@@ -60,6 +60,10 @@ public class ArticleRepository extends AbstractRepository {
         super.remove(id);
 
         articleCache.removeArticle(id);
+        JSONObject article = articleCache.getArticle(id);
+        if (null != article) {
+            throw new RepositoryException(id);
+        } 
     }
 
     @Override

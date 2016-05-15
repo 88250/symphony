@@ -18,6 +18,7 @@ package org.b3log.symphony.cache;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.symphony.util.JSONs;
@@ -27,10 +28,11 @@ import org.json.JSONObject;
  * User cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Apr 20, 2016
+ * @version 1.0.1.2, May 15, 2016
  * @since 1.4.0
  */
 @Named
+@Singleton
 public class UserCache {
 
     /**

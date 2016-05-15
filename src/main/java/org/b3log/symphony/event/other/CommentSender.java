@@ -16,7 +16,6 @@
 package org.b3log.symphony.event.other;
 
 import java.net.URL;
-import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
