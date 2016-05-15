@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import jodd.io.FileUtil;
 import jodd.upload.MultipartRequestInputStream;
 import jodd.util.MimeTypes;
+import jodd.util.URLDecoder;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
@@ -93,6 +94,7 @@ public class FileUploadServlet extends HttpServlet {
         key = StringUtils.substringBeforeLast(key, "-260.jpg"); // Erase Qiniu template
 
         String path = UPLOAD_DIR + key;
+        path = URLDecoder.decode(path, "UTF-8");
 
         if (!FileUtil.isExistingFile(new File(path))) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -133,7 +135,9 @@ public class FileUploadServlet extends HttpServlet {
         multipartRequestInputStream.readBoundary();
         multipartRequestInputStream.readDataHeader("UTF-8");
 
-        String suffix = StringUtils.substringAfterLast(multipartRequestInputStream.getLastHeader().getFileName(), ".");
+        String fileName = multipartRequestInputStream.getLastHeader().getFileName();
+        final String name = StringUtils.substringBeforeLast(fileName, ".");
+        String suffix = StringUtils.substringAfterLast(fileName, ".");
         if (StringUtils.isBlank(suffix)) {
             final String mimeType = multipartRequestInputStream.getLastHeader().getContentType();
             String[] exts = MimeTypes.findExtensionsByMimeTypes(mimeType, false);
@@ -143,7 +147,8 @@ public class FileUploadServlet extends HttpServlet {
             }
         }
 
-        final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + suffix;
+        final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        fileName = name + "-" + uuid + "." + suffix;
 
         final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName);
         IOUtils.copy(multipartRequestInputStream, output);

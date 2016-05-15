@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.12.18, May 15, 2016
+ * @version 1.24.12.19, May 15, 2016
  */
 
 /**
@@ -874,7 +874,7 @@ var Util = {
      */
     uploadFile: function (obj) {
         var filename = "";
-
+        var ext = "";
         var isImg = false;
 
         if ("" === obj.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
@@ -886,6 +886,10 @@ var Util = {
                 paramName: "file",
                 add: function (e, data) {
                     filename = data.files[0].name;
+
+                    if (!filename) {
+                        ext = data.files[0].type.split("/")[1];
+                    }
 
                     if (window.File && window.FileReader && window.FileList && window.Blob) {
                         var reader = new FileReader();
@@ -971,7 +975,6 @@ var Util = {
             return;
         }
 
-        var ext = "";
         $('#' + obj.id).fileupload({
             multipart: true,
             pasteZone: obj.pasteZone,
@@ -1014,10 +1017,11 @@ var Util = {
                 var data = form.serializeArray();
 
                 if (filename) {
-                    ext = filename.substring(filename.lastIndexOf(".") + 1);
+                    data.push({name: 'key', value: "file/" + getUUID() + "/" + filename});
+                } else {
+                    data.push({name: 'key', value: getUUID() + "." + ext});
                 }
 
-                data.push({name: 'key', value: getUUID() + "." + ext});
                 data.push({name: 'token', value: obj.qiniuUploadToken});
 
                 return data;
