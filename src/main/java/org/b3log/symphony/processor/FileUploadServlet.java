@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * File upload.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Feb 2, 2016
+ * @version 1.1.0.1, May 15, 2016
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -133,14 +133,14 @@ public class FileUploadServlet extends HttpServlet {
         multipartRequestInputStream.readBoundary();
         multipartRequestInputStream.readDataHeader("UTF-8");
 
-        final String mimeType = multipartRequestInputStream.getLastHeader().getContentType();
+        String suffix = StringUtils.substringAfterLast(multipartRequestInputStream.getLastHeader().getFileName(), ".");
+        if (StringUtils.isBlank(suffix)) {
+            final String mimeType = multipartRequestInputStream.getLastHeader().getContentType();
+            String[] exts = MimeTypes.findExtensionsByMimeTypes(mimeType, false);
 
-        String suffix;
-        String[] exts = MimeTypes.findExtensionsByMimeTypes(mimeType, false);
-        if (null == exts || 0 == exts.length) {
-            suffix = StringUtils.substringAfterLast(multipartRequestInputStream.getLastHeader().getFileName(), ".");
-        } else {
-            suffix = exts[0];
+            if (null != exts && 0 < exts.length) {
+                suffix = exts[0];
+            }
         }
 
         final String fileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + suffix;

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.12.18, May 15, 2016
+ * @version 1.24.12.18, May 15, 2016
  */
 
 /**
@@ -875,6 +875,8 @@ var Util = {
     uploadFile: function (obj) {
         var filename = "";
 
+        var isImg = false;
+
         if ("" === obj.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
             $('#' + obj.id).fileupload({
                 multipart: true,
@@ -890,16 +892,16 @@ var Util = {
                         reader.readAsArrayBuffer(data.files[0]);
                         reader.onload = function (evt) {
                             var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
-                            var isImg = isImage(fileBuf);
+                            isImg = isImage(fileBuf);
 
-                            if (!isImg) {
-                                alert("Image only~");
+                            if (isImg && evt.target.result.byteLength > obj.imgMaxSize) {
+                                alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
 
                                 return;
                             }
 
-                            if (evt.target.result.byteLength > obj.imgMaxSize) {
-                                alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
+                            if (!isImg && evt.target.result.byteLength > obj.fileMaxSize) {
+                                alert("This file is too large (max " + obj.fileMaxSize / 1024 / 1024 + "M)");
 
                                 return;
                             }
@@ -930,12 +932,20 @@ var Util = {
                         return;
                     }
 
-                    var filename = new Date().getTime();
-
                     if (obj.editor.replaceRange) {
                         var cursor = obj.editor.getCursor();
-                        obj.editor.replaceRange('![' + filename + '](' + qiniuKey + ') \n\n',
-                                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+
+                        if (!filename) {
+                            filename = new Date().getTime();
+                        }
+
+                        if (isImg) {
+                            obj.editor.replaceRange('![' + filename + '](' + qiniuKey + ') \n\n',
+                                    CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                        } else {
+                            obj.editor.replaceRange('[' + filename + '](' + qiniuKey + ') \n\n',
+                                    CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                        }
                     } else {
                         obj.editor.$it.val(obj.editor.$it.val() + '![' + filename + '](' + qiniuKey + ') \n\n');
                         $('#' + obj.id + ' input').prop('disabled', false);
@@ -988,8 +998,14 @@ var Util = {
                             return;
                         }
 
-                        if (evt.target.result.byteLength > 1024 * 1024) {
+                        if (isImg && evt.target.result.byteLength > obj.imgMaxSize) {
                             alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
+
+                            return;
+                        }
+
+                        if (!isImg && evt.target.result.byteLength > obj.fileMaxSize) {
+                            alert("This file is too large (max " + obj.fileMaxSize / 1024 / 1024 + "M)");
 
                             return;
                         }
@@ -1028,12 +1044,20 @@ var Util = {
                     return;
                 }
 
-                var filename = new Date().getTime();
-
                 if (obj.editor.replaceRange) {
                     var cursor = obj.editor.getCursor();
-                    obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
-                            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+
+                    if (!filename) {
+                        filename = new Date().getTime();
+                    }
+
+                    if (isImg) {
+                        obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
+                                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                    } else {
+                        obj.editor.replaceRange('[' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
+                                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                    }
                 } else {
                     obj.editor.$it.val('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n');
                     $('#' + obj.id + ' input').prop('disabled', false);
