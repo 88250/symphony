@@ -992,12 +992,6 @@ var Util = {
                         var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
                         var isImg = isImage(fileBuf);
 
-                        if (!isImg) {
-                            alert("Image only~");
-
-                            return;
-                        }
-
                         if (isImg && evt.target.result.byteLength > obj.imgMaxSize) {
                             alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
 
