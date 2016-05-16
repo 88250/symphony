@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -44,10 +45,11 @@ import org.jsoup.Jsoup;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 14, 2016
+ * @version 1.0.1.0, May 15, 2016
  * @since 1.4.0
  */
 @Named
+@Singleton
 public class TagCache {
 
     /**

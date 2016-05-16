@@ -16,6 +16,7 @@
 package org.b3log.symphony.cache;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
@@ -28,10 +29,11 @@ import org.json.JSONObject;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 18, 2016
+ * @version 1.0.1.0, May 15, 2016
  * @since 1.4.0
  */
 @Named
+@Singleton
 public class ArticleCache {
 
     /**

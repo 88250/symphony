@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.12.17, May 12, 2016
+ * @version 1.24.12.19, May 15, 2016
  */
 
 /**
@@ -773,7 +773,7 @@ var Util = {
                 'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999; font-style:italic;'
                 );
         console && console.log("欢迎将你的开源项目提交到 B3log：https://github.com/b3log，我们一同构建中国最好的开源组织！\n细节请看：https://hacpai.com/article/1463025124998");
-        
+
     },
     /**
      * @description 设置导航状态
@@ -874,6 +874,8 @@ var Util = {
      */
     uploadFile: function (obj) {
         var filename = "";
+        var ext = "";
+        var isImg = false;
 
         if ("" === obj.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
             $('#' + obj.id).fileupload({
@@ -885,21 +887,25 @@ var Util = {
                 add: function (e, data) {
                     filename = data.files[0].name;
 
+                    if (!filename) {
+                        ext = data.files[0].type.split("/")[1];
+                    }
+
                     if (window.File && window.FileReader && window.FileList && window.Blob) {
                         var reader = new FileReader();
                         reader.readAsArrayBuffer(data.files[0]);
                         reader.onload = function (evt) {
                             var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
-                            var mime = isImage(fileBuf);
+                            isImg = isImage(fileBuf);
 
-                            if (null === mime) {
-                                alert("Image only~");
+                            if (isImg && evt.target.result.byteLength > obj.imgMaxSize) {
+                                alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
 
                                 return;
                             }
 
-                            if (evt.target.result.byteLength > obj.imgMaxSize) {
-                                alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
+                            if (!isImg && evt.target.result.byteLength > obj.fileMaxSize) {
+                                alert("This file is too large (max " + obj.fileMaxSize / 1024 / 1024 + "M)");
 
                                 return;
                             }
@@ -930,12 +936,20 @@ var Util = {
                         return;
                     }
 
-                    var filename = new Date().getTime();
-
                     if (obj.editor.replaceRange) {
                         var cursor = obj.editor.getCursor();
-                        obj.editor.replaceRange('![' + filename + '](' + qiniuKey + ') \n\n',
-                                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+
+                        if (!filename) {
+                            filename = new Date().getTime();
+                        }
+
+                        if (isImg) {
+                            obj.editor.replaceRange('![' + filename + '](' + qiniuKey + ') \n\n',
+                                    CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                        } else {
+                            obj.editor.replaceRange('[' + filename + '](' + qiniuKey + ') \n\n',
+                                    CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                        }
                     } else {
                         obj.editor.$it.val(obj.editor.$it.val() + '![' + filename + '](' + qiniuKey + ') \n\n');
                         $('#' + obj.id + ' input').prop('disabled', false);
@@ -961,7 +975,6 @@ var Util = {
             return;
         }
 
-        var ext = "";
         $('#' + obj.id).fileupload({
             multipart: true,
             pasteZone: obj.pasteZone,
@@ -980,16 +993,16 @@ var Util = {
                     reader.readAsArrayBuffer(data.files[0]);
                     reader.onload = function (evt) {
                         var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
-                        var mime = isImage(fileBuf);
+                        isImg = isImage(fileBuf);
 
-                        if (null == mime) {
-                            alert("Image only~");
+                        if (isImg && evt.target.result.byteLength > obj.imgMaxSize) {
+                            alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
 
                             return;
                         }
 
-                        if (evt.target.result.byteLength > 1024 * 1024) {
-                            alert("This image is too large (max " + obj.imgMaxSize / 1024 / 1024 + "M)");
+                        if (!isImg && evt.target.result.byteLength > obj.fileMaxSize) {
+                            alert("This file is too large (max " + obj.fileMaxSize / 1024 / 1024 + "M)");
 
                             return;
                         }
@@ -1004,10 +1017,11 @@ var Util = {
                 var data = form.serializeArray();
 
                 if (filename) {
-                    ext = filename.substring(filename.lastIndexOf(".") + 1);
+                    data.push({name: 'key', value: "file/" + getUUID() + "/" + filename});
+                } else {
+                    data.push({name: 'key', value: getUUID() + "." + ext});
                 }
 
-                data.push({name: 'key', value: getUUID() + "." + ext});
                 data.push({name: 'token', value: obj.qiniuUploadToken});
 
                 return data;
@@ -1028,12 +1042,20 @@ var Util = {
                     return;
                 }
 
-                var filename = new Date().getTime();
-
                 if (obj.editor.replaceRange) {
                     var cursor = obj.editor.getCursor();
-                    obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
-                            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+
+                    if (!filename) {
+                        filename = new Date().getTime();
+                    }
+
+                    if (isImg) {
+                        obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
+                                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                    } else {
+                        obj.editor.replaceRange('[' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
+                                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                    }
                 } else {
                     obj.editor.$it.val('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n');
                     $('#' + obj.id + ' input').prop('disabled', false);
@@ -1214,6 +1236,10 @@ function arrayEquals(arr1, arr2) {
 }
 
 function isImage(buf) {
+    return null !== getImageMime(buf);
+}
+
+function getImageMime(buf) {
     if (buf == null || buf == 'undefined' || buf.length < 8) {
         return null;
     }

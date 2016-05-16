@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -56,10 +57,11 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.14, Apr 12, 2016
+ * @version 1.5.5.14, May 15, 2016
  * @since 0.2.0
  */
 @Named
+@Singleton
 public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
     /**

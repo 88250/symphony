@@ -73,7 +73,11 @@
                     <div>
                         <a rel="author" href="/member/${article.articleAuthorName}" class="ft-black"
                            title="${article.articleAuthorName}"><strong>${article.articleAuthorName}</strong></a>
-                        <span class="ft-gray"> •
+                        <span class="ft-gray"> 
+                            <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
+                            • <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
+                            </#if>
+                            •
                             ${article.timeAgo}
                             •
                             ${viewLabel}

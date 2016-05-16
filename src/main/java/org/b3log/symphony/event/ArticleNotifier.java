@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -50,10 +51,11 @@ import org.jsoup.Jsoup;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Feb 26, 2016
+ * @version 1.1.2.6, May 15, 2016
  * @since 0.2.0
  */
 @Named
+@Singleton
 public class ArticleNotifier extends AbstractEventListener<JSONObject> {
 
     /**

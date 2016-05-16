@@ -111,7 +111,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.15.28, May 6, 2016
+ * @version 1.18.15.29, May 14, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -409,6 +409,9 @@ public class ArticleProcessor {
         article.put(Common.IS_MY_ARTICLE, false);
         article.put(Article.ARTICLE_T_AUTHOR, author);
         article.put(Common.REWARDED, false);
+        if (!article.has(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK)) { // for legacy data
+            article.put(Article.ARTICLE_CLIENT_ARTICLE_PERMALINK, "");
+        }
 
         articleQueryService.processArticleContent(article, request);
 

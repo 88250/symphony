@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.service.DomainQueryService;
 import org.json.JSONObject;
@@ -28,10 +29,11 @@ import org.json.JSONObject;
  * Domain cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, May 3, 2016
+ * @version 1.0.2.0, May 15, 2016
  * @since 1.4.0
  */
 @Named
+@Singleton
 public class DomainCache {
 
     /**
