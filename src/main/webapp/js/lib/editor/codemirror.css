@@ -548,7 +548,7 @@ span.CodeMirror-selectedtext { background: none; }
     line-height: 24px;
 }
 
-.editor-toolbar label.icon-image {
+.editor-toolbar label.icon-upload {
     padding: 0 1px;
     height: 23px;
     width: 21px;

@@ -548,8 +548,9 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
-.icon-close:before {
-    content: "\e909";
+
+.icon-upload:before {
+    content: "\f0ee";
 }
 .icon-copy:before {
     content: "\e908";
@@ -559,6 +560,9 @@ a[class*=" icon-"]:hover {
 }
 .icon-sortasc:before {
     content: "\e905";
+}
+.icon-close:before {
+    content: "\e909";
 }
 .icon-locked:before {
     content: "\e61e";
