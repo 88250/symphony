@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.10.15, Apr 29, 2016
+ * @version 2.8.10.15, May 16, 2016
  */
 
 /* start module */
@@ -127,6 +127,23 @@ h2.article-title {
 
 #revision .pagination {
     margin-top: 0;
+} 
+
+.article-content table, .comment table {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 13px;
+    border-collapse: collapse;
+}
+
+.article-content thead, .comment thead {
+    text-align: center;
+}
+
+.article-content td, .article-content th, .comment td, .comment th {
+    border: 1px solid #dddddd;
+    padding: 6px;
+    line-height: 16px;
 }
 
 .comment-submit {

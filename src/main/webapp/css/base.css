@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.12.22, May 16, 2016
+ * @version 1.17.12.23, May 16, 2016
  */
 
 /* start reset */
@@ -318,23 +318,6 @@ textarea {
 
 .content-reset iframe {
     border: 1px solid #ccc;
-}
-
-.content-reset table {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 13px;
-    border-collapse: collapse;
-}
-
-.content-reset table thead {
-    text-align: center;
-}
-
-.content-reset table, table td, table th {
-    border: 1px solid #dddddd;
-    padding: 6px;
-    line-height: 16px;
 }
 
 /* end reset */
