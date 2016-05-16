@@ -48,6 +48,7 @@ import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.event.ArticleBaiduSender;
 import org.b3log.symphony.event.ArticleNotifier;
+import org.b3log.symphony.event.ArticleQQSender;
 import org.b3log.symphony.event.ArticleSearchAdder;
 import org.b3log.symphony.event.ArticleSearchUpdater;
 import org.b3log.symphony.event.CommentNotifier;
@@ -70,7 +71,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.4.6, Apr 21, 2016
+ * @version 2.12.4.7, May 16, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -124,6 +125,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final ArticleBaiduSender articleBaiduSender = beanManager.getReference(ArticleBaiduSender.class);
         eventManager.registerListener(articleBaiduSender);
 
+        final ArticleQQSender articleQQSender = beanManager.getReference(ArticleQQSender.class);
+        eventManager.registerListener(articleQQSender);
+
         final CommentNotifier commentNotifier = beanManager.getReference(CommentNotifier.class);
         eventManager.registerListener(commentNotifier);
 
@@ -143,6 +147,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         JdbcRepository.dispose();
 
+        ArticleQQSender.initQQClient();
+
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
@@ -153,6 +159,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
+
+        ArticleQQSender.closeQQClient();
 
         LOGGER.info("Destroyed the context");
     }
