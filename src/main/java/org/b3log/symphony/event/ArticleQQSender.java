@@ -66,19 +66,24 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
             return;
         }
 
-        QQ_CLIENT = new SmartQQClient(new MessageCallback() {
+        new Thread(new Runnable() {
             @Override
-            public void onMessage(final Message message) {
-            }
+            public void run() {
+                QQ_CLIENT = new SmartQQClient(new MessageCallback() {
+                    @Override
+                    public void onMessage(final Message message) {
+                    }
 
-            @Override
-            public void onGroupMessage(GroupMessage message) {
-            }
+                    @Override
+                    public void onGroupMessage(GroupMessage message) {
+                    }
 
-            @Override
-            public void onDiscussMessage(DiscussMessage message) {
+                    @Override
+                    public void onDiscussMessage(DiscussMessage message) {
+                    }
+                });
             }
-        });
+        }).start();
     }
 
     /**
