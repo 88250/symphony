@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Sends an article URL to Baidu.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, May 15, 2016
+ * @version 1.0.2.0, May 16, 2016
  * @since 1.3.0
  */
 @Named
@@ -65,6 +65,11 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
 
         try {
             final JSONObject article = data.getJSONObject(Article.ARTICLE);
+            final int articleType = article.optInt(Article.ARTICLE_TYPE);
+            if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType || Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
+                return;
+            }
+
             final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
 
             sendToBaidu(articlePermalink);
