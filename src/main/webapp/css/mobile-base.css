@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, May 3, 2016
+ * @version 1.1.0.1, May 16, 2016
  */
 
 /* start reset */
@@ -315,6 +315,39 @@ textarea {
 .content-reset iframe {
     border: 1px solid #ccc;
 }
+
+.content-reset table {
+    width: 100%; 
+    border: 1px solid #dedede; 
+    margin: 15px auto;
+    border-collapse: collapse; 
+    empty-cells: show; 
+}
+
+.content-reset thead {
+    text-align: center;
+}
+
+.content-reset td,
+.content-reset th {
+    height: 35px; 
+    border: 1px solid #dedede; 
+    padding: 0 10px; 
+}
+
+.content-reset th {
+    font-weight: bold; 
+    text-align: center !important; 
+    background: rgba(158,188,226,0.2); 
+}
+
+.content-reset tbody tr:nth-child(2n) {
+    background: rgba(158,188,226,0.12); 
+}
+
+.content-reset tr:hover {
+    background: #efefef; 
+}
 /* end reset */
 
 /* start function */
@@ -550,14 +583,20 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
-.icon-wechat:before {
-    content: "\e907";
+.icon-upload:before {
+    content: "\f0ee";
+}
+.icon-copy:before {
+    content: "\e908";
 }
 .icon-time:before {
     content: "\e906";
 }
 .icon-sortasc:before {
     content: "\e905";
+}
+.icon-close:before {
+    content: "\e909";
 }
 .icon-locked:before {
     content: "\e61e";
@@ -723,6 +762,9 @@ a[class*=" icon-"]:hover {
 }
 .icon-compass:before {
     content: "\e61c";
+}
+.icon-wechat:before {
+    content: "\e907";
 }
 
 .icon-search {

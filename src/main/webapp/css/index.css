@@ -129,21 +129,37 @@ h2.article-title {
     margin-top: 0;
 } 
 
-.article-content table, .comment table {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 13px;
-    border-collapse: collapse;
+.content-reset table {
+    width: 100%; 
+    border: 1px solid #dedede; 
+    margin: 15px auto;
+    border-collapse: collapse; 
+    empty-cells: show; 
 }
 
-.article-content thead, .comment thead {
+.content-reset thead {
     text-align: center;
 }
 
-.article-content td, .article-content th, .comment td, .comment th {
-    border: 1px solid #dddddd;
-    padding: 6px;
-    line-height: 16px;
+.content-reset td,
+.content-reset th {
+    height: 35px; 
+    border: 1px solid #dedede; 
+    padding: 0 10px; 
+}
+
+.content-reset th {
+    font-weight: bold; 
+    text-align: center !important; 
+    background: rgba(158,188,226,0.2); 
+}
+
+.content-reset tbody tr:nth-child(2n) {
+    background: rgba(158,188,226,0.12); 
+}
+
+.content-reset tr:hover {
+    background: #efefef; 
 }
 
 .comment-submit {

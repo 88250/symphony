@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.13.8.8, Mar 14, 2016
+ * @version 2.14.8.8, Mar 16, 2016
  */
 
 /**
@@ -144,7 +144,7 @@ var AddArticle = {
                     {name: 'ordered-list'},
                     '|',
                     {name: 'link'},
-                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-image"><input type="file"/></label></form>'},
+                    {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
                     '|',
                     {name: 'redo'},
                     {name: 'undo'},
