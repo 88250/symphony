@@ -22,6 +22,7 @@ import com.scienjus.smartqq.model.GroupMessage;
 import com.scienjus.smartqq.model.Message;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -98,10 +99,8 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
-        LOGGER
-                .log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                        new Object[]{event.getType(), data, ArticleQQSender.class
-                            .getName()});
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                new Object[]{event.getType(), data, ArticleQQSender.class.getName()});
 
         if (null == QQ_CLIENT) {
             return;
@@ -130,7 +129,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
         final String title = article.optString(Article.ARTICLE_TITLE);
         final String permalink = article.optString(Article.ARTICLE_PERMALINK);
 
-        QQ_CLIENT.sendMessageToGroup(QQ_GROUP_ID, title + " " + permalink);
+        QQ_CLIENT.sendMessageToGroup(QQ_GROUP_ID, title + " " + Latkes.getServePath() + permalink);
     }
 
     /**

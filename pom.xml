@@ -407,6 +407,7 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
+        
         <repository>
             <id>sonatype-nexus-snapshots</id>
             <name>Snapshots Repository</name>
@@ -417,6 +418,16 @@
             <releases>
                 <enabled>false</enabled>
             </releases>
+        </repository>
+
+        <!-- Just for SmartQQ -->        
+        <repository>
+            <id>scienjus-mvn-repo</id>
+            <url>https://raw.github.com/ScienJus/maven/snapshot/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
         </repository>
     </repositories>
     
