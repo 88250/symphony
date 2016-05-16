@@ -38,7 +38,7 @@ import org.pegdown.PegDownProcessor;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.3.8, May 12, 2016
+ * @version 1.7.4.8, May 12, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -118,19 +118,14 @@ public final class Markdowns {
             return "";
         }
 
-//        final StringWriter writer = new StringWriter();
-//        final Markdown markdown = new Markdown();
-//
-//        try {
-//            markdown.transform(new StringReader(markdownText), writer);
-//        } catch (final ParseException e) {
-//            // LOGGER.log(Level.WARN, "Markdown error[text={0}]", markdownText);
-//            return markdownText;
-//        }
-//
-//        return writer.toString();
         final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL, 5000);
-        return pegDownProcessor.markdownToHtml(markdownText);
+        String ret = pegDownProcessor.markdownToHtml(markdownText);
+
+        if (!StringUtils.startsWith(ret, "<p>")) {
+            ret = "<p>" + ret + "</p>";
+        }
+
+        return ret;
     }
 
     /**
