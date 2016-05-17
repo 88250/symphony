@@ -126,9 +126,14 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                         }
 
                         String keyword = "";
-                        final List<JSONObject> tags = tagCache.getIconTags(Integer.MAX_VALUE);
+                        final List<JSONObject> tags = tagCache.getTags();
                         for (final JSONObject tag : tags) {
+                            if (tag.optInt(Tag.TAG_REFERENCE_CNT) < 10) {
+                                continue;
+                            }
+
                             final String tagTitle = tag.optString(Tag.TAG_TITLE);
+
                             if (StringUtils.containsIgnoreCase(content, tagTitle)) {
                                 keyword = tagTitle;
 
@@ -140,8 +145,13 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                         if (StringUtils.isNotBlank(keyword)) {
                             msg = "这里可能有该问题的答案： "
                                     + Latkes.getServePath() + "/search?key=" + keyword;
-                        } else if (StringUtils.contains(content, "Bot #1")) {
-                            msg = turingQueryService.chat("", content);
+                        } else {
+                            LOGGER.info(content);
+
+                            if (StringUtils.contains(content, "Bot #1")) {
+                                msg = turingQueryService.chat("", content);
+                                LOGGER.info(msg);
+                            }
                         }
 
                         if (StringUtils.isNotBlank(msg)) {
