@@ -33,7 +33,6 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
@@ -58,29 +57,14 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
     private static final Logger LOGGER = Logger.getLogger(ArticleQQSender.class.getName());
 
     /**
-     * QQ group names.
-     */
-    private static final List<String> QQ_GROUP_NAMES = new ArrayList<String>();
-
-    static {
-        final String namesStr = Symphonys.get("qq.groupNames");
-        if (StringUtils.isNotBlank(namesStr)) {
-            final String[] names = namesStr.split(",");
-            for (final String name : names) {
-                QQ_GROUP_NAMES.add(name);
-            }
-        }
-    }
-
-    /**
      * QQ group ids.
      */
-    private static List<Long> QQ_GROUP_IDS = new ArrayList<Long>();
+    private static final List<Long> QQ_GROUP_IDS = new ArrayList<Long>();
 
     /**
      * QQ client.
      */
-    private SmartQQClient qqClient = null;
+    private SmartQQClient qqClient;
 
     /**
      * Tag cache.
@@ -98,10 +82,6 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
      * Initializes QQ client.
      */
     public void initQQClient() {
-        if (QQ_GROUP_NAMES.isEmpty()) {
-            return;
-        }
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -156,7 +136,6 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                             ret = "这里可能有该问题的答案： " + Latkes.getServePath() + "/search?key=" + keyword;
                         } else if (StringUtils.contains(content, Symphonys.get("qq.robotName"))) {
                             ret = turingQueryService.chat("Vanessa", content);
-                            LOGGER.info(content + ": " + ret);
                         }
 
                         return ret;
@@ -171,12 +150,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                 final List<Group> groups = qqClient.getGroupList();
                 for (final Group group : groups) {
                     final Long id = group.getId();
-                    final String name = group.getName();
-                    LOGGER.info(id + ": " + name);
-
-                    if (Strings.containsIgnoreCase(name, QQ_GROUP_NAMES.toArray(new String[0]))) {
-                        QQ_GROUP_IDS.add(id);
-                    }
+                    QQ_GROUP_IDS.add(id);
                 }
             }
         }).start();
