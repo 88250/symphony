@@ -35,6 +35,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.service.TuringQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -76,6 +77,12 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
     private TagCache tagCache;
 
     /**
+     * Turing query service.
+     */
+    @Inject
+    private TuringQueryService turingQueryService;
+
+    /**
      * Initializes QQ client.
      */
     public void initQQClient() {
@@ -115,12 +122,17 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                             }
                         }
 
-                        if (StringUtils.isBlank(keyword)) {
-                            return;
+                        String msg = "";
+                        if (StringUtils.isNotBlank(keyword)) {
+                            msg = "社区里可能有该问题的答案： "
+                                    + Latkes.getServePath() + "/search?key=" + keyword;
+                        } else if (StringUtils.contains(content, "@社区 Bot #1")) {
+                            msg = turingQueryService.chat("", content);
                         }
 
-                        qqClient.sendMessageToGroup(QQ_GROUP_ID, "社区里可能有该问题的答案： "
-                                + Latkes.getServePath() + "/search?key=" + keyword);
+                        if (StringUtils.isNotBlank(msg)) {
+                            qqClient.sendMessageToGroup(QQ_GROUP_ID, msg);
+                        }
                     }
 
                     @Override
