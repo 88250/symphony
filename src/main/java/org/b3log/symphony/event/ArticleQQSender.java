@@ -126,9 +126,10 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                         }
 
                         String keyword = "";
+                        final int pageSize = Symphonys.getInt("latestArticlesCnt");
                         final List<JSONObject> tags = tagCache.getTags();
                         for (final JSONObject tag : tags) {
-                            if (tag.optInt(Tag.TAG_REFERENCE_CNT) < 10) {
+                            if (tag.optInt(Tag.TAG_REFERENCE_CNT) < pageSize) {
                                 continue;
                             }
 
@@ -146,12 +147,8 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                             msg = "这里可能有该问题的答案： "
                                     + Latkes.getServePath() + "/search?key=" + keyword;
                         } else {
-                            LOGGER.info(content);
-
-                            if (StringUtils.contains(content, "Bot #1")) {
-                                msg = turingQueryService.chat("", content);
-                                LOGGER.info(msg);
-                            }
+                            msg = turingQueryService.chat("", content);
+                            LOGGER.info(content + ": " + msg);
                         }
 
                         if (StringUtils.isNotBlank(msg)) {
