@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.10.2.27, May 16, 2016
+    Version: 2.10.2.28, May 16, 2016
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -21,11 +21,11 @@
 
     <!-- Properties -->
     <properties>
-        <latke.version>2.0.1</latke.version>
+        <latke.version>2.0.2</latke.version>
         
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.2.7.v20150116</jetty.version>
-        <slf4j.version>1.7.5</slf4j.version>
+        <slf4j.version>1.7.7</slf4j.version>
         <mysql-connector-java.version>5.1.36</mysql-connector-java.version>
         <jsoup.version>1.7.1</jsoup.version>
         <pegdown.version>1.6.0</pegdown.version>
@@ -159,12 +159,6 @@
             <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
             <version>${latke.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.jolbox</groupId>
-                    <artifactId>bonecp</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         
         <dependency>         
