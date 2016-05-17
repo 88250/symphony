@@ -119,9 +119,8 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                         }
 
                         final String content = message.getContent();
-                        final String atUsername = message.getAtUsername();
                         String msg = "";
-                        if (StringUtils.equals(Symphonys.get("qq.robotName"), atUsername)
+                        if (StringUtils.contains(content, Symphonys.get("qq.robotName"))
                                 || (StringUtils.length(content) > 6
                                 && (StringUtils.contains(content, "?") || StringUtils.contains(content, "？") || StringUtils.contains(content, "问")))) {
                             msg = answer(content);
@@ -154,9 +153,8 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
 
                         String ret = "";
                         if (StringUtils.isNotBlank(keyword)) {
-                            ret = "这里可能有该问题的答案： "
-                                    + Latkes.getServePath() + "/search?key=" + keyword;
-                        } else {
+                            ret = "这里可能有该问题的答案： " + Latkes.getServePath() + "/search?key=" + keyword;
+                        } else if (StringUtils.contains(content, Symphonys.get("qq.robotName"))) {
                             ret = turingQueryService.chat("Vanessa", content);
                             LOGGER.info(content + ": " + ret);
                         }
