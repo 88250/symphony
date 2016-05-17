@@ -119,12 +119,22 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                         }
 
                         final String content = message.getContent();
-                        if (StringUtils.length(content) < 7
-                                || (!StringUtils.contains(content, "?") && !StringUtils.contains(content, "？")
-                                && !StringUtils.contains(content, "问"))) {
-                            return;
+                        final String atUsername = message.getAtUsername();
+                        String msg = "";
+                        if (StringUtils.equals(Symphonys.get("qq.robotName"), atUsername)
+                                || (StringUtils.length(content) > 6
+                                && (StringUtils.contains(content, "?") || StringUtils.contains(content, "？") || StringUtils.contains(content, "问")))) {
+                            msg = answer(content);
+
+                            LOGGER.info(content + ": " + msg);
                         }
 
+                        if (StringUtils.isNotBlank(msg)) {
+                            qqClient.sendMessageToGroup(groupId, msg);
+                        }
+                    }
+
+                    private String answer(final String content) {
                         String keyword = "";
                         final int pageSize = Symphonys.getInt("latestArticlesCnt");
                         final List<JSONObject> tags = tagCache.getTags();
@@ -142,18 +152,16 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                             }
                         }
 
-                        String msg = "";
+                        String ret = "";
                         if (StringUtils.isNotBlank(keyword)) {
-                            msg = "这里可能有该问题的答案： "
+                            ret = "这里可能有该问题的答案： "
                                     + Latkes.getServePath() + "/search?key=" + keyword;
                         } else {
-                            msg = turingQueryService.chat("", content);
-                            LOGGER.info(content + ": " + msg);
+                            ret = turingQueryService.chat("Vanessa", content);
+                            LOGGER.info(content + ": " + ret);
                         }
 
-                        if (StringUtils.isNotBlank(msg)) {
-                            qqClient.sendMessageToGroup(groupId, msg);
-                        }
+                        return ret;
                     }
 
                     @Override
