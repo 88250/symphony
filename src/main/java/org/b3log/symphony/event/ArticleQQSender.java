@@ -126,7 +126,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                         }
 
                         String keyword = "";
-                        final List<JSONObject> tags = tagCache.getTags();
+                        final List<JSONObject> tags = tagCache.getIconTags(Integer.MAX_VALUE);
                         for (final JSONObject tag : tags) {
                             final String tagTitle = tag.optString(Tag.TAG_TITLE);
                             if (StringUtils.containsIgnoreCase(content, tagTitle)) {
