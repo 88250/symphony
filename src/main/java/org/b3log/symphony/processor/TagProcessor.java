@@ -90,14 +90,14 @@ public class TagProcessor {
     private TagCache tagCache;
 
     /**
-     * Caches icon tags.
+     * Caches tags.
      *
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      * @param context the specified HTTP request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/cron/tag/cache-icon-tags", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/cron/tag/cache-tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public void cacheIconTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
@@ -110,6 +110,7 @@ public class TagProcessor {
         }
 
         tagCache.loadIconTags();
+        tagCache.loadAllTags();
 
         context.renderJSON().renderTrueResult();
     }

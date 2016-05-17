@@ -18,7 +18,7 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.8.0.4, Apr 23, 2016
+    Version: 1.8.0.5, May 17, 2016
     Author: Liang Ding
 -->
 <cronentries>
@@ -36,8 +36,8 @@
     </cron>
     
     <cron>
-        <url>/cron/tag/cache-icon-tags?key=dev_key</url>
-        <description>Cache icon tags</description>
+        <url>/cron/tag/cache-tags?key=dev_key</url>
+        <description>Cache tags</description>
         <schedule>every 30 minutes</schedule>
     </cron>
 
