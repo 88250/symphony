@@ -18,6 +18,7 @@ package org.b3log.symphony.event;
 import com.scienjus.smartqq.callback.MessageCallback;
 import com.scienjus.smartqq.client.SmartQQClient;
 import com.scienjus.smartqq.model.DiscussMessage;
+import com.scienjus.smartqq.model.Group;
 import com.scienjus.smartqq.model.GroupMessage;
 import com.scienjus.smartqq.model.Message;
 import java.util.List;
@@ -54,9 +55,14 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
     private static final Logger LOGGER = Logger.getLogger(ArticleQQSender.class.getName());
 
     /**
+     * QQ group name.
+     */
+    private static final String QQ_GROUP_NAME = Symphonys.get("qq.groupName");
+
+    /**
      * QQ group id.
      */
-    private static final Long QQ_GROUP_ID = Symphonys.getLong("qq.groupId");
+    private static Long QQ_GROUP_ID;
 
     /**
      * QQ client.
@@ -73,7 +79,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
      * Initializes QQ client.
      */
     public void initQQClient() {
-        if (null == QQ_GROUP_ID) {
+        if (null == QQ_GROUP_NAME) {
             return;
         }
 
@@ -94,8 +100,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
 
                         final String content = message.getContent();
                         if (StringUtils.length(content) < 12
-                                || !StringUtils.contains(content, "?")
-                                || !StringUtils.contains(content, "？")) {
+                                || (!StringUtils.contains(content, "?") && !StringUtils.contains(content, "？"))) {
                             return;
                         }
 
@@ -122,6 +127,17 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                     public void onDiscussMessage(final DiscussMessage message) {
                     }
                 });
+
+                final List<Group> groups = qqClient.getGroupList();
+                for (final Group group : groups) {
+                    final Long id = group.getId();
+                    final String name = group.getName();
+                    LOGGER.info(id + ": " + name);
+
+                    if (StringUtils.equals(name, QQ_GROUP_NAME)) {
+                        QQ_GROUP_ID = id;
+                    }
+                }
             }
         }).start();
     }
