@@ -147,7 +147,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         JdbcRepository.dispose();
 
-        ArticleQQSender.initQQClient();
+        articleQQSender.initQQClient();
 
         LOGGER.info("Initialized the context");
 
@@ -160,7 +160,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
 
-        ArticleQQSender.closeQQClient();
+        final ArticleQQSender articleQQSender = beanManager.getReference(ArticleQQSender.class);
+        articleQQSender.closeQQClient();
 
         LOGGER.info("Destroyed the context");
     }

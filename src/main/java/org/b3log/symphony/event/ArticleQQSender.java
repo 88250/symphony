@@ -20,15 +20,20 @@ import com.scienjus.smartqq.client.SmartQQClient;
 import com.scienjus.smartqq.model.DiscussMessage;
 import com.scienjus.smartqq.model.GroupMessage;
 import com.scienjus.smartqq.model.Message;
+import java.util.List;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -56,12 +61,18 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
     /**
      * QQ client.
      */
-    private static SmartQQClient QQ_CLIENT = null;
+    private SmartQQClient qqClient = null;
+
+    /**
+     * Tag cache.
+     */
+    @Inject
+    private TagCache tagCache;
 
     /**
      * Initializes QQ client.
      */
-    public static void initQQClient() {
+    public void initQQClient() {
         if (null == QQ_GROUP_ID) {
             return;
         }
@@ -69,17 +80,46 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                QQ_CLIENT = new SmartQQClient(new MessageCallback() {
+                qqClient = new SmartQQClient(new MessageCallback() {
                     @Override
                     public void onMessage(final Message message) {
                     }
 
                     @Override
-                    public void onGroupMessage(GroupMessage message) {
+                    public void onGroupMessage(final GroupMessage message) {
+                        final long groupId = message.getGroupId();
+                        if (QQ_GROUP_ID != groupId) {
+                            return;
+                        }
+
+                        final String content = message.getContent();
+                        if (StringUtils.length(content) < 12
+                                || !StringUtils.contains(content, "?")
+                                || !StringUtils.contains(content, "？")) {
+                            return;
+                        }
+
+                        String keyword = "";
+                        final List<JSONObject> tags = tagCache.getIconTags(Integer.MAX_VALUE);
+                        for (final JSONObject tag : tags) {
+                            final String tagTitle = tag.optString(Tag.TAG_TITLE);
+                            if (content.contains(tagTitle)) {
+                                keyword = tagTitle;
+
+                                break;
+                            }
+                        }
+
+                        if (StringUtils.isBlank(keyword)) {
+                            return;
+                        }
+
+                        qqClient.sendMessageToGroup(QQ_GROUP_ID, "社区里可能有该问题的答案： "
+                                + Latkes.getServePath() + "/search?key=" + keyword);
                     }
 
                     @Override
-                    public void onDiscussMessage(DiscussMessage message) {
+                    public void onDiscussMessage(final DiscussMessage message) {
                     }
                 });
             }
@@ -89,13 +129,13 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
     /**
      * Closes QQ client.
      */
-    public static void closeQQClient() {
-        if (null == QQ_CLIENT) {
+    public void closeQQClient() {
+        if (null == qqClient) {
             return;
         }
 
         try {
-            QQ_CLIENT.close();
+            qqClient.close();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Closes QQ client failed", e);
         }
@@ -107,7 +147,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, ArticleQQSender.class.getName()});
 
-        if (null == QQ_CLIENT) {
+        if (null == qqClient) {
             return;
         }
 
@@ -130,11 +170,11 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
      *
      * @param article the specified article
      */
-    public static void sendToQQGroup(final JSONObject article) {
+    public void sendToQQGroup(final JSONObject article) {
         final String title = article.optString(Article.ARTICLE_TITLE);
         final String permalink = article.optString(Article.ARTICLE_PERMALINK);
 
-        QQ_CLIENT.sendMessageToGroup(QQ_GROUP_ID, title + " " + Latkes.getServePath() + permalink);
+        qqClient.sendMessageToGroup(QQ_GROUP_ID, title + " " + Latkes.getServePath() + permalink);
     }
 
     /**
