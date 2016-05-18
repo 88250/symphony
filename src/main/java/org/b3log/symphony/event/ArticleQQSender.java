@@ -88,31 +88,41 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                 qqClient = new SmartQQClient(new MessageCallback() {
                     @Override
                     public void onMessage(final Message message) {
+                        final String content = message.getContent();
+
+                        final String key = Symphonys.get("qq.robotKey");
+                        if (!StringUtils.startsWith(content, key)) {
+                            return;
+                        }
+
+                        final String msg = StringUtils.substringAfter(content, key);
+                        LOGGER.info("Received admin message: " + msg);
+                        sendToQQGroups(msg);
                     }
-                    
+
                     @Override
                     public void onGroupMessage(final GroupMessage message) {
                         final long groupId = message.getGroupId();
-                        
+
                         if (QQ_GROUP_IDS.isEmpty() || !QQ_GROUP_IDS.contains(groupId)) {
                             return;
                         }
-                        
+
                         final String content = message.getContent();
                         String msg = "";
                         if (StringUtils.contains(content, Symphonys.get("qq.robotName"))
                                 || (StringUtils.length(content) > 6
                                 && (StringUtils.contains(content, "?") || StringUtils.contains(content, "？") || StringUtils.contains(content, "问")))) {
                             msg = answer(content);
-                            
+
                             LOGGER.info(content + ": " + msg);
                         }
-                        
+
                         if (StringUtils.isNotBlank(msg)) {
                             qqClient.sendMessageToGroup(groupId, msg);
                         }
                     }
-                    
+
                     private String answer(final String content) {
                         String keyword = "";
                         final int pageSize = Symphonys.getInt("latestArticlesCnt");
@@ -121,26 +131,26 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                             if (tag.optInt(Tag.TAG_REFERENCE_CNT) < pageSize) {
                                 continue;
                             }
-                            
+
                             final String tagTitle = tag.optString(Tag.TAG_TITLE);
-                            
+
                             if (StringUtils.containsIgnoreCase(content, tagTitle)) {
                                 keyword = tagTitle;
-                                
+
                                 break;
                             }
                         }
-                        
+
                         String ret = "";
                         if (StringUtils.isNotBlank(keyword)) {
                             ret = "这里可能有该问题的答案： " + Latkes.getServePath() + "/search?key=" + keyword;
                         } else if (StringUtils.contains(content, Symphonys.get("qq.robotName"))) {
                             ret = turingQueryService.chat("Vanessa", content);
                         }
-                        
+
                         return ret;
                     }
-                    
+
                     @Override
                     public void onDiscussMessage(final DiscussMessage message) {
                     }
@@ -151,7 +161,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                 for (final Group group : groups) {
                     final Long id = group.getId();
                     QQ_GROUP_IDS.add(id);
-                    
+
                     LOGGER.info(group.getName());
                 }
             }
@@ -165,49 +175,60 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
         if (null == qqClient) {
             return;
         }
-        
+
         try {
             qqClient.close();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Closes QQ client failed", e);
         }
     }
-    
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, ArticleQQSender.class.getName()});
-        
+
         if (null == qqClient) {
             return;
         }
-        
+
         try {
             final JSONObject article = data.getJSONObject(Article.ARTICLE);
             final int articleType = article.optInt(Article.ARTICLE_TYPE);
             if (Article.ARTICLE_TYPE_C_DISCUSSION == articleType || Article.ARTICLE_TYPE_C_THOUGHT == articleType) {
                 return;
             }
-            
-            sendToQQGroup(article);
-            
+
+            sendToQQGroups(article);
+
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article to QQ group error", e);
         }
     }
 
     /**
-     * Sends the specified article to QQ group.
+     * Sends the specified article to QQ groups.
      *
      * @param article the specified article
      */
-    public void sendToQQGroup(final JSONObject article) {
+    private void sendToQQGroups(final JSONObject article) {
         final String title = article.optString(Article.ARTICLE_TITLE);
         final String permalink = article.optString(Article.ARTICLE_PERMALINK);
-        
+
         for (final Long groupId : QQ_GROUP_IDS) {
             qqClient.sendMessageToGroup(groupId, title + " " + Latkes.getServePath() + permalink);
+        }
+    }
+
+    /**
+     * Sends the specified message to QQ groups.
+     *
+     * @param msg the specified message
+     */
+    private void sendToQQGroups(final String msg) {
+        for (final Long groupId : QQ_GROUP_IDS) {
+            qqClient.sendMessageToGroup(groupId, msg);
         }
     }
 
