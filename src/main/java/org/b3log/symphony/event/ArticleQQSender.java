@@ -21,12 +21,17 @@ import com.scienjus.smartqq.model.DiscussMessage;
 import com.scienjus.smartqq.model.Group;
 import com.scienjus.smartqq.model.GroupMessage;
 import com.scienjus.smartqq.model.Message;
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
@@ -59,8 +64,10 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
 
     /**
      * QQ groups.
+     *
+     * &lt;groupId, group&gt;
      */
-    private static final List<Group> QQ_GROUPS = new ArrayList<Group>();
+    private static final Map<Long, Group> QQ_GROUPS = new HashMap<Long, Group>();
 
     /**
      * QQ client.
@@ -120,7 +127,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                         }
 
                         if (StringUtils.isNotBlank(msg)) {
-                            qqClient.sendMessageToGroup(groupId, msg);
+                            sendMessageToGroup(groupId, msg);
                         }
                     }
 
@@ -144,7 +151,12 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
 
                         String ret = "";
                         if (StringUtils.isNotBlank(keyword)) {
-                            ret = "这里可能有该问题的答案： " + Latkes.getServePath() + "/search?key=" + keyword;
+                            try {
+                                ret = "这里可能有该问题的答案： " + Latkes.getServePath() + "/search?key="
+                                        + URLEncoder.encode(keyword, "UTF-8");
+                            } catch (final UnsupportedEncodingException e) {
+                                LOGGER.log(Level.ERROR, "Search key encoding failed", e);
+                            }
                         } else if (StringUtils.contains(content, Symphonys.get("qq.robotName"))) {
                             ret = turingQueryService.chat("Vanessa", content);
                         }
@@ -157,10 +169,10 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                     }
                 });
 
-                // Init group id
+                // Load groups
                 final List<Group> groups = qqClient.getGroupList();
                 for (final Group group : groups) {
-                    QQ_GROUPS.add(group);
+                    QQ_GROUPS.put(group.getId(), group);
 
                     LOGGER.info(group.getName() + ": " + group.getId());
                 }
@@ -222,14 +234,14 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
         }
 
         final String[] groups = defaultGroupsConf.split(",");
-        for (final Group group : QQ_GROUPS) {
+        for (final Entry<Long, Group> entry : QQ_GROUPS.entrySet()) {
+            final Group group = entry.getValue();
             final String name = group.getName();
 
             if (Strings.contains(name, groups)) {
                 final String msg = title + " " + Latkes.getServePath() + permalink;
 
-                LOGGER.info("Pushing [msg=" + msg + "] to QQ qun [" + group.getName() + "]");
-                qqClient.sendMessageToGroup(group.getId(), msg);
+                sendMessageToGroup(group.getId(), msg);
             }
         }
     }
@@ -240,10 +252,37 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
      * @param msg the specified message
      */
     private void sendToQQGroups(final String msg) {
-        for (final Group group : QQ_GROUPS) {
-            LOGGER.info("Pushing [msg=" + msg + "] to QQ qun [" + group.getName() + "]");
-            qqClient.sendMessageToGroup(group.getId(), msg);
+        for (final Entry<Long, Group> entry : QQ_GROUPS.entrySet()) {
+            final Group group = entry.getValue();
+            sendMessageToGroup(group.getId(), msg);
         }
+    }
+
+    private void sendMessageToGroup(final Long groupId, final String msg) {
+        final Group group = QQ_GROUPS.get(groupId);
+
+        if (null == group) {
+            // Reload groups
+
+            final List<Group> groups = qqClient.getGroupList();
+            QQ_GROUPS.clear();
+
+            for (final Group g : groups) {
+                QQ_GROUPS.put(g.getId(), g);
+
+                LOGGER.info(g.getName() + ": " + g.getId());
+            }
+        }
+
+        final int sleepSeconds = 1 + RandomUtils.nextInt(4);
+        try {
+            Thread.sleep(1000 * sleepSeconds);
+        } catch (final InterruptedException e) {
+            LOGGER.log(Level.DEBUG, "Sleep failed", e);
+        }
+
+        LOGGER.info("Pushing [msg=" + msg + "] to QQ qun [" + group.getName() + "]");
+        qqClient.sendMessageToGroup(groupId, msg);
     }
 
     /**
