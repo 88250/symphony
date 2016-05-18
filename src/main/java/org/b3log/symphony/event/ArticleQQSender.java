@@ -33,6 +33,7 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Tag;
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * Sends an article to QQ qun.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, May 17, 2016
+ * @version 1.2.0.0, May 18, 2016
  * @since 1.4.0
  */
 @Named
@@ -57,9 +58,9 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
     private static final Logger LOGGER = Logger.getLogger(ArticleQQSender.class.getName());
 
     /**
-     * QQ group ids.
+     * QQ groups.
      */
-    private static final List<Long> QQ_GROUP_IDS = new ArrayList<Long>();
+    private static final List<Group> QQ_GROUPS = new ArrayList<Group>();
 
     /**
      * QQ client.
@@ -104,7 +105,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                     public void onGroupMessage(final GroupMessage message) {
                         final long groupId = message.getGroupId();
 
-                        if (QQ_GROUP_IDS.isEmpty() || !QQ_GROUP_IDS.contains(groupId)) {
+                        if (QQ_GROUPS.isEmpty()) {
                             return;
                         }
 
@@ -159,10 +160,9 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                 // Init group id
                 final List<Group> groups = qqClient.getGroupList();
                 for (final Group group : groups) {
-                    final Long id = group.getId();
-                    QQ_GROUP_IDS.add(id);
+                    QQ_GROUPS.add(group);
 
-                    LOGGER.info(group.getName());
+                    LOGGER.info(group.getName() + ": " + group.getId());
                 }
             }
         }).start();
@@ -216,8 +216,21 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
         final String title = article.optString(Article.ARTICLE_TITLE);
         final String permalink = article.optString(Article.ARTICLE_PERMALINK);
 
-        for (final Long groupId : QQ_GROUP_IDS) {
-            qqClient.sendMessageToGroup(groupId, title + " " + Latkes.getServePath() + permalink);
+        final String defaultGroupsConf = Symphonys.get("qq.robotDefaultPushGroups");
+        if (StringUtils.isBlank(defaultGroupsConf)) {
+            return;
+        }
+
+        final String[] groups = defaultGroupsConf.split(",");
+        for (final Group group : QQ_GROUPS) {
+            final String name = group.getName();
+
+            if (Strings.contains(name, groups)) {
+                final String msg = title + " " + Latkes.getServePath() + permalink;
+
+                LOGGER.info("Pushing [msg=" + msg + "] to QQ qun [" + group.getName() + "]");
+                qqClient.sendMessageToGroup(group.getId(), msg);
+            }
         }
     }
 
@@ -227,8 +240,9 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
      * @param msg the specified message
      */
     private void sendToQQGroups(final String msg) {
-        for (final Long groupId : QQ_GROUP_IDS) {
-            qqClient.sendMessageToGroup(groupId, msg);
+        for (final Group group : QQ_GROUPS) {
+            LOGGER.info("Pushing [msg=" + msg + "] to QQ qun [" + group.getName() + "]");
+            qqClient.sendMessageToGroup(group.getId(), msg);
         }
     }
 
