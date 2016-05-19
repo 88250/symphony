@@ -38,10 +38,14 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.channel.ChatRoomChannel;
 import org.b3log.symphony.service.TuringQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -50,7 +54,7 @@ import org.json.JSONObject;
  * Sends an article to QQ qun.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, May 18, 2016
+ * @version 1.3.0.0, May 19, 2016
  * @since 1.4.0
  */
 @Named
@@ -115,8 +119,18 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                         if (QQ_GROUPS.isEmpty()) {
                             return;
                         }
-
+                        
                         final String content = message.getContent();
+
+                        // Push to chat room
+                        final String defaultAvatarURL = Symphonys.get("defaultThumbnailURL");
+                        final JSONObject chatroomMsg = new JSONObject();
+                        chatroomMsg.put(User.USER_NAME, message.getUserId());
+                        chatroomMsg.put(UserExt.USER_AVATAR_URL, defaultAvatarURL);
+                        chatroomMsg.put(Common.CONTENT, "<p>" + content + "</p>");
+                        
+                        ChatRoomChannel.notifyChat(chatroomMsg);
+                        
                         String msg = "";
                         if (StringUtils.contains(content, Symphonys.get("qq.robotName"))
                                 || (StringUtils.length(content) > 6

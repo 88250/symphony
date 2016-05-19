@@ -184,7 +184,7 @@ public class ChatRoomProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/cr", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/chat-room", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showChatRoom(final HTTPRequestContext context,

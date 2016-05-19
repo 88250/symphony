@@ -8,7 +8,7 @@
                 <a href="/tag/Q%26A">${qnaLabel}</a>
                 <a href="/domains">${domainLabel}</a>
                 <a href="/tags">${tagLabel}</a>
-                <a rel="nofollow" href="/cr">${chatRoomLabel}</a>
+                <a rel="nofollow" href="/chat-room">${chatRoomLabel}</a>
                 <a href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
                 <a href="/statistic" class="last">${dataStatLabel}</a>
 
