@@ -288,13 +288,6 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
             }
         }
 
-        final int sleepSeconds = 1 + RandomUtils.nextInt(4);
-        try {
-            Thread.sleep(1000 * sleepSeconds);
-        } catch (final InterruptedException e) {
-            LOGGER.log(Level.DEBUG, "Sleep failed", e);
-        }
-
         LOGGER.info("Pushing [msg=" + msg + "] to QQ qun [" + group.getName() + "]");
         qqClient.sendMessageToGroup(groupId, msg);
     }
