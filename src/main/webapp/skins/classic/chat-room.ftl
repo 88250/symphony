@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${chatRoomLabel} - ${symphonyLabel}">
+        <@head title="${communityDynamicLabel} - ${symphonyLabel}">
         <meta name="description" content="${timelineLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />

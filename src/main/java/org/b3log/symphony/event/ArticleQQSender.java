@@ -126,7 +126,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                         // Push to chat room
                         final String defaultAvatarURL = Symphonys.get("defaultThumbnailURL");
                         final JSONObject chatroomMsg = new JSONObject();
-                        chatroomMsg.put(User.USER_NAME, message.getUserId());
+                        chatroomMsg.put(User.USER_NAME, Long.toHexString(message.getUserId()));
                         chatroomMsg.put(UserExt.USER_AVATAR_URL, defaultAvatarURL);
                         chatroomMsg.put(Common.CONTENT, "<p>" + content + "</p>");
 

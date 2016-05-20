@@ -54,12 +54,12 @@ import org.json.JSONObject;
  * Chat room processor.
  *
  * <ul>
- * <li>Shows char room (/cr), GET</li>
+ * <li>Shows char room (/cr, /chat-room, /community), GET</li>
  * <li>Sends chat message (/chat-room/send), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.3, Apr 13, 2016
+ * @version 1.1.2.3, May 20, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -184,7 +184,7 @@ public class ChatRoomProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/chat-room", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/cr", "/chat-room", "/community"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showChatRoom(final HTTPRequestContext context,

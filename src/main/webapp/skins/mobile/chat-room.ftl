@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${chatRoomLabel} - ${symphonyLabel}">
+        <@head title="${communityDynamicLabel} - ${symphonyLabel}">
         <meta name="description" content="${timelineLabel}"/>
         </@head>
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
