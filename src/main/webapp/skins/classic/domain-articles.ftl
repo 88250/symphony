@@ -15,7 +15,7 @@
         <div class="domains">
             <div class="wrapper fn-clear">
                 <#list domains as navDomain>
-                <a href="/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainTitle}</a>
+                <a href="/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainIconPath}&nbsp;${navDomain.domainTitle}</a>
                 </#list>
                 <a href="/">${latestLabel}</a>
                 <a href="/hot">${hotLabel}</a>
