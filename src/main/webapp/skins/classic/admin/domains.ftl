@@ -22,7 +22,7 @@
             </div>
             <div class="fn-clear">
                 <#if item.domainIconPath != ''>
-                <div class="avatar" style="background-image:url('${staticServePath}/images/domains/${item.domainIconPath}')"></div>
+                ${item.domainIconPath}
                 </#if>
                 <span class="domains">${item.domainDescription}</span>
             </div>

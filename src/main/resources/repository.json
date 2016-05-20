@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.17.4.7, Apr 20, 2016",
+    "version": "3.17.4.8, May 20, 2016",
     "authors": [
         "Liang Ding"
     ],
@@ -170,7 +170,7 @@
                 {
                     "name": "domainIconPath",
                     "type": "String",
-                    "length": 128
+                    "length": 1024
                 },
                 {
                     "name": "domainCSS",

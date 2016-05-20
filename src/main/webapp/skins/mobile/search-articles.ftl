@@ -14,7 +14,7 @@
                 <div class="content fn-clear">
                     <div class="domains fn-clear">
                         <#list domains as domain>
-                        <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
+                        <a href='/domain/${domain.domainURI}'>${domain.domainIconPath}&nbsp;${domain.domainTitle}</a>
                         </#list>
                         <a href="/">${latestLabel}</a>
                         <a href="/hot">${hotLabel}</a>
