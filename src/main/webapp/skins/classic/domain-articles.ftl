@@ -17,7 +17,7 @@
                 <#list domains as navDomain>
                 <a href="/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainIconPath}&nbsp;${navDomain.domainTitle}</a>
                 </#list>
-<a href="/" class="selected">
+                <a href="/">
                     <svg height="16" viewBox="0 0 14 16" width="14"><path d="M8 8h3v2H7c-0.55 0-1-0.45-1-1V4h2v4z m-1-5.7c3.14 0 5.7 2.56 5.7 5.7S10.14 13.7 7 13.7 1.3 11.14 1.3 8s2.56-5.7 5.7-5.7m0-1.3C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7S10.86 1 7 1z"></path></svg>&nbsp;${latestLabel}</a>
                 <a href="/hot">
                     <svg height="16" viewBox="0 0 14 16" width="16"><path d="M10 1c-0.17 0-0.36 0.05-0.52 0.14-1.44 0.88-4.98 3.44-6.48 3.86-1.38 0-3 0.67-3 2.5s1.63 2.5 3 2.5c0.3 0.08 0.64 0.23 1 0.41v4.59h2V11.55c1.34 0.86 2.69 1.83 3.48 2.31 0.16 0.09 0.34 0.14 0.52 0.14 0.52 0 1-0.42 1-1V2c0-0.58-0.48-1-1-1z m0 12c-0.38-0.23-0.89-0.58-1.5-1-0.16-0.11-0.33-0.22-0.5-0.34V3.31c0.16-0.11 0.31-0.2 0.47-0.31 0.61-0.41 1.16-0.77 1.53-1v11z m2-6h4v1H12v-1z m0 2l4 2v1L12 10v-1z m4-6v1L12 6v-1l4-2z"></path></svg>&nbsp;${hotLabel}</a>
