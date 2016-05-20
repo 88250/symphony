@@ -34,6 +34,7 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.symphony.event.ArticleQQSender;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -49,6 +50,7 @@ import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Chat room processor.
@@ -141,6 +143,7 @@ public class ChatRoomProcessor {
         msg.put(Common.CONTENT, content);
 
         ChatRoomChannel.notifyChat(msg);
+        ArticleQQSender.sendToDefaultPushQQGroups(Jsoup.parse(content).text());
 
         messages.addFirst(msg);
         final int maxCnt = Symphonys.getInt("chatRoom.msgCnt");

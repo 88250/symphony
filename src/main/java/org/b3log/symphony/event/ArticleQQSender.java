@@ -77,7 +77,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
     /**
      * QQ client.
      */
-    private SmartQQClient qqClient;
+    private static SmartQQClient qqClient;
 
     /**
      * Tag cache.
@@ -228,7 +228,10 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
-            sendToQQGroups(article);
+            final String title = article.optString(Article.ARTICLE_TITLE);
+            final String permalink = article.optString(Article.ARTICLE_PERMALINK);
+            final String msg = title + " " + Latkes.getServePath() + permalink;
+            sendToDefaultPushQQGroups(msg);
 
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article to QQ group error", e);
@@ -238,12 +241,9 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
     /**
      * Sends the specified article to QQ groups.
      *
-     * @param article the specified article
+     * @param msg the specified message
      */
-    private void sendToQQGroups(final JSONObject article) {
-        final String title = article.optString(Article.ARTICLE_TITLE);
-        final String permalink = article.optString(Article.ARTICLE_PERMALINK);
-
+    public static void sendToDefaultPushQQGroups(final String msg) {
         final String defaultGroupsConf = Symphonys.get("qq.robotDefaultPushGroups");
         if (StringUtils.isBlank(defaultGroupsConf)) {
             return;
@@ -255,8 +255,6 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
             final String name = group.getName();
 
             if (Strings.contains(name, groups)) {
-                final String msg = title + " " + Latkes.getServePath() + permalink;
-
                 sendMessageToGroup(group.getId(), msg);
             }
         }
@@ -274,7 +272,7 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
         }
     }
 
-    private void sendMessageToGroup(final Long groupId, final String msg) {
+    private static void sendMessageToGroup(final Long groupId, final String msg) {
         final Group group = QQ_GROUPS.get(groupId);
 
         if (null == group) {
