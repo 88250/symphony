@@ -97,7 +97,7 @@ public class ChatRoomProcessor {
     /**
      * Chat messages.
      */
-    private LinkedList<JSONObject> messages = new LinkedList<JSONObject>();
+    public static LinkedList<JSONObject> messages = new LinkedList<JSONObject>();
 
     /**
      * Adds a chat message.

@@ -13,13 +13,18 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content chat-room">
+                    <div class="content-reset">
+                        <h1>${communityDynamicLabel}</h1>
+                        <i class="ft-gray">${communityDynamicSubLabel}</i>
+                    </div>
+                    <!--
                     <div class="fn-clear">
-                        <h2 class="fn-left">${chatRoomLabel}</h2>
                         <span class="fn-right ft-smaller online-cnt">
                             <span class="ft-red" id="onlineCnt">${onlineChatCnt}</span>
                             <span class="ft-gray">${onlineLabel}</span>
                         </span>
                     </div>
+                    -->
                     <div class="form">
                         <div class="reply">
                             <#if isLoggedIn>
@@ -86,18 +91,17 @@
             WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
             // Init [ChatRoom] channel
             ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}/chat-room-channel");
-
             var chatRoomMsgCnt = ${chatRoomMsgCnt};
             Util.uploadFile({
-                "type": "img",
-                "id": "fileUpload",
-                "pasteZone": $(".CodeMirror"),
-                "editor": ChatRoom.editor,
-                "qiniuUploadToken": "${qiniuUploadToken}",
-                "uploadingLabel": "${uploadingLabel}",
-                "qiniuDomain": "${qiniuDomain}",
-                "imgMaxSize": ${imgMaxSize?c},
-                "fileMaxSize": ${fileMaxSize?c}               
+            "type": "img",
+                    "id": "fileUpload",
+                    "pasteZone": $(".CodeMirror"),
+                    "editor": ChatRoom.editor,
+                    "qiniuUploadToken": "${qiniuUploadToken}",
+                    "uploadingLabel": "${uploadingLabel}",
+                    "qiniuDomain": "${qiniuDomain}",
+                    "imgMaxSize": ${imgMaxSize?c},
+                    "fileMaxSize": ${fileMaxSize?c}
             });
         </script>
     </body>
