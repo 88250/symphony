@@ -20,6 +20,7 @@
                     <a href="/city/my">${currentUser.userCity}</a>
                     </#if>
                     <a href="/timeline" class="selected">${timelineLabel}</a>
+                    <a href="/community">${communityGroupLabel}</a>
                 </div>
 
                 <#if timelines?size <= 0>
