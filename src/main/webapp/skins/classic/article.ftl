@@ -181,15 +181,20 @@
                                 <li id="${comment.oId}"<#if comment.commentStatus == 1>class="shield"</#if>>
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
+                                        <#if !comment.fromClient>
                                         <a rel="nofollow" href="/member/${comment.commentAuthorName}">
                                             <div class="avatar" 
                                                  title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
-                                        </a>
+                                        </a><#else>
+                                        <div class="avatar" 
+                                                 title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
+                                        </#if>
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
+                                                    <#if !comment.fromClient>
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
-                                                       title="${comment.commentAuthorName}">${comment.commentAuthorName}</a><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
+                                                       title="${comment.commentAuthorName}">${comment.commentAuthorName}</a><#else>${comment.commentAuthorName} via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
                                                         <span class="cmt-via" data-ua="${comment.commentUA}"></span>
                                                     </span>
                                                     <#if comment.rewardedCnt gt 0>

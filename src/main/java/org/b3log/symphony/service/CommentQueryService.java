@@ -44,6 +44,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
@@ -60,7 +61,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.5.5.17, Apr 21, 2016
+ * @version 2.5.5.18, May 24, 2016
  * @since 0.2.0
  */
 @Service
@@ -586,6 +587,22 @@ public class CommentQueryService {
         commentContent = Emotions.convert(commentContent);
         commentContent = Markdowns.toHTML(commentContent);
         commentContent = Markdowns.clean(commentContent, "");
+
+        final boolean sync = StringUtils.isNotBlank(comment.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
+        comment.put(Common.FROM_CLIENT, sync);
+        if (sync) {
+            // "<i class='ft-small'>by 88250</i>"
+            String syncCommenterName = StringUtils.substringAfter(commentContent, "<i class=\"ft-small\">by ");
+            syncCommenterName = StringUtils.substringBefore(syncCommenterName, "</i>");
+            
+            if (UserRegisterValidation.invalidUserName(syncCommenterName)) {
+                syncCommenterName = "Someone";
+            }
+
+            commentContent = commentContent.replaceAll("<i class=\"ft-small\">by .*</i>", "");
+
+            comment.put(Comment.COMMENT_T_AUTHOR_NAME, syncCommenterName);
+        }
 
         comment.put(Comment.COMMENT_CONTENT, commentContent);
     }
