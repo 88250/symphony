@@ -31,7 +31,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
@@ -55,7 +54,7 @@ import org.json.JSONObject;
  * Sends an article to QQ qun.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.1, May 20, 2016
+ * @version 1.3.0.2, May 24, 2016
  * @since 1.4.0
  */
 @Named
@@ -124,14 +123,17 @@ public class ArticleQQSender extends AbstractEventListener<JSONObject> {
                         final String content = message.getContent();
 
                         // Push to chat room
-                        final String defaultAvatarURL = Symphonys.get("defaultThumbnailURL");
-                        final JSONObject chatroomMsg = new JSONObject();
-                        chatroomMsg.put(User.USER_NAME, Long.toHexString(message.getUserId()));
-                        chatroomMsg.put(UserExt.USER_AVATAR_URL, defaultAvatarURL);
-                        chatroomMsg.put(Common.CONTENT, "<p>" + content + "</p>");
+                        final String qqMsg = content.replaceAll("\\[\"face\",[0-9]+\\]", "");
+                        if (StringUtils.isNotBlank(qqMsg)) {
+                            final String defaultAvatarURL = Symphonys.get("defaultThumbnailURL");
+                            final JSONObject chatroomMsg = new JSONObject();
+                            chatroomMsg.put(User.USER_NAME, Long.toHexString(message.getUserId()));
+                            chatroomMsg.put(UserExt.USER_AVATAR_URL, defaultAvatarURL);
+                            chatroomMsg.put(Common.CONTENT, "<p>" + qqMsg + "</p>");
 
-                        ChatRoomChannel.notifyChat(chatroomMsg);
-                        ChatRoomProcessor.messages.addFirst(chatroomMsg);
+                            ChatRoomChannel.notifyChat(chatroomMsg);
+                            ChatRoomProcessor.messages.addFirst(chatroomMsg);
+                        }
 
                         String msg = "";
                         if (StringUtils.contains(content, Symphonys.get("qq.robotName"))
