@@ -30,7 +30,7 @@
                     <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
                     </#list>
                     <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${article.timeAgo}</span>
-                    <#if "" != article.articleLatestCmterName>
+                    <#if "" != article.articleLatestCmterName && !article.syncWithSymphonyClient>
                     <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> <a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}">${article.articleLatestCmterName}</a>
                     </#if>
                 </div>

@@ -31,7 +31,7 @@
                     </#list>
                     <div class="ft-smaller">
                     <span class="ft-fade">${article.timeAgo}</span>
-                    <#if "" != article.articleLatestCmterName>
+                    <#if "" != article.articleLatestCmterName && !article.syncWithSymphonyClient>
                     <span class="ft-fade">•&nbsp;${latestCmtFromLabel}</span> <a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}">${article.articleLatestCmterName}</a>
                     </#if>
                     </div>
