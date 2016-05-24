@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.4.7, May 16, 2016
+ * @version 2.12.5.7, May 24, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -238,7 +238,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             if (!isStatic) {
                 Stopwatchs.end();
 
-                final long elapsed = Stopwatchs.getElapsed("Request initialized");
+                final long elapsed = Stopwatchs.getElapsed("Request initialized [" + request.getRequestURI() + "]");
                 if (elapsed > Symphonys.getInt("perfromance.threshold")) {
                     LOGGER.log(Level.INFO, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
                 }
