@@ -23,7 +23,7 @@ import org.b3log.latke.RuntimeMode;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Mar 22, 2016
+ * @version 1.3.0.4, May 24, 2016
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -39,11 +39,17 @@ public final class Symphonys {
     public static final String[] RESERVED_TAGS;
 
     /**
+     * White list tags.
+     */
+    public static final String[] WHITE_LIST_TAGS;
+
+    /**
      * Reserved user names.
      */
     public static final String[] RESERVED_USER_NAMES;
 
     static {
+        // Loads reserved tags
         final String reservedTags = CFG.getString("reservedTags");
         final String[] tags = reservedTags.split(",");
         RESERVED_TAGS = new String[tags.length];
@@ -54,6 +60,18 @@ public final class Symphonys {
             RESERVED_TAGS[i] = tag.trim();
         }
 
+        // Loads white list tags
+        final String whiteListTags = CFG.getString("whiteListTags");
+        final String[] wlTags = whiteListTags.split(",");
+        WHITE_LIST_TAGS = new String[wlTags.length];
+
+        for (int i = 0; i < wlTags.length; i++) {
+            final String tag = wlTags[i];
+
+            WHITE_LIST_TAGS[i] = tag.trim();
+        }
+
+        // Loads reserved usernames
         final String reservedUserNames = CFG.getString("reservedUserNames");
         final String[] userNames = reservedUserNames.split(",");
         RESERVED_USER_NAMES = new String[userNames.length];
