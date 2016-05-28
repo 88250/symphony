@@ -1611,6 +1611,7 @@ public class ArticleQueryService {
                         + "        title: '" + mp3Name + "',\n"
                         + "        author: '" + mp3URL + "',\n"
                         + "        url: '" + mp3URL + "',\n"
+                        + "        pic: '" + Latkes.getStaticServePath() + "/js/lib/aplayer/default.jpg'\n"
                         + "    }\n"
                         + "});\n"
                         + playerId + ".init();\n"
