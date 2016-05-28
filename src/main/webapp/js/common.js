@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.12.19, May 15, 2016
+ * @version 1.24.12.20, May 28, 2016
  */
 
 /**
@@ -724,8 +724,6 @@ var Util = {
         this._initNav();
         // 每日活跃
         this._initActivity();
-        // 自动添加链接
-        $('.content-reset').linkify();
         // 登录密码输入框回车事件
         $("#loginPassword").keyup(function (event) {
             if (event.keyCode === 13) {

@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.6.5, Apr 13, 2016
+ * @version 1.7.6.6, May 28, 2016
  */
 
 /**
@@ -109,7 +109,6 @@ var ArticleChannel = {
 
                     $("#comments > ul").prepend(template);
 
-                    $("#comments > ul > li:first").linkify();
                     Article.parseLanguage();
 
                     $("#" + data.commentId).fadeIn(2000);

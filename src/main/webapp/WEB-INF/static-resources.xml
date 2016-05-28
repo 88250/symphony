@@ -19,7 +19,7 @@
 
 <!--
     Description: Static resources definition.
-    Version: 1.3.0.1, Feb 23, 2016
+    Version: 1.4.0.1, May 28, 2016
     Author: Liang Ding
 -->
 <static-files>
@@ -44,6 +44,10 @@
     <include path="/js/**/*.jpg" />
     <include path="/js/**.swf" />
     <include path="/js/**/*.swf" />
+    <include path="/js/**/*.eot" />
+    <include path="/js/**/*.svg" />
+    <include path="/js/**/*.ttf" />
+    <include path="/js/**/*.woff" />
         
     <include path="/skins/**.css" />
     <include path="/skins/**/*.css" />

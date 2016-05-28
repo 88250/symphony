@@ -24,6 +24,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
@@ -80,7 +82,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.11.21, May 6, 2016
+ * @version 2.16.11.21, May 28, 2016
  * @since 0.2.0
  */
 @Service
@@ -1579,6 +1581,48 @@ public class ArticleQueryService {
             }
 
             markdown(article);
+            
+            final String articleId = article.optString(Keys.OBJECT_ID);
+
+            // MP3 player render
+            final StringBuffer contentBuilder = new StringBuffer();
+            articleContent = article.optString(Article.ARTICLE_CONTENT);
+            final String MP3_URL_REGEX = "<p><a href.*\\.mp3.*</a>( )*</p>";
+            final Pattern p = Pattern.compile(MP3_URL_REGEX);
+            final Matcher m = p.matcher(articleContent);
+
+            int i = 0;
+            while (m.find()) {
+                String mp3URL = m.group();
+                String mp3Name = StringUtils.substringBetween(mp3URL, "\">", ".mp3</a>");
+                mp3URL = StringUtils.substringBetween(mp3URL, "href=\"", "\" rel=");
+                final String playerId = "player" + articleId + i++;
+
+                m.appendReplacement(contentBuilder, "<div id=\"" + playerId + "\" class=\"aplayer\"></div>\n"
+                        + "<script>\n"
+                        + "var " + playerId + " = new APlayer({\n"
+                        + "    element: document.getElementById('" + playerId + "'),\n"
+                        + "    narrow: false,\n"
+                        + "    autoplay: false,\n"
+                        + "    showlrc: false,\n"
+                        + "    mutex: true,\n"
+                        + "    theme: '#e6d0b2',\n"
+                        + "    music: {\n"
+                        + "        title: '" + mp3Name + "',\n"
+                        + "        author: '" + mp3URL + "',\n"
+                        + "        url: '" + mp3URL + "',\n"
+                        + "    }\n"
+                        + "});\n"
+                        + playerId + ".init();\n"
+                        + "</script>");
+            }
+            m.appendTail(contentBuilder);
+
+            articleContent = contentBuilder.toString();
+            articleContent = articleContent.replaceFirst("<div id=\"player",
+                    "<script src=\"" + Latkes.getStaticServePath() + "/js/lib/aplayer/APlayer.min.js\"></script>\n<div id=\"player");
+
+            article.put(Article.ARTICLE_CONTENT, articleContent);
 
             article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));
         } finally {

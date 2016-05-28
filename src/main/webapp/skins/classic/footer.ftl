@@ -41,7 +41,6 @@
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/md5.js"></script>
-<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.linkify-1.0-min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.notification-1.0.5.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/ua-parser.min.js"></script>

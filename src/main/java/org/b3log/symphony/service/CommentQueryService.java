@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -61,7 +63,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.5.5.18, May 24, 2016
+ * @version 2.6.5.18, May 28, 2016
  * @since 0.2.0
  */
 @Service
@@ -588,13 +590,51 @@ public class CommentQueryService {
         commentContent = Markdowns.toHTML(commentContent);
         commentContent = Markdowns.clean(commentContent, "");
 
+        final String commentId = comment.optString(Keys.OBJECT_ID);
+        // MP3 player render
+        final StringBuffer contentBuilder = new StringBuffer();
+        final String MP3_URL_REGEX = "<p><a href.*\\.mp3.*</a>( )*</p>";
+        final Pattern p = Pattern.compile(MP3_URL_REGEX);
+        final Matcher m = p.matcher(commentContent);
+
+        int i = 0;
+        while (m.find()) {
+            String mp3URL = m.group();
+            String mp3Name = StringUtils.substringBetween(mp3URL, "\">", ".mp3</a>");
+            mp3URL = StringUtils.substringBetween(mp3URL, "href=\"", "\" rel=");
+            final String playerId = "player" + commentId + i++;
+
+            m.appendReplacement(contentBuilder, "<div id=\"" + playerId + "\" class=\"aplayer\"></div>\n"
+                    + "<script>\n"
+                    + "var " + playerId + " = new APlayer({\n"
+                    + "    element: document.getElementById('" + playerId + "'),\n"
+                    + "    narrow: false,\n"
+                    + "    autoplay: false,\n"
+                    + "    showlrc: false,\n"
+                    + "    mutex: true,\n"
+                    + "    theme: '#e6d0b2',\n"
+                    + "    music: {\n"
+                    + "        title: '" + mp3Name + "',\n"
+                    + "        author: '" + mp3URL + "',\n"
+                    + "        url: '" + mp3URL + "',\n"
+                    + "    }\n"
+                    + "});\n"
+                    + playerId + ".init();\n"
+                    + "</script>");
+        }
+        m.appendTail(contentBuilder);
+
+        commentContent = contentBuilder.toString();
+        commentContent = commentContent.replaceFirst("<div id=\"player",
+                "<script src=\"" + Latkes.getStaticServePath() + "/js/lib/aplayer/APlayer.min.js\"></script>\n<div id=\"player");
+
         final boolean sync = StringUtils.isNotBlank(comment.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
         comment.put(Common.FROM_CLIENT, sync);
         if (sync) {
             // "<i class='ft-small'>by 88250</i>"
             String syncCommenterName = StringUtils.substringAfter(commentContent, "<i class=\"ft-small\">by ");
             syncCommenterName = StringUtils.substringBefore(syncCommenterName, "</i>");
-            
+
             if (UserRegisterValidation.invalidUserName(syncCommenterName)) {
                 syncCommenterName = "Someone";
             }
