@@ -216,12 +216,6 @@
             <version>${user-agent-utils.version}</version>
         </dependency>
         
-        <dependency>
-            <groupId>com.scienjus</groupId>
-            <artifactId>smartqq</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -414,15 +408,6 @@
             </releases>
         </repository>
 
-        <!-- Just for SmartQQ -->        
-        <repository>
-            <id>scienjus-mvn-repo</id>
-            <url>https://raw.github.com/ScienJus/maven/snapshot/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-            </snapshots>
-        </repository>
     </repositories>
     
     <pluginRepositories>

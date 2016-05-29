@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.5.7, May 24, 2016
+ * @version 2.12.5.8, May 29, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -147,8 +147,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         JdbcRepository.dispose();
 
-        articleQQSender.initQQClient();
-
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
@@ -159,9 +157,6 @@ public final class SymphonyServletListener extends AbstractServletListener {
     @Override
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
-
-        final ArticleQQSender articleQQSender = beanManager.getReference(ArticleQQSender.class);
-        articleQQSender.closeQQClient();
 
         LOGGER.info("Destroyed the context");
     }
