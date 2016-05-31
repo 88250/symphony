@@ -55,9 +55,9 @@ ${ADLabel}
         <ul class="module-list">
             <#list sideHotArticles as hotArticle>
             <li<#if !hotArticle_has_next> class="last"</#if>>
-                <a class="avatar-small slogan" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
+                <a class="avatar-small tooltipped tooltipped-se slogan" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
                style="background-image:url('${hotArticle.articleAuthorThumbnailURL}-64.jpg?${hotArticle.articleAuthor.userUpdateTime?c}')"
-               title="${hotArticle.articleAuthorName}"></a>
+               aria-label="${hotArticle.articleAuthorName}"></a>
                 <a rel="nofollow" class="title" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
             </#list>
@@ -107,8 +107,8 @@ ${ADLabel}
         <ul class="module-list">
             <#list sideRandomArticles as randomArticle>
             <li<#if !randomArticle_has_next> class="last"</#if>>
-                <a class="avatar-small slogan" rel="nofollow" href="/member/${randomArticle.articleAuthorName}"
-               title="${randomArticle.articleAuthorName}"
+                <a class="avatar-small tooltipped tooltipped-se slogan" rel="nofollow" href="/member/${randomArticle.articleAuthorName}"
+               aria-label="${randomArticle.articleAuthorName}"
                style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
                 <a class="title" rel="nofollow" title="${randomArticle.articleTitle}" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
             </li>

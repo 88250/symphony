@@ -31,13 +31,13 @@
                         <span class='fn-right'>
                             <#if isLoggedIn> &nbsp;
                             <#if isFollowing>
-                            <span class="icon-star ft-red fn-pointer" title="${unfollowLabel}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', 'tag-articles')"></span>
+                            <span class="tooltipped tooltipped-s ft-red fn-pointer" aria-label="${unfollowLabel}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', 'tag-articles')"><span class="icon-star"></span></span>
                             <#else>
-                            <span class="icon-star ft-gray fn-pointer" title="${followLabel}" onclick="Util.follow(this, '${tag.oId}', 'tag', 'tag-articles')"></span>
+                            <span class="tooltipped tooltipped-s ft-gray fn-pointer" aria-label="${followLabel}" onclick="Util.follow(this, '${tag.oId}', 'tag', 'tag-articles')"><span class="icon-star"></span></span>
                             </#if>
                             </#if>
                             <#if isAdminLoggedIn> &nbsp;
-                            <a class="icon-setting" href="/admin/tag/${tag.oId}" title="${adminLabel}"></a>
+                            <a class="a-icon tooltipped tooltipped-s" href="/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                             </#if>
                         </span>
                     </div>

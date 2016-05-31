@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.8.10.15, May 16, 2016
+ * @version 2.9.10.15, May 31, 2016
  */
 
 /* start module */
@@ -83,6 +83,7 @@
     float: left;
     margin-left: 10px;
     text-decoration: none;
+    color: #333;
 }
 
 #heatBar {
@@ -177,11 +178,17 @@ h2.article-title {
     font-size: 24px;
 }
 
+#comments > div.comment-header a {
+    text-decoration: none;
+    color: #333;
+}
+
 #comments > div.comment-header .icon-sortasc,
 #comments > div.comment-header .icon-time {
     font-size: 16px;
     font-weight: bold;
     margin: 4px 10px 0 0;
+    display: inherit;
 }
 
 #comments li.shield {
@@ -275,8 +282,6 @@ h2.article-title {
 }
 
 .share [class^="icon-"]:hover {
-    transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
     color: #4183c4;
 }
 
@@ -322,6 +327,20 @@ h2.article-title {
     background-color: #FFF;
     border-color: #d26911 #e5e5e5 transparent;
     color: #111;
+}
+
+.domains a:hover {
+    color: #333;
+}
+
+.domains svg {
+    color: #bbb;
+    vertical-align: text-top;
+    fill: currentColor;
+}
+
+.domains a.selected svg {
+    color: inherit;
 }
 
 .domain-tags a {

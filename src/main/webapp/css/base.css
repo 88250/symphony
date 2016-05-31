@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.12.24, May 29, 2016
+ * @version 1.18.12.24, May 31, 2016
  */
 
 /* start reset */
@@ -434,6 +434,165 @@ textarea {
     color: #333;
     background-color: #ccc;
 }
+.tooltipped {
+    position: relative
+}
+
+.tooltipped::after {
+    position: absolute;
+    z-index: 1000000;
+    display: none;
+    padding: 5px 8px;
+    font-size: 11px;
+    -webkit-font-smoothing: subpixel-antialiased;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: break-word;
+    white-space: pre;
+    pointer-events: none;
+    content: attr(aria-label);
+    background: rgba(0,0,0,0.8);
+    border-radius: 3px;
+    opacity: 0
+}
+
+.tooltipped::before {
+    position: absolute;
+    z-index: 1000001;
+    display: none;
+    width: 0;
+    height: 0;
+    color: rgba(0,0,0,0.8);
+    pointer-events: none;
+    content: "";
+    border: 5px solid transparent;
+    opacity: 0
+}
+
+@-webkit-keyframes tooltip-appear {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes tooltip-appear {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+.tooltipped:hover::before,.tooltipped:hover::after,.tooltipped:active::before,.tooltipped:active::after,.tooltipped:focus::before,.tooltipped:focus::after {
+    display: inline-block;
+    text-decoration: none;
+    -webkit-animation-name: tooltip-appear;
+    animation-name: tooltip-appear;
+    -webkit-animation-duration: 0.1s;
+    animation-duration: 0.1s;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s
+}
+
+.tooltipped-s::after,.tooltipped-se::after,.tooltipped-sw::after {
+    top: 100%;
+    right: 50%;
+    margin-top: 5px
+}
+
+.tooltipped-s::before,.tooltipped-se::before,.tooltipped-sw::before {
+    top: auto;
+    right: 50%;
+    bottom: -5px;
+    margin-right: -5px;
+    border-bottom-color: rgba(0,0,0,0.8)
+}
+
+.tooltipped-se::after {
+    right: auto;
+    left: 50%;
+    margin-left: -15px
+}
+
+.tooltipped-sw::after {
+    margin-right: -15px
+}
+
+.tooltipped-n::after,.tooltipped-ne::after,.tooltipped-nw::after {
+    right: 50%;
+    bottom: 100%;
+    margin-bottom: 5px
+}
+
+.tooltipped-n::before,.tooltipped-ne::before,.tooltipped-nw::before {
+    top: -5px;
+    right: 50%;
+    bottom: auto;
+    margin-right: -5px;
+    border-top-color: rgba(0,0,0,0.8)
+}
+
+.tooltipped-ne::after {
+    right: auto;
+    left: 50%;
+    margin-left: -15px
+}
+
+.tooltipped-nw::after {
+    margin-right: -15px
+}
+
+.tooltipped-s::after,.tooltipped-n::after {
+    -webkit-transform: translateX(50%);
+    transform: translateX(50%)
+}
+
+.tooltipped-w::after {
+    right: 100%;
+    bottom: 50%;
+    margin-right: 5px;
+    -webkit-transform: translateY(50%);
+    transform: translateY(50%)
+}
+
+.tooltipped-w::before {
+    top: 50%;
+    bottom: 50%;
+    left: -5px;
+    margin-top: -5px;
+    border-left-color: rgba(0,0,0,0.8)
+}
+
+.tooltipped-e::after {
+    bottom: 50%;
+    left: 100%;
+    margin-left: 5px;
+    -webkit-transform: translateY(50%);
+    transform: translateY(50%)
+}
+
+.tooltipped-e::before {
+    top: 50%;
+    right: -5px;
+    bottom: 50%;
+    margin-top: -5px;
+    border-right-color: rgba(0,0,0,0.8)
+}
+
 /* start button */
 button,
 .btn {
@@ -547,6 +706,14 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
+.a-icon {
+    color: #333;
+    text-decoration: none;
+} 
+
+.a-icon:hover {
+    text-decoration: none;
+}
 
 .icon-upload:before {
     content: "\f0ee";
@@ -739,10 +906,6 @@ a[class*=" icon-"]:hover {
     top: 7px;
     z-index: 2;
     cursor: pointer;
-}
-
-.icon-reply:hover {
-    color: #4183C4;
 }
 
 .icon-up {

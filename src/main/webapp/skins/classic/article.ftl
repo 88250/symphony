@@ -20,40 +20,40 @@
                     <div class="fn-clear article-action">
                         <span class="fn-right">
                             <#if isLoggedIn>
-                            <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
+                            <span id="voteUp" class="tooltipped tooltipped-s fn-pointer<#if 0==vote> ft-red</#if>" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
                                 <span class="icon-thumbs-up"></span></span>
-                            <span id="voteDown" class="fn-pointer<#if 1==vote> ft-red</#if>" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
+                            <span id="voteDown" class="tooltipped tooltipped-s fn-pointer<#if 1==vote> ft-red</#if>" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
                                 <span class="icon-thumbs-down"></span></span>
                             </#if>
                             <#if isLoggedIn>
                             <#if isFollowing>
-                            <span class="ft-red fn-pointer" title="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
+                            <span class="ft-red tooltipped tooltipped-s fn-pointer" aria-label="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
                                 <span class="icon-star"></span>
                                 ${article.articleCollectCnt}
                             </span>
                             <#else>
-                            <span class="fn-pointer" title="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')">
+                            <span class="tooltipped tooltipped-s fn-pointer" aria-label="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')">
                                 <span class="icon-star"></span>
                                 ${article.articleCollectCnt}
                             </span>
                             </#if>
                             <#else>
-                            <span title="${collectLabel}" class="fn-pointer">
+                            <span aria-label="${collectLabel}" class="fn-pointer tooltipped tooltipped-s">
                                 <span class="icon-star"></span>
                                 ${article.articleCollectCnt}
                             </span>
                             </#if>
-                            <span onclick="Article.revision('${article.oId}')" title="${historyLabel}"
-                                  class="fn-pointer icon-refresh"></span>
+                            <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
+                                  class="fn-pointer tooltipped tooltipped-s"><span class="icon-refresh"></span></span>
                             <#if article.isMyArticle && 3 != article.articleType>
-                            <a href="/update?id=${article.oId}" title="${editLabel}" class="icon-edit"></a>
+                            <a href="/update?id=${article.oId}" aria-label="${editLabel}" class="tooltipped tooltipped-s"><span class="icon-edit"></span></a>
                             </#if>
                             <#if article.isMyArticle>
-                            <a class="icon-chevron-up" title="${stickLabel}" 
-                               href="javascript:Article.stick('${article.oId}')"></a>
+                            <a class="tooltipped tooltipped-s" aria-label="${stickLabel}" 
+                               href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a>
                             </#if>
                             <#if isAdminLoggedIn>
-                            <a class="icon-setting" href="/admin/article/${article.oId}" title="${adminLabel}"></a>
+                            <a class="tooltipped tooltipped-s" href="/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                             </#if>
                         </span>
                     </div>
@@ -114,14 +114,15 @@
                     <div class="fn-clear">
                         <div class="share fn-right">
                             <div id="qrCode" class="fn-none"></div>
-                            <span class="icon-wechat" data-type="wechat"></span>
-                            <span class="icon-tencent" data-type="tencent"></span>
-                            <span class="icon-weibo" data-type="weibo"></span>
-                            <span class="icon-twitter" data-type="twitter"></span>
-                            <span class="icon-google" data-type="google"></span>
-                            <span id="shareClipboard" class="icon-copy ft-red" 
-                                  data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"
-                                  data-type="copy" title="${copyLabel}"></span>
+                            <span class="tooltipped tooltipped-s" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span>
+                            <span class="tooltipped tooltipped-s" aria-label="share to tencent" data-type="tencent"><span class="icon-tencent"></span></span>
+                            <span class="tooltipped tooltipped-s" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
+                            <span class="tooltipped tooltipped-s" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
+                            <span class="tooltipped tooltipped-s" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>
+                            <span class="tooltipped tooltipped-sw ft-red" 
+                                  aria-label="${copyLabel}"><span id="shareClipboard"
+                                                            data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"
+                                  data-type="copy" class="icon-copy"></span></span>
                         </div>
                     </div>
                     <#if 0 < article.articleRewardPoint>
@@ -172,9 +173,9 @@
                             <div class="fn-clear comment-header">
                                 <h2 class="fn-left">${article.articleCommentCount} ${cmtLabel}</h2>
                                 <span<#if article.articleComments?size == 0> class="fn-none"</#if>>
-                                    <a class="icon-chevron-down fn-right" href="#bottomComment" title="${jumpToBottomCommentLabel}"></a>
-                                    <a class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if> fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
-                                       title="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"></a>
+                                    <a class="tooltipped tooltipped-sw fn-right" href="#bottomComment" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
+                                    <a class="tooltipped tooltipped-sw fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
+                                       aria-label="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"><span class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if>"></span></a>
                                 </span>
                             </div>
                             <ul>
@@ -219,10 +220,10 @@
                                                           onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}')">${thankLabel}</span>
                                                     </#if>
                                                     </#if>
-                                                    <span class="icon-reply fn-pointer" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
+                                                    <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
-                                                    <a class="icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
+                                                    <a class="tooltipped tooltipped-s a-icon" href="/admin/comment/${comment.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                     </#if>
                                                     #<i><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
                                                 </span>    
@@ -287,8 +288,8 @@
                             <ul class="module-list">
                                 <#list sideRelevantArticles as relevantArticle>
                                 <li<#if !relevantArticle_has_next> class="last"</#if>>
-                                    <a class="avatar-small slogan" rel="nofollow" 
-                                   title="${relevantArticle.articleAuthorName}"
+                                    <a class="avatar-small slogan tooltipped tooltipped-se" rel="nofollow" 
+                                   aria-label="${relevantArticle.articleAuthorName}"
                                    style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
                                    href="/member/${relevantArticle.articleAuthorName}"></a>
                                     <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
@@ -309,9 +310,9 @@
                             <ul class="module-list">
                                 <#list sideRandomArticles as randomArticle>
                                 <li<#if !randomArticle_has_next> class="last"</#if>>
-                                    <a class="avatar-small slogan" rel="nofollow"
+                                    <a class="avatar-small slogan tooltipped tooltipped-se" rel="nofollow"
                                    href="/member/${randomArticle.articleAuthorName}"
-                                   title="${randomArticle.articleAuthorName}"
+                                   aria-label="${randomArticle.articleAuthorName}"
                                    style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
                                     <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                                 </li>

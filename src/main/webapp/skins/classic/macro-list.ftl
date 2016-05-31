@@ -7,9 +7,9 @@
         <#if article_has_next><#assign articleIds = articleIds + ","></#if>
         <li<#if article.articleStickRemains gt 0 && articleStickCheck??> class="stick"</#if>>
             <div class="fn-flex">
-                <a rel="nofollow" class="ft-gray"
+                <a rel="nofollow" class="ft-gray tooltipped tooltipped-se"
                    href="/member/${article.articleAuthorName}" 
-                   title="${article.articleAuthorName}"><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div></a>
+                   aria-label="${article.articleAuthorName}"><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div></a>
                 <div class="fn-flex-1 has-view">
                     <h2>
                         <#if 1 == article.articleType>

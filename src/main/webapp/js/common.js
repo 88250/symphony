@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.12.20, May 28, 2016
+ * @version 1.25.12.20, May 31, 2016
  */
 
 /**
@@ -472,11 +472,11 @@ var Util = {
                         $(it).addClass('ft-red').html(' <span class="icon-star"></span> ' +
                                 (parseInt($(it).text()) + 1) + ' ').
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
-                                .attr("title", Label.uncollectLabel);
+                                .attr("aria-label", Label.uncollectLabel);
                     } else if (from && 'tag-articles' === from) {
                         $(it).removeClass("ft-gray").addClass("ft-red")
                                 .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', 'tag-articles')")
-                                .attr('title', Label.unfollowLabel);
+                                .attr('aria-label', Label.unfollowLabel);
                     } else {
                         $(it).removeClass("green").addClass("red")
                                 .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
@@ -520,11 +520,11 @@ var Util = {
 
                         $(it).removeClass('ft-red').html(' <span class="icon-star"></span> ' + count + ' ')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
-                                .attr("title", Label.collectLabel);
+                                .attr("aria-label", Label.collectLabel);
                     } else if (from && 'tag-articles' === from) {
                         $(it).removeClass("ft-red").addClass("ft-gray")
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "', 'tag-articles')")
-                                .attr('title', Label.followLabel);
+                                .attr('aria-label', Label.followLabel);
                     } else {
                         $(it).removeClass("red").addClass("green")
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
@@ -560,15 +560,15 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 $("#voteUp").removeClass("disabled");
-                var upCnt = parseInt($("#voteUp").attr('title').substr(3)),
-                        downCnt = parseInt($("#voteDown").attr('title').substr(3));
+                var upCnt = parseInt($("#voteUp").attr('aria-label').substr(3)),
+                        downCnt = parseInt($("#voteDown").attr('aria-label').substr(3));
                 if (result.sc) {
                     if (0 == result.type) { // cancel up
-                        $("#voteUp").removeClass("ft-red").attr('title', Label.upLabel + ' ' + (upCnt - 1));
+                        $("#voteUp").removeClass("ft-red").attr('aria-label', Label.upLabel + ' ' + (upCnt - 1));
                     } else {
-                        $("#voteUp").addClass("ft-red").attr('title', Label.upLabel + ' ' + (upCnt + 1));
+                        $("#voteUp").addClass("ft-red").attr('aria-label', Label.upLabel + ' ' + (upCnt + 1));
                         if ($("#voteDown").hasClass('ft-red')) {
-                            $("#voteDown").removeClass("ft-red").attr('title', Label.downLabel + ' ' + (downCnt - 1));
+                            $("#voteDown").removeClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt - 1));
                         }
                     }
 
@@ -602,15 +602,15 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 $("#voteDown").removeClass("disabled");
-                var upCnt = parseInt($("#voteUp").attr('title').substr(3)),
-                        downCnt = parseInt($("#voteDown").attr('title').substr(3));
+                var upCnt = parseInt($("#voteUp").attr('aria-label').substr(3)),
+                        downCnt = parseInt($("#voteDown").attr('aria-label').substr(3));
                 if (result.sc) {
                     if (1 == result.type) { // cancel down
-                        $("#voteDown").removeClass("ft-red").attr('title', Label.downLabel + ' ' + (downCnt - 1));
+                        $("#voteDown").removeClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt - 1));
                     } else {
-                        $("#voteDown").addClass("ft-red").attr('title', Label.downLabel + ' ' + (downCnt + 1));
+                        $("#voteDown").addClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt + 1));
                         if ($("#voteUp").hasClass('ft-red')) {
-                            $("#voteUp").removeClass("ft-red").attr('title', Label.upLabel + ' ' + (upCnt - 1));
+                            $("#voteUp").removeClass("ft-red").attr('aria-label', Label.upLabel + ' ' + (upCnt - 1));
                         }
                     }
 

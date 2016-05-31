@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.21.9, May 12, 2016
+ * @version 1.18.21.9, May 31, 2016
  */
 
 /**
@@ -509,7 +509,7 @@ var Article = {
             var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
             shareClipboard.on("ready", function (readyEvent) {
                 shareClipboard.on("aftercopy", function (event) {
-                    $('#shareClipboard').attr('title', Label.copiedLabel)
+                    $('#shareClipboard').parent().attr('aria-label', Label.copiedLabel)
                 });
             });
         }
