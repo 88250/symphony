@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -56,10 +57,11 @@ import org.json.JSONObject;
  * <ul>
  * <li>Shows char room (/cr, /chat-room, /community), GET</li>
  * <li>Sends chat message (/chat-room/send), POST</li>
+ * <li>Receives <a href="https://github.com/b3log/xiaov">XiaoV</a> message (/community/push), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.4, May 29, 2016
+ * @version 1.2.2.4, May 30, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -214,5 +216,52 @@ public class ChatRoomProcessor {
         filler.fillHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+    }
+
+    /**
+     * XiaoV push API.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/community/push", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void receiveXiaoV(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final String key = Symphonys.get("xiaov.key");
+        if (!key.equals(request.getParameter("key"))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final String msg = request.getParameter("msg");
+        if (StringUtils.isBlank(msg)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+
+            return;
+        }
+
+        String user = request.getParameter("user");
+        if (StringUtils.isBlank("user")) {
+            user = "V";
+        }
+
+        final JSONObject ret = new JSONObject();
+        context.renderJSON(ret);
+
+        final String defaultAvatarURL = Symphonys.get("defaultThumbnailURL");
+        final JSONObject chatroomMsg = new JSONObject();
+        chatroomMsg.put(User.USER_NAME, user);
+        chatroomMsg.put(UserExt.USER_AVATAR_URL, defaultAvatarURL);
+        chatroomMsg.put(Common.CONTENT, msg);
+
+        ChatRoomChannel.notifyChat(chatroomMsg);
+        ChatRoomProcessor.messages.addFirst(chatroomMsg);
+
+        ret.put(Keys.STATUS_CODE, true);
     }
 }
