@@ -299,7 +299,7 @@ var ChatRoomChannel = {
                     $("#onlineCnt").text(data.onlineChatCnt);
                     break;
                 case "msg":
-                    var enableUserLink = data.userAvatarURL.indexOf("user-thumbnail.png") > -1;
+                    var enableUserLink = data.userAvatarURL.indexOf("user-thumbnail.png") < 0;
                     var avatarPart = '<a rel="nofollow" href="/member/' + data.userName + '">'
                             + '<div class="avatar" '
                             + 'title="' + data.userName + '" style="background-image:url(' + data.userAvatarURL + '-64.jpg)"></div>'
@@ -314,7 +314,7 @@ var ChatRoomChannel = {
                     if (!enableUserLink) {
                         namePart = data.userName;
                     }
-
+                    
                     var liHTML = '<li class="fn-none">'
                             + '<div class="fn-flex">'
                             + avatarPart
