@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.6.6, May 28, 2016
+ * @version 1.7.6.7, May 31, 2016
  */
 
 /**
@@ -299,17 +299,29 @@ var ChatRoomChannel = {
                     $("#onlineCnt").text(data.onlineChatCnt);
                     break;
                 case "msg":
-                    var liHTML = '<li class="fn-none">'
-                            + '<div class="fn-flex">'
-                            + '<a rel="nofollow" href="/member/' + data.userName + '">'
+                    var enableUserLink = data.userAvatarURL.indexOf("user-thumbnail.png") < 0;
+                    var avatarPart = '<a rel="nofollow" href="/member/' + data.userName + '">'
                             + '<div class="avatar" '
                             + 'title="' + data.userName + '" style="background-image:url(' + data.userAvatarURL + '-64.jpg)"></div>'
-                            + '</a>'
+                            + '</a>';
+                    if (!enableUserLink) {
+                        avatarPart = '<div class="avatar" '
+                                + 'title="' + data.userName + '" style="background-image:url(' + data.userAvatarURL + '-64.jpg)"></div>';
+                    }
+
+                    var namePart = '<a rel="nofollow" href="/member/' + data.userName + '" '
+                            + 'title="' + data.userName + '">' + data.userName + '</a>';
+                    if (!enableUserLink) {
+                        namePart = data.userName;
+                    }
+                    
+                    var liHTML = '<li class="fn-none">'
+                            + '<div class="fn-flex">'
+                            + avatarPart
                             + '<div class="fn-flex-1">'
                             + '<div class="fn-clear">'
                             + '<span class="fn-left">'
-                            + '<a rel="nofollow" href="/member/' + data.userName + '" '
-                            + 'title="' + data.userName + '">' + data.userName + '</a>'
+                            + namePart
                             + '</span>'
                             + '</div>'
                             + '<div class="content-reset">'
