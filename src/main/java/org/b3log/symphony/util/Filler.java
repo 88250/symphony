@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.11, Apr 13, 2016
+ * @version 1.7.1.11, Jun 2, 2016
  * @since 0.2.0
  */
 @Service
@@ -247,6 +247,7 @@ public class Filler {
         dataModel.put("algoliaAppId", Symphonys.get("algolia.appId"));
         dataModel.put("algoliaSearchKey", Symphonys.get("algolia.searchKey"));
         dataModel.put("algoliaIndex", Symphonys.get("algolia.index"));
+        dataModel.put("logoIcon", Symphonys.get("icon.logo"));
 
         // fillTrendTags(dataModel);
         fillPersonalNav(request, response, dataModel);

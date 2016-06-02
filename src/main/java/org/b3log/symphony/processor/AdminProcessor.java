@@ -117,7 +117,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.2.4, May 6, 2016
+ * @version 2.15.3.4, Jun 2, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1601,7 +1601,11 @@ public class AdminProcessor {
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             final String name = parameterNames.nextElement();
-            final String value = request.getParameter(name);
+            String value = request.getParameter(name);
+
+            if (Domain.DOMAIN_ICON_PATH.equals(name)) {
+                value = StringUtils.replace(value, "\"", "'");
+            }
 
             domain.put(name, value);
         }
