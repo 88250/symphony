@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.12.20, May 31, 2016
+ * @version 1.25.13.20, Jun 2, 2016
  */
 
 /**
@@ -449,9 +449,9 @@ var Util = {
      * @param {BOM} it 触发事件的元素
      * @param {String} id 关注 id
      * @param {String} type 关注的类型
-     * @param {String} from 时间来源
+     * @param {String} index 为数字时表示关注数，String 时表示来源
      */
-    follow: function (it, id, type, from) {
+    follow: function (it, id, type, index) {
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -468,15 +468,15 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeClass("disabled");
-                    if ("article" == type) {
-                        $(it).addClass('ft-red').html(' <span class="icon-star"></span> ' +
-                                (parseInt($(it).text()) + 1) + ' ').
-                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
-                                .attr("aria-label", Label.uncollectLabel);
-                    } else if (from && 'tag-articles' === from) {
-                        $(it).removeClass("ft-gray").addClass("ft-red")
-                                .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', 'tag-articles')")
-                                .attr('aria-label', Label.unfollowLabel);
+                    if ("article" === type) {
+                        $(it).html('<span class="icon-star ft-red"></span>').
+                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
+                                .attr("aria-label", Label.uncollectLabel + ' ' +
+                                (index + 1));
+                    } else if (index && typeof(index) === 'string') {
+                        $(it).html('<span class="icon-star ft-red"></span>').
+                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', 'tag-articles')")
+                                .attr("aria-label", Label.unfollowLabel);
                     } else {
                         $(it).removeClass("green").addClass("red")
                                 .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
@@ -494,9 +494,9 @@ var Util = {
      * @param {BOM} it 触发事件的元素
      * @param {String} id 关注 id
      * @param {String} type 取消关注的类型
-     * @param {String} from 时间来源
+     * @param {String} index 为数字时表示关注数，String 时表示来源
      */
-    unfollow: function (it, id, type, from) {
+    unfollow: function (it, id, type, index) {
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -513,18 +513,13 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     if ("article" === type) {
-                        var count = parseInt($(it).text()) - 1;
-                        if (count < 0) {
-                            count = 0;
-                        }
-
-                        $(it).removeClass('ft-red').html(' <span class="icon-star"></span> ' + count + ' ')
-                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
-                                .attr("aria-label", Label.collectLabel);
-                    } else if (from && 'tag-articles' === from) {
-                        $(it).removeClass("ft-red").addClass("ft-gray")
+                        $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
+                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
+                                .attr("aria-label", Label.collectLabel + ' ' + (index - 1));
+                    } else if (index && typeof(index) === 'string') {
+                        $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "', 'tag-articles')")
-                                .attr('aria-label', Label.followLabel);
+                                .attr("aria-label", Label.followLabel);
                     } else {
                         $(it).removeClass("red").addClass("green")
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
@@ -564,11 +559,11 @@ var Util = {
                         downCnt = parseInt($("#voteDown").attr('aria-label').substr(3));
                 if (result.sc) {
                     if (0 == result.type) { // cancel up
-                        $("#voteUp").removeClass("ft-red").attr('aria-label', Label.upLabel + ' ' + (upCnt - 1));
+                        $("#voteUp").attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
                     } else {
-                        $("#voteUp").addClass("ft-red").attr('aria-label', Label.upLabel + ' ' + (upCnt + 1));
-                        if ($("#voteDown").hasClass('ft-red')) {
-                            $("#voteDown").removeClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt - 1));
+                        $("#voteUp").attr('aria-label', Label.upLabel + ' ' + (upCnt + 1)).children().addClass("ft-red");
+                        if ($("#voteDown").children().hasClass('ft-red')) {
+                            $("#voteDown").attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
                         }
                     }
 
@@ -606,11 +601,11 @@ var Util = {
                         downCnt = parseInt($("#voteDown").attr('aria-label').substr(3));
                 if (result.sc) {
                     if (1 == result.type) { // cancel down
-                        $("#voteDown").removeClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt - 1));
+                        $("#voteDown").attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
                     } else {
-                        $("#voteDown").addClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt + 1));
-                        if ($("#voteUp").hasClass('ft-red')) {
-                            $("#voteUp").removeClass("ft-red").attr('aria-label', Label.upLabel + ' ' + (upCnt - 1));
+                        $("#voteDown").addClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children().addClass("ft-red");
+                        if ($("#voteUp").children().hasClass('ft-red')) {
+                            $("#voteUp").attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
                         }
                     }
 

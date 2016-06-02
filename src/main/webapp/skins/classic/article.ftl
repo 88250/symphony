@@ -20,22 +20,16 @@
                     <div class="fn-clear article-action">
                         <span class="fn-right">
                             <#if isLoggedIn>
-                            <span id="voteUp" class="tooltipped tooltipped-s fn-pointer<#if 0==vote> ft-red</#if>" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
-                                <span class="icon-thumbs-up"></span></span>
-                            <span id="voteDown" class="tooltipped tooltipped-s fn-pointer<#if 1==vote> ft-red</#if>" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
-                                <span class="icon-thumbs-down"></span></span>
+                            <span id="voteUp" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
+                                <span class="icon-thumbs-up<#if 0==vote> ft-red</#if>"></span></span>
+                            <span id="voteDown" class="tooltipped tooltipped-s fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
+                                <span class="icon-thumbs-down<#if 1==vote> ft-red</#if>"></span></span>
                             </#if>
                             <#if isLoggedIn>
                             <#if isFollowing>
-                            <span class="ft-red tooltipped tooltipped-s fn-pointer" aria-label="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
-                                <span class="icon-star"></span>
-                                ${article.articleCollectCnt}
-                            </span>
+                            <span class="tooltipped tooltipped-s fn-pointer" aria-label="${uncollectLabel} ${article.articleCollectCnt}" onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
                             <#else>
-                            <span class="tooltipped tooltipped-s fn-pointer" aria-label="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')">
-                                <span class="icon-star"></span>
-                                ${article.articleCollectCnt}
-                            </span>
+                            <span class="tooltipped tooltipped-s fn-pointer" aria-label="${collectLabel} ${article.articleCollectCnt}" onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
                             </#if>
                             <#else>
                             <span aria-label="${collectLabel}" class="fn-pointer tooltipped tooltipped-s">

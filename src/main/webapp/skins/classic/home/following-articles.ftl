@@ -5,7 +5,7 @@
     <ul class="fn-clear">
         <#list userHomeFollowingArticles as article>
         <li class="fn-flex read">
-            <a title="${article.articleAuthorName}"
+            <a aria-label="${article.articleAuthorName}" class="tooltipped tooltipped-s"
                target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}">
                 <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div>
             </a>

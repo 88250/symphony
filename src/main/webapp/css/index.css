@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.10.15, May 31, 2016
+ * @version 2.9.11.15, Jun 2, 2016
  */
 
 /* start module */
@@ -79,7 +79,7 @@
     padding: 4px 8px;
     border-radius: 2px;
     display: inline-block;
-    line-height: 16px;
+    line-height: 12px;
     float: left;
     margin-left: 10px;
     text-decoration: none;

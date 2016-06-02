@@ -28,17 +28,19 @@
                         <#list tag.tagDomains as domain>
                         <a class="ft-gray" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
                         </#list>
+                        <span class="article-action">
                         <span class='fn-right'>
                             <#if isLoggedIn> &nbsp;
                             <#if isFollowing>
-                            <span class="tooltipped tooltipped-s ft-red fn-pointer" aria-label="${unfollowLabel}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', 'tag-articles')"><span class="icon-star"></span></span>
+                            <span class="tooltipped tooltipped-s fn-pointer" aria-label="${unfollowLabel}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', 'tag-articles')"><span class="ft-red icon-star"></span></span>
                             <#else>
-                            <span class="tooltipped tooltipped-s ft-gray fn-pointer" aria-label="${followLabel}" onclick="Util.follow(this, '${tag.oId}', 'tag', 'tag-articles')"><span class="icon-star"></span></span>
+                            <span class="tooltipped tooltipped-s fn-pointer" aria-label="${followLabel}" onclick="Util.follow(this, '${tag.oId}', 'tag', 'tag-articles')"><span class="icon-star"></span></span>
                             </#if>
                             </#if>
                             <#if isAdminLoggedIn> &nbsp;
                             <a class="a-icon tooltipped tooltipped-s" href="/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                             </#if>
+                        </span>
                         </span>
                     </div>
                     <#if tag.tagIconPath != ""><div class="description">

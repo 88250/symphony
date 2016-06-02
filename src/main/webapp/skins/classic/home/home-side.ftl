@@ -3,12 +3,14 @@
     <div>
         <div class="user-name">
             <a href="/member/${user.userName}">${user.userName}</a>
-            <img title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
+            <span class="tooltipped tooltipped-s" aria-label="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>">
+            <img src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
+            </span>
             <#if "adminRole" == user.userRole>
-            <span class="ft-13 icon-userrole" title="${administratorLabel}"></span>
+            <span class="ft-13 tooltipped tooltipped-s" aria-label="${administratorLabel}"><span class="icon-userrole"></span></span>
             </#if>
             <#if isAdminLoggedIn>
-            <a class="ft-13 icon-setting" href="/admin/user/${user.oId}" title="${adminLabel}"></a>
+            <a class="ft-13 tooltipped tooltipped-s a-icon" href="/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
             </#if>
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>

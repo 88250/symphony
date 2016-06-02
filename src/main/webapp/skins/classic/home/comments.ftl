@@ -5,8 +5,8 @@
     <ul>
         <#list userHomeComments as comment>
         <li class="fn-flex comment-list-item">
-            <a target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
-               title="${comment.commentArticleAuthorName}">
+            <a target="_blank" class="tooltipped tooltipped-s" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
+               aria-label="${comment.commentArticleAuthorName}">
                 <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
             </a>
             <div class="fn-flex-1">
