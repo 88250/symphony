@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.21.9, May 31, 2016
+ * @version 1.18.22.9, Jue 06, 2016
  */
 
 /**
@@ -477,7 +477,7 @@ var Article = {
             text: location.protocol + '//' + location.host + Label.articlePermalink + userName
         });
 
-        $(".share span").click(function () {
+        $(".share > span").click(function () {
             var key = $(this).data("type");
             if (key === 'wechat') {
                 $('#qrCode').slideToggle();
@@ -489,7 +489,7 @@ var Article = {
             }
 
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
-                    url = location.protocol + '//' + location.host + Label.articlePermalink + userName,
+                    url = decodeURIComponent(location.protocol + '//' + location.host + Label.articlePermalink + userName),
                     pic = $(".content-reset img").attr("src");
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
