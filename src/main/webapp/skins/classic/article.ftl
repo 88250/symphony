@@ -71,19 +71,19 @@
                             <a rel="author" href="/member/${article.articleAuthorName}" class="ft-black"
                                title="${article.articleAuthorName}"><strong>${article.articleAuthorName}</strong></a>
                             <span class="ft-gray">
-                            <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
-                            • <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
-                            </#if>
-                            •
-                            ${article.timeAgo}   
-                            •
-                            ${viewLabel}
-                            <#if article.articleViewCount < 1000>
-                            ${article.articleViewCount}
-                            <#else>
-                            ${article.articleViewCntDisplayFormat}
-                            </#if>
-                            •
+                                <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
+                                • <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
+                                </#if>
+                                •
+                                ${article.timeAgo}   
+                                •
+                                ${viewLabel}
+                                <#if article.articleViewCount < 1000>
+                                ${article.articleViewCount}
+                                <#else>
+                                ${article.articleViewCntDisplayFormat}
+                                </#if>
+                                •
                             </span>
                             <a title="${cmtLabel}" rel="nofollow" class="ft-gray" href="#comments">
                                 ${cmtLabel} ${article.articleCommentCount}
@@ -113,10 +113,11 @@
                             <span class="tooltipped tooltipped-s" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
                             <span class="tooltipped tooltipped-s" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
                             <span class="tooltipped tooltipped-s" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>
-                            <span class="tooltipped tooltipped-sw ft-red" 
-                                  aria-label="${copyLabel}"><span id="shareClipboard"
-                                                            data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"
-                                  data-type="copy" class="icon-copy"></span></span>
+                            <span class="tooltipped tooltipped-sw ft-red" data-type="copy"
+                                  aria-label="${copyLabel}"
+                                  id="shareClipboard"
+                                  data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span 
+                                    class="icon-copy"></span></span>
                         </div>
                     </div>
                     <#if 0 < article.articleRewardPoint>
@@ -183,7 +184,7 @@
                                                  title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
                                         </a><#else>
                                         <div class="avatar" 
-                                                 title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
+                                             title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
                                         </#if>
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
@@ -339,6 +340,7 @@
             Label.stickConfirmLabel = "${stickConfirmLabel}";
             Label.audioRecordingLabel = '${audioRecordingLabel}';
             Label.copiedLabel = '${copiedLabel}';
+            Label.copyLabel = '${copyLabel}';
             Label.noRevisionLabel = "${noRevisionLabel}";
             <#if isLoggedIn>
                     Label.currentUserName = '${currentUser.userName}';

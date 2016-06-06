@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.22.9, Jue 06, 2016
+ * @version 1.18.22.9, Jun 6, 2016
  */
 
 /**
@@ -477,6 +477,10 @@ var Article = {
             text: location.protocol + '//' + location.host + Label.articlePermalink + userName
         });
 
+        $('body').click(function () {
+            $('#qrCode').slideUp();
+        });
+
         $(".share > span").click(function () {
             var key = $(this).data("type");
             if (key === 'wechat') {
@@ -506,10 +510,18 @@ var Article = {
         });
 
         if (typeof (ZeroClipboard) !== "undefined") {
+            $('#shareClipboard').mouseover(function () {
+                 $(this).attr('aria-label', Label.copyLabel);
+            });
+            
+            ZeroClipboard.config({
+                hoverClass: "tooltipped-hover"
+            });
+            
             var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
             shareClipboard.on("ready", function (readyEvent) {
                 shareClipboard.on("aftercopy", function (event) {
-                    $('#shareClipboard').parent().attr('aria-label', Label.copiedLabel)
+                    $('#shareClipboard').attr('aria-label', Label.copiedLabel);
                 });
             });
         }

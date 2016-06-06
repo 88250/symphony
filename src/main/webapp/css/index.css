@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.11.15, Jun 2, 2016
+ * @version 2.9.12.15, Jun 6, 2016
  */
 
 /* start module */
@@ -165,6 +165,10 @@ h2.article-title {
 
 .comment-submit {
     margin-top: 20px;
+}
+
+#shareClipboard.tooltipped-hover {
+    color: #4183C4;
 }
 
 #comments > .comment-header {

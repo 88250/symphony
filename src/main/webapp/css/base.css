@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.13.24, Jun 2, 2016
+ * @version 1.19.13.24, Jun 6, 2016
  */
 
 /* start reset */
@@ -434,8 +434,10 @@ textarea {
     color: #333;
     background-color: #ccc;
 }
+
 .tooltipped {
-    position: relative
+    position: relative;
+    cursor: pointer;
 }
 
 .tooltipped::after {
@@ -494,7 +496,14 @@ textarea {
     }
 }
 
-.tooltipped:hover::before,.tooltipped:hover::after,.tooltipped:active::before,.tooltipped:active::after,.tooltipped:focus::before,.tooltipped:focus::after {
+.tooltipped-hover::before,
+.tooltipped-hover::after,
+.tooltipped:hover::before,
+.tooltipped:hover::after,
+.tooltipped:active::before,
+.tooltipped:active::after,
+.tooltipped:focus::before,
+.tooltipped:focus::after {
     display: inline-block;
     text-decoration: none;
     -webkit-animation-name: tooltip-appear;
