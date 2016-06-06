@@ -32,10 +32,7 @@
                             <span class="tooltipped tooltipped-s fn-pointer" aria-label="${collectLabel} ${article.articleCollectCnt}" onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
                             </#if>
                             <#else>
-                            <span aria-label="${collectLabel}" class="fn-pointer tooltipped tooltipped-s">
-                                <span class="icon-star"></span>
-                                ${article.articleCollectCnt}
-                            </span>
+                            <span aria-label="${collectLabel} ${article.articleCollectCnt}" class="fn-pointer tooltipped tooltipped-s"><span class="icon-star"></span></span>
                             </#if>
                             <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
                                   class="fn-pointer tooltipped tooltipped-s"><span class="icon-refresh"></span></span>
@@ -109,7 +106,6 @@
                         <div class="share fn-right">
                             <div id="qrCode" class="fn-none"></div>
                             <span class="tooltipped tooltipped-s" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span>
-                            <span class="tooltipped tooltipped-s" aria-label="share to tencent" data-type="tencent"><span class="icon-tencent"></span></span>
                             <span class="tooltipped tooltipped-s" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
                             <span class="tooltipped tooltipped-s" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
                             <span class="tooltipped tooltipped-s" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>

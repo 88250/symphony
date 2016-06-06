@@ -18,29 +18,19 @@
                 <div class="article-action fn-clear">
                     <div class="fn-right">
                         <#if isLoggedIn>
-                        <span id="voteUp" class="fn-pointer<#if 0==vote> ft-red</#if>" title="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
-                            <span class="icon-thumbs-up"></span></span>&nbsp;
-                        <span id="voteDown" class="fn-pointer<#if 1==vote> ft-red</#if>" title="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
-                            <span class="icon-thumbs-down"></span></span>
+                        <span id="voteUp" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
+                            <span class="icon-thumbs-up<#if 0==vote> ft-red</#if>"></span></span>
+                        <span id="voteDown" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
+                            <span class="icon-thumbs-down<#if 1==vote> ft-red</#if>"></span></span>
                         </#if>
-
                         <#if isLoggedIn>
                         <#if isFollowing>
-                        <span class="ft-red fn-pointer" title="${uncollectLabel}" onclick="Util.unfollow(this, '${article.oId}', 'article')">
-                            <span class="icon-star"></span>
-                            ${article.articleCollectCnt}
-                        </span>
+                        <span aria-label="${uncollectLabel} ${article.articleCollectCnt}" onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
                         <#else>
-                        <span class="fn-pointer" title="${collectLabel}" onclick="Util.follow(this, '${article.oId}', 'article')">
-                            <span class="icon-star"></span>
-                            ${article.articleCollectCnt}
-                        </span>
+                        <span aria-label="${collectLabel} ${article.articleCollectCnt}" onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
                         </#if>
                         <#else>
-                        <span title="${collectLabel}" class="fn-pointer">
-                            <span class="icon-star"></span>
-                            ${article.articleCollectCnt}
-                        </span>
+                        <span aria-label="${collectLabel} ${article.articleCollectCnt}"><span class="icon-star"></span></span>
                         </#if>
 
                         <#if article.isMyArticle && 3 != article.articleType>
@@ -116,7 +106,6 @@
                     <div class="share fn-right">
                         <div id="qrCode" class="fn-none"></div>
                         <span class="icon-wechat" data-type="wechat"></span>
-                        <span class="icon-tencent" data-type="tencent"></span>
                         <span class="icon-weibo" data-type="weibo"></span>
                         <span class="icon-twitter" data-type="twitter"></span>
                         <span class="icon-google" data-type="google"></span>
