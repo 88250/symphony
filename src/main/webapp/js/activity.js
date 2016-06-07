@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.2.0, Jun 7, 2015
+ * @version 1.2.2.0, Jun 7, 2016
  */
 
 /**
@@ -128,15 +128,30 @@ var Activity = {
         };
     },
     /**
-     * 获取 canvas 图片
+     * 提交写好字的图片.
+     * 
      * @param {string} id canvas id.
      */
-    getCharImg: function (id) {
+    submitCharacter: function (id) {
         var canvas = document.getElementById(id);
         var url = canvas.toDataURL();
 
         var newImg = document.createElement("img");
         newImg.src = url;
         $('#charImg').html('').append(newImg);
+
+        var requestJSONObject = {
+            dataURL: url
+        };
+
+        $.ajax({
+            url: "/activity/character/submit",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+
+            }
+        });
     }
 };

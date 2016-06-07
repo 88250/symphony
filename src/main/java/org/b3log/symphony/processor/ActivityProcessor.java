@@ -15,6 +15,10 @@
  */
 package org.b3log.symphony.processor;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Base64;
 import org.b3log.symphony.util.GeetestLib;
 import java.util.Calendar;
 import java.util.List;
@@ -23,8 +27,10 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -35,6 +41,7 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.processor.advice.CSRFCheck;
@@ -60,6 +67,8 @@ import org.json.JSONObject;
  * <li>Shows 1A0001 (/activity/1A0001), GET</li>
  * <li>Bets 1A0001 (/activity/1A0001/bet), POST</li>
  * <li>Collects 1A0001 (/activity/1A0001/collect), POST</li>
+ * <li>Shows character (/activity/character), GET</li>
+ * <li>Submit character (/activity/character/submit), POST</li>
  * </ul>
  * </p>
  *
@@ -128,6 +137,71 @@ public class ActivityProcessor {
         filler.fillHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+
+        String activityCharacterGuideLabel = langPropsService.get("activityCharacterGuideLabel");
+
+        final String characters = langPropsService.get("characters");
+        final int index = RandomUtils.nextInt(characters.length());
+        activityCharacterGuideLabel = activityCharacterGuideLabel.replace("{character}",
+                characters.substring(index, index + 1));
+        dataModel.put("activityCharacterGuideLabel", activityCharacterGuideLabel);
+    }
+
+    /**
+     * Submits character.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/activity/character/submit", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {StopwatchEndAdvice.class})
+    public void submitCharacter(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) {
+        context.renderJSON().renderFalseResult();
+
+        final String recongnizeFailedMsg = langPropsService.get("activityCharacterRecognizeFailedLabel");
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            request.setAttribute(Keys.REQUEST, requestJSONObject);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Submits character failed", e);
+
+            context.renderJSON(false).renderMsg(recongnizeFailedMsg);
+
+            return;
+        }
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        final String dataURL = requestJSONObject.optString("dataURL");
+        final String dataPart = StringUtils.substringAfter(dataURL, ",");
+        final byte[] data = Base64.getDecoder().decode(dataPart);
+
+        OutputStream stream = null;
+
+        try {
+            stream = new FileOutputStream(userId + "-character.png");
+            stream.write(data);
+            stream.flush();
+            stream.close();
+        } catch (final IOException e) {
+            context.renderJSON(false).renderMsg(recongnizeFailedMsg);
+
+            return;
+        } finally {
+            if (null != stream) {
+                try {
+                    stream.close();
+                } catch (final IOException ex) {
+                }
+            }
+        }
     }
 
     /**

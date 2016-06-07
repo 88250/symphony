@@ -12,10 +12,13 @@
             <div class="wrapper">
                 <div class="content activity">
                     <div class="content-reset">
-                        <canvas id="charCanvas" width="450" height="600"></canvas>
+                        ${activityCharacterTitleLabel}
+                        ${activityCharacterGuideLabel}
+                        
+                        <canvas id="charCanvas" width="600" height="600"></canvas>
                         <br/>
                         <br/>
-                        <button class="green fn-right" onclick="Activity.getCharImg('charCanvas')">确定</button>
+                        <button class="green fn-right" onclick="Activity.submitCharacter('charCanvas')">${submitLabel}</button>
                         <div id="charImg"></div>
                     </div>
                 </div>
