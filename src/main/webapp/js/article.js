@@ -493,7 +493,7 @@ var Article = {
             }
 
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
-                    url = decodeURIComponent(location.protocol + '//' + location.host + Label.articlePermalink + userName),
+                    url = encodeURIComponent(location.protocol + '//' + location.host + Label.articlePermalink + userName),
                     pic = $(".content-reset img").attr("src");
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
