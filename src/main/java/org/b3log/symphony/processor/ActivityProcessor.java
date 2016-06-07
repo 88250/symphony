@@ -18,7 +18,6 @@ package org.b3log.symphony.processor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Base64;
 import org.b3log.symphony.util.GeetestLib;
 import java.util.Calendar;
 import java.util.List;
@@ -26,6 +25,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jodd.util.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
@@ -181,10 +181,9 @@ public class ActivityProcessor {
 
         final String dataURL = requestJSONObject.optString("dataURL");
         final String dataPart = StringUtils.substringAfter(dataURL, ",");
-        final byte[] data = Base64.getDecoder().decode(dataPart);
+        final byte[] data = Base64.decode(dataPart);
 
         OutputStream stream = null;
-
         try {
             stream = new FileOutputStream(userId + "-character.png");
             stream.write(data);
@@ -192,8 +191,6 @@ public class ActivityProcessor {
             stream.close();
         } catch (final IOException e) {
             context.renderJSON(false).renderMsg(recongnizeFailedMsg);
-
-            return;
         } finally {
             if (null != stream) {
                 try {
