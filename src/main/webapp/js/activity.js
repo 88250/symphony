@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.2.0, Aug 29, 2015
+ * @version 1.2.2.0, Jun 7, 2015
  */
 
 /**
@@ -40,7 +40,7 @@ var Activity = {
         $.ajax({
             url: "/activity/1A0001/bet",
             type: "POST",
-            headers: {"csrfToken": csrfToken},            
+            headers: {"csrfToken": csrfToken},
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
@@ -86,9 +86,57 @@ var Activity = {
             }
         });
     },
-    init: function () {
+    /**
+     * paint brush
+     * @param {string} id canvas id.
+     * @returns {undefined}
+     */
+    charInit: function (id) {
+        var el = document.getElementById(id);
+        var ctx = el.getContext('2d');
 
+        ctx.lineWidth = 5;
+        ctx.lineJoin = ctx.lineCap = 'round';
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = 'rgb(0, 0, 0)';
+
+        var isDrawing, points = [];
+
+        el.onmousedown = function (e) {
+            isDrawing = true;
+            points.push({x: e.clientX - e.target.offsetLeft, y: e.clientY - e.target.offsetTop});
+        };
+
+        el.onmousemove = function (e) {
+            if (!isDrawing)
+                return;
+
+            // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            points.push({x: e.clientX - e.target.offsetLeft, y: e.clientY - e.target.offsetTop});
+
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            for (var i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+            ctx.stroke();
+        };
+
+        el.onmouseup = function () {
+            isDrawing = false;
+            points.length = 0;
+        };
+    },
+    /**
+     * 获取 canvas 图片
+     * @param {string} id canvas id.
+     */
+    getCharImg: function (id) {
+        var canvas = document.getElementById(id);
+        var url = canvas.toDataURL();
+
+        var newImg = document.createElement("img");
+        newImg.src = url;
+        $('#charImg').html('').append(newImg);
     }
 };
-
-Activity.init();

@@ -10,9 +10,14 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content">
+                <div class="content activity">
                     <div class="content-reset">
-                    字如其人 ^_^
+                        <canvas id="charCanvas" width="450" height="600"></canvas>
+                        <br/>
+                        <br/>
+                        <button class="green fn-right" onclick="Activity.getCharImg('charCanvas')">确定</button>
+                        <div id="charImg"></div>
+                    </div>
                 </div>
                 <div class="side">
                     <#include "../side.ftl">
@@ -21,5 +26,8 @@
         </div>
         <#include "../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script>
+            Activity.charInit('charCanvas');
+        </script>
     </body>
 </html>
