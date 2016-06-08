@@ -17,7 +17,6 @@ package org.b3log.symphony.repository;
 
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.symphony.model.Client;
 
 /**
  * Character repository.
@@ -33,6 +32,6 @@ public class CharacterRepository extends AbstractRepository {
      * Public constructor.
      */
     public CharacterRepository() {
-        super(Client.CLIENT);
+        super(org.b3log.symphony.model.Character.CHARACTER);
     }
 }
