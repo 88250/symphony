@@ -23,7 +23,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -59,6 +58,7 @@ import org.json.JSONObject;
  *
  * <p>
  * <ul>
+ * <li>Shows activities (/activities), GET</li>
  * <li>Daily checkin (/activity/daily-checkin), GET</li>
  * <li>Shows 1A0001 (/activity/1A0001), GET</li>
  * <li>Bets 1A0001 (/activity/1A0001/bet), POST</li>

@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.2.1, Apr 5, 2016
+ * @version 1.14.2.1, Jun 8, 2016
  * @since 1.3.0
  */
 @Service
@@ -424,6 +424,7 @@ public class PointtransferQueryService {
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD:
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001:
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT:
+                    case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHARACTER:
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS:
                         final JSONObject comment20 = commentRepository.get(dataId);
@@ -432,7 +433,7 @@ public class PointtransferQueryService {
 
                             break;
                         }
-                        
+
                         final String articleId20 = comment20.optString(Comment.COMMENT_ON_ARTICLE_ID);
                         final JSONObject atParticipantsArticle = articleRepository.get(articleId20);
                         if (null == atParticipantsArticle) {

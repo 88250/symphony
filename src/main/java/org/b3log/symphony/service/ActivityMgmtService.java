@@ -171,9 +171,10 @@ public class ActivityMgmtService {
             record.put(org.b3log.symphony.model.Character.CHARACTER_IMG, characterImg);
             record.put(org.b3log.symphony.model.Character.CHARACTER_USER_ID, userId);
 
+            String characterId = "";
             final Transaction transaction = characterRepository.beginTransaction();
             try {
-                characterRepository.add(record);
+                characterId = characterRepository.add(record);
 
                 transaction.commit();
             } catch (final RepositoryException e) {
@@ -185,6 +186,10 @@ public class ActivityMgmtService {
 
                 return ret;
             }
+
+            pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
+                    Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHARACTER, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHARACTER,
+                    characterId);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("activityCharacterRecognizeSuccLabel"));
