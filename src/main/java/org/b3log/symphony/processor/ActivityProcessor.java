@@ -15,9 +15,6 @@
  */
 package org.b3log.symphony.processor;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import org.b3log.symphony.util.GeetestLib;
 import java.util.Calendar;
 import java.util.List;
@@ -25,7 +22,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jodd.util.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
@@ -56,7 +52,6 @@ import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
-import org.b3log.symphony.util.Tesseracts;
 import org.json.JSONObject;
 
 /**
@@ -178,43 +173,12 @@ public class ActivityProcessor {
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String userId = currentUser.optString(Keys.OBJECT_ID);
-
         final String dataURL = requestJSONObject.optString("dataURL");
         final String dataPart = StringUtils.substringAfter(dataURL, ",");
-        final byte[] data = Base64.decode(dataPart);
-
-        OutputStream stream = null;
-        final String tmpDir = System.getProperty("java.io.tmpdir");
-        final String imagePath = tmpDir + "/" + userId + "-character.png";
-
-        try {
-            stream = new FileOutputStream(imagePath);
-            stream.write(data);
-            stream.flush();
-            stream.close();
-        } catch (final IOException e) {
-            context.renderJSON(false).renderMsg(recongnizeFailedMsg);
-        } finally {
-            if (null != stream) {
-                try {
-                    stream.close();
-                } catch (final IOException ex) {
-                }
-            }
-        }
-
         final String character = requestJSONObject.optString("character");
 
-        final String recognizedCharacter = Tesseracts.recognizeCharacter(imagePath);
-        LOGGER.info("Character [" + character + "], recognized [" + recognizedCharacter + "], image path [" + imagePath
-                + "]");
-        if (StringUtils.equals(character, recognizedCharacter)) {
-            // TODO: save to db
-
-            context.renderJSON(true).renderMsg(langPropsService.get("activityCharacterRecognizeSuccLabel"));
-        } else {
-            context.renderJSON(false).renderMsg(langPropsService.get("activityCharacterRecognizeFailedLabel"));
-        }
+        final JSONObject result = activityMgmtService.submitCharacter(userId, dataPart, character);
+        context.renderJSON(result);
     }
 
     /**

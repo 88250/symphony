@@ -15,11 +15,15 @@
  */
 package org.b3log.symphony.service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import javax.inject.Inject;
+import jodd.util.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -28,6 +32,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -36,7 +42,9 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.CharacterRepository;
 import org.b3log.symphony.util.Results;
+import org.b3log.symphony.util.Tesseracts;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,7 +53,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.7.2, May 31, 2016
+ * @version 1.4.7.2, Jun 8, 2016
  * @since 1.3.0
  */
 @Service
@@ -55,6 +63,12 @@ public class ActivityMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ActivityMgmtService.class.getName());
+
+    /**
+     * Character repository.
+     */
+    @Inject
+    private CharacterRepository characterRepository;
 
     /**
      * Pointtransfer query service.
@@ -109,6 +123,71 @@ public class ActivityMgmtService {
      */
     @Inject
     private LivenessQueryService livenessQueryService;
+
+    public synchronized JSONObject submitCharacter(final String userId, final String characterImg, final String character) {
+        final String recongnizeFailedMsg = langPropsService.get("activityCharacterRecognizeFailedLabel");
+
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.STATUS_CODE, false);
+        ret.put(Keys.MSG, recongnizeFailedMsg);
+
+        final byte[] data = Base64.decode(characterImg);
+        OutputStream stream = null;
+        final String tmpDir = System.getProperty("java.io.tmpdir");
+        final String imagePath = tmpDir + "/" + userId + "-character.png";
+
+        try {
+            stream = new FileOutputStream(imagePath);
+            stream.write(data);
+            stream.flush();
+            stream.close();
+        } catch (final IOException e) {
+            LOGGER.log(Level.ERROR, "Submits character failed", e);
+
+            return ret;
+        } finally {
+            if (null != stream) {
+                try {
+                    stream.close();
+                } catch (final IOException ex) {
+                    LOGGER.log(Level.ERROR, "Closes stream failed", ex);
+                }
+            }
+        }
+
+        final String recognizedCharacter = Tesseracts.recognizeCharacter(imagePath);
+        LOGGER.info("Character [" + character + "], recognized [" + recognizedCharacter + "], image path [" + imagePath
+                + "]");
+        if (StringUtils.equals(character, recognizedCharacter)) {
+            final JSONObject record = new JSONObject();
+            record.put(org.b3log.symphony.model.Character.CHARACTER_CONTENT, character);
+            record.put(org.b3log.symphony.model.Character.CHARACTER_IMG, characterImg);
+            record.put(org.b3log.symphony.model.Character.CHARACTER_USER_ID, userId);
+
+            final Transaction transaction = characterRepository.beginTransaction();
+            try {
+                characterRepository.add(record);
+
+                transaction.commit();
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Submits character failed", e);
+
+                if (null != transaction) {
+                    transaction.rollback();
+                }
+
+                return ret;
+            }
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("activityCharacterRecognizeSuccLabel"));
+        } else {
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, recongnizeFailedMsg);
+        }
+
+        return ret;
+    }
 
     /**
      * Daily checkin.
