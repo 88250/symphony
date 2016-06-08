@@ -131,6 +131,13 @@ public class ActivityMgmtService {
         ret.put(Keys.STATUS_CODE, false);
         ret.put(Keys.MSG, recongnizeFailedMsg);
 
+        if (StringUtils.isBlank(characterImg) || StringUtils.isBlank(character)) {
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, recongnizeFailedMsg);
+
+            return ret;
+        }
+
         final byte[] data = Base64.decode(characterImg);
         OutputStream stream = null;
         final String tmpDir = System.getProperty("java.io.tmpdir");

@@ -136,10 +136,16 @@ public class ActivityProcessor {
 
         String activityCharacterGuideLabel = langPropsService.get("activityCharacterGuideLabel");
 
-        final String characters = langPropsService.get("characters");
-        final int index = RandomUtils.nextInt(characters.length());
-        activityCharacterGuideLabel = activityCharacterGuideLabel.replace("{character}",
-                StringUtils.trim(characters.substring(index, index + 1)));
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+        final String character = activityQueryService.getCharacter(userId);
+        if (StringUtils.isBlank(character)) {
+            dataModel.put("noCharacter", true);
+
+            return;
+        }
+
+        activityCharacterGuideLabel = activityCharacterGuideLabel.replace("{character}", character);
         dataModel.put("activityCharacterGuideLabel", activityCharacterGuideLabel);
     }
 

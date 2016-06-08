@@ -13,8 +13,12 @@
                 <div class="content activity">
                     <div class="content-reset">
                         ${activityCharacterTitleLabel}
+                        <#if noCharacter??>
+                        ${activityCharacterNotCharacterLabel}
+                        <#else>
                         ${activityCharacterGuideLabel}
-                        
+                        </#if>
+
                         <canvas id="charCanvas" width="600" height="600"></canvas>
                         <br/>
                         <br/>
@@ -29,7 +33,7 @@
         <#include "../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            Activity.charInit('charCanvas');
+                            Activity.charInit('charCanvas');
         </script>
     </body>
 </html>

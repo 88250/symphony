@@ -20,19 +20,25 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.symphony.cache.UserCache;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.CharacterRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -59,6 +65,12 @@ public class ActivityQueryService {
     private UserRepository userRepository;
 
     /**
+     * Character repository.
+     */
+    @Inject
+    private CharacterRepository characterRepository;
+
+    /**
      * Pointtransfer query service.
      */
     @Inject
@@ -71,10 +83,47 @@ public class ActivityQueryService {
     private AvatarQueryService avatarQueryService;
 
     /**
-     * User cache.
+     * Language service.
      */
     @Inject
-    private UserCache userCache;
+    private LangPropsService langPropsService;
+
+    /**
+     * Gets a character of the specified user id.
+     *
+     * @param userId the specified user id
+     * @return character
+     */
+    public String getCharacter(final String userId) {
+        final int maxRetries = 7;
+        int retries = 0;
+
+        while (retries < maxRetries) {
+            retries++;
+
+            final String characters = langPropsService.get("characters");
+            final int index = RandomUtils.nextInt(characters.length());
+            final String ret = StringUtils.trim(characters.substring(index, index + 1));
+
+            final Query query = new Query();
+            query.setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_USER_ID, FilterOperator.EQUAL, userId),
+                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret)
+            ));
+
+            try {
+                if (characterRepository.count(query) > 0) {
+                    continue;
+                }
+
+                return ret;
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Gets a character failed", e);
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Gets the top checkin users with the specified fetch size.
