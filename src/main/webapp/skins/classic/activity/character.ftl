@@ -19,7 +19,6 @@
                         <br/>
                         <br/>
                         <button class="green fn-right" onclick="Activity.submitCharacter('charCanvas')">${submitLabel}</button>
-                        <div id="charImg"></div>
                     </div>
                 </div>
                 <div class="side">

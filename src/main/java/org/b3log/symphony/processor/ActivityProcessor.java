@@ -56,6 +56,7 @@ import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
+import org.b3log.symphony.util.Tesseracts;
 import org.json.JSONObject;
 
 /**
@@ -73,7 +74,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.1, Jun 7, 2016
+ * @version 1.6.1.2, Jun 8, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -143,7 +144,7 @@ public class ActivityProcessor {
         final String characters = langPropsService.get("characters");
         final int index = RandomUtils.nextInt(characters.length());
         activityCharacterGuideLabel = activityCharacterGuideLabel.replace("{character}",
-                characters.substring(index, index + 1));
+                StringUtils.trim(characters.substring(index, index + 1)));
         dataModel.put("activityCharacterGuideLabel", activityCharacterGuideLabel);
     }
 
@@ -153,7 +154,6 @@ public class ActivityProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/activity/character/submit", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
@@ -184,8 +184,11 @@ public class ActivityProcessor {
         final byte[] data = Base64.decode(dataPart);
 
         OutputStream stream = null;
+        final String tmpDir = System.getProperty("java.io.tmpdir");
+        final String imagePath = tmpDir + "/" + userId + "-character.png";
+
         try {
-            stream = new FileOutputStream(userId + "-character.png");
+            stream = new FileOutputStream(imagePath);
             stream.write(data);
             stream.flush();
             stream.close();
@@ -198,6 +201,19 @@ public class ActivityProcessor {
                 } catch (final IOException ex) {
                 }
             }
+        }
+
+        final String character = requestJSONObject.optString("character");
+
+        final String recognizedCharacter = Tesseracts.recognizeCharacter(imagePath);
+        LOGGER.info("Character [" + character + "], recognized [" + recognizedCharacter + "], image path [" + imagePath
+                + "]");
+        if (StringUtils.equals(character, recognizedCharacter)) {
+            // TODO: save to db
+
+            context.renderJSON(true).renderMsg(langPropsService.get("activityCharacterRecognizeSuccLabel"));
+        } else {
+            context.renderJSON(false).renderMsg(langPropsService.get("activityCharacterRecognizeFailedLabel"));
         }
     }
 

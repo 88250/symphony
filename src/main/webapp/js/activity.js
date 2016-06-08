@@ -136,12 +136,9 @@ var Activity = {
         var canvas = document.getElementById(id);
         var url = canvas.toDataURL();
 
-        var newImg = document.createElement("img");
-        newImg.src = url;
-        $('#charImg').html('').append(newImg);
-
         var requestJSONObject = {
-            dataURL: url
+            dataURL: url,
+            character: $("#character").text()
         };
 
         $.ajax({
@@ -150,7 +147,7 @@ var Activity = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
-
+                alert(result.msg);
             }
         });
     }
