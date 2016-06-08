@@ -32,6 +32,10 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -166,6 +170,22 @@ public class ActivityMgmtService {
         LOGGER.info("Character [" + character + "], recognized [" + recognizedCharacter + "], image path [" + imagePath
                 + "]");
         if (StringUtils.equals(character, recognizedCharacter)) {
+            final Query query = new Query();
+            query.setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_USER_ID, FilterOperator.EQUAL, userId),
+                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, character)
+            ));
+
+            try {
+                if (characterRepository.count(query) > 0) {
+                    return ret;
+                }
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Count characters failed [userId=" + userId + ", character=" + character + "]", e);
+
+                return ret;
+            }
+
             final JSONObject record = new JSONObject();
             record.put(org.b3log.symphony.model.Character.CHARACTER_CONTENT, character);
             record.put(org.b3log.symphony.model.Character.CHARACTER_IMG, characterImg);
@@ -190,6 +210,23 @@ public class ActivityMgmtService {
             pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                     Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHARACTER, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHARACTER,
                     characterId);
+
+            try {
+                final JSONObject user = userQueryService.getUser(userId);
+                final String userName = user.optString(User.USER_NAME);
+
+                // Timeline
+                final JSONObject timeline = new JSONObject();
+                timeline.put(Common.TYPE, Common.ACTIVITY);
+                String content = langPropsService.get("timelineActivityCharacterLabel");
+                content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                        + "/member/" + userName + "'>" + userName + "</a>");
+                timeline.put(Common.CONTENT, content);
+
+                timelineMgmtService.addTimeline(timeline);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Submits character timeline failed", e);
+            }
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("activityCharacterRecognizeSuccLabel"));
