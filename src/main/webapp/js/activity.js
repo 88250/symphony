@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.2.0, Jun 7, 2016
+ * @version 1.2.2.1, Jun 11, 2016
  */
 
 /**
@@ -92,8 +92,8 @@ var Activity = {
      * @returns {undefined}
      */
     charInit: function (id) {
-        var el = document.getElementById(id);
-        var ctx = el.getContext('2d');
+        var el = document.getElementById(id),
+                ctx = el.getContext('2d');
 
         ctx.lineWidth = 5;
         ctx.lineJoin = ctx.lineCap = 'round';
@@ -104,7 +104,10 @@ var Activity = {
 
         el.onmousedown = function (e) {
             isDrawing = true;
-            points.push({x: e.clientX - e.target.offsetLeft, y: e.clientY - e.target.offsetTop});
+            points.push({
+                x: e.clientX - e.target.offsetLeft + $(window).scrollLeft(),
+                y: e.clientY - e.target.offsetTop + $(window).scrollTop()
+            });
         };
 
         el.onmousemove = function (e) {
@@ -112,7 +115,9 @@ var Activity = {
                 return;
 
             // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            points.push({x: e.clientX - e.target.offsetLeft, y: e.clientY - e.target.offsetTop});
+            points.push({x: e.clientX - e.target.offsetLeft + $(window).scrollLeft(),
+                y: e.clientY - e.target.offsetTop + $(window).scrollTop()
+            });
 
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
@@ -146,9 +151,27 @@ var Activity = {
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
+            beforeSend: function () {
+                var $btn = $("button.green");
+                $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
+            },
             success: function (result, textStatus) {
                 alert(result.msg);
+            },
+            complete: function () {
+                var $btn = $("button.green");
+                $btn.removeAttr("disabled").css("opacity", "1").text($btn.text().substr(0, $btn.text().length - 3));
             }
         });
+    },
+    /**
+     * clear canvas
+     * 
+     * @param {string} id canvas id.
+     */
+    clearCharacter: function (id) {
+        var canvas = document.getElementById(id),
+                ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     }
 };

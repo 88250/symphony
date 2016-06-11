@@ -13,16 +13,21 @@
                 <div class="content activity">
                     <div class="content-reset">
                         ${activityCharacterTitleLabel}
-                        <#if noCharacter??>
-                        ${activityCharacterNotCharacterLabel}
-                        <#else>
-                        ${activityCharacterGuideLabel}
-                        </#if>
-
-                        <canvas id="charCanvas" width="600" height="600"></canvas>
-                        <br/>
-                        <br/>
-                        <button class="green fn-right" onclick="Activity.submitCharacter('charCanvas')">${submitLabel}</button>
+                        <div class="fn-clear">
+                            <div class="fn-left">
+                                <#if noCharacter??>
+                                ${activityCharacterNotCharacterLabel}
+                                <#else>
+                                ${activityCharacterGuideLabel}
+                                </#if>
+                            </div>
+                            <div class="fn-right">
+                                <button class="red" onclick="Activity.clearCharacter('charCanvas')">clear</button>
+                                &nbsp;
+                                <button class="green" onclick="Activity.submitCharacter('charCanvas')">${submitLabel}</button>
+                            </div>
+                        </div>
+                        <canvas id="charCanvas" width="500" height="500"></canvas>
                     </div>
                 </div>
                 <div class="side">
@@ -33,7 +38,7 @@
         <#include "../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                            Activity.charInit('charCanvas');
+                                    Activity.charInit('charCanvas');
         </script>
     </body>
 </html>
