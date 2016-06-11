@@ -11,8 +11,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content content-reset">
-                    <h1>${dataStatLabel}</h1>
-                    <i class="ft-gray">${dataStatSubLabel}</i>
+                    <h2 class="fn-inline">${dataStatLabel}</h2><span class="ft-gray">${dataStatSubLabel}</span>
                     <br><br>
                     <div id="chart30" style="height:400px"></div>
                     <br><br>

@@ -14,8 +14,7 @@
             <div class="wrapper">
                 <div class="content chat-room">
                     <div class="content-reset">
-                        <h1>${communityDynamicLabel}</h1>
-                        <i class="ft-gray">${communityDynamicSubLabel}</i>
+                        <h2 class="fn-inline">${communityDynamicLabel}</h2><span class="ft-gray">${communityDynamicSubLabel}</span>
                     </div>
                     <!--
                     <div class="fn-clear">
