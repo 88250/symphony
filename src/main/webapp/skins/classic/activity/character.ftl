@@ -22,7 +22,7 @@
                                 </#if>
                             </div>
                             <div class="fn-right">
-                                <button class="red" onclick="Activity.clearCharacter('charCanvas')">clear</button>
+                                <button class="red" onclick="Activity.clearCharacter('charCanvas')">${clearLabel}</button>
                                 &nbsp;
                                 <button class="green" onclick="Activity.submitCharacter('charCanvas')">${submitLabel}</button>
                             </div>
