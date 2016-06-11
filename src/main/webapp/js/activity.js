@@ -143,7 +143,7 @@ var Activity = {
 
         var requestJSONObject = {
             dataURL: url,
-            character: $("#character").text()
+            character: $("h2.fn-inline a").text()
         };
 
         $.ajax({
