@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.2.1, Jun 11, 2016
+ * @version 1.2.2.2, Jun 11, 2016
  */
 
 /**
@@ -166,6 +166,10 @@ var Activity = {
             },
             success: function (result, textStatus) {
                 alert(result.msg);
+                
+                if (result.sc) {
+                    window.location.reload();
+                }
             },
             complete: function () {
                 var $btn = $("button.green");
