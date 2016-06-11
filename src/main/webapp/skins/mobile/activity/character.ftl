@@ -4,7 +4,6 @@
     <head>
         <@head title="${characterLabel} - ${activityLabel} - ${symphonyLabel}">
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">
@@ -13,20 +12,21 @@
                 <div class="content activity">
                     <div class="content-reset">
                         ${activityCharacterTitleLabel}
-                        <#if noCharacter??>
-                        ${activityCharacterNotCharacterLabel}
-                        <#else>
-                        ${activityCharacterGuideLabel}
-                        </#if>
-
-                        <canvas id="charCanvas" width="280px" height="280px"></canvas>
-                        <br/>
-                        <br/>
-
                         <div class="fn-clear">
-                            <button class="green fn-right" onclick="Activity.submitCharacter('charCanvas')">${submitLabel}</button>
+                            <div class="fn-left">
+                                <#if noCharacter??>
+                                ${activityCharacterNotCharacterLabel}
+                                <#else>
+                                ${activityCharacterGuideLabel}
+                                </#if>
+                            </div>
+                            <div class="fn-right activity-char-btns">
+                                <button class="red" onclick="Activity.clearCharacter('charCanvas')">${clearLabel}</button>
+                                &nbsp;
+                                <button class="green" onclick="Activity.submitCharacter('charCanvas')">${submitLabel}</button>
+                            </div>
                         </div>
-                        <div class="fn-hr10"></div>
+                        <canvas id="charCanvas" width="300" height="300"></canvas>
                     </div>
                 </div>
                 <div class="side">

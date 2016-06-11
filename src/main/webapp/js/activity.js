@@ -94,43 +94,52 @@ var Activity = {
     charInit: function (id) {
         var el = document.getElementById(id),
                 ctx = el.getContext('2d');
-
+        ctx.strokeStyle = '#000';
         ctx.lineWidth = 5;
         ctx.lineJoin = ctx.lineCap = 'round';
         ctx.shadowBlur = 5;
         ctx.shadowColor = 'rgb(0, 0, 0)';
 
-        var isDrawing, points = [];
+        var isDrawing = false, x = 0, y = 0;
 
         el.onmousedown = function (e) {
             isDrawing = true;
-            points.push({
-                x: e.clientX - e.target.offsetLeft + $(window).scrollLeft(),
-                y: e.clientY - e.target.offsetTop + $(window).scrollTop()
-            });
+            ctx.beginPath();
+            x = e.clientX - e.target.offsetLeft + $(window).scrollLeft();
+            y = e.clientY - e.target.offsetTop + $(window).scrollTop();
+            ctx.moveTo(x, y);
         };
 
         el.onmousemove = function (e) {
-            if (!isDrawing)
+            if (!isDrawing) {
                 return;
-
-            // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            points.push({x: e.clientX - e.target.offsetLeft + $(window).scrollLeft(),
-                y: e.clientY - e.target.offsetTop + $(window).scrollTop()
-            });
-
-            ctx.beginPath();
-            ctx.moveTo(points[0].x, points[0].y);
-            for (var i = 1; i < points.length; i++) {
-                ctx.lineTo(points[i].x, points[i].y);
             }
+
+            x = e.clientX - e.target.offsetLeft + $(window).scrollLeft();
+            y = e.clientY - e.target.offsetTop + $(window).scrollTop();
+            ctx.lineTo(x, y);
             ctx.stroke();
         };
 
         el.onmouseup = function () {
             isDrawing = false;
-            points.length = 0;
         };
+
+        el.addEventListener("touchstart", function (e) {
+            ctx.beginPath();
+            x = e.changedTouches[0].pageX - e.target.offsetLeft;
+            y = e.changedTouches[0].pageY - e.target.offsetTop;
+            ctx.moveTo(x, y);
+
+        }, false);
+
+        el.addEventListener("touchmove", function (e) {
+            e.preventDefault();
+            x = e.changedTouches[0].pageX - e.target.offsetLeft;
+            y = e.changedTouches[0].pageY - e.target.offsetTop;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }, false);
     },
     /**
      * 提交写好字的图片.
