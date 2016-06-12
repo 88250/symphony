@@ -26,7 +26,7 @@
                                 <button class="green" onclick="Activity.submitCharacter('charCanvas')">${submitLabel}</button>
                             </div>
                         </div>
-                        <canvas id="charCanvas" width="300" height="300"></canvas>
+                        <canvas id="charCanvas" width="306" height="300"></canvas>
                     </div>
                 </div>
                 <div class="side">

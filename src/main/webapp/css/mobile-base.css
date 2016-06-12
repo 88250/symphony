@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Jun 11, 2016
+ * @version 1.2.0.2, Jun 12, 2016
  */
 
 /* start reset */
@@ -2222,6 +2222,8 @@ code .dec { color: initial; } /* decimal - blue */
     background-color: #fff;
     display: block;
     margin: 20px auto;
+    background-image: url(../images/m-char.png);
+    background-size: cover;
 }
 /* end activity */
 
