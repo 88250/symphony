@@ -43,7 +43,6 @@
 <script type="text/javascript" src="${staticServePath}/js/lib/md5.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.notification-1.0.5.js"></script>
-<script type="text/javascript" src="${staticServePath}/js/lib/ua-parser.min.js"></script>
 <script>
     var Label = {
         invalidPasswordLabel: "${invalidPasswordLabel}",
@@ -61,8 +60,7 @@
     Util.init();
 </script>
 <#if algoliaEnabled>
-<script src="${staticServePath}/js/lib/algolia/algoliasearch.min.js"></script>
-<script src="${staticServePath}/js/lib/algolia/autocomplete.jquery.min.js"></script>
+<script src="${staticServePath}/js/lib/algolia/algolia.min.js"></script>
 <script>
     Util.initSearch('${algoliaAppId}', '${algoliaSearchKey}', '${algoliaIndex}');
 </script>
