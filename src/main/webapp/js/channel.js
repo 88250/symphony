@@ -18,7 +18,7 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.6.7, May 31, 2016
+ * @version 1.7.7.7, Jun 13, 2016
  */
 
 /**
@@ -223,7 +223,7 @@ var TimelineChannel = {
     /**
      * @description Initializes message channel
      */
-    init: function (channelServer) {
+    init: function (channelServer, timelineCnt) {
         TimelineChannel.ws = new ReconnectingWebSocket(channelServer);
         TimelineChannel.ws.reconnectInterval = 10000;
 

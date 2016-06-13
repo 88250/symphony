@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.13.20, Jun 2, 2016
+ * @version 1.25.14.20, Jun 13, 2016
  */
 
 /**
@@ -345,11 +345,6 @@ var Util = {
      * @description 鼠标移动到文章列表标题上时，显示其开头内容
      */
     initArticlePreview: function () {
-        if ($.ua.device.type === 'mobile') {
-            $('.commenters').remove();
-            $('.cmts').css('display', 'inline-block');
-            return false;
-        }
         $(".article-list h2 > a").hover(function () {
             var $ele = $(this);
 
