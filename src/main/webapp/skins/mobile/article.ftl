@@ -318,15 +318,19 @@
             Label.audioRecordingLabel = '${audioRecordingLabel}';
             // Init [Article] channel
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
-            // jQuery File Upload
-            Util.uploadFile({
-            "type": "img",
-                    "id": "fileUpload",
-                    "pasteZone": $(".CodeMirror"),
-                    "qiniuUploadToken": "${qiniuUploadToken}",
-                    "editor": Comment.editor,
-                    "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}"
+            $(document).ready(function () {
+                 // jQuery File Upload
+                Util.uploadFile({
+                "type": "img",
+                        "id": "fileUpload",
+                        "pasteZone": $(".CodeMirror"),
+                        "qiniuUploadToken": "${qiniuUploadToken}",
+                        "editor": Comment.editor,
+                        "uploadingLabel": "${uploadingLabel}",
+                        "qiniuDomain": "${qiniuDomain}",
+                        "imgMaxSize": ${imgMaxSize?c},
+                        "fileMaxSize": ${fileMaxSize?c}
+                });
             });
             <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');

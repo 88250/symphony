@@ -123,7 +123,9 @@
                                 "qiniuUploadToken": "${qiniuUploadToken}",
                                 "editor": AddArticle.editor,
                                 "uploadingLabel": "${uploadingLabel}",
-                                "qiniuDomain": "${qiniuDomain}"
+                                "qiniuDomain": "${qiniuDomain}",
+                                "imgMaxSize": ${imgMaxSize?c},
+                                "fileMaxSize": ${fileMaxSize?c}
                         });
                         Util.uploadFile({
                         "id": "rewardFileUpload",
@@ -131,7 +133,9 @@
                                 "qiniuUploadToken": "${qiniuUploadToken}",
                                 "editor": AddArticle.rewardEditor,
                                 "uploadingLabel": "${uploadingLabel}",
-                                "qiniuDomain": "${qiniuDomain}"
+                                "qiniuDomain": "${qiniuDomain}",
+                                "imgMaxSize": ${imgMaxSize?c},
+                                "fileMaxSize": ${fileMaxSize?c}
                         });
         </script>
     </body>
