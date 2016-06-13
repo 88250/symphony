@@ -9,7 +9,8 @@
     </#list>
 </ul>
 <#else>
-${noMessageLabel}
+<div class="fn-hr10"></div>
+<div class="ft-center">${noMessageLabel}</div>
 </#if>
 
 <@pagination url="/notifications/point"/></@notifications>
