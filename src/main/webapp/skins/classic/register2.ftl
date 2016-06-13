@@ -73,7 +73,6 @@
         </div>
         <#include "footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/register${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/md5.js"></script>
         <script>
                                         Register.init2();
                                         Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";

@@ -1,6 +1,7 @@
 target/
 *.log
 upload/*
+node_modules/
 qrcode.png
 
 src/main/webapp/js/*.min.js

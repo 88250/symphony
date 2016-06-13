@@ -37,12 +37,8 @@
     </div>
 </div>
 <div class="icon-up" onclick="Util.goTop()"></div>
-<script>var isLoggedIn = ${isLoggedIn?c};</script>
-<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="${staticServePath}/js/lib/compress/libs.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
-<script type="text/javascript" src="${staticServePath}/js/lib/md5.js"></script>
-<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
-<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.notification-1.0.5.js"></script>
 <script>
     var Label = {
         invalidPasswordLabel: "${invalidPasswordLabel}",
@@ -57,7 +53,7 @@
         desktopNotificationTemplateLabel: "${desktopNotificationTemplateLabel}",
         staticServePath: "${staticServePath}"
     };
-    Util.init();
+    Util.init(${isLoggedIn?c});
 </script>
 <#if algoliaEnabled>
 <script src="${staticServePath}/js/lib/algolia/algolia.min.js"></script>
