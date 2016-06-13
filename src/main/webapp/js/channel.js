@@ -96,6 +96,10 @@ var ArticleChannel = {
                             "</div>" +
                             "</li>";
 
+                    var replaceAll = function (string, find, replace) {
+                        return string.replace(new RegExp(find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"), 'g'), replace);
+                    };
+                    
                     template = replaceAll(template, "${comment.oId}", data.commentId);
                     template = replaceAll(template, "${comment.commentAuthorName}", data.commentAuthorName);
                     template = replaceAll(template, "${comment.commentAuthorThumbnailURL}", data.commentAuthorThumbnailURL);
@@ -204,7 +208,7 @@ var ArticleListChannel = {
         };
 
         ArticleListChannel.ws.onerror = function (err) {
-            console.log("ERROR", err)
+            console.log("ERROR", err);
         };
     }
 };
@@ -314,7 +318,7 @@ var ChatRoomChannel = {
                     if (!enableUserLink) {
                         namePart = data.userName;
                     }
-                    
+
                     var liHTML = '<li class="fn-none">'
                             + '<div class="fn-flex">'
                             + avatarPart
@@ -353,11 +357,3 @@ var ChatRoomChannel = {
         };
     }
 };
-
-function escapeRegExp(string) {
-    return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-}
-
-function replaceAll(string, find, replace) {
-    return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-}

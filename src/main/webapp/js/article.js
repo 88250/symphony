@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.22.9, Jun 6, 2016
+ * @version 1.18.23.9, Jun 14, 2016
  */
 
 /**
@@ -55,7 +55,7 @@ var Comment = {
      * 评论初始化
      * @returns {Boolean}
      */
-    init: function () {
+    init: function (isLoggedIn) {
         $("#comments").on('dblclick', 'img', function () {
             window.open($(this).attr('src'));
         });
@@ -515,7 +515,8 @@ var Article = {
             });
             
             ZeroClipboard.config({
-                hoverClass: "tooltipped-hover"
+                hoverClass: "tooltipped-hover",
+                swfPath: Label.staticServePath + "/js/lib/zeroclipboard/ZeroClipboard.swf"
             });
             
             var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
@@ -694,4 +695,3 @@ var Article = {
 };
 
 Article.init();
-Comment.init();

@@ -1,0 +1,33 @@
+{
+    "name": "Symphony",
+    "version": "1.3.0",
+    "description": "A real-time community forum written in Java. Java 实时社区论坛。 https://hacpai.com ",
+    "homepage": "https://github.com/b3log/symphony",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/b3log/symphony.git"
+    },
+    "bugs": {
+        "url": "https://github.com/b3log/symphony/issues"
+    },
+    "license": "Apache License",
+    "private": true,
+    "author": "Daniel <dl882509@gmail.com> (http://88250.b3log.org) & Vanessa <lly219@gmail.com> (http://vanessa.b3log.org)",
+    "maintainers": [
+        {
+            "name": "Daniel",
+            "email": "dl88250@gmail.com"
+        },
+        {
+            "name": "Vanessa",
+            "email": "lly219@gmail.com"
+        }
+    ],
+    "devDependencies": {
+        "gulp": "3.9.0",
+        "gulp-concat": "2.6.0",
+        "gulp-clean-css": "2.0.6",
+        "gulp-uglify": "1.5.1",
+        "gulp-sourcemaps": "1.6.0"
+    }
+}

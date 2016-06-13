@@ -75,8 +75,5 @@
             </div>
         </div>
         <#include "footer.ftl">
-        <script>
-            Util.initArticlePreview();
-        </script>
     </body>
 </html>

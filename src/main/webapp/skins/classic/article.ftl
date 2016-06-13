@@ -319,6 +319,9 @@
         </div>
         <div id="revision"><div id="revisions"></div></div>
         <#include "footer.ftl">
+        <script src="${staticServePath}/js/lib/compress/article-libs.min.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
@@ -341,21 +344,6 @@
             <#if isLoggedIn>
                     Label.currentUserName = '${currentUser.userName}';
             </#if>
-        </script>
-        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
-        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
-        <script src="${staticServePath}/js/lib/editor/editor.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.qrcode.min.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/zeroclipboard/ZeroClipboard.min.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/ua-parser.min.js"></script>
-        <script>
             // Init [Article] channel
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             // jQuery File Upload
@@ -373,6 +361,7 @@
             <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');
             </#if>
+            Comment.init(${isLoggedIn?c});
         </script>
     </body>
 </html>
