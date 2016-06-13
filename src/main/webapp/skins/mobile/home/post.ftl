@@ -114,6 +114,7 @@
                         Label.uploadLabel = "${uploadLabel}";
                         Label.audioRecordingLabel = '${audioRecordingLabel}';
         </script>
+        <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
                         Util.uploadFile({

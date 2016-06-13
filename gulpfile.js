@@ -59,7 +59,8 @@ gulp.task('cc', function () {
     var jsCommonLib = ['./src/main/webapp/js/lib/jquery/jquery.min.js',
         './src/main/webapp/js/lib/md5.js',
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
-        './src/main/webapp/js/lib/jquery/jquery.notification-1.0.5.js'];
+        './src/main/webapp/js/lib/jquery/jquery.notification-1.0.5.js',
+        './src/main/webapp/js/lib/ua-parser.min.js'];
     gulp.src(jsCommonLib)
             .pipe(uglify())
             .pipe(concat('libs.min.js'))
@@ -71,8 +72,7 @@ gulp.task('cc', function () {
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js',
         './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
         './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',
-        './src/main/webapp/js/lib/zeroclipboard/ZeroClipboard.min.js',
-        './src/main/webapp/js/lib/ua-parser.min.js'];
+        './src/main/webapp/js/lib/zeroclipboard/ZeroClipboard.min.js'];
     gulp.src(jsArticleLib)
             .pipe(uglify())
             .pipe(concat('article-libs.min.js'))
