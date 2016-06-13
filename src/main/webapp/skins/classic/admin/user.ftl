@@ -70,11 +70,16 @@
                 <label for="userPassword">${userPasswordLabel}</label>
                 <input type="text" id="userPassword" name="userPassword" value="${user.userPassword}" />
 
+                <label for="userNickname">${nicknameLabel}</label>
+                <input type="text" id="userNickname" name="userNickname" value="${user.userNickname}" />
+
                 <label for="userURL">URL</label>
                 <input type="text" id="userURL" name="userURL" value="${user.userURL}" />
 
+                <#--
                 <label for="userQQ">QQ</label>
                 <input type="text" id="userQQ" name="userQQ" value="${user.userQQ}" />
+                -->
 
                 <label for="userIntro">${userIntroLabel}</label>
                 <input type="text" id="userIntro" name="userIntro" value="${user.userIntro}" />

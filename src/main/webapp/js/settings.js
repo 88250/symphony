@@ -164,8 +164,8 @@ var Settings = {
             data: [{
                     "target": $("#userNickname"),
                     "type": "string",
-                    "min": 1,
-                    "max": 8,
+                    "min": 0,
+                    "max": 20,
                     "msg": Label.invalidUserNicknameLabel
                 }, {
                     "target": $("#userTags"),

@@ -2,7 +2,12 @@
     <div id="avatarURLDom" class="avatar-big" title="${user.userName}" style="background-image:url('${user.userAvatarURL}-260.jpg?${user.userUpdateTime?c}')"></div>
     <div>
         <div class="user-name">
-            <a href="/member/${user.userName}">${user.userName}</a>
+            <#if user.userNickname != "">
+            <div id="userNicknameDom">
+                ${user.userNickname}
+            </div>
+            </#if>
+            <span class="ft-gray">${user.userName}</span>
             <img title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
             <#if "adminRole" == user.userRole>
             <span class="ft-13 icon-userrole" title="${administratorLabel}"></span>
@@ -20,7 +25,7 @@
                 ${followLabel}
             </button>
             </#if>
-            <button class="green small" onclick="location.href='/post?type=1&at=${user.userName}'"> 
+            <button class="green small" onclick="location.href = '/post?type=1&at=${user.userName}'"> 
                 ${privateMessageLabel}
             </button>
             </#if>

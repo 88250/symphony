@@ -10,6 +10,9 @@
             <a class="ft-red fn-right" href="javascript:Util.logout()">${logoutLabel}</a>
         </div>
         <div class="module-panel form fn-clear">
+            <label>${nicknameLabel}</label><br/>
+            <input id="userNickname" type="text" value="${currentUser.userNickname}" placeholder="${selfNicknameLabel}"/>
+
             <label>${selfTagLabel}</label><br/>
             <input id="userTags" type="text" value="${currentUser.userTags}" placeholder="${selfDescriptionLabel}"/>
 

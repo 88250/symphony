@@ -117,6 +117,7 @@
                     Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
                     Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
                     Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
+                    Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
         </script>
     </body>
 </html>

@@ -59,7 +59,7 @@ public class UpdateProfilesValidation extends BeforeRequestProcessAdvice {
     /**
      * Max user nickname length.
      */
-    public static final int MAX_USER_NICKNAME_LENGTH = 8;
+    public static final int MAX_USER_NICKNAME_LENGTH = 20;
 
     /**
      * Max user URL length.
