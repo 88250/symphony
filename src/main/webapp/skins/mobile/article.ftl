@@ -8,7 +8,6 @@
         <meta name="description" content="${article.articlePreviewContent}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/mobile-index${miniPostfix}.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
     </head>
     <body>
@@ -298,6 +297,9 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <#include "footer.ftl">
+        <script src="${staticServePath}/js/lib/compress/article-libs.min.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
@@ -314,22 +316,6 @@
             Label.userCommentViewMode = ${userCommentViewMode};
             Label.stickConfirmLabel = "${stickConfirmLabel}";
             Label.audioRecordingLabel = '${audioRecordingLabel}';
-        </script>
-        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
-        <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
-        <script src="${staticServePath}/js/lib/editor/editor.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.qrcode.min.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script>
-            var WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
             // Init [Article] channel
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             // jQuery File Upload
@@ -345,6 +331,7 @@
             <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');
             </#if>
+            Comment.init(${isLoggedIn?c});
         </script>
     </body>
 </html>

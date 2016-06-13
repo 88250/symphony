@@ -77,17 +77,13 @@
         <script>
             Label.uploadLabel = "${uploadLabel}";
         </script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
         <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
-        <script src="${staticServePath}/js/lib/editor/editor.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/chat-room${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            WEB_SOCKET_SWF_LOCATION = "${staticServePath}/js/lib/ws-flash/WebSocketMain.swf";
             // Init [ChatRoom] channel
             ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}/chat-room-channel");
             var chatRoomMsgCnt = ${chatRoomMsgCnt};

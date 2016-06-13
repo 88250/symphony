@@ -100,9 +100,7 @@
             </div>
         </div>
         <#include "../footer.ftl">
-        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script src="${staticServePath}/js/lib/editor/codemirror.min.js?4.13"></script>
-        <script src="${staticServePath}/js/lib/editor/editor.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
@@ -117,7 +115,6 @@
                         Label.audioRecordingLabel = '${audioRecordingLabel}';
         </script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
-        <script type="text/javascript" src="${staticServePath}/js/audio${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
                         Util.uploadFile({
                         "id": "fileUpload",
