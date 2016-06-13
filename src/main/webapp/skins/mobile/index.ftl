@@ -50,8 +50,8 @@
                             </ul>
                         </div>
                     </div>
-                    </#if>
                 </div>
+                </#if>
             </div>
             <div class="side wrapper">
                 <#include "side.ftl">

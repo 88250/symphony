@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.2, Jun 12, 2016
+ * @version 1.2.0.3, Jun 13, 2016
  */
 
 /* start reset */
@@ -1772,13 +1772,12 @@ h2.article-title {
 }
 
 .comment-login {
-    border: 1px solid #D9D9D9;
-    border-top-color: #C0C0C0;
-    border-left-color: #C0C0C0;
-    margin: 10px 0;
+    border: 1px solid #e5e5e5;
+    margin: 10px 10px 15px 10px;
     padding: 3px;
     background-color: #FAFAFA;
     box-sizing: border-box;
+    border-radius: 3px;
 }
 
 .comment-login > a {
