@@ -267,6 +267,7 @@ public class UserMgmtService {
      * @param requestJSONObject the specified request json object (user), for example,      <pre>
      * {
      *     "oId": "",
+     *     "userNickname": "",
      *     "userTags": "",
      *     "userURL": "",
      *     "userQQ": "",
@@ -299,6 +300,7 @@ public class UserMgmtService {
             tag(oldUser);
 
             // Update
+            oldUser.put(UserExt.USER_NICKNAME, requestJSONObject.optString(UserExt.USER_NICKNAME));
             oldUser.put(User.USER_URL, requestJSONObject.optString(User.USER_URL));
             oldUser.put(UserExt.USER_QQ, requestJSONObject.optString(UserExt.USER_QQ));
             oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
@@ -473,6 +475,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, "");
             user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, "");
             user.put(UserExt.USER_INTRO, "");
+            user.put(UserExt.USER_NICKNAME, "");
             user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
             user.put(UserExt.USER_QQ, "");
             user.put(UserExt.USER_ONLINE_FLAG, false);

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.7, Mar 28, 2016
+ * @version 1.9.3.7, Jun 13, 2016
  */
 
 /**
@@ -140,6 +140,7 @@ var Settings = {
                     if (type === 'profiles') {
                         $('#avatarURLDom').attr('style', 'background-image:url(' + requestJSONObject.userAvatarURL + ')');
                         $('#userIntroDom').text(requestJSONObject.userIntro);
+                        $('#userNicknameDom').text(requestJSONObject.userNickname);
                         $('#userURLDom').text(requestJSONObject.userURL).attr('href', requestJSONObject.userURL);
                     }
                 } else {
@@ -161,6 +162,12 @@ var Settings = {
     _validateProfiles: function () {
         if (Validate.goValidate({target: $('#profilesTip'),
             data: [{
+                    "target": $("#userNickname"),
+                    "type": "string",
+                    "min": 1,
+                    "max": 8,
+                    "msg": Label.invalidUserNicknameLabel
+                }, {
                     "target": $("#userTags"),
                     "type": "string",
                     "min": 0,
@@ -184,6 +191,7 @@ var Settings = {
                     "msg": Label.invalidAvatarURLLabel
                 }]})) {
             return {
+                userNickname: $("#userNickname").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userTags: $("#userTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userURL: $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userIntro: $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, ""),
