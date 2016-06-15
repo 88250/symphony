@@ -16,16 +16,24 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
+import java.awt.Graphics;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import jodd.util.Base64;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -69,6 +77,7 @@ import org.b3log.symphony.processor.advice.validate.ArticleUpdateValidation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.CharacterQueryService;
 import org.b3log.symphony.service.ClientMgmtService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentQueryService;
@@ -207,10 +216,84 @@ public class ArticleProcessor {
     private ReferralMgmtService referralMgmtService;
 
     /**
+     * Character query service.
+     */
+    @Inject
+    private CharacterQueryService characterQueryService;
+
+    /**
      * Filler.
      */
     @Inject
     private Filler filler;
+
+    /**
+     * Gets article image.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param articleId the specified article id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/article/{articleId}/image", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class})
+    @After(adviceClass = {StopwatchEndAdvice.class})
+    public void getArticleImage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String articleId) throws Exception {
+        final JSONObject article = articleQueryService.getArticle(articleId);
+        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+
+        final Set<JSONObject> characters = characterQueryService.getCharacters();
+        final String articleContent = article.optString(Article.ARTICLE_CONTENT);
+
+        final List<BufferedImage> images = new ArrayList<BufferedImage>();
+        for (int i = 0; i < articleContent.length(); i++) {
+            final String ch = articleContent.substring(i, i + 1);
+            final JSONObject chRecord = org.b3log.symphony.model.Character.getCharacter(ch, characters);
+            if (null == chRecord) {
+                images.add(org.b3log.symphony.model.Character.createImage(ch));
+
+                continue;
+            }
+
+            final String imgData = chRecord.optString(org.b3log.symphony.model.Character.CHARACTER_IMG);
+            final byte[] data = Base64.decode(imgData.getBytes());
+            final BufferedImage img = ImageIO.read(new ByteArrayInputStream(data));
+            final BufferedImage newImage = new BufferedImage(50, 50, img.getType());
+            final Graphics g = newImage.getGraphics();
+            g.drawImage(img, 0, 0, 50, 50, null);
+            g.dispose();
+
+            images.add(newImage);
+        }
+
+        final int rowCharacterCount = 30;
+        final int rows = (int) Math.ceil((double) images.size() / (double) rowCharacterCount);
+
+        final BufferedImage combined = new BufferedImage(30 * 50, rows * 50, Transparency.TRANSLUCENT);
+        int row = 0;
+        for (int i = 0; i < images.size(); i++) {
+            final BufferedImage image = images.get(i);
+
+            final Graphics g = combined.getGraphics();
+            g.drawImage(image, (i % rowCharacterCount) * 50, row * 50, null);
+
+            if (0 == i % rowCharacterCount && i > 0) {
+                row++;
+            }
+        }
+
+        ImageIO.write(combined, "PNG", new File("E:\\ch\\hp.png"));
+
+        String url = "";
+
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.STATUS_CODE, true);
+        ret.put(Common.URL, (Object) url);
+
+        context.renderJSON(ret);
+    }
 
     /**
      * Gets article revisions.
