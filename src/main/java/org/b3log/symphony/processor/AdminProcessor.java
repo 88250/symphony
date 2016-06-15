@@ -117,7 +117,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.3.4, Jun 2, 2016
+ * @version 2.15.3.5, Jun 15, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -292,6 +292,8 @@ public class AdminProcessor {
         final String articleTitle = request.getParameter(Article.ARTICLE_TITLE);
         final String articleTags = request.getParameter(Article.ARTICLE_TAGS);
         final String articleContent = request.getParameter(Article.ARTICLE_CONTENT);
+        String rewardContent = request.getParameter(Article.ARTICLE_REWARD_CONTENT);
+        final String rewardPoint = request.getParameter(Article.ARTICLE_REWARD_POINT);
 
         long time = System.currentTimeMillis();
 
@@ -309,6 +311,8 @@ public class AdminProcessor {
         article.put(Article.ARTICLE_TITLE, articleTitle);
         article.put(Article.ARTICLE_TAGS, articleTags);
         article.put(Article.ARTICLE_CONTENT, articleContent);
+        article.put(Article.ARTICLE_REWARD_CONTENT, rewardContent);
+        article.put(Article.ARTICLE_REWARD_POINT, Integer.valueOf(rewardPoint));
         article.put(User.USER_NAME, userName);
         article.put(Common.TIME, time);
 

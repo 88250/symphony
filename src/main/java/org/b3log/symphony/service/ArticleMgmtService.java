@@ -74,7 +74,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.19.15, Apr 20, 2016
+ * @version 2.9.19.16, Jun 15, 2016
  * @since 0.2.0
  */
 @Service
@@ -1297,6 +1297,8 @@ public class ArticleMgmtService {
      *     "articleTitle": "",
      *     "articleTags": "",
      *     "articleContent": "",
+     *     "articleRewardContent": "",
+     *     "articleRewardPoint": int,
      *     "userName": "",
      *     "time": long
      * }
@@ -1332,7 +1334,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_AUTHOR_EMAIL, author.optString(User.USER_EMAIL));
             article.put(Article.ARTICLE_TITLE, Emotions.toAliases(requestJSONObject.optString(Article.ARTICLE_TITLE)));
             article.put(Article.ARTICLE_CONTENT, Emotions.toAliases(requestJSONObject.optString(Article.ARTICLE_CONTENT)));
-            article.put(Article.ARTICLE_REWARD_CONTENT, "");
+            article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
@@ -1350,7 +1352,7 @@ public class ArticleMgmtService {
             article.put(Article.REDDIT_SCORE, 0);
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
             article.put(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
-            article.put(Article.ARTICLE_REWARD_POINT, 0);
+            article.put(Article.ARTICLE_REWARD_POINT, requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT));
             article.put(Article.ARTICLE_CITY, "");
             String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
