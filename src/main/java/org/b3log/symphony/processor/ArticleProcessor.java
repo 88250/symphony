@@ -262,6 +262,8 @@ public class ArticleProcessor {
             final BufferedImage img = ImageIO.read(new ByteArrayInputStream(data));
             final BufferedImage newImage = new BufferedImage(50, 50, img.getType());
             final Graphics g = newImage.getGraphics();
+            g.setClip(0, 0, 50, 50);
+            g.fillRect(0, 0, 50, 50);
             g.drawImage(img, 0, 0, 50, 50, null);
             g.dispose();
 
@@ -279,12 +281,12 @@ public class ArticleProcessor {
             final Graphics g = combined.getGraphics();
             g.drawImage(image, (i % rowCharacterCount) * 50, row * 50, null);
 
-            if (0 == i % rowCharacterCount && i > 0) {
+            if (0 == (i + 1) % rowCharacterCount) {
                 row++;
             }
         }
 
-        ImageIO.write(combined, "PNG", new File("E:\\ch\\hp.png"));
+        ImageIO.write(combined, "PNG", new File("./hp.png"));
 
         String url = "";
 
