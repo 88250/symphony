@@ -120,7 +120,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.15.29, May 14, 2016
+ * @version 1.18.15.30, Jun 16, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -244,7 +244,7 @@ public class ArticleProcessor {
         final JSONObject article = articleQueryService.getArticle(articleId);
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
-        final Set<JSONObject> characters = characterQueryService.getCharacters();
+        final Set<JSONObject> characters = characterQueryService.getWrittenCharacters();
         final String articleContent = article.optString(Article.ARTICLE_CONTENT);
 
         final List<BufferedImage> images = new ArrayList<BufferedImage>();
