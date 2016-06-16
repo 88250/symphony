@@ -106,10 +106,12 @@ public class ActivityQueryService {
             final String ret = StringUtils.trim(characters.substring(index, index + 1));
 
             final Query query = new Query();
-            query.setFilter(CompositeFilterOperator.and(
-                    // new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_USER_ID, FilterOperator.EQUAL, userId),
-                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret)
-            ));
+//            query.setFilter(CompositeFilterOperator.and(
+//                    // new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_USER_ID, FilterOperator.EQUAL, userId),
+//                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret)
+//            ));
+
+            query.setFilter(new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret));
 
             try {
                 if (characterRepository.count(query) > 0) {
