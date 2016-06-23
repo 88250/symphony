@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.4, May 30, 2016
+ * @version 1.2.3.4, Jun 23, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -260,7 +260,11 @@ public class ChatRoomProcessor {
         chatroomMsg.put(Common.CONTENT, msg);
 
         ChatRoomChannel.notifyChat(chatroomMsg);
-        ChatRoomProcessor.messages.addFirst(chatroomMsg);
+        messages.addFirst(chatroomMsg);
+        final int maxCnt = Symphonys.getInt("chatRoom.msgCnt");
+        if (messages.size() > maxCnt) {
+            messages.remove(maxCnt);
+        }
 
         ret.put(Keys.STATUS_CODE, true);
     }
