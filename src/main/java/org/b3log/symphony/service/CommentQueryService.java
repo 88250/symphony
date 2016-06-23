@@ -63,7 +63,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.5.18, May 28, 2016
+ * @version 2.6.6.18, Jun 23, 2016
  * @since 0.2.0
  */
 @Service
@@ -573,6 +573,9 @@ public class CommentQueryService {
     private void processCommentContent(final JSONObject comment) {
         final JSONObject commenter = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
 
+        final boolean sync = StringUtils.isNotBlank(comment.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
+        comment.put(Common.FROM_CLIENT, sync);
+
         if (Comment.COMMENT_STATUS_C_INVALID == comment.optInt(Comment.COMMENT_STATUS)
                 || UserExt.USER_STATUS_C_INVALID == commenter.optInt(UserExt.USER_STATUS)) {
             comment.put(Comment.COMMENT_CONTENT, langPropsService.get("commentContentBlockLabel"));
@@ -629,8 +632,6 @@ public class CommentQueryService {
         commentContent = commentContent.replaceFirst("<div id=\"player",
                 "<script src=\"" + Latkes.getStaticServePath() + "/js/lib/aplayer/APlayer.min.js\"></script>\n<div id=\"player");
 
-        final boolean sync = StringUtils.isNotBlank(comment.optString(Comment.COMMENT_CLIENT_COMMENT_ID));
-        comment.put(Common.FROM_CLIENT, sync);
         if (sync) {
             // "<i class='ft-small'>by 88250</i>"
             String syncCommenterName = StringUtils.substringAfter(commentContent, "<i class=\"ft-small\">by ");

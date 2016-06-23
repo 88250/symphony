@@ -22,12 +22,12 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.1.10, Jun 13, 2016
+ * @version 2.19.1.10, Jun 23, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
-    
+
     /**
      * Key of user nickname.
      */
@@ -286,6 +286,11 @@ public final class UserExt {
      * User status - registered but not verified.
      */
     public static final int USER_STATUS_C_NOT_VERIFIED = 2;
+
+    /**
+     * User status - invalid login.
+     */
+    public static final int USER_STATUS_C_INVALID_LOGIN = 3;
 
     //// Join point rank constants
     /**

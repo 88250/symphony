@@ -109,7 +109,8 @@
                 <select id="userStatus" name="userStatus">
                     <option value="0"<#if 0 == user.userStatus> selected</#if>>${validLabel}</option>
                     <option value="1"<#if 1 == user.userStatus> selected</#if>>${banLabel}</option>
-                    <option value="1"<#if 2 == user.userStatus> selected</#if>>${notVerifiedLabel}</option>
+                    <option value="2"<#if 2 == user.userStatus> selected</#if>>${notVerifiedLabel}</option>
+                    <option value="3"<#if 3 == user.userStatus> selected</#if>>${invalidLoginLabel}</option>
                 </select>
 
                 <label>${syncWithSymphonyClientLabel}</label>

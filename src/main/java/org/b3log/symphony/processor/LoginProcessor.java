@@ -74,7 +74,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.3.9, Apr 22, 2016
+ * @version 1.7.3.9, Jan 23, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -487,6 +487,20 @@ public class LoginProcessor {
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
                 context.renderMsg(langPropsService.get("userBlockLabel"));
+
+                return;
+            }
+
+            if (UserExt.USER_STATUS_C_NOT_VERIFIED == user.optInt(UserExt.USER_STATUS)) {
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
+                context.renderMsg(langPropsService.get("notVerifiedLabel"));
+
+                return;
+            }
+
+            if (UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)) {
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
+                context.renderMsg(langPropsService.get("invalidLoginLabel"));
 
                 return;
             }
