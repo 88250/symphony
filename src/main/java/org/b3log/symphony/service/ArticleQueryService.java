@@ -82,7 +82,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.16.11.21, May 28, 2016
+ * @version 2.16.11.22, Jun 23, 2016
  * @since 0.2.0
  */
 @Service
@@ -1000,6 +1000,7 @@ public class ArticleQueryService {
         final Query query = new Query()
                 .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setFilter(new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, "`oId`"))
                 .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
         query.setFilter(makeArticleShowingFilter());
         return query;
@@ -1581,7 +1582,7 @@ public class ArticleQueryService {
             }
 
             markdown(article);
-            
+
             final String articleId = article.optString(Keys.OBJECT_ID);
 
             // MP3 player render
