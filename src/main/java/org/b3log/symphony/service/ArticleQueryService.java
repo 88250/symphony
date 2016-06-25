@@ -990,6 +990,19 @@ public class ArticleQueryService {
     }
 
     /**
+     * Makes recent article showing filters.
+     *
+     * @return filter the article showing to user
+     */
+    private CompositeFilter makeRecentArticleShowingFilter() {
+        final List<Filter> filters = new ArrayList<Filter>();
+        filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
+        filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
+        filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, "%B3log%"));
+        return new CompositeFilter(CompositeFilterOperator.AND, filters);
+    }
+
+    /**
      * Makes the recent (sort by create time) articles with the specified fetch size.
      *
      * @param currentPageNum the specified current page number
@@ -1000,9 +1013,8 @@ public class ArticleQueryService {
         final Query query = new Query()
                 .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setFilter(new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, "`oId`"))
                 .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-        query.setFilter(makeArticleShowingFilter());
+        query.setFilter(makeRecentArticleShowingFilter());
         return query;
     }
 
