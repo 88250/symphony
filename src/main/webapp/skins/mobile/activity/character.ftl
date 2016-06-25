@@ -27,6 +27,12 @@
                             </div>
                         </div>
                         <canvas id="charCanvas" width="306" height="300"></canvas>
+                        <#if !noCharacter??>
+                        <ul>
+                            <li>${userCharacterProgressLabel}${colonLabel}${userProgress}</li>
+                            <li>${totalCharacterProgressLabel}${colonLabel}${totalProgress}</li>
+                        </ul>
+                        </#if>
                     </div>
                 </div>
                 <div class="side">
@@ -37,7 +43,7 @@
         <#include "../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                                Activity.charInit('charCanvas');
+                                    Activity.charInit('charCanvas');
         </script>
     </body>
 </html>
