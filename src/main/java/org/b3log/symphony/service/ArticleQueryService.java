@@ -82,7 +82,7 @@ import org.jsoup.safety.Whitelist;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.16.11.22, Jun 23, 2016
+ * @version 2.17.11.22, Jun 29, 2016
  * @since 0.2.0
  */
 @Service
@@ -999,6 +999,7 @@ public class ArticleQueryService {
         filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, "B3log%"));
+        filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, "Sandbox%"));
         return new CompositeFilter(CompositeFilterOperator.AND, filters);
     }
 

@@ -74,7 +74,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.19.16, Jun 15, 2016
+ * @version 2.11.19.16, Jun 29, 2016
  * @since 0.2.0
  */
 @Service
@@ -469,8 +469,14 @@ public class ArticleMgmtService {
 
             String articleTags = article.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
+            boolean sandboxEnv = false;
+            if (StringUtils.containsIgnoreCase(articleTags, "Sandbox")) {
+                articleTags = "Sandbox";
+                sandboxEnv = true;
+            }
+
             String[] tagTitles = articleTags.split(",");
-            if (tagTitles.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
+            if (!sandboxEnv && tagTitles.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                     && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(articleTags)) {
                 final String content = article.optString(Article.ARTICLE_TITLE)
                         + " " + Jsoup.parse("<p>" + article.optString(Article.ARTICLE_CONTENT) + "</p>").text();
@@ -1015,10 +1021,15 @@ public class ArticleMgmtService {
         final List<JSONObject> oldTags = tagRepository.getByArticleId(oldArticleId);
         String tagsString = newArticle.getString(Article.ARTICLE_TAGS);
         tagsString = Tag.formatTags(tagsString);
-        String[] tagStrings = tagsString.split(",");
+        boolean sandboxEnv = false;
+        if (StringUtils.containsIgnoreCase(tagsString, "Sandbox")) {
+            tagsString = "Sandbox";
+            sandboxEnv = true;
+        }
 
+        String[] tagStrings = tagsString.split(",");
         final int articleType = newArticle.optInt(Article.ARTICLE_TYPE);
-        if (tagStrings.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
+        if (!sandboxEnv && tagStrings.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                 && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(tagsString)) {
             final String content = newArticle.optString(Article.ARTICLE_TITLE)
                     + " " + Jsoup.parse("<p>" + newArticle.optString(Article.ARTICLE_CONTENT) + "</p>").text();
@@ -1356,8 +1367,14 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_CITY, "");
             String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
+            boolean sandboxEnv = false;
+            if (StringUtils.containsIgnoreCase(articleTags, "Sandbox")) {
+                articleTags = "Sandbox";
+                sandboxEnv = true;
+            }
+
             String[] tagTitles = articleTags.split(",");
-            if (tagTitles.length < GEN_TAG_MAX_CNT && !Tag.containsReservedTags(articleTags)) {
+            if (!sandboxEnv && tagTitles.length < GEN_TAG_MAX_CNT && !Tag.containsReservedTags(articleTags)) {
                 final String content = article.optString(Article.ARTICLE_TITLE)
                         + " " + Jsoup.parse("<p>" + article.optString(Article.ARTICLE_CONTENT) + "</p>").text();
                 final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
