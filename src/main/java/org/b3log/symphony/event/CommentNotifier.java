@@ -57,7 +57,7 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.5.14, May 15, 2016
+ * @version 1.5.6.14, Jun 29, 2016
  * @since 0.2.0
  */
 @Named
@@ -212,23 +212,19 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             if (commentContent.contains("@participants ")) {
                 final List<JSONObject> participants
                         = articleQueryService.getArticleLatestParticipants(articleId, Integer.MAX_VALUE);
-                final int count = participants.size();
+                int count = participants.size();
                 if (count < 1) {
                     return;
                 }
 
-                final int sum = count * Pointtransfer.TRANSFER_SUM_C_AT_PARTICIPANTS;
-                final boolean succ = null != pointtransferMgmtService.transfer(commenterId, Pointtransfer.ID_C_SYS,
-                        Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS, sum, commentId);
-                if (!succ) {
-                    return;
-                }
-
+                count = 0;
                 for (final JSONObject participant : participants) {
                     final String participantId = participant.optString(Keys.OBJECT_ID);
-                    if (participantId.equals(articleAuthorId) || participantId.equals(commenterId)) {
+                    if (participantId.equals(commenterId)) {
                         continue;
                     }
+
+                    count++;
 
                     final JSONObject requestJSONObject = new JSONObject();
                     requestJSONObject.put(Notification.NOTIFICATION_USER_ID, participantId);
@@ -236,6 +232,10 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
                     notificationMgmtService.addAtNotification(requestJSONObject);
                 }
+
+                final int sum = count * Pointtransfer.TRANSFER_SUM_C_AT_PARTICIPANTS;
+                pointtransferMgmtService.transfer(commenterId, Pointtransfer.ID_C_SYS,
+                        Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS, sum, commentId);
 
                 return;
             }
