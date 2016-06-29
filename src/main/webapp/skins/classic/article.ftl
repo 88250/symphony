@@ -20,6 +20,7 @@
                     <div class="fn-clear article-action">
                         <span class="fn-right">
                             <#if isLoggedIn>
+                            <span id="thankArticle" aria-label="${thankLabel}" class="fn-pointer tooltipped tooltipped-s" <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${pointThankArticle})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
                             <span id="voteUp" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
                                 <span class="icon-thumbs-up<#if 0==vote> ft-red</#if>"></span></span>
                             <span id="voteDown" class="tooltipped tooltipped-s fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
@@ -326,6 +327,8 @@
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
             Label.rewardConfirmLabel = "${rewardConfirmLabel?replace('{point}', article.articleRewardPoint)}";
+            Label.thankArticleConfirmLabel = "${thankArticleConfirmLabel?replace('{point}', pointThankArticle)}";
+            Label.thankSentLabel = "${thankSentLabel}";
             Label.articleOId = "${article.oId}";
             Label.articleTitle = "${article.articleTitle}";
             Label.articlePermalink = "${article.articlePermalink}";

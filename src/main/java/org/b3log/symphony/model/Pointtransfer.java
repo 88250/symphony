@@ -21,7 +21,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines all pointtransfer model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.1.0, Jun 8, 2016
+ * @version 1.16.1.0, Jun 29, 2016
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -262,6 +262,16 @@ public final class Pointtransfer {
      * Transfer sum - Activity - Character.
      */
     public static final int TRANSFER_SUM_C_ACTIVITY_CHARACTER = Symphonys.getInt("pointActivityCharacter");
+
+    /**
+     * Transfer type - Article Thank Income/Outcome.
+     */
+    public static final int TRANSFER_TYPE_C_ARTICLE_THANK = 22;
+
+    /**
+     * Transfer sum - Article Thank.
+     */
+    public static final int TRANSFER_SUM_C_ARTICLE_THANK = Symphonys.getInt("pointThankArticle");
 
     /**
      * Private constructor.

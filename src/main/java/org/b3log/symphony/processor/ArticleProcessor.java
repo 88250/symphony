@@ -120,7 +120,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.15.30, Jun 16, 2016
+ * @version 1.19.15.30, Jun 29, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -584,7 +584,7 @@ public class ArticleProcessor {
                 cmtViewMode);
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
-        // Fill reward(thank)
+        // Fill comment thank
         for (final JSONObject comment : articleComments) {
             String thankTemplate = langPropsService.get("thankConfirmLabel");
             thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
@@ -599,6 +599,9 @@ public class ArticleProcessor {
 
             comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
         }
+
+        // Fill article thank
+        article.put(Common.THANKED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_THANK_ARTICLE));
 
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
@@ -617,6 +620,8 @@ public class ArticleProcessor {
         String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
         stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
         dataModel.put("stickConfirmLabel", stickConfirmLabel);
+
+        dataModel.put("pointThankArticle", Symphonys.get("pointThankArticle"));
 
         // Referral statistic
         final String referralUserName = request.getParameter("r");
@@ -1390,14 +1395,53 @@ public class ArticleProcessor {
         }
 
         final JSONObject article = articleQueryService.getArticle(articleId);
-        if (null == article) {
-            return;
-        }
-
         articleQueryService.processArticleContent(article, request);
 
         context.renderTrueResult().
                 renderJSONValue(Article.ARTICLE_REWARD_CONTENT, article.optString(Article.ARTICLE_REWARD_CONTENT));
+    }
+
+    /**
+     * Article thanks.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/article/thank", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void thank(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        if (Strings.isEmptyOrNull(articleId)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+
+            return;
+        }
+
+        context.renderJSON();
+
+        try {
+            articleMgmtService.thank(articleId, currentUser.optString(Keys.OBJECT_ID));
+        } catch (final ServiceException e) {
+            context.renderMsg(langPropsService.get("transferFailLabel"));
+
+            return;
+        }
+
+        final JSONObject article = articleQueryService.getArticle(articleId);
+        articleQueryService.processArticleContent(article, request);
+
+        context.renderTrueResult();
     }
 
     /**

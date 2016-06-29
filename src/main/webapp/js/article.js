@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.23.9, Jun 14, 2016
+ * @version 1.19.23.9, Jun 29, 2016
  */
 
 /**
@@ -511,14 +511,14 @@ var Article = {
 
         if (typeof (ZeroClipboard) !== "undefined") {
             $('#shareClipboard').mouseover(function () {
-                 $(this).attr('aria-label', Label.copyLabel);
+                $(this).attr('aria-label', Label.copyLabel);
             });
-            
+
             ZeroClipboard.config({
                 hoverClass: "tooltipped-hover",
                 swfPath: Label.staticServePath + "/js/lib/zeroclipboard/ZeroClipboard.swf"
             });
-            
+
             var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
             shareClipboard.on("ready", function (readyEvent) {
                 shareClipboard.on("aftercopy", function (event) {
@@ -561,24 +561,47 @@ var Article = {
         }
     },
     /**
-     * @description 置顶
+     * @description 感谢文章
      */
-    stick: function (articleId) {
-        var r = confirm(Label.stickConfirmLabel);
+    thankArticle: function (articleId) {
+        var r = confirm(Label.thankArticleConfirmLabel);
 
         if (r) {
             $.ajax({
-                url: "/article/stick?articleId=" + articleId,
+                url: "/article/thank?articleId=" + articleId,
                 type: "POST",
                 cache: false,
                 success: function (result, textStatus) {
-                    alert(result.msg);
+                    if (result.sc) {
+                        $("#thankArticle").removeAttr("onclick").find("span").addClass("ft-red");
+                        
+                        return;
+                    }
 
-                    window.location.href = "/";
+                    alert(result.msg);
                 }
             });
         }
     },
+            /**
+             * @description 置顶
+             */
+            stick: function (articleId) {
+                var r = confirm(Label.stickConfirmLabel);
+
+                if (r) {
+                    $.ajax({
+                        url: "/article/stick?articleId=" + articleId,
+                        type: "POST",
+                        cache: false,
+                        success: function (result, textStatus) {
+                            alert(result.msg);
+
+                            window.location.href = "/";
+                        }
+                    });
+                }
+            },
     /**
      * @description 播放思绪
      * @param {string} articleContent 记录过程

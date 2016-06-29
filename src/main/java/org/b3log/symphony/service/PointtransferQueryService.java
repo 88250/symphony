@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.2.1, Jun 8, 2016
+ * @version 1.15.2.1, Jun 29, 2016
  * @since 1.3.0
  */
 @Service
@@ -260,7 +260,8 @@ public class PointtransferQueryService {
                 if (("3".equals(typeStr) && userId.equals(toId))
                         || ("5".equals(typeStr) && userId.equals(fromId))
                         || ("9".equals(typeStr) && userId.equals(toId))
-                        || ("14".equals(typeStr) && userId.equals(toId))) {
+                        || ("14".equals(typeStr) && userId.equals(toId))
+                        || ("22".equals(typeStr) && userId.equals(toId))) {
                     typeStr += "In";
                 }
 
@@ -357,14 +358,14 @@ public class PointtransferQueryService {
                         if ("5In".equals(typeStr)) {
                             senderId = toId;
                         }
-                        final String rewardAArticleId = reward.optString(Reward.DATA_ID);
+                        final String rewardArticleId = reward.optString(Reward.DATA_ID);
 
                         final JSONObject sender = userRepository.get(senderId);
                         final String senderLink = "<a href=\"/member/" + sender.optString(User.USER_NAME) + "\">"
                                 + sender.optString(User.USER_NAME) + "</a>";
                         desTemplate = desTemplate.replace("{user}", senderLink);
 
-                        final JSONObject articleReward = articleRepository.get(rewardAArticleId);
+                        final JSONObject articleReward = articleRepository.get(rewardArticleId);
                         if (null == articleReward) {
                             desTemplate = langPropsService.get("removedLabel");
 
@@ -399,11 +400,37 @@ public class PointtransferQueryService {
                                 + user14.optString(User.USER_NAME) + "</a>";
                         desTemplate = desTemplate.replace("{user}", userLink14);
 
-                        final JSONObject article = articleRepository.get(articleId14);
+                        final JSONObject article14 = articleRepository.get(articleId14);
                         final String articleLink = "<a href=\""
-                                + article.optString(Article.ARTICLE_PERMALINK) + "\">"
-                                + article.optString(Article.ARTICLE_TITLE) + "</a>";
+                                + article14.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + article14.optString(Article.ARTICLE_TITLE) + "</a>";
                         desTemplate = desTemplate.replace("{article}", articleLink);
+
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_ARTICLE_THANK:
+                        final JSONObject thank22 = rewardRepository.get(dataId);
+                        JSONObject user22;
+                        if ("22In".equals(typeStr)) {
+                            user22 = userRepository.get(fromId);
+                        } else {
+                            user22 = userRepository.get(toId);
+                        }
+                        final String articleId22 = thank22.optString(Reward.DATA_ID);
+                        final JSONObject article22 = articleRepository.get(articleId22);
+                        if (null == article22) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
+                        final String userLink22 = "<a href=\"/member/" + user22.optString(User.USER_NAME) + "\">"
+                                + user22.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", userLink22);
+
+                        final String articleLink22 = "<a href=\""
+                                + article22.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + article22.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", articleLink22);
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER:
