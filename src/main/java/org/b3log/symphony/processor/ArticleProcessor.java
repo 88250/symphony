@@ -564,6 +564,14 @@ public class ArticleProcessor {
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
 
+        // Fill article thank
+        article.put(Common.THANKED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_THANK_ARTICLE));
+
+        String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
+        stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
+        dataModel.put("stickConfirmLabel", stickConfirmLabel);
+        dataModel.put("pointThankArticle", Symphonys.get("pointThankArticle"));
+
         dataModel.put(Common.DISCUSSION_VIEWABLE, article.optBoolean(Common.DISCUSSION_VIEWABLE));
         if (!article.optBoolean(Common.DISCUSSION_VIEWABLE)) {
             article.put(Article.ARTICLE_T_COMMENTS, (Object) Collections.emptyList());
@@ -600,9 +608,6 @@ public class ArticleProcessor {
             comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
         }
 
-        // Fill article thank
-        article.put(Common.THANKED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_THANK_ARTICLE));
-
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
 
@@ -616,12 +621,6 @@ public class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Common.ARTICLE_COMMENTS_PAGE_SIZE, pageSize);
-
-        String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
-        stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
-        dataModel.put("stickConfirmLabel", stickConfirmLabel);
-
-        dataModel.put("pointThankArticle", Symphonys.get("pointThankArticle"));
 
         // Referral statistic
         final String referralUserName = request.getParameter("r");
