@@ -21,6 +21,9 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>Emoji</word>
         <word>geo</word>
         <word>ids</word>
+        <word>invitecode</word>
+        <word>invitecodes</word>
+        <word>Invitecodes</word>
         <word>io</word>
         <word>json</word>
         <word>Markdowns</word>

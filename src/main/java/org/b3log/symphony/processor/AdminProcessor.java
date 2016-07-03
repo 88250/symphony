@@ -49,6 +49,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Domain;
+import org.b3log.symphony.model.Invitecode;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
@@ -65,6 +66,8 @@ import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.DomainMgmtService;
 import org.b3log.symphony.service.DomainQueryService;
+import org.b3log.symphony.service.InvitecodeMgmtService;
+import org.b3log.symphony.service.InvitecodeQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.OptionMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
@@ -110,6 +113,10 @@ import org.json.JSONObject;
  * <li>Shows tags (/admin/tags), GET</li>
  * <li>Show a tag (/admin/tag/{tagId}), GET</li>
  * <li>Updates a tag (/admin/tag/{tagId}), POST</li>
+ * <li>Generates invitecodes (/admin/invitecodes/generate), POST</li>
+ * <li>Shows invitecodes (/admin/invitecodes), GET</li>
+ * <li>Show an invitecode (/admin/invitecode/{invitecodeId}), GET</li>
+ * <li>Updates an invitecode (/admin/invitecode/{invitecodeId}), POST</li>
  * <li>Shows miscellaneous (/admin/misc), GET</li>
  * <li>Updates miscellaneous (/admin/misc), POST</li>
  * <li>Search index (/admin/search/index), POST</li>
@@ -117,7 +124,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.3.5, Jun 15, 2016
+ * @version 2.16.3.5, Jul 3, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -225,6 +232,18 @@ public class AdminProcessor {
     private SearchMgmtService searchMgmtService;
 
     /**
+     * Invitecode query service.
+     */
+    @Inject
+    private InvitecodeQueryService invitecodeQueryService;
+
+    /**
+     * Invitecode management service.
+     */
+    @Inject
+    private InvitecodeMgmtService invitecodeMgmtService;
+
+    /**
      * Filler.
      */
     @Inject
@@ -239,6 +258,138 @@ public class AdminProcessor {
      * Pagination page size.
      */
     private static final int PAGE_SIZE = 20;
+
+    /**
+     * Generates invitecodes.
+     *
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/invitecodes/generate", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void generateInvitecodes(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final String quantityStr = request.getParameter("quantity");
+        int quantity = 20;
+        try {
+            quantity = Integer.valueOf(quantityStr);
+        } catch (final NumberFormatException e) {
+        }
+
+        invitecodeMgmtService.generateInvitecodes(quantity);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/invitecodes");
+    }
+
+    /**
+     * Shows admin invitecodes.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/invitecodes", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showInvitecodes(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/invitecodes.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+        final int pageSize = PAGE_SIZE;
+        final int windowSize = WINDOW_SIZE;
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+        requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
+        final JSONObject result = invitecodeQueryService.getInvitecodes(requestJSONObject);
+        dataModel.put(Invitecode.INVITECODES, CollectionUtils.jsonArrayToList(result.optJSONArray(Invitecode.INVITECODES)));
+
+        final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final JSONArray pageNums = pagination.optJSONArray(Pagination.PAGINATION_PAGE_NUMS);
+        dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.opt(0));
+        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.opt(pageNums.length() - 1));
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows an invitecode.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param invitecodeId the specified invitecode id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/invitecode/{invitecodeId}", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String invitecodeId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/invitecode.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject invitecode = invitecodeQueryService.getInvitecodeById(invitecodeId);
+        dataModel.put(Invitecode.INVITECODE, invitecode);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Updates an invitecode.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param invitecodeId the specified invitecode id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/invitecode/{invitecodeId}", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void updateInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String invitecodeId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/invitecode.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        JSONObject invitecode = invitecodeQueryService.getInvitecodeById(invitecodeId);
+
+        final Enumeration<String> parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            final String name = parameterNames.nextElement();
+            final String value = request.getParameter(name);
+
+            invitecode.put(name, value);
+        }
+
+        invitecodeMgmtService.updateInvitecode(invitecodeId, invitecode);
+
+        invitecode = invitecodeQueryService.getInvitecodeById(invitecodeId);
+        dataModel.put(Invitecode.INVITECODE, invitecode);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
 
     /**
      * Shows add article.

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.8, Dec 8, 2015
+ * @version 2.4.1.8, Jul 3, 2016
  */
 
 /**
@@ -50,6 +50,7 @@ var Register = {
             var requestJSONObject = {
                 userName: $("#userName").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userEmail: $("#userEmail").val().replace(/(^\s*)|(\s*$)/g, ""),
+                invitecode: $("#invitecode").val().replace(/(^\s*)|(\s*$)/g, ""),
                 captcha: $("#securityCode").val(),
                 referral: $("#referral").val()
             };

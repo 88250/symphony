@@ -205,6 +205,23 @@ public class OptionQueryService {
     }
 
     /**
+     * Gets allow register option value.
+     *
+     * @return allow register option value, return {@code null} if not found
+     */
+    public String getAllowRegister() {
+        try {
+            final JSONObject result = optionRepository.get(Option.ID_C_MISC_ALLOW_REGISTER);
+
+            return result.optString(Option.OPTION_VALUE);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets option [allow register] value failed", e);
+
+            return null;
+        }
+    }
+
+    /**
      * Gets the miscellaneous.
      *
      * @return misc
@@ -235,9 +252,8 @@ public class OptionQueryService {
      *
      * @param optionId the specified id
      * @return option, return {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getOption(final String optionId) throws ServiceException {
+    public JSONObject getOption(final String optionId) {
         try {
             final JSONObject ret = optionRepository.get(optionId);
 
@@ -248,7 +264,8 @@ public class OptionQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets an option [optionId=" + optionId + "] failed", e);
-            throw new ServiceException(e);
+            
+            return null;
         }
     }
 }

@@ -1,11 +1,44 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.19.5.9, Jun 13, 2016",
+    "version": "3.20.5.9, Jul 3, 2016",
     "authors": [
         "Liang Ding"
     ],
     "since": "0.2.0",
     "repositories": [
+        {
+            "name": "invitecode",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "code",
+                    "type": "String",
+                    "length": 16
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "useTime",
+                    "type": "long"
+                },
+                {
+                    "name": "status",
+                    "type": "int"
+                },
+                {
+                    "name": "memo",
+                    "type": "String",
+                    "length": 512
+                }
+            ]
+        },
         {
             "name": "character",
             "keys": [

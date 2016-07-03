@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.6.9, Apr 6, 2016
+ * @version 2.2.6.10, Jul 3 2016
  */
 
 /* start home side */
@@ -268,7 +268,8 @@
     vertical-align: bottom;
 }
 
-.admin .form input[type=text] {
+.admin .form input[type=text],
+.admin .form input[type=number] {
     width: 50%;
     margin-right: 10px;
 }

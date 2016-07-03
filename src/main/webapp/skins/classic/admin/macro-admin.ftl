@@ -36,6 +36,9 @@
         <#if type == "addArticle">
         <@head title="${addArticleLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "invitecodes">
+        <@head title="${invitecodeAdminLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <#if type == "misc">
         <@head title="${miscAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
@@ -54,6 +57,7 @@
                         <li<#if type == "domains" || type == "addDomain"> class="current"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
                         <li<#if type == "tags"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
                         <li<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>><a href="/admin/reserved-words">${reservedWordAdminLabel}</a></li>
+                        <li<#if type == "invitecodes"> class="current"</#if>><a href="/admin/invitecodes">${invitecodeAdminLabel}</a></li>
                         <li<#if type == "misc"> class="current"</#if>><a href="/admin/misc">${miscAdminLabel}</a></li>
                     </ul>
                     <br/>
@@ -68,6 +72,7 @@
                         <li<#if type == "domains" || type == "addDomain"> class="current"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
                         <li<#if type == "tags"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
                         <li<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>><a href="/admin/reserved-words">${reservedWordAdminLabel}</a></li>
+                        <li<#if type == "invitecodes"> class="current"</#if>><a href="/admin/invitecodes">${invitecodeAdminLabel}</a></li>
                         <li<#if type == "misc"> class="current"</#if>><a href="/admin/misc">${miscAdminLabel}</a></li>
                     </ul>
                 </div>
