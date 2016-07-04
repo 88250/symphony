@@ -341,9 +341,12 @@
             Label.userCommentViewMode = ${userCommentViewMode};
             Label.stickConfirmLabel = "${stickConfirmLabel}";
             Label.audioRecordingLabel = '${audioRecordingLabel}';
+            Label.uploadingLabel = '${uploadingLabel}';
             Label.copiedLabel = '${copiedLabel}';
             Label.copyLabel = '${copyLabel}';
             Label.noRevisionLabel = "${noRevisionLabel}";
+            qiniuToken = "${qiniuUploadToken}";
+            qiniuDomain = "${qiniuDomain}";
             <#if isLoggedIn>
                     Label.currentUserName = '${currentUser.userName}';
             </#if>

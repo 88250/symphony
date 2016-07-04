@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.23.9, Jun 29, 2016
+ * @version 1.19.24.9, Jul 4, 2016
  */
 
 /**
@@ -107,7 +107,7 @@ var Comment = {
                     "Alt-/": "autocompleteUserName",
                     "Ctrl-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
-                    "Alt-E": "endAudioRecord"
+                    "Alt-R": "endAudioRecord"
                 },
                 status: false
             });

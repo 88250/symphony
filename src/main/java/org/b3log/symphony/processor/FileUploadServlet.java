@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * File upload.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, May 15, 2016
+ * @version 1.1.1.1, Jul 4, 2016
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -144,6 +144,8 @@ public class FileUploadServlet extends HttpServlet {
 
             if (null != exts && 0 < exts.length) {
                 suffix = exts[0];
+            } else {
+                suffix = StringUtils.substringAfter(mimeType, "/");
             }
         }
 

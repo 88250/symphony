@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.14.20, Jun 13, 2016
+ * @version 1.25.15.20, Jul 4, 2016
  */
 
 /**
@@ -231,7 +231,7 @@ var Util = {
             Audio.handleStopRecording();
 
             var cursor = cm.getCursor();
-            cm.replaceRange(uploadingLabel, CodeMirror.Pos(cursor.line, cursor.ch - Label.audioRecordingLabel.length), cursor);
+            cm.replaceRange(Label.uploadingLabel, CodeMirror.Pos(cursor.line, cursor.ch - Label.audioRecordingLabel.length), cursor);
 
             var blob = Audio.wavFileBlob.getDataBlob();
             var key = Math.floor(Math.random() * 100) + "" + new Date().getTime() + ""
@@ -239,29 +239,54 @@ var Util = {
 
             var reader = new FileReader();
             reader.onload = function (event) {
-                var fd = new FormData();
-                fd.append('token', qiniuToken);
-                fd.append('file', blob);
-                fd.append('key', key);
+                if ("" !== qiniuToken) {
+                    var fd = new FormData();
+                    fd.append('token', qiniuToken);
+                    fd.append('file', blob);
+                    fd.append('key', key);
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'https://up.qbox.me/',
-                    data: fd,
-                    processData: false,
-                    contentType: false,
-                    paramName: "file",
-                    success: function (data) {
-                        var cursor = cm.getCursor();
-                        cm.replaceRange('<audio controls="controls" src="' + qiniuDomain + '/' + key + '"></audio>\n\n',
-                                CodeMirror.Pos(cursor.line, cursor.ch - uploadingLabel.length), cursor);
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert("Error: " + errorThrown);
-                        var cursor = cm.getCursor();
-                        cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - uploadingLabel.length), cursor);
-                    }
-                });
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://up.qbox.me/',
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        paramName: "file",
+                        success: function (data) {
+                            var cursor = cm.getCursor();
+                            cm.replaceRange('<audio controls="controls" src="' + qiniuDomain + '/' + key + '"></audio>\n\n',
+                                    CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("Error: " + errorThrown);
+                            var cursor = cm.getCursor();
+                            cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
+                        }
+                    });
+                } else { // 说明没有使用七牛，而是使用本地
+                    var fd = new FormData();
+                    fd.append('file', blob);
+                    fd.append('key', key);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/upload',
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        paramName: "file",
+                        success: function (data) {
+                            var cursor = cm.getCursor();
+                            cm.replaceRange('<audio controls="controls" src="' + data.key + '"></audio>\n\n',
+                                    CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("Error: " + errorThrown);
+                            var cursor = cm.getCursor();
+                            cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
+                        }
+                    });
+                }
             };
 
             // trigger the read from the reader...
@@ -467,8 +492,8 @@ var Util = {
                         $(it).html('<span class="icon-star ft-red"></span>').
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.uncollectLabel + ' ' +
-                                (index + 1));
-                    } else if (index && typeof(index) === 'string') {
+                                        (index + 1));
+                    } else if (index && typeof (index) === 'string') {
                         $(it).html('<span class="icon-star ft-red"></span>').
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', 'tag-articles')")
                                 .attr("aria-label", Label.unfollowLabel);
@@ -511,7 +536,7 @@ var Util = {
                         $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel + ' ' + (index - 1));
-                    } else if (index && typeof(index) === 'string') {
+                    } else if (index && typeof (index) === 'string') {
                         $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "', 'tag-articles')")
                                 .attr("aria-label", Label.followLabel);
@@ -1417,7 +1442,7 @@ var Audio = {
                     if (!Audio.recorderObj.isRecording()) {
                         return;
                     }
-                    
+
                     // Copy the data from the input buffers;
                     var left = e.inputBuffer.getChannelData(0);
                     var right = e.inputBuffer.getChannelData(1);
