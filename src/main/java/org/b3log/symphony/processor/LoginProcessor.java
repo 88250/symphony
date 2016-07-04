@@ -79,7 +79,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.9, Jul 3, 2016
+ * @version 1.8.3.10, Jul 4, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -393,14 +393,11 @@ public class LoginProcessor {
             verifycodeMgmtService.addVerifycode(verifycode);
 
             final JSONObject ic = invitecodeQueryService.getInvitecode(invitecode);
-            if (null != ic && Invitecode.STATUS_C_UNUSED == ic.optInt(Invitecode.STATUS)) {
-                ic.put(Invitecode.STATUS, Invitecode.STATUS_C_USED);
-                ic.put(Invitecode.USER_ID, newUserId);
-                ic.put(Invitecode.USE_TIME, System.currentTimeMillis());
-                final String icId = ic.optString(Keys.OBJECT_ID);
+            ic.put(Invitecode.USER_ID, newUserId);
+            ic.put(Invitecode.USE_TIME, System.currentTimeMillis());
+            final String icId = ic.optString(Keys.OBJECT_ID);
 
-                invitecodeMgmtService.updateInvitecode(icId, ic);
-            }
+            invitecodeMgmtService.updateInvitecode(icId, ic);
 
             context.renderTrueResult().renderMsg(langPropsService.get("verifycodeSentLabel"));
         } catch (final ServiceException e) {
@@ -469,6 +466,16 @@ public class LoginProcessor {
                             Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER,
                             Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, userId);
                 }
+            }
+
+            final JSONObject ic = invitecodeQueryService.getInvitecodeByUserId(userId);
+            if (null != ic && Invitecode.STATUS_C_UNUSED == ic.optInt(Invitecode.STATUS)) {
+                ic.put(Invitecode.STATUS, Invitecode.STATUS_C_USED);
+                ic.put(Invitecode.USER_ID, userId);
+                ic.put(Invitecode.USE_TIME, System.currentTimeMillis());
+                final String icId = ic.optString(Keys.OBJECT_ID);
+
+                invitecodeMgmtService.updateInvitecode(icId, ic);
             }
 
             context.renderTrueResult();

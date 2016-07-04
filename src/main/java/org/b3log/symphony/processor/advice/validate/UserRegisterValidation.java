@@ -43,7 +43,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.7, Jul 3, 2016
+ * @version 1.4.2.8, Jul 4, 2016
  * @since 0.2.0
  */
 @Named
@@ -113,7 +113,7 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
         } catch (final Exception e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
-        
+
         final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
         checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
 
@@ -133,7 +133,6 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
             final JSONObject ic = invitecodeQueryService.getInvitecode(invitecode);
             if (null == ic) {
                 checkField(true, "registerFailLabel", "invalidInvitecodeLabel");
-                
             }
 
             if (Invitecode.STATUS_C_UNUSED != ic.optInt(Invitecode.STATUS)) {
@@ -145,7 +144,6 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
         //final String password = requestJSONObject.optString(User.USER_PASSWORD);
-        
 
         if (UserExt.isReservedUserName(name)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel")

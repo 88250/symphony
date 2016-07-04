@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Invitecode query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 3, 2016
+ * @version 1.0.0.1, Jul 4, 2016
  * @since 1.4.0
  */
 @Service
@@ -145,7 +145,7 @@ public class InvitecodeQueryService {
     }
 
     /**
-     * Gets an invitecode by the specified user id.
+     * Gets an invitecode by the specified invitecode id.
      *
      * @param invitecodeId the specified invitecode id
      * @return for example,      <pre>
@@ -163,10 +163,41 @@ public class InvitecodeQueryService {
         try {
             return invitecodeRepository.get(invitecodeId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets an invitecodeId failed", e);
+            LOGGER.log(Level.ERROR, "Gets an invitecode failed", e);
 
             throw new ServiceException(e);
         }
     }
 
+    /**
+     * Gets an invitecode by the specified user id.
+     *
+     * @param userId the specified user id
+     * @return for example,      <pre>
+     * {
+     *     "oId": "",
+     *     "code": "",
+     *     "memo": "",
+     *     ....
+     * }
+     * </pre>, returns {@code null} if not found
+     *
+     * @throws ServiceException service exception
+     */
+    public JSONObject getInvitecodeByUserId(final String userId) throws ServiceException {
+        final Query query = new Query().setFilter(new PropertyFilter(Invitecode.USER_ID, FilterOperator.EQUAL, userId));
+
+        try {
+            final JSONArray data = invitecodeRepository.get(query).optJSONArray(Keys.RESULTS);
+            if (1 > data.length()) {
+                return null;
+            }
+
+            return data.optJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets an invitecode failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
 }
