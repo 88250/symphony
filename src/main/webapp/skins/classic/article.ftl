@@ -92,7 +92,9 @@
                                 ${articleTag}
                             </a>&nbsp;
                             </#list>
+                            <#if 0 == article.articleAuthor.userUAStatus>
                             <span id="articltVia" class="ft-fade" data-ua="${article.articleUA}"></span>
+                            </#if>
                         </div>
                     </div>
 
@@ -189,7 +191,7 @@
                                                     <#if !comment.fromClient>
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
                                                        title="${comment.commentAuthorName}">${comment.commentAuthorName}</a><#else>${comment.commentAuthorName} via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
-                                                        <span class="cmt-via" data-ua="${comment.commentUA}"></span>
+                                                        <#if 0 == comment.commenter.userUAStatus><span class="cmt-via" data-ua="${comment.commentUA}"></span></#if>
                                                     </span>
                                                     <#if comment.rewardedCnt gt 0>
                                                     <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>

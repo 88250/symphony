@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.15.20, Jul 4, 2016
+ * @version 1.26.15.20, Jul 5, 2016
  */
 
 /**
@@ -435,7 +435,7 @@ var Util = {
                     $("#aNotifications").removeClass("no-msg").addClass("msg").text(count);
 
                     if (window.localStorage) {
-                        if (count !== Number(window.localStorage.unreadNotificationCount)) {
+                        if (count !== Number(window.localStorage.unreadNotificationCount) && 0 === result.userNotifyStatus) {
                             // Webkit Desktop Notification
                             var msg = Label.desktopNotificationTemplateLabel;
                             msg = msg.replace("${count}", count);
@@ -780,7 +780,6 @@ var Util = {
                 Util.setUnreadNotificationCount();
             }, 60000);
         }
-
 
         console && console.log("%cCopyright \xa9 2012-%s, b3log.org & hacpai.com\n\n%cHacPai%c 平等、自由、奔放",
                 'font-size:12px;color:#999999;', (new Date).getFullYear(),

@@ -35,6 +35,7 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.2, Feb 16, 2016
+ * @version 1.4.1.3, Jul 5, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -514,6 +515,7 @@ public class NotificationProcessor {
         }
 
         context.renderJSON(true).renderJSONValue(Notification.NOTIFICATION_T_UNREAD_COUNT,
-                notificationQueryService.getUnreadNotificationCount(currentUser.optString(Keys.OBJECT_ID)));
+                notificationQueryService.getUnreadNotificationCount(currentUser.optString(Keys.OBJECT_ID))).
+                renderJSONValue(UserExt.USER_NOTIFY_STATUS, currentUser.optInt(UserExt.USER_NOTIFY_STATUS));
     }
 }
