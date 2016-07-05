@@ -74,7 +74,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.19.16, Jun 29, 2016
+ * @version 2.11.19.17, Jul 5, 2016
  * @since 0.2.0
  */
 @Service
@@ -460,12 +460,8 @@ public class ArticleMgmtService {
             final int articleType = requestJSONObject.optInt(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
             article.put(Article.ARTICLE_TYPE, articleType);
             article.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
-            String city = "";
+            String city = author.optString(UserExt.USER_CITY);
             article.put(Article.ARTICLE_CITY, city);
-            if (UserExt.USER_GEO_STATUS_C_PUBLIC == author.optInt(UserExt.USER_GEO_STATUS)) {
-                city = author.optString(UserExt.USER_CITY);
-                article.put(Article.ARTICLE_CITY, city);
-            }
 
             String articleTags = article.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);

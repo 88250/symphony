@@ -11,7 +11,7 @@
     <div class="module-panel form fn-clear">
         <label>${nicknameLabel}</label><br/>
         <input id="userNickname" type="text" value="${currentUser.userNickname}" placeholder="${selfNicknameLabel}"/>
-        
+
         <label>${selfTagLabel}</label><br/>
         <input id="userTags" type="text" value="${currentUser.userTags}" placeholder="${selfDescriptionLabel}"/>
 
@@ -110,14 +110,14 @@
     <div class="module-panel form fn-clear">
         ${geoInfoTipLabel}<br><br>
         <input id="cityName" type="text" placeholder="${geoInfoPlaceholderLabel}" value="${user.userCity}" 
-               readonly="readonly"/><!--<br/><br/>
+               readonly="readonly"/>
+
+        <br/><br/>
 
         <select id="geoStatus" onchange="Settings.changeGeoStatus('${csrfToken}')">
             <option name="public" value="0" <#if 0 == user.userGeoStatus>selected</#if>>${publicLabel}</option>
             <option name="private" value="1" <#if 1 == user.userGeoStatus>selected</#if>>${privateLabel}</option>
         </select>
-        ${geoInfoLabel}
-        -->
     </div>
 </div>
 
@@ -172,28 +172,26 @@
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
 <script>
             Util.initUpload({
-                id: 'avatarUpload',
-                qiniuUploadToken: '${qiniuUploadToken}',
-                userId: '${currentUser.oId}',
-                maxSize: ${imgMaxSize?c}
+            id: 'avatarUpload',
+                    qiniuUploadToken: '${qiniuUploadToken}',
+                    userId: '${currentUser.oId}',
+                    maxSize: ${imgMaxSize?c}
             }, function (data) {
-                var qiniuKey = data.result.key;
-                $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
-                $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
-                $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+            var qiniuKey = data.result.key;
+            $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+            $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+            $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
             }, function (data) {
-                var qiniuKey = data.result.key,
-                        t = new Date().getTime();
-                $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
-                $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
-                $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+            var qiniuKey = data.result.key,
+                    t = new Date().getTime();
+            $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+            $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+            $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
             });
-
             var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
-
             shareClipboard.on("ready", function (readyEvent) {
-                shareClipboard.on("aftercopy", function (event) {
-                    $("#shareClipboard").text('${copiedLabel}');
-                });
+            shareClipboard.on("aftercopy", function (event) {
+            $("#shareClipboard").text('${copiedLabel}');
+            });
             });
 </script>
