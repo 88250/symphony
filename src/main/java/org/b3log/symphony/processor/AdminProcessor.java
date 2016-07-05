@@ -72,6 +72,7 @@ import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.OptionMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.PointtransferMgmtService;
+import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.service.SearchMgmtService;
 import org.b3log.symphony.service.TagMgmtService;
 import org.b3log.symphony.service.TagQueryService;
@@ -124,7 +125,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.16.3.5, Jul 3, 2016
+ * @version 2.17.3.5, Jul 5, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -218,6 +219,12 @@ public class AdminProcessor {
      */
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
+     * Pointtransfer query service.
+     */
+    @Inject
+    private PointtransferQueryService pointtransferQueryService;
 
     /**
      * Notification management service.
@@ -1118,6 +1125,51 @@ public class AdminProcessor {
             notification.put(Notification.NOTIFICATION_DATA_ID, transferId);
 
             notificationMgmtService.addAbusePointDeductNotification(notification);
+        } catch (final Exception e) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, e.getMessage());
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+    }
+
+    /**
+     * Compensates a user's initial point.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userId the specified user id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/user/{userId}/init-point", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void initPoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String userId) throws Exception {
+        try {
+            final JSONObject user = userQueryService.getUser(userId);
+            if (null == user
+                    || UserExt.USER_STATUS_C_VALID != user.optInt(UserExt.USER_STATUS)
+                    || UserExt.NULL_USER_NAME.equals(user.optString(User.USER_NAME))) {
+                response.sendRedirect(Latkes.getServePath() + "/admin/user/" + userId);
+
+                return;
+            }
+
+            final List<JSONObject> records
+                    = pointtransferQueryService.getLatestPointtransfers(userId, Pointtransfer.TRANSFER_TYPE_C_INIT, 1);
+            if (records.isEmpty()) {
+                pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId, Pointtransfer.TRANSFER_TYPE_C_INIT,
+                        Pointtransfer.TRANSFER_SUM_C_INIT, userId, Long.valueOf(userId));
+            }
         } catch (final Exception e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
