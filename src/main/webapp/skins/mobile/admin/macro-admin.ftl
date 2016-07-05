@@ -36,6 +36,9 @@
         <#if type == "addArticle">
         <@head title="${addArticleLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "invitecodes">
+        <@head title="${invitecodeAdminLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <#if type == "misc">
         <@head title="${miscAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
@@ -59,6 +62,8 @@
                     ${tagAdminLabel}
                     <#elseif type == "reservedWords" || type == "addReservedWord">
                     ${reservedWordAdminLabel}
+                    <#elseif type == "invitecodes">
+                    ${invitecodeAdminLabel}
                     <#elseif type == "misc">
                     ${miscAdminLabel}
                     </#if>
@@ -73,11 +78,12 @@
                     <li<#if type == "domains" || type == "addDomain"> class="fn-none"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
                     <li<#if type == "tags"> class="fn-none"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
                     <li<#if type == "reservedWords" || type == "addReservedWord"> class="fn-none"</#if>><a href="/admin/reserved-words">${reservedWordAdminLabel}</a></li>
+                    <li<#if type == "invitecodes"> class="current"</#if>><a href="/admin/invitecodes">${invitecodeAdminLabel}</a></li>
                     <li<#if type == "misc"> class="fn-none"</#if>><a href="/admin/misc">${miscAdminLabel}</a></li>
-                </ul> 
-            </div>
-            <#nested>
-        </div>
+                    </ul>
+                </div>
+                <#nested>
+                </div>
         <#include "../footer.ftl">
     </body>
 </html>
