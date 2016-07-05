@@ -418,11 +418,13 @@ public class CommentMgmtService {
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
 
+            LOGGER.warn("Fire event [ADD_COMMENT_TO_ARTICLE], commentId [" + ret + "]");
             try {
                 eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
             }
+            LOGGER.warn("Fired event [ADD_COMMENT_TO_ARTICLE], commentId [" + ret + "]");
 
             return ret;
         } catch (final RepositoryException e) {
