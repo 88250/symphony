@@ -152,6 +152,28 @@
 
 <div class="module">
     <div class="module-header">
+        <h2>${miscLabel}</h2>
+    </div>
+    <div class="module-panel form fn-clear">
+        <label>
+            ${displayUALabel}
+            <input id="userUAStatus" <#if 0 == currentUser.userUAStatus> checked="checked"</#if> type="checkbox" /> 
+        </label>
+
+        <label>&nbsp; &nbsp;
+            ${useNotifyLabel}
+            <input id="userNotifyStatus" <#if 0 == currentUser.userNotifyStatus> checked="checked"</#if> type="checkbox" /> 
+        </label>
+
+        <br/><br/>
+        <div class="fn-clear"></div>
+        <div id="miscTip" class="tip"></div><br/>
+        <button class="green fn-right" onclick="Settings.update('misc', '${csrfToken}')">${saveLabel}</button>
+    </div>
+</div>
+
+<div class="module">
+    <div class="module-header">
         <h2>${passwordLabel}</h2>
     </div>
     <div class="module-panel form fn-clear">

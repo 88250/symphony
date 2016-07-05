@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.20.5.9, Jul 3, 2016",
+    "version": "3.21.5.9, Jul 5, 2016",
     "authors": [
         "Liang Ding"
     ],
@@ -916,6 +916,16 @@
                     "name": "userCommentViewMode",
                     "type": "int",
                     "description": "0: traditional, 1: real time"
+                },
+                {
+                    "name": "userUAStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userNotifyStatus",
+                    "type": "int",
+                    "description": "0: Enabled, 1: Disabled"
                 }
             ]
         },

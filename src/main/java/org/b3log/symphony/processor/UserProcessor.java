@@ -91,6 +91,7 @@ import org.json.JSONObject;
  * <li>Profiles (/settings/profiles), POST</li>
  * <li>Geo status (/settings/geo/status), POST</li>
  * <li>Sync (/settings/sync/b3), POST</li>
+ * <li>Misc (/settings/misc), POST</li>
  * <li>Password (/settings/password), POST</li>
  * <li>SyncUser (/apis/user), POST</li>
  * <li>Lists usernames (/users/names), GET</li>
@@ -98,7 +99,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.8.16, Jun 13, 2016
+ * @version 1.16.8.16, Jul 5, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -754,13 +755,54 @@ public class UserProcessor {
         }
 
         int geoStatus = requestJSONObject.optInt(UserExt.USER_GEO_STATUS);
-        if (UserExt.USER_GEO_STATUS_C_PRIVATE != geoStatus && UserExt.USER_GEO_STATUS_C_PRIVATE != geoStatus) {
+        if (UserExt.USER_GEO_STATUS_C_PRIVATE != geoStatus && UserExt.USER_GEO_STATUS_C_PUBLIC != geoStatus) {
             geoStatus = UserExt.USER_GEO_STATUS_C_PUBLIC;
         }
 
         final JSONObject user = userQueryService.getCurrentUser(request);
 
         user.put(UserExt.USER_GEO_STATUS, geoStatus);
+
+        try {
+            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
+
+            context.renderTrueResult();
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
+
+    /**
+     * Updates user misc.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/settings/misc", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    public void updateMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        context.renderJSON();
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            request.setAttribute(Keys.REQUEST, requestJSONObject);
+        } catch (final Exception e) {
+            LOGGER.warn(e.getMessage());
+
+            requestJSONObject = new JSONObject();
+        }
+
+        final boolean uaStatus = requestJSONObject.optBoolean(UserExt.USER_UA_STATUS);
+        final boolean notifyStatus = requestJSONObject.optBoolean(UserExt.USER_NOTIFY_STATUS);
+
+        final JSONObject user = userQueryService.getCurrentUser(request);
+
+        user.put(UserExt.USER_UA_STATUS, uaStatus ? UserExt.USER_UA_STATUS_C_PUBLIC : UserExt.USER_UA_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_NOTIFY_STATUS, notifyStatus ? UserExt.USER_NOTIFY_STATUS_C_ENABLED : UserExt.USER_NOTIFY_STATUS_C_DISABLED);
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);

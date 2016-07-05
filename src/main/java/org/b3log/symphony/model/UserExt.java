@@ -22,11 +22,21 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.19.1.10, Jun 23, 2016
+ * @version 2.20.1.10, Jul 5, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+
+    /**
+     * Key of user User-Agent status.
+     */
+    public static final String USER_UA_STATUS = "userUAStatus";
+
+    /**
+     * Key of user notify status.
+     */
+    public static final String USER_NOTIFY_STATUS = "userNotifyStatus";
 
     /**
      * Key of user nickname.
@@ -312,6 +322,28 @@ public final class UserExt {
      * User join used point rank - not join.
      */
     public static final int USER_JOIN_USED_POINT_RANK_C_NOT_JOIN = 1;
+
+    //// User-Agent Status constants
+    /**
+     * User UA status - public.
+     */
+    public static final int USER_UA_STATUS_C_PUBLIC = 0;
+
+    /**
+     * User UA status - private.
+     */
+    public static final int USER_UA_STATUS_C_PRIVATE = 1;
+
+    //// User Notify Status constants
+    /**
+     * User notify status - enabled.
+     */
+    public static final int USER_NOTIFY_STATUS_C_ENABLED = 0;
+
+    /**
+     * User notify status - disabled.
+     */
+    public static final int USER_NOTIFY_STATUS_C_DISABLED = 1;
 
     //// Comment View Mode constants
     /**

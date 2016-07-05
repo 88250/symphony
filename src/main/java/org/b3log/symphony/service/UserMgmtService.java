@@ -78,7 +78,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.13.8, Jun 23, 2016
+ * @version 1.13.13.9, Jul 5, 2016
  * @since 0.2.0
  */
 @Service
@@ -506,6 +506,8 @@ public class UserMgmtService {
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
             user.put(UserExt.USER_COMMENT_VIEW_MODE, UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME);
+            user.put(UserExt.USER_UA_STATUS, UserExt.USER_UA_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_NOTIFY_STATUS, UserExt.USER_NOTIFY_STATUS_C_ENABLED);
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, userNo);

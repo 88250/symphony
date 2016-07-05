@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.7, Jun 13, 2016
+ * @version 1.10.3.7, Jul 5, 2016
  */
 
 /**
@@ -113,6 +113,9 @@ var Settings = {
                 break;
             case "password":
                 requestJSONObject = this._validatePassword();
+                break;
+            case "misc":
+                requestJSONObject = this._validateMisc();
                 break;
             default:
                 console.log("update settings has no type");
@@ -238,6 +241,16 @@ var Settings = {
         } else {
             return false;
         }
+    },
+    /**
+     * @description settings 页面其他（杂项）数据校验
+     * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
+     */
+    _validateMisc: function () {
+        return {
+            userUAStatus: $("#userUAStatus").prop("checked"),
+            userNotifyStatus: $("#userNotifyStatus").prop("checked")
+        };
     },
     /**
      * @description settings 页面密码校验
