@@ -12,6 +12,7 @@
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/aplayer/APlayer.min.css">
     </head>
     <body>
         <#include "header.ftl">
