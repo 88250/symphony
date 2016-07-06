@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.4, Jun 23, 2016
+ * @version 1.2.3.5, Jul 6, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -231,12 +231,12 @@ public class ChatRoomProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void receiveXiaoV(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final String key = Symphonys.get("xiaov.key");
-        if (!key.equals(request.getParameter("key"))) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
+//        final String key = Symphonys.get("xiaov.key");
+//        if (!key.equals(request.getParameter("key"))) {
+//            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+//
+//            return;
+//        }
 
         final String msg = request.getParameter("msg");
         if (StringUtils.isBlank(msg)) {
