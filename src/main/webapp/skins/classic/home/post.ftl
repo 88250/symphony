@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${addArticleLabel} - ${symphonyLabel}">
+        <#if !article??><#assign postTitle = addArticleLabel><#else><#assign postTitle = updateArticleLabel></#if>
+        <@head title="${postTitle} - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />

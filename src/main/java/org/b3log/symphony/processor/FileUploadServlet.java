@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * File upload.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Jul 4, 2016
+ * @version 1.1.2.1, Jul 6, 2016
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -151,6 +151,8 @@ public class FileUploadServlet extends HttpServlet {
 
         final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         fileName = name + "-" + uuid + "." + suffix;
+        
+        fileName = StringUtils.replace(fileName, " ", "_");
 
         final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName);
         IOUtils.copy(multipartRequestInputStream, output);

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.26.15.20, Jul 5, 2016
+ * @version 1.26.16.20, Jul 6, 2016
  */
 
 /**
@@ -1031,6 +1031,7 @@ var Util = {
                 var data = form.serializeArray();
 
                 if (filename) {
+                    filename = filename.replace(/ /g, "_");
                     data.push({name: 'key', value: "file/" + getUUID() + "/" + filename});
                 } else {
                     data.push({name: 'key', value: getUUID() + "." + ext});
