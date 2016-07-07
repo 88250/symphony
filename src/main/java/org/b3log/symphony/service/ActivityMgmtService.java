@@ -57,7 +57,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.7.2, Jun 8, 2016
+ * @version 1.4.8.2, Jul 7, 2016
  * @since 1.3.0
  */
 @Service
@@ -496,29 +496,30 @@ public class ActivityMgmtService {
      * Collects yesterday's liveness reward.
      *
      * @param userId the specified user id
-     * @return {@code Random int} if checkin succeeded, returns {@code Integer.MIN_VALUE} otherwise
      */
-    public synchronized int yesterdayLivenessReward(final String userId) {
+    public synchronized void yesterdayLivenessReward(final String userId) {
         if (activityQueryService.isCollectedYesterdayLivenessReward(userId)) {
-            return Integer.MIN_VALUE;
+            return;
         }
 
         final JSONObject yesterdayLiveness = livenessQueryService.getYesterdayLiveness(userId);
         if (null == yesterdayLiveness) {
-            return Integer.MIN_VALUE;
+            return;
         }
 
         final int sum = Liveness.calcPoint(yesterdayLiveness);
 
+        if (0 == sum) {
+            return;
+        }
+
         boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD, sum, userId);
         if (!succ) {
-            return Integer.MIN_VALUE;
+            return;
         }
 
-        // Liveness
+        // Today liveness (activity)
         livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
-
-        return 0;
     }
 }
