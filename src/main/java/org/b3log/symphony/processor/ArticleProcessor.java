@@ -112,6 +112,8 @@ import org.json.JSONObject;
  * <li>Rewards an article (/article/reward), POST</li>
  * <li>Gets an article preview content (/article/{articleId}/preview), GET</li>
  * <li>Sticks an article (/article/stick), POST</li>
+ * <li>Gets article revisions (/article/{articleId}/revisions), GET</li>
+ * <li>Gets article image (/article/{articleId}/image), GET</li>
  * </ul>
  *
  * <p>
