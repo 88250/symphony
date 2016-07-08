@@ -20,16 +20,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Set;
-import javax.imageio.ImageIO;
 import org.json.JSONObject;
 
 /**
  * This class defines all character model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 8, 2016
+ * @version 1.0.1.0, Jul 8, 2016
  * @since 1.4.0
  */
 public final class Character {
@@ -92,7 +90,7 @@ public final class Character {
         final Graphics g = ret.getGraphics();
         g.setClip(0, 0, 50, 50);
         g.fillRect(0, 0, 50, 50);
-        g.setFont(new Font("宋体", Font.PLAIN, 40));
+        g.setFont(new Font(null, Font.PLAIN, 40));
         g.setColor(Color.BLACK);
         g.drawString(content, 5, 40);
         g.dispose();
