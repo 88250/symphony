@@ -76,13 +76,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 
 /**
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.17.11.22, Jun 29, 2016
+ * @version 2.18.11.22, Jul 9, 2016
  * @since 0.2.0
  */
 @Service
@@ -1502,6 +1505,7 @@ public class ArticleQueryService {
      * <li>Generates emotion images</li>
      * <li>Generates article link with article id</li>
      * <li>Generates article abstract (preview content)</li>
+     * <li>Generates article ToC</li>
      * </ul>
      *
      * @param article the specified article, for example,      <pre>
@@ -1640,6 +1644,8 @@ public class ArticleQueryService {
             article.put(Article.ARTICLE_CONTENT, articleContent);
 
             article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));
+
+            article.put(Article.ARTICLE_T_TOC, getArticleToC(article));
         } finally {
             Stopwatchs.end();
         }
@@ -1800,5 +1806,45 @@ public class ArticleQueryService {
         } finally {
             Stopwatchs.end();
         }
+    }
+
+    /**
+     * Gets ToC of the specified article.
+     * 
+     * @param article the specified article
+     * @return ToC
+     */
+    private String getArticleToC(final JSONObject article) {
+        String content = article.optString(Article.ARTICLE_CONTENT);
+        
+        if (!StringUtils.contains(content, "#")
+                || Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+            return "";
+        }
+
+        final Document doc = Jsoup.parse(content, StringUtils.EMPTY, Parser.htmlParser());
+        doc.outputSettings().prettyPrint(false);
+
+        final StringBuilder listBuilder = new StringBuilder();
+
+        final Elements hs = doc.select("h1, h2, h3, h4, h5");
+
+        listBuilder.append("<ul class=\"article-toc\">");
+        for (int i = 0; i < hs.size(); i++) {
+            final Element element = hs.get(i);
+            final String tagName = element.tagName().toLowerCase();
+            final String text = element.text();
+            final String id = "toc_" + tagName + "_" + i;
+
+            element.before("<span id='" + id + "'></span>");
+
+            listBuilder.append("<li class='toc-").append(tagName).append("'><a href='#").append(id).append("'>").append(text).append(
+                    "</a></li>");
+        }
+        listBuilder.append("</ul>");
+        
+        article.put(Article.ARTICLE_CONTENT, doc.select("body").html());
+
+        return listBuilder.toString();
     }
 }

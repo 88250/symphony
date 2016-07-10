@@ -306,6 +306,50 @@ h2.article-title {
 .editor-toolbar {
     margin-top: 20px;
 }
+
+.article-toc li {
+    list-style: none;
+    padding: 5px 10px;
+    border-bottom: 1px dotted #CCCCCC;
+}
+
+
+.article-toc li:last-child {
+    border-bottom-width: 0;
+}
+
+.article-toc li:hover {
+    background-color: #F7F7F7;
+}
+
+.article-toc li a {
+    color: #767676;
+    display: block;
+}
+
+.article-toc li a:before {
+    content: '1'
+}
+
+.article-toc li a:hover {
+    text-decoration: none;
+}
+
+.article-toc li.toc-h2 {
+    padding-left: 20px;
+}
+
+.article-toc li.toc-h3 {
+    padding-left: 30px;
+}
+
+.article-toc li.toc-h4 {
+    padding-left: 40px;
+}
+
+.article-toc li.toc-h5 {
+    padding-left: 50px;
+}
 /* end article */
 
 /* start domains */

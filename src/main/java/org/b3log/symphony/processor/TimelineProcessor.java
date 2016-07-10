@@ -19,7 +19,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -42,7 +41,7 @@ import org.b3log.symphony.util.Symphonys;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Feb 26, 2016
+ * @version 1.0.0.3, Jul 9, 2016
  * @since 1.3.0
  */
 @RequestProcessor

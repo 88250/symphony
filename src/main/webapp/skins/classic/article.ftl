@@ -270,10 +270,25 @@
                     </#if>
                 </div>
                 <div class="side">
+                     <#if article.articleToC?? && 3 != article.articleType>
+                    <div class="module">
+                        <div class="module-header">
+                            <h2>
+                                ${relativeArticleLabel}
+                            </h2>
+                        </div>
+                        <div class="module-panel">
+                             ${article.articleToC}
+                        </div>
+                    </div>
+                    </#if>
+                    
                     <#include 'common/person-info.ftl'/>
+                    
                     <#if ADLabel!="">
                     ${ADLabel}
                     </#if>
+                    
                     <#if sideRelevantArticles?size != 0>
                     <div class="module">
                         <div class="module-header">
@@ -296,7 +311,8 @@
                         </div>
                     </div>
                     </#if>
-
+                    
+                    <#if sideRandomArticles?size != 0>
                     <div class="module">
                         <div class="module-header">
                             <h2>
@@ -317,6 +333,7 @@
                             </ul>
                         </div>
                     </div>
+                    </#if>
                 </div>
             </div>
         </div>

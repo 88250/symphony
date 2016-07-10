@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.0.11, Apr 15, 2016
+ * @version 1.14.0.11, Jul 9, 2016
  * @since 0.2.0
  */
 public final class Article {
@@ -289,6 +289,11 @@ public final class Article {
      * Key of article heat.
      */
     public static final String ARTICLE_T_HEAT = "articleHeat";
+    
+    /**
+     * Key of article ToC.
+     */
+    public static final String ARTICLE_T_TOC = "articleToC";
 
     // Status constants
     /**
