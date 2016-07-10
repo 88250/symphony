@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.24.9, Jul 4, 2016
+ * @version 1.20.24.9, Jul 9, 2016
  */
 
 /**
@@ -375,6 +375,8 @@ var Article = {
             "modal": true,
             "hideFooter": true
         });
+
+        this.toggleToc();
     },
     /**
      * 历史版本对比
@@ -574,7 +576,7 @@ var Article = {
                 success: function (result, textStatus) {
                     if (result.sc) {
                         $("#thankArticle").removeAttr("onclick").find("span").addClass("ft-red");
-                        
+
                         return;
                     }
 
@@ -583,25 +585,25 @@ var Article = {
             });
         }
     },
-            /**
-             * @description 置顶
-             */
-            stick: function (articleId) {
-                var r = confirm(Label.stickConfirmLabel);
+    /**
+     * @description 置顶
+     */
+    stick: function (articleId) {
+        var r = confirm(Label.stickConfirmLabel);
 
-                if (r) {
-                    $.ajax({
-                        url: "/article/stick?articleId=" + articleId,
-                        type: "POST",
-                        cache: false,
-                        success: function (result, textStatus) {
-                            alert(result.msg);
+        if (r) {
+            $.ajax({
+                url: "/article/stick?articleId=" + articleId,
+                type: "POST",
+                cache: false,
+                success: function (result, textStatus) {
+                    alert(result.msg);
 
-                            window.location.href = "/";
-                        }
-                    });
+                    window.location.href = "/";
                 }
-            },
+            });
+        }
+    },
     /**
      * @description 播放思绪
      * @param {string} articleContent 记录过程
@@ -714,6 +716,36 @@ var Article = {
         $('#thoughtProgress .icon-video').click(function () {
             $("#thoughtProgressPreview").dialog("open");
         });
+    },
+    /**
+     * 目录展现隐藏切换
+     * @returns {undefined}
+     */
+    toggleToc: function () {
+        if ($('#articleToC').length === 0) {
+            return false;
+        }
+
+        var $menu = $('.icon-unordered-list');
+        if ($menu.hasClass('ft-red')) {
+            $('#articleToC').hide();
+            $menu.removeClass('ft-red');
+        } else {
+            $('#articleToC').show().css({
+                'position': 'fixed',
+                'width': $('.side').width() + 'px',
+                'top': '69px',
+                'z-index': 10,
+                'left': $('.side').offset().left + 'px'
+            });
+
+            $('.article-toc').css({
+                'overflow': 'auto',
+                'max-height': $(window).height() - 127 + 'px'
+            });
+            $menu.addClass('ft-red');
+
+        }
     }
 };
 

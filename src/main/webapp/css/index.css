@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.12.16, Jun 12, 2016
+ * @version 2.12.12.16, Jul 9, 2016
  */
 
 /* start module */
@@ -308,47 +308,34 @@ h2.article-title {
 }
 
 .article-toc li {
-    list-style: none;
-    padding: 5px 10px;
-    border-bottom: 1px dotted #CCCCCC;
+    margin-left: 40px;
+    padding: 5px 10px 5px 0;
+    list-style-type: circle;
 }
-
 
 .article-toc li:last-child {
     border-bottom-width: 0;
 }
 
-.article-toc li:hover {
-    background-color: #F7F7F7;
-}
-
 .article-toc li a {
-    color: #767676;
     display: block;
-}
-
-.article-toc li a:before {
-    content: '1'
-}
-
-.article-toc li a:hover {
-    text-decoration: none;
+    line-height: 20px;
 }
 
 .article-toc li.toc-h2 {
-    padding-left: 20px;
+    margin-left: 50px;
 }
 
 .article-toc li.toc-h3 {
-    padding-left: 30px;
+    margin-left: 60px;
 }
 
 .article-toc li.toc-h4 {
-    padding-left: 40px;
+    margin-left: 70px;
 }
 
 .article-toc li.toc-h5 {
-    padding-left: 50px;
+    margin-left: 80px;
 }
 /* end article */
 

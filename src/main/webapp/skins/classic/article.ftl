@@ -22,6 +22,10 @@
                 <div class="content">
                     <div class="fn-clear article-action">
                         <span class="fn-right">
+                            <#if article.articleToC??>
+                            <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
+                                  class="fn-pointer tooltipped tooltipped-s"><span class="icon-unordered-list"></span></span>
+                            </#if>
                             <#if isLoggedIn>
                             <span id="thankArticle" aria-label="${thankLabel}" class="fn-pointer tooltipped tooltipped-s" <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${pointThankArticle})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
                             <span id="voteUp" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
@@ -102,6 +106,19 @@
                     </div>
 
                     <#if 3 != article.articleType>
+                    <#if article.articleToC??>
+                    <div class="module" id="articleToC">
+                        <div class="module-header">
+                            <h2>
+                                ${ToCLabel}
+                                <a href="javascript:Article.toggleToc()" class="fn-right ft-13 ft-gray">X</a>
+                            </h2>
+                        </div>
+                        <div class="module-panel">
+                             ${article.articleToC}
+                        </div>
+                    </div>
+                    </#if>
                     <div class="content-reset article-content">${article.articleContent}</div>
                     <#else>
                     <div id="thoughtProgress"><span class="bar"></span><span class="icon-video"></span><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
@@ -270,19 +287,6 @@
                     </#if>
                 </div>
                 <div class="side">
-                     <#if article.articleToC?? && 3 != article.articleType>
-                    <div class="module">
-                        <div class="module-header">
-                            <h2>
-                                ${relativeArticleLabel}
-                            </h2>
-                        </div>
-                        <div class="module-panel">
-                             ${article.articleToC}
-                        </div>
-                    </div>
-                    </#if>
-                    
                     <#include 'common/person-info.ftl'/>
                     
                     <#if ADLabel!="">
