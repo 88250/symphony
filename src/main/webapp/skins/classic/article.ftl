@@ -22,7 +22,7 @@
                 <div class="content">
                     <div class="fn-clear article-action">
                         <span class="fn-right">
-                            <#if article.articleToC??>
+                            <#if "" != article.articleToC>
                             <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
                                   class="fn-pointer tooltipped tooltipped-s"><span class="icon-unordered-list"></span></span>
                             </#if>
@@ -106,7 +106,7 @@
                     </div>
 
                     <#if 3 != article.articleType>
-                    <#if article.articleToC??>
+                    <#if "" != article.articleToC>
                     <div class="module" id="articleToC">
                         <div class="module-header">
                             <h2>

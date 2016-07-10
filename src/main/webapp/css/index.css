@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.12.16, Jul 9, 2016
+ * @version 2.12.12.17, Jul 10, 2016
  */
 
 /* start module */
@@ -308,9 +308,9 @@ h2.article-title {
 }
 
 .article-toc li {
-    margin-left: 40px;
+    margin-left: 20px;
     padding: 5px 10px 5px 0;
-    list-style-type: circle;
+    list-style-type: none;
 }
 
 .article-toc li:last-child {
@@ -323,19 +323,19 @@ h2.article-title {
 }
 
 .article-toc li.toc-h2 {
-    margin-left: 50px;
+    margin-left: 34px;
 }
 
 .article-toc li.toc-h3 {
-    margin-left: 60px;
+    margin-left: 48px;
 }
 
 .article-toc li.toc-h4 {
-    margin-left: 70px;
+    margin-left: 62px;
 }
 
 .article-toc li.toc-h5 {
-    margin-left: 80px;
+    margin-left: 86px;
 }
 /* end article */
 
