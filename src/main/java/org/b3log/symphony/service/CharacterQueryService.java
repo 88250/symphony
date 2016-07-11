@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Character query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jun 16, 2016
+ * @version 1.0.0.2, Jul 11, 2016
  * @since 1.4.0
  */
 @Service
@@ -130,15 +130,17 @@ public class CharacterQueryService {
      * @return character
      */
     public String getUnwrittenCharacter(final String userId) {
-        final int maxRetries = 7;
-        int retries = 0;
+        final String characters = langPropsService.get("characters");
 
-        while (retries < maxRetries) {
-            retries++;
+        int index = 0;
+        while (true) {
+            if (index > characters.length()) {
+                return null; // All done
+            }
 
-            final String characters = langPropsService.get("characters");
-            final int index = RandomUtils.nextInt(characters.length());
             final String ret = StringUtils.trim(characters.substring(index, index + 1));
+
+            index++;
 
             final Query query = new Query();
             query.setFilter(CompositeFilterOperator.and(
@@ -158,8 +160,6 @@ public class CharacterQueryService {
                 LOGGER.log(Level.ERROR, "Gets an unwritten character for user [id=" + userId + "] failed", e);
             }
         }
-
-        return null;
     }
 
     /**
@@ -168,13 +168,28 @@ public class CharacterQueryService {
      * @return character
      */
     public String getUnwrittenCharacter() {
+        final String ret = getUnwrittenCharacterRandom();
+        if (StringUtils.isNotBlank(ret)) {
+            return ret;
+        }
+
+        return getUnwrittenCharacterOneByOne();
+    }
+
+    /**
+     * Gets an unwritten character (strategy: Random).
+     *
+     * @return character
+     */
+    private String getUnwrittenCharacterRandom() {
+        final String characters = langPropsService.get("characters");
+
         final int maxRetries = 7;
         int retries = 0;
 
         while (retries < maxRetries) {
             retries++;
 
-            final String characters = langPropsService.get("characters");
             final int index = RandomUtils.nextInt(characters.length());
             final String ret = StringUtils.trim(characters.substring(index, index + 1));
 
@@ -193,5 +208,38 @@ public class CharacterQueryService {
         }
 
         return null;
+    }
+
+    /**
+     * Gets an unwritten character (strategy: One By One).
+     *
+     * @return character
+     */
+    private String getUnwrittenCharacterOneByOne() {
+        final String characters = langPropsService.get("characters");
+
+        int index = 0;
+        while (true) {
+            if (index > characters.length()) {
+                return null; // All done
+            }
+
+            final String ret = StringUtils.trim(characters.substring(index, index + 1));
+
+            index++;
+
+            final Query query = new Query().setFilter(
+                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret));
+
+            try {
+                if (characterRepository.count(query) > 0) {
+                    continue;
+                }
+
+                return ret;
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Gets an unwritten character failed", e);
+            }
+        }
     }
 }
