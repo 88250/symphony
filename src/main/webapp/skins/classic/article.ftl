@@ -111,7 +111,7 @@
                         <div class="module-header">
                             <h2>
                                 ${ToCLabel}
-                                <a href="javascript:Article.toggleToc()" class="fn-right ft-13 ft-gray">X</a>
+                                <a href="javascript:Article.toggleToc()" class="fn-right ft-13 ft-fade">X</a>
                             </h2>
                         </div>
                         <div class="module-panel">
