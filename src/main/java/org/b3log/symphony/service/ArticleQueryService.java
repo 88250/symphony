@@ -85,7 +85,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.11.22, Jul 9, 2016
+ * @version 2.18.12.22, Jul 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -1810,13 +1810,13 @@ public class ArticleQueryService {
 
     /**
      * Gets ToC of the specified article.
-     * 
+     *
      * @param article the specified article
      * @return ToC
      */
     private String getArticleToC(final JSONObject article) {
         String content = article.optString(Article.ARTICLE_CONTENT);
-        
+
         if (!StringUtils.contains(content, "#")
                 || Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
             return "";
@@ -1828,6 +1828,10 @@ public class ArticleQueryService {
         final StringBuilder listBuilder = new StringBuilder();
 
         final Elements hs = doc.select("h1, h2, h3, h4, h5");
+
+        if (hs.isEmpty()) {
+            return "";
+        }
 
         listBuilder.append("<ul class=\"article-toc\">");
         for (int i = 0; i < hs.size(); i++) {
@@ -1842,7 +1846,7 @@ public class ArticleQueryService {
                     "</a></li>");
         }
         listBuilder.append("</ul>");
-        
+
         article.put(Article.ARTICLE_CONTENT, doc.select("body").html());
 
         return listBuilder.toString();
