@@ -45,15 +45,15 @@
     <body class="body--ready">
         <canvas class="canvas"></canvas>
         <p class="text">
-            该页面加载出现问题<br/>
-            对此非常抱歉,请尝试稍后刷新.如果还不能使用，请 <a href="http://b3log.org">联系我们</a>
+            非常抱歉，加载出现了点问题<br/>
+            请稍后尝试刷新，如果还不能使用，<a href="http://b3log.org">联系我们</a>吧！
         </p>
         <script>
             var S = {
                 init: function () {
                     S.Drawing.init('.canvas');
                     document.body.classList.add('body--ready');
-                    S.UI.simulate('B3log|Solo|Symphy|#countdown 3|#icon thumbs-up');
+                    S.UI.simulate('B3log|Solo|Symphony|Wide|with YOU!|#countdown 3|#icon thumbs-up');
                     S.Drawing.loop(function () {
                         S.Shape.render();
                     });
@@ -212,7 +212,7 @@
                                 break;
 
                             default:
-                                S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'Hacpai' : current));
+                                S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'HacPai' : current));
                         }
                     }, 2000, sequence.length);
                 }

@@ -19,6 +19,7 @@
                 <#else>
                 <font class="ft-red">${stopUseLabel}</font>
                 </#if>
+                <font class="ft-gray">${item.memo}</font>
                 <a href="/admin/invitecode/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
             </div>
         </li>
