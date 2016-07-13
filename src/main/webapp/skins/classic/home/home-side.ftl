@@ -45,7 +45,7 @@
         </div>
         <#if "" != user.userTags>
         <div class="user-info">
-            <span class="ft-gray">${selfTagLabel}</span> <#list user.userTags?split(',') as tag> ${tag?html}<#if tag_has_next>,</#if></#list>
+            <span class="ft-gray" id="userTags">${selfTagLabel}</span> <#list user.userTags?split(',') as tag> ${tag?html}<#if tag_has_next>,</#if></#list>
         </div>
         </#if>
         <#if "" != user.userCity && 0 == user.userGeoStatus>
