@@ -18,7 +18,7 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.8.0.5, May 17, 2016
+    Version: 1.9.0.5, Jul 14, 2016
     Author: Liang Ding
 -->
 <cronentries>
@@ -51,6 +51,12 @@
         <url>/cron/stat?key=dev_key</url>
         <description>Load statistic data</description>
         <schedule>every 30 minutes</schedule>
+    </cron>
+    
+    <cron>
+        <url>/cron/xiaov?key=dev_key</url>
+        <description>XiaoV replies Stm.</description>
+        <schedule>every 5 seconds</schedule>
     </cron>
     
     <!-- Disabled on Dev environment -->

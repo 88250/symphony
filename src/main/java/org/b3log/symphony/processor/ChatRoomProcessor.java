@@ -18,6 +18,7 @@ package org.b3log.symphony.processor;
 import com.qiniu.util.Auth;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -35,21 +36,31 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
 import org.b3log.symphony.processor.channel.ChatRoomChannel;
 import static org.b3log.symphony.processor.channel.ChatRoomChannel.SESSIONS;
+import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.CommentMgmtService;
+import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.service.TuringQueryService;
 import org.b3log.symphony.service.UserMgmtService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Chat room processor.
@@ -97,9 +108,122 @@ public class ChatRoomProcessor {
     private ShortLinkQueryService shortLinkQueryService;
 
     /**
+     * Notification query service.
+     */
+    @Inject
+    private NotificationQueryService notificationQueryService;
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
+     * Comment management service.
+     */
+    @Inject
+    private CommentMgmtService commentMgmtService;
+
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
+
+    /**
+     * Article query service.
+     */
+    @Inject
+    private ArticleQueryService articleQueryService;
+
+    /**
      * Chat messages.
      */
     public static LinkedList<JSONObject> messages = new LinkedList<JSONObject>();
+
+    /**
+     * XiaoV replies Stm.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws IOException io exception
+     * @throws ServletException servlet exception
+     */
+    @RequestProcessing(value = "/cron/xiaov", method = HTTPRequestMethod.GET)
+    public void xiaoVReply(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException, ServletException {
+        context.renderJSON();
+
+        try {
+            final JSONObject xiaoV = userQueryService.getUserByName(TuringQueryService.ROBOT_NAME);
+            if (null == xiaoV) {
+                return;
+            }
+
+            final String xiaoVUserId = xiaoV.optString(Keys.OBJECT_ID);
+            final String xiaoVEmail = xiaoV.optString(User.USER_EMAIL);
+            final JSONObject result = notificationQueryService.getAtNotifications(xiaoVUserId, 1, 1);
+            final List<JSONObject> notifications = (List<JSONObject>) result.get(Keys.RESULTS);
+
+            for (final JSONObject notification : notifications) {
+                if (notification.optBoolean(Notification.NOTIFICATION_HAS_READ)) {
+                    continue;
+                }
+
+                String xiaoVSaid = "";
+
+                final JSONObject comment = new JSONObject();
+
+                String articleId = StringUtils.substringBetween(notification.optString(Common.URL),
+                        "/article/", "#");
+
+                String q = "";
+
+                if (!StringUtils.isBlank(articleId)) {
+                    final String originalCmtId = StringUtils.substringAfter(notification.optString(Common.URL), "#");
+                    final JSONObject originalCmt = commentQueryService.getCommentById(originalCmtId);
+                    q = originalCmt.optString(Comment.COMMENT_CONTENT);
+                } else {
+                    articleId = StringUtils.substringAfter(notification.optString(Common.URL),
+                            "/article/");
+
+                    final JSONObject article = articleQueryService.getArticleById(articleId);
+                    q = article.optString(Article.ARTICLE_CONTENT);
+                }
+
+                if (StringUtils.isNotBlank(q)) {
+                    q = Jsoup.parse(q).text();
+                    q = StringUtils.replace(q, "@" + TuringQueryService.ROBOT_NAME, "");
+
+                    xiaoVSaid = turingQueryService.chat(articleId, q);
+
+                    comment.put(Comment.COMMENT_CONTENT, xiaoVSaid);
+                    comment.put(Comment.COMMENT_AUTHOR_ID, xiaoVUserId);
+                    comment.put(Comment.COMMENT_AUTHOR_EMAIL, xiaoVEmail);
+                    comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
+
+                    xiaoV.remove(UserExt.USER_T_POINT_CC);
+                    comment.put(Comment.COMMENT_T_COMMENTER, xiaoV);
+
+                    commentMgmtService.addComment(comment);
+                }
+
+                notificationMgmtService.makeRead(notification);
+            }
+
+            context.renderTrueResult();
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Update user latest comment time failed", e);
+        }
+    }
 
     /**
      * Adds a chat message.
