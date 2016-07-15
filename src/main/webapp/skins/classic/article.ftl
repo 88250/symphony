@@ -32,18 +32,14 @@
                                 <span class="icon-thumbs-up<#if 0==vote> ft-red</#if>"></span></span>
                             <span id="voteDown" class="tooltipped tooltipped-s fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
                                 <span class="icon-thumbs-down<#if 1==vote> ft-red</#if>"></span></span>
-                            </#if>
-                            <#if isLoggedIn>
                             <#if isFollowing>
                             <span class="tooltipped tooltipped-s fn-pointer" aria-label="${uncollectLabel} ${article.articleCollectCnt}" onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
                             <#else>
                             <span class="tooltipped tooltipped-s fn-pointer" aria-label="${collectLabel} ${article.articleCollectCnt}" onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
                             </#if>
-                            <#else>
-                            <span aria-label="${collectLabel} ${article.articleCollectCnt}" class="fn-pointer tooltipped tooltipped-s"><span class="icon-star"></span></span>
-                            </#if>
                             <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
                                   class="fn-pointer tooltipped tooltipped-s"><span class="icon-refresh"></span></span>
+                            </#if>
                             <#if article.isMyArticle && 3 != article.articleType>
                             <a href="/update?id=${article.oId}" aria-label="${editLabel}" class="tooltipped tooltipped-s"><span class="icon-edit"></span></a>
                             </#if>

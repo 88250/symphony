@@ -21,19 +21,16 @@
                 <div class="article-action fn-clear">
                     <div class="fn-right">
                         <#if isLoggedIn>
+                        <span id="thankArticle" aria-label="${thankLabel}" class="fn-pointer tooltipped tooltipped-s" <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${pointThankArticle})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
                         <span id="voteUp" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
                             <span class="icon-thumbs-up<#if 0==vote> ft-red</#if>"></span></span>
                         <span id="voteDown" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
                             <span class="icon-thumbs-down<#if 1==vote> ft-red</#if>"></span></span>
-                        </#if>
-                        <#if isLoggedIn>
                         <#if isFollowing>
                         <span aria-label="${uncollectLabel} ${article.articleCollectCnt}" onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
                         <#else>
                         <span aria-label="${collectLabel} ${article.articleCollectCnt}" onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
                         </#if>
-                        <#else>
-                        <span aria-label="${collectLabel} ${article.articleCollectCnt}"><span class="icon-star"></span></span>
                         </#if>
 
                         <#if article.isMyArticle && 3 != article.articleType>
@@ -310,6 +307,7 @@
             Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
             Label.rewardConfirmLabel = "${rewardConfirmLabel?replace('{point}', article.articleRewardPoint)}";
+            Label.thankArticleConfirmLabel = "${thankArticleConfirmLabel?replace('{point}', pointThankArticle)}";
             Label.articleOId = "${article.oId}";
             Label.articleTitle = "${article.articleTitle}";
             Label.articlePermalink = "${article.articlePermalink}";
