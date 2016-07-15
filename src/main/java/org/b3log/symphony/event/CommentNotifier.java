@@ -57,7 +57,7 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.14, Jun 29, 2016
+ * @version 1.5.6.15, Jul 15, 2016
  * @since 0.2.0
  */
 @Named
@@ -120,7 +120,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.WARN, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, CommentNotifier.class.getName()});
 
         try {
