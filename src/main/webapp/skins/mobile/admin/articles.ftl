@@ -9,7 +9,7 @@
         <#if esEnabled || algoliaEnabled>
         <button type="button" class="btn red" onclick="searchIndex();">${searchIndexLabel}</button>
         </#if>
-        <button type="button" class="btn red" onclick="window.location='/admin/add-article'">${addArticleLabel}</button>
+        <button type="button" class="btn red" onclick="window.location = '/admin/add-article'">${addArticleLabel}</button>
     </form>
     <ul>
         <#list articles as item>
@@ -21,6 +21,9 @@
                 <span class="ft-gray">${validLabel}</span>
                 <#else>
                 <font class="ft-red">${banLabel}</font>
+                </#if>
+                <#if 0 < item.articleStick>
+                <#if 9223372036854775807 <= item.articleStick><font class="ft-green">${adminLabel}</font></#if><font class="ft-green">${stickLabel}</font>
                 </#if>
                 <a href="/admin/article/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>  
             </div>

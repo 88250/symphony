@@ -74,7 +74,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.19.18, Jul 5, 2016
+ * @version 2.12.19.18, Jul 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -1043,6 +1043,54 @@ public class ArticleMgmtService {
     }
 
     /**
+     * Admin sticks an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public synchronized void adminStick(final String articleId) throws ServiceException {
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
+            }
+
+            article.put(Article.ARTICLE_STICK, Long.MAX_VALUE);
+
+            articleRepository.update(articleId, article);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Admin sticks an article[id=" + articleId + "] failed", e);
+
+            throw new ServiceException(langPropsService.get("stickFailedLabel"));
+        }
+    }
+
+    /**
+     * Admin cancels stick an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public synchronized void adminCancelStick(final String articleId) throws ServiceException {
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
+            }
+
+            article.put(Article.ARTICLE_STICK, 0L);
+
+            articleRepository.update(articleId, article);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Admin cancel sticks an article[id=" + articleId + "] failed", e);
+
+            throw new ServiceException(langPropsService.get("operationFailedLabel"));
+        }
+    }
+
+    /**
      * Expires sticked articles.
      *
      * @throws ServiceException service exception
@@ -1062,7 +1110,12 @@ public class ArticleMgmtService {
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.optJSONObject(i);
-                final long expired = article.optLong(Article.ARTICLE_STICK) + stepTime;
+                final long stick = article.optLong(Article.ARTICLE_STICK);
+                if (stick >= Long.MAX_VALUE) {
+                    continue; // Skip admin stick
+                }
+
+                final long expired = stick + stepTime;
 
                 if (expired < now) {
                     article.put(Article.ARTICLE_STICK, 0L);

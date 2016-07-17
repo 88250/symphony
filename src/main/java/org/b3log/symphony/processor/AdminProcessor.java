@@ -125,7 +125,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.17.3.5, Jul 5, 2016
+ * @version 2.18.3.5, Jul 17, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -265,6 +265,42 @@ public class AdminProcessor {
      * Pagination page size.
      */
     private static final int PAGE_SIZE = 20;
+
+    /**
+     * Sticks an article.
+     *
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/stick-article", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void stickArticle(final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        articleMgmtService.adminStick(articleId);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/articles");
+    }
+
+    /**
+     * Cancels stick an article.
+     *
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/cancel-stick-article", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void stickCancelArticle(final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        articleMgmtService.adminCancelStick(articleId);
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/articles");
+    }
 
     /**
      * Generates invitecodes.
@@ -1292,6 +1328,7 @@ public class AdminProcessor {
         articleFields.put(Article.ARTICLE_AUTHOR_ID, String.class);
         articleFields.put(Article.ARTICLE_TAGS, String.class);
         articleFields.put(Article.ARTICLE_STATUS, Integer.class);
+        articleFields.put(Article.ARTICLE_STICK, Long.class);
 
         final JSONObject result = articleQueryService.getArticles(requestJSONObject, articleFields);
         dataModel.put(Article.ARTICLES, CollectionUtils.jsonArrayToList(result.optJSONArray(Article.ARTICLES)));
