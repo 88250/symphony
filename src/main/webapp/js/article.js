@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.24.10, Jul 12, 2016
+ * @version 1.20.24.11, Jul 18, 2016
  */
 
 /**
@@ -732,10 +732,7 @@ var Article = {
             $menu.removeClass('ft-red');
         } else {
             $('#articleToC').show().css({
-                'position': 'fixed',
                 'width': $('.side').width() + 'px',
-                'top': '69px',
-                'z-index': 10,
                 'left': $('.side').offset().left + 'px'
             });
 
