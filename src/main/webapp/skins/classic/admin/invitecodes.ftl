@@ -3,7 +3,8 @@
 <@admin "invitecodes">
 <div class="list content admin">
     <form method="POST" action="invitecodes/generate" class="form">
-        <input name="quantity" type="number" placeholder="${quantityLabel}"/>
+        <input name="quantity" type="number" placeholder="${quantityLabel}" style="width: 30%" />
+        <input name="memo" type="text" placeholder="${memoLabel}"/>
         <button type="submit" class="green">${generateLabel}</button>
     </form>
     <br/>

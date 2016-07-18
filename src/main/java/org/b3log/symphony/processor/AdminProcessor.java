@@ -125,7 +125,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.17.3.5, Jul 5, 2016
+ * @version 2.17.3.6, Jul 18, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -284,7 +284,12 @@ public class AdminProcessor {
         } catch (final NumberFormatException e) {
         }
 
-        invitecodeMgmtService.generateInvitecodes(quantity);
+        String memo = request.getParameter("memo");
+        if (StringUtils.isBlank(memo)) {
+            memo = "";
+        }
+
+        invitecodeMgmtService.generateInvitecodes(quantity, memo);
 
         response.sendRedirect(Latkes.getServePath() + "/admin/invitecodes");
     }

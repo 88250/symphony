@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * Invitecode management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 3, 2016
+ * @version 1.0.0.1, Jul 18, 2016
  * @since 1.4.0
  */
 @Service
@@ -48,19 +48,20 @@ public class InvitecodeMgmtService {
     private InvitecodeRepository invitecodeRepository;
 
     /**
-     * Generates invitecodes with the specified quantity.
+     * Generates invitecodes with the specified quantity and memo.
      *
      * @param quantity the specified quantity
+     * @param memo the specified memo
      * @throws ServiceException service exception
      */
-    public void generateInvitecodes(final int quantity) throws ServiceException {
+    public void generateInvitecodes(final int quantity, final String memo) throws ServiceException {
         final Transaction transaction = invitecodeRepository.beginTransaction();
 
         try {
             for (int i = 0; i < quantity; i++) {
                 final JSONObject invitecode = new JSONObject();
                 invitecode.put(Invitecode.CODE, RandomStringUtils.randomAlphanumeric(16));
-                invitecode.put(Invitecode.MEMO, "");
+                invitecode.put(Invitecode.MEMO, memo);
                 invitecode.put(Invitecode.STATUS, Invitecode.STATUS_C_UNUSED);
                 invitecode.put(Invitecode.USER_ID, "");
                 invitecode.put(Invitecode.USE_TIME, 0);

@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Invitecode query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 4, 2016
+ * @version 1.0.0.2, Jul 18, 2016
  * @since 1.4.0
  */
 @Service
@@ -116,7 +116,8 @@ public class InvitecodeQueryService {
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
-                addSort(Invitecode.STATUS, SortDirection.DESCENDING);
+                addSort(Invitecode.STATUS, SortDirection.DESCENDING).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
         JSONObject result = null;
 
