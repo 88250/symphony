@@ -45,6 +45,9 @@
 
             <label for="articleUA">UA</label>
             <input type="text" id="articleUA" name="articleUA" value="${article.articleUA}" readonly="readonly" />
+
+            <label for"articleStick">${stickLabel}</label>
+            <input type="text" id="articleStick" name="articleStick" value="${article.articleStick?c}" readonly="readonly" />
         </div>
     </div>
     <div class="module">
@@ -93,6 +96,36 @@
 
                 <label for="articleBadCnt">${badCntLabel}</label>
                 <input type="text" id="articleBadCnt" name="articleBadCnt" value="${article.articleBadCnt}" />
+
+                <br/><br/>
+                <button type="submit" class="green fn-right" >${submitLabel}</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="module">
+        <div class="module-header">
+            <h2>${stickLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/stick-article" method="POST">
+                <label for="articleId">Id</label>
+                <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly="readonly"/>
+
+                <br/><br/>
+                <button type="submit" class="green fn-right" >${submitLabel}</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="module">
+        <div class="module-header">
+            <h2>${cancelStickLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/cancel-stick-article" method="POST">
+                <label for="articleId">Id</label>
+                <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly="readonly"/>
 
                 <br/><br/>
                 <button type="submit" class="green fn-right" >${submitLabel}</button>

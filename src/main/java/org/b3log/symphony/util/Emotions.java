@@ -82,43 +82,37 @@ public final class Emotions {
      * @return converted content
      */
     public static String convert(final String content) {
-        Stopwatchs.start("Emoj convert");
+        final String staticServePath = Latkes.getStaticServePath();
 
-        try {
-            final String staticServePath = Latkes.getStaticServePath();
+        String ret = content;
 
-            String ret = content;
-
-            String emotionName;
-            for (int i = 0; i < EMOTION_CNT; i++) {
-                if (i < TEN) {
-                    emotionName = "em0" + i;
-                } else {
-                    emotionName = "em" + i;
-                }
-
-                ret = ret.replace('[' + emotionName + ']',
-                        "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
+        String emotionName;
+        for (int i = 0; i < EMOTION_CNT; i++) {
+            if (i < TEN) {
+                emotionName = "em0" + i;
+            } else {
+                emotionName = "em" + i;
             }
 
-            if (!EMOJI_PATTERN.matcher(ret).find()) {
-                return ret;
-            }
+            ret = ret.replace('[' + emotionName + ']',
+                    "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
+        }
 
-            for (final String emojiCode : EMOJIS) {
-                final String emoji = ":" + emojiCode + ":";
-                ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                        + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode
-                        + ".png\" title=\"" + emoji + "\"></img>");
-            }
+        if (!EMOJI_PATTERN.matcher(ret).find()) {
+            return ret;
+        }
+
+        for (final String emojiCode : EMOJIS) {
+            final String emoji = ":" + emojiCode + ":";
+            ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
+                    + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode
+                    + ".png\" title=\"" + emoji + "\"></img>");
+        }
 
 //        ret = ret.replaceAll("\ufe0f", "");
 //        ret = ret.replaceAll("\ufffd", "");
 //        ret = ret.replaceAll("⃣", "");
-            return ret;
-        } finally {
-            Stopwatchs.end();
-        }
+        return ret;
     }
 
     public static void main(String[] args) {

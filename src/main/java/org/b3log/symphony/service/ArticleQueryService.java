@@ -85,7 +85,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.12.22, Jul 13, 2016
+ * @version 2.18.12.24, Jul 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -1014,12 +1014,28 @@ public class ArticleQueryService {
      * @return recent articles query
      */
     private Query makeRecentQuery(final int currentPageNum, final int fetchSize) {
-        final Query query = new Query()
+        final Query ret = new Query()
                 .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
-        query.setFilter(makeRecentArticleShowingFilter());
-        return query;
+        ret.setFilter(makeRecentArticleShowingFilter());
+        ret.addProjection(Keys.OBJECT_ID, String.class).
+                addProjection(Article.ARTICLE_STICK, Long.class).
+                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
+                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                addProjection(Article.ARTICLE_TITLE, String.class).
+                addProjection(Article.ARTICLE_STATUS, Integer.class).
+                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                addProjection(Article.ARTICLE_TYPE, Integer.class).
+                addProjection(Article.ARTICLE_PERMALINK, String.class).
+                addProjection(Article.ARTICLE_TAGS, String.class).
+                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
+                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
+                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class);
+
+        return ret;
     }
 
     /**
@@ -1068,11 +1084,15 @@ public class ArticleQueryService {
         JSONObject result = null;
 
         try {
+            Stopwatchs.start("Query recent articles");
+
             result = articleRepository.get(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets articles failed", e);
 
             throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -1097,9 +1117,8 @@ public class ArticleQueryService {
             throw new ServiceException(e);
         }
 
-        final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
-        genParticipants(articles, participantsCnt);
-
+        //final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
+        //genParticipants(articles, participantsCnt);
         ret.put(Article.ARTICLES, (Object) articles);
 
         return ret;
@@ -1690,6 +1709,7 @@ public class ArticleQueryService {
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
                 addSort(Article.ARTICLE_UPDATE_TIME, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
             query.addProjection(articleField.getKey(), articleField.getValue());
