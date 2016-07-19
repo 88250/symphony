@@ -606,6 +606,7 @@ span.CodeMirror-selectedtext { background: none; }
     -moz-transition: left 0.2s ease;
     -ms-transition: left 0.2s ease;
     transition: left 0.2s ease;
+    box-sizing: border-box;
 }
 .editor-preview-active {
     left: 0;
