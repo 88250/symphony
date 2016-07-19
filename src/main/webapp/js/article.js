@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.24.11, Jul 18, 2016
+ * @version 1.21.24.11, Jul 19, 2016
  */
 
 /**
@@ -741,9 +741,25 @@ var Article = {
                 'max-height': $(window).height() - 127 + 'px',
                 'background-color': '#f7f7f7'
             });
-            $menu.addClass('ft-red');
 
+            $menu.addClass('ft-red');
         }
+    },
+    /**
+     * 标记消息通知为已读状态.
+     */
+    makeNotificationRead: function (articleId, commentIds) {
+        var requestJSONObject = {
+            articleId: articleId,
+            commentIds: commentIds
+        };
+
+        $.ajax({
+            url: "/notification/read",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject)
+        });
     }
 };
 

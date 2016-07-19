@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.8, Apr 1, 2016
+ * @version 1.3.0.8, Jul 19, 2016
  * @since 0.2.0
  */
 public final class Comment {
@@ -99,6 +99,11 @@ public final class Comment {
      * Key of comment id.
      */
     public static final String COMMENT_T_ID = "commentId";
+    
+    /**
+     * Key of comment ids.
+     */
+    public static final String COMMENT_T_IDS = "commentIds";
 
     /**
      * Key of comment on symphony article id.

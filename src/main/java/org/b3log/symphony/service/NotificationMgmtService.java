@@ -16,14 +16,22 @@
 package org.b3log.symphony.service;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.repository.NotificationRepository;
 import org.json.JSONObject;
@@ -32,7 +40,7 @@ import org.json.JSONObject;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.3, Feb 23, 2016
+ * @version 1.5.0.3, Jul 19, 2016
  * @since 0.2.5
  */
 @Service
@@ -48,6 +56,26 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    public void makeRead(final String userId, final String articleId, final List<String> commentIds) {
+        final Set<String> dataIds = new HashSet<String>(commentIds);
+        dataIds.add(articleId);
+
+        final Query query = new Query().setPageCount(-1).setFilter(
+                CompositeFilterOperator.and(
+                        new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId),
+                        new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false),
+                        new PropertyFilter(Notification.NOTIFICATION_DATA_ID, FilterOperator.IN, dataIds)));
+
+        try {
+            final Set<JSONObject> notifications = CollectionUtils.jsonArrayToSet(notificationRepository.get(query).
+                    optJSONArray(Keys.RESULTS));
+
+            makeRead(notifications);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Makes read failed", e);
+        }
+    }
 
     /**
      * Makes the specified notifications have been read.
