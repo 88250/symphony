@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.26.16.21, Jul 19, 2016
+ * @version 1.27.16.21, Jul 19, 2016
  */
 
 /**
@@ -418,6 +418,17 @@ var Util = {
             $li.find('.preview').hide();
 
             $(this).removeClass("previewing");
+        });
+    },
+    /**
+     * @description 标记指定类型的消息通知为已读状态.
+     * @param {String} type 指定类型："commented"/"at"/"followingUser"
+     */
+    makeNotificationRead: function (type) {
+        $.ajax({
+            url: "/notification/read/" + type,
+            type: "POST",
+            cache: false
         });
     },
     /**

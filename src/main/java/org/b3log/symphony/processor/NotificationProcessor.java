@@ -97,6 +97,55 @@ public class NotificationProcessor {
     private Filler filler;
 
     /**
+     * Makes the specified type notifications as read.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param type the specified type: "commented"/"at"/"followingUser"
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/notification/read/{type}", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void makeNotificationRead(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response, final String type) throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        int notificationType = -1;
+
+        switch (type) {
+            case "commented":
+                notificationType = Notification.DATA_TYPE_C_COMMENTED;
+
+                break;
+            case "at":
+                notificationType = Notification.DATA_TYPE_C_AT;
+
+                break;
+            case "followingUser":
+                notificationType = Notification.DATA_TYPE_C_FOLLOWING_USER;
+
+                break;
+            default:
+                context.renderJSON(false);
+
+                return;
+        }
+
+        notificationMgmtService.makeRead(userId, notificationType);
+
+        context.renderJSON(true);
+    }
+
+    /**
      * Makes article/comment read.
      *
      * @param context the specified context
@@ -132,7 +181,7 @@ public class NotificationProcessor {
         final List<String> commentIds = Arrays.asList(requestJSONObject.optString(Comment.COMMENT_T_IDS).split(","));
 
         notificationMgmtService.makeRead(userId, articleId, commentIds);
-        
+
         context.renderJSON(true);
     }
 

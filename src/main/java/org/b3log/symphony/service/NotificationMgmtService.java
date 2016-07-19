@@ -56,7 +56,37 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+    
+    /**
+     * Makes the specified user's notifications of the specified type as read. 
+     * 
+     * @param userId the specified user id
+     * @param type the specified notification type
+     */
+    public void makeRead(final String userId, final int type) {
+        final Query query = new Query().setPageCount(-1).setFilter(
+                CompositeFilterOperator.and(
+                        new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId),
+                        new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false),
+                        new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, type)));
 
+        try {
+            final Set<JSONObject> notifications = CollectionUtils.jsonArrayToSet(notificationRepository.get(query).
+                    optJSONArray(Keys.RESULTS));
+
+            makeRead(notifications);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Makes read failed", e);
+        }
+    }
+
+    /**
+     * Makes the specified user to article, comments notifications as read. 
+     * 
+     * @param userId the specified user id
+     * @param articleId the specified article id
+     * @param commentIds the specified comment ids
+     */
     public void makeRead(final String userId, final String articleId, final List<String> commentIds) {
         final Set<String> dataIds = new HashSet<String>(commentIds);
         dataIds.add(articleId);
