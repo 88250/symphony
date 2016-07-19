@@ -105,7 +105,7 @@ public class NotificationProcessor {
      * @param type the specified type: "commented"/"at"/"followingUser"
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/notification/read/{type}", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/notification/read/{type}", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void makeNotificationRead(final HTTPRequestContext context, final HttpServletRequest request,

@@ -427,7 +427,7 @@ var Util = {
     makeNotificationRead: function (type) {
         $.ajax({
             url: "/notification/read/" + type,
-            type: "POST",
+            type: "GET",
             cache: false
         });
     },
