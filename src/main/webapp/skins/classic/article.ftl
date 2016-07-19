@@ -102,19 +102,6 @@
                     </div>
 
                     <#if 3 != article.articleType>
-                    <#if "" != article.articleToC>
-                    <div class="module" id="articleToC">
-                        <div class="module-header">
-                            <h2>
-                                ${ToCLabel}
-                                <a href="javascript:Article.toggleToc()" class="fn-right ft-13 ft-fade">X</a>
-                            </h2>
-                        </div>
-                        <div class="module-panel">
-                             ${article.articleToC}
-                        </div>
-                    </div>
-                    </#if>
                     <div class="content-reset article-content">${article.articleContent}</div>
                     <#else>
                     <div id="thoughtProgress"><span class="bar"></span><span class="icon-video"></span><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
@@ -290,6 +277,19 @@
                     
                     <#if ADLabel!="">
                     ${ADLabel}
+                    </#if>
+                    <#if "" != article.articleToC && 3 != article.articleType>
+                    <div class="module" id="articleToC">
+                        <div class="module-header">
+                            <h2>
+                                ${ToCLabel}
+                                <a href="javascript:Article.toggleToc()" class="fn-right ft-13 ft-fade">X</a>
+                            </h2>
+                        </div>
+                        <div class="module-panel">
+                             ${article.articleToC}
+                        </div>
+                    </div>
                     </#if>
                     
                     <#if sideRelevantArticles?size != 0>

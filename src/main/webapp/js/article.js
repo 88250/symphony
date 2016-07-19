@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.24.11, Jul 19, 2016
+ * @version 1.21.24.12, Jul 20, 2016
  */
 
 /**
@@ -377,6 +377,7 @@ var Article = {
         });
 
         this.toggleToc();
+        this.initToc();
     },
     /**
      * 历史版本对比
@@ -718,8 +719,42 @@ var Article = {
         });
     },
     /**
-     * 目录展现隐藏切换
-     * @returns {undefined}
+     * @description 初始化目录.
+     */
+    initToc: function () {
+        var $articleToc = $('#articleToC'),
+                top = $articleToc.offset().top;
+
+        $articleToc.css('width', $('.side').width() + 'px');
+        $articleToc.next().css('width', $('.side').width() + 'px');
+        $articleToc.next().next().css('width', $('.side').width() + 'px');
+
+        $('.article-toc').css({
+            'overflow': 'auto',
+            'max-height': $(window).height() - 127 + 'px',
+            'background-color': '#f7f7f7'
+        });
+
+        $(window).scroll(function (event) {
+            if ($('body').scrollTop() > top - 20) {
+                $articleToc.css('position', 'fixed');
+                $articleToc.next().css({
+                    'position': 'fixed',
+                    'top': ($articleToc.height() + 41) + 'px'
+                });
+                $articleToc.next().next().css({
+                    'position': 'fixed',
+                    'top': ($articleToc.height() + $articleToc.next().height() + 62) + 'px'
+                });
+            } else {
+                $articleToc.css('position', 'inherit');
+                $articleToc.next().css('position', 'inherit');
+                $articleToc.next().next().css('position', 'inherit');
+            }
+        });
+    },
+    /**
+     * @description 目录展现隐藏切换.
      */
     toggleToc: function () {
         if ($('#articleToC').length === 0) {
@@ -731,22 +766,12 @@ var Article = {
             $('#articleToC').hide();
             $menu.removeClass('ft-red');
         } else {
-            $('#articleToC').show().css({
-                'width': $('.side').width() + 'px',
-                'left': $('.side').offset().left + 'px'
-            });
-
-            $('.article-toc').css({
-                'overflow': 'auto',
-                'max-height': $(window).height() - 127 + 'px',
-                'background-color': '#f7f7f7'
-            });
-
+            $('#articleToC').show();
             $menu.addClass('ft-red');
         }
     },
     /**
-     * 标记消息通知为已读状态.
+     * @description 标记消息通知为已读状态.
      */
     makeNotificationRead: function (articleId, commentIds) {
         var requestJSONObject = {

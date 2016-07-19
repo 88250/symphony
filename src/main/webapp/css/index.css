@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.12.19, Jul 18, 2016
+ * @version 2.12.12.20, Jul 20, 2016
  */
 
 /* start module */
@@ -308,9 +308,7 @@ h2.article-title {
 }
 
 #articleToC {
-    display: none;
-    position: fixed;
-    top: 69px;
+    top: 21px;
     z-index: 10;
 }
 
