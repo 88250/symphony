@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.10.2.33, Jul 11, 2016
+    Version: 2.10.2.34, Jul 19, 2016
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -32,7 +32,7 @@
         <qiniu.version>7.0.4.1</qiniu.version>
         <jodd.version>3.6.6</jodd.version>
         <emoji-java.version>3.0.0</emoji-java.version>
-        <user-agent-utils.version>1.19</user-agent-utils.version>
+        <user-agent-utils.version>1.20</user-agent-utils.version>
 
         <!-- maven plugin -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>

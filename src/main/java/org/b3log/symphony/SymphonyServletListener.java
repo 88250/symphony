@@ -26,6 +26,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
@@ -71,7 +72,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.5.8, May 29, 2016
+ * @version 2.12.6.8, Jul 19, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -195,7 +196,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final String userAgentStr = httpServletRequest.getHeader("User-Agent");
 
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
-        final BrowserType browserType = userAgent.getBrowser().getBrowserType();
+        BrowserType browserType = userAgent.getBrowser().getBrowserType();
 
         if (BrowserType.ROBOT == browserType) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
@@ -211,6 +212,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
         }
 
         Stopwatchs.start("Request initialized [" + httpServletRequest.getRequestURI() + "]");
+
+        // For QQ Mobile browser
+        browserType = StringUtils.containsIgnoreCase(userAgentStr, "mobile") ? BrowserType.MOBILE_BROWSER : browserType;
 
         httpServletRequest.setAttribute(Common.IS_MOBILE, BrowserType.MOBILE_BROWSER == browserType);
 
