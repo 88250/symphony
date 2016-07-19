@@ -15,7 +15,7 @@
                 background: #79a8ae;
                 color: #CFEBE4;
                 font-size: 18px;
-                line-height: 2;
+                line-height: 1.6;
                 letter-spacing: 1.2px;
                 margin: 0;
             }
@@ -31,7 +31,7 @@
             }
             .text {
                 position: fixed;
-                bottom: 100px;
+                bottom: 70px;
                 text-align: center;
                 width: 100%;
             }
@@ -39,11 +39,22 @@
                 margin: 0 auto;
                 display: block;
             }
+            .slogan {
+                position: fixed;
+                bottom: 50%;
+                text-align: center;
+                width: 100%;
+                font-size: 60px;
+                color: #FFF;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+                display: none;
+            }
         </style>
     </head>
 
     <body class="body--ready">
         <canvas class="canvas"></canvas>
+        <p class="slogan">HacPai</p>
         <p class="text">
             非常抱歉，加载出现了点问题<br/>
             请稍后尝试刷新，如果还不能使用，<a href="http://b3log.org">联系我们</a>吧！
@@ -53,7 +64,11 @@
                 init: function () {
                     S.Drawing.init('.canvas');
                     document.body.classList.add('body--ready');
-                    S.UI.simulate('B3log|Solo|Symphony|Wide|with YOU!|#countdown 3|#icon thumbs-up');
+                    var text = 'B3log|Solo|Symphony|Wide|with YOU!|#countdown 3|#icon thumbs-up';
+                    if (window.innerWidth < 600) {
+                        text = 'H|a|c|P|a|i|';
+                    }
+                    S.UI.simulate(text);
                     S.Drawing.loop(function () {
                         S.Shape.render();
                     });
@@ -91,8 +106,8 @@
                         requestFrame.call(window, this.loop.bind(this));
                     },
                     adjustCanvas: function () {
-                        canvas.width = window.innerWidth - 100;
-                        canvas.height = window.innerHeight - 30;
+                        canvas.width = window.innerWidth;
+                        canvas.height = window.innerHeight;
                     },
                     clearFrame: function () {
                         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -213,6 +228,11 @@
 
                             default:
                                 S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'HacPai' : current));
+                                if (current === '') {
+                                    setTimeout(function () {
+                                        document.querySelector('.slogan').style.display = 'block';
+                                    }, 1000 / 60);
+                                }
                         }
                     }, 2000, sequence.length);
                 }
