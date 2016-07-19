@@ -85,7 +85,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.13.24, Jul 19, 2016
+ * @version 2.18.14.24, Jul 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -1557,7 +1557,6 @@ public class ArticleQueryService {
             }
 
             article.put(Article.ARTICLE_T_PREVIEW_CONTENT, article.optString(Article.ARTICLE_TITLE));
-            article.put(Article.ARTICLE_T_TOC, getArticleToC(article));
 
             String articleContent = article.optString(Article.ARTICLE_CONTENT);
             article.put(Common.DISCUSSION_VIEWABLE, true);
@@ -1588,6 +1587,7 @@ public class ArticleQueryService {
 
                     article.put(Article.ARTICLE_REWARD_CONTENT, "");
                     article.put(Article.ARTICLE_REWARD_POINT, 0);
+                    article.put(Article.ARTICLE_T_TOC, "");
 
                     return;
                 }
@@ -1663,6 +1663,7 @@ public class ArticleQueryService {
 
             article.put(Article.ARTICLE_CONTENT, articleContent);
             article.put(Article.ARTICLE_T_PREVIEW_CONTENT, getArticleMetaDesc(article));
+            article.put(Article.ARTICLE_T_TOC, getArticleToC(article));
         } finally {
             Stopwatchs.end();
         }
