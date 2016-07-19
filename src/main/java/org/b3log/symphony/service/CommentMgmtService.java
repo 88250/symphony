@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.8.6.16, Mar 22, 2016
+ * @version 2.8.6.17, Jul 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -418,13 +418,11 @@ public class CommentMgmtService {
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
 
-            LOGGER.warn("Fire event [ADD_COMMENT_TO_ARTICLE], commentId [" + ret + "]");
             try {
                 eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
             }
-            LOGGER.warn("Fired event [ADD_COMMENT_TO_ARTICLE], commentId [" + ret + "]");
 
             return ret;
         } catch (final RepositoryException e) {
