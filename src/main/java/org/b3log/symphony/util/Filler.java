@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.12, Jul 15, 2016
+ * @version 1.7.1.13, Jul 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -190,7 +190,12 @@ public class Filler {
     public void fillRandomArticles(final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills random articles");
         try {
-            dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(Symphonys.getInt("sideRandomArticlesCnt")));
+            final int fetchSize = Symphonys.getInt("sideRandomArticlesCnt");
+            if (fetchSize > 0) {
+                dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(fetchSize));
+            } else {
+                dataModel.put(Common.SIDE_RANDOM_ARTICLES, Collections.emptyList());
+            }
         } finally {
             Stopwatchs.end();
         }

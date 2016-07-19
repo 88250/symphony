@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.26.16.20, Jul 6, 2016
+ * @version 1.26.16.21, Jul 19, 2016
  */
 
 /**
@@ -775,6 +775,8 @@ var Util = {
         });
 
         if (isLoggedIn) { // 如果登录了
+            Util.setUnreadNotificationCount();
+
             // 定时获取并设置未读提醒计数
             setInterval(function () {
                 Util.setUnreadNotificationCount();
