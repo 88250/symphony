@@ -38,12 +38,12 @@ import org.json.JSONObject;
  *
  * <p>
  * <ul>
- * <li>Report running status (/status), GET</li>
+ * <li>Report running status (/cron/status), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Apr 13, 2016
+ * @version 1.1.0.3, Jul 19, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -68,7 +68,7 @@ public class StatusProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/status", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/cron/status", method = HTTPRequestMethod.GET)
     public void reportStatus(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String key = Symphonys.get("keyOfSymphony");

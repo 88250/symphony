@@ -18,13 +18,13 @@
 -->
 <!--
     Description: Cron job configurations. 
-    Version: 1.9.0.5, Jul 14, 2016
+    Version: 1.9.0.6, Jul 19, 2016
     Author: Liang Ding
 -->
 <cronentries>
     
     <cron>
-        <url>/users/load-names?key=dev_key</url>
+        <url>/cron/users/load-names?key=dev_key</url>
         <description>Loads usernames</description>
         <schedule>every 30 minutes</schedule>
     </cron>
@@ -62,25 +62,25 @@
     <!-- Disabled on Dev environment -->
     <!--
     <cron>
-        <url>/status?key=dev_key</url>
+        <url>/cron/status?key=dev_key</url>
         <description>Checks running status</description>
         <schedule>every 2 hours</schedule>
     </cron>
 
     <cron>
-        <url>/verifycode/email?key=dev_key</url>
+        <url>/cron/verifycode/email?key=dev_key</url>
         <description>Sends email verifycodes</description>
         <schedule>every 5 seconds</schedule>
     </cron>
     
     <cron>
-        <url>/verifycode/remove-expired?key=dev_key</url>
+        <url>/cron/verifycode/remove-expired?key=dev_key</url>
         <description>Removes expired verifycodes</description>
         <schedule>every 1 hours</schedule>
     </cron>
     
     <cron>
-        <url>/users/reset-unverified?key=dev_key</url>
+        <url>/cron/users/reset-unverified?key=dev_key</url>
         <description>Resets unverified users</description>
         <schedule>every 24 hours</schedule>
     </cron>

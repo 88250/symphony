@@ -31,7 +31,7 @@ import org.b3log.symphony.util.Symphonys;
  *
  * <p>
  * <ul>
- * <li>Send email verifycode (/verifycode/email), GET</li>
+ * <li>Send email verifycode (/cron/verifycode/email), GET</li>
  * </ul>
  * </p>
  *
@@ -61,7 +61,7 @@ public class VerifycodeProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/verifycode/email", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/cron/verifycode/email", method = HTTPRequestMethod.GET)
     public void sendEmailRegisterVerifycode(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String key = Symphonys.get("keyOfSymphony");
@@ -84,7 +84,7 @@ public class VerifycodeProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/verifycode/remove-expired", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/cron/verifycode/remove-expired", method = HTTPRequestMethod.GET)
     public void removeExpriedVerifycodes(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String key = Symphonys.get("keyOfSymphony");

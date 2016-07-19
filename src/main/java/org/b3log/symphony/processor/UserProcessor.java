@@ -1099,14 +1099,14 @@ public class UserProcessor {
     }
 
     /**
-     * Resets unverified users..
+     * Resets unverified users.
      *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/users/reset-unverified", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/cron/users/reset-unverified", method = HTTPRequestMethod.GET)
     public void resetUnverifiedUsers(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String key = Symphonys.get("keyOfSymphony");
@@ -1176,7 +1176,7 @@ public class UserProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/users/load-names", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/cron/users/load-names", method = HTTPRequestMethod.GET)
     public void loadUserNames(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String key = Symphonys.get("keyOfSymphony");
