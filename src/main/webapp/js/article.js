@@ -736,11 +736,38 @@ var Article = {
 
         $('.article-toc').css({
             'overflow': 'auto',
-            'max-height': $(window).height() - 127 + 'px',
-            'background-color': '#f7f7f7'
+            'max-height': $(window).height() - 127 + 'px'
+        });
+
+        var toc = [];
+        $('.article-content [id^=toc]').each(function (i) {
+            var $it = $(this);
+            toc.push({
+                id: $it.attr('id'),
+                offsetTop: $it.offset().top
+            });
+        });
+
+        $articleToc.find('li').click(function () {
+            var $it = $(this);
+            setTimeout(function () {
+                $articleToc.find('li').removeClass('current');
+                $it.addClass('current');
+            }, 50);
         });
 
         $(window).scroll(function (event) {
+            var scrollTop = $('body').scrollTop();
+
+            for (var i = 0, iMax = toc.length; i < iMax; i++) {
+                if (scrollTop < toc[i].offsetTop - 5) {
+                    $articleToc.find('li').removeClass('current');
+                    var index = i > 0 ? i - 1 : 0;
+                    $articleToc.find('a[href=#' + toc[index].id + ']').parent().addClass('current');
+                    break;
+                }
+            }
+
             if ($('#articleToC').css('display') === 'none') {
                 return false;
             }
@@ -763,6 +790,8 @@ var Article = {
                 'width': $('.side').width() + 'px'
             });
         });
+        
+        $(window).scroll();
     },
     /**
      * @description 目录展现隐藏切换.
