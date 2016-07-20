@@ -45,4 +45,13 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>Verifycodes</word>
         <word>whitelist</word>
     </spellchecker-wordlist>
+    <properties xmlns="http://www.netbeans.org/ns/maven-properties-data/1">
+        <!--
+Properties that influence various parts of the IDE, especially code formatting and the like. 
+You can copy and paste the single properties, into the pom.xml file and the IDE will pick them up.
+That way multiple projects can share the same settings (useful for formatting rules for example).
+Any value defined here will override the pom.xml file value but is only applicable to the current project.
+-->
+        <org-netbeans-modules-web-clientproject-api.Gulp_2e_task_2e_1>cc</org-netbeans-modules-web-clientproject-api.Gulp_2e_task_2e_1>
+    </properties>
 </project-shared-configuration>
