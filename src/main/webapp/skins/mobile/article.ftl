@@ -345,6 +345,10 @@
             Comment.init(${isLoggedIn?c});
             <#if isLoggedIn>
             Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
+
+            setTimeout(function() {
+                Util.setUnreadNotificationCount();
+            }, 1000);
             </#if>            
         </script>
         <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
