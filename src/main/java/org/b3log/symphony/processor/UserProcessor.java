@@ -66,6 +66,7 @@ import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.PointtransferQueryService;
+import org.b3log.symphony.service.PostExportService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
@@ -95,11 +96,12 @@ import org.json.JSONObject;
  * <li>Password (/settings/password), POST</li>
  * <li>SyncUser (/apis/user), POST</li>
  * <li>Lists usernames (/users/names), GET</li>
+ * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.16.8.16, Jul 5, 2016
+ * @version 1.17.8.16, Jul 20, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -175,6 +177,36 @@ public class UserProcessor {
      */
     @Inject
     private NotificationMgmtService notificationMgmtService;
+
+    /**
+     * Post export service.
+     */
+    @Inject
+    private PostExportService postExportService;
+
+    /**
+     * Exports posts(article/comment) to a file.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     */
+    @RequestProcessing(value = "/export/posts", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {LoginCheck.class})
+    public void exportPosts(final HTTPRequestContext context, final HttpServletRequest request) {
+        context.renderJSON();
+
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+
+        final String downloadURL = postExportService.exportPosts(userId);
+        if (StringUtils.isBlank(downloadURL)) {
+            context.renderJSON(false);
+
+            return;
+        }
+
+        context.renderJSON(true).renderJSONValue("url", downloadURL);
+    }
 
     /**
      * Shows user home page.
