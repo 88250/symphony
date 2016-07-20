@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.4.7, Jul 14, 2016
+ * @version 1.11.4.7, Jul 20, 2016
  */
 
 /**
@@ -27,6 +27,25 @@
  * @static
  */
 var Settings = {
+    /**
+     * 数据导出.
+     */
+    exportPosts: function () {
+        $.ajax({
+            url: "/export/posts",
+            type: "POST",
+            cache: false,
+            success: function (result, textStatus) {
+                if (!result.sc) {
+                    alert("TBD: V, tip display it....");
+                    
+                    return;
+                }
+                
+                window.open(result.url);
+            }
+        });
+    },
     /**
      * @description 修改地理位置状态
      * @param {type} csrfToken CSRF token

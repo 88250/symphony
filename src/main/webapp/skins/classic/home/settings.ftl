@@ -189,6 +189,15 @@
         <button class="green fn-right" onclick="Settings.update('password', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
+
+<div class="module">
+    <div class="module-header">
+        <h2>${dataExportLabel}</h2>
+    </div>
+    <div class="module-panel form fn-clear">
+        <button class="green fn-right" onclick="Settings.exportPosts()">${submitLabel}</button>
+    </div>
+</div>
 </@home>
 <script type="text/javascript" src="${staticServePath}/js/lib/zeroclipboard/ZeroClipboard.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>

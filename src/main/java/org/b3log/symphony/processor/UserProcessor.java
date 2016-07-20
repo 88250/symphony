@@ -190,7 +190,7 @@ public class UserProcessor {
      * @param context the specified context
      * @param request the specified request
      */
-    @RequestProcessing(value = "/export/posts", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/export/posts", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class})
     public void exportPosts(final HTTPRequestContext context, final HttpServletRequest request) {
         context.renderJSON();
