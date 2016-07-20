@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Validates for comment adding remotely.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Apr 3, 2015
+ * @version 1.1.0.4, Jul 20, 2015
  * @since 0.2.0
  */
 @Named
@@ -123,7 +123,8 @@ public class ClientCommentAddValidation extends BeforeRequestProcessAdvice {
             }
 
             if (!author.optString(UserExt.USER_B3_KEY).equals(userB3Key)) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Wrong B3 key [client=" + userB3Key + ", sym="
+                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Wrong B3 key [email="
+                        + clientAdminEmail + "client=" + userB3Key + ", sym="
                         + author.optString(UserExt.USER_B3_KEY) + "]"));
             }
         } catch (final ServiceException e) {
