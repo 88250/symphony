@@ -162,7 +162,10 @@
                             </span>
                         </div>
                         <ul>
+                            <#assign notificationCmtIds = "">
                             <#list article.articleComments as comment>
+                            <#assign notificationCmtIds = notificationCmtIds + comment.oId>
+                            <#if comment_has_next><#assign notificationCmtIds = notificationCmtIds + ","></#if>
                             <li id="${comment.oId}"<#if comment.commentStatus == 1>class="shield"</#if>>
                                 <#if !comment?has_next><div id="bottomComment"></div></#if>
                                 <div class="fn-flex">
@@ -340,6 +343,9 @@
                     Article.playThought('${article.articleContent}');
             </#if>
             Comment.init(${isLoggedIn?c});
+            <#if isLoggedIn>
+            Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
+            </#if>            
         </script>
         <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">
