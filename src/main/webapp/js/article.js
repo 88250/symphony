@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.24.12, Jul 20, 2016
+ * @version 1.21.24.13, Jul 20, 2016
  */
 
 /**
@@ -376,7 +376,6 @@ var Article = {
             "hideFooter": true
         });
 
-        this.toggleToc();
         this.initToc();
     },
     /**
@@ -726,8 +725,14 @@ var Article = {
                 top = $articleToc.offset().top;
 
         $articleToc.css('width', $('.side').width() + 'px');
-        $articleToc.next().css('width', $('.side').width() + 'px');
-        $articleToc.next().next().css('width', $('.side').width() + 'px');
+        $articleToc.next().css({
+            'width': $('.side').width() + 'px',
+            'top': ($articleToc.height() + 41) + 'px'
+        });
+        $articleToc.next().next().css({
+            'width': $('.side').width() + 'px',
+            'top': ($articleToc.height() + $articleToc.next().height() + 62) + 'px'
+        });
 
         $('.article-toc').css({
             'overflow': 'auto',
@@ -736,39 +741,49 @@ var Article = {
         });
 
         $(window).scroll(function (event) {
+            if ($('#articleToC').css('display') === 'none') {
+                return false;
+            }
+
             if ($('body').scrollTop() > top - 20) {
                 $articleToc.css('position', 'fixed');
-                $articleToc.next().css({
-                    'position': 'fixed',
-                    'top': ($articleToc.height() + 41) + 'px'
-                });
-                $articleToc.next().next().css({
-                    'position': 'fixed',
-                    'top': ($articleToc.height() + $articleToc.next().height() + 62) + 'px'
-                });
+                $articleToc.next().css('position', 'fixed');
+                $articleToc.next().next().css('position', 'fixed');
             } else {
                 $articleToc.css('position', 'inherit');
                 $articleToc.next().css('position', 'inherit');
                 $articleToc.next().next().css('position', 'inherit');
             }
+        }).resize(function () {
+            $articleToc.css('width', $('.side').width() + 'px');
+            $articleToc.next().css({
+                'width': $('.side').width() + 'px'
+            });
+            $articleToc.next().next().css({
+                'width': $('.side').width() + 'px'
+            });
         });
     },
     /**
      * @description 目录展现隐藏切换.
      */
     toggleToc: function () {
-        if ($('#articleToC').length === 0) {
+        var $articleToc = $('#articleToC');
+        if ($articleToc.length === 0) {
             return false;
         }
 
-        var $menu = $('.icon-unordered-list');
+        var $menu = $('.article-action .icon-unordered-list');
         if ($menu.hasClass('ft-red')) {
-            $('#articleToC').hide();
+            $articleToc.hide();
             $menu.removeClass('ft-red');
         } else {
-            $('#articleToC').show();
+            $articleToc.show();
             $menu.addClass('ft-red');
         }
+
+        $articleToc.next().css('position', 'inherit');
+        $articleToc.next().next().css('position', 'inherit');
     },
     /**
      * @description 标记消息通知为已读状态.

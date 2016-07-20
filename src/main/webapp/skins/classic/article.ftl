@@ -24,7 +24,7 @@
                         <span class="fn-right">
                             <#if "" != article.articleToC>
                             <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
-                                  class="fn-pointer tooltipped tooltipped-s"><span class="icon-unordered-list"></span></span>
+                                  class="fn-pointer tooltipped tooltipped-s"><span class="icon-unordered-list ft-red"></span></span>
                             </#if>
                             <#if isLoggedIn>
                             <span id="thankArticle" aria-label="${thankLabel}" class="fn-pointer tooltipped tooltipped-s" <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${pointThankArticle})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
