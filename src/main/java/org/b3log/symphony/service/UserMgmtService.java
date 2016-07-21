@@ -506,8 +506,15 @@ public class UserMgmtService {
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
             user.put(UserExt.USER_COMMENT_VIEW_MODE, UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME);
-            user.put(UserExt.USER_UA_STATUS, UserExt.USER_UA_STATUS_C_PUBLIC);
-            user.put(UserExt.USER_NOTIFY_STATUS, UserExt.USER_NOTIFY_STATUS_C_ENABLED);
+            user.put(UserExt.USER_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_COMMENT_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_FOLLOWING_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_FOLLOWING_TAG_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_FOLLOWING_USER_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_FOLLOWER_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_POINT_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_UA_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_NOTIFY_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, userNo);
