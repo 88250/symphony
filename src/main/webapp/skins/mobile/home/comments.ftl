@@ -1,6 +1,7 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "comments">
+<#if "adminRole" == currentUser.userRole || currentUser.userName == user.userName || (currentUser.userName != user.userName && user.userCommentStatus == 0)>
 <div class="list">
     <ul>
         <#list userHomeComments as comment>
@@ -34,4 +35,7 @@
     </ul>
 </div>
 <@pagination url="/member/${user.userName}/comments"/>
+<#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</#if>
 </@home>

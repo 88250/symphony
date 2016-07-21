@@ -1,6 +1,7 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "followers">
+<#if "adminRole" == currentUser.userRole || currentUser.userName == user.userName || (currentUser.userName != user.userName && user.userFollowerStatus == 0)>
 <div class="follow">
     <ol>
         <#list userHomeFollowerUsers as follower>
@@ -43,4 +44,7 @@
     </ol>
 </div>
 <@pagination url="/member/${user.userName}/followers"/>
+<#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</#if>
 </@home>

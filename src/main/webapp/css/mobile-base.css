@@ -2378,6 +2378,11 @@ code .dec { color: initial; } /* decimal - blue */
     padding: 5px 0;
     display: block;
 }
+.home-invisible {
+    margin: 10px 0;
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 10px;
+}
 /* end home */
 
 /* start notifications */
@@ -2547,5 +2552,11 @@ code .dec { color: initial; } /* decimal - blue */
 /* start settings */
 #avatarUpload {
     overflow: hidden;
+}
+.settings-secret label {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    float: none;
 }
 /* end settings */

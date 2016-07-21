@@ -1,6 +1,7 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "followingTags">
+<#if "adminRole" == currentUser.userRole || currentUser.userName == user.userName || (currentUser.userName != user.userName && user.userFollowingTagStatus == 0)>
 <div class="follow">
     <ol>
         <#list userHomeFollowingTags as followingTag>
@@ -38,4 +39,7 @@
     </ol>
 </div>
 <@pagination url="/member/${user.userName}/following/tags"/>
+<#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</#if>
 </@home>

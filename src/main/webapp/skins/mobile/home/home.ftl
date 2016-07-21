@@ -1,6 +1,7 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "home">
+<#if "adminRole" == currentUser.userRole || currentUser.userName == user.userName || (currentUser.userName != user.userName && user.userArticleStatus == 0)>
 <div class="list">
     <ul> 
         <#list userHomeArticles as article>
@@ -41,4 +42,7 @@
     </ul>
 </div>
 <@pagination url="/member/${user.userName}"/>
+<#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</#if>
 </@home>

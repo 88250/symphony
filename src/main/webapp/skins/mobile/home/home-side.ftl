@@ -8,7 +8,9 @@
             </div>
             </#if>
             <span class="ft-gray">${user.userName}</span>
+            <#if "adminRole" == currentUser.userRole || currentUser.userName == user.userName || (currentUser.userName != user.userName && user.userOnlineStatus == 0)>
             <img title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
+            </#if>
             <#if "adminRole" == user.userRole>
             <span class="ft-13 icon-userrole" title="${administratorLabel}"></span>
             </#if>
