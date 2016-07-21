@@ -8,9 +8,11 @@
             </div>
             </#if>
             <span class="ft-gray">${user.userName}</span>
+            <#if "adminRole" == currentUser.userRole || currentUser.userName == user.userName || (currentUser.userName != user.userName && user.userOnlineStatus == 0)>
             <span class="tooltipped tooltipped-s" aria-label="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>">
                 <img src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
             </span>
+            </#if>
             <#if "adminRole" == user.userRole>
             <span class="ft-13 tooltipped tooltipped-s" aria-label="${administratorLabel}"><span class="icon-userrole"></span></span>
             </#if>

@@ -269,7 +269,15 @@ var Settings = {
     _validateMisc: function () {
         return {
             userUAStatus: $("#userUAStatus").prop("checked"),
-            userNotifyStatus: $("#userNotifyStatus").prop("checked")
+            userNotifyStatus: $("#userNotifyStatus").prop("checked"),
+            userArticleStatus: $("#userArticleStatus").prop("checked"),
+            userCommentStatus: $("#userCommentStatus").prop("checked"),
+            userFollowingUserStatus: $("#userFollowingUserStatus").prop("checked"),
+            userFollowingTagStatus: $("#userFollowingTagStatus").prop("checked"),
+            userFollowingArticleStatus: $("#userFollowingArticleStatus").prop("checked"),
+            userFollowerStatus: $("#userFollowerStatus").prop("checked"),
+            userPointStatus: $("#userPointStatus").prop("checked"),
+            userOnlineStatus: $("#userOnlineStatus").prop("checked")  
         };
     },
     /**

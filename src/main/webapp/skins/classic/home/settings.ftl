@@ -155,19 +155,78 @@
         <h2>${miscLabel}</h2>
     </div>
     <div class="module-panel form fn-clear">
-        <label>
-            ${displayUALabel}
-            <input id="userUAStatus" <#if 0 == currentUser.userUAStatus> checked="checked"</#if> type="checkbox" /> 
-        </label>
-
-        <label>&nbsp; &nbsp;
-            ${useNotifyLabel}
-            <input id="userNotifyStatus" <#if 0 == currentUser.userNotifyStatus> checked="checked"</#if> type="checkbox" /> 
-        </label>
-
-        <br/><br/>
-        <div class="fn-clear"></div>
-        <div id="miscTip" class="tip"></div><br/>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${displayUALabel}
+                    <input id="userUAStatus" <#if 0 == currentUser.userUAStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${useNotifyLabel}
+                    <input id="userNotifyStatus" <#if 0 == currentUser.userNotifyStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${userArticleStatusLabel}
+                    <input id="userArticleStatus" <#if 0 == currentUser.userArticleStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userCommentStatusLabel}
+                    <input id="userCommentStatus" <#if 0 == currentUser.userCommentStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${userFollowingUserStatusLabel}
+                    <input id="userFollowingUserStatus" <#if 0 == currentUser.userFollowingUserStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userFollowingTagStatusLabel}
+                    <input id="userFollowingTagStatus" <#if 0 == currentUser.userFollowingTagStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${userFollowingArticleStatusLabel}
+                    <input id="userFollowingArticleStatus" <#if 0 == currentUser.userFollowingArticleStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userFollowerStatusLabel}
+                    <input id="userFollowerStatus" <#if 0 == currentUser.userFollowerStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${userPointStatusLabel}
+                    <input id="userPointStatus" <#if 0 == currentUser.userPointStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userOnlineStatusLabel}
+                    <input id="userOnlineStatus" <#if 0 == currentUser.userOnlineStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+        <div id="miscTip" class="tip"></div>
+        <div class="fn-hr5"></div>
         <button class="green fn-right" onclick="Settings.update('misc', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
@@ -204,26 +263,26 @@
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
 <script>
             Util.initUpload({
-            id: 'avatarUpload',
-                    qiniuUploadToken: '${qiniuUploadToken}',
-                    userId: '${currentUser.oId}',
-                    maxSize: ${imgMaxSize?c}
+                id: 'avatarUpload',
+                qiniuUploadToken: '${qiniuUploadToken}',
+                userId: '${currentUser.oId}',
+                maxSize: '${imgMaxSize?c}'
             }, function (data) {
-            var qiniuKey = data.result.key;
-            $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
-            $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
-            $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+                var qiniuKey = data.result.key;
+                $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+                $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+                $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
             }, function (data) {
-            var qiniuKey = data.result.key,
-                    t = new Date().getTime();
-            $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
-            $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
-            $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+                var qiniuKey = data.result.key,
+                        t = new Date().getTime();
+                $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+                $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+                $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
             });
             var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
             shareClipboard.on("ready", function (readyEvent) {
-            shareClipboard.on("aftercopy", function (event) {
-            $("#shareClipboard").text('${copiedLabel}');
-            });
+                shareClipboard.on("aftercopy", function (event) {
+                    $("#shareClipboard").text('${copiedLabel}');
+                });
             });
 </script>

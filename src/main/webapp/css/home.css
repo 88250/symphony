@@ -146,6 +146,10 @@
     padding: 8px;
     display: block;
 }
+
+.home-invisible {
+    margin: 50px 0;
+}
 /* end home */
 
 /* start notifications */
@@ -344,5 +348,10 @@
     bottom: 20px;
     padding: 5px 12px 5px;
     border-radius: 0 3px 3px 0;
+}
+
+.settings-secret > div {
+    float: left;
+    width: 50%
 }
 /* end settings */

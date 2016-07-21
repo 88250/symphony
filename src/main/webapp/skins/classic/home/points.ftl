@@ -1,6 +1,7 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
 <@home "points">
+<#if "adminRole" == currentUser.userRole || currentUser.userName == user.userName || (currentUser.userName != user.userName && user.userPointStatus == 0)>
 <table class="points">
     <#list userHomePoints as point>
     <tr<#if point_index % 2 == 1> class="even"</#if>>
@@ -15,8 +16,10 @@
     </tr>
     </#list>
 </table>
-
+<@pagination url="/member/${user.userName}/points"/>
+<#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</#if>
 <br>
 <#include "../common/ranking.ftl">
-<@pagination url="/member/${user.userName}/points"/>
 </@home>

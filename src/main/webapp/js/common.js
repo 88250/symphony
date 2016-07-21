@@ -302,7 +302,7 @@ var Util = {
         if ("" === params.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
             $('#' + params.id).fileupload({
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: params.maxSize,
+                maxFileSize: parseInt(params.maxSize),
                 multipart: true,
                 pasteZone: null,
                 dropZone: null,
@@ -334,7 +334,7 @@ var Util = {
         } else {
             $('#' + params.id).fileupload({
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: params.maxSize,
+                maxFileSize: parseInt(params.maxSize),
                 multipart: true,
                 pasteZone: null,
                 dropZone: null,
