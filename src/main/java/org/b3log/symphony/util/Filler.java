@@ -45,7 +45,6 @@ import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.LivenessQueryService;
-import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -56,7 +55,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.13, Jul 19, 2016
+ * @version 1.7.1.14, Jul 21, 2016
  * @since 0.2.0
  */
 @Service
@@ -108,12 +107,6 @@ public class Filler {
      */
     @Inject
     private UserQueryService userQueryService;
-
-    /**
-     * Notification query service.
-     */
-    @Inject
-    private NotificationQueryService notificationQueryService;
 
     /**
      * Avatar query service.

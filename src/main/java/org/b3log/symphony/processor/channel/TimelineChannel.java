@@ -16,7 +16,6 @@
 package org.b3log.symphony.processor.channel;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,7 +33,7 @@ import org.json.JSONObject;
  * Timeline channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.3.0, Apr 25, 2016
+ * @version 2.0.3.1, Jul 21, 2016
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/timeline-channel", configurator = Channels.WebSocketConfigurator.class)

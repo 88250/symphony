@@ -54,6 +54,11 @@
         staticServePath: "${staticServePath}"
     };
     Util.init(${isLoggedIn?c});
+    
+    <#if isLoggedIn>
+    // Init [User] channel
+    UserChannel.init("${wsScheme}://${serverHost}:${serverPort}/user-channel");
+    </#if>
 </script>
 <#if algoliaEnabled>
 <script src="${staticServePath}/js/lib/algolia/algolia.min.js"></script>

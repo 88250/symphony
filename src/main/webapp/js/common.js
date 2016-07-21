@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.27.16.21, Jul 19, 2016
+ * @version 1.28.16.21, Jul 21, 2016
  */
 
 /**
@@ -1496,3 +1496,39 @@ var Audio = {
     }
 };
 
+/**
+ * @description 用户状态 channel.
+ * @static
+ */
+var UserChannel = {
+    /**
+     * WebSocket instance.
+     * 
+     * @type WebSocket
+     */
+    ws: undefined,
+    /**
+     * @description Initializes message channel
+     */
+    init: function (channelServer) {
+        UserChannel.ws = new ReconnectingWebSocket(channelServer);
+        UserChannel.ws.reconnectInterval = 10000;
+
+        UserChannel.ws.onopen = function () {
+            setInterval(function () {
+                UserChannel.ws.send('-hb-');
+            }, 1000 * 5);
+        };
+
+        UserChannel.ws.onmessage = function (evt) {
+        };
+
+        UserChannel.ws.onclose = function () {
+            UserChannel.ws.close();
+        };
+
+        UserChannel.ws.onerror = function (err) {
+            console.log("ERROR", err)
+        };
+    }
+};
