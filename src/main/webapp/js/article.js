@@ -19,7 +19,6 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.24.13, Jul 20, 2016
  */
 
 /**
@@ -721,6 +720,11 @@ var Article = {
      * @description 初始化目录.
      */
     initToc: function () {
+        if ($('#articleToC').length === 0) {
+            return false;
+        }
+
+        // 样式
         var $articleToc = $('#articleToC'),
                 top = $articleToc.offset().top;
 
@@ -739,6 +743,15 @@ var Article = {
             'max-height': $(window).height() - 127 + 'px'
         });
 
+        // 目录点击
+        $articleToc.find('li').click(function () {
+            var $it = $(this);
+            setTimeout(function () {
+                $articleToc.find('li').removeClass('current');
+                $it.addClass('current');
+            }, 50);
+        });
+
         var toc = [];
         $('.article-content [id^=toc]').each(function (i) {
             var $it = $(this);
@@ -748,15 +761,12 @@ var Article = {
             });
         });
 
-        $articleToc.find('li').click(function () {
-            var $it = $(this);
-            setTimeout(function () {
-                $articleToc.find('li').removeClass('current');
-                $it.addClass('current');
-            }, 50);
-        });
-
         $(window).scroll(function (event) {
+            if ($('#articleToC').css('display') === 'none') {
+                return false;
+            }
+
+            // 当前目录样式
             var scrollTop = $('body').scrollTop();
 
             for (var i = 0, iMax = toc.length; i < iMax; i++) {
@@ -768,10 +778,12 @@ var Article = {
                 }
             }
 
-            if ($('#articleToC').css('display') === 'none') {
-                return false;
+            if ($(window).height() + scrollTop >= $('body').height()) {
+                $articleToc.find('li').removeClass('current');
+                $articleToc.find('li:last').addClass('current');
             }
 
+            // 位置是否固定
             if ($('body').scrollTop() > top - 20) {
                 $articleToc.css('position', 'fixed');
                 $articleToc.next().css('position', 'fixed');
@@ -790,7 +802,7 @@ var Article = {
                 'width': $('.side').width() + 'px'
             });
         });
-        
+
         $(window).scroll();
     },
     /**
@@ -809,6 +821,9 @@ var Article = {
         } else {
             $articleToc.show();
             $menu.addClass('ft-red');
+            $articleToc.css('position', 'inherit');
+            $articleToc.find('li').removeClass('current');
+            $articleToc.find('li:first').addClass('current');
         }
 
         $articleToc.next().css('position', 'inherit');
