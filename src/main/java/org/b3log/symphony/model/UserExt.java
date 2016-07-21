@@ -22,11 +22,46 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.1.10, Jul 5, 2016
+ * @version 2.21.1.10, Jul 21, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+
+    /**
+     * Key of user point status.
+     */
+    public static final String USER_POINT_STATUS = "userPointStatus";
+
+    /**
+     * Key of user follower status.
+     */
+    public static final String USER_FOLLOWER_STATUS = "userFollowerStatus";
+
+    /**
+     * Key of user following article status.
+     */
+    public static final String USER_FOLLOWING_ARTICLE_STATUS = "userFollowingArticleStatus";
+
+    /**
+     * Key of user following tag status.
+     */
+    public static final String USER_FOLLOWING_TAG_STATUS = "userFollowingTagStatus";
+
+    /**
+     * Key of user following user status.
+     */
+    public static final String USER_FOLLOWING_USER_STATUS = "userFollowingUserStatus";
+
+    /**
+     * Key of user comment status.
+     */
+    public static final String USER_COMMENT_STATUS = "userCommentStatus";
+
+    /**
+     * Key of user article status.
+     */
+    public static final String USER_ARTICLE_STATUS = "userArticleStatus";
 
     /**
      * Key of user User-Agent status.
@@ -323,27 +358,26 @@ public final class UserExt {
      */
     public static final int USER_JOIN_USED_POINT_RANK_C_NOT_JOIN = 1;
 
-    //// User-Agent Status constants
+    //// User XXX Status constants
     /**
-     * User UA status - public.
+     * User XXX (notify/point/follower/following article/following tag/following user/comment/article) status - public.
      */
-    public static final int USER_UA_STATUS_C_PUBLIC = 0;
+    public static final int USER_XXX_STATUS_C_PUBLIC = 0;
 
     /**
-     * User UA status - private.
+     * User XXX (notify/point/follower/following article/following tag/following user/comment/article) status - private.
      */
-    public static final int USER_UA_STATUS_C_PRIVATE = 1;
-
-    //// User Notify Status constants
-    /**
-     * User notify status - enabled.
-     */
-    public static final int USER_NOTIFY_STATUS_C_ENABLED = 0;
+    public static final int USER_XXX_STATUS_C_PRIVATE = 1;
 
     /**
-     * User notify status - disabled.
+     * User XXX (UA) status - enabled.
      */
-    public static final int USER_NOTIFY_STATUS_C_DISABLED = 1;
+    public static final int USER_XXX_STATUS_C_ENABLED = 0;
+
+    /**
+     * User XXX (UA) status - disabled.
+     */
+    public static final int USER_XXX_STATUS_C_DISABLED = 1;
 
     //// Comment View Mode constants
     /**

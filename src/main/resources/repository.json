@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.21.6.9, Jul 8, 2016",
+    "version": "3.22.6.9, Jul 21, 2016",
     "authors": [
         "Liang Ding"
     ],
@@ -925,7 +925,42 @@
                 {
                     "name": "userNotifyStatus",
                     "type": "int",
-                    "description": "0: Enabled, 1: Disabled"
+                    "description": "0: enabled, 1: disabled"
+                },
+                {
+                    "name": "userPointStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userFollowerStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userFollowingArticleStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userFollowingTagStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userFollowingUserStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userCommentStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userArticleStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
                 }
             ]
         },

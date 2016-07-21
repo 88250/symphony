@@ -101,7 +101,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.8.17, Jul 21, 2016
+ * @version 1.17.8.18, Jul 21, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -773,12 +773,11 @@ public class UserProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/settings/geo/status", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void updateGeoStatus(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void updateGeoStatus(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) {
         context.renderJSON();
 
         JSONObject requestJSONObject;
@@ -796,11 +795,10 @@ public class UserProcessor {
             geoStatus = UserExt.USER_GEO_STATUS_C_PUBLIC;
         }
 
-        final JSONObject user = userQueryService.getCurrentUser(request);
-
-        user.put(UserExt.USER_GEO_STATUS, geoStatus);
-
         try {
+            final JSONObject user = userQueryService.getCurrentUser(request);
+            user.put(UserExt.USER_GEO_STATUS, geoStatus);
+
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
 
             context.renderTrueResult();
@@ -833,13 +831,36 @@ public class UserProcessor {
             requestJSONObject = new JSONObject();
         }
 
+        final boolean articleStatus = requestJSONObject.optBoolean(UserExt.USER_ARTICLE_STATUS);
+        final boolean commentStatus = requestJSONObject.optBoolean(UserExt.USER_COMMENT_STATUS);
+        final boolean followingUserStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWING_USER_STATUS);
+        final boolean followingTagStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWING_TAG_STATUS);
+        final boolean followingArticleStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWING_ARTICLE_STATUS);
+        final boolean followerStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWER_STATUS);
+        final boolean pointStatus = requestJSONObject.optBoolean(UserExt.USER_POINT_STATUS);
         final boolean uaStatus = requestJSONObject.optBoolean(UserExt.USER_UA_STATUS);
         final boolean notifyStatus = requestJSONObject.optBoolean(UserExt.USER_NOTIFY_STATUS);
 
         final JSONObject user = userQueryService.getCurrentUser(request);
 
-        user.put(UserExt.USER_UA_STATUS, uaStatus ? UserExt.USER_UA_STATUS_C_PUBLIC : UserExt.USER_UA_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_NOTIFY_STATUS, notifyStatus ? UserExt.USER_NOTIFY_STATUS_C_ENABLED : UserExt.USER_NOTIFY_STATUS_C_DISABLED);
+        user.put(UserExt.USER_ARTICLE_STATUS, articleStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_COMMENT_STATUS, commentStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_FOLLOWING_USER_STATUS, followingUserStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_FOLLOWING_TAG_STATUS, followingTagStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_FOLLOWING_ARTICLE_STATUS, followingArticleStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_FOLLOWER_STATUS, followerStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_POINT_STATUS, pointStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_UA_STATUS, uaStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_NOTIFY_STATUS, notifyStatus
+                ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
