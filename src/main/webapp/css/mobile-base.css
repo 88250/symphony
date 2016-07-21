@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Jul 3, 2016
+ * @version 1.3.1.3, Jul 21, 2016
  */
 
 /* start reset */
@@ -946,7 +946,7 @@ a[class*=" icon-"]:hover {
 .form label {
     color: #666;
     font-size: 15px;
-    margin: 12px 0 6px;
+    margin: 10px 0 5px;
     float: left;
 }
 

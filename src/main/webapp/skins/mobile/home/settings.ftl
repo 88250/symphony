@@ -79,7 +79,9 @@
         </div>
 
         <div class="module-panel form fn-clear">
-            ${inviteTipLabel}<br><br>
+            <div class="fn-hr10"></div>
+            ${inviteTipLabel}
+            <div class="fn-hr10"></div>
             <input type="text" value="${serverScheme}://${serverHost}/register?r=${currentUser.userName}" onclick="this.select()"/>
         </div>
     </div>
@@ -90,9 +92,11 @@
         </div>
 
         <div class="module-panel form fn-clear">
-            ${pointTransferTipLabel}<br><br>
+            <div class="fn-hr10"></div>
+            ${pointTransferTipLabel}
+            <div class="fn-hr10"></div>
             <input id="pointTransferUserName" type="text" placeholder="${userNameLabel}"/>
-            <br/> <br/>
+            <div class="fn-hr10"></div>
             <input id="pointTransferAmount" type="number" placeholder="${amountLabel}"/> <br/><br/>
             <div id="pointTransferTip" class="tip"></div> <br/>
             <button class="red fn-right" onclick="Settings.pointTransfer('${csrfToken}')">${confirmTransferLabel}</button>
@@ -103,9 +107,10 @@
         <div class="module-header">
             <h2>${geoLable}</h2>
         </div>
-
         <div class="module-panel form fn-clear">
-            ${geoInfoTipLabel}<br><br>
+            <div class="fn-hr10"></div>
+            ${geoInfoTipLabel}
+            <div class="fn-hr10"></div>
             <input id="cityName" type="text" placeholder="${geoInfoPlaceholderLabel}" value="${user.userCity}" 
                    readonly="readonly"/><!--<br/><br/>
     
