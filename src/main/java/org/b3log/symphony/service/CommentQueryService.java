@@ -638,7 +638,7 @@ public class CommentQueryService {
             syncCommenterName = StringUtils.substringBefore(syncCommenterName, "</i>");
 
             if (UserRegisterValidation.invalidUserName(syncCommenterName)) {
-                syncCommenterName = "Someone";
+                syncCommenterName = "someone";
             }
 
             commentContent = commentContent.replaceAll("<i class=\"ft-small\">by .*</i>", "");

@@ -59,6 +59,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
@@ -1372,6 +1373,13 @@ public class ArticleQueryService {
             article.put(Article.ARTICLE_T_STICK_REMAINS, (int) Math.floor((double) remainsMills / 1000 / 60));
         } else {
             article.put(Article.ARTICLE_T_STICK_REMAINS, 0);
+        }
+        
+        String articleLatestCmterName = article.optString(Article.ARTICLE_LATEST_CMTER_NAME);
+        if (StringUtils.isNotBlank(articleLatestCmterName) 
+                && UserRegisterValidation.invalidUserName(articleLatestCmterName)) {
+            articleLatestCmterName = "someone";
+            article.put(Article.ARTICLE_LATEST_CMTER_NAME, articleLatestCmterName);
         }
     }
 
