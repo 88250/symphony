@@ -32,8 +32,12 @@
                     <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
                     </#list>
                     <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${article.timeAgo}</span>
-                    <#if "" != article.articleLatestCmterName && !article.syncWithSymphonyClient>
+                    <#if "" != article.articleLatestCmterName>
+                    <#if article.syncWithSymphonyClient>
+                    <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> <span class="ft-gray">${article.articleLatestCmterName}</span>
+                    <#else>
                     <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> <a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}">${article.articleLatestCmterName}</a>
+                    </#if>
                     </#if>
                 </div>
             </div>
