@@ -195,6 +195,7 @@
         <h2>${dataExportLabel}</h2>
     </div>
     <div class="module-panel form fn-clear">
+        ${dataExportTipLabel}
         <button class="green fn-right" onclick="Settings.exportPosts()">${submitLabel}</button>
     </div>
 </div>

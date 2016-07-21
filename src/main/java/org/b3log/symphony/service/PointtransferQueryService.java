@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.2.1, Jun 29, 2016
+ * @version 1.16.2.1, Jul 21, 2016
  * @since 1.3.0
  */
 @Service
@@ -280,6 +280,10 @@ public class PointtransferQueryService {
                 String desTemplate = langPropsService.get("pointType" + typeStr + "DesLabel");
 
                 switch (type) {
+                    case Pointtransfer.TRANSFER_TYPE_C_DATA_EXPORT:
+                        desTemplate = desTemplate.replace("{num}", record.optString(Pointtransfer.DATA_ID));
+
+                        break;
                     case Pointtransfer.TRANSFER_TYPE_C_INIT:
                         desTemplate = desTemplate.replace("{point}", record.optString(Pointtransfer.SUM));
 

@@ -22,7 +22,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.UUID;
-import java.util.zip.ZipOutputStream;
 import javax.inject.Inject;
 import jodd.io.ZipUtil;
 import org.apache.commons.io.FileUtils;
@@ -34,11 +33,15 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,7 +50,7 @@ import org.json.JSONObject;
  * Post (article/comment) export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 20, 2016
+ * @version 1.0.0.1, Jul 21, 2016
  * @since 1.4.0
  */
 @Service
@@ -57,6 +60,12 @@ public class PostExportService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PostExportService.class.getName());
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Article repository.
@@ -71,12 +80,32 @@ public class PostExportService {
     private CommentRepository commentRepository;
 
     /**
+     * Pointtransfer management service.
+     */
+    @Inject
+    private PointtransferMgmtService pointtransferMgmtService;
+
+    /**
      * Exports all posts of a user's specified with the given user id.
      *
      * @param userId the given user id
-     * @return download URL
+     * @return download URL, returns {@code "-1"} if in sufficient balance, returns {@code null} if other exceptions
      */
     public String exportPosts(final String userId) {
+        final int pointDataExport = Symphonys.getInt("pointDataExport");
+        try {
+            final JSONObject user = userRepository.get(userId);
+            final int balance = user.optInt(UserExt.USER_POINT);
+
+            if (balance - pointDataExport < 0) {
+                return "-1";
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Checks user failed", e);
+
+            return null;
+        }
+
         final JSONArray posts = new JSONArray();
 
         Query query = new Query().setPageCount(-1).setFilter(
@@ -146,6 +175,13 @@ public class PostExportService {
         }
 
         LOGGER.info("Exporting posts [size=" + posts.length() + "]");
+
+        final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
+                Pointtransfer.TRANSFER_TYPE_C_DATA_EXPORT, Pointtransfer.TRANSFER_SUM_C_DATA_EXPORT,
+                String.valueOf(posts.length()));
+        if (!succ) {
+            return null;
+        }
 
         final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         String fileKey = "export/" + userId + "/" + uuid + ".zip";

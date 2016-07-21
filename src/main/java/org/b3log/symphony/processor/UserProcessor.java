@@ -101,7 +101,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.8.16, Jul 20, 2016
+ * @version 1.17.8.17, Jul 21, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -199,9 +199,10 @@ public class UserProcessor {
         final String userId = user.optString(Keys.OBJECT_ID);
 
         final String downloadURL = postExportService.exportPosts(userId);
-        if (StringUtils.isBlank(downloadURL)) {
-            context.renderJSON(false);
+        if ("-1".equals(downloadURL)) {
+            context.renderJSONValue(Keys.MSG, langPropsService.get("insufficientBalanceLabel"));
 
+        } else if (StringUtils.isBlank(downloadURL)) {
             return;
         }
 
@@ -760,6 +761,10 @@ public class UserProcessor {
         String pointTransferTipLabel = (String) dataModel.get("pointTransferTipLabel");
         pointTransferTipLabel = pointTransferTipLabel.replace("{point}", Symphonys.get("pointTransferMin"));
         dataModel.put("pointTransferTipLabel", pointTransferTipLabel);
+
+        String dataExportTipLabel = (String) dataModel.get("dataExportTipLabel");
+        dataExportTipLabel = dataExportTipLabel.replace("{point}", Symphonys.get("pointDataExport"));
+        dataModel.put("dataExportTipLabel", dataExportTipLabel);
     }
 
     /**
