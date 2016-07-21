@@ -961,6 +961,11 @@
                     "name": "userArticleStatus",
                     "type": "int",
                     "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userOnlineStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
                 }
             ]
         },

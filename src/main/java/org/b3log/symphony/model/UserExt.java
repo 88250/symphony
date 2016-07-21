@@ -64,6 +64,11 @@ public final class UserExt {
     public static final String USER_ARTICLE_STATUS = "userArticleStatus";
 
     /**
+     * Key of user online status.
+     */
+    public static final String USER_ONLINE_STATUS = "userOnlineStatus";
+
+    /**
      * Key of user User-Agent status.
      */
     public static final String USER_UA_STATUS = "userUAStatus";

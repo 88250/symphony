@@ -831,6 +831,7 @@ public class UserProcessor {
             requestJSONObject = new JSONObject();
         }
 
+        final boolean onlineStatus = requestJSONObject.optBoolean(UserExt.USER_ONLINE_STATUS);
         final boolean articleStatus = requestJSONObject.optBoolean(UserExt.USER_ARTICLE_STATUS);
         final boolean commentStatus = requestJSONObject.optBoolean(UserExt.USER_COMMENT_STATUS);
         final boolean followingUserStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWING_USER_STATUS);
@@ -843,6 +844,8 @@ public class UserProcessor {
 
         final JSONObject user = userQueryService.getCurrentUser(request);
 
+        user.put(UserExt.USER_ONLINE_STATUS, onlineStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_ARTICLE_STATUS, articleStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_COMMENT_STATUS, commentStatus
