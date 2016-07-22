@@ -201,7 +201,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                         notificationMgmtService.addBroadcastNotification(notification);
                     }
 
-                    LOGGER.info("City broadcast [" + users.length() + "]");
+                    LOGGER.info("City [" + city + "] broadcast [users=" + users.length() + "]");
                 }
             }
         } catch (final Exception e) {

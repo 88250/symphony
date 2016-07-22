@@ -1517,7 +1517,7 @@ var UserChannel = {
         UserChannel.ws.onopen = function () {
             setInterval(function () {
                 UserChannel.ws.send('-hb-');
-            }, 1000 * 5);
+            }, 1000 * 60 * 5);
         };
 
         UserChannel.ws.onmessage = function (evt) {

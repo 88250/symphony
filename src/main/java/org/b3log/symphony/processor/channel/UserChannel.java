@@ -157,6 +157,7 @@ public class UserChannel {
         try {
             final JSONObject user = userRepository.get(userId);
             user.put(UserExt.USER_ONLINE_FLAG, online);
+            user.put(UserExt.USER_LATEST_LOGIN_TIME, System.currentTimeMillis());
 
             userRepository.update(userId, user);
 
