@@ -98,6 +98,7 @@
                 <#include "home-side.ftl">
             </div>
         </div>
+        <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>        
         <#include "../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
