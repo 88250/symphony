@@ -57,7 +57,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.8.2, Jul 7, 2016
+ * @version 1.4.8.3, Jul 22, 2016
  * @since 1.3.0
  */
 @Service
@@ -217,6 +217,7 @@ public class ActivityMgmtService {
 
                 // Timeline
                 final JSONObject timeline = new JSONObject();
+                timeline.put(Common.USER_ID, userId);
                 timeline.put(Common.TYPE, Common.ACTIVITY);
                 String content = langPropsService.get("timelineActivityCharacterLabel");
                 content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
@@ -334,6 +335,7 @@ public class ActivityMgmtService {
 
             // Timeline
             final JSONObject timeline = new JSONObject();
+            timeline.put(Common.USER_ID, userId);
             timeline.put(Common.TYPE, Common.ACTIVITY);
             String content = langPropsService.get("timelineActivityCheckinLabel");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
@@ -387,6 +389,7 @@ public class ActivityMgmtService {
 
             // Timeline
             final JSONObject timeline = new JSONObject();
+            timeline.put(Common.USER_ID, userId);
             timeline.put(Common.TYPE, Common.ACTIVITY);
             String content = langPropsService.get("timelineActivity1A0001Label");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
