@@ -122,7 +122,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.15.30, Jun 29, 2016
+ * @version 1.19.16.30, Jul 22, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -804,6 +804,7 @@ public class ArticleProcessor {
         rewardEditorPlaceholderLabel = rewardEditorPlaceholderLabel.replace("{point}",
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD));
         dataModel.put("rewardEditorPlaceholderLabel", rewardEditorPlaceholderLabel);
+        dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
     }
 
     /**
