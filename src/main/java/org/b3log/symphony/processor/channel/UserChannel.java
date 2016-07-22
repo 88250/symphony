@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * User channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 21, 2016
+ * @version 1.0.1.0, Jul 22, 2016
  * @since 1.4.0
  */
 @ServerEndpoint(value = "/user-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -79,6 +79,8 @@ public class UserChannel {
         userSessions.add(session);
 
         SESSIONS.put(userId, userSessions);
+
+        updateUserOnlineFlag(userId, true);
     }
 
     /**
@@ -100,14 +102,12 @@ public class UserChannel {
      */
     @OnMessage
     public void onMessage(final String message, final Session session) {
-        final JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
+        JSONObject user = (JSONObject) Channels.getHttpSessionAttribute(session, User.USER);
         if (null == user) {
             return;
         }
 
-        user.put(UserExt.USER_ONLINE_FLAG, true);
-
-        updateUser(user);
+        updateUserOnlineFlag(user.optString(Keys.OBJECT_ID), true);
     }
 
     /**
@@ -136,30 +136,29 @@ public class UserChannel {
 
         Set<Session> userSessions = SESSIONS.get(userId);
         if (null == userSessions) {
-            user.put(UserExt.USER_ONLINE_FLAG, false);
-
-            updateUser(user);
+            updateUserOnlineFlag(userId, false);
 
             return;
         }
 
         userSessions.remove(session);
         if (userSessions.isEmpty()) {
-            user.put(UserExt.USER_ONLINE_FLAG, false);
-
-            updateUser(user);
+            updateUserOnlineFlag(userId, false);
 
             return;
         }
     }
 
-    private void updateUser(final JSONObject user) {
+    private void updateUserOnlineFlag(final String userId, final boolean online) {
         final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
         final UserRepository userRepository = beanManager.getReference(UserRepository.class);
 
         final Transaction transaction = userRepository.beginTransaction();
         try {
-            userRepository.update(user.optString(Keys.OBJECT_ID), user);
+            final JSONObject user = userRepository.get(userId);
+            user.put(UserExt.USER_ONLINE_FLAG, online);
+
+            userRepository.update(userId, user);
 
             transaction.commit();
         } catch (final Exception e) {
