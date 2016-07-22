@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.4.7, Jul 21, 2016
+ * @version 1.12.4.8, Jul 22, 2016
  */
 
 /**
@@ -38,10 +38,10 @@ var Settings = {
             success: function (result, textStatus) {
                 if (!result.sc) {
                     alert("TBD: V, tip display it....");
-                    
+
                     return;
                 }
-                
+
                 window.open(result.url);
             }
         });
@@ -277,7 +277,8 @@ var Settings = {
             userFollowingArticleStatus: $("#userFollowingArticleStatus").prop("checked"),
             userFollowerStatus: $("#userFollowerStatus").prop("checked"),
             userPointStatus: $("#userPointStatus").prop("checked"),
-            userOnlineStatus: $("#userOnlineStatus").prop("checked")  
+            userOnlineStatus: $("#userOnlineStatus").prop("checked"),
+            userTimelineStatus: $("#userTimelineStatus").prop("checked")
         };
     },
     /**

@@ -51,7 +51,7 @@ import org.jsoup.Jsoup;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.6, May 15, 2016
+ * @version 1.1.2.7, Jul 22, 2016
  * @since 0.2.0
  */
 @Named
@@ -158,6 +158,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
 
             final JSONObject timeline = new JSONObject();
+            timeline.put(Common.USER_ID, articleAuthorId);
             timeline.put(Common.TYPE, Article.ARTICLE);
             String content = langPropsService.get("timelineArticleLabel");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
@@ -166,7 +167,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
                             + "'>" + articleTitle + "</a>");
             content = Emotions.convert(content);
             timeline.put(Common.CONTENT, content);
-            
+
             timelineMgmtService.addTimeline(timeline);
 
             // 'Broadcast' Notification

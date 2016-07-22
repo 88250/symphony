@@ -54,7 +54,7 @@ import org.jsoup.Jsoup;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.7.5, Apr 25, 2016
+ * @version 2.2.7.6, Jul 22, 2016
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -131,6 +131,7 @@ public class ArticleChannel {
             final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
 
             final JSONObject timeline = new JSONObject();
+            timeline.put(Common.USER_ID, user.optString(Keys.OBJECT_ID));
             timeline.put(Common.TYPE, Article.ARTICLE);
             String content = langPropsService.get("timelineInArticleLabel");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
@@ -352,6 +353,7 @@ public class ArticleChannel {
             final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
 
             final JSONObject timeline = new JSONObject();
+            timeline.put(Common.USER_ID, user.optString(Keys.OBJECT_ID));
             timeline.put(Common.TYPE, Article.ARTICLE);
             String content = langPropsService.get("timelineOutArticleLabel");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()

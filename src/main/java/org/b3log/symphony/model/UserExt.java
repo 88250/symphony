@@ -22,7 +22,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.21.1.10, Jul 21, 2016
+ * @version 2.21.1.11, Jul 22, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -67,6 +67,11 @@ public final class UserExt {
      * Key of user online status.
      */
     public static final String USER_ONLINE_STATUS = "userOnlineStatus";
+
+    /**
+     * Key of user timeline status.
+     */
+    public static final String USER_TIMELINE_STATUS = "userTimelineStatus";
 
     /**
      * Key of user User-Agent status.

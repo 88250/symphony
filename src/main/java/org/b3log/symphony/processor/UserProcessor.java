@@ -101,7 +101,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.8.18, Jul 21, 2016
+ * @version 1.17.8.19, Jul 22, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -839,6 +839,7 @@ public class UserProcessor {
         final boolean followingArticleStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWING_ARTICLE_STATUS);
         final boolean followerStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWER_STATUS);
         final boolean pointStatus = requestJSONObject.optBoolean(UserExt.USER_POINT_STATUS);
+        final boolean timelineStatus = requestJSONObject.optBoolean(UserExt.USER_TIMELINE_STATUS);
         final boolean uaStatus = requestJSONObject.optBoolean(UserExt.USER_UA_STATUS);
         final boolean notifyStatus = requestJSONObject.optBoolean(UserExt.USER_NOTIFY_STATUS);
 
@@ -859,6 +860,8 @@ public class UserProcessor {
         user.put(UserExt.USER_FOLLOWER_STATUS, followerStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_POINT_STATUS, pointStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_TIMELINE_STATUS, timelineStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_UA_STATUS, uaStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);

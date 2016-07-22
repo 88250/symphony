@@ -225,6 +225,14 @@
                 </label>
             </div>
         </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${userTimelineStatusLabel}
+                    <input id="userTimelineStatus" <#if 0 == currentUser.userTimelineStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
         <div id="miscTip" class="tip"></div>
         <div class="fn-hr5"></div>
         <button class="green fn-right" onclick="Settings.update('misc', '${csrfToken}')">${saveLabel}</button>

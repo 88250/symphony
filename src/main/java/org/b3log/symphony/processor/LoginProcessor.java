@@ -79,7 +79,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.10, Jul 4, 2016
+ * @version 1.8.3.11, Jul 22, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -484,6 +484,7 @@ public class LoginProcessor {
 
             // Timeline
             final JSONObject timeline = new JSONObject();
+            timeline.put(Common.USER_ID, user.optString(Keys.OBJECT_ID));
             timeline.put(Common.TYPE, Common.NEW_USER);
             String content = langPropsService.get("timelineNewUserLabel");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()

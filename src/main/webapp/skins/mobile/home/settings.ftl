@@ -196,6 +196,10 @@
                 ${userOnlineStatusLabel}
                 <input id="userOnlineStatus" <#if 0 == currentUser.userOnlineStatus> checked="checked"</#if> type="checkbox" /> 
             </label>
+            <label>
+                ${userTimelineStatusLabel}
+                <input id="userTimelineStatus" <#if 0 == currentUser.userTimelineStatus> checked="checked"</#if> type="checkbox" /> 
+            </label>
             <div id="miscTip" class="tip"></div>
             <div class="fn-hr5"></div>
             <button class="green fn-right" onclick="Settings.update('misc', '${csrfToken}')">${saveLabel}</button>
