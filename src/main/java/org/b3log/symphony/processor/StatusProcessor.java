@@ -83,6 +83,7 @@ public class StatusProcessor {
         context.renderJSON(ret);
 
         ret.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
+        ret.put(Common.ONLINE_MEMBER_CNT, optionQueryService.getOnlineMemberCount());
         ret.put(Common.ONLINE_CHAT_CNT, ChatRoomChannel.SESSIONS.size());
         ret.put(Common.ARTICLE_CHANNEL_CNT, ArticleChannel.SESSIONS.size());
         ret.put(Common.ARTICLE_LIST_CHANNEL_CNT, ArticleListChannel.SESSIONS.size());

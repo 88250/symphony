@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.14, Jul 21, 2016
+ * @version 1.7.1.15, Jul 22, 2016
  * @since 0.2.0
  */
 @Service
@@ -455,6 +455,7 @@ public class Filler {
     private void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
         dataModel.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
+        dataModel.put(Common.ONLINE_MEMBER_CNT, optionQueryService.getOnlineMemberCount());
 
         if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
             final JSONObject statistic = optionQueryService.getStatistic();

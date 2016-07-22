@@ -16,7 +16,9 @@
 package org.b3log.symphony.service;
 
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
+import javax.websocket.Session;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -36,6 +38,7 @@ import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.processor.channel.ChatRoomChannel;
 import org.b3log.symphony.processor.channel.TimelineChannel;
+import org.b3log.symphony.processor.channel.UserChannel;
 import org.b3log.symphony.repository.OptionRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,7 +51,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.7, Jul 21, 2016
+ * @version 1.4.0.7, Jul 22, 2016
  * @since 0.2.0
  */
 @Service
@@ -72,6 +75,20 @@ public class OptionQueryService {
     private LangPropsService langPropsService;
 
     /**
+     * Gets the online member count.
+     *
+     * @return online member count
+     */
+    public int getOnlineMemberCount() {
+        int ret = 0;
+        for (final Set<Session> value : UserChannel.SESSIONS.values()) {
+            ret += value.size();
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets the online visitor count.
      *
      * @return online visitor count
@@ -79,11 +96,6 @@ public class OptionQueryService {
     public int getOnlineVisitorCount() {
         final int ret = ArticleChannel.SESSIONS.size() + ArticleListChannel.SESSIONS.size() + TimelineChannel.SESSIONS.size()
                 + ChatRoomChannel.SESSIONS.size();
-
-//        int ret = 0;
-//        for (final Set<Session> value : UserChannel.SESSIONS.values()) {
-//            ret += value.size();
-//        }
 
         try {
             final JSONObject maxOnlineMemberCntRecord = optionRepository.get(Option.ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT);

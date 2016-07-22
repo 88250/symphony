@@ -19,11 +19,11 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.35.1.11, Jun 29, 2016
+ * @version 1.36.1.11, Jul 22, 2016
  * @since 0.2.0
  */
 public final class Common {
-    
+
     /**
      * Key of is mobile device.
      */
@@ -535,6 +535,11 @@ public final class Common {
     public static final String ONLINE_VISITOR_CNT = "onlineVisitorCnt";
 
     /**
+     * Key of online member count.
+     */
+    public static final String ONLINE_MEMBER_CNT = "onlineMemberCnt";
+
+    /**
      * Key of online chat count.
      */
     public static final String ONLINE_CHAT_CNT = "onlineChatCnt";
@@ -593,7 +598,7 @@ public final class Common {
      * Key of rewarded.
      */
     public static final String REWARDED = "rewarded";
-    
+
     /**
      * Key of thanked.
      */
