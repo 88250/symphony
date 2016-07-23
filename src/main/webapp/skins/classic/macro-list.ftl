@@ -38,7 +38,7 @@
                     <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> <span class="ft-gray">${article.articleLatestCmterName}</span>
                     <#else>
                     <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> 
-                    <#if article.articleAnonymous == 1><a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleAnonymous == 1></a><#else></span></#if>
+                    <#if article.articleLatestCmterName != 'someone'><a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
                     </#if>
                     </#if>
                 </div>

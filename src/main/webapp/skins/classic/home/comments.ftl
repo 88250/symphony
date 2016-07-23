@@ -6,11 +6,11 @@
     <ul>
         <#list userHomeComments as comment>
         <li class="fn-flex comment-list-item">
-            <#if comment.commentAnonymous == 1>
+            <#if comment.commentArticleAuthorName != "someone">
             <a target="_blank" class="tooltipped tooltipped-s" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
                aria-label="${comment.commentArticleAuthorName}"></#if>
                 <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
-            <#if comment.commentAnonymous == 1>
+            <#if comment.commentArticleAuthorName != "someone">
             </a>
             </#if>
             <div class="fn-flex-1">

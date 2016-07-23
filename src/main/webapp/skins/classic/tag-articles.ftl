@@ -81,18 +81,23 @@
                             </li>
                         </ul>
                         <div class="tag-artile-user fn-clear">
-                            <a rel="nofollow" class="fn-left" title="${creatorLabel} ${tag.tagCreatorName}" 
-                               href="/member/${tag.tagCreatorName}">
-                                <div class="avatar" style="background-image:url('${tag.tagCreatorThumbnailURL}-64.jpg?${tag.tagCreatorThumbnailUpdateTime?c}')"></div>
-                            </a>
+                            <#if "someone" != tag.tagCreatorName>
+                            <a rel="nofollow" class="fn-left" 
+                               href="/member/${tag.tagCreatorName}"></#if>
+                                <div class="avatar tooltipped tooltipped-se" 
+                                     aria-label="${creatorLabel} ${tag.tagCreatorName}" 
+                                     style="background-image:url('${tag.tagCreatorThumbnailURL}-64.jpg?${tag.tagCreatorThumbnailUpdateTime?c}')"></div>
+                            <#if "someone" != tag.tagCreatorName></a></#if>
                             <div class="fn-right">
                                 <#list tag.tagParticipants as commenter>
                                 <#if commenter_index < 4>
+                                <#if "someone" != commenter.tagParticipantName>
                                 <a rel="nofollow" class="fn-left" 
-                                   title="${contributorLabel} ${commenter.tagParticipantName}"
-                                   href="/member/${commenter.tagParticipantName}">
-                                    <div class="avatar" style="background-image:url('${commenter.tagParticipantThumbnailURL}-64.jpg?${commenter.tagParticipantThumbnailUpdateTime?c}')"></div>
-                                </a>
+                                   href="/member/${commenter.tagParticipantName}"></#if>
+                                    <div class="avatar tooltipped tooltipped-sw"
+                                         aria-label="${contributorLabel} ${commenter.tagParticipantName}"
+                                         style="background-image:url('${commenter.tagParticipantThumbnailURL}-64.jpg?${commenter.tagParticipantThumbnailUpdateTime?c}')"></div>
+                                <#if "someone" != commenter.tagParticipantName></a></#if>
                                 </#if>
                                 </#list>
                             </div>

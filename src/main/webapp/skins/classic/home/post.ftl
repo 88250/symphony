@@ -97,9 +97,9 @@
                             <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
                         </#if>
                         <div class="fn-right">
-                            <#if !article??>
-                            <label class="article-anonymous">${anonymousLabel}<input type="checkbox" id="articleAnonymous"></label>
-                            </#if>
+                            <label class="article-anonymous">${anonymousLabel}<input
+                                    <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
+                                    type="checkbox" id="articleAnonymous"></label>
                             <button class="red" tabindex="10" onclick="AddArticle.add(<#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>

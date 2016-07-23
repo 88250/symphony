@@ -187,11 +187,11 @@
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
-                                        <#if article.articleAnonymous == 0>
+                                        <#if comment.commentAnonymous == 0>
                                         <a rel="nofollow" href="/member/${comment.commentAuthorName}"></#if>
                                             <div class="avatar" 
                                                  title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
-                                        <#if article.articleAnonymous == 0></a></#if>
+                                        <#if comment.commentAnonymous == 0></a></#if>
                                         <#else>
                                         <div class="avatar" 
                                              title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
@@ -200,11 +200,10 @@
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
                                                     <#if !comment.fromClient>
-                                                    <#if article.articleAnonymous == 0>
+                                                    <#if comment.commentAnonymous == 0>
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
-                                                       title="${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if article.articleAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
-                                                       via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if>
-                                                       <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
+                                                       title="${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
+                                                       via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
                                                         <#if 0 == comment.commenter.userUAStatus><span class="cmt-via" data-ua="${comment.commentUA}"></span></#if>
                                                     </span>
                                                     <#if comment.rewardedCnt gt 0>
@@ -228,8 +227,10 @@
                                                           onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}', ${comment.commentAnonymous})">${thankLabel}</span>
                                                     </#if>
                                                     </#if>
-                                                    <#if article.articleAnonymous == 0>
+                                                    <#if comment.commentAuthorName != currentUser.userName>
+                                                    <#if comment.commentAnonymous == 0>
                                                     <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
+                                                    </#if>
                                                     </#if>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
