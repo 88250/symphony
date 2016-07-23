@@ -16,6 +16,7 @@
 package org.b3log.symphony.service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
@@ -76,8 +77,14 @@ public class CharacterQueryService {
      * @return all written character count
      */
     public int getWrittenCharacterCount() {
+        
         try {
-            return (int) characterRepository.count(new Query());
+            final List<JSONObject> result = characterRepository.select("select count(DISTINCT characterContent) from symphony_character");
+            if (null == result || result.isEmpty()) {
+                return 0;
+            }
+            
+            return result.get(0).optInt("count(DISTINCT characterContent)");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Counts characters failed", e);
 
