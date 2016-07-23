@@ -58,6 +58,8 @@
         </#list>
     </ul>
 </div>
+</#macro>
+<#macro listScript>
 <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     // Init [Article List] channel
