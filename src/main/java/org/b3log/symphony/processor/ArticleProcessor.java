@@ -1450,9 +1450,6 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject article = articleQueryService.getArticle(articleId);
-        articleQueryService.processArticleContent(article, request);
-
         context.renderTrueResult();
     }
 

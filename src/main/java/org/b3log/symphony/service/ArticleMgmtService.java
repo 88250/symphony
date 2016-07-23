@@ -957,12 +957,15 @@ public class ArticleMgmtService {
             }
 
             final String rewardId = Ids.genTimeMillisId();
-            final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
-                    Pointtransfer.TRANSFER_TYPE_C_ARTICLE_THANK,
-                    Pointtransfer.TRANSFER_SUM_C_ARTICLE_THANK, rewardId);
 
-            if (!succ) {
-                throw new ServiceException();
+            if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
+                final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
+                        Pointtransfer.TRANSFER_TYPE_C_ARTICLE_THANK,
+                        Pointtransfer.TRANSFER_SUM_C_ARTICLE_THANK, rewardId);
+
+                if (!succ) {
+                    throw new ServiceException();
+                }
             }
 
             final JSONObject reward = new JSONObject();

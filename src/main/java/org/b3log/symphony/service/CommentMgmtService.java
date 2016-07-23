@@ -230,11 +230,14 @@ public class CommentMgmtService {
             }
 
             final String rewardId = Ids.genTimeMillisId();
-            final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
-                    Pointtransfer.TRANSFER_TYPE_C_COMMENT_REWARD, rewardPoint, rewardId);
 
-            if (!succ) {
-                throw new ServiceException(langPropsService.get("transferFailLabel"));
+            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == comment.optInt(Comment.COMMENT_ANONYMOUS)) {
+                final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
+                        Pointtransfer.TRANSFER_TYPE_C_COMMENT_REWARD, rewardPoint, rewardId);
+
+                if (!succ) {
+                    throw new ServiceException(langPropsService.get("transferFailLabel"));
+                }
             }
 
             final JSONObject reward = new JSONObject();
