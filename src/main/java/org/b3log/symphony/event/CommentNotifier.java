@@ -144,7 +144,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 chData.put(Comment.COMMENT_T_AUTHOR_NAME, commenterName);
                 chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(commenter));
             } else {
-                chData.put(Comment.COMMENT_T_AUTHOR_NAME, "someone");
+                chData.put(Comment.COMMENT_T_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
                 chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
             }
 

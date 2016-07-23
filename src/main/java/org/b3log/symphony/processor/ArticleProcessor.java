@@ -499,7 +499,7 @@ public class ArticleProcessor {
             article.put(Article.ARTICLE_T_AUTHOR_URL, author.optString(User.USER_URL));
             article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
         } else {
-            article.put(Article.ARTICLE_T_AUTHOR_NAME, "someone");
+            article.put(Article.ARTICLE_T_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
             article.put(Article.ARTICLE_T_AUTHOR_URL, "");
             article.put(Article.ARTICLE_T_AUTHOR_INTRO, "");
         }

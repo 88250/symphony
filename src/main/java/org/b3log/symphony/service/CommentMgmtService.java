@@ -341,7 +341,7 @@ public class CommentMgmtService {
             article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) + 1);
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, commenter.optString(User.USER_NAME));
             if (Comment.COMMENT_ANONYMOUS_C_ANONYMOUS == commentAnonymous) {
-                article.put(Article.ARTICLE_LATEST_CMTER_NAME, "someone");
+                article.put(Article.ARTICLE_LATEST_CMTER_NAME, UserExt.ANONYMOUS_USER_NAME);
             }
             article.put(Article.ARTICLE_LATEST_CMT_TIME, currentTimeMillis);
 

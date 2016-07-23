@@ -70,7 +70,7 @@ import org.jsoup.Jsoup;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.8, Apr 14, 2016
+ * @version 1.6.4.8, Jul 24, 2016
  * @since 0.2.0
  */
 @Service
@@ -416,17 +416,25 @@ public class TagQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
 
         try {
+            final JSONObject ret = new JSONObject();
+
             final JSONObject result = userTagRepository.get(query);
             final JSONArray results = result.optJSONArray(Keys.RESULTS);
             final JSONObject creatorTagRelation = results.optJSONObject(0);
 
             final String creatorId = creatorTagRelation.optString(User.USER + '_' + Keys.OBJECT_ID);
+            if (UserExt.ANONYMOUS_USER_ID.equals(creatorId)) {
+                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
+                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, 0L);
+                ret.put(Tag.TAG_T_CREATOR_NAME, UserExt.ANONYMOUS_USER_NAME);
+
+                return ret;
+            }
 
             final JSONObject creator = userRepository.get(creatorId);
 
             final String thumbnailURL = avatarQueryService.getAvatarURLByUser(creator);
 
-            final JSONObject ret = new JSONObject();
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, creator.optLong(UserExt.USER_UPDATE_TIME));
             ret.put(Tag.TAG_T_CREATOR_NAME, creator.optString(User.USER_NAME));

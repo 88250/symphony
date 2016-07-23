@@ -427,7 +427,6 @@ public class ArticleMgmtService {
 
             articleTitle = Emotions.toAliases(articleTitle);
             article.put(Article.ARTICLE_TITLE, articleTitle);
-
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
@@ -468,6 +467,7 @@ public class ArticleMgmtService {
                 city = author.optString(UserExt.USER_CITY);
             }
             article.put(Article.ARTICLE_CITY, city);
+            article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
 
             String articleTags = article.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
@@ -510,8 +510,6 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_UA, ua);
 
             article.put(Article.ARTICLE_STICK, 0L);
-
-            article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
@@ -695,6 +693,7 @@ public class ArticleMgmtService {
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
+            requestJSONObject.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
             processTagsForArticleUpdate(oldArticle, requestJSONObject, author);
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
@@ -1396,7 +1395,12 @@ public class ArticleMgmtService {
             // User-Tag relation
             final JSONObject userTagRelation = new JSONObject();
             userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
-            userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, article.optString(Article.ARTICLE_AUTHOR_ID));
+
+            if (Article.ARTICLE_ANONYMOUS_C_ANONYMOUS == article.optInt(Article.ARTICLE_ANONYMOUS)) {
+                userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, "0");
+            } else {
+                userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, article.optString(Article.ARTICLE_AUTHOR_ID));
+            }
             userTagRelation.put(Common.TYPE, userTagType);
             userTagRepository.add(userTagRelation);
         }

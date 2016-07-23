@@ -326,7 +326,7 @@ public class CommentQueryService {
                     final String articleAuthorThumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor);
                     comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
                 } else {
-                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, "someone");
+                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
                     comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, "");
                     comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
                 }
@@ -560,7 +560,7 @@ public class CommentQueryService {
             final String thumbnailURL = avatarQueryService.getAvatarURLByUser(author);
             comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
         } else {
-            comment.put(Comment.COMMENT_T_AUTHOR_NAME, "someone");
+            comment.put(Comment.COMMENT_T_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
             comment.put(Comment.COMMENT_T_AUTHOR_URL, "");
             comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
         }
@@ -655,7 +655,7 @@ public class CommentQueryService {
             syncCommenterName = StringUtils.substringBefore(syncCommenterName, "</i>");
 
             if (UserRegisterValidation.invalidUserName(syncCommenterName)) {
-                syncCommenterName = "someone";
+                syncCommenterName = UserExt.ANONYMOUS_USER_NAME;
             }
 
             commentContent = commentContent.replaceAll("<i class=\"ft-small\">by .*</i>", "");

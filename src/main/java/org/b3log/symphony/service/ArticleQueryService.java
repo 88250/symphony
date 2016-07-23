@@ -1384,7 +1384,7 @@ public class ArticleQueryService {
         String articleLatestCmterName = article.optString(Article.ARTICLE_LATEST_CMTER_NAME);
         if (StringUtils.isNotBlank(articleLatestCmterName)
                 && UserRegisterValidation.invalidUserName(articleLatestCmterName)) {
-            articleLatestCmterName = "someone";
+            articleLatestCmterName = UserExt.ANONYMOUS_USER_NAME;
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, articleLatestCmterName);
         }
     }
@@ -1415,7 +1415,7 @@ public class ArticleQueryService {
         article.put(Article.ARTICLE_T_AUTHOR, author);
 
         if (Article.ARTICLE_ANONYMOUS_C_ANONYMOUS == article.optInt(Article.ARTICLE_ANONYMOUS)) {
-            article.put(Article.ARTICLE_T_AUTHOR_NAME, "someone");
+            article.put(Article.ARTICLE_T_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
             article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
         } else {
             article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
