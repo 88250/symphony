@@ -40,8 +40,6 @@
             </div>
         </div>
         <#include "footer.ftl">
-
-        <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             // Init [Timeline] channel
