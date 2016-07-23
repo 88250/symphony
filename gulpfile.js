@@ -58,6 +58,7 @@ gulp.task('cc', function () {
 
     var jsCommonLib = ['./src/main/webapp/js/lib/jquery/jquery.min.js',
         './src/main/webapp/js/lib/md5.js',
+        './src/main/webapp/js/lib/reconnecting-websocket.min.js',
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
         './src/main/webapp/js/lib/jquery/jquery.notification-1.0.5.js',
         './src/main/webapp/js/lib/ua-parser.min.js'];
@@ -68,7 +69,6 @@ gulp.task('cc', function () {
     
     var jsArticleLib = ['./src/main/webapp/js/lib/editor/codemirror.min.js',
         './src/main/webapp/js/lib/highlight.js-8.6/highlight.pack.js',
-        './src/main/webapp/js/lib/reconnecting-websocket.min.js',
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js',
         './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
         './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',

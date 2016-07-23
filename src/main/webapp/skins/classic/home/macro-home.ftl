@@ -35,6 +35,14 @@
         <@head title="${settingsLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
+        <#elseif type == "articlesAnonymous">
+        <@head title="${anonymousLabel}${articleLabel} - ${user.userName} - ${symphonyLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
+        </@head>
+        <#elseif type == "commentsAnonymous">
+        <@head title="${anonymousLabel}${cmtLabel} - ${user.userName} - ${symphonyLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
+        </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
     </head>
@@ -66,6 +74,12 @@
                             <a href="/member/${user.userName}/points">${pointLabel}</a>
                         </li>
                         <#if currentUser?? && currentUser.userName == user.userName>
+                        <li<#if type == "articlesAnonymous"> class="current"</#if>>
+                            <a href="/member/${user.userName}/articles-anonymous">${anonymousLabel}${articleLabel}</a>
+                        </li>
+                        <li<#if type == "commentsAnonymous"> class="current"</#if>>
+                            <a href="/member/${user.userName}/comments-anonymous">${anonymousLabel}${cmtLabel}</a>
+                        </li>
                         <li<#if type == "settings"> class="current"</#if>>
                             <a href="/settings"><b class="ft-red">${settingsLabel}</b></a>
                         </li>
@@ -80,7 +94,6 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
         <#include "../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>

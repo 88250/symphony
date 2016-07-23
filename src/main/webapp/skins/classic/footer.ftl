@@ -57,7 +57,7 @@
     
     <#if isLoggedIn>
     // Init [User] channel
-    UserChannel.init("${wsScheme}://${serverHost}:${serverPort}/user-channel");
+    Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}/user-channel");
     </#if>
 </script>
 <#if algoliaEnabled>

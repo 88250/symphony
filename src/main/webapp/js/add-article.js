@@ -55,7 +55,8 @@ var AddArticle = {
                 articleCommentable: true,
                 articleType: $("input[type='radio'][name='articleType']:checked").val(),
                 articleRewardContent: this.rewardEditor.getValue(),
-                articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")
+                articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, ""),
+                articleAnonymous: $('#articleAnonymous').prop('checked')
             },
             url = "/article", type = "POST";
 

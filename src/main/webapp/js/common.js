@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.28.16.22, Jul 21, 2016
+ * @version 1.28.17.22, Jul 23, 2016
  */
 
 /**
@@ -803,6 +803,31 @@ var Util = {
 
     },
     /**
+     * @description 用户状态 channel.
+     * @static
+     */
+    initUserChannel: function (channelServer) {
+        var userChannel = new ReconnectingWebSocket(channelServer);
+        userChannel.reconnectInterval = 10000;
+
+        userChannel.onopen = function () {
+            setInterval(function () {
+                userChannel.send('-hb-');
+            }, 1000 * 60 * 5);
+        };
+
+        userChannel.onmessage = function (evt) {
+        };
+
+        userChannel.onclose = function () {
+            userChannel.close();
+        };
+
+        userChannel.onerror = function (err) {
+            console.log("ERROR", err);
+        };
+    },
+    /**
      * @description 设置导航状态
      */
     _initNav: function () {
@@ -1493,42 +1518,5 @@ var Audio = {
         //Save the recording by building the wav file blob and send it to the client:
         console.log("Building wav file.");
         Audio.wavFileBlob = Audio.recorderObj.buildWavFileBlob();
-    }
-};
-
-/**
- * @description 用户状态 channel.
- * @static
- */
-var UserChannel = {
-    /**
-     * WebSocket instance.
-     * 
-     * @type WebSocket
-     */
-    ws: undefined,
-    /**
-     * @description Initializes message channel
-     */
-    init: function (channelServer) {
-        UserChannel.ws = new ReconnectingWebSocket(channelServer);
-        UserChannel.ws.reconnectInterval = 10000;
-
-        UserChannel.ws.onopen = function () {
-            setInterval(function () {
-                UserChannel.ws.send('-hb-');
-            }, 1000 * 60 * 5);
-        };
-
-        UserChannel.ws.onmessage = function (evt) {
-        };
-
-        UserChannel.ws.onclose = function () {
-            UserChannel.ws.close();
-        };
-
-        UserChannel.ws.onerror = function (err) {
-            console.log("ERROR", err)
-        };
     }
 };

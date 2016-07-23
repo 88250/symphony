@@ -150,6 +150,7 @@
                                 <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
                             </span>
                             <div class="fn-right">
+                                <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                                 <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
                             </div>
                         </div>
@@ -256,6 +257,7 @@
                                 <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
                             </span>
                             <div class="fn-right">
+                                <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                                 <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
                             </div>
                         </div>

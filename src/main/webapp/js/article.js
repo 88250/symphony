@@ -249,6 +249,7 @@ var Comment = {
 
         var requestJSONObject = {
             articleId: id,
+            commentAnonymous: $('#commentAnonymous').prop('checked'),
             commentContent: Comment.editor.getValue() // 实际提交时不去除空格，因为直接贴代码时需要空格
         };
 

@@ -77,31 +77,32 @@
                         <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/> 
                         </#if>
                     </div>
-                    <div class="fn-clear">
-                        <br/>
-                        <div class="fn-left">
-                            <#if !articleType??>
-                            <#assign articleType=article.articleType>
-                            </#if>
-                            <#if 0 == articleType>
-                            <span class="icon-article"></span> ${articleLabel} 
-                            <span class="ft-gray"><span class="ft-green">提问</span>或<span class="ft-green">分享</span>对别人有帮助的经验与见解</span>
-                            <#elseif 1 == articleType>
-                            <span class="icon-locked"></span> ${discussionLabel}
-                            <span class="ft-gray">@好友并在<span class="ft-red">私密</span>空间中进行交流</span>
-                            <#elseif 2 == articleType>
-                            <span class="icon-feed"></span> ${cityBroadcastLabel}
-                            <span class="ft-gray">发起你所在城市的招聘、Meetup 等，仅需<i>${broadcastPoint}</i> 积分</span>
-                            <#elseif 3 == articleType>
-                            <span class="icon-video"></span> ${thoughtLabel}
-                            <span class="ft-gray">写作过程的记录与重放，文字版的<span class="ft-red">沙画</span>表演
-                                <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
-                            </#if>
-                        </div>
-
-                        <button class="red fn-right" tabindex="10" onclick="AddArticle.add(<#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
-                    </div>
                     <br/>
+                    <div class="fn-clear">
+                        <#if !articleType??>
+                        <#assign articleType=article.articleType>
+                        </#if>
+                        <#if 0 == articleType>
+                        <span class="icon-article"></span> ${articleLabel} 
+                        <span class="ft-gray"><span class="ft-green">提问</span>或<span class="ft-green">分享</span>对别人有帮助的经验与见解</span>
+                        <#elseif 1 == articleType>
+                        <span class="icon-locked"></span> ${discussionLabel}
+                        <span class="ft-gray">@好友并在<span class="ft-red">私密</span>空间中进行交流</span>
+                        <#elseif 2 == articleType>
+                        <span class="icon-feed"></span> ${cityBroadcastLabel}
+                        <span class="ft-gray">发起你所在城市的招聘、Meetup 等，仅需<i>${broadcastPoint}</i> 积分</span>
+                        <#elseif 3 == articleType>
+                        <span class="icon-video"></span> ${thoughtLabel}
+                        <span class="ft-gray">写作过程的记录与重放，文字版的<span class="ft-red">沙画</span>表演
+                            <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
+                        </#if>
+                        <div class="fn-right">
+                            <#if !article??>
+                            <label class="article-anonymous">${anonymousLabel}<input type="checkbox" id="articleAnonymous"></label>
+                            </#if>
+                            <button class="red" tabindex="10" onclick="AddArticle.add(<#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
