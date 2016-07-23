@@ -1037,7 +1037,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_TAGS, String.class).
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
                 addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
-                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class);
+                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class);
 
         return ret;
     }
