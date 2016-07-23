@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.8, Jul 19, 2016
+ * @version 1.4.0.8, Jul 23, 2016
  * @since 0.2.0
  */
 public final class Comment {
@@ -89,6 +89,11 @@ public final class Comment {
      */
     public static final String COMMENT_UA = "commentUA";
 
+    /**
+     * Key of comment anonymous.
+     */
+    public static final String COMMENT_ANONYMOUS = "commentAnonymous";
+
     //// Transient ////
     /**
      * Key of commenter.
@@ -99,7 +104,7 @@ public final class Comment {
      * Key of comment id.
      */
     public static final String COMMENT_T_ID = "commentId";
-    
+
     /**
      * Key of comment ids.
      */
@@ -170,6 +175,17 @@ public final class Comment {
      * Comment status - invalid.
      */
     public static final int COMMENT_STATUS_C_INVALID = 1;
+
+    // Anonymous constants
+    /**
+     * Comment anonymous - public.
+     */
+    public static final int COMMENT_ANONYMOUS_C_PUBLIC = 0;
+
+    /**
+     * Comment anonymous - anonymous.
+     */
+    public static final int COMMENT_ANONYMOUS_C_ANONYMOUS = 1;
 
     /**
      * Private constructor.

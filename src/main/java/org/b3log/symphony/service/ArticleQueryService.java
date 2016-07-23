@@ -86,7 +86,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.14.24, Jul 19, 2016
+ * @version 2.19.14.24, Jul 23, 2016
  * @since 0.2.0
  */
 @Service
@@ -908,16 +908,19 @@ public class ArticleQueryService {
      * Gets the user articles with the specified user id, page number and page size.
      *
      * @param userId the specified user id
+     * @param anonymous the specified article anonymous
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
      * @return user articles, return an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getUserArticles(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+    public List<JSONObject> getUserArticles(final String userId, final int anonymous,
+            final int currentPageNum, final int pageSize) throws ServiceException {
         final Query query = new Query().addSort(Article.ARTICLE_CREATE_TIME, SortDirection.DESCENDING)
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                 setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, userId),
+                        new PropertyFilter(Article.ARTICLE_ANONYMOUS, FilterOperator.EQUAL, anonymous),
                         new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID)));
         try {
             final JSONObject result = articleRepository.get(query);
@@ -1300,6 +1303,7 @@ public class ArticleQueryService {
      * <li>generates article view count display format(1k+/1.5k+...)</li>
      * <li>generates time ago text</li>
      * <li>generates stick remains minutes</li>
+     * <li>anonymous process</li>
      * </ul>
      *
      * @param articles the specified articles
@@ -1328,6 +1332,7 @@ public class ArticleQueryService {
      * <li>generates article view count display format(1k+/1.5k+...)</li>
      * <li>generates time ago text</li>
      * <li>generates stick remains minutes</li>
+     * <li>anonymous process</li>
      * </ul>
      *
      * @param article the specified article
@@ -1374,9 +1379,9 @@ public class ArticleQueryService {
         } else {
             article.put(Article.ARTICLE_T_STICK_REMAINS, 0);
         }
-        
+
         String articleLatestCmterName = article.optString(Article.ARTICLE_LATEST_CMTER_NAME);
-        if (StringUtils.isNotBlank(articleLatestCmterName) 
+        if (StringUtils.isNotBlank(articleLatestCmterName)
                 && UserRegisterValidation.invalidUserName(articleLatestCmterName)) {
             articleLatestCmterName = "someone";
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, articleLatestCmterName);
@@ -1406,11 +1411,15 @@ public class ArticleQueryService {
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
 
         final JSONObject author = userRepository.get(authorId);
-
-        article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
         article.put(Article.ARTICLE_T_AUTHOR, author);
 
-        article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+        if (Article.ARTICLE_ANONYMOUS_C_ANONYMOUS == article.optInt(Article.ARTICLE_ANONYMOUS)) {
+            article.put(Article.ARTICLE_T_AUTHOR_NAME, "someone");
+            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
+        } else {
+            article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+            article.put(Article.ARTICLE_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
+        }
     }
 
     /**

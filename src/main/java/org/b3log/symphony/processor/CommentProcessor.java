@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.11, Apr 15, 2016
+ * @version 1.3.1.11, Jul 23, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -118,7 +118,8 @@ public class CommentProcessor {
      * <pre>
      * {
      *     "articleId": "",
-     *     "commentContent": ""
+     *     "commentContent": "",
+     *     "commentAnonymous": boolean
      * }
      * </pre>
      * </p>
@@ -141,6 +142,8 @@ public class CommentProcessor {
         final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
         final String ip = Requests.getRemoteAddr(request);
         final String ua = request.getHeader("User-Agent");
+
+        final boolean isAnonymous = requestJSONObject.optBoolean(Comment.COMMENT_ANONYMOUS, false);
 
         final JSONObject comment = new JSONObject();
         comment.put(Comment.COMMENT_CONTENT, commentContent);
@@ -194,6 +197,8 @@ public class CommentProcessor {
             comment.put(Comment.COMMENT_AUTHOR_EMAIL, authorEmail);
 
             comment.put(Comment.COMMENT_T_COMMENTER, currentUser);
+            comment.put(Comment.COMMENT_ANONYMOUS, isAnonymous
+                    ? Comment.COMMENT_ANONYMOUS_C_ANONYMOUS : Comment.COMMENT_ANONYMOUS_C_PUBLIC);
 
             commentMgmtService.addComment(comment);
             context.renderTrueResult();

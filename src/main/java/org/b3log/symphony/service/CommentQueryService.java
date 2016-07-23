@@ -63,7 +63,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.6.18, Jun 23, 2016
+ * @version 2.7.6.18, Jun 23, 2016
  * @since 0.2.0
  */
 @Service
@@ -282,17 +282,21 @@ public class CommentQueryService {
      * Gets the user comments with the specified user id, page number and page size.
      *
      * @param userId the specified user id
+     * @param anonymous the specified comment anonymous
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
      * @param viewer the specified viewer, may be {@code null}
      * @return user comments, return an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getUserComments(final String userId, final int currentPageNum, final int pageSize,
-            final JSONObject viewer) throws ServiceException {
+    public List<JSONObject> getUserComments(final String userId, final int anonymous,
+            final int currentPageNum, final int pageSize, final JSONObject viewer) throws ServiceException {
         final Query query = new Query().addSort(Comment.COMMENT_CREATE_TIME, SortDirection.DESCENDING)
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize).
-                setFilter(new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId));
+                setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId),
+                        new PropertyFilter(Comment.COMMENT_ANONYMOUS, FilterOperator.EQUAL, anonymous)
+                ));
         try {
             final JSONObject result = commentRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));

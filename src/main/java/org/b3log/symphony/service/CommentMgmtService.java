@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.8.6.17, Jul 19, 2016
+ * @version 2.9.6.17, Jul 23, 2016
  * @since 0.2.0
  */
 @Service
@@ -275,7 +275,8 @@ public class CommentMgmtService {
      *         // User model
      *     },
      *     "commentIP": "", // optional, default to ""
-     *     "commentUA": "" // optional, default to ""
+     *     "commentUA": "", // optional, default to ""
+     *     "commentAnonymous": int // optional, default to 0 (public)
      * }
      * </pre>, see {@link Comment} for more details
      *
@@ -290,6 +291,7 @@ public class CommentMgmtService {
         final String articleId = requestJSONObject.optString(Comment.COMMENT_ON_ARTICLE_ID);
         final String ip = requestJSONObject.optString(Comment.COMMENT_IP);
         String ua = requestJSONObject.optString(Comment.COMMENT_UA);
+        final int commentAnonymous = requestJSONObject.optInt(Comment.COMMENT_ANONYMOUS);
 
         if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
                 && !Role.ADMIN_ROLE.equals(commenter.optString(User.USER_ROLE))
@@ -328,11 +330,16 @@ public class CommentMgmtService {
             throw new ServiceException(e);
         }
 
+        final int articleAnonymous = article.optInt(Article.ARTICLE_ANONYMOUS);
+
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
             article.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT) + 1);
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, commenter.optString(User.USER_NAME));
+            if (Comment.COMMENT_ANONYMOUS_C_ANONYMOUS == commentAnonymous) {
+                article.put(Article.ARTICLE_LATEST_CMTER_NAME, "someone");
+            }
             article.put(Article.ARTICLE_LATEST_CMT_TIME, currentTimeMillis);
 
             final String ret = Ids.genTimeMillisId();
@@ -368,6 +375,8 @@ public class CommentMgmtService {
             }
             comment.put(Comment.COMMENT_UA, ua);
 
+            comment.put(Comment.COMMENT_ANONYMOUS, commentAnonymous);
+
             final JSONObject cmtCntOption = optionRepository.get(Option.ID_C_STATISTIC_CMT_COUNT);
             final int cmtCnt = cmtCntOption.optInt(Option.OPTION_VALUE);
             cmtCntOption.put(Option.OPTION_VALUE, String.valueOf(cmtCnt + 1));
@@ -396,7 +405,8 @@ public class CommentMgmtService {
 
             transaction.commit();
 
-            if (!fromClient) {
+            if (!fromClient && Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
+                    && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                 if (articleAuthorId.equals(commentAuthorId)) {

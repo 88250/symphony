@@ -74,7 +74,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.19.18, Jul 17, 2016
+ * @version 2.13.19.18, Jul 23, 2016
  * @since 0.2.0
  */
 @Service
@@ -346,6 +346,7 @@ public class ArticleMgmtService {
      *     "articleRewardPoint": int, // optional, default to 0
      *     "articleIP": "", // optional, default to ""
      *     "articleUA": "", // optional, default to ""
+     *     "articleAnonymous": int // optional, default to 0 (public)
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -508,6 +509,9 @@ public class ArticleMgmtService {
 
             article.put(Article.ARTICLE_STICK, 0L);
 
+            final int articleAnonymous = requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS);
+            article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
+
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);
             articleCntOption.put(Option.OPTION_VALUE, articleCnt + 1);
@@ -558,7 +562,7 @@ public class ArticleMgmtService {
             // Grows the tag graph
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
-            if (!fromClient) {
+            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 final int addition = (int) Math.round(Math.sqrt(followerCnt));
@@ -620,7 +624,7 @@ public class ArticleMgmtService {
      *     "articleRewardContent": "", // optional, default to ""
      *     "articleRewardPoint": int, // optional, default to 0
      *     "articleIP": "", // optional, default to ""
-     *     "articleUA": "" // optional, default to ""
+     *     "articleUA": "", // optional default to ""
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -1533,6 +1537,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_UA, ua);
 
             article.put(Article.ARTICLE_STICK, 0L);
+            article.put(Article.ARTICLE_ANONYMOUS, false);
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);

@@ -75,10 +75,10 @@
                         </li>
                         <#if currentUser?? && currentUser.userName == user.userName>
                         <li<#if type == "articlesAnonymous"> class="current"</#if>>
-                            <a href="/member/${user.userName}/articles-anonymous">${anonymousLabel}${articleLabel}</a>
+                            <a href="/member/${user.userName}/articles/anonymous">${anonymousLabel}${articleLabel}</a>
                         </li>
                         <li<#if type == "commentsAnonymous"> class="current"</#if>>
-                            <a href="/member/${user.userName}/comments-anonymous">${anonymousLabel}${cmtLabel}</a>
+                            <a href="/member/${user.userName}/comments/anonymous">${anonymousLabel}${cmtLabel}</a>
                         </li>
                         <li<#if type == "settings"> class="current"</#if>>
                             <a href="/settings"><b class="ft-red">${settingsLabel}</b></a>

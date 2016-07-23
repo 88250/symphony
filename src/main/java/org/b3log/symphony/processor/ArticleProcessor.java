@@ -122,7 +122,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.16.30, Jul 22, 2016
+ * @version 1.20.16.30, Jul 23, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -658,7 +658,8 @@ public class ArticleProcessor {
      *   "articleCommentable": boolean,
      *   "articleType": int,
      *   "articleRewardContent": "",
-     *   "articleRewardPoint": int
+     *   "articleRewardPoint": int,
+     *   "articleAnonymous": boolean
      * }
      * </pre>
      * </p>
@@ -688,6 +689,9 @@ public class ArticleProcessor {
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final String ip = Requests.getRemoteAddr(request);
         final String ua = request.getHeader("User-Agent");
+        final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
+        final int articleAnonymous = isAnonymous
+                ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -705,6 +709,7 @@ public class ArticleProcessor {
         if (StringUtils.isNotBlank(ua)) {
             article.put(Article.ARTICLE_UA, ua);
         }
+        article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
 
         try {
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
