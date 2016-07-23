@@ -364,6 +364,8 @@ public class ArticleMgmtService {
             throw new ServiceException(langPropsService.get("invalidRewardPointLabel"));
         }
 
+        final int articleAnonymous = requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS);
+
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
 
         try {
@@ -383,7 +385,7 @@ public class ArticleMgmtService {
                 throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
             }
 
-            if (!fromClient) {
+            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 final int addition = (int) Math.round(Math.sqrt(followerCnt));
@@ -509,7 +511,6 @@ public class ArticleMgmtService {
 
             article.put(Article.ARTICLE_STICK, 0L);
 
-            final int articleAnonymous = requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS);
             article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
@@ -639,6 +640,7 @@ public class ArticleMgmtService {
         String authorId;
         JSONObject author;
         int updatePointSum;
+        int articleAnonymous = 0;
 
         try {
             // check if admin allow to add article
@@ -659,7 +661,9 @@ public class ArticleMgmtService {
             addition += collectCnt * 2;
             updatePointSum = Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition;
 
-            if (!fromClient) {
+            articleAnonymous = oldArticle.optInt(Article.ARTICLE_ANONYMOUS);
+
+            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final int balance = author.optInt(UserExt.USER_POINT);
                 if (balance - updatePointSum < 0) {
@@ -750,7 +754,7 @@ public class ArticleMgmtService {
 
             transaction.commit();
 
-            if (!fromClient) {
+            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 if (currentTimeMillis - createTime > 1000 * 60 * 5) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
@@ -882,11 +886,14 @@ public class ArticleMgmtService {
             }
 
             final String rewardId = Ids.genTimeMillisId();
-            final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
-                    Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, rewardId);
 
-            if (!succ) {
-                throw new ServiceException();
+            if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
+                final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
+                        Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, rewardId);
+
+                if (!succ) {
+                    throw new ServiceException();
+                }
             }
 
             final JSONObject reward = new JSONObject();
