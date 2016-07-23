@@ -5,9 +5,10 @@
     <#list followingUserNotifications as notification>
     <li class="fn-flex<#if notification.hasRead> read</#if>">
         <#if "someone" != notification.authorName>
-        <a target="_blank" rel="nofollow" href="/member/${notification.authorName}" 
-           title="${notification.authorName}"></#if>
-            <div class="avatar" style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
+        <a target="_blank" rel="nofollow" href="/member/${notification.authorName}"></#if>
+            <div class="avatar" 
+           title="${notification.authorName}"
+           style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
         <#if "someone" != notification.authorName></a></#if>
         <div class="fn-flex-1 has-view">
             <h2>

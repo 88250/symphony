@@ -53,9 +53,11 @@ ${ADLabel}
         <ul class="module-list">
             <#list sideHotArticles as hotArticle>
             <li<#if !hotArticle_has_next> class="last"</#if>>
-                <a class="avatar-small slogan" rel="nofollow" href="/member/${hotArticle.articleAuthorName}" 
-               style="background-image:url('${hotArticle.articleAuthorThumbnailURL}-64.jpg?${hotArticle.articleAuthor.userUpdateTime?c}')"
-               title="${hotArticle.articleAuthorName}"></a>
+                <#if "someone" != hotArticle.articleAuthorName>
+                <a rel="nofollow" href="/member/${hotArticle.articleAuthorName}"></#if>
+                    <span class="avatar-small slogan"
+                          style="background-image:url('${hotArticle.articleAuthorThumbnailURL}-64.jpg?${hotArticle.articleAuthor.userUpdateTime?c}')"></span>
+                <#if "someone" != hotArticle.articleAuthorName></a></#if>
                 <a rel="nofollow" class="title" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
             </#list>

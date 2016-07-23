@@ -59,11 +59,13 @@
                     </a>
                 </h2> 
                 <div class="article-info">
+                    <#if article.articleAnonymous == 0>
                     <a rel="author" href="/member/${article.articleAuthorName}"
-                       title="${article.articleAuthorName}"><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div></a>
+                       title="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
                     <div>
+                        <#if article.articleAnonymous == 0>
                         <a rel="author" href="/member/${article.articleAuthorName}" class="ft-black"
-                           title="${article.articleAuthorName}"><strong>${article.articleAuthorName}</strong></a>
+                           title="${article.articleAuthorName}"></#if><strong>${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
                         <span class="ft-gray"> 
                             <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
                             • <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
@@ -171,10 +173,11 @@
                                 <#if !comment?has_next><div id="bottomComment"></div></#if>
                                 <div class="fn-flex">
                                     <#if !comment.fromClient>
-                                    <a rel="nofollow" href="/member/${comment.commentAuthorName}">
+                                    <#if comment.commentAnonymous == 0>
+                                    <a rel="nofollow" href="/member/${comment.commentAuthorName}"></#if>
                                         <div class="avatar" 
                                              title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
-                                    </a><#else>
+                                    <#if comment.commentAnonymous == 0></a></#if><#else>
                                         <div class="avatar" 
                                                  title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
                                     </#if>
@@ -182,8 +185,9 @@
                                         <div class="fn-clear comment-info">
                                             <span class="fn-left">
                                                 <#if !comment.fromClient>
+                                                <#if comment.commentAnonymous == 0>
                                                 <a rel="nofollow" href="/member/${comment.commentAuthorName}"
-                                                   title="${comment.commentAuthorName}">${comment.commentAuthorName}</a><#else>${comment.commentAuthorName} via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
+                                                   title="${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via" data-ua="${comment.commentUA}"></span></#if>
                                                 </span>
                                                 <#if comment.rewardedCnt gt 0>
@@ -207,7 +211,9 @@
                                                       onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}', ${comment.commentAnonymous})">${thankLabel}</span>
                                                 </#if>
                                                 </#if>
+                                                <#if comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0>
                                                 <span class="icon-reply fn-pointer" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
+                                                </#if>
                                                 </#if>
                                                 <#if isAdminLoggedIn>
                                                 <a class="icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
@@ -267,10 +273,13 @@
                         <ul class="module-list">
                             <#list sideRelevantArticles as relevantArticle>
                             <li<#if !relevantArticle_has_next> class="last"</#if>>
-                                <a class="avatar-small slogan" rel="nofollow" 
-                               title="${relevantArticle.articleAuthorName}"
-                               style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
-                               href="/member/${relevantArticle.articleAuthorName}"></a>
+                                <#if "someone" != relevantArticle.articleAuthorName>
+                                    <a rel="nofollow" 
+                                   href="/member/${relevantArticle.articleAuthorName}"></#if>
+                                        <span class="avatar-small slogan"
+                                   style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
+                                   ></span>
+                                    <#if "someone" != relevantArticle.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                             </li>
                             </#list>
@@ -289,11 +298,13 @@
                         <ul class="module-list">
                             <#list sideRandomArticles as randomArticle>
                             <li<#if !randomArticle_has_next> class="last"</#if>>
-                                <a class="avatar-small slogan" rel="nofollow"
-                               href="/member/${randomArticle.articleAuthorName}"
-                               title="${randomArticle.articleAuthorName}"
-                               style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
-                                <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
+                                <#if "someone" != randomArticle.articleAuthorName>
+                                    <a  rel="nofollow"
+                                   href="/member/${randomArticle.articleAuthorName}"></#if>
+                                        <span class="avatar-small"
+                                   style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></span>
+                                    <#if "someone" != randomArticle.articleAuthorName></a></#if>
+                                    <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                             </li>
                             </#list>
                         </ul>

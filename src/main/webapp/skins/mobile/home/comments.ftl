@@ -6,10 +6,13 @@
     <ul>
         <#list userHomeComments as comment>
         <li class="fn-flex comment-list-item">
-            <a target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
-               title="${comment.commentArticleAuthorName}">
+            <#if comment.commentArticleAuthorName != "someone">
+            <a rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
+               title="${comment.commentArticleAuthorName}"></#if>
                 <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
+            <#if comment.commentArticleAuthorName != "someone">
             </a>
+            </#if>
             <div class="fn-flex-1">
                 <div>
                     <h2>

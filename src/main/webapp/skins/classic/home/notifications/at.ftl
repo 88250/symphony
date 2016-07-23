@@ -5,10 +5,10 @@
     <#list atNotifications as notification>
     <li class="comment-list-item fn-flex<#if notification.hasRead> read</#if>">
         <#if "someone" != notification.authorName>
-        <a target="_blank" rel="nofollow" href="/member/${notification.authorName}" 
-           title="${notification.authorName}">
+        <a target="_blank" rel="nofollow" href="/member/${notification.authorName}">
         </#if>
-            <div class="avatar" style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
+            <div class="avatar" title="${notification.authorName}"
+                 style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
         <#if "someone" != notification.authorName></a></#if>
 
         <#if !notification.atInArticle>

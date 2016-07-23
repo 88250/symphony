@@ -227,10 +227,8 @@
                                                           onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}', ${comment.commentAnonymous})">${thankLabel}</span>
                                                     </#if>
                                                     </#if>
-                                                    <#if comment.commentAuthorName != currentUser.userName>
-                                                    <#if comment.commentAnonymous == 0>
+                                                    <#if comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0>
                                                     <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
-                                                    </#if>
                                                     </#if>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
@@ -315,10 +313,13 @@
                             <ul class="module-list">
                                 <#list sideRelevantArticles as relevantArticle>
                                 <li<#if !relevantArticle_has_next> class="last"</#if>>
-                                    <a class="avatar-small slogan tooltipped tooltipped-se" rel="nofollow" 
-                                   aria-label="${relevantArticle.articleAuthorName}"
+                                    <#if "someone" != relevantArticle.articleAuthorName>
+                                    <a rel="nofollow" 
+                                   href="/member/${relevantArticle.articleAuthorName}"></#if>
+                                        <span class="avatar-small slogan tooltipped tooltipped-se" aria-label="${relevantArticle.articleAuthorName}"
                                    style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
-                                   href="/member/${relevantArticle.articleAuthorName}"></a>
+                                   ></span>
+                                    <#if "someone" != relevantArticle.articleAuthorName></a></#if>
                                     <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                 </li>
                                 </#list>
@@ -338,10 +339,13 @@
                             <ul class="module-list">
                                 <#list sideRandomArticles as randomArticle>
                                 <li<#if !randomArticle_has_next> class="last"</#if>>
-                                    <a class="avatar-small slogan tooltipped tooltipped-se" rel="nofollow"
-                                   href="/member/${randomArticle.articleAuthorName}"
+                                    <#if "someone" != randomArticle.articleAuthorName>
+                                    <a  rel="nofollow"
+                                   href="/member/${randomArticle.articleAuthorName}"></#if>
+                                        <span class="avatar-small slogan tooltipped tooltipped-se"
                                    aria-label="${randomArticle.articleAuthorName}"
-                                   style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
+                                   style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></span>
+                                    <#if "someone" != randomArticle.articleAuthorName></a></#if>
                                     <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                                 </li>
                                 </#list>

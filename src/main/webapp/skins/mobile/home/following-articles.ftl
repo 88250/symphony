@@ -6,10 +6,11 @@
     <ul class="fn-clear">
         <#list userHomeFollowingArticles as article>
         <li class="fn-flex read">
+            <#if "someone" != article.articleAuthorName>
             <a title="${article.articleAuthorName}"
-               target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}">
+               target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}"></#if>
                 <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div>
-            </a>
+            <#if "someone" != article.articleAuthorName></a></#if>
             <div class="fn-flex-1 has-view">
                 <h2>
                     <#if 1 == article.articleType>

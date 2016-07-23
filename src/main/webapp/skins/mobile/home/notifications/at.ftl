@@ -4,10 +4,11 @@
 <ul class="notification">
     <#list atNotifications as notification>
     <li class="comment-list-item fn-flex<#if notification.hasRead> read</#if>">
-        <a target="_blank" rel="nofollow" href="/member/${notification.authorName}" 
-           title="${notification.authorName}">
+        <#if "someone" != notification.authorName>
+        <a rel="nofollow" href="/member/${notification.authorName}" 
+           title="${notification.authorName}"></#if>
             <div class="avatar" style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
-        </a>
+        <#if "someone" != notification.authorName></a></#if>
 
         <#if !notification.atInArticle>
         <div class="fn-flex-1">
