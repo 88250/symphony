@@ -31,5 +31,6 @@
             </div>
         </div>
         <#include "footer.ftl">
+        <@listScript/>
     </body>
 </html>
