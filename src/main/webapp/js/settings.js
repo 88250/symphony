@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.4.8, Jul 22, 2016
+ * @version 1.12.5.8, Jul 23, 2016
  */
 
 /**
@@ -161,7 +161,7 @@ var Settings = {
                     $("#" + type.replace(/\//g, "") + "Tip").addClass("succ").removeClass("error").html('<ul><li>' + Label.updateSuccLabel + '</li></ul>');
                     if (type === 'profiles') {
                         $('#userNicknameDom').text(requestJSONObject.userNickname);
-                        $('#userTags').after(requestJSONObject.userTags);
+                        $('#userTagsDom').text(requestJSONObject.userTags);
                         $('#userURLDom').text(requestJSONObject.userURL).attr('href', requestJSONObject.userURL);
                         $('#userIntroDom').text(requestJSONObject.userIntro);
                         $('#avatarURLDom, .user-nav .avatar-small').attr('style', 'background-image:url(' + requestJSONObject.userAvatarURL + ')');

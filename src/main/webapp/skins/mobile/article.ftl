@@ -134,6 +134,7 @@
 
                     <div class="fn-clear comment-submit">
                         <div class="fn-right">
+                            <label class="anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                             <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
                         </div>
                     </div>
@@ -234,6 +235,7 @@
 
                     <div class="fn-clear comment-submit">
                         <div class="fn-right">
+                            <label class="anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
                             <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
                         </div>
                     </div>
