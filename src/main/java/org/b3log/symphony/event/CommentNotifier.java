@@ -57,7 +57,7 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.16, Jul 22, 2016
+ * @version 1.5.6.16, Jul 23, 2016
  * @since 0.2.0
  */
 @Named
@@ -187,7 +187,8 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final boolean isDiscussion = originalArticle.optInt(Article.ARTICLE_TYPE) == Article.ARTICLE_TYPE_C_DISCUSSION;
 
             // Timeline
-            if (!isDiscussion) {
+            if (!isDiscussion
+                    && Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalComment.optInt(Comment.COMMENT_ANONYMOUS)) {
                 String articleTitle = Jsoup.parse(originalArticle.optString(Article.ARTICLE_TITLE)).text();
                 articleTitle = Emotions.convert(articleTitle);
                 final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);

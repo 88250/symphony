@@ -450,6 +450,11 @@ public class ArticleProcessor {
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD));
         dataModel.put("rewardEditorPlaceholderLabel", rewardEditorPlaceholderLabel);
         dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
+
+        String articleContentErrorLabel = langPropsService.get("articleContentErrorLabel");
+        articleContentErrorLabel = articleContentErrorLabel.replace("{maxArticleContentLength}",
+                String.valueOf(ArticleAddValidation.MAX_ARTICLE_CONTENT_LENGTH));
+        dataModel.put("articleContentErrorLabel", articleContentErrorLabel);
     }
 
     /**

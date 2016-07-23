@@ -320,13 +320,18 @@ public class CommentQueryService {
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                 final JSONObject articleAuthor = userRepository.get(articleAuthorId);
                 final String articleAuthorName = articleAuthor.optString(User.USER_NAME);
-                final String articleAuthorURL = "/member/" + articleAuthor.optString(User.USER_NAME);
-                comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
-                comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, articleAuthorURL);
+                if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
+                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, articleAuthorName);
+                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, "/member/" + articleAuthor.optString(User.USER_NAME));
+                } else {
+                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_NAME, "someone");
+                    comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_URL, "");
+                }
                 final String articleAuthorThumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor);
                 comment.put(Comment.COMMENT_T_ARTICLE_AUTHOR_THUMBNAIL_URL, articleAuthorThumbnailURL);
 
-                if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)) {
+                if (Article.ARTICLE_TYPE_C_DISCUSSION == article.optInt(Article.ARTICLE_TYPE)
+                        && Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
                     final String msgContent = langPropsService.get("articleDiscussionLabel").
                             replace("{user}", "<a href='" + Latkes.getServePath()
                                     + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>");
@@ -509,6 +514,7 @@ public class CommentQueryService {
      * <li>block comment if need</li>
      * <li>generates emotion images</li>
      * <li>generates time ago text</li>
+     * <li>anonymous process</li>
      * </ul>
      *
      * @param comments the specified comments
@@ -533,6 +539,7 @@ public class CommentQueryService {
      * <li>block comment if need</li>
      * <li>generates emotion images</li>
      * <li>generates time ago text</li>
+     * <li>anonymous process</li>
      * </ul>
      *
      * @param comment the specified comment
@@ -549,8 +556,13 @@ public class CommentQueryService {
         comment.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
         comment.put(Comment.COMMENT_T_COMMENTER, author);
-        comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
-        comment.put(Comment.COMMENT_T_AUTHOR_URL, author.optString(User.USER_URL));
+        if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == comment.optInt(Comment.COMMENT_ANONYMOUS)) {
+            comment.put(Comment.COMMENT_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+            comment.put(Comment.COMMENT_T_AUTHOR_URL, author.optString(User.USER_URL));
+        } else {
+            comment.put(Comment.COMMENT_T_AUTHOR_NAME, "someone");
+            comment.put(Comment.COMMENT_T_AUTHOR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
+        }
 
         processCommentContent(comment);
     }

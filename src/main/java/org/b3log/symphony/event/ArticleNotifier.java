@@ -51,7 +51,7 @@ import org.jsoup.Jsoup;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.7, Jul 22, 2016
+ * @version 1.2.2.7, Jul 23, 2016
  * @since 0.2.0
  */
 @Named
@@ -154,21 +154,23 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             }
 
             // Timeline
-            final String articleTitle = Jsoup.parse(originalArticle.optString(Article.ARTICLE_TITLE)).text();
-            final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
+            if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)) {
+                final String articleTitle = Jsoup.parse(originalArticle.optString(Article.ARTICLE_TITLE)).text();
+                final String articlePermalink = Latkes.getServePath() + originalArticle.optString(Article.ARTICLE_PERMALINK);
 
-            final JSONObject timeline = new JSONObject();
-            timeline.put(Common.USER_ID, articleAuthorId);
-            timeline.put(Common.TYPE, Article.ARTICLE);
-            String content = langPropsService.get("timelineArticleLabel");
-            content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
-                    + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>")
-                    .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
-                            + "'>" + articleTitle + "</a>");
-            content = Emotions.convert(content);
-            timeline.put(Common.CONTENT, content);
+                final JSONObject timeline = new JSONObject();
+                timeline.put(Common.USER_ID, articleAuthorId);
+                timeline.put(Common.TYPE, Article.ARTICLE);
+                String content = langPropsService.get("timelineArticleLabel");
+                content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                        + "/member/" + articleAuthorName + "'>" + articleAuthorName + "</a>")
+                        .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
+                                + "'>" + articleTitle + "</a>");
+                content = Emotions.convert(content);
+                timeline.put(Common.CONTENT, content);
 
-            timelineMgmtService.addTimeline(timeline);
+                timelineMgmtService.addTimeline(timeline);
+            }
 
             // 'Broadcast' Notification
             if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == originalArticle.optInt(Article.ARTICLE_TYPE)) {
