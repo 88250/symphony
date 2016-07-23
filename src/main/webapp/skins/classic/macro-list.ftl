@@ -7,9 +7,10 @@
         <#if article_has_next><#assign articleIds = articleIds + ","></#if>
         <li<#if article.articleStickRemains gt 0 && articleStickCheck??> class="stick"</#if>>
             <div class="fn-flex">
+                <#if article.articleAnonymous == 0>
                 <a rel="nofollow" class="ft-gray tooltipped tooltipped-se"
                    href="/member/${article.articleAuthorName}" 
-                   aria-label="${article.articleAuthorName}"><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div></a>
+                   aria-label="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
                 <div class="fn-flex-1 has-view">
                     <h2>
                         <#if 1 == article.articleType>
@@ -36,7 +37,8 @@
                     <#if article.syncWithSymphonyClient>
                     <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> <span class="ft-gray">${article.articleLatestCmterName}</span>
                     <#else>
-                    <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> <a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}">${article.articleLatestCmterName}</a>
+                    <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> 
+                    <#if article.articleAnonymous == 1><a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleAnonymous == 1></a><#else></span></#if>
                     </#if>
                     </#if>
                 </div>
@@ -46,15 +48,6 @@
                 <a class="count ft-gray" href="${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
-            <#--
-            <div class="commenters">
-                <#list article.articleParticipants as comment>
-                <a rel="nofollow" href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}">
-                    <div class="avatar-small" style="background-image:url('${comment.articleParticipantThumbnailURL}-64.jpg?${comment.articleParticipantThumbnailUpdateTime?c}')"></div>
-                </a>
-                </#list>
-            </div>
-            -->
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </li>
         </#list>

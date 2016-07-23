@@ -66,11 +66,13 @@
                         </a>
                     </h2> 
                     <div class="article-info fn-flex">
+                        <#if article.articleAnonymous == 0>
                         <a rel="author" href="/member/${article.articleAuthorName}"
-                           title="${article.articleAuthorName}"><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div></a> 
+                            title="${article.articleAuthorName}"></a></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
                         <div class="fn-flex-1">
+                            <#if article.articleAnonymous == 0>
                             <a rel="author" href="/member/${article.articleAuthorName}" class="ft-black"
-                               title="${article.articleAuthorName}"><strong>${article.articleAuthorName}</strong></a>
+                               title="${article.articleAuthorName}"></#if><strong>${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
                             <span class="ft-gray">
                                 <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
                                 • <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
@@ -185,10 +187,12 @@
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
-                                        <a rel="nofollow" href="/member/${comment.commentAuthorName}">
+                                        <#if article.articleAnonymous == 0>
+                                        <a rel="nofollow" href="/member/${comment.commentAuthorName}"></#if>
                                             <div class="avatar" 
                                                  title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
-                                        </a><#else>
+                                        <#if article.articleAnonymous == 0></a></#if>
+                                        <#else>
                                         <div class="avatar" 
                                              title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
                                         </#if>
@@ -196,19 +200,22 @@
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
                                                     <#if !comment.fromClient>
+                                                    <#if article.articleAnonymous == 0>
                                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"
-                                                       title="${comment.commentAuthorName}">${comment.commentAuthorName}</a><#else>${comment.commentAuthorName} via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
+                                                       title="${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if article.articleAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
+                                                       via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if>
+                                                       <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
                                                         <#if 0 == comment.commenter.userUAStatus><span class="cmt-via" data-ua="${comment.commentUA}"></span></#if>
                                                     </span>
                                                     <#if comment.rewardedCnt gt 0>
                                                     <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
                                                     <#if hasRewarded>
                                                     <span title="${thankedLabel}">
-                                                        </#if>   
+                                                    </#if>   
                                                         <span class="icon-heart ft-smaller <#if hasRewarded>ft-red<#else>ft-fade</#if>"></span><span
                                                             class="ft-smaller <#if hasRewarded>ft-red<#else>ft-fade</#if>" 
                                                             id='${comment.oId}RewardedCnt'> ${comment.rewardedCnt}</span> 
-                                                        <#if hasRewarded>
+                                                    <#if hasRewarded>
                                                     </span>
                                                     </#if>
                                                     </#if>
@@ -221,7 +228,9 @@
                                                           onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}')">${thankLabel}</span>
                                                     </#if>
                                                     </#if>
+                                                    <#if article.articleAnonymous == 0>
                                                     <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
+                                                    </#if>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
                                                     <a class="tooltipped tooltipped-s a-icon" href="/admin/comment/${comment.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
