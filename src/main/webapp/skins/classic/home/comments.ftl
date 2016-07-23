@@ -1,6 +1,6 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
-<@home "comments">
+<@home "${type}">
 <#if 0 == user.userCommentStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
     <ul>

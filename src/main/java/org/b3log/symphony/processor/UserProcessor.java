@@ -252,6 +252,8 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        dataModel.put(Common.TYPE, "commentsAnonymous");
     }
 
     /**
@@ -328,6 +330,8 @@ public class UserProcessor {
         } else {
             dataModel.put(Common.IS_MY_ARTICLE, userName.equals(currentUser.optString(User.USER_NAME)));
         }
+
+        dataModel.put(Common.TYPE, "articlesAnonymous");
     }
 
     /**
@@ -429,6 +433,8 @@ public class UserProcessor {
         } else {
             dataModel.put(Common.IS_MY_ARTICLE, userName.equals(currentUser.optString(User.USER_NAME)));
         }
+
+        dataModel.put(Common.TYPE, "home");
     }
 
     /**
@@ -497,6 +503,8 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        dataModel.put(Common.TYPE, "comments");
     }
 
     /**
@@ -570,6 +578,8 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        dataModel.put(Common.TYPE, "followingUsers");
     }
 
     /**
@@ -643,6 +653,8 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        dataModel.put(Common.TYPE, "followingTags");
     }
 
     /**
@@ -716,6 +728,8 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        dataModel.put(Common.TYPE, "followingArticles");
     }
 
     /**
@@ -789,6 +803,8 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        dataModel.put(Common.TYPE, "followers");
     }
 
     /**
@@ -858,6 +874,8 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        dataModel.put(Common.TYPE, "points");
     }
 
     /**
@@ -912,6 +930,8 @@ public class UserProcessor {
         String dataExportTipLabel = (String) dataModel.get("dataExportTipLabel");
         dataExportTipLabel = dataExportTipLabel.replace("{point}", Symphonys.get("pointDataExport"));
         dataModel.put("dataExportTipLabel", dataExportTipLabel);
+
+        dataModel.put(Common.TYPE, "settings");
     }
 
     /**

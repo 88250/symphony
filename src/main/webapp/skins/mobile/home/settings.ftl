@@ -1,5 +1,5 @@
 <#include "macro-home.ftl">
-<@home "settings">
+<@home "${type}">
 <div class="wrapper">
     <div class="fn-hr10"></div>
     <div class="module">

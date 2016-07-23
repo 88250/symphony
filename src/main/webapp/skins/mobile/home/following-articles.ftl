@@ -1,6 +1,6 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
-<@home "followingArticles">
+<@home "${type}">
 <#if 0 == user.userFollowingArticleStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
     <ul class="fn-clear">

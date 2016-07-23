@@ -1,5 +1,5 @@
 <#include "macro-home.ftl">
-<@home "settings">
+<@home "${type}">
 <br/>
 <div class="module">
     <div class="module-header fn-clear">

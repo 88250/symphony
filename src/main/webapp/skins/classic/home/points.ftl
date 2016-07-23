@@ -1,6 +1,6 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
-<@home "points">
+<@home "${type}">
 <#if 0 == user.userPointStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <table class="points">
     <#list userHomePoints as point>

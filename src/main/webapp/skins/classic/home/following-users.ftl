@@ -1,6 +1,6 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
-<@home "followingUsers">
+<@home "${type}">
 <#if 0 == user.userFollowingUserStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="follow">
     <ol>
