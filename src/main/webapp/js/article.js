@@ -187,14 +187,15 @@ var Comment = {
         });
     },
     /**
-     * @description 感谢.
+     * @description 感谢评论.
      * @param {String} id 评论 id
      * @param {String} csrfToken CSRF 令牌
-     * @param {string} tip 确认提示
-     * @param {string} thxed 已感谢文案
+     * @param {String} tip 确认提示
+     * @param {String} thxed 已感谢文案
+     * @param {Integer} 0：公开评论，1：匿名评论
      */
-    thank: function (id, csrfToken, tip, thxed) {
-        if (!confirm(tip)) {
+    thank: function (id, csrfToken, tip, thxed, commentAnonymous) {
+        if (0 === commentAnonymous && !confirm(tip)) {
             return false;
         }
 
@@ -566,25 +567,25 @@ var Article = {
     /**
      * @description 感谢文章
      */
-    thankArticle: function (articleId) {
-        var r = confirm(Label.thankArticleConfirmLabel);
-
-        if (r) {
-            $.ajax({
-                url: "/article/thank?articleId=" + articleId,
-                type: "POST",
-                cache: false,
-                success: function (result, textStatus) {
-                    if (result.sc) {
-                        $("#thankArticle").removeAttr("onclick").find("span").addClass("ft-red");
-
-                        return;
-                    }
-
-                    alert(result.msg);
-                }
-            });
+    thankArticle: function (articleId, articleAnonymous) {
+        if (0 === articleAnonymous && !confirm(Label.thankArticleConfirmLabel)) {
+            return;
         }
+
+        $.ajax({
+            url: "/article/thank?articleId=" + articleId,
+            type: "POST",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    $("#thankArticle").removeAttr("onclick").find("span").addClass("ft-red");
+
+                    return;
+                }
+
+                alert(result.msg);
+            }
+        });
     },
     /**
      * @description 置顶

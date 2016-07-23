@@ -68,6 +68,9 @@ var ArticleChannel = {
                     if (UAName !== '') {
                         UAName = ' <span class="cmt-via">via ' + UAName + '</span>';
                     }
+
+                    var commentAnonymous = "someone" === data.commentAuthorName ? 1 : 0;
+
                     // Append comment
                     var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" + bottomCmt +
                             "<div class=\"fn-flex\">" +
@@ -84,7 +87,7 @@ var ArticleChannel = {
                             "</span>" +
                             "<span class=\"fn-right\">" +
                             "<span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'" +
-                            "   onclick=\"Comment.thank('${comment.oId}', '" + Label.csrfToken + "', '${comment.commentThankLabel}', '${comment.thankedLabel}')\">${comment.thankLabel}</span> " +
+                            "   onclick=\"Comment.thank('${comment.oId}', '" + Label.csrfToken + "', '${comment.commentThankLabel}', '${comment.thankedLabel}', " + commentAnonymous + ")\">${comment.thankLabel}</span> " +
                             "<span class=\"icon-reply fn-pointer\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span> " +
                             "#<i>" + parseInt($("#comments .comment-header h2").text()) + "</i>" +
                             "</span>    " +
@@ -99,7 +102,7 @@ var ArticleChannel = {
                     var replaceAll = function (string, find, replace) {
                         return string.replace(new RegExp(find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"), 'g'), replace);
                     };
-                    
+
                     template = replaceAll(template, "${comment.oId}", data.commentId);
                     template = replaceAll(template, "${comment.commentAuthorName}", data.commentAuthorName);
                     template = replaceAll(template, "${comment.commentAuthorThumbnailURL}", data.commentAuthorThumbnailURL);

@@ -139,9 +139,15 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final JSONObject chData = new JSONObject();
             chData.put(Article.ARTICLE_T_ID, articleId);
             chData.put(Comment.COMMENT_T_ID, commentId);
-            chData.put(Comment.COMMENT_T_AUTHOR_NAME, commenterName);
 
-            chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(commenter));
+            if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalComment.optInt(Comment.COMMENT_ANONYMOUS)) {
+                chData.put(Comment.COMMENT_T_AUTHOR_NAME, commenterName);
+                chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(commenter));
+            } else {
+                chData.put(Comment.COMMENT_T_AUTHOR_NAME, "someone");
+                chData.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
+            }
+
             chData.put(Common.THUMBNAIL_UPDATE_TIME, commenter.optLong(UserExt.USER_UPDATE_TIME));
 
             chData.put(Comment.COMMENT_CREATE_TIME,

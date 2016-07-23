@@ -963,12 +963,12 @@ public class ArticleMgmtService {
                 return;
             }
 
-            final String rewardId = Ids.genTimeMillisId();
+            final String thankId = Ids.genTimeMillisId();
 
             if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
                 final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
                         Pointtransfer.TRANSFER_TYPE_C_ARTICLE_THANK,
-                        Pointtransfer.TRANSFER_SUM_C_ARTICLE_THANK, rewardId);
+                        Pointtransfer.TRANSFER_SUM_C_ARTICLE_THANK, thankId);
 
                 if (!succ) {
                     throw new ServiceException();
@@ -976,7 +976,7 @@ public class ArticleMgmtService {
             }
 
             final JSONObject reward = new JSONObject();
-            reward.put(Keys.OBJECT_ID, rewardId);
+            reward.put(Keys.OBJECT_ID, thankId);
             reward.put(Reward.SENDER_ID, senderId);
             reward.put(Reward.DATA_ID, articleId);
             reward.put(Reward.TYPE, Reward.TYPE_C_THANK_ARTICLE);
@@ -985,9 +985,9 @@ public class ArticleMgmtService {
 
             final JSONObject notification = new JSONObject();
             notification.put(Notification.NOTIFICATION_USER_ID, receiverId);
-            notification.put(Notification.NOTIFICATION_DATA_ID, rewardId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, thankId);
 
-            notificationMgmtService.addArticleRewardNotification(notification);
+            notificationMgmtService.addArticleThankNotification(notification);
 
             livenessMgmtService.incLiveness(senderId, Liveness.LIVENESS_REWARD);
         } catch (final RepositoryException e) {

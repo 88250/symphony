@@ -56,10 +56,10 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
-    
+
     /**
-     * Makes the specified user's notifications of the specified type as read. 
-     * 
+     * Makes the specified user's notifications of the specified type as read.
+     *
      * @param userId the specified user id
      * @param type the specified notification type
      */
@@ -81,8 +81,8 @@ public class NotificationMgmtService {
     }
 
     /**
-     * Makes the specified user to article, comments notifications as read. 
-     * 
+     * Makes the specified user to article, comments notifications as read.
+     *
      * @param userId the specified user id
      * @param articleId the specified article id
      * @param commentIds the specified comment ids
@@ -299,6 +299,32 @@ public class NotificationMgmtService {
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
             final String msg = "Adds notification [type=article_reward] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
+     * Adds a 'article thank' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * {
+     *     "userId"; "",
+     *     "dataId": "" // thank id
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addArticleThankNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_POINT_ARTICLE_THANK);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=article_thank] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);

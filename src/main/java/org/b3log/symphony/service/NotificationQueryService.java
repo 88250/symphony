@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.5, Apr 18, 2016
+ * @version 1.5.2.5, Jul 23, 2016
  * @since 0.2.5
  */
 @Service
@@ -203,6 +203,8 @@ public class NotificationQueryService {
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_ARTICLE_THANK));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_CHARGE));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_EXCHANGE));
@@ -261,6 +263,8 @@ public class NotificationQueryService {
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_POINT_ARTICLE_THANK));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_CHARGE));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_EXCHANGE));
@@ -292,6 +296,25 @@ public class NotificationQueryService {
                 String desTemplate = "";
 
                 switch (dataType) {
+                    case Notification.DATA_TYPE_C_POINT_ARTICLE_THANK:
+                        desTemplate = langPropsService.get("notificationArticleThankLabel");
+
+                        final JSONObject reward12 = rewardRepository.get(dataId);
+                        final String senderId12 = reward12.optString(Reward.SENDER_ID);
+                        final JSONObject user12 = userRepository.get(senderId12);
+                        final String articleId12 = reward12.optString(Reward.DATA_ID);
+                        final JSONObject article12 = articleRepository.get(articleId12);
+
+                        final String userLink12 = "<a href=\"/member/" + user12.optString(User.USER_NAME) + "\">"
+                                + user12.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", userLink12);
+
+                        final String articleLink12 = "<a href=\""
+                                + article12.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + article12.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", articleLink12);
+
+                        break;
                     case Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD:
                         desTemplate = langPropsService.get("notificationArticleRewardLabel");
 

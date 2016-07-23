@@ -21,7 +21,7 @@
                 <div class="article-action fn-clear">
                     <div class="fn-right">
                         <#if isLoggedIn>
-                        <span id="thankArticle" aria-label="${thankLabel}" class="fn-pointer tooltipped tooltipped-s" <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${pointThankArticle})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
+                        <span id="thankArticle" aria-label="${thankLabel}" class="fn-pointer tooltipped tooltipped-s" <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
                         <span id="voteUp" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
                             <span class="icon-thumbs-up<#if 0==vote> ft-red</#if>"></span></span>
                         <span id="voteDown" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
@@ -204,7 +204,7 @@
                                                 <#if comment.commentAuthorId != currentUser.oId>
                                                 <#if !comment.rewarded>
                                                 <span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'
-                                                      onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}')">${thankLabel}</span>
+                                                      onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}', ${comment.commentAnonymous})">${thankLabel}</span>
                                                 </#if>
                                                 </#if>
                                                 <span class="icon-reply fn-pointer" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
