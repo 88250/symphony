@@ -232,6 +232,12 @@
                     <input id="userTimelineStatus" <#if 0 == currentUser.userTimelineStatus> checked="checked"</#if> type="checkbox" /> 
                 </label>
             </div>
+            <div>
+                <label>
+                    ${userListPageSizeLabel}
+                    <input id="userListPageSize" type="number" value="${currentUser.userListPageSize}" /> 
+                </label>
+            </div>
         </div>
         <div id="miscTip" class="tip"></div>
         <div class="fn-hr5"></div>

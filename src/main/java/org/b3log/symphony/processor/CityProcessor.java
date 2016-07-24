@@ -149,7 +149,7 @@ public class CityProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Symphonys.getInt("cityArticlesCnt");
+        final int pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
         final int windowSize = Symphonys.getInt("cityArticlesWindowSize");
 
         final JSONObject statistic = optionQueryService.getOption(queryCity + "-ArticleCount");

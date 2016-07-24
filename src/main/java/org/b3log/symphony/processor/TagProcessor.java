@@ -35,11 +35,13 @@ import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.TagQueryService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -76,6 +78,12 @@ public class TagProcessor {
      */
     @Inject
     private FollowQueryService followQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Filler.
@@ -170,7 +178,12 @@ public class TagProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Symphonys.getInt("tagArticlesCnt");
+        int pageSize = Symphonys.getInt("indexArticlesCnt");
+
+        final JSONObject user = userQueryService.getCurrentUser(request);
+        if (null != user) {
+            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+        }
         final int windowSize = Symphonys.getInt("tagArticlesWindowSize");
 
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);

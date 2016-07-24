@@ -36,11 +36,13 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DomainQueryService;
 import org.b3log.symphony.service.SearchQueryService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
@@ -78,10 +80,10 @@ public class SearchProcessor {
     private ArticleQueryService articleQueryService;
 
     /**
-     * Domain query service.
+     * User query service.
      */
     @Inject
-    private DomainQueryService domainQueryService;
+    private UserQueryService userQueryService;
 
     /**
      * Filler.
@@ -124,7 +126,11 @@ public class SearchProcessor {
             pageNum = Integer.valueOf(p);
         }
 
-        final int pageSize = Symphonys.getInt("latestArticlesCnt");
+        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        final JSONObject user = userQueryService.getCurrentUser(request);
+        if (null != user) {
+            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+        }
         final List<JSONObject> articles = new ArrayList<JSONObject>();
         int total = 0;
 

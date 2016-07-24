@@ -1009,6 +1009,18 @@ public class UserProcessor {
         final boolean timelineStatus = requestJSONObject.optBoolean(UserExt.USER_TIMELINE_STATUS);
         final boolean uaStatus = requestJSONObject.optBoolean(UserExt.USER_UA_STATUS);
         final boolean notifyStatus = requestJSONObject.optBoolean(UserExt.USER_NOTIFY_STATUS);
+        String userListPageSizeStr = requestJSONObject.optString(UserExt.USER_LIST_PAGE_SIZE);
+
+        int userListPageSize;
+        try {
+            userListPageSize = Integer.valueOf(userListPageSizeStr);
+
+            if (10 > userListPageSize || userListPageSize > Symphonys.getInt("indexArticlesCnt")) {
+                userListPageSize = Symphonys.getInt("indexArticlesCnt");
+            }
+        } catch (final Exception e) {
+            userListPageSize = Symphonys.getInt("indexArticlesCnt");
+        }
 
         final JSONObject user = userQueryService.getCurrentUser(request);
 
@@ -1034,6 +1046,7 @@ public class UserProcessor {
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_NOTIFY_STATUS, notifyStatus
                 ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_LIST_PAGE_SIZE, userListPageSize);
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);

@@ -35,9 +35,11 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -70,6 +72,12 @@ public class IndexProcessor {
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Filler.
@@ -107,7 +115,11 @@ public class IndexProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Symphonys.getInt("latestArticlesCnt");
+        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        final JSONObject user = userQueryService.getCurrentUser(request);
+        if (null != user) {
+            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+        }
 
         final JSONObject result = articleQueryService.getRecentArticles(pageNum, pageSize);
         final List<JSONObject> latestArticles = (List<JSONObject>) result.get(Article.ARTICLES);
