@@ -22,11 +22,16 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.22.1.11, Jul 24, 2016
+ * @version 2.23.1.11, Jul 24, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+
+    /**
+     * Key of user list page size.
+     */
+    public static final String USER_LIST_PAGE_SIZE = "userListPageSize";
 
     /**
      * Key of user point status.

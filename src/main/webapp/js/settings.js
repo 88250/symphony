@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.5.8, Jul 23, 2016
+ * @version 1.13.5.8, Jul 24, 2016
  */
 
 /**
@@ -278,7 +278,8 @@ var Settings = {
             userFollowerStatus: $("#userFollowerStatus").prop("checked"),
             userPointStatus: $("#userPointStatus").prop("checked"),
             userOnlineStatus: $("#userOnlineStatus").prop("checked"),
-            userTimelineStatus: $("#userTimelineStatus").prop("checked")
+            userTimelineStatus: $("#userTimelineStatus").prop("checked"),
+            userListPageSize: $("#userListPageSize").val()
         };
     },
     /**
