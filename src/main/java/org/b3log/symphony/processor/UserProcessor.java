@@ -1015,8 +1015,12 @@ public class UserProcessor {
         try {
             userListPageSize = Integer.valueOf(userListPageSizeStr);
 
-            if (10 > userListPageSize || userListPageSize > Symphonys.getInt("indexArticlesCnt")) {
-                userListPageSize = Symphonys.getInt("indexArticlesCnt");
+            if (15 > userListPageSize) {
+                userListPageSize = 15;
+            }
+
+            if (userListPageSize > 41) {
+                userListPageSize = 41;
             }
         } catch (final Exception e) {
             userListPageSize = Symphonys.getInt("indexArticlesCnt");
