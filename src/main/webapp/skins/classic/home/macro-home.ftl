@@ -36,11 +36,11 @@
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
         <#elseif type == "articlesAnonymous">
-        <@head title="${anonymousLabel}${articleLabel} - ${user.userName} - ${symphonyLabel}">
+        <@head title="${anonymousArticleLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
         <#elseif type == "commentsAnonymous">
-        <@head title="${anonymousLabel}${cmtLabel} - ${user.userName} - ${symphonyLabel}">
+        <@head title="${anonymousCommentLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
         </#if>
@@ -75,10 +75,10 @@
                         </li>
                         <#if currentUser?? && currentUser.userName == user.userName>
                         <li<#if type == "articlesAnonymous"> class="current"</#if>>
-                            <a href="/member/${user.userName}/articles/anonymous">${anonymousLabel}${articleLabel}</a>
+                            <a href="/member/${user.userName}/articles/anonymous">${anonymousArticleLabel}</a>
                         </li>
                         <li<#if type == "commentsAnonymous"> class="current"</#if>>
-                            <a href="/member/${user.userName}/comments/anonymous">${anonymousLabel}${cmtLabel}</a>
+                            <a href="/member/${user.userName}/comments/anonymous">${anonymousCommentLabel}</a>
                         </li>
                         <li<#if type == "settings"> class="current"</#if>>
                             <a href="/settings"><b class="ft-red">${settingsLabel}</b></a>
