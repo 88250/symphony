@@ -26,7 +26,7 @@
         <label>${userIntroLabel}</label><br/>
         <textarea id="userIntro" placeholder="${selfIntroLabel}">${currentUser.userIntro}</textarea>
 
-        <label>${commentViewModeLabel}</label><br/>
+        <label>${cmtViewModeLabel}</label><br/>
         <select id="userCommentViewMode" name="userCommentViewMode">
             <option value="0"<#if 0 == currentUser.userCommentViewMode> selected</#if>>${traditionLabel}</option>
             <option value="1"<#if 1 == currentUser.userCommentViewMode> selected</#if>>${realTimeLabel}</option>
