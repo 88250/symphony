@@ -235,7 +235,7 @@
             <div>
                 <label>
                     ${userListPageSizeLabel}
-                    <input id="userListPageSize" type="number" value="${currentUser.userListPageSize}" /> 
+                    <input id="userListPageSize" type="number" style="width:60px" value="${currentUser.userListPageSize}" /> 
                 </label>
             </div>
         </div>

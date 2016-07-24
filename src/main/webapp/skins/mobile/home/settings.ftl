@@ -188,6 +188,10 @@
                 ${userTimelineStatusLabel}
                 <input id="userTimelineStatus" <#if 0 == currentUser.userTimelineStatus> checked="checked"</#if> type="checkbox" /> 
             </label>
+            <label>
+                ${userListPageSizeLabel}
+                <input id="userListPageSize" type="number" style="width:60px" value="${currentUser.userListPageSize}" /> 
+            </label>
             <div id="miscTip" class="tip"></div>
             <div class="fn-hr5"></div>
             <button class="green fn-right" onclick="Settings.update('misc', '${csrfToken}')">${saveLabel}</button>

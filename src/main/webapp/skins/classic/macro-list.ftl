@@ -8,9 +8,11 @@
         <li<#if article.articleStickRemains gt 0 && articleStickCheck??> class="stick"</#if>>
             <div class="fn-flex">
                 <#if article.articleAnonymous == 0>
-                <a rel="nofollow" class="ft-gray tooltipped tooltipped-se"
-                   href="/member/${article.articleAuthorName}" 
-                   aria-label="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
+                <a rel="nofollow" 
+                   href="/member/${article.articleAuthorName}"></#if><div
+                   class="avatar ft-gray tooltipped tooltipped-se"  
+                   aria-label="${article.articleAuthorName}"
+                   style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
                 <div class="fn-flex-1 has-view">
                     <h2>
                         <#if 1 == article.articleType>
