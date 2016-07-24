@@ -27,12 +27,15 @@
                     <span class="icon-chevron-down fn-right"></span>
                 </div>
                 <div class="fn-hr5"></div>
-                <ul class="tab fn-clear fn-none">
+                <ul class="tab fn-clear fn-none notification-tab">
                     <li<#if type == "commented"> class="fn-none"</#if>>
                         <a href="/notifications/commented">
                             <span>${notificationCommentedLabel}</span>
                             <#if unreadCommentedNotificationCnt &gt; 0>
                             <span class="counter">${unreadCommentedNotificationCnt}</span>
+                            <span class="ft-gray fn-right" onclick="Util.makeNotificationRead('commented')" class="fn-right">
+                                ${makeAsReadLabel}
+                            </span>
                             </#if>
                         </a> 
                     </li>
@@ -41,6 +44,9 @@
                             <span>${notificationAtLabel}</span>
                             <#if unreadAtNotificationCnt &gt; 0>
                             <span class="counter">${unreadAtNotificationCnt}</span>
+                            <span class="ft-gray fn-right" onclick="Util.makeNotificationRead('at')" class="fn-right">
+                                ${makeAsReadLabel}
+                            </span>
                             </#if>
                         </a>
                     </li>
@@ -49,6 +55,9 @@
                             <span>${notificationFollowingUserLabel}</span>
                             <#if unreadFollowingUserNotificationCnt &gt; 0>
                             <span class="counter">${unreadFollowingUserNotificationCnt}</span>
+                            <span class="ft-gray fn-right" onclick="Util.makeNotificationRead('followingUser')" class="fn-right">
+                                ${makeAsReadLabel}
+                            </span>
                             </#if>
                         </a>
                     </li>

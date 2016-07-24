@@ -19,11 +19,6 @@
             <label>URL</label><br/>
             <input id="userURL" type="text" value="${currentUser.userURL}" placeholder="${selfURLLabel}"/>
 
-            <#--
-            <label>QQ</label><br/>
-            <input id="userQQ" type="text" value="${currentUser.userQQ}" />
-            -->
-
             <label>${userIntroLabel}</label><br/>
             <textarea id="userIntro" placeholder="${selfIntroLabel}">${currentUser.userIntro}</textarea>
 
@@ -112,14 +107,7 @@
             ${geoInfoTipLabel}
             <div class="fn-hr10"></div>
             <input id="cityName" type="text" placeholder="${geoInfoPlaceholderLabel}" value="${user.userCity}" 
-                   readonly="readonly"/><!--<br/><br/>
-    
-            <select id="geoStatus" onchange="Settings.changeGeoStatus('${csrfToken}')">
-                <option name="public" value="0" <#if 0 == user.userGeoStatus>selected</#if>>${publicLabel}</option>
-                <option name="private" value="1" <#if 1 == user.userGeoStatus>selected</#if>>${privateLabel}</option>
-            </select>
-            ${geoInfoLabel}
-            -->
+                   readonly="readonly"/>
         </div>
     </div>
 
@@ -205,42 +193,41 @@
             <button class="green fn-right" onclick="Settings.update('misc', '${csrfToken}')">${saveLabel}</button>
         </div>
     </div>
-</div>
-<div class="module">
-    <div class="module-header">
-        <h2>${passwordLabel}</h2>
-    </div>
-    <div class="module-panel form fn-clear">
-        <label>${oldPasswordLabel}</label>
-        <input id="pwdOld" type="password" />
+    <div class="module">
+        <div class="module-header">
+            <h2>${passwordLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <label>${oldPasswordLabel}</label>
+            <input id="pwdOld" type="password" />
 
-        <label>${newPasswordLabel}</label>
-        <input id="pwdNew" type="password" />
+            <label>${newPasswordLabel}</label>
+            <input id="pwdNew" type="password" />
 
-        <label>${confirmPasswordLabel}</label>
-        <input id="pwdRepeat" type="password" /> <br/><br/>
-        <div id="passwordTip" class="tip"></div><br/>
-        <button class="green fn-right" onclick="Settings.update('password', '${csrfToken}')">${saveLabel}</button>
+            <label>${confirmPasswordLabel}</label>
+            <input id="pwdRepeat" type="password" /> <br/><br/>
+            <div id="passwordTip" class="tip"></div><br/>
+            <button class="green fn-right" onclick="Settings.update('password', '${csrfToken}')">${saveLabel}</button>
+        </div>
     </div>
-</div>
 </div>
 </@home>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
 <script>
-            Util.initUpload({
-                id: 'avatarUpload',
-                qiniuUploadToken: '${qiniuUploadToken}',
-                userId: '${currentUser.oId}'
-            }, function (data) {
-                var qiniuKey = data.result.key;
-                $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
-                $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
-                $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
-            }, function (data) {
-                var qiniuKey = data.result.key,
-                        t = new Date().getTime();
-                $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
-                $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
-                $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
-            });
+                Util.initUpload({
+                    id: 'avatarUpload',
+                    qiniuUploadToken: '${qiniuUploadToken}',
+                    userId: '${currentUser.oId}'
+                }, function (data) {
+                    var qiniuKey = data.result.key;
+                    $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+                    $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+                    $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+                }, function (data) {
+                    var qiniuKey = data.result.key,
+                            t = new Date().getTime();
+                    $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+                    $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+                    $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+                });
 </script>

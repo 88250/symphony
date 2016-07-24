@@ -76,7 +76,9 @@
                         <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/> 
                         </#if>
                     </div>
-                    <label class="anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                    <label class="anonymous-check">${anonymousLabel}<input
+                                    <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
+                                    type="checkbox" id="articleAnonymous"></label>
                     <button class="red fn-right" tabindex="10" onclick="AddArticle.add(<#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
                     <div class="fn-clear">
                             <#if !articleType??>

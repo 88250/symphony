@@ -62,7 +62,7 @@
                     <#if article.articleAnonymous == 0>
                     <a rel="author" href="/member/${article.articleAuthorName}"
                        title="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
-                    <div>
+                    <div class="article-params">
                         <#if article.articleAnonymous == 0>
                         <a rel="author" href="/member/${article.articleAuthorName}" class="ft-black"
                            title="${article.articleAuthorName}"></#if><strong>${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
@@ -135,15 +135,9 @@
                     <div class="tip" id="addCommentTip"></div>
 
                     <div class="fn-clear comment-submit">
-                        <div class="fn-right">
-                            <label class="anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                            <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
-                        </div>
+                        <label class="anonymous-check">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
                     </div>
-
-                </div>
-                <div class="grammar fn-none fn-clear">
-                    ${markdwonGrammarLabel}
                 </div>
                 </#if>
                 <#else>
@@ -235,20 +229,16 @@
                 <#if 0 == userCommentViewMode>
                 <#if isLoggedIn>
                 <#if discussionViewable && article.articleCommentable>
-                <div class="form fn-clear comment-wrap">
+                <div class="form fn-clear wrapper">
                     <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
                     <div class="tip" id="addCommentTip"></div>
 
                     <div class="fn-clear comment-submit">
-                        <div class="fn-right">
-                            <label class="anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                            <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
-                        </div>
+                        <label class="anonymous-check">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
                     </div>
-
-                </div>
-                <div class="grammar fn-none fn-clear">
-                    ${markdwonGrammarLabel}
+                    <div class="fn-hr10"></div>
+                    <div class="fn-hr10"></div>
                 </div>
                 </#if>
                 <#else>

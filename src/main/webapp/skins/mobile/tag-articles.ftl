@@ -26,17 +26,19 @@
                     <#list tag.tagDomains as domain>
                     <a class="ft-gray" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
                     </#list>
+                    <span class="article-action">
                     <span class='fn-right'>
                         <#if isLoggedIn> &nbsp;
-                        <#if isFollowing>
-                        <span class="icon-star ft-red fn-pointer" title="${unfollowLabel}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', 'tag-articles')"></span>
-                        <#else>
-                        <span class="icon-star ft-gray fn-pointer" title="${followLabel}" onclick="Util.follow(this, '${tag.oId}', 'tag', 'tag-articles')"></span>
-                        </#if>
-                        </#if>
-                        <#if isAdminLoggedIn> &nbsp;
-                        <a class="icon-setting" href="/admin/tag/${tag.oId}" title="${adminLabel}"></a>
-                        </#if>
+                            <#if isFollowing>
+                            <span onclick="Util.unfollow(this, '${tag.oId}', 'tag', 'tag-articles')"><span class="ft-red icon-star"></span></span>
+                            <#else>
+                            <span onclick="Util.follow(this, '${tag.oId}', 'tag', 'tag-articles')"><span class="icon-star"></span></span>
+                            </#if>
+                            </#if>
+                            <#if isAdminLoggedIn> &nbsp;
+                            <a class="ft-a-icon" href="/admin/tag/${tag.oId}"><span class="icon-setting"></span></a>
+                            </#if>
+                    </span>
                     </span>
                 </div>
                 <#if tag.tagIconPath != "">

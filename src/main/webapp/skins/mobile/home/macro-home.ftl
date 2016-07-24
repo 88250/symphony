@@ -64,6 +64,10 @@
                     ${followersLabel}
                     <#elseif type == "points">
                     ${pointLabel}
+                    <#elseif type == "articlesAnonymous">
+                    ${anonymousLabel}${articleLabel}
+                    <#elseif type == "commentsAnonymous">
+                    ${anonymousLabel}${cmtLabel}
                     <#elseif type == "settings">
                     ${settingsLabel}
                     </#if>

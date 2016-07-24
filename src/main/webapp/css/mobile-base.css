@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.3, Jul 23, 2016
+ * @version 1.3.3.3, Jul 24, 2016
  */
 
 /* start reset */
@@ -448,6 +448,11 @@ a.ft-black {
 
 .ft-center {
     text-align: center;
+}
+
+.ft-a-icon {
+    color: #333;
+    text-decoration: none;
 }
 
 .fn-inline {
@@ -1278,7 +1283,7 @@ a[class*=" icon-"]:hover {
 /* end list */
 
 /* start article */
-label.anonymous {
+label.anonymous-check {
     margin: 2px 15px 0 0;
 }
 
@@ -1690,7 +1695,7 @@ ul.CodeMirror-hints {
     margin-bottom: 15px;
 }
 
-.article-info > div {
+.article-info > div.article-params {
     position: absolute;
     top: 0;
     left: 40px;
@@ -2390,55 +2395,19 @@ code .dec { color: initial; } /* decimal - blue */
 /* end home */
 
 /* start notifications */
-.note-list {
-    background-image: linear-gradient(to right, #F6F6F6 0%, #FDFDFD 8px);
-    box-shadow: 1px 0 0 #EEEEEE inset;
-    list-style: none;
-    padding: 15px 0;
-}
-
-.note-list li a {
-    cursor: pointer;
-    margin: 5px 0;
-    display: block;
-    padding: 8px 10px;
+.notification-tab a:hover {
     text-decoration: none;
 }
 
-.note-list li a:hover {
-    box-shadow: 2px 0 0 #CCC inset;
-}
-
-.note-list li a > span.counter {
-    background-color: #EEEEEE;
+.notification-tab .counter {
+    background-color: #eee;
     border-radius: 2px 2px 2px 2px;
-    box-shadow: 0 -1px 0 #E3E3E3 inset;
-    color: #999999;
-    float: right;
+    box-shadow: 0 -1px 0 #e3e3e3 inset;
+    color: #999;
     font-size: 11px;
     font-weight: bold;
     padding: 2px 5px;
-}
-
-.note-list li.current a {
-    background: none repeat scroll 0 0 #FDFDFD;    
-    box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.05);
-    color: #333333;
-    font-weight: bold;
-    position: relative;
-    border: 1px solid #EEE;
-    border-left-width: 0;
-}
-
-.note-list li.current a:after {
-    background-image: linear-gradient(#D26911, #BA5D0F);
-    bottom: -1px;
-    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1) inset;
-    content: "";
-    position: absolute;
-    right: -1px;
-    top: -1px;
-    width: 3px;
+    margin-left: 5px;
 }
 
 .notification .read {
@@ -2449,6 +2418,10 @@ code .dec { color: initial; } /* decimal - blue */
 
 .notification li {
     background-color: #F8F8FF;
+}
+
+.notification li:last-child {
+    border-bottom-width: 0;
 }
 /* end notifications */
 
