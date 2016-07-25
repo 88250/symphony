@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.6.17, Jul 23, 2016
+ * @version 2.9.7.17, Jul 25, 2016
  * @since 0.2.0
  */
 @Service
@@ -303,6 +303,8 @@ public class CommentMgmtService {
             throw new ServiceException(langPropsService.get("tooFrequentCmtLabel"));
         }
 
+        final String commenterName = commenter.optString(User.USER_NAME);
+
         JSONObject article = null;
         try {
             // check if admin allow to add comment
@@ -314,7 +316,7 @@ public class CommentMgmtService {
 
             article = articleRepository.get(articleId);
 
-            if (!fromClient) {
+            if (!fromClient && !TuringQueryService.ROBOT_NAME.equals(commenterName)) {
                 int pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT;
 
                 // Point
@@ -409,7 +411,8 @@ public class CommentMgmtService {
             transaction.commit();
 
             if (!fromClient && Comment.COMMENT_ANONYMOUS_C_PUBLIC == commentAnonymous
-                    && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
+                    && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous
+                    && !TuringQueryService.ROBOT_NAME.equals(commenterName)) {
                 // Point
                 final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
                 if (articleAuthorId.equals(commentAuthorId)) {
