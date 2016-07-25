@@ -28,6 +28,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -103,7 +104,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.8.19, Jul 22, 2016
+ * @version 1.17.9.19, Jul 25, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -200,13 +201,26 @@ public class UserProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showHomeAnonymousComments(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String userName) throws Exception {
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/home/comments.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
+
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        JSONObject currentUser = null;
+        if (isLoggedIn) {
+            currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+        }
+
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+        if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
+                && !Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -224,8 +238,6 @@ public class UserProcessor {
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
 
-        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
-        JSONObject currentUser = null;
         if (isLoggedIn) {
             currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
@@ -273,7 +285,26 @@ public class UserProcessor {
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showAnonymousArticles(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response, final String userName) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/comments.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeaderAndFooter(request, response, dataModel);
+
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+        JSONObject currentUser = null;
+        if (isLoggedIn) {
+            currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
+        }
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+        if (null == currentUser || (!currentUser.optString(Keys.OBJECT_ID).equals(user.optString(Keys.OBJECT_ID)))
+                && !Role.ADMIN_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
 
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
@@ -281,11 +312,6 @@ public class UserProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-        context.setRenderer(renderer);
-        final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
@@ -296,9 +322,7 @@ public class UserProcessor {
         fillHomeUser(dataModel, user);
         avatarQueryService.fillUserAvatarURL(user);
 
-        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             final String followerId = currentUser.optString(Keys.OBJECT_ID);
 
             final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
@@ -330,12 +354,7 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final JSONObject currentUser = Sessions.currentUser(request);
-        if (null == currentUser) {
-            dataModel.put(Common.IS_MY_ARTICLE, false);
-        } else {
-            dataModel.put(Common.IS_MY_ARTICLE, userName.equals(currentUser.optString(User.USER_NAME)));
-        }
+        dataModel.put(Common.IS_MY_ARTICLE, userName.equals(currentUser.optString(User.USER_NAME)));
 
         dataModel.put(Common.TYPE, "articlesAnonymous");
     }
