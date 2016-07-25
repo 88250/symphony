@@ -143,6 +143,8 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](https://hacpai
 * 配置 SendCloud 邮件模版：
   ![sendcloud](https://cloud.githubusercontent.com/assets/873584/10298675/3cb11b08-6c14-11e5-9fd4-025122336469.png)
 
+如果遇到问题，可以参考一下这篇[帖子](https://hacpai.com/article/1468824093225)。
+
 ## 商用授权
 
 请看[这里](https://github.com/b3log/symphony/wiki/%E5%95%86%E7%94%A8%E6%8E%88%E6%9D%83)。
