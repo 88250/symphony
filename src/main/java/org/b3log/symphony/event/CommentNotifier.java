@@ -20,6 +20,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
@@ -36,6 +37,7 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -124,6 +126,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
+            final boolean fromClient = data.optBoolean(Common.FROM_CLIENT);
 
             final String articleId = originalArticle.optString(Keys.OBJECT_ID);
             final String commentId = originalComment.optString(Keys.OBJECT_ID);
@@ -172,10 +175,23 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             cc = cc.replace("@participants ",
                     "@<a href='https://hacpai.com/article/1458053458339' class='ft-red'>participants</a> ");
+            if (fromClient) {
+                // "<i class='ft-small'>by 88250</i>"
+                String syncCommenterName = StringUtils.substringAfter(cc, "<i class=\"ft-small\">by ");
+                syncCommenterName = StringUtils.substringBefore(syncCommenterName, "</i>");
+
+                if (UserRegisterValidation.invalidUserName(syncCommenterName)) {
+                    syncCommenterName = UserExt.ANONYMOUS_USER_NAME;
+                }
+
+                cc = cc.replaceAll("<i class=\"ft-small\">by .*</i>", "");
+
+                chData.put(Comment.COMMENT_T_AUTHOR_NAME, syncCommenterName);
+            }
 
             chData.put(Comment.COMMENT_CONTENT, cc);
             chData.put(Comment.COMMENT_UA, originalComment.optString(Comment.COMMENT_UA));
-            chData.put(Common.FROM_CLIENT, data.optBoolean(Common.FROM_CLIENT));
+            chData.put(Common.FROM_CLIENT, fromClient);
             chData.put(UserExt.USER_UA_STATUS, commenter.optInt(UserExt.USER_UA_STATUS));
 
             ArticleChannel.notifyComment(chData);
