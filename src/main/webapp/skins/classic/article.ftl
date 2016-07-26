@@ -68,7 +68,7 @@
                     <div class="article-info fn-flex">
                         <#if article.articleAnonymous == 0>
                         <a rel="author" href="/member/${article.articleAuthorName}"
-                            title="${article.articleAuthorName}"></a></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
+                            title="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
                         <div class="fn-flex-1">
                             <#if article.articleAnonymous == 0>
                             <a rel="author" href="/member/${article.articleAuthorName}" class="ft-black"
