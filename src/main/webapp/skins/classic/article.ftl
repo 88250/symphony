@@ -232,7 +232,7 @@
                                                     </#if>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
-                                                    <a class="tooltipped tooltipped-s a-icon" href="/admin/comment/${comment.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                                                    <a class="tooltipped tooltipped-s ft-a-icon" href="/admin/comment/${comment.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                     </#if>
                                                     #<i><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
                                                 </span>    
@@ -386,6 +386,12 @@
             Label.copiedLabel = '${copiedLabel}';
             Label.copyLabel = '${copyLabel}';
             Label.noRevisionLabel = "${noRevisionLabel}";
+            Label.thankedLabel = "${thankedLabel}";
+            Label.thankLabel = "${thankLabel}";
+            Label.isLoggedIn = ${isLoggedIn?c};
+            Label.currentUserName = '${currentUser.userName}';
+            Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
+            Label.adminLabel = '${adminLabel}';
             qiniuToken = "${qiniuUploadToken}";
             qiniuDomain = "${qiniuDomain}";
             <#if isLoggedIn>

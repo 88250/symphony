@@ -38,7 +38,7 @@
                             </#if>
                             </#if>
                             <#if isAdminLoggedIn> &nbsp;
-                            <a class="a-icon tooltipped tooltipped-s" href="/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                            <a class="ft-a-icon tooltipped tooltipped-s" href="/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                             </#if>
                         </span>
                         </span>

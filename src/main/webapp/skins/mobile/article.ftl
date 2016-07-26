@@ -171,9 +171,10 @@
                                     <a rel="nofollow" href="/member/${comment.commentAuthorName}"></#if>
                                         <div class="avatar" 
                                              title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
-                                    <#if comment.commentAnonymous == 0></a></#if><#else>
-                                        <div class="avatar" 
-                                                 title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
+                                        <#if comment.commentAnonymous == 0></a></#if>
+                                    <#else>
+                                    <div class="avatar" 
+                                         title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
                                     </#if>
                                     <div class="fn-flex-1 comment-content">
                                         <div class="fn-clear comment-info">
@@ -181,7 +182,8 @@
                                                 <#if !comment.fromClient>
                                                 <#if comment.commentAnonymous == 0>
                                                 <a rel="nofollow" href="/member/${comment.commentAuthorName}"
-                                                   title="${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
+                                                   title="${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
+                                                   via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via" data-ua="${comment.commentUA}"></span></#if>
                                                 </span>
                                                 <#if comment.rewardedCnt gt 0>
@@ -206,11 +208,11 @@
                                                 </#if>
                                                 </#if>
                                                 <#if comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0>
-                                                <span class="icon-reply fn-pointer" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
+                                                <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
                                                 </#if>
                                                 </#if>
                                                 <#if isAdminLoggedIn>
-                                                <a class="icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
+                                                <a class="tooltipped tooltipped-s ft-a-icon" href="/admin/comment/${comment.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                 </#if>
                                                 #<i><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
                                             </span>    
@@ -221,7 +223,7 @@
                                     </div>
                                 </div>
                             </li>
-                            </#list>  
+                            </#list> 
                         </ul>
                     </div>
                     <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
@@ -264,11 +266,11 @@
                             <#list sideRelevantArticles as relevantArticle>
                             <li<#if !relevantArticle_has_next> class="last"</#if>>
                                 <#if "someone" != relevantArticle.articleAuthorName>
-                                    <a rel="nofollow" 
-                                   href="/member/${relevantArticle.articleAuthorName}"></#if>
-                                        <span class="avatar-small slogan"
-                                   style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
-                                   ></span>
+                                <a rel="nofollow" 
+                               href="/member/${relevantArticle.articleAuthorName}"></#if>
+                                    <span class="avatar-small slogan"
+                                          style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
+                                          ></span>
                                     <#if "someone" != relevantArticle.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                             </li>
@@ -289,12 +291,12 @@
                             <#list sideRandomArticles as randomArticle>
                             <li<#if !randomArticle_has_next> class="last"</#if>>
                                 <#if "someone" != randomArticle.articleAuthorName>
-                                    <a  rel="nofollow"
-                                   href="/member/${randomArticle.articleAuthorName}"></#if>
-                                        <span class="avatar-small"
-                                   style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></span>
+                                <a  rel="nofollow"
+                                href="/member/${randomArticle.articleAuthorName}"></#if>
+                                    <span class="avatar-small"
+                                          style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
-                                    <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
+                                <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                             </li>
                             </#list>
                         </ul>
@@ -326,24 +328,30 @@
             Label.userCommentViewMode = ${userCommentViewMode};
             Label.stickConfirmLabel = "${stickConfirmLabel}";
             Label.audioRecordingLabel = '${audioRecordingLabel}';
+            Label.thankedLabel = "${thankedLabel}";
+            Label.thankLabel = "${thankLabel}";
+            Label.isLoggedIn = ${isLoggedIn?c};
+            Label.currentUserName = '${currentUser.userName}';
+            Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
+            Label.adminLabel = '${adminLabel}';
             // Init [Article] channel
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             $(document).ready(function () {
-                 // jQuery File Upload
+                // jQuery File Upload
                 Util.uploadFile({
-                "type": "img",
-                        "id": "fileUpload",
-                        "pasteZone": $(".CodeMirror"),
-                        "qiniuUploadToken": "${qiniuUploadToken}",
-                        "editor": Comment.editor,
-                        "uploadingLabel": "${uploadingLabel}",
-                        "qiniuDomain": "${qiniuDomain}",
-                        "imgMaxSize": ${imgMaxSize?c},
-                        "fileMaxSize": ${fileMaxSize?c}
+                    "type": "img",
+                    "id": "fileUpload",
+                    "pasteZone": $(".CodeMirror"),
+                    "qiniuUploadToken": "${qiniuUploadToken}",
+                    "editor": Comment.editor,
+                    "uploadingLabel": "${uploadingLabel}",
+                    "qiniuDomain": "${qiniuDomain}",
+                    "imgMaxSize": ${imgMaxSize?c},
+                    "fileMaxSize": ${fileMaxSize?c}
                 });
             });
             <#if 3 == article.articleType>
-                    Article.playThought('${article.articleContent}');
+            Article.playThought('${article.articleContent}');
             </#if>
             Comment.init(${isLoggedIn?c});
             <#if isLoggedIn>
@@ -357,21 +365,21 @@
         <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
-                tex2jax: {
-                    inlineMath: [['$','$'], ["\\(","\\)"] ],
-                    displayMath: [['$$','$$']],
-                    processEscapes: true,
-                    processEnvironments: true,
-                    skipTags: ['pre','code'],
-                }
+            tex2jax: {
+            inlineMath: [['$','$'], ["\\(","\\)"] ],
+            displayMath: [['$$','$$']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['pre','code'],
+            }
             });
         </script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Queue(function() {
-                var all = MathJax.Hub.getAllJax(), i;
-                for(i = 0; i < all.length; i += 1) {
-                    all[i].SourceElement().parentNode.className += 'has-jax';
-                }
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += 'has-jax';
+            }
             });
         </script>
     </body>

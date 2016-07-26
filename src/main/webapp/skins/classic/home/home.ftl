@@ -28,7 +28,7 @@
             </div>
             <#if isMyArticle && 3 != article.articleType>
             <div class="cmts">
-                <a class="a-icon tooltipped tooltipped-s" href="/update?id=${article.oId}" aria-label="${editLabel}"><span class="icon-edit"></span></a>
+                <a class="ft-a-icon tooltipped tooltipped-s" href="/update?id=${article.oId}" aria-label="${editLabel}"><span class="icon-edit"></span></a>
             </div>
             <#else>
             <#if article.articleCommentCount != 0>

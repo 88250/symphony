@@ -47,7 +47,6 @@ var ArticleChannel = {
 
         ArticleChannel.ws.onmessage = function (evt) {
             var data = JSON.parse(evt.data);
-            // console.log(data);
 
             if (Label.articleOId !== data.articleId) { // It's not the current article
                 return;
@@ -55,76 +54,95 @@ var ArticleChannel = {
 
             switch (data.type) {
                 case "comment":
-                    if (0 === Label.userCommentViewMode) { // tranditional view mode
-                        return;
-                    }
+                    var cmtCount = parseInt($("#comments .comment-header h2").text()) + 1;
+                    // 总帖数更新
+                    $("#comments .comment-header h2").text(cmtCount + ' ' + Label.cmtLabel);
 
-                    $("#comments .comment-header h2").text((parseInt($("#comments .comment-header h2").text()) + 1) + ' ' + Label.cmtLabel);
+                    // 新增第一条评论时到底部的锚点
                     var bottomCmt = '';
                     if ($('#comments > ul li').length === 0) {
                         bottomCmt = '<div id="bottomComment"></div>';
                     }
+
+                    // ua
                     var UAName = Util.getDeviceByUa(data.commentUA);
                     if (UAName !== '') {
                         UAName = ' <span class="cmt-via">via ' + UAName + '</span>';
                     }
 
-                    var commentAnonymous = "someone" === data.commentAuthorName ? 1 : 0;
+                    var template = '<li id="' + data.commentId + '">'
+                            + '<div class="fn-flex">';
 
-                    // Append comment
-                    var template = "<li class=\"fn-none\" id=\"${comment.oId}\">" + bottomCmt +
-                            "<div class=\"fn-flex\">" +
-                            "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\">" +
-                            "<img class=\"avatar\"" +
-                            "title=\"${comment.commentAuthorName}\" src=\"${comment.commentAuthorThumbnailURL}-64.jpg?${comment.thumbnailUpdateTime}\" />" +
-                            "</a>" +
-                            "<div class=\"fn-flex-1 comment-content\">" +
-                            "<div class=\"fn-clear comment-info\">" +
-                            "<span class=\"fn-left\">";
-                    if (0 === commentAnonymous) {
-                        template += "<a rel=\"nofollow\" href=\"/member/${comment.commentAuthorName}\"" +
-                                "title=\"${comment.commentAuthorName}\">${comment.commentAuthorName}</a>";
+                    if (!data.fromClient) {   // TODO: fromClient
+
+                        if (data.commentAuthorName !== 'someone') {
+                            template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
+                        }
+
+                        template += '<div class="avatar" title="' + data.commentAuthorName + '" style="background-image:url('
+                                + data.commentAuthorThumbnailURL + '-64.jpg?${comment.commenter.userUpdateTime?c})"></div>'; // TODO: userUpdateTime
+                        if (data.commentAuthorName !== 'someone') {
+                            template += '</a>';
+                        }
+
                     } else {
-                        template += "${comment.commentAuthorName}";
+                        template += '<div class="avatar" title="' + data.commentAuthorName + '" style="background-image:url('
+                                + data.commentAuthorThumbnailURL + '-64.jpg?${comment.commenter.userUpdateTime?c})"></div>'; // TODO: userUpdateTime
                     }
-                    template +=
-                            "<span class=\"ft-fade ft-smaller\">&nbsp;•&nbsp;${comment.timeAgo}" + UAName + "</span>" +
-                            "</span>" +
-                            "<span class=\"fn-right\">" +
-                            "<span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'" +
-                            "   onclick=\"Comment.thank('${comment.oId}', '" + Label.csrfToken + "', '${comment.commentThankLabel}', '${comment.thankedLabel}', " + commentAnonymous + ")\">${comment.thankLabel}</span> " +
-                            "<span class=\"icon-reply fn-pointer\" onclick=\"Comment.replay('@${comment.commentAuthorName} ')\"></span> " +
-                            "#<i>" + parseInt($("#comments .comment-header h2").text()) + "</i>" +
-                            "</span>    " +
-                            "</div>" +
-                            "<div class=\"content-reset comment\">" +
-                            "${comment.commentContent}" +
-                            "</div>" +
-                            "</div>" +
-                            "</div>" +
-                            "</li>";
 
-                    var replaceAll = function (string, find, replace) {
-                        return string.replace(new RegExp(find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"), 'g'), replace);
-                    };
+                    template += '<div class="fn-flex-1 comment-content">'
+                            + '<div class="fn-clear comment-info">'
+                            + '<span class="fn-left">';
 
-                    template = replaceAll(template, "${comment.oId}", data.commentId);
-                    template = replaceAll(template, "${comment.commentAuthorName}", data.commentAuthorName);
-                    template = replaceAll(template, "${comment.commentAuthorThumbnailURL}", data.commentAuthorThumbnailURL);
-                    template = replaceAll(template, "${comment.thumbnailUpdateTime}", data.thumbnailUpdateTime);
-                    template = replaceAll(template, "${comment.commentContent}", data.commentContent);
-                    template = replaceAll(template, "${comment.commentCreateTime}", data.commentCreateTime);
-                    template = replaceAll(template, "${comment.timeAgo}", data.timeAgo);
-                    template = replaceAll(template, "${comment.thankLabel}", data.thankLabel);
-                    template = replaceAll(template, "${comment.thankedLabel}", data.thankedLabel);
-                    template = replaceAll(template, "${comment.commentThankLabel}", data.commentThankLabel);
+                    if (!data.fromClient) {   // TODO: fromClient
+                        if (data.commentAuthorName !== 'someone') {
+                            template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '" title="' + data.commentAuthorName + '">';
+                        }
 
-                    $("#comments > ul").prepend(template);
+                        template += data.commentAuthorName;
+                        if (data.commentAuthorName !== 'someone') {
+                            template += '</a>';
+                        }
+                    } else {
+                        template += data.commentAuthorName + 'via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
+                    }
+                    template += '<span class="ft-fade ft-smaller"> • ' + data.timeAgo;
 
+                    if (data.userUAStatus === 0) {  // TODO: comment.commenter.userUAStatus
+                        template += UAName;
+                    }
+                    
+                    template += '</span></span><span class="fn-right">';
+
+                    if (Label.isLoggedIn) {
+                        if (data.commentAuthorName !== Label.currentUserName) {
+                            template += '<span class="fn-none thx fn-pointer ft-smaller ft-fade" id="' + data.commentId + 'Thx"'
+                                    + ' onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
+                                    + '\', \'' + data.commentThankLabel + '\', \'' + Label.thankedLabel
+                                    + '\', ${comment.commentAnonymous})">' + Label.thankLabel + '</span> ';
+                        }
+
+                        if (data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') {
+                            template += ' <span aria-label="@' + data.commentAuthorName + '" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay(\'@'
+                                    + data.commentAuthorName + ' \')"><span class="icon-reply"></span></span> ';
+                        }
+                    }
+
+                    if (Label.isAdminLoggedIn) {
+                        template += '<a class="tooltipped tooltipped-s ft-a-icon" href="/admin/comment/' + data.commentId
+                                + '" aria-label="' + Label.adminLabel + '"><span class="icon-setting"></span></a> ';
+                    }
+
+                    template += '#<i>' + cmtCount + '</i></span></div><div class="content-reset comment">'
+                            + data.commentContent + '</div></div></div></li>';
+
+                    if (0 === Label.userCommentViewMode) { // tranditional view mode
+                        $("#comments > ul").afterpend(template);
+                    } else {
+                        $("#comments > ul").prepend(template);
+                    }
                     Article.parseLanguage();
-
                     $("#" + data.commentId).fadeIn(2000);
-
                     break;
                 case "articleHeat":
                     var $heatBar = $("#heatBar"),
@@ -274,7 +292,7 @@ var TimelineChannel = {
         };
 
         TimelineChannel.ws.onerror = function (err) {
-            console.log("ERROR", err)
+            console.log("ERROR", err);
         };
     }
 };
@@ -361,7 +379,7 @@ var ChatRoomChannel = {
         };
 
         ChatRoomChannel.ws.onerror = function (err) {
-            console.log("ERROR", err)
+            console.log("ERROR", err);
         };
     }
 };
