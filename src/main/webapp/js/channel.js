@@ -101,7 +101,7 @@ var ArticleChannel = {
                             template += '</a>';
                         }
                     } else {
-                        template += data.commentAuthorName + 'via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
+                        template += data.commentAuthorName + ' via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
                     }
                     template += '<span class="ft-fade ft-smaller"> • ' + data.timeAgo;
 
