@@ -58,8 +58,12 @@
                                         <div class="fn-flex-1">
                                             <div class="fn-clear">
                                                 <span class="fn-left">
+                                                    <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
                                                     <a rel="nofollow" href="/member/${msg.userName}"
                                                        title="${msg.userName}">${msg.userName}</a>
+                                                    <#else>
+                                                    ${msg.userName}
+                                                    </#if>
                                                 </span>
                                             </div>
                                             <div class="content-reset">
