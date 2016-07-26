@@ -331,9 +331,11 @@
             Label.thankedLabel = "${thankedLabel}";
             Label.thankLabel = "${thankLabel}";
             Label.isLoggedIn = ${isLoggedIn?c};
-            Label.currentUserName = '${currentUser.userName}';
             Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
             Label.adminLabel = '${adminLabel}';
+            <#if isLoggedIn>
+                    Label.currentUserName = '${currentUser.userName}';
+            </#if>            
             // Init [Article] channel
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             $(document).ready(function () {

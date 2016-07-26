@@ -389,7 +389,6 @@
             Label.thankedLabel = "${thankedLabel}";
             Label.thankLabel = "${thankLabel}";
             Label.isLoggedIn = ${isLoggedIn?c};
-            Label.currentUserName = '${currentUser.userName}';
             Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
             Label.adminLabel = '${adminLabel}';
             qiniuToken = "${qiniuUploadToken}";
