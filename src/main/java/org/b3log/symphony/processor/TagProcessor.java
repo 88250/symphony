@@ -15,11 +15,13 @@
  */
 package org.b3log.symphony.processor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -43,6 +45,7 @@ import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
+import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -52,10 +55,11 @@ import org.json.JSONObject;
  * <ul>
  * <li>Shows tags wall (/tags), GET</li>
  * <li>Shows tag articles (/tag/{tagTitle}), GET</li>
+ * <li>Query tags (/tags/query), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Apr 14, 2016
+ * @version 1.4.0.3, Jul 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -96,6 +100,44 @@ public class TagProcessor {
      */
     @Inject
     private TagCache tagCache;
+
+    /**
+     * Queries tags.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/tags/query", method = HTTPRequestMethod.GET)
+    public void queryTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        if (null == Sessions.currentUser(request)) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        context.renderJSON().renderTrueResult();
+
+        final String titlePrefix = request.getParameter("title");
+
+        List<JSONObject> tags;
+
+        final int fetchSize = 7;
+        if (StringUtils.isBlank(titlePrefix)) {
+            tags = tagQueryService.getTags(fetchSize);
+        } else {
+            tags = tagQueryService.getTagsByPrefix(titlePrefix, fetchSize);
+        }
+
+        final List<String> ret = new ArrayList<>();
+        for (final JSONObject tag : tags) {
+            ret.add(tag.optString(Tag.TAG_TITLE));
+        }
+
+        context.renderJSONValue(Tag.TAGS, ret);
+    }
 
     /**
      * Caches tags.

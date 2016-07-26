@@ -26,7 +26,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.11.3.4, May 24, 2016
+ * @version 1.12.3.4, Jul 26, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -176,6 +176,11 @@ public final class Tag {
      * Key of related tags.
      */
     public static final String TAG_T_RELATED_TAGS = "tagRelatedTags";
+
+    /**
+     * Key of tag title lower case.
+     */
+    public static final String TAG_T_TITLE_LOWER_CASE = "tagTitleLowerCase";
 
     //// Tag type constants
     /**

@@ -18,6 +18,8 @@ package org.b3log.symphony.service;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -70,7 +72,7 @@ import org.jsoup.Jsoup;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.4.8, Jul 24, 2016
+ * @version 1.7.4.8, Jul 26, 2016
  * @since 0.2.0
  */
 @Service
@@ -139,6 +141,68 @@ public class TagQueryService {
      */
     @Inject
     private TagCache tagCache;
+
+    /**
+     * Gets tags by the specified title prefix.
+     *
+     * @param titlePrefix the specified title prefix
+     * @param fetchSize the specified fetch size
+     * @return a list of tags, for example      <pre>
+     * [
+     *     {
+     *         "tagTitle": "",
+     *         "tagIconPath": "",
+     *     }, ....
+     * ]
+     * </pre>
+     */
+    public List<JSONObject> getTagsByPrefix(final String titlePrefix, final int fetchSize) {
+        final JSONObject titleToSearch = new JSONObject();
+        titleToSearch.put(Tag.TAG_T_TITLE_LOWER_CASE, titlePrefix.toLowerCase());
+
+        final List<JSONObject> tags = tagCache.getTags();
+
+        int index = Collections.binarySearch(tags, titleToSearch, new Comparator<JSONObject>() {
+            @Override
+            public int compare(final JSONObject t1, final JSONObject t2) {
+                String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+                final String inputTitle = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+
+                if (u1Title.length() < inputTitle.length()) {
+                    return u1Title.compareTo(inputTitle);
+                }
+
+                u1Title = u1Title.substring(0, inputTitle.length());
+
+                return u1Title.compareTo(inputTitle);
+            }
+        });
+
+        final List<JSONObject> ret = new ArrayList<>();
+
+        if (index < 0) {
+            return ret;
+        }
+
+        int start = index;
+        int end = index;
+
+        while (start > -1 && tags.get(start).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
+            start--;
+        }
+
+        start++;
+
+        if (start < index - fetchSize) {
+            end = start + fetchSize;
+        } else {
+            while (end < tags.size() && end < index + fetchSize && tags.get(end).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
+                end++;
+            }
+        }
+
+        return tags.subList(start, end);
+    }
 
     /**
      * Generates tags for the specified content.
