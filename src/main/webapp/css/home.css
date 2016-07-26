@@ -120,6 +120,87 @@
 label.article-anonymous {
     margin: 7px 15px 0 0;
 }
+
+.post .tags-wrap {
+    position: relative;
+}
+
+.post .tags-input {
+    border: 1px solid #CCCCCC;
+    background-color: #FAFAFA;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
+    padding: 5px 5px 3px 5px;
+    width: 100%;
+    line-height: 17px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    height: 33px;
+}
+
+.post .tags-input span.tag {
+    margin: 2px 5px 0 0px;
+}
+
+.post .tags-input span.icon-close {
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.post .tags-input span.tag.haved {
+    color: #333;
+    background-color: #ccc;
+    transition: background 0.5s ease-in,color 0.3s ease-out;
+}
+
+.post .tags-input input {
+    border: 0;
+    outline: none;
+    box-shadow: 0 0 0;
+    border-radius: 0;
+    padding: 2px;
+}
+
+.post .tags-input input:focus {
+    border: 0;
+    background-color: transparent;
+    box-shadow: 0 0 0;
+}
+
+.post .domains-tags, 
+.completed-panel {
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    border: 1px solid #e5e5e5;
+    z-index: 10;
+    padding: 10px;
+    border-radius: 0 0 3px 3px;
+    width: 50%;
+    top: 32px;
+}
+
+.post .domains-tags .tag {
+    cursor: pointer;
+}
+
+.post .domains-tags > span.current {
+    color: #FFF;
+    background-color: #b33630;
+    background-image: linear-gradient(#dc5f59, #b33630);
+    border-color: #cd504a;
+}
+
+.completed-panel a {
+    display: block;
+    padding: 3px;
+}
+
+.completed-panel a.selected,
+.completed-panel a:hover {
+    background-color: #e5e5e5;
+}
 /* end add article */
 
 /* start home */

@@ -48,10 +48,15 @@ var AddArticle = {
                     "min": 4,
                     "msg": Label.articleContentErrorLabel
                 }]})) {
+            
+            var articleTags = '';
+            $('.tags-input .tag').each(function () {
+               articleTags += $(this).text() + ',';
+            });
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g, ""),
                 articleContent: this.editor.getValue(),
-                articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g, ""),
+                articleTags: articleTags,
                 articleCommentable: true,
                 articleType: $("input[type='radio'][name='articleType']:checked").val(),
                 articleRewardContent: this.rewardEditor.getValue(),
@@ -176,18 +181,18 @@ var AddArticle = {
             AddArticle.editor.setCursor(CodeMirror.Pos(0, 0));
             AddArticle.editor.focus();
 
-            var username = getParameterByName("at");
+            var username = Util.getParameterByName("at");
             $("#articleTitle").val("Hi, " + username);
 
             var tagTitles = "小黑屋";
-            var tags = getParameterByName("tags");
+            var tags = Util.getParameterByName("tags");
             if ("" !== tags) {
                 tagTitles += "," + tags;
             }
             $("#articleTags").val(tagTitles);
         }
 
-        var title = getParameterByName("title");
+        var title = Util.getParameterByName("title");
         if (title && title.length > 0) {
             $("#articleTitle").val(title);
         }
@@ -271,7 +276,7 @@ var AddArticle = {
             });
         }
 
-        $("#articleTitle, #articleTags, #articleRewardPoint").keypress(function (event) {
+        $("#articleTitle, #articleRewardPoint").keypress(function (event) {
             if (13 === event.keyCode) {
                 AddArticle.add();
             }
@@ -351,6 +356,128 @@ var AddArticle = {
         }
 
         $("#articleRewardContent").next().next().height(100);
+        this._initTag();
+    },
+    /**
+     * @description 初始化标签编辑器
+     * @returns {undefined}
+     */
+    _initTag: function () {
+        // domains 切换
+        $('.domains-tags .btn').click(function () {
+            $('.domains-tags .btn.current').removeClass('current');
+            $(this).addClass('current');
+            $('.domains-tags .domain-tags').hide();
+            $('#tags' + $(this).data('id')).show();
+        });
+
+        $('.domain-tags .tag').click(function () {
+            if ($('.tags-input .tag').length >= 4) {
+                return false;
+            }
+
+            var $it = $(this), $matchItem;
+            $('.tags-input .tag').each(function () {
+                if ($it.text() === $(this).text()) {
+                    $matchItem = $(this);
+                }
+            });
+
+            if ($matchItem) {
+                $matchItem.addClass('haved');
+                setTimeout(function () {
+                    $matchItem.removeClass('haved');
+                }, 900);
+            } else {
+                $('.post .tags-selected').append('<span class="tag">' + $(this).text() + '<span class="icon-close"></span></span>');
+                $('.post .domains-tags').css('left', $('.post .tags-selected').width() + 'px');
+                $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
+
+                if ($('.tags-input .tag').length >= 4) {
+                    $('#articleTags').prop('disabled', true).val('');
+                }
+            }
+
+        });
+
+        $('.tags-input .icon-close').live('click', function () {
+            $(this).parent().remove();
+            $('.post .domains-tags').css('left', $('.post .tags-selected').width() + 'px');
+            $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
+
+            $('#articleTags').prop('disabled', false);
+        });
+
+        $('#articleTags').click(function () {
+            $('.post .domains-tags').show();
+        });
+
+        $('body').click(function (event) {
+            if ($(event.target).closest('.tags-input').length === 1 || $(event.target).closest('.domains-tags').length === 1) {
+            } else {
+                $('.post .domains-tags').hide();
+            }
+        });
+        $("#articleTags").completed({
+            height: 160,
+            onlySelect: true,
+            data: [],
+            afterKeyup: function (event) {
+                $('.post .domains-tags').hide();
+
+                if (event.key === ',' || event.key === '，' ||
+                        event.key === '、' || event.key === '；' ||
+                        event.key.replace(/\s/, "") === '' || event.key === ';') {
+                    var text = $("#articleTags").val();
+                    addTag(text.substr(0, text.length - 1));
+                    return false;
+                }
+                if ($("#articleTags").val().length > 9) {
+                    addTag($("#articleTags").val());
+                    return false;
+                }
+
+
+                if (event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 13
+                        || event.keyCode === 38 || event.keyCode === 40) {
+                    if (event.keyCode === 13) {
+                        addTag($("#articleTags").val());
+                    }
+                    return false;
+                }
+                
+                
+                if (event.keyCode === 27) {
+                    $('#articleTagsSelectedPanel').hide();
+                    return false;
+                }
+
+                $.ajax({
+                    url: '/tags/query?title=' + $("#articleTags").val(),
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#addArticleTip").addClass('error').html('<ul><li>' + errorThrown + '</li></ul>');
+                    },
+                    success: function (result, textStatus) {
+                        if (result.sc) {
+                            $("#articleTags").completed('updateData', result.tags);
+                        } else {
+                            console.log(result);
+                        }
+                    }
+                });
+            }
+        });
+
+        var addTag = function (text) {
+            $('.post .tags-selected').append('<span class="tag">' + text + '<span class="icon-close"></span></span>');
+            $('.post .domains-tags').css('left', $('.post .tags-selected').width() + 'px');
+            $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
+
+            if ($('.tags-input .tag').length >= 4) {
+                $('#articleTags').prop('disabled', true).val('');
+            }
+            $("#articleTags").val('');
+        };
     },
     /**
      * @description 显示简要语法
@@ -361,11 +488,3 @@ var AddArticle = {
 };
 
 AddArticle.init();
-
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}

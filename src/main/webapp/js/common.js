@@ -28,6 +28,18 @@
  */
 var Util = {
     /**
+     * @description 根据 url search 获取值
+     * @param {type} name
+     * @returns {String}
+     */
+    getParameterByName: function (name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    },
+    /**
      * 通过 UA 获取设备 
      * @param {String} ua user agent
      * @returns {String} 设备
