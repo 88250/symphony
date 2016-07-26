@@ -15,13 +15,11 @@
  */
 package org.b3log.symphony.event;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
@@ -57,7 +55,7 @@ import org.jsoup.Jsoup;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.16, Jul 23, 2016
+ * @version 1.5.6.17, Jul 26, 2016
  * @since 0.2.0
  */
 @Named
@@ -150,8 +148,6 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             chData.put(Common.THUMBNAIL_UPDATE_TIME, commenter.optLong(UserExt.USER_UPDATE_TIME));
 
-            chData.put(Comment.COMMENT_CREATE_TIME,
-                    DateFormatUtils.format(new Date(originalComment.optLong(Comment.COMMENT_CREATE_TIME)), "yyyy-MM-dd HH:mm"));
             chData.put(Common.TIME_AGO, langPropsService.get("justNowLabel"));
             chData.put("thankLabel", langPropsService.get("thankLabel"));
             chData.put("thankedLabel", langPropsService.get("thankedLabel"));
@@ -179,6 +175,8 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             chData.put(Comment.COMMENT_CONTENT, cc);
             chData.put(Comment.COMMENT_UA, originalComment.optString(Comment.COMMENT_UA));
+            chData.put(Common.FROM_CLIENT, data.optBoolean(Common.FROM_CLIENT));
+            chData.put(UserExt.USER_UA_STATUS, commenter.optInt(UserExt.USER_UA_STATUS));
 
             ArticleChannel.notifyComment(chData);
 

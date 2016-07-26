@@ -216,13 +216,15 @@ public class ArticleChannel {
      *     "commentId": "",
      *     "commentAuthorName": "",
      *     "commentAuthorThumbnailURL": "",
-     *     "commentCreateTime": "", // yyyy-MM-dd HH:mm
+     *     "thumbnailUpdateTime": long,
      *     "commentContent": "",
      *     “commentThankLabel": "",
      *     "thankLabel": "",
      *     "thankedLabel": "",
      *     "timeAgo": "",
-     *     "commentUA": ""
+     *     "commentUA": "",
+     *     "fromClient": boolean,
+     *     "userUAStatus": int
      * }
      * </pre>
      */

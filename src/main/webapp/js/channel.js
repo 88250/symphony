@@ -18,7 +18,8 @@
  * @fileoverview Message channel via WebSocket.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.7.7, Jul 24, 2016
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.8.7.8, Jul 26, 2016
  */
 
 /**
@@ -73,32 +74,28 @@ var ArticleChannel = {
                     var template = '<li id="' + data.commentId + '">'
                             + '<div class="fn-flex">';
 
-                    if (!data.fromClient) {   // TODO: fromClient
-
+                    if (!data.fromClient) {
                         if (data.commentAuthorName !== 'someone') {
                             template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
                         }
-
                         template += '<div class="avatar" title="' + data.commentAuthorName + '" style="background-image:url('
-                                + data.commentAuthorThumbnailURL + '-64.jpg?${comment.commenter.userUpdateTime?c})"></div>'; // TODO: userUpdateTime
+                                + data.commentAuthorThumbnailURL + '-64.jpg?' + data.thumbnailUpdateTime + ')"></div>';
                         if (data.commentAuthorName !== 'someone') {
                             template += '</a>';
                         }
-
                     } else {
                         template += '<div class="avatar" title="' + data.commentAuthorName + '" style="background-image:url('
-                                + data.commentAuthorThumbnailURL + '-64.jpg?${comment.commenter.userUpdateTime?c})"></div>'; // TODO: userUpdateTime
+                                + data.commentAuthorThumbnailURL + '-64.jpg?' + data.thumbnailUpdateTime + ')"></div>';
                     }
 
                     template += '<div class="fn-flex-1 comment-content">'
                             + '<div class="fn-clear comment-info">'
                             + '<span class="fn-left">';
 
-                    if (!data.fromClient) {   // TODO: fromClient
+                    if (!data.fromClient) {
                         if (data.commentAuthorName !== 'someone') {
                             template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '" title="' + data.commentAuthorName + '">';
                         }
-
                         template += data.commentAuthorName;
                         if (data.commentAuthorName !== 'someone') {
                             template += '</a>';
@@ -108,10 +105,10 @@ var ArticleChannel = {
                     }
                     template += '<span class="ft-fade ft-smaller"> • ' + data.timeAgo;
 
-                    if (data.userUAStatus === 0) {  // TODO: comment.commenter.userUAStatus
+                    if (data.userUAStatus === 0) {
                         template += UAName;
                     }
-                    
+
                     template += '</span></span><span class="fn-right">';
 
                     if (Label.isLoggedIn) {
