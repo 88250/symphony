@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import javax.imageio.ImageIO;
@@ -55,10 +56,12 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Referral;
@@ -81,6 +84,7 @@ import org.b3log.symphony.service.CharacterQueryService;
 import org.b3log.symphony.service.ClientMgmtService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.DomainQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.LivenessMgmtService;
 import org.b3log.symphony.service.ReferralMgmtService;
@@ -122,7 +126,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.16.30, Jul 23, 2016
+ * @version 1.21.16.30, Jul 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -222,6 +226,18 @@ public class ArticleProcessor {
      */
     @Inject
     private CharacterQueryService characterQueryService;
+
+    /**
+     * Domain query service.
+     */
+    @Inject
+    private DomainQueryService domainQueryService;
+
+    /**
+     * Domain cache.
+     */
+    @Inject
+    private DomainCache domainCache;
 
     /**
      * Filler.
@@ -346,6 +362,23 @@ public class ArticleProcessor {
     }
 
     /**
+     * Fills the domains with tags.
+     *
+     * @param dataModel the specified data model
+     */
+    private void fillDomainsWithTags(Map<String, Object> dataModel) {
+        final List<JSONObject> domains = domainCache.getDomains(Integer.MAX_VALUE);
+        
+        dataModel.put(Domain.DOMAINS, domains);
+
+        for (final JSONObject domain : domains) {
+            final List<JSONObject> tags = domainQueryService.getTags(domain.optString(Keys.OBJECT_ID));
+
+            domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
+        }
+    }
+
+    /**
      * Shows add article.
      *
      * @param context the specified context
@@ -378,6 +411,8 @@ public class ArticleProcessor {
         dataModel.put("imgMaxSize", imgMaxSize);
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
+
+        fillDomainsWithTags(dataModel);
 
         String tags = request.getParameter(Tag.TAGS);
         if (StringUtils.isBlank(tags)) {
@@ -816,6 +851,8 @@ public class ArticleProcessor {
         dataModel.put("imgMaxSize", imgMaxSize);
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
+        
+        fillDomainsWithTags(dataModel);
 
         String rewardEditorPlaceholderLabel = langPropsService.get("rewardEditorPlaceholderLabel");
         rewardEditorPlaceholderLabel = rewardEditorPlaceholderLabel.replace("{point}",
