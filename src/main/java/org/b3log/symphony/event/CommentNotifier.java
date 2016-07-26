@@ -217,11 +217,26 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 timeline.put(Common.USER_ID, commenterId);
                 timeline.put(Common.TYPE, Comment.COMMENT);
                 String content = langPropsService.get("timelineCommentLabel");
-                content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
-                        + "/member/" + commenterName + "'>" + commenterName + "</a>")
-                        .replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
-                                + "'>" + articleTitle + "</a>")
+
+                if (fromClient) {
+                    // "<i class='ft-small'>by 88250</i>"
+                    String syncCommenterName = StringUtils.substringAfter(cc, "<i class=\"ft-small\">by ");
+                    syncCommenterName = StringUtils.substringBefore(syncCommenterName, "</i>");
+
+                    if (UserRegisterValidation.invalidUserName(syncCommenterName)) {
+                        syncCommenterName = UserExt.ANONYMOUS_USER_NAME;
+                    }
+
+                    content = content.replace("{user}", syncCommenterName);
+                } else {
+                    content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
+                            + "/member/" + commenterName + "'>" + commenterName + "</a>");
+                }
+
+                content = content.replace("{article}", "<a target='_blank' rel='nofollow' href='" + articlePermalink
+                        + "'>" + articleTitle + "</a>")
                         .replace("{comment}", cc.replaceAll("<p>", "").replaceAll("</p>", ""));
+
                 timeline.put(Common.CONTENT, content);
 
                 timelineMgmtService.addTimeline(timeline);
