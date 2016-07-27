@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Validates for article adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.8, May 23, 2016
+ * @version 1.3.4.8, Jul 27, 2016
  * @since 0.2.0
  */
 @Named
@@ -145,12 +145,14 @@ public class ArticleAddValidation extends BeforeRequestProcessAdvice {
                     throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
                 }
 
-                if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
-                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
-                }
+                if (!Tag.containsWhiteListTags(tagTitle)) {
+                    if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
+                        throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                    }
 
-                if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
-                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                    if (tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH) {
+                        throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("tagsErrorLabel")));
+                    }
                 }
 
                 final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);

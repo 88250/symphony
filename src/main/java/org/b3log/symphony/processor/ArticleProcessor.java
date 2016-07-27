@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import javax.imageio.ImageIO;
@@ -126,7 +125,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.16.30, Jul 26, 2016
+ * @version 1.21.17.30, Jul 27, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -430,12 +429,18 @@ public class ArticleProcessor {
                 if (Strings.isEmptyOrNull(tagTitle)) {
                     continue;
                 }
+                
+                if (Tag.containsWhiteListTags(tagTitle)) {
+                     tagBuilder.append(tagTitle).append(",");
+                     
+                     continue;
+                }
 
                 if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
                     continue;
                 }
 
-                if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
+                if (tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH) {
                     continue;
                 }
 
