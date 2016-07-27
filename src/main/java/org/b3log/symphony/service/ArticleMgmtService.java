@@ -74,7 +74,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.13.19.18, Jul 23, 2016
+ * @version 2.13.20.18, Jul 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -715,12 +715,12 @@ public class ArticleMgmtService {
             final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
             boolean enableReward = false;
             if (0 < rewardPoint) {
-                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
-                oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
-
                 if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT)) {
                     enableReward = true;
                 }
+
+                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
+                oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
             }
 
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);

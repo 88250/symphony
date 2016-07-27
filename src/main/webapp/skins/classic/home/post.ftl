@@ -68,9 +68,9 @@
                                       placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
                         </div>
                         <div>
-                            <input id="articleRewardPoint" type="number" tabindex="5" min="1" 
+                            <input id="articleRewardPoint" type="number" tabindex="5" min="1"
                                    <#if article?? && 0 < article.articleRewardPoint>data-orval="${article.articleRewardPoint}"</#if> 
-                                   value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" />
+                                   value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint?c}</#if>" placeholder="${rewardPointLabel}" />
                         </div>
                     </div>
                     <br/>
