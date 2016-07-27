@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${recentArticleLabel} - ${symphonyLabel}">
+        <@head title="${hotTopicLabel} - ${symphonyLabel}">
         <meta name="description" content="${recentArticleLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
