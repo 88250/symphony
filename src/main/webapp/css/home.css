@@ -143,9 +143,10 @@ label.article-anonymous {
     margin: 2px 5px 0 0px;
 }
 
-.post .tags-input span.icon-close {
+.post .tags-input .tag > span {
     cursor: pointer;
     margin-left: 5px;
+    color: #333;
 }
 
 .post .tags-input span.tag.haved {

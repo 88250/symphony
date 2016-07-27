@@ -48,10 +48,10 @@ var AddArticle = {
                     "min": 4,
                     "msg": Label.articleContentErrorLabel
                 }]})) {
-            
+
             var articleTags = '';
-            $('.tags-input .tag').each(function () {
-               articleTags += $(this).text() + ',';
+            $('.tags-input .tag .text').each(function () {
+                articleTags += $(this).text() + ',';
             });
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g, ""),
@@ -363,6 +363,36 @@ var AddArticle = {
      * @returns {undefined}
      */
     _initTag: function () {
+        // 添加 tag 到输入框
+        var addTag = function (text) {
+            var hasTag = false;
+            
+            $("#articleTags").val('');
+            
+            $('.tags-input .text').each(function () {
+                var $it = $(this);
+                if (text === $it.text()) {
+                    $it.parent().addClass('haved');
+                    setTimeout(function () {
+                        $it.parent().removeClass('haved');
+                    }, 900);
+                    hasTag = true;
+                }
+            });
+
+            if (hasTag) {
+                return false;
+            }
+
+            $('.post .tags-selected').append('<span class="tag"><span class="text">' + text + '</span><span>x</span></span>');
+            $('.post .domains-tags').css('left', $('.post .tags-selected').width() + 'px');
+            $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
+
+            if ($('.tags-input .tag').length >= 4) {
+                $('#articleTags').prop('disabled', true).val('');
+            }
+        };
+        
         // domains 切换
         $('.domains-tags .btn').click(function () {
             $('.domains-tags .btn.current').removeClass('current');
@@ -370,37 +400,18 @@ var AddArticle = {
             $('.domains-tags .domain-tags').hide();
             $('#tags' + $(this).data('id')).show();
         });
+        
+        // tag 初始化渲染
+        var initTags = $('#articleTags').val().split(',');
+        for (var j = 0, jMax = initTags.length; j < jMax; j++) {
+            addTag(initTags[j]);
+        }
 
         $('.domain-tags .tag').click(function () {
-            if ($('.tags-input .tag').length >= 4) {
-                return false;
-            }
-
-            var $it = $(this), $matchItem;
-            $('.tags-input .tag').each(function () {
-                if ($it.text() === $(this).text()) {
-                    $matchItem = $(this);
-                }
-            });
-
-            if ($matchItem) {
-                $matchItem.addClass('haved');
-                setTimeout(function () {
-                    $matchItem.removeClass('haved');
-                }, 900);
-            } else {
-                $('.post .tags-selected').append('<span class="tag">' + $(this).text() + '<span class="icon-close"></span></span>');
-                $('.post .domains-tags').css('left', $('.post .tags-selected').width() + 'px');
-                $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
-
-                if ($('.tags-input .tag').length >= 4) {
-                    $('#articleTags').prop('disabled', true).val('');
-                }
-            }
-
+            addTag($(this).text());
         });
 
-        $('.tags-input .icon-close').live('click', function () {
+        $('.tags-input .tag > span').live('click', function () {
             $(this).parent().remove();
             $('.post .domains-tags').css('left', $('.post .tags-selected').width() + 'px');
             $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
@@ -422,6 +433,9 @@ var AddArticle = {
             height: 160,
             onlySelect: true,
             data: [],
+            afterSelected: function ($it) {
+                addTag($it.text());
+            },
             afterKeyup: function (event) {
                 $('.post .domains-tags').hide();
 
@@ -437,7 +451,6 @@ var AddArticle = {
                     return false;
                 }
 
-
                 if (event.keyCode === 37 || event.keyCode === 39 || event.keyCode === 13
                         || event.keyCode === 38 || event.keyCode === 40) {
                     if (event.keyCode === 13) {
@@ -445,8 +458,8 @@ var AddArticle = {
                     }
                     return false;
                 }
-                
-                
+
+
                 if (event.keyCode === 27) {
                     $('#articleTagsSelectedPanel').hide();
                     return false;
@@ -467,17 +480,6 @@ var AddArticle = {
                 });
             }
         });
-
-        var addTag = function (text) {
-            $('.post .tags-selected').append('<span class="tag">' + text + '<span class="icon-close"></span></span>');
-            $('.post .domains-tags').css('left', $('.post .tags-selected').width() + 'px');
-            $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
-
-            if ($('.tags-input .tag').length >= 4) {
-                $('#articleTags').prop('disabled', true).val('');
-            }
-            $("#articleTags").val('');
-        };
     },
     /**
      * @description 显示简要语法
