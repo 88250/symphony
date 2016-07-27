@@ -68,7 +68,8 @@
                                       placeholder="${rewardEditorPlaceholderLabel}"><#if article??>${article.articleRewardContent}</#if></textarea>
                         </div>
                         <div>
-                            <input id="articleRewardPoint" type="number" tabindex="5" min="1"
+                            <input id="articleRewardPoint" type="number" tabindex="5" min="1" 
+                                   <#if article?? && 0 < article.articleRewardPoint>data-orval="${article.articleRewardPoint}"</#if> 
                                    value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" />
                         </div>
                     </div>
@@ -119,7 +120,7 @@
                             <label class="article-anonymous">${anonymousLabel}<input
                                     <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
                                     type="checkbox" id="articleAnonymous"></label>
-                            <button class="red" tabindex="10" onclick="AddArticle.add(<#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button>
+                            <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button>
                         </div>
                     </div>
                 </div>
@@ -140,8 +141,8 @@
                             Label.uploadLabel = "${uploadLabel}";
                             Label.audioRecordingLabel = '${audioRecordingLabel}';
                             Label.uploadingLabel = '${uploadingLabel}';
-                            qiniuToken = "${qiniuUploadToken}";
-                            qiniuDomain = "${qiniuDomain}";
+                            Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
+                            <#if article??>Label.articleOId = '${article.oId}' ;</#if>
         </script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
