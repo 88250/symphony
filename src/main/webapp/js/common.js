@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.28.17.22, Jul 23, 2016
+ * @version 1.29.17.22, Jul 28, 2016
  */
 
 /**
@@ -27,6 +27,36 @@
  * @static
  */
 var Util = {
+    /**
+     * 粘貼中包含图片和文案时，需要处理为 markdown 语法
+     * @param {type} text
+     * @returns {String}
+     */
+    processClipBoard: function (text) {
+        var $clipBoradData = $('<div>' + text + '</div>');
+
+        $clipBoradData.find('img').each(function () {
+            var $it = $(this),
+                    textHTML = '![';
+            textHTML += ($it.attr('alt') ? $it.attr('src') : '') + ']('
+                    + ($it.attr('src') ? $it.attr('src') : '')
+                    + ($it.attr('title') ? ' "' + $it.attr('title') + '"' : '') + ')';
+            $it.text(textHTML);
+        });
+
+        $clipBoradData.find('a').each(function () {
+            var $it = $(this),
+                    textHTML = '[';
+            textHTML += $it.text() + '](';
+            var textHref = $it.attr('href');
+            if (textHref.indexOf('javascript') > -1) {
+                textHref = 'http://hacpai.com';
+            }
+            textHTML += textHref + ')';
+            $it.text(textHTML);
+        });
+        
+    },
     /**
      * @description 根据 url search 获取值
      * @param {type} name

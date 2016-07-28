@@ -365,7 +365,7 @@ var AddArticle = {
      */
     _initTag: function () {
         $.ua.set(navigator.userAgent);
-        
+
         // 添加 tag 到输入框
         var addTag = function (text) {
             if (text.replace(/\s/g, '') === '') {
@@ -458,7 +458,7 @@ var AddArticle = {
 
         // 自动补全 tag
         $("#articleTags").completed({
-            height: 168,
+            height: 170,
             onlySelect: true,
             data: [],
             afterSelected: function ($it) {

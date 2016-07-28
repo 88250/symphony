@@ -1146,8 +1146,9 @@
   }
 
   function handlePaste(e, cm) {
-    var pasted = e.clipboardData && e.clipboardData.getData("text/plain");
+    var pasted = e.clipboardData && e.clipboardData.getData("text/html"); // NOTE: changed by Vanessa
     if (pasted) {
+        pasted = Util.processClipBoard(pasted); // NOTE: Vanessa add
       e.preventDefault();
       if (!cm.isReadOnly() && !cm.options.disableInput)
         runInOp(cm, function() { applyTextInput(cm, pasted, 0, null, "paste"); });
