@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.8.7.8, Jul 26, 2016
+ * @version 1.8.8.8, Jul 27, 2016
  */
 
 /**
@@ -71,7 +71,7 @@ var ArticleChannel = {
                         UAName = ' <span class="cmt-via">via ' + UAName + '</span>';
                     }
 
-                    var template = '<li id="' + data.commentId + '">'
+                    var template = '<li id="' + data.commentId + '" class="fn-none">'
                             + '<div class="fn-flex">';
 
                     if (!data.fromClient) {
@@ -134,7 +134,7 @@ var ArticleChannel = {
                             + data.commentContent + '</div></div></div></li>';
 
                     if (0 === Label.userCommentViewMode) { // tranditional view mode
-                        $("#comments > ul").afterpend(template);
+                        $("#comments > ul").append(template);
                     } else {
                         $("#comments > ul").prepend(template);
                     }

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.7.10, Jul 23 2016
+ * @version 2.4.7.10, Jul 27 2016
  */
 
 /* start home side */
@@ -143,9 +143,10 @@ label.article-anonymous {
     margin: 2px 5px 0 0px;
 }
 
-.post .tags-input span.icon-close {
+.post .tags-input .tag > span.close {
     cursor: pointer;
     margin-left: 5px;
+    color: #333;
 }
 
 .post .tags-input span.tag.haved {
@@ -169,7 +170,7 @@ label.article-anonymous {
 }
 
 .post .domains-tags, 
-.completed-panel {
+.post .completed-panel {
     display: none;
     position: absolute;
     background-color: #FFF;
@@ -179,6 +180,7 @@ label.article-anonymous {
     border-radius: 0 0 3px 3px;
     width: 50%;
     top: 32px;
+    box-sizing: border-box;
 }
 
 .post .domains-tags .tag {
@@ -192,14 +194,23 @@ label.article-anonymous {
     border-color: #cd504a;
 }
 
-.completed-panel a {
-    display: block;
-    padding: 3px;
+.post .completed-panel {
+    padding: 0;
+    overflow: auto;
+    left: 0;
 }
 
-.completed-panel a.selected,
-.completed-panel a:hover {
-    background-color: #e5e5e5;
+.post .completed-panel a {
+    display: block;
+    padding: 3px;
+    text-decoration: none;
+    line-height: 18px;
+    height: 18px;
+}
+
+.post .completed-panel a.selected,
+.post .completed-panel a:hover {
+    background-color: #F5F5F5;
 }
 /* end add article */
 

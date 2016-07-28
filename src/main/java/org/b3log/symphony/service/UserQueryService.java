@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.3.5, Apr 21, 2016
+ * @version 1.6.4.5, Jul 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -235,6 +235,10 @@ public class UserQueryService {
         } else {
             while (end < userNames.size() && end < index + 5 && userNames.get(end).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
                 end++;
+
+                if (end >= start + 5) {
+                    break;
+                }
             }
         }
 

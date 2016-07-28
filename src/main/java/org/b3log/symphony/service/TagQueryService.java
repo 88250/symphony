@@ -72,7 +72,7 @@ import org.jsoup.Jsoup;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.4.8, Jul 26, 2016
+ * @version 1.7.5.8, Jul 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -198,6 +198,10 @@ public class TagQueryService {
         } else {
             while (end < tags.size() && end < index + fetchSize && tags.get(end).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
                 end++;
+                
+                if (end >= start + fetchSize) {
+                    break;
+                }
             }
         }
 
