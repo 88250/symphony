@@ -27,6 +27,9 @@
         <#if type == "tags">
         <@head title="${tagAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "addTag">
+        <@head title="${addTagLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <#if type == "reservedWords">
         <@head title="${reservedWordAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
@@ -58,7 +61,7 @@
                     ${commentAdminLabel}
                     <#elseif type == "domains" || type == "addDomain">
                     ${domainAdminLabel}
-                    <#elseif type == "tags">
+                    <#elseif type == "tags" || type == "addTag">
                     ${tagAdminLabel}
                     <#elseif type == "reservedWords" || type == "addReservedWord">
                     ${reservedWordAdminLabel}
@@ -76,14 +79,14 @@
                     <li<#if type == "articles" || type == "addArticle"> class="fn-none"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
                     <li<#if type == "comments"> class="fn-none"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
                     <li<#if type == "domains" || type == "addDomain"> class="fn-none"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
-                    <li<#if type == "tags"> class="fn-none"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
+                    <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
                     <li<#if type == "reservedWords" || type == "addReservedWord"> class="fn-none"</#if>><a href="/admin/reserved-words">${reservedWordAdminLabel}</a></li>
                     <li<#if type == "invitecodes"> class="current"</#if>><a href="/admin/invitecodes">${invitecodeAdminLabel}</a></li>
                     <li<#if type == "misc"> class="fn-none"</#if>><a href="/admin/misc">${miscAdminLabel}</a></li>
-                    </ul>
-                </div>
-                <#nested>
-                </div>
+                </ul>
+            </div>
+            <#nested>
+        </div>
         <#include "../footer.ftl">
     </body>
 </html>

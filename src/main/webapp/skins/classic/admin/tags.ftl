@@ -5,6 +5,7 @@
     <form method="GET" action="tags" class="form">
         <input name="title" type="text" placeholder="${tagLabel}"/>
         <button type="submit" class="green">${searchLabel}</button>
+        <button type="button" class="btn red" onclick="window.location = '/admin/add-tag'">${addTagLabel}</button>
     </form>
     <br/>
     <ul>

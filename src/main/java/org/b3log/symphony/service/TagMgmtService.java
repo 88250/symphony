@@ -21,21 +21,29 @@ import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.annotation.Transactional;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.TagTagRepository;
+import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.repository.UserTagRepository;
 import org.json.JSONObject;
 
 /**
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, May 31, 2015
+ * @version 1.2.0.0, Jul 28, 2016
  * @since 1.1.0
  */
 @Service
@@ -45,6 +53,18 @@ public class TagMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagMgmtService.class.getName());
+
+    /**
+     * Option repository.
+     */
+    @Inject
+    private OptionRepository optionRepository;
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Tag repository.
@@ -59,6 +79,80 @@ public class TagMgmtService {
     private TagTagRepository tagTagRepository;
 
     /**
+     * User-Tag repository.
+     */
+    @Inject
+    private UserTagRepository userTagRepository;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
+     * Adds a tag.
+     *
+     * <b>Note</b>: This method just for admin console.
+     *
+     * @param userId the specified user id
+     * @param tagTitle the specified tag title
+     * @return tag id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public String addTag(final String userId, final String tagTitle) throws ServiceException {
+        String ret;
+
+        try {
+            if (null != tagRepository.getByTitle(tagTitle)) {
+                throw new ServiceException(langPropsService.get("tagExistLabel"));
+            }
+
+            final JSONObject author = userRepository.get(userId);
+
+            JSONObject tag = new JSONObject();
+            tag.put(Tag.TAG_TITLE, tagTitle);
+            tag.put(Tag.TAG_REFERENCE_CNT, 0);
+            tag.put(Tag.TAG_COMMENT_CNT, 0);
+            tag.put(Tag.TAG_FOLLOWER_CNT, 0);
+            tag.put(Tag.TAG_DESCRIPTION, "");
+            tag.put(Tag.TAG_ICON_PATH, "");
+            tag.put(Tag.TAG_STATUS, 0);
+            tag.put(Tag.TAG_GOOD_CNT, 0);
+            tag.put(Tag.TAG_BAD_CNT, 0);
+            tag.put(Tag.TAG_SEO_TITLE, tagTitle);
+            tag.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
+            tag.put(Tag.TAG_SEO_DESC, "");
+            tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
+
+            ret = tagRepository.add(tag);
+            tag.put(Keys.OBJECT_ID, ret);
+
+            final JSONObject tagCntOption = optionRepository.get(Option.ID_C_STATISTIC_TAG_COUNT);
+            final int tagCnt = tagCntOption.optInt(Option.OPTION_VALUE);
+            tagCntOption.put(Option.OPTION_VALUE, tagCnt + 1);
+            optionRepository.update(Option.ID_C_STATISTIC_TAG_COUNT, tagCntOption);
+
+            author.put(UserExt.USER_TAG_COUNT, author.optInt(UserExt.USER_TAG_COUNT) + 1);
+            userRepository.update(userId, author);
+
+            // User-Tag relation
+            final JSONObject userTagRelation = new JSONObject();
+            userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, ret);
+            userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, userId);
+            userTagRelation.put(Common.TYPE, Tag.TAG_TYPE_C_CREATOR);
+            userTagRepository.add(userTagRelation);
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Adds tag failed", e);
+
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    /**
      * Updates the specified tag by the given tag id.
      *
      * @param tagId the given tag id
@@ -70,7 +164,7 @@ public class TagMgmtService {
 
         try {
             tag.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
-            
+
             tagRepository.update(tagId, tag);
 
             transaction.commit();

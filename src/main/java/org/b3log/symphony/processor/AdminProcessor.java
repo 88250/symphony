@@ -113,6 +113,8 @@ import org.json.JSONObject;
  * <li>Updates a domain (/admin/domain/{domainId}), POST</li>
  * <li>Shows tags (/admin/tags), GET</li>
  * <li>Show a tag (/admin/tag/{tagId}), GET</li>
+ * <li>Shows add tag (/admin/add-tag), GET</li>
+ * <li>Adds a tag (/admin/add-tag), POST</li>
  * <li>Updates a tag (/admin/tag/{tagId}), POST</li>
  * <li>Generates invitecodes (/admin/invitecodes/generate), POST</li>
  * <li>Shows invitecodes (/admin/invitecodes), GET</li>
@@ -125,7 +127,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.3.6, Jul 18, 2016
+ * @version 2.19.3.6, Jul 28, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -265,6 +267,91 @@ public class AdminProcessor {
      * Pagination page size.
      */
     private static final int PAGE_SIZE = 20;
+
+    /**
+     * Shows add tag.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/add-tag", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showAddTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/add-tag.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Adds a tag.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/add-tag", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void addTag(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        String title = StringUtils.trim(request.getParameter(Tag.TAG_TITLE));
+        try {
+            if (Strings.isEmptyOrNull(title)) {
+                throw new Exception(langPropsService.get("tagsErrorLabel"));
+            }
+            
+             title = Tag.formatTags(title);
+
+            if (!Tag.containsWhiteListTags(title)) {
+                if (!Tag.TAG_TITLE_PATTERN.matcher(title).matches()) {
+                    throw new Exception(langPropsService.get("tagsErrorLabel"));
+                }
+
+                if (title.length() > Tag.MAX_TAG_TITLE_LENGTH) {
+                    throw new Exception(langPropsService.get("tagsErrorLabel"));
+                }
+            }
+        } catch (final Exception e) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, e.getMessage());
+
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        final JSONObject admin = (JSONObject) request.getAttribute(User.USER);
+        final String userId = admin.optString(Keys.OBJECT_ID);
+
+        String tagId;
+        try {
+            tagId = tagMgmtService.addTag(userId, title);
+        } catch (final Exception e) {
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("admin/error.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Keys.MSG, e.getMessage());
+            filler.fillHeaderAndFooter(request, response, dataModel);
+
+            return;
+        }
+
+        response.sendRedirect(Latkes.getServePath() + "/admin/tag/" + tagId);
+    }
 
     /**
      * Sticks an article.

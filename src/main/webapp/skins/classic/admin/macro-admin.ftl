@@ -27,6 +27,9 @@
         <#if type == "tags">
         <@head title="${tagAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "addTag">
+        <@head title="${addTagLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <#if type == "reservedWords">
         <@head title="${reservedWordAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
@@ -55,7 +58,7 @@
                         <li<#if type == "articles" || type == "addArticle"> class="current"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
                         <li<#if type == "comments"> class="current"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
                         <li<#if type == "domains" || type == "addDomain"> class="current"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
-                        <li<#if type == "tags"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
+                        <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
                         <li<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>><a href="/admin/reserved-words">${reservedWordAdminLabel}</a></li>
                         <li<#if type == "invitecodes"> class="current"</#if>><a href="/admin/invitecodes">${invitecodeAdminLabel}</a></li>
                         <li<#if type == "misc"> class="current"</#if>><a href="/admin/misc">${miscAdminLabel}</a></li>
@@ -70,7 +73,7 @@
                         <li<#if type == "articles" || type == "addArticle"> class="current"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
                         <li<#if type == "comments"> class="current"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
                         <li<#if type == "domains" || type == "addDomain"> class="current"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
-                        <li<#if type == "tags"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
+                        <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
                         <li<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>><a href="/admin/reserved-words">${reservedWordAdminLabel}</a></li>
                         <li<#if type == "invitecodes"> class="current"</#if>><a href="/admin/invitecodes">${invitecodeAdminLabel}</a></li>
                         <li<#if type == "misc"> class="current"</#if>><a href="/admin/misc">${miscAdminLabel}</a></li>
