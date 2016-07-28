@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.13.26, Jun 26, 2016
+ * @version 1.20.13.26, Jun 28, 2016
  */
 
 /* start reset */
@@ -319,6 +319,10 @@ textarea {
     border: 1px solid #ccc;
 }
 
+code.hljs,
+.hljs code {
+    font-family: mononoki;
+}
 /* end reset */
 
 /* start function */
