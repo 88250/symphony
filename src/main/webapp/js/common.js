@@ -33,30 +33,9 @@ var Util = {
      * @returns {String}
      */
     processClipBoard: function (text) {
-        var $clipBoradData = $('<div>' + text + '</div>');
-
-        $clipBoradData.find('img').each(function () {
-            var $it = $(this),
-                    textHTML = '![';
-            textHTML += ($it.attr('alt') ? $it.attr('src') : '') + ']('
-                    + ($it.attr('src') ? $it.attr('src') : '')
-                    + ($it.attr('title') ? ' "' + $it.attr('title') + '"' : '') + ')';
-            $it.text(textHTML);
-        });
-
-        $clipBoradData.find('a').each(function () {
-            var $it = $(this),
-                    textHTML = '[';
-            textHTML += $it.text() + '](';
-            var textHref = $it.attr('href');
-            if (textHref.indexOf('javascript') > -1) {
-                textHref = 'http://hacpai.com';
-            }
-            textHTML += textHref + ')';
-            $it.text(textHTML);
-        });
-        
-        return $.trim($clipBoradData.text());
+        var text = toMarkdown(text, {gfm: true});
+        text = $(text).text().replace(/\n{2,}/g, '\n\n');
+        return $.trim(text);
     },
     /**
      * @description 根据 url search 获取值

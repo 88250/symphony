@@ -18,7 +18,7 @@
  * @file frontend tool.
  * 
  * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 0.1.0.0, Jan 29, 2016 
+ * @version 0.1.2.0, Jul 28, 2016 
  */
 var gulp = require("gulp");
 var concat = require('gulp-concat');
@@ -50,7 +50,8 @@ gulp.task('cc', function () {
         './src/main/webapp/js/lib/editor/placeholder.js',
         './src/main/webapp/js/lib/editor/merge.js',
         './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
-        './src/main/webapp/js/lib/editor/editor.js'];
+        './src/main/webapp/js/lib/editor/editor.js',
+        './src/main/webapp/js/lib/to-markdown.js'];
     gulp.src(jsCodemirror)
             .pipe(uglify())
             .pipe(concat('codemirror.min.js'))
