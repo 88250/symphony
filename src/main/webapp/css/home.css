@@ -158,7 +158,7 @@ label.article-anonymous {
 .post .tags-input input {
     border: 0;
     outline: none;
-    box-shadow: 0 0 0;
+    box-shadow: 0 0 0 transparent;
     border-radius: 0;
     padding: 2px;
 }
@@ -166,7 +166,7 @@ label.article-anonymous {
 .post .tags-input input:focus {
     border: 0;
     background-color: transparent;
-    box-shadow: 0 0 0;
+    box-shadow: 0 0 0 transparent;
 }
 
 .post .domains-tags, 
