@@ -47,7 +47,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 
 **帖子**
 
-![帖子](https://cloud.githubusercontent.com/assets/873584/17216833/d20155a8-5514-11e6-8c39-92f2c5a3ac6a.png)
+![帖子](https://cloud.githubusercontent.com/assets/873584/17220386/927f5512-5521-11e6-9045-bd35e627ccd2.png)
 
 **个人设置**
 
