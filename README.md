@@ -16,88 +16,58 @@ Sym 的诞生是有如下几点原因：
 
 * 大多数论坛用户体验不够现代化，想做一个和聊 QQ 一样体验的论坛
 * 已有的用 Java 写的论坛真的很少也很丑，并且大多已经不再维护
-* 我们想实现一种[新的网络社区体验](https://hacpai.com/b3log)，独立博客+社区互动
+* 我们想实现一种[新的网络社区体验](https://hacpai.com/b3log)，独立博客+论坛互动
 
 ### 基本理念
 
 #### 实时交互
 
-在浏览帖子时，传统论坛都是需要刷新页面来查看回帖的。Sym 在类似的用户交互场景上是基于 WebSocket 技术进行架构的，看帖时不需要刷新页面也可以看到其他人回帖。
+在浏览帖子时，传统论坛都是需要刷新页面来查看回帖的。Sym 在类似的用户交互场景上是基于 WebSocket 技术进行实现的，看帖时不需要刷新页面也可以看到其他人回帖。
+
+#### 互联
+
+Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、评论的同步（[B3log 构思](https://hacpai.com/b3log)），目前 [Solo](https://github.com/b3log/solo)、[Typecho](https://github.com/DT27/B3logForHacPai)、[Z-BlogPHP](https://github.com/zblogapp/hacpai)、[WordPress](https://github.com/zh-h/hacpai-sync-wordpress) 均已经提供插件来进行内容同步，欢迎大家进行接入！
 
 #### HTML5
 
 Sym 使用了很多 HTML5 提供的技术特性，比如
 
 * 通过使用_本地存储_防止编辑帖子/评论时内容丢失
-* 使用了_音频_特性来进行帖子/评论音频录制
+* 使用了_音频_特性来进行帖子/评论音频录制、播放
 * 复制/粘贴上传图片
+* CSS3 动画
 
-通过使用这些技术，Sym 可以让用户在分享、灌水时更加便捷、舒服 :smirk: 
-
-#### 积分系统
-
-积分系统是所有论坛的基础/标配系统之一吧，好玩是一方面，另一方面是量化每个用户的价值。Sym 的积分系统参考了 [V2EX](http://v2ex.com) 的积分系统，未来将会加入更多动态特性，比如用户阵营汇率、系统运营参数等。
-
-#### 互联
-
-Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](https://hacpai.com/b3log)），目前 [Solo](https://github.com/b3log/solo) 博客系统已经可以完整和 Sym 保持内容同步。
+通过使用这些技术，Sym 可以让用户在分享、交流时更加便捷、舒服 
 
 ### 功能图解
 
 **首页**
 
-首页使用 Reddit 热帖排序算法，基于用户投票和时间来决定首页内容。另外，列表上面的每篇帖子都有一个_小红条_，表示该帖的当前热度（实时浏览/评论）。
-
-![首页](https://cloud.githubusercontent.com/assets/873584/10239677/db41be9e-6903-11e5-9a93-d095c62fe103.png)
+![首页](https://cloud.githubusercontent.com/assets/873584/17216774/8ad7840e-5514-11e6-9e0a-aa05693bfd49.png)
 
 **帖子**
 
-![帖子](https://cloud.githubusercontent.com/assets/873584/10239706/4d98c668-6904-11e5-8c1d-3ca9e5d1584a.png)
+![帖子](https://cloud.githubusercontent.com/assets/873584/17216833/d20155a8-5514-11e6-8c39-92f2c5a3ac6a.png)
 
 **个人设置**
 
-![个人设置](https://cloud.githubusercontent.com/assets/873584/10239055/23c48c32-68fa-11e5-857d-11b82941810a.png)
-
-**发布选择**
-
-目前有 4 类帖子：
-
-* 文章：普通的帖子，注重作者分享经验和见解
-* 思绪：记录写作过程，实例请看[这里](https://hacpai.com/article/1442568741454)
-* 小黑屋：邀请好友进行私密交流，其他用户看不到具体内容和评论
-* 同城广播：发起你所在城市的招聘、Meetup 等
-
-![发布选择](https://cloud.githubusercontent.com/assets/873584/10239716/6ebcf5f8-6904-11e5-9f7c-e16cd5afe0ac.png)
+![个人设置](https://cloud.githubusercontent.com/assets/873584/17216836/d845db64-5514-11e6-88fa-19c0b2c7bf6a.png)
 
 **发布编辑**
 
-* Markdown 编辑器
+* Markdown 编辑器，支持 GFM 语法
+* LaTeX 数学公式
+* 复制粘贴时自动转换为 Markdown 
 * Chrome 下可以直接粘贴图片，其他浏览器支持拖拽
-* 除了使用文字，也可以在帖子内一键进行录音
-* 支持标准 Emoji 表情
-* 积分打赏
+* 除了使用文字，也可以在帖子内进行录音
+* 支持 Emoji
+* 使用本地存储保障数据在未提交时不丢
 
-![发布编辑](https://cloud.githubusercontent.com/assets/873584/10239755/ed2ca5f0-6904-11e5-8945-1a2a2ec11e69.png)
+![发布编辑](https://cloud.githubusercontent.com/assets/873584/17216839/db3a18e4-5514-11e6-9cca-190e04a750fd.png)
 
 #### 移动端
 
-移动端目前除了不能录音外，其他功能和 PC 端保持一致。
-
-**首页**
-
-![移动端首页](https://cloud.githubusercontent.com/assets/873584/10244422/b830f536-6931-11e5-9fb9-088eef709711.png)
-
-**浏览帖子**
-
-![移动端浏览帖子](https://cloud.githubusercontent.com/assets/873584/10244430/c5b8e86c-6931-11e5-8aff-1a1d58661965.png)
-
-**评论区**
-
-![移动端评论区](https://cloud.githubusercontent.com/assets/873584/10244441/d17b284a-6931-11e5-860f-ec581633fdff.png)
-
-**发布**
-
-![移动端发布](https://cloud.githubusercontent.com/assets/873584/10244451/e192891c-6931-11e5-8441-8d06efa0a547.png)
+移动端使用单独的模版进行渲染，解决通过一套模版自适应不能达成的效果和体验。
 
 ## 安装
 
@@ -114,6 +84,7 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](https://hacpai
 
 * 没有数据库建表 SQL 脚本，只需要手动建库，表会在第一次启动时自动生成
 * 只能部署到 ROOT 中，线上环境建议使用反向代理
+* Tomcat 用 9 以上版本，最好是使用最新版
 
 ## 配置
 
@@ -156,8 +127,8 @@ Sym 提供了 API 进行帖子、评论的同步（[B3log 构思](https://hacpai
 * 我们见证了 xAE（GAE/BAE/SAE/etc）的兴起与没落。2009 年选择了 GAE 作为服务器，并开始实现 [Latke](https://github.com/b3log/latke) 框架来解决跨云平台，直到[告别 GAE](https://hacpai.com/article/1443685401909)，不得不感叹技术更迭之快
 * 感受到了自造轮子的优缺点，并且可以肯定一点：对于一个想要长久的产品来说，自制技术框架优势远大于劣势
 * 一个_好玩_的产品或说是细节特性然并卵，需要做的是一个能够持续提供用户价值的产品/特性
-* 虽然直到目前 B3log 系产品用户不多，但我们已经初步证明了：Java 用来实现博客、论坛没有什么不好的（仅次于 PHP 吧）
-* 先完成本职工作，再用开源的产品/经验来进行工作相关结合与提升
+* 虽然直到目前 B3log 系产品用户不多，但我们已经初步证明了：Java 用来实现博客、论坛没有什么不好的
+* 使用开源软件，了解开源思想，融入开源
 
 ## Terms
 
