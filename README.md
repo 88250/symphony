@@ -2,7 +2,7 @@
 
 ## 简介
 
-Sym 是一个用 Java 写的实时论坛，欢迎来[体验](https://hacpai.com/register)！
+[Sym](https://github.com/b3log/symphony) 是一个用 Java 写的实时论坛，欢迎来[体验](https://hacpai.com/register)！
 
 如果你需要搭建一个企业内网论坛，请使用 [SymX](https://github.com/FangStarNet/symphonyx)。
 
