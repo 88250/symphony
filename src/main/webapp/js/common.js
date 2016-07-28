@@ -56,6 +56,7 @@ var Util = {
             $it.text(textHTML);
         });
         
+        return $.trim($clipBoradData.text());
     },
     /**
      * @description 根据 url search 获取值
