@@ -34,7 +34,8 @@ var Util = {
      */
     processClipBoard: function (text) {
         var text = toMarkdown(text, {gfm: true});
-        text = $(text).text().replace(/\n{2,}/g, '\n\n');
+        // ascii 160 替换为 30
+        text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
         return $.trim(text);
     },
     /**
