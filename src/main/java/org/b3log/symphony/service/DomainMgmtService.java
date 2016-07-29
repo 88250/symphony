@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Domain management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.2, May 12, 2016
+ * @version 1.0.3.2, Jul 29, 2016
  * @since 1.4.0
  */
 @Service
@@ -212,6 +212,11 @@ public class DomainMgmtService {
         try {
             domainTagRepository.removeByDomainId(domainId);
             domainRepository.remove(domainId);
+
+            final JSONObject domainCntOption = optionRepository.get(Option.ID_C_STATISTIC_DOMAIN_COUNT);
+            final int domainCnt = domainCntOption.optInt(Option.OPTION_VALUE);
+            domainCntOption.put(Option.OPTION_VALUE, domainCnt - 1);
+            optionRepository.update(Option.ID_C_STATISTIC_DOMAIN_COUNT, domainCntOption);
 
             // Refresh cache
             domainCache.loadDomains();
