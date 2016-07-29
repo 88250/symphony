@@ -17,17 +17,17 @@ Sym 的诞生是有如下几点原因：
 * 已有的用 Java 写的论坛很少也很丑，并且大多数已经不再维护
 * 我们想实现一种[新的网络社区体验](https://hacpai.com/b3log)，独立博客+论坛互动
 
-### 基本理念
+## 基本理念
 
-#### 实时交互
+### 实时交互
 
 在浏览帖子时，传统论坛都是需要刷新页面来查看回帖的，而 Sym 则是基于 WebSocket 技术进行回帖推送，看帖时不需要刷新页面也可以看到其他人回帖。
 
-#### 互联
+### 互联
 
 Sym 提供了 [API](https://hacpai.com/article/1457158841475) 进行帖子、评论的同步（[B3log 构思](https://hacpai.com/b3log)），目前 [Solo](https://github.com/b3log/solo)、[Typecho](https://github.com/DT27/B3logForHacPai)、[Z-BlogPHP](https://github.com/zblogapp/hacpai)、[WordPress](https://github.com/zh-h/hacpai-sync-wordpress) 均已经提供插件来进行内容同步，欢迎大家进行接入！
 
-#### HTML5
+### HTML5
 
 Sym 使用了很多 HTML5 提供的技术特性，比如
 
@@ -38,7 +38,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 
 通过使用这些技术，Sym 可以让用户在分享、交流时更加便捷、舒服 
 
-### 功能图解
+## 功能图解
 
 **首页**
 
@@ -64,7 +64,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 
 ![发布编辑](https://cloud.githubusercontent.com/assets/873584/17216839/db3a18e4-5514-11e6-9cca-190e04a750fd.png)
 
-#### 移动端
+### 移动端
 
 移动端使用单独的模版进行渲染，解决通过一套模版自适应不能达成的效果和体验。
 
