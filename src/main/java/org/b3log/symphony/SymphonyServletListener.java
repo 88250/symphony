@@ -72,7 +72,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.6.8, Jul 19, 2016
+ * @version 2.13.6.8, Jul 29, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -80,7 +80,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     /**
      * Symphony version.
      */
-    public static final String VERSION = "1.3.0";
+    public static final String VERSION = "1.4.0";
 
     /**
      * Logger.
