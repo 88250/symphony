@@ -47,7 +47,7 @@
                                 <li>
                                     <div class="fn-flex">
                                         <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
-                                        <a rel="nofollow" href="/member/${msg.userName}">
+                                        <a rel="nofollow" href="${servePath}/member/${msg.userName}">
                                             <div class="avatar" 
                                                  title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}-64.jpg')"></div>
                                         </a>
@@ -59,7 +59,7 @@
                                             <div class="fn-clear">
                                                 <span class="fn-left">
                                                     <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
-                                                    <a rel="nofollow" href="/member/${msg.userName}"
+                                                    <a rel="nofollow" href="${servePath}/member/${msg.userName}"
                                                        title="${msg.userName}">${msg.userName}</a>
                                                     <#else>
                                                     ${msg.userName}
@@ -93,7 +93,7 @@
         <script type="text/javascript" src="${staticServePath}/js/chat-room${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             // Init [ChatRoom] channel
-            ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}/chat-room-channel");
+            ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/chat-room-channel");
             var chatRoomMsgCnt = ${chatRoomMsgCnt};
             Util.uploadFile({
             "type": "img",

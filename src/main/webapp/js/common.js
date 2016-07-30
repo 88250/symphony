@@ -156,7 +156,7 @@ var Util = {
 
             $.ajax({
                 async: false,
-                url: "/users/names?name=" + tok.string.substring(1),
+                url: Label.servePath + "/users/names?name=" + tok.string.substring(1),
                 type: "GET",
                 success: function (result) {
                     if (!result.sc || !result.userNames) {
@@ -293,7 +293,7 @@ var Util = {
 
                     $.ajax({
                         type: 'POST',
-                        url: '/upload',
+                        url: Label.servePath + '/upload',
                         data: fd,
                         processData: false,
                         contentType: false,
@@ -422,7 +422,7 @@ var Util = {
                 }
 
                 $.ajax({
-                    url: "/article/" + $ele.data('id') + "/preview",
+                    url: Label.servePath + "/article/" + $ele.data('id') + "/preview",
                     type: "GET",
                     cache: false,
                     success: function (result, textStatus) {
@@ -449,7 +449,7 @@ var Util = {
      */
     makeNotificationRead: function (type) {
         $.ajax({
-            url: "/notification/read/" + type,
+            url: Label.servePath + "/notification/read/" + type,
             type: "GET",
             cache: false
         });
@@ -459,7 +459,7 @@ var Util = {
      */
     setUnreadNotificationCount: function () {
         $.ajax({
-            url: "/notification/unread/count",
+            url: Label.servePath + "/notification/unread/count",
             type: "GET",
             cache: false,
             success: function (result, textStatus) {
@@ -515,7 +515,7 @@ var Util = {
         };
         $(it).addClass("disabled");
         $.ajax({
-            url: "/follow/" + type,
+            url: Label.servePath + "/follow/" + type,
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
@@ -560,7 +560,7 @@ var Util = {
         };
         $(it).addClass("disabled");
         $.ajax({
-            url: "/follow/" + type,
+            url: Label.servePath + "/follow/" + type,
             type: "DELETE",
             cache: false,
             data: JSON.stringify(requestJSONObject),
@@ -603,7 +603,7 @@ var Util = {
         $("#voteUp").addClass("disabled");
 
         $.ajax({
-            url: "/vote/up/" + type,
+            url: Label.servePath + "/vote/up/" + type,
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
@@ -645,7 +645,7 @@ var Util = {
         $("#voteDown").addClass("disabled");
 
         $.ajax({
-            url: "/vote/down/" + type,
+            url: Label.servePath + "/vote/down/" + type,
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
@@ -701,7 +701,7 @@ var Util = {
     _kill: function () {
         if ($.browser.msie && parseInt($.browser.version) < 10) {
             $.ajax({
-                url: "/kill-browser",
+                url: Label.servePath + "/kill-browser",
                 type: "GET",
                 cache: false,
                 success: function (result, textStatus) {
@@ -885,7 +885,7 @@ var Util = {
                 userPassword: calcMD5($("#loginPassword").val())
             };
             $.ajax({
-                url: "/login",
+                url: Label.servePath + "/login",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),

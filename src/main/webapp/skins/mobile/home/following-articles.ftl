@@ -8,7 +8,7 @@
         <li class="fn-flex read">
             <#if "someone" != article.articleAuthorName>
             <a title="${article.articleAuthorName}"
-               target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}"></#if>
+               target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
                 <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div>
             <#if "someone" != article.articleAuthorName></a></#if>
             <div class="fn-flex-1 has-view">
@@ -24,7 +24,7 @@
                 </h2>
                 <span class="ft-gray">
                     <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">
+                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">
                         ${articleTag}</a>
                     </#list><br/>
                     <span class="icon-date"></span>

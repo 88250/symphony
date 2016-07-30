@@ -16,13 +16,13 @@
                     <div class="module">
                         <div class="module-header">
                             <h2>${domain.domainTitle}</h2>
-                            <a class="ft-gray fn-right" rel="nofollow" href="/domain/${domain.domainURI}">${domain.domainTags?size} Tags</a>
+                            <a class="ft-gray fn-right" rel="nofollow" href="${servePath}/domain/${domain.domainURI}">${domain.domainTags?size} Tags</a>
                         </div>
                         <div class="module-panel">
                             <ul class="tags fn-clear">
                                 <#list domain.domainTags as tag>
                                 <li>
-                                    <a class="tag" rel="nofollow" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                 </li>
                                 </#list>
                             </ul>

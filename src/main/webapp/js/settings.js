@@ -32,7 +32,7 @@ var Settings = {
      */
     exportPosts: function () {
         $.ajax({
-            url: "/export/posts",
+            url: Label.servePath + "/export/posts",
             type: "POST",
             cache: false,
             success: function (result, textStatus) {
@@ -56,7 +56,7 @@ var Settings = {
         };
 
         $.ajax({
-            url: "/settings/geo/status",
+            url: Label.servePath + "/settings/geo/status",
             type: "POST",
             headers: {"csrfToken": csrfToken},
             cache: false,
@@ -89,7 +89,7 @@ var Settings = {
             };
 
             $.ajax({
-                url: "/point/transfer",
+                url: Label.servePath + "/point/transfer",
                 type: "POST",
                 headers: {"csrfToken": csrfToken},
                 cache: false,
@@ -145,7 +145,7 @@ var Settings = {
         }
 
         $.ajax({
-            url: "/settings/" + type,
+            url: Label.servePath + "/settings/" + type,
             type: "POST",
             headers: {"csrfToken": csrfToken},
             cache: false,

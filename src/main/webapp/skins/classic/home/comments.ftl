@@ -7,7 +7,7 @@
         <#list userHomeComments as comment>
         <li class="fn-flex comment-list-item">
             <#if comment.commentArticleAuthorName != "someone">
-            <a target="_blank" class="tooltipped tooltipped-s" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
+            <a target="_blank" class="tooltipped tooltipped-s" rel="nofollow" href="${servePath}/member/${comment.commentArticleAuthorName}" 
                aria-label="${comment.commentArticleAuthorName}"></#if>
                 <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
             <#if comment.commentArticleAuthorName != "someone">

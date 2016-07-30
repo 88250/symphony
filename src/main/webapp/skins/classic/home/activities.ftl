@@ -14,9 +14,9 @@
                     <h2>${activityLabel}</h2>
                     <ul>
                         <li><a href="<#if useCaptchaCheckin>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a></li>
-                        <li><a href="/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
-                        <li><a href="/activity/1A0001">${activity1A0001Label}</a></li>
-                        <li><a href="/activity/character">${characterLabel}</a></li>
+                        <li><a href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
+                        <li><a href="${servePath}/activity/1A0001">${activity1A0001Label}</a></li>
+                        <li><a href="${servePath}/activity/character">${characterLabel}</a></li>
                     </ul>
                 </div>
                 <div class="side">

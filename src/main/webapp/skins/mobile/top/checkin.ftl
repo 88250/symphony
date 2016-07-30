@@ -7,13 +7,13 @@
         <li>
             <div class="fn-flex">
                 <a rel="nofollow"
-                   href="/member/${user.userName}" 
+                   href="${servePath}/member/${user.userName}" 
                    title="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}-64.jpg?${user.userUpdateTime}')"></div></a>
                 <div class="fn-flex-1">
                     <div class="fn-clear">
                         <h2 class="fn-left">
                             ${user_index + 1}.
-                            <a rel="bookmark" href="/member/${user.userName}">${user.userName}</a>
+                            <a rel="bookmark" href="${servePath}/member/${user.userName}">${user.userName}</a>
                         </h2>
                         <div class="fn-right">
                             ${user.userCurrentCheckinStreak}/<span class="ft-red">${user.userLongestCheckinStreak}</span>

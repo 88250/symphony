@@ -17,7 +17,7 @@
             <span class="ft-13 tooltipped tooltipped-s" aria-label="${administratorLabel}"><span class="icon-userrole"></span></span>
             </#if>
             <#if isAdminLoggedIn>
-            <a class="ft-13 tooltipped tooltipped-s ft-a-icon" href="/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+            <a class="ft-13 tooltipped tooltipped-s ft-a-icon" href="${servePath}/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
             </#if>
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>
@@ -58,7 +58,7 @@
         </#if>
         <div class="user-info">
             <span class="ft-gray">${pointLabel}</span>
-            <a href="/member/${user.userName}/points" title="${user.userPoint?c}">
+            <a href="${servePath}/member/${user.userName}/points" title="${user.userPoint?c}">
                 <#if 0 == user.userAppRole>
                 0x${user.userPointHex}
                 <#else>

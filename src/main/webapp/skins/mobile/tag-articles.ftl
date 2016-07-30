@@ -20,11 +20,11 @@
                     <h1 class="fn-inline">
                         <a rel="tag" 
                            title="${tag.tagTitle?url('UTF-8')}" 
-                           href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                           href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                     </h1> 
                     <#if tag.tagDomains?size gt 0>/</#if>
                     <#list tag.tagDomains as domain>
-                    <a class="ft-gray" href="/domain/${domain.domainURI}">${domain.domainTitle}</a>
+                    <a class="ft-gray" href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
                     </#list>
                     <span class="article-action">
                     <span class='fn-right'>
@@ -36,7 +36,7 @@
                             </#if>
                             </#if>
                             <#if isAdminLoggedIn> &nbsp;
-                            <a class="ft-a-icon" href="/admin/tag/${tag.oId}"><span class="icon-setting"></span></a>
+                            <a class="ft-a-icon" href="${servePath}/admin/tag/${tag.oId}"><span class="icon-setting"></span></a>
                             </#if>
                     </span>
                     </span>
@@ -52,7 +52,7 @@
                     <li>
                         <span>
                             <#if relatedTag.tagIconPath != "">
-                            <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if><a rel="tag" href="/tag/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
+                            <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if><a rel="tag" href="${servePath}/tag/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
                         </span>
                         <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
                             <div>${relatedTag.tagDescription}</div>
@@ -84,7 +84,7 @@
                     <div class="tag-artile-user fn-clear">
                         <#if "someone" != tag.tagCreatorName>
                         <a rel="nofollow" class="fn-left" title="${creatorLabel} ${tag.tagCreatorName}" 
-                           href="/member/${tag.tagCreatorName}"></#if>
+                           href="${servePath}/member/${tag.tagCreatorName}"></#if>
                             <div class="avatar" style="background-image:url('${tag.tagCreatorThumbnailURL}-64.jpg?${tag.tagCreatorThumbnailUpdateTime?c}')"></div>
                         <#if "someone" != tag.tagCreatorName></a></#if>
                         <div class="fn-right">
@@ -93,7 +93,7 @@
                             <#if "someone" != commenter.tagParticipantName>
                             <a rel="nofollow" class="fn-left" 
                                title="${contributorLabel} ${commenter.tagParticipantName}"
-                               href="/member/${commenter.tagParticipantName}"></#if>
+                               href="${servePath}/member/${commenter.tagParticipantName}"></#if>
                                 <div class="avatar" style="background-image:url('${commenter.tagParticipantThumbnailURL}-64.jpg?${commenter.tagParticipantThumbnailUpdateTime?c}')"></div>
                             <#if "someone" != commenter.tagParticipantName></a></#if>
                             </#if>

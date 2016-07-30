@@ -6,12 +6,12 @@
     <ol>
         <#list userHomeFollowerUsers as follower>
         <li class="fn-clear">
-            <a rel="nofollow" title="${follower.userName} <#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" href="/member/${follower.userName}" >
+            <a rel="nofollow" title="${follower.userName} <#if follower.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" href="${servePath}/member/${follower.userName}" >
                 <div class="avatar fn-left" style="background-image:url('${follower.userAvatarURL}')"></div>
             </a>
             <div class="fn-left">
                 <h3 class="fn-inline">
-                    <a rel="nofollow" href="/member/${follower.userName}" >${follower.userName}</a>
+                    <a rel="nofollow" href="${servePath}/member/${follower.userName}" >${follower.userName}</a>
                 </h3> &nbsp;
                 <#if isLoggedIn && (userName != follower.userName)> 
                 <#if follower.isFollowing>

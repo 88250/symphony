@@ -12,13 +12,13 @@
         <#list domains as item>
         <li>
             <div class="fn-clear first">
-                <a target="_blank" href="/domain/${item.domainURI}">${item.domainTitle}</a> &nbsp;
+                <a target="_blank" href="${servePath}/domain/${item.domainURI}">${item.domainTitle}</a> &nbsp;
                 <#if item.domainStatus == 0>
                 <span class="ft-gray">${validLabel}</span>
                 <#else>
                 <font class="ft-red">${banLabel}</font>
                 </#if>
-                <a href="/admin/domain/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
+                <a href="${servePath}/admin/domain/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
             </div>
             <div class="fn-clear">
                 <#if item.domainIconPath != ''>

@@ -11,13 +11,13 @@
         <div class="main">
             <div class="pre-post">
                 <div>
-                    <a href="/post?type=0">
+                    <a href="${servePath}/post?type=0">
                         <div class="icon-article"> ${articleLabel}</div>
                     </a>
                     <div class="ft-fade"><span class="ft-green">提问</span>或<span class="ft-green">分享</span>对别人有帮助的经验与见解</div>
                 </div>
                 <div>
-                    <a href="/post?type=3">
+                    <a href="${servePath}/post?type=3">
                         <div class="icon-video"> ${thoughtLabel}</div>
                     </a>
                     <div class="ft-fade">
@@ -26,13 +26,13 @@
                     </div>
                 </div>
                 <div>
-                    <a href="/post?type=1">
+                    <a href="${servePath}/post?type=1">
                         <div class="icon-locked"> ${discussionLabel}</div>
                     </a>
                     <div class="ft-fade">@好友并在<span class="ft-red">私密</span>空间中进行交流</div>
                 </div>
                 <div>
-                    <a href="/post?type=2">
+                    <a href="${servePath}/post?type=2">
                         <div class="icon-feed"> ${cityBroadcastLabel}</div>
                     </a>
                     <div class="ft-fade">发起你所在城市的招聘、Meetup 等，仅需<i>${broadcastPoint}</i> 积分</div>

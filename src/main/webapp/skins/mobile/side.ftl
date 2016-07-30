@@ -34,7 +34,7 @@ ${ADLabel}
         <ul class="tags fn-clear">
             <#list navTrendTags as trendTag>
             <li>
-                <a class="btn small" rel="nofollow" href="/tag/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
+                <a class="btn small" rel="nofollow" href="${servePath}/tag/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
             </li>
             </#list>
         </ul>
@@ -54,7 +54,7 @@ ${ADLabel}
             <#list sideHotArticles as hotArticle>
             <li<#if !hotArticle_has_next> class="last"</#if>>
                 <#if "someone" != hotArticle.articleAuthorName>
-                <a rel="nofollow" href="/member/${hotArticle.articleAuthorName}"></#if>
+                <a rel="nofollow" href="${servePath}/member/${hotArticle.articleAuthorName}"></#if>
                     <span class="avatar-small slogan"
                           style="background-image:url('${hotArticle.articleAuthorThumbnailURL}-64.jpg?${hotArticle.articleAuthor.userUpdateTime?c}')"></span>
                 <#if "someone" != hotArticle.articleAuthorName></a></#if>
@@ -78,7 +78,7 @@ ${ADLabel}
             <li>
                 <span>
                     <#if tag.tagIconPath!="">
-                    <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if><a rel="nofollow" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                    <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if><a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                 </span>
                 <div<#if tag.tagDescription == ''> style="width:auto"</#if>>
                     <div>${tag.tagDescription}</div>

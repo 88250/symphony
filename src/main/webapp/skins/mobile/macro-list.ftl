@@ -9,7 +9,7 @@
             <div class="fn-flex">
                 <#if article.articleAnonymous == 0>
                 <a rel="nofollow" class="ft-gray"
-                   href="/member/${article.articleAuthorName}"
+                   href="${servePath}/member/${article.articleAuthorName}"
                    ></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
                 <div class="fn-flex-1 has-view">
                     <h2>
@@ -30,14 +30,14 @@
                         </#if>
                     </h2>
                     <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
+                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
                     </#list>
                     <div class="ft-smaller">
                     <span class="ft-fade">${article.timeAgo}</span>
                     <#if "" != article.articleLatestCmterName>
                     <span class="ft-fade">•&nbsp;${latestCmtFromLabel}</span> 
                     <#if article.articleLatestCmterName != 'someone'>
-                    <a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
+                    <a rel="nofollow" class="ft-gray" href="${servePath}/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
                     </#if>
                     </div>
                 </div>
@@ -57,6 +57,6 @@
 <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     // Init [Article List] channel
-    ArticleListChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-list-channel?articleIds=${articleIds}");
+    ArticleListChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-list-channel?articleIds=${articleIds}");
 </script>
 </#macro>

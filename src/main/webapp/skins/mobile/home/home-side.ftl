@@ -15,7 +15,7 @@
             <span class="ft-13 icon-userrole" title="${administratorLabel}"></span>
             </#if>
             <#if isAdminLoggedIn>
-            <a class="ft-13 icon-setting" href="/admin/user/${user.oId}" title="${adminLabel}"></a>
+            <a class="ft-13 icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
             </#if>
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>
@@ -58,7 +58,7 @@
         </#if>
         <div class="user-info">
             <span class="ft-gray">${pointLabel}</span>
-            <a href="/member/${user.userName}/points" title="${user.userPoint?c}">
+            <a href="${servePath}/member/${user.userName}/points" title="${user.userPoint?c}">
                 <#if 0 == user.userAppRole>
                 0x${user.userPointHex}
                 <#else>

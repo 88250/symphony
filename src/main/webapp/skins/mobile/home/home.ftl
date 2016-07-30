@@ -19,7 +19,7 @@
                 </h2>
                 <span class="ft-gray">
                     <#list article.articleTags?split(",") as articleTag>
-                    <a class="tag" rel="tag" href="/tag/${articleTag?url('UTF-8')}">
+                    <a class="tag" rel="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">
                         ${articleTag}</a>
                     </#list><br/>
                     <span class="icon-date"></span>
@@ -28,7 +28,7 @@
             </div>
             <#if isMyArticle && 3 != article.articleType>
             <div class="cmts">
-                <a class="icon-edit" href="/update?id=${article.oId}" title="${editLabel}"></a>
+                <a class="icon-edit" href="${servePath}/update?id=${article.oId}" title="${editLabel}"></a>
             </div>
             <#else>
             <#if article.articleCommentCount != 0>

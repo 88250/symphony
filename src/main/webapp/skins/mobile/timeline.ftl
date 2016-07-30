@@ -12,15 +12,15 @@
             <div class="content fn-clear">
                 <div class="domains fn-clear">
                     <#list domains as navDomain>
-                    <a href="/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
+                    <a href="${servePath}/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
                     </#list>
-                    <a href="/">${latestLabel}</a>
-                    <a href="/hot">${hotLabel}</a>
+                    <a href="${servePath}/">${latestLabel}</a>
+                    <a href="${servePath}/hot">${hotLabel}</a>
                     <#if isLoggedIn && "" != currentUser.userCity>
-                    <a href="/city/my">${currentUser.userCity}</a>
+                    <a href="${servePath}/city/my">${currentUser.userCity}</a>
                     </#if>
-                    <a href="/timeline" class="selected">${timelineLabel}</a>
-                    <a href="/community">${communityGroupLabel}</a>
+                    <a href="${servePath}/timeline" class="selected">${timelineLabel}</a>
+                    <a href="${servePath}/community">${communityGroupLabel}</a>
                 </div>
 
                 <#if timelines?size <= 0>
@@ -43,7 +43,7 @@
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             // Init [Timeline] channel
-            TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}/timeline-channel", ${timelineCnt});
+            TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/timeline-channel", ${timelineCnt});
         </script>
     </body>
 </html>

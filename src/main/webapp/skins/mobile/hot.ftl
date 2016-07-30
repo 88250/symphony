@@ -13,18 +13,18 @@
             <div class="content fn-clear">
                 <div class="domains fn-clear">
                     <#list domains as domain>
-                    <a href='/domain/${domain.domainURI}'>${domain.domainTitle}</a>
+                    <a href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
                     </#list>
-                    <a href="/">${latestLabel}</a>
-                    <a href="/hot" class="selected">${hotLabel}</a>
+                    <a href="${servePath}/">${latestLabel}</a>
+                    <a href="${servePath}/hot" class="selected">${hotLabel}</a>
                     <#if isLoggedIn && "" != currentUser.userCity>
-                    <a href="/city/my">${currentUser.userCity}</a>
+                    <a href="${servePath}/city/my">${currentUser.userCity}</a>
                     </#if>
-                    <a href="/timeline">${timelineLabel}</a>
-                    <a href="/community">${communityGroupLabel}</a>
+                    <a href="${servePath}/timeline">${timelineLabel}</a>
+                    <a href="${servePath}/community">${communityGroupLabel}</a>
                 </div>
                 <@list listData=indexArticles/>
-                <a href="/" class="ft-gray more-article">${moreRecentArticleLabel}</a>
+                <a href="${servePath}/" class="ft-gray more-article">${moreRecentArticleLabel}</a>
             </div>
             <div class="side wrapper">
                 <#include "side.ftl">

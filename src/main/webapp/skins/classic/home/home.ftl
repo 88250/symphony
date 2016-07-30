@@ -15,11 +15,11 @@
                     <#elseif 3 == article.articleType>
                     <span class="icon-video" title="${thoughtLabel}"></span>
                     </#if>
-                    <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                    <a rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
                 <span class="ft-gray">
                     <#list article.articleTags?split(",") as articleTag>
-                    <a class="tag" rel="tag" href="/tag/${articleTag?url('UTF-8')}">
+                    <a class="tag" rel="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">
                         ${articleTag}</a>
                     </#list> &nbsp; 
                     <span class="icon-date"></span>
@@ -28,12 +28,12 @@
             </div>
             <#if isMyArticle && 3 != article.articleType>
             <div class="cmts">
-                <a class="ft-a-icon tooltipped tooltipped-s" href="/update?id=${article.oId}" aria-label="${editLabel}"><span class="icon-edit"></span></a>
+                <a class="ft-a-icon tooltipped tooltipped-s" href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}"><span class="icon-edit"></span></a>
             </div>
             <#else>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">
-                <a class="count ft-gray" href="${article.articlePermalink}">${article.articleCommentCount}</a>
+                <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
             </#if>

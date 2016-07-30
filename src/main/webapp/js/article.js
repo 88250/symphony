@@ -204,7 +204,7 @@ var Comment = {
         };
 
         $.ajax({
-            url: "/comment/thank",
+            url: Label.servePath + "/comment/thank",
             type: "POST",
             headers: {"csrfToken": csrfToken},
             cache: false,
@@ -255,7 +255,7 @@ var Comment = {
         };
 
         $.ajax({
-            url: "/comment",
+            url: Label.servePath + "/comment",
             type: "POST",
             headers: {"csrfToken": csrfToken},
             cache: false,
@@ -386,7 +386,7 @@ var Article = {
             return false;
         }
         $.ajax({
-            url: '/article/' + articleId + '/revisions',
+            url: Label.servePath + '/article/' + articleId + '/revisions',
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
@@ -546,7 +546,7 @@ var Article = {
 
         if (r) {
             $.ajax({
-                url: "/article/reward?articleId=" + articleId,
+                url: Label.servePath + "/article/reward?articleId=" + articleId,
                 type: "POST",
                 cache: false,
                 success: function (result, textStatus) {
@@ -569,7 +569,7 @@ var Article = {
         }
 
         $.ajax({
-            url: "/article/thank?articleId=" + articleId,
+            url: Label.servePath + "/article/thank?articleId=" + articleId,
             type: "POST",
             cache: false,
             success: function (result, textStatus) {
@@ -591,7 +591,7 @@ var Article = {
 
         if (r) {
             $.ajax({
-                url: "/article/stick?articleId=" + articleId,
+                url: Label.servePath + "/article/stick?articleId=" + articleId,
                 type: "POST",
                 cache: false,
                 success: function (result, textStatus) {
@@ -838,7 +838,7 @@ var Article = {
         };
 
         $.ajax({
-            url: "/notification/read",
+            url: Label.servePath + "/notification/read",
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject)

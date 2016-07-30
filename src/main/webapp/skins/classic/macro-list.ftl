@@ -9,7 +9,7 @@
             <div class="fn-flex">
                 <#if article.articleAnonymous == 0>
                 <a rel="nofollow" 
-                   href="/member/${article.articleAuthorName}"></#if><div
+                   href="${servePath}/member/${article.articleAuthorName}"></#if><div
                    class="avatar ft-gray tooltipped tooltipped-se"  
                    aria-label="${article.articleAuthorName}"
                    style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
@@ -23,7 +23,7 @@
                         <span class="icon-video" title="${thoughtLabel}"></span>
                         </#if>
                         <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark"
-                           href="${article.articlePermalink}">${article.articleTitleEmoj}
+                           href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                         </a>
                         <#if articleStickCheck??>
                         <#if article.articleStick < 9223372036854775807>
@@ -32,7 +32,7 @@
                         </#if>
                     </h2>
                     <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
+                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
                     </#list>
                     <span class="ft-fade ft-smaller">&nbsp;•&nbsp;${article.timeAgo}</span>
                     <#if "" != article.articleLatestCmterName>
@@ -40,14 +40,14 @@
                     <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> <span class="ft-gray">${article.articleLatestCmterName}</span>
                     <#else>
                     <span class="ft-fade ft-smaller">•&nbsp;${latestCmtFromLabel}</span> 
-                    <#if article.articleLatestCmterName != 'someone'><a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
+                    <#if article.articleLatestCmterName != 'someone'><a rel="nofollow" class="ft-gray" href="${servePath}/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
                     </#if>
                     </#if>
                 </div>
             </div>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">
-                <a class="count ft-gray" href="${article.articlePermalink}">${article.articleCommentCount}</a>
+                <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
@@ -60,6 +60,6 @@
 <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     // Init [Article List] channel
-    ArticleListChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-list-channel?articleIds=${articleIds}");
+    ArticleListChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-list-channel?articleIds=${articleIds}");
 </script>
 </#macro>

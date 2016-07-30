@@ -8,7 +8,7 @@
         <li class="fn-flex read">
             <#if "someone" != article.articleAuthorName>
             <a aria-label="${article.articleAuthorName}" class="tooltipped tooltipped-s"
-               target="_blank" rel="nofollow" href="/member/${article.articleAuthorName}"></#if>
+               target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
                 <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div>
             <#if "someone" != article.articleAuthorName></a></#if>
             <div class="fn-flex-1 has-view">
@@ -20,11 +20,11 @@
                     <#elseif 3 == article.articleType>
                     <span class="icon-video" title="${thoughtLabel}"></span>
                     </#if>
-                    <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                    <a rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
                 <span class="ft-gray">
                     <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">
+                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">
                         ${articleTag}</a>
                     </#list> &nbsp; 
                     <span class="icon-date"></span>
@@ -33,7 +33,7 @@
             </div>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">
-                <a class="count ft-gray" href="${article.articlePermalink}">${article.articleCommentCount}</a>
+                <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
         </li>

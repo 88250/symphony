@@ -2,7 +2,7 @@
     <div class="wrapper fn-clear">
         <div class="head-fn fn-left">
             <h1>
-                <a href="/" style="background-image: url('${staticServePath}/images/hacpai.png')" alt="${symphonyLabel}" 
+                <a href="${servePath}/" style="background-image: url('${staticServePath}/images/hacpai.png')" alt="${symphonyLabel}" 
                    title="${symphonyLabel}" width="42" class="fn-pointer"></a>
             </h1>
         </div>
@@ -10,15 +10,15 @@
         <div class="fn-right user-nav">
             <#if isLoggedIn>
             <#if "adminRole" == userRole>
-            <a href="/admin" title="${adminLabel}" class="last icon-userrole"></a>
+            <a href="${servePath}/admin" title="${adminLabel}" class="last icon-userrole"></a>
             </#if>
-            <a href="/member/${currentUser.userName}" title="Home" class="<#if 'adminRole' != userRole>last </#if>nav-avatar">
+            <a href="${servePath}/member/${currentUser.userName}" title="Home" class="<#if 'adminRole' != userRole>last </#if>nav-avatar">
                 <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL}-64.jpg?${currentUser.userUpdateTime?c}')"></span>
             </a>
-            <a href="/activities" title="${activityLabel}" class="icon-flag"></a>
-            <a href="/pre-post" title="${addArticleLabel}" 
+            <a href="${servePath}/activities" title="${activityLabel}" class="icon-flag"></a>
+            <a href="${servePath}/pre-post" title="${addArticleLabel}" 
                class="icon-addfile"></a>
-            <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
+            <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
             <#else>
             <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin" 
                title="${registerLabel}">${registerLabel}</a>

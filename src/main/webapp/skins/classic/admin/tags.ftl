@@ -12,13 +12,13 @@
         <#list tags as item>
         <li>
             <div class="fn-clear first">
-                <a href="/tag/${item.tagTitle?url('utf-8')}">${item.tagTitle}</a> &nbsp;
+                <a href="${servePath}/tag/${item.tagTitle?url('utf-8')}">${item.tagTitle}</a> &nbsp;
                 <#if item.tagStatus == 0>
                 <span class="ft-gray">${validLabel}</span>
                 <#else>
                 <font class="ft-red">${banLabel}</font>
                 </#if>
-                <a href="/admin/tag/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
+                <a href="${servePath}/admin/tag/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
             </div>
             <div class="fn-clear">
                 <#if item.tagIconPath != ''>

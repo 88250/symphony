@@ -74,15 +74,15 @@
                 </div>
                 <div class="fn-hr5"></div>
                 <ul class="tab fn-clear fn-none">
-                    <li<#if type == "index"> class="fn-none"</#if>><a href="/admin">${consoleIndexLabel}</a></li>
-                    <li<#if type == "users" || type == "addUser"> class="fn-none"</#if>><a href="/admin/users">${userAdminLabel}</a></li>
-                    <li<#if type == "articles" || type == "addArticle"> class="fn-none"</#if>><a href="/admin/articles">${articleAdminLabel}</a></li>
-                    <li<#if type == "comments"> class="fn-none"</#if>><a href="/admin/comments">${commentAdminLabel}</a></li>
-                    <li<#if type == "domains" || type == "addDomain"> class="fn-none"</#if>><a href="/admin/domains">${domainAdminLabel}</a></li>
-                    <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="/admin/tags">${tagAdminLabel}</a></li>
-                    <li<#if type == "reservedWords" || type == "addReservedWord"> class="fn-none"</#if>><a href="/admin/reserved-words">${reservedWordAdminLabel}</a></li>
-                    <li<#if type == "invitecodes"> class="current"</#if>><a href="/admin/invitecodes">${invitecodeAdminLabel}</a></li>
-                    <li<#if type == "misc"> class="fn-none"</#if>><a href="/admin/misc">${miscAdminLabel}</a></li>
+                    <li<#if type == "index"> class="fn-none"</#if>><a href="${servePath}/admin">${consoleIndexLabel}</a></li>
+                    <li<#if type == "users" || type == "addUser"> class="fn-none"</#if>><a href="${servePath}/admin/users">${userAdminLabel}</a></li>
+                    <li<#if type == "articles" || type == "addArticle"> class="fn-none"</#if>><a href="${servePath}/admin/articles">${articleAdminLabel}</a></li>
+                    <li<#if type == "comments"> class="fn-none"</#if>><a href="${servePath}/admin/comments">${commentAdminLabel}</a></li>
+                    <li<#if type == "domains" || type == "addDomain"> class="fn-none"</#if>><a href="${servePath}/admin/domains">${domainAdminLabel}</a></li>
+                    <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="${servePath}/admin/tags">${tagAdminLabel}</a></li>
+                    <li<#if type == "reservedWords" || type == "addReservedWord"> class="fn-none"</#if>><a href="${servePath}/admin/reserved-words">${reservedWordAdminLabel}</a></li>
+                    <li<#if type == "invitecodes"> class="current"</#if>><a href="${servePath}/admin/invitecodes">${invitecodeAdminLabel}</a></li>
+                    <li<#if type == "misc"> class="fn-none"</#if>><a href="${servePath}/admin/misc">${miscAdminLabel}</a></li>
                 </ul>
             </div>
             <#nested>

@@ -13,15 +13,15 @@
             <div class="content fn-clear">
                 <div class="domains fn-clear">
                     <#list domains as navDomain>
-                    <a href="/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
+                    <a href="${servePath}/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
                     </#list>
-                    <a href="/">${latestLabel}</a>
-                    <a href="/hot">${hotLabel}</a>
+                    <a href="${servePath}/">${latestLabel}</a>
+                    <a href="${servePath}/hot">${hotLabel}</a>
                     <#if isLoggedIn && "" != currentUser.userCity>
-                    <a href="/city/my" class="selected">${currentUser.userCity}</a>
+                    <a href="${servePath}/city/my" class="selected">${currentUser.userCity}</a>
                     </#if>
-                    <a href="/timeline">${timelineLabel}</a>
-                    <a href="/community">${communityGroupLabel}</a>
+                    <a href="${servePath}/timeline">${timelineLabel}</a>
+                    <a href="${servePath}/community">${communityGroupLabel}</a>
                 </div>
 
                 <#if articles?size gt 0>

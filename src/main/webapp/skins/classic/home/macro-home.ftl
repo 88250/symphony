@@ -53,35 +53,35 @@
                 <div class="content">
                     <ul class="tab fn-clear">
                         <li<#if type == "home"> class="current"</#if>>
-                            <a href="/member/${user.userName}">${articleLabel}</a>
+                            <a href="${servePath}/member/${user.userName}">${articleLabel}</a>
                         </li>
                         <li<#if type == "comments"> class="current"</#if>>
-                            <a href="/member/${user.userName}/comments">${cmtLabel}</a>
+                            <a href="${servePath}/member/${user.userName}/comments">${cmtLabel}</a>
                         </li>
                         <li<#if type == "followingUsers"> class="current"</#if>>
-                            <a href="/member/${user.userName}/following/users">${followingUsersLabel}</a>
+                            <a href="${servePath}/member/${user.userName}/following/users">${followingUsersLabel}</a>
                         </li>
                         <li<#if type == "followingTags"> class="current"</#if>>
-                            <a href="/member/${user.userName}/following/tags">${followingTagsLabel}</a>
+                            <a href="${servePath}/member/${user.userName}/following/tags">${followingTagsLabel}</a>
                         </li>
                         <li<#if type == "followingArticles"> class="current"</#if>>
-                            <a href="/member/${user.userName}/following/articles">${followingArticlesLabel}</a>
+                            <a href="${servePath}/member/${user.userName}/following/articles">${followingArticlesLabel}</a>
                         </li>
                         <li<#if type == "followers"> class="current"</#if>>
-                            <a href="/member/${user.userName}/followers">${followersLabel}</a>
+                            <a href="${servePath}/member/${user.userName}/followers">${followersLabel}</a>
                         </li>
                         <li<#if type == "points"> class="current"</#if>>
-                            <a href="/member/${user.userName}/points">${pointLabel}</a>
+                            <a href="${servePath}/member/${user.userName}/points">${pointLabel}</a>
                         </li>
                         <#if currentUser?? && currentUser.userName == user.userName>
                         <li<#if type == "articlesAnonymous"> class="current"</#if>>
-                            <a href="/member/${user.userName}/articles/anonymous">${anonymousArticleLabel}</a>
+                            <a href="${servePath}/member/${user.userName}/articles/anonymous">${anonymousArticleLabel}</a>
                         </li>
                         <li<#if type == "commentsAnonymous"> class="current"</#if>>
-                            <a href="/member/${user.userName}/comments/anonymous">${anonymousCommentLabel}</a>
+                            <a href="${servePath}/member/${user.userName}/comments/anonymous">${anonymousCommentLabel}</a>
                         </li>
                         <li<#if type == "settings"> class="current"</#if>>
-                            <a href="/settings"><b class="ft-red">${settingsLabel}</b></a>
+                            <a href="${servePath}/settings"><b class="ft-red">${settingsLabel}</b></a>
                         </li>
                         </#if>
                     </ul>

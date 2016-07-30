@@ -19,7 +19,7 @@
         <div class="module-panel form fn-clear">
             <br/>
             <#list domain.domainTags as tag>
-            <a class="tag" target="_blank" href="/tag/${tag.tagTitle?url('UTF-8')}">${tag.tagTitle}</a>
+            <a class="tag" target="_blank" href="${servePath}/tag/${tag.tagTitle?url('UTF-8')}">${tag.tagTitle}</a>
             </#list>
 
             <form method="POST" action="/admin/domain/${domain.oId}/add-tag" class="fn-clear">

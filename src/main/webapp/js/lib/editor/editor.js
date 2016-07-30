@@ -1279,7 +1279,7 @@
         var text = cm.getValue();
 
         $.ajax({
-            url: "/markdown",
+            url: Label.servePath + "/markdown",
             type: "POST",
             cache: false,
             data: {

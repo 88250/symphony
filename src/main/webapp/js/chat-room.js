@@ -150,7 +150,7 @@ var ChatRoom = {
         };
 
         $.ajax({
-            url: "/chat-room/send",
+            url: Label.servePath + "/chat-room/send",
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),

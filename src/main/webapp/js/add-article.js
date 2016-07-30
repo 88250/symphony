@@ -69,7 +69,7 @@ var AddArticle = {
                 articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, ""),
                 articleAnonymous: $('#articleAnonymous').prop('checked')
             },
-            url = "/article", type = "POST";
+            url = Label.servePath + "/article", type = "POST";
 
             if (3 === parseInt(requestJSONObject.articleType)) { // 如果是“思绪”
                 requestJSONObject.articleContent = window.localStorage.thoughtContent;
@@ -510,7 +510,7 @@ var AddArticle = {
                 }
 
                 $.ajax({
-                    url: '/tags/query?title=' + $("#articleTags").val(),
+                    url: Label.servePath + '/tags/query?title=' + $("#articleTags").val(),
                     error: function (jqXHR, textStatus, errorThrown) {
                         $("#addArticleTip").addClass('error').html('<ul><li>' + errorThrown + '</li></ul>');
                     },

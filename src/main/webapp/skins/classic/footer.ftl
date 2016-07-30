@@ -4,13 +4,13 @@
             <div class="footer-nav fn-clear">
                 <a rel="help" href="https://hacpai.com/article/1440573175609">${aboutLabel}</a>
                 <a href="https://hacpai.com/article/1457158841475">API</a>
-                <a href="/tag/系统公告">${symAnnouncementLabel}</a>
-                <a href="/tag/Q%26A">${qnaLabel}</a>
-                <a href="/domains">${domainLabel}</a>
-                <a href="/tags">${tagLabel}</a>
-                <a rel="nofollow" href="/chat-room">${chatRoomLabel}</a>
+                <a href="${servePath}/tag/系统公告">${symAnnouncementLabel}</a>
+                <a href="${servePath}/tag/Q%26A">${qnaLabel}</a>
+                <a href="${servePath}/domains">${domainLabel}</a>
+                <a href="${servePath}/tags">${tagLabel}</a>
+                <a rel="nofollow" href="${servePath}/chat-room">${chatRoomLabel}</a>
                 <a href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
-                <a href="/statistic" class="last">${dataStatLabel}</a>
+                <a href="${servePath}/statistic" class="last">${dataStatLabel}</a>
 
                 <div class="fn-right">
                     <span class="ft-gray">&COPY; ${year}</span>
@@ -51,13 +51,14 @@
         collectLabel: "${collectLabel}",
         uncollectLabel: "${uncollectLabel}",
         desktopNotificationTemplateLabel: "${desktopNotificationTemplateLabel}",
+        servePath: "${servePath}",
         staticServePath: "${staticServePath}"
     };
     Util.init(${isLoggedIn?c});
     
     <#if isLoggedIn>
     // Init [User] channel
-    Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}/user-channel");
+    Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}${contextPath}/user-channel");
     </#if>
 </script>
 <#if algoliaEnabled>

@@ -3,7 +3,7 @@
 <br/>
 <div class="module">
     <div class="module-header fn-clear">
-        <a rel="nofollow" href="/member/${currentUser.userName}" target="_blank">${currentUser.userName}</a>
+        <a rel="nofollow" href="${servePath}/member/${currentUser.userName}" target="_blank">${currentUser.userName}</a>
         <h2>${profilesLabel}</h2>
         <span>(${currentUser.userEmail})</span>
         <a class="ft-red fn-right" href="javascript:Util.logout()">${logoutLabel}</a>

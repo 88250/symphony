@@ -41,14 +41,14 @@
                                   class="fn-pointer tooltipped tooltipped-s"><span class="icon-refresh"></span></span>
                             </#if>
                             <#if article.isMyArticle && 3 != article.articleType>
-                            <a href="/update?id=${article.oId}" aria-label="${editLabel}" class="tooltipped tooltipped-s"><span class="icon-edit"></span></a>
+                            <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" class="tooltipped tooltipped-s"><span class="icon-edit"></span></a>
                             </#if>
                             <#if article.isMyArticle>
                             <a class="tooltipped tooltipped-s" aria-label="${stickLabel}" 
                                href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a>
                             </#if>
                             <#if isAdminLoggedIn>
-                            <a class="tooltipped tooltipped-s" href="/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                            <a class="tooltipped tooltipped-s" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                             </#if>
                         </span>
                     </div>
@@ -61,17 +61,17 @@
                         <#elseif 3 == article.articleType>
                         <span class="icon-video" title="${thoughtLabel}"></span>
                         </#if>
-                        <a href="${article.articlePermalink}" rel="bookmark">
+                        <a href="${servePath}${article.articlePermalink}" rel="bookmark">
                             ${article.articleTitleEmoj}
                         </a>
                     </h2> 
                     <div class="article-info fn-flex">
                         <#if article.articleAnonymous == 0>
-                        <a rel="author" href="/member/${article.articleAuthorName}"
+                        <a rel="author" href="${servePath}/member/${article.articleAuthorName}"
                             title="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
                         <div class="fn-flex-1">
                             <#if article.articleAnonymous == 0>
-                            <a rel="author" href="/member/${article.articleAuthorName}" class="ft-black"
+                            <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-black"
                                title="${article.articleAuthorName}"></#if><strong>${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
                             <span class="ft-gray">
                                 <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
@@ -93,7 +93,7 @@
                             </a> 
                             <br/>
                             <#list article.articleTags?split(",") as articleTag>
-                            <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">
+                            <a rel="tag" class="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">
                                 ${articleTag}
                             </a>&nbsp;
                             </#list>
@@ -188,7 +188,7 @@
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
                                         <#if comment.commentAnonymous == 0>
-                                        <a rel="nofollow" href="/member/${comment.commentAuthorName}"></#if>
+                                        <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
                                             <div class="avatar" 
                                                  title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
                                         <#if comment.commentAnonymous == 0></a></#if>
@@ -201,7 +201,7 @@
                                                 <span class="fn-left">
                                                     <#if !comment.fromClient>
                                                     <#if comment.commentAnonymous == 0>
-                                                    <a rel="nofollow" href="/member/${comment.commentAuthorName}"
+                                                    <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"
                                                        title="${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
                                                        via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
                                                         <#if 0 == comment.commenter.userUAStatus><span class="cmt-via" data-ua="${comment.commentUA}"></span></#if>
@@ -232,7 +232,7 @@
                                                     </#if>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
-                                                    <a class="tooltipped tooltipped-s ft-a-icon" href="/admin/comment/${comment.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                                                    <a class="tooltipped tooltipped-s ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                     </#if>
                                                     #<i><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
                                                 </span>    
@@ -315,7 +315,7 @@
                                 <li<#if !relevantArticle_has_next> class="last"</#if>>
                                     <#if "someone" != relevantArticle.articleAuthorName>
                                     <a rel="nofollow" 
-                                   href="/member/${relevantArticle.articleAuthorName}"></#if>
+                                   href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
                                         <span class="avatar-small slogan tooltipped tooltipped-se" aria-label="${relevantArticle.articleAuthorName}"
                                    style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
                                    ></span>
@@ -341,7 +341,7 @@
                                 <li<#if !randomArticle_has_next> class="last"</#if>>
                                     <#if "someone" != randomArticle.articleAuthorName>
                                     <a  rel="nofollow"
-                                   href="/member/${randomArticle.articleAuthorName}"></#if>
+                                   href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
                                         <span class="avatar-small slogan tooltipped tooltipped-se"
                                    aria-label="${randomArticle.articleAuthorName}"
                                    style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></span>
@@ -397,7 +397,7 @@
                     Label.currentUserName = '${currentUser.userName}';
             </#if>
             // Init [Article] channel
-            ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
+            ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             $(document).ready(function () {
                  // jQuery File Upload
                 Util.uploadFile({

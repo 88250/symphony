@@ -5,7 +5,7 @@
     <#list atNotifications as notification>
     <li class="comment-list-item fn-flex<#if notification.hasRead> read</#if>">
         <#if "someone" != notification.authorName>
-        <a rel="nofollow" href="/member/${notification.authorName}" 
+        <a rel="nofollow" href="${servePath}/member/${notification.authorName}" 
            title="${notification.authorName}"></#if>
             <div class="avatar" style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
         <#if "someone" != notification.authorName></a></#if>
@@ -43,7 +43,7 @@
 
             <p class="ft-gray">
                 <#list notification.articleTags?split(",") as articleTag>
-                <a rel="tag" class="tag" href="/tag/${notification?url('UTF-8')}">
+                <a rel="tag" class="tag" href="${servePath}/tag/${notification?url('UTF-8')}">
                     ${articleTag}</a>
                 </#list>
                 <br/>

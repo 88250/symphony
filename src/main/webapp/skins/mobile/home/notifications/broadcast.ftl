@@ -5,7 +5,7 @@
     <#list broadcastNotifications as notification>
     <li class="fn-flex<#if notification.hasRead> read</#if>">
         <#if "someone" != notification.authorName>
-        <a target="_blank" rel="nofollow" href="/member/${notification.authorName}" 
+        <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.authorName}" 
            title="${notification.authorName}"></#if>
             <div class="avatar" style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
         <#if "someone" != notification.authorName></a></#if>
@@ -20,7 +20,7 @@
             </h2>
             <div class="ft-gray">
                 <#list notification.articleTags?split(",") as articleTag>
-                <a class="tag" rel="tag" href="/tag/${articleTag?url('UTF-8')}">
+                <a class="tag" rel="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">
                     ${articleTag}</a>
                 </#list> <br/>
                 <span class="icon-date"></span>

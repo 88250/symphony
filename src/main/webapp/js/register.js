@@ -56,7 +56,7 @@ var Register = {
             };
 
             $.ajax({
-                url: "/register",
+                url: Label.servePath + "/register",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -97,7 +97,7 @@ var Register = {
             };
 
             $.ajax({
-                url: "/register2",
+                url: Label.servePath + "/register2",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -132,7 +132,7 @@ var Register = {
             };
 
             $.ajax({
-                url: "/forget-pwd",
+                url: Label.servePath + "/forget-pwd",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -171,7 +171,7 @@ var Register = {
             };
 
             $.ajax({
-                url: "/reset-pwd",
+                url: Label.servePath + "/reset-pwd",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
