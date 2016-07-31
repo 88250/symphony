@@ -619,6 +619,7 @@ public class ArticleProcessor {
 
         // Fill article thank
         article.put(Common.THANKED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_THANK_ARTICLE));
+        article.put(Common.THANKED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_THANK_ARTICLE));
 
         String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
         stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));

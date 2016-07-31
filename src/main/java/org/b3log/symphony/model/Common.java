@@ -93,6 +93,11 @@ public final class Common {
      * Key of rewarded count.
      */
     public static final String REWARED_COUNT = "rewardedCnt";
+    
+    /**
+     * Key of thanked count.
+     */
+    public static final String THANKED_COUNT = "thankedCnt";
 
     /**
      * Key of CSRF token.

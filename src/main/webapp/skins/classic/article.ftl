@@ -28,6 +28,7 @@
                             </#if>
                             <#if isLoggedIn>
                             <span id="thankArticle" aria-label="${thankLabel}" class="fn-pointer tooltipped tooltipped-s" <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
+                            ${article.thankedCnt}
                             <span id="voteUp_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
                                 <span class="icon-thumbs-up<#if 0 == article.articleVote> ft-red</#if>"></span></span>
                             <span id="voteDown_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
