@@ -54,7 +54,7 @@ import org.jsoup.Jsoup;
  * Article channel.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.7.6, Jul 22, 2016
+ * @version 2.2.8.6, Aug 1, 2016
  * @since 1.3.0
  */
 @ServerEndpoint(value = "/article-channel", configurator = Channels.WebSocketConfigurator.class)
@@ -218,7 +218,7 @@ public class ArticleChannel {
      *     "commentAuthorThumbnailURL": "",
      *     "thumbnailUpdateTime": long,
      *     "commentContent": "",
-     *     “commentThankLabel": "",
+     *     "commentThankLabel": "",
      *     "thankLabel": "",
      *     "thankedLabel": "",
      *     "timeAgo": "",
