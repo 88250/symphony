@@ -146,12 +146,14 @@ public class FetchUploadProcessor {
                     null, contentType, false);
 
             context.renderJSONValue(Common.URL, Symphonys.get("qiniu.domain") + "/e/" + fileName);
+            context.renderJSONValue("originalURL", originalURL);
         } else {
             final OutputStream output = new FileOutputStream(Symphonys.get("upload.dir") + fileName);
             IOUtils.write(data, output);
             IOUtils.closeQuietly(output);
 
             context.renderJSONValue(Common.URL, Latkes.getServePath() + "/upload/" + fileName);
+            context.renderJSONValue("originalURL", originalURL);
         }
 
         context.renderTrueResult();

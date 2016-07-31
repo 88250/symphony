@@ -32,32 +32,30 @@ var Util = {
      * @param {type} text
      * @returns {String}
      */
-    processClipBoard: function (text) {
+    processClipBoard: function (text, cm) {
         var text = toMarkdown(text, {converters: [
                 {
-                    filter: function (node) {
-                        if ('IMG' === node.nodeName) {
-                            console.log(node.src);
-                            
-                            var requestJSONObject = {
-                                url: node.src
-                            };
+                    filter: 'img',
+                    replacement: function (innerHTML, node) {
+                        var requestJSONObject = {
+                            url: node.src
+                        };
 
-                            $.ajax({
-                                url: Label.servePath + "/fetch-upload",
-                                type: "POST",
-                                data: JSON.stringify(requestJSONObject),
-                                cache: false,
-                                success: function (result, textStatus) {
-                                    if (!result.sc){
-                                        
-                                        return;
-                                    }
-                                    
-                                    console.log(result.url);
+                        $.ajax({
+                            url: Label.servePath + "/fetch-upload",
+                            type: "POST",
+                            data: JSON.stringify(requestJSONObject),
+                            cache: false,
+                            success: function (result, textStatus) {
+                                if (result.sc) {
+                                    var value = cm.getValue();
+                                    value = value.replace(result.originalURL, result.url);
+                                    cm.setValue(value);
                                 }
-                            });
-                        }
+                            }
+                        });
+
+                        return "![](" + node.src + ")";
                     }
                 }
             ], gfm: true});
@@ -535,11 +533,11 @@ var Util = {
      */
     follow: function (it, id, type, index) {
         if (!Label.isLoggedIn) {
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
             Util.showLogin();
             return false;
         }
-        
+
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -556,7 +554,7 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeClass("disabled");
-                    if ("article" === type || ("tag" === type && typeof(index) !== 'undefined')) {
+                    if ("article" === type || ("tag" === type && typeof (index) !== 'undefined')) {
                         $(it).html('<span class="icon-star ft-red"></span>').
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.uncollectLabel + ' ' +
@@ -582,11 +580,11 @@ var Util = {
      */
     unfollow: function (it, id, type, index) {
         if (!Label.isLoggedIn) {
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
             Util.showLogin();
             return false;
         }
-        
+
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -602,7 +600,7 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 if (result.sc) {
-                    if ("article" === type || ("tag" === type && typeof(index) !== 'undefined')) {
+                    if ("article" === type || ("tag" === type && typeof (index) !== 'undefined')) {
                         $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel + ' ' + (index - 1));
