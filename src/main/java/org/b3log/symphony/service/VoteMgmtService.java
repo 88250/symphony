@@ -101,7 +101,7 @@ public class VoteMgmtService {
                 final int downs = article.optInt(Article.ARTICLE_BAD_CNT);
                 final long t = article.optLong(Keys.OBJECT_ID) / 1000;
 
-                final double redditScore = redditScore(ups, downs, t);
+                final double redditScore = redditArticleScore(ups, downs, t);
                 article.put(Article.REDDIT_SCORE, redditScore);
 
                 articleRepository.update(dataId, article);
@@ -119,8 +119,11 @@ public class VoteMgmtService {
                     comment.put(Comment.COMMENT_BAD_CNT, comment.optInt(Comment.COMMENT_BAD_CNT) - 1);
                 }
 
-                // TODO: comment score
-                comment.put(Comment.COMMENT_SCORE, 0);
+                final int ups = comment.optInt(Comment.COMMENT_GOOD_CNT);
+                final int downs = comment.optInt(Comment.COMMENT_BAD_CNT);
+
+                final double redditScore = redditCommentScore(ups, downs);
+                comment.put(Comment.COMMENT_SCORE, redditScore);
 
                 commentRepository.update(dataId, comment);
             } else {
@@ -203,7 +206,7 @@ public class VoteMgmtService {
             final int downs = article.optInt(Article.ARTICLE_BAD_CNT);
             final long t = article.optLong(Keys.OBJECT_ID) / 1000;
 
-            final double redditScore = redditScore(ups, downs, t);
+            final double redditScore = redditArticleScore(ups, downs, t);
             article.put(Article.REDDIT_SCORE, redditScore);
 
             articleRepository.update(dataId, article);
@@ -222,8 +225,11 @@ public class VoteMgmtService {
                 comment.put(Comment.COMMENT_GOOD_CNT, comment.optInt(Comment.COMMENT_GOOD_CNT) + 1);
             }
 
-            // TODO: comment score
-            comment.put(Comment.COMMENT_SCORE, 0);
+            final int ups = comment.optInt(Comment.COMMENT_GOOD_CNT);
+            final int downs = comment.optInt(Comment.COMMENT_BAD_CNT);
+
+            final double redditScore = redditCommentScore(ups, downs);
+            comment.put(Comment.COMMENT_SCORE, redditScore);
 
             commentRepository.update(dataId, comment);
         } else {
@@ -269,7 +275,7 @@ public class VoteMgmtService {
             final int downs = article.optInt(Article.ARTICLE_BAD_CNT);
             final long t = article.optLong(Keys.OBJECT_ID) / 1000;
 
-            final double redditScore = redditScore(ups, downs, t);
+            final double redditScore = redditArticleScore(ups, downs, t);
             article.put(Article.REDDIT_SCORE, redditScore);
 
             articleRepository.update(dataId, article);
@@ -288,8 +294,11 @@ public class VoteMgmtService {
                 comment.put(Comment.COMMENT_BAD_CNT, comment.optInt(Comment.COMMENT_BAD_CNT) + 1);
             }
 
-            // TODO: comment score
-            comment.put(Comment.COMMENT_SCORE, 0);
+            final int ups = comment.optInt(Comment.COMMENT_GOOD_CNT);
+            final int downs = comment.optInt(Comment.COMMENT_BAD_CNT);
+
+            final double redditScore = redditCommentScore(ups, downs);
+            comment.put(Comment.COMMENT_SCORE, redditScore);
 
             commentRepository.update(dataId, comment);
         } else {
@@ -306,14 +315,14 @@ public class VoteMgmtService {
     }
 
     /**
-     * Gets Reddit score.
+     * Gets Reddit article score.
      *
      * @param ups the specified vote up count
      * @param downs the specified vote down count
      * @param t time (epoch seconds)
      * @return reddit score
      */
-    public static double redditScore(final int ups, final int downs, final long t) {
+    private static double redditArticleScore(final int ups, final int downs, final long t) {
         final int x = ups - downs;
         final double z = Math.max(Math.abs(x), 1);
         int y = 0;
@@ -324,5 +333,17 @@ public class VoteMgmtService {
         }
 
         return Math.log10(z) + y * (t - 1353745196) / 45000;
+    }
+
+    private static double redditCommentScore(final int ups, final int downs) {
+        final int n = ups + downs;
+        if (0 == n) {
+            return 0;
+        }
+
+        final double z = 1.0; // 1.0: 85%, 1.6: 95%
+        final double phat = (double) ups / n;
+
+        return Math.sqrt(phat + z * z / (2 * n) - z * ((phat * (1 - phat) + z * z / (4 * n)) / n)) / (1 + z * z / n);
     }
 }

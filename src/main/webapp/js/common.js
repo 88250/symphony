@@ -663,7 +663,7 @@ var Util = {
                     if (1 === result.type) { // cancel down
                         $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
                     } else {
-                        $(voteDownId).addClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children().addClass("ft-red");
+                        $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children().addClass("ft-red");
                         if ($(voteUpId).children().hasClass('ft-red')) {
                             $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
                         }
