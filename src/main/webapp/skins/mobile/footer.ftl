@@ -26,6 +26,7 @@
         collectLabel: "${collectLabel}",
         uncollectLabel: "${uncollectLabel}",
         desktopNotificationTemplateLabel: "${desktopNotificationTemplateLabel}",
+        servePath: "${servePath}",
         staticServePath: "${staticServePath}"
     };
     Util.init(${isLoggedIn?c});

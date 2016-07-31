@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.7.17, Jul 25, 2016
+ * @version 2.10.7.17, Jul 31, 2016
  * @since 0.2.0
  */
 @Service
@@ -404,6 +404,10 @@ public class CommentMgmtService {
             commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) + 1);
             commenter.put(UserExt.USER_LATEST_CMT_TIME, currentTimeMillis);
             userRepository.update(commenter.optString(Keys.OBJECT_ID), commenter);
+            
+            comment.put(Comment.COMMENT_GOOD_CNT, 0);
+            comment.put(Comment.COMMENT_BAD_CNT, 0);
+            comment.put(Comment.COMMENT_SCORE, 0D);
 
             // Adds the comment
             final String commentId = commentRepository.add(comment);

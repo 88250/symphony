@@ -231,9 +231,9 @@
                                                     <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
                                                     </#if>
                                                     <span id="voteUp_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${comment.commentGoodCnt}" onclick="Util.voteUp('${comment.oId}', 'comment')">
-                                                    <span class="icon-thumbs-up<#if 0 == comment.commentVote> ft-red</#if>"></span></span>
+                                                        <span class="icon-thumbs-up<#if 0 == comment.commentVote> ft-red</#if>"></span></span>
                                                     <span id="voteDown_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${downLabel} ${comment.commentBadCnt}" onclick="Util.voteDown('${comment.oId}', 'comment')">
-                                                    <span class="icon-thumbs-down<#if 1 == comment.commentVote> ft-red</#if>"></span></span>
+                                                        <span class="icon-thumbs-down<#if 1 == comment.commentVote> ft-red</#if>"></span></span>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
                                                     <a class="tooltipped tooltipped-s ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>

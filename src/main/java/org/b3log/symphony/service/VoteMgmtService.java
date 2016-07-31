@@ -81,7 +81,7 @@ public class VoteMgmtService {
     @Transactional
     public void voteCancel(final String userId, final String dataId, final int dataType) {
         try {
-            final int oldType = voteRepository.removeIfExists(userId, dataId);
+            final int oldType = voteRepository.removeIfExists(userId, dataId, dataType);
 
             if (Vote.DATA_TYPE_C_ARTICLE == dataType) {
                 final JSONObject article = articleRepository.get(dataId);
@@ -139,6 +139,7 @@ public class VoteMgmtService {
      *
      * @param userId the specified user id
      * @param dataId the specified article/comment id
+     * @param dataType the specified data type
      * @throws ServiceException service exception
      */
     @Transactional
@@ -185,7 +186,7 @@ public class VoteMgmtService {
      * @throws RepositoryException repository exception
      */
     private void up(final String userId, final String dataId, final int dataType) throws RepositoryException {
-        final int oldType = voteRepository.removeIfExists(userId, dataId);
+        final int oldType = voteRepository.removeIfExists(userId, dataId, dataType);
 
         if (Vote.DATA_TYPE_C_ARTICLE == dataType) {
             final JSONObject article = articleRepository.get(dataId);
@@ -254,7 +255,7 @@ public class VoteMgmtService {
      * @throws RepositoryException repository exception
      */
     private void down(final String userId, final String dataId, final int dataType) throws RepositoryException {
-        final int oldType = voteRepository.removeIfExists(userId, dataId);
+        final int oldType = voteRepository.removeIfExists(userId, dataId, dataType);
 
         if (Vote.DATA_TYPE_C_ARTICLE == dataType) {
             final JSONObject article = articleRepository.get(dataId);
@@ -289,7 +290,7 @@ public class VoteMgmtService {
 
             if (-1 == oldType) {
                 comment.put(Comment.COMMENT_BAD_CNT, comment.optInt(Comment.COMMENT_BAD_CNT) + 1);
-            } else if (Vote.TYPE_C_DOWN == oldType) {
+            } else if (Vote.TYPE_C_UP == oldType) {
                 comment.put(Comment.COMMENT_GOOD_CNT, comment.optInt(Comment.COMMENT_GOOD_CNT) - 1);
                 comment.put(Comment.COMMENT_BAD_CNT, comment.optInt(Comment.COMMENT_BAD_CNT) + 1);
             }

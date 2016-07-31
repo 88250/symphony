@@ -42,7 +42,8 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://wdx.me">DX</a>
- * @version 1.1.0.0, Aug 15, 2015
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.1.0.1, Jul 31, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -128,7 +129,7 @@ public class VoteProcessor {
         if (Vote.TYPE_C_UP == vote) {
             voteMgmtService.voteCancel(userId, id, Vote.DATA_TYPE_C_ARTICLE);
         } else {
-            voteMgmtService.voteUpArticle(userId, id);
+            voteMgmtService.voteUp(userId, id, Vote.DATA_TYPE_C_ARTICLE);
         }
 
         ret.put(Vote.TYPE, vote);

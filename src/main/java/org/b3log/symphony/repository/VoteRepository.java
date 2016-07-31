@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Vote repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 13, 2015
+ * @version 1.0.0.1, Jul 31, 2016
  * @since 1.3.0
  */
 @Repository
@@ -46,13 +46,15 @@ public class VoteRepository extends AbstractRepository {
      *
      * @param userId the specified user id
      * @param dataId the specified data entity id
+     * @param dataType the specified data type
      * @return the removed vote type, returns {@code -1} if removed nothing
      * @throws RepositoryException repository exception
      */
-    public int removeIfExists(final String userId, final String dataId) throws RepositoryException {
+    public int removeIfExists(final String userId, final String dataId, final int dataType) throws RepositoryException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Vote.USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Vote.DATA_ID, FilterOperator.EQUAL, dataId));
+        filters.add(new PropertyFilter(Vote.DATA_TYPE, FilterOperator.EQUAL, dataType));
 
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
