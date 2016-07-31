@@ -532,15 +532,11 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeClass("disabled");
-                    if ("article" === type) {
+                    if ("article" === type || ("tag" === type && typeof(index) !== 'undefined')) {
                         $(it).html('<span class="icon-star ft-red"></span>').
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.uncollectLabel + ' ' +
                                         (index + 1));
-                    } else if (index && typeof (index) === 'string') {
-                        $(it).html('<span class="icon-star ft-red"></span>').
-                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', 'tag-articles')")
-                                .attr("aria-label", Label.unfollowLabel);
                     } else {
                         $(it).removeClass("green").addClass("red")
                                 .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
@@ -576,14 +572,10 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 if (result.sc) {
-                    if ("article" === type) {
+                    if ("article" === type || ("tag" === type && typeof(index) !== 'undefined')) {
                         $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel + ' ' + (index - 1));
-                    } else if (index && typeof (index) === 'string') {
-                        $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
-                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "', 'tag-articles')")
-                                .attr("aria-label", Label.followLabel);
                     } else {
                         $(it).removeClass("red").addClass("green")
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")

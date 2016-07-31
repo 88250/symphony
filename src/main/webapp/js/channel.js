@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.8.8.8, Jul 27, 2016
+ * @version 1.9.8.8, Jul 31, 2016
  */
 
 /**
@@ -113,11 +113,20 @@ var ArticleChannel = {
 
                     if (Label.isLoggedIn) {
                         if (data.commentAuthorName !== Label.currentUserName) {
-                            template += '<span class="fn-none thx fn-pointer ft-smaller ft-fade" id="' + data.commentId + 'Thx"'
+                            template += '<span class="fn-none hover-show fn-pointer ft-smaller ft-fade" id="' + data.commentId + 'Thx"'
                                     + ' onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
-                                    + '\', \'' + data.commentThankLabel + '\', \'' + Label.thankedLabel
-                                    + '\', ${comment.commentAnonymous})">' + Label.thankLabel + '</span> ';
+                                    + '\', \'' + data.commentThankLabel + '\',' 
+                                    + (data.commentAuthorName === 'someone' ? 1 : 0) + ')">' + Label.thankLabel + '</span> ';
                         }
+                        
+                        template += '<span id="voteUp_comment' + data.commentId + '" class="tooltipped tooltipped-s fn-pointer fn-none hover-show ft-fade" '
+                                                      + 'aria-label="' + Label.upLabel + ' 0"'
+                                                      + 'onclick="Util.voteUp(\'' + data.commentId + '\', \'comment\')">'
+                                                    + '<span class="icon-thumbs-up"></span></span> '
+                                                + '<span id="voteDown_comment' + data.commentId + '" class="tooltipped tooltipped-s fn-pointer fn-none hover-show ft-fade"'
+                                                      + 'aria-label="' + Label.downLabel + ' 0" '
+                                                      + 'onclick="Util.voteDown(\'' + data.commentId + '\', \'comment\')">'
+                                                    + '<span class="icon-thumbs-down"></span></span> ';
 
                         if (data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') {
                             template += ' <span aria-label="@' + data.commentAuthorName + '" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay(\'@'

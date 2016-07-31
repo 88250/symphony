@@ -27,8 +27,9 @@
                                   class="fn-pointer tooltipped tooltipped-s"><span class="icon-unordered-list ft-red"></span></span>
                             </#if>
                             <#if isLoggedIn>
-                            <span id="thankArticle" aria-label="${thankLabel}" class="fn-pointer tooltipped tooltipped-s" <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
-                            ${article.thankedCnt}
+                            <span id="thankArticle" aria-label="${thankLabel} ${article.thankedCnt}"
+                                  class="fn-pointer tooltipped tooltipped-s"
+                                  <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
                             <span id="voteUp_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
                                 <span class="icon-thumbs-up<#if 0 == article.articleVote> ft-red</#if>"></span></span>
                             <span id="voteDown_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
@@ -224,17 +225,23 @@
                                                     <#if isLoggedIn>
                                                     <#if comment.commentAuthorId != currentUser.oId>
                                                     <#if !comment.rewarded>
-                                                    <span class='fn-none thx fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'
-                                                          onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', '${thankedLabel}', ${comment.commentAnonymous})">${thankLabel}</span>
+                                                    <span class='fn-none hover-show fn-pointer ft-smaller ft-fade' id='${comment.oId}Thx'
+                                                          onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', ${comment.commentAnonymous})">${thankLabel}</span>
                                                     </#if>
                                                     </#if>
+
+                                                    <span id="voteUp_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer fn-none hover-show ft-fade" 
+                                                          aria-label="${upLabel} ${comment.commentGoodCnt}"
+                                                          onclick="Util.voteUp('${comment.oId}', 'comment')">
+                                                        <span class="icon-thumbs-up<#if 0 == comment.commentVote> ft-red</#if>"></span></span>
+                                                    <span id="voteDown_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer fn-none hover-show ft-fade"
+                                                          aria-label="${downLabel} ${comment.commentBadCnt}" 
+                                                          onclick="Util.voteDown('${comment.oId}', 'comment')">
+                                                        <span class="icon-thumbs-down<#if 1 == comment.commentVote> ft-red</#if>"></span></span>
+                                                    
                                                     <#if comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0>
                                                     <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
                                                     </#if>
-                                                    <span id="voteUp_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${comment.commentGoodCnt}" onclick="Util.voteUp('${comment.oId}', 'comment')">
-                                                        <span class="icon-thumbs-up<#if 0 == comment.commentVote> ft-red</#if>"></span></span>
-                                                    <span id="voteDown_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${downLabel} ${comment.commentBadCnt}" onclick="Util.voteDown('${comment.oId}', 'comment')">
-                                                        <span class="icon-thumbs-down<#if 1 == comment.commentVote> ft-red</#if>"></span></span>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
                                                     <a class="tooltipped tooltipped-s ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
@@ -441,8 +448,6 @@
                     skipTags: ['pre','code'],
                 }
             });
-        </script>
-        <script type="text/x-mathjax-config">
             MathJax.Hub.Queue(function() {
                 var all = MathJax.Hub.getAllJax(), i;
                 for(i = 0; i < all.length; i += 1) {
