@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.15.0.11, Jul 23, 2016
+ * @version 1.16.0.11, Jul 31, 2016
  * @since 0.2.0
  */
 public final class Article {
@@ -190,6 +190,11 @@ public final class Article {
     public static final String ARTICLE_ANONYMOUS = "articleAnonymous";
 
     //// Transient ////
+    /**
+     * Key of article vote.
+     */
+    public static final String ARTICLE_T_VOTE = "articleVote";
+
     /**
      * Key of article stick check.
      */

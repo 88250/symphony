@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.29.17.22, Jul 28, 2016
+ * @version 1.30.17.22, Jul 31, 2016
  */
 
 /**
@@ -592,7 +592,10 @@ var Util = {
      * @param {String} type 赞同的实体类型
      */
     voteUp: function (id, type) {
-        if ($("#voteUp").hasClass("disabled")) {
+        var voteUpId = "#voteUp_" + type + id;
+        var voteDownId = "#voteDown_" + type + id;
+
+        if ($(voteUpId).hasClass("disabled")) {
             return false;
         }
 
@@ -600,7 +603,7 @@ var Util = {
             dataId: id
         };
 
-        $("#voteUp").addClass("disabled");
+        $(voteUpId).addClass("disabled");
 
         $.ajax({
             url: Label.servePath + "/vote/up/" + type,
@@ -608,16 +611,16 @@ var Util = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
-                $("#voteUp").removeClass("disabled");
-                var upCnt = parseInt($("#voteUp").attr('aria-label').substr(3)),
-                        downCnt = parseInt($("#voteDown").attr('aria-label').substr(3));
+                $(voteUpId).removeClass("disabled");
+                var upCnt = parseInt($(voteUpId).attr('aria-label').substr(3)),
+                        downCnt = parseInt($(voteDownId).attr('aria-label').substr(3));
                 if (result.sc) {
-                    if (0 == result.type) { // cancel up
-                        $("#voteUp").attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
+                    if (0 === result.type) { // cancel up
+                        $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
                     } else {
-                        $("#voteUp").attr('aria-label', Label.upLabel + ' ' + (upCnt + 1)).children().addClass("ft-red");
-                        if ($("#voteDown").children().hasClass('ft-red')) {
-                            $("#voteDown").attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
+                        $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt + 1)).children().addClass("ft-red");
+                        if ($(voteDownId).children().hasClass('ft-red')) {
+                            $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
                         }
                     }
 
@@ -634,7 +637,10 @@ var Util = {
      * @param {String} type 反对的实体类型
      */
     voteDown: function (id, type) {
-        if ($("#voteDown").hasClass("disabled")) {
+        var voteUpId = "#voteUp_" + type + id;
+        var voteDownId = "#voteDown_" + type + id;
+
+        if ($(voteDownId).hasClass("disabled")) {
             return false;
         }
 
@@ -642,7 +648,7 @@ var Util = {
             dataId: id
         };
 
-        $("#voteDown").addClass("disabled");
+        $(voteDownId).addClass("disabled");
 
         $.ajax({
             url: Label.servePath + "/vote/down/" + type,
@@ -650,16 +656,16 @@ var Util = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
-                $("#voteDown").removeClass("disabled");
-                var upCnt = parseInt($("#voteUp").attr('aria-label').substr(3)),
-                        downCnt = parseInt($("#voteDown").attr('aria-label').substr(3));
+                $(voteDownId).removeClass("disabled");
+                var upCnt = parseInt($(voteUpId).attr('aria-label').substr(3)),
+                        downCnt = parseInt($(voteDownId).attr('aria-label').substr(3));
                 if (result.sc) {
-                    if (1 == result.type) { // cancel down
-                        $("#voteDown").attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
+                    if (1 === result.type) { // cancel down
+                        $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
                     } else {
-                        $("#voteDown").addClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children().addClass("ft-red");
-                        if ($("#voteUp").children().hasClass('ft-red')) {
-                            $("#voteUp").attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
+                        $(voteDownId).addClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children().addClass("ft-red");
+                        if ($(voteUpId).children().hasClass('ft-red')) {
+                            $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
                         }
                     }
 

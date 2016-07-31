@@ -68,7 +68,6 @@ import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.model.Vote;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.CSRFToken;
 import org.b3log.symphony.processor.advice.LoginCheck;
@@ -367,7 +366,7 @@ public class ArticleProcessor {
      */
     private void fillDomainsWithTags(Map<String, Object> dataModel) {
         final List<JSONObject> domains = domainCache.getDomains(Integer.MAX_VALUE);
-        
+
         dataModel.put(Domain.DOMAINS, domains);
 
         for (final JSONObject domain : domains) {
@@ -429,11 +428,11 @@ public class ArticleProcessor {
                 if (Strings.isEmptyOrNull(tagTitle)) {
                     continue;
                 }
-                
+
                 if (Tag.containsWhiteListTags(tagTitle)) {
-                     tagBuilder.append(tagTitle).append(",");
-                     
-                     continue;
+                    tagBuilder.append(tagTitle).append(",");
+
+                    continue;
                 }
 
                 if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
@@ -569,8 +568,8 @@ public class ArticleProcessor {
             final boolean isFollowing = followQueryService.isFollowing(currentUserId, articleId);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
 
-            final int vote = voteQueryService.isVoted(currentUserId, articleId);
-            dataModel.put(Vote.VOTE, vote);
+            final int articleVote = voteQueryService.isVoted(currentUserId, articleId);
+            article.put(Article.ARTICLE_T_VOTE, articleVote);
 
             if (currentUserId.equals(author.optString(Keys.OBJECT_ID))) {
                 article.put(Common.REWARDED, true);
@@ -657,6 +656,8 @@ public class ArticleProcessor {
             if (isLoggedIn) {
                 comment.put(Common.REWARDED,
                         rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
+                final int commentVote = voteQueryService.isVoted(currentUserId, commentId);
+                comment.put(Comment.COMMENT_T_VOTE, commentVote);
             }
 
             comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
@@ -856,7 +857,7 @@ public class ArticleProcessor {
         dataModel.put("imgMaxSize", imgMaxSize);
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
-        
+
         fillDomainsWithTags(dataModel);
 
         String rewardEditorPlaceholderLabel = langPropsService.get("rewardEditorPlaceholderLabel");

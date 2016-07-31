@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.8, Jul 23, 2016
+ * @version 1.5.0.8, Jul 31, 2016
  * @since 0.2.0
  */
 public final class Comment {
@@ -94,7 +94,27 @@ public final class Comment {
      */
     public static final String COMMENT_ANONYMOUS = "commentAnonymous";
 
+    /**
+     * Key of comment good count.
+     */
+    public static final String COMMENT_GOOD_CNT = "commentGoodCnt";
+
+    /**
+     * Key of comment bad count.
+     */
+    public static final String COMMENT_BAD_CNT = "commentBadCnt";
+
+    /**
+     * Key of comment score.
+     */
+    public static final String COMMENT_SCORE = "commentScore";
+
     //// Transient ////
+    /**
+     * Key of comment vote.
+     */
+    public static final String COMMENT_T_VOTE = "commentVote";
+    
     /**
      * Key of commenter.
      */

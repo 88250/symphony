@@ -24,9 +24,11 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Vote;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.VoteRepository;
 import org.json.JSONObject;
 
@@ -34,7 +36,7 @@ import org.json.JSONObject;
  * Vote management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Aug 14, 2015
+ * @version 1.1.1.0, Jul 31, 2016
  * @since 1.3.0
  */
 @Service
@@ -56,6 +58,12 @@ public class VoteMgmtService {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Liveness management service.
@@ -97,6 +105,26 @@ public class VoteMgmtService {
                 article.put(Article.REDDIT_SCORE, redditScore);
 
                 articleRepository.update(dataId, article);
+            } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
+                final JSONObject comment = commentRepository.get(dataId);
+                if (null == comment) {
+                    LOGGER.log(Level.ERROR, "Not found comment [id={0}] to vote cancel", dataId);
+
+                    return;
+                }
+
+                if (Vote.TYPE_C_UP == oldType) {
+                    comment.put(Comment.COMMENT_GOOD_CNT, comment.optInt(Comment.COMMENT_GOOD_CNT) - 1);
+                } else if (Vote.TYPE_C_DOWN == oldType) {
+                    comment.put(Comment.COMMENT_BAD_CNT, comment.optInt(Comment.COMMENT_BAD_CNT) - 1);
+                }
+
+                // TODO: comment score
+                comment.put(Comment.COMMENT_SCORE, 0);
+
+                commentRepository.update(dataId, comment);
+            } else {
+                LOGGER.warn("Wrong data type [" + dataType + "]");
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, e.getMessage());
@@ -104,18 +132,18 @@ public class VoteMgmtService {
     }
 
     /**
-     * The specified user vote up the specified article.
+     * The specified user vote up the specified article/comment.
      *
      * @param userId the specified user id
-     * @param articleId the specified article id
+     * @param dataId the specified article/comment id
      * @throws ServiceException service exception
      */
     @Transactional
-    public void voteUpArticle(final String userId, final String articleId) throws ServiceException {
+    public void voteUp(final String userId, final String dataId, final int dataType) throws ServiceException {
         try {
-            up(userId, articleId, Vote.DATA_TYPE_C_ARTICLE);
+            up(userId, dataId, dataType);
         } catch (final RepositoryException e) {
-            final String msg = "User[id=" + userId + "] vote up an article[id=" + articleId + "] failed";
+            final String msg = "User[id=" + userId + "] vote up an [" + dataType + "][id=" + dataId + "] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -125,18 +153,18 @@ public class VoteMgmtService {
     }
 
     /**
-     * The specified user vote down the specified article.
+     * The specified user vote down the specified article、comment.
      *
      * @param userId the specified user id
-     * @param articleId the specified article id
+     * @param dataId the specified article id
      * @throws ServiceException service exception
      */
     @Transactional
-    public void voteDownArticle(final String userId, final String articleId) throws ServiceException {
+    public void voteDown(final String userId, final String dataId, final int dataType) throws ServiceException {
         try {
-            down(userId, articleId, Vote.DATA_TYPE_C_ARTICLE);
+            down(userId, dataId, dataType);
         } catch (final RepositoryException e) {
-            final String msg = "User[id=" + userId + "] vote down an article[id=" + articleId + "] failed";
+            final String msg = "User[id=" + userId + "] vote down an [" + dataType + "][id=" + dataId + "] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);
@@ -179,6 +207,27 @@ public class VoteMgmtService {
             article.put(Article.REDDIT_SCORE, redditScore);
 
             articleRepository.update(dataId, article);
+        } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
+            final JSONObject comment = commentRepository.get(dataId);
+            if (null == comment) {
+                LOGGER.log(Level.ERROR, "Not found comment [id={0}] to vote up", dataId);
+
+                return;
+            }
+
+            if (-1 == oldType) {
+                comment.put(Comment.COMMENT_GOOD_CNT, comment.optInt(Comment.COMMENT_GOOD_CNT) + 1);
+            } else if (Vote.TYPE_C_DOWN == oldType) {
+                comment.put(Comment.COMMENT_BAD_CNT, comment.optInt(Comment.COMMENT_BAD_CNT) - 1);
+                comment.put(Comment.COMMENT_GOOD_CNT, comment.optInt(Comment.COMMENT_GOOD_CNT) + 1);
+            }
+
+            // TODO: comment score
+            comment.put(Comment.COMMENT_SCORE, 0);
+
+            commentRepository.update(dataId, comment);
+        } else {
+            LOGGER.warn("Wrong data type [" + dataType + "]");
         }
 
         final JSONObject vote = new JSONObject();
@@ -224,6 +273,27 @@ public class VoteMgmtService {
             article.put(Article.REDDIT_SCORE, redditScore);
 
             articleRepository.update(dataId, article);
+        } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
+            final JSONObject comment = commentRepository.get(dataId);
+            if (null == comment) {
+                LOGGER.log(Level.ERROR, "Not found comment [id={0}] to vote up", dataId);
+
+                return;
+            }
+
+            if (-1 == oldType) {
+                comment.put(Comment.COMMENT_BAD_CNT, comment.optInt(Comment.COMMENT_BAD_CNT) + 1);
+            } else if (Vote.TYPE_C_DOWN == oldType) {
+                comment.put(Comment.COMMENT_GOOD_CNT, comment.optInt(Comment.COMMENT_GOOD_CNT) - 1);
+                comment.put(Comment.COMMENT_BAD_CNT, comment.optInt(Comment.COMMENT_BAD_CNT) + 1);
+            }
+
+            // TODO: comment score
+            comment.put(Comment.COMMENT_SCORE, 0);
+
+            commentRepository.update(dataId, comment);
+        } else {
+            LOGGER.warn("Wrong data type [" + dataType + "]");
         }
 
         final JSONObject vote = new JSONObject();
