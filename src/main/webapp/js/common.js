@@ -516,6 +516,12 @@ var Util = {
      * @param {String} index 为数字时表示关注数，String 时表示来源
      */
     follow: function (it, id, type, index) {
+        if (!Label.isLoggedIn) {
+            window.scrollTo(0,0);
+            Util.showLogin();
+            return false;
+        }
+        
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -557,6 +563,12 @@ var Util = {
      * @param {String} index 为数字时表示关注数，String 时表示来源
      */
     unfollow: function (it, id, type, index) {
+        if (!Label.isLoggedIn) {
+            window.scrollTo(0,0);
+            Util.showLogin();
+            return false;
+        }
+        
         if ($(it).hasClass("disabled")) {
             return false;
         }

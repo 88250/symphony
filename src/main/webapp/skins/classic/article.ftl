@@ -41,7 +41,13 @@
                             </#if>
                             <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
                                   class="fn-pointer tooltipped tooltipped-s"><span class="icon-refresh"></span></span>
+                            <#else>
+                            <span class="tooltipped tooltipped-s fn-pointer" aria-label="${collectLabel} ${article.articleCollectCnt}" 
+                                  onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
+                            <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
+                                  class="fn-pointer tooltipped tooltipped-s"><span class="icon-refresh"></span></span>
                             </#if>
+                            
                             <#if article.isMyArticle && 3 != article.articleType>
                             <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" class="tooltipped tooltipped-s"><span class="icon-edit"></span></a>
                             </#if>

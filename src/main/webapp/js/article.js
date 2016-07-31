@@ -380,6 +380,11 @@ var Article = {
      * @returns {undefined}
      */
     revision: function (articleId) {
+        if (!Label.isLoggedIn) {
+            window.scrollTo(0,0);
+            Util.showLogin();
+            return false;
+        }
         if ($('.CodeMirror-merge').length > 0) {
             $('#revision').dialog('open');
             return false;
