@@ -236,11 +236,11 @@
                                                     </#if>
                                                     </#if>
 
-                                                    <span id="voteUp_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer fn-none hover-show ft-fade" 
+                                                    <span id="voteUp_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer <#if comment.commentGoodCnt < 1>fn-none hover-show</#if> ft-fade" 
                                                           aria-label="${upLabel} ${comment.commentGoodCnt}"
                                                           onclick="Util.voteUp('${comment.oId}', 'comment')">
                                                         <span class="icon-thumbs-up<#if 0 == comment.commentVote> ft-red</#if>"></span></span>
-                                                    <span id="voteDown_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer fn-none hover-show ft-fade"
+                                                    <span id="voteDown_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer <#if comment.commentBadCnt < 1>fn-none hover-show</#if> ft-fade"
                                                           aria-label="${downLabel} ${comment.commentBadCnt}" 
                                                           onclick="Util.voteDown('${comment.oId}', 'comment')">
                                                         <span class="icon-thumbs-down<#if 1 == comment.commentVote> ft-red</#if>"></span></span>
