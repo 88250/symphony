@@ -341,9 +341,9 @@ public class VoteMgmtService {
             return 0;
         }
 
-        final double z = 1.0; // 1.0: 85%, 1.6: 95%
-        final double phat = (double) ups / n;
+        final double z = 1.281551565545; // 1.0: 85%, 1.6: 95%, 1.281551565545: 80%
+        final double p = (double) ups / n;
 
-        return Math.sqrt(phat + z * z / (2 * n) - z * ((phat * (1 - phat) + z * z / (4 * n)) / n)) / (1 + z * z / n);
+        return (p + z * z / (2 * n) - z * Math.sqrt((p * (1 - p) + z * z / (4 * n)) / n)) / (1 + z * z / n);
     }
 }
