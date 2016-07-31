@@ -28,12 +28,22 @@
  */
 var Util = {
     /**
-     * 粘貼中包含图片和文案时，需要处理为 markdown 语法
+     * 粘贴中包含图片和文案时，需要处理为 markdown 语法
      * @param {type} text
      * @returns {String}
      */
     processClipBoard: function (text) {
-        var text = toMarkdown(text, {gfm: true});
+        var text = toMarkdown(text, {converters: [
+                {
+                    filter: function (node) {
+                        if ('IMG' === node.nodeName) {
+                            console.log(node);
+                            // 处理上传
+                        }
+                    }
+                }
+            ], gfm: true});
+
         // ascii 160 替换为 30
         text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
         return $.trim(text);
