@@ -54,9 +54,11 @@
 </div>
 </#macro>
 <#macro listScript>
+<#if articleIds??>
 <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     // Init [Article List] channel
     ArticleListChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-list-channel?articleIds=${articleIds}");
 </script>
+</#if>
 </#macro>
