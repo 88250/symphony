@@ -42,7 +42,7 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
- * File upload.
+ * File upload to local.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.2.1, Jul 6, 2016

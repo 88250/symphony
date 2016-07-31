@@ -37,8 +37,26 @@ var Util = {
                 {
                     filter: function (node) {
                         if ('IMG' === node.nodeName) {
-                            console.log(node);
-                            // 处理上传
+                            console.log(node.src);
+                            
+                            var requestJSONObject = {
+                                url: node.src
+                            };
+
+                            $.ajax({
+                                url: Label.servePath + "/fetch-upload",
+                                type: "POST",
+                                data: JSON.stringify(requestJSONObject),
+                                cache: false,
+                                success: function (result, textStatus) {
+                                    if (!result.sc){
+                                        
+                                        return;
+                                    }
+                                    
+                                    console.log(result.url);
+                                }
+                            });
                         }
                     }
                 }
