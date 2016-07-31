@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.25.14, Jul 26, 2016
+ * @version 1.21.25.15, Jul 31, 2016
  */
 
 /**
@@ -191,10 +191,9 @@ var Comment = {
      * @param {String} id 评论 id
      * @param {String} csrfToken CSRF 令牌
      * @param {String} tip 确认提示
-     * @param {String} thxed 已感谢文案
      * @param {Integer} 0：公开评论，1：匿名评论
      */
-    thank: function (id, csrfToken, tip, thxed, commentAnonymous) {
+    thank: function (id, csrfToken, tip, commentAnonymous) {
         if (0 === commentAnonymous && !confirm(tip)) {
             return false;
         }
@@ -381,6 +380,11 @@ var Article = {
      * @returns {undefined}
      */
     revision: function (articleId) {
+        if (!Label.isLoggedIn) {
+            window.scrollTo(0,0);
+            Util.showLogin();
+            return false;
+        }
         if ($('.CodeMirror-merge').length > 0) {
             $('#revision').dialog('open');
             return false;
@@ -565,7 +569,7 @@ var Article = {
      */
     thankArticle: function (articleId, articleAnonymous) {
         if (0 === articleAnonymous && !confirm(Label.thankArticleConfirmLabel)) {
-            return;
+            return false;
         }
 
         $.ajax({
@@ -574,9 +578,11 @@ var Article = {
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
+                    var thxCnt = parseInt($('#thankArticle').attr('aria-label').substr(3));
                     $("#thankArticle").removeAttr("onclick").find("span").addClass("ft-red");
+                    $("#thankArticle").attr('aria-label', Label.thankLabel + ' ' + (thxCnt + 1));
 
-                    return;
+                    return false;
                 }
 
                 alert(result.msg);

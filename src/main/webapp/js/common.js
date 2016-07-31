@@ -534,6 +534,12 @@ var Util = {
      * @param {String} index 为数字时表示关注数，String 时表示来源
      */
     follow: function (it, id, type, index) {
+        if (!Label.isLoggedIn) {
+            window.scrollTo(0,0);
+            Util.showLogin();
+            return false;
+        }
+        
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -550,15 +556,11 @@ var Util = {
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeClass("disabled");
-                    if ("article" === type) {
+                    if ("article" === type || ("tag" === type && typeof(index) !== 'undefined')) {
                         $(it).html('<span class="icon-star ft-red"></span>').
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.uncollectLabel + ' ' +
                                         (index + 1));
-                    } else if (index && typeof (index) === 'string') {
-                        $(it).html('<span class="icon-star ft-red"></span>').
-                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', 'tag-articles')")
-                                .attr("aria-label", Label.unfollowLabel);
                     } else {
                         $(it).removeClass("green").addClass("red")
                                 .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
@@ -579,6 +581,12 @@ var Util = {
      * @param {String} index 为数字时表示关注数，String 时表示来源
      */
     unfollow: function (it, id, type, index) {
+        if (!Label.isLoggedIn) {
+            window.scrollTo(0,0);
+            Util.showLogin();
+            return false;
+        }
+        
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -594,14 +602,10 @@ var Util = {
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 if (result.sc) {
-                    if ("article" === type) {
+                    if ("article" === type || ("tag" === type && typeof(index) !== 'undefined')) {
                         $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel + ' ' + (index - 1));
-                    } else if (index && typeof (index) === 'string') {
-                        $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
-                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "', 'tag-articles')")
-                                .attr("aria-label", Label.followLabel);
                     } else {
                         $(it).removeClass("red").addClass("green")
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
