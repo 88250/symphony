@@ -26,12 +26,10 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.service.FollowMgmtService;
-import org.b3log.symphony.util.Results;
 import org.json.JSONObject;
 
 /**
