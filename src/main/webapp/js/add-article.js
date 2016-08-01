@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.9.8, Jul 27, 2016
+ * @version 2.15.10.8, Aug 1, 2016
  */
 
 /**
@@ -373,7 +373,7 @@ var AddArticle = {
             }
             var hasTag = false;
 
-            text = text.substr(0, 9).replace(/\s/g, 's');
+            text = text.replace(/\s/g, 's');
 
             $("#articleTags").val('').data('val', '');
 
@@ -474,7 +474,7 @@ var AddArticle = {
                     return false;
                 }
 
-                // 标签长度大于 9 或回车，自动添加标签
+                // 回车，自动添加标签
                 if (event.keyCode === 13) {
                     addTag($("#articleTags").val());
                     return false;

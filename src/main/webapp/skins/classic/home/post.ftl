@@ -38,7 +38,7 @@
                     <div class="tags-wrap">
                         <div class="tags-input"><span class="tags-selected"></span>
                         <input id="articleTags" type="text" tabindex="3" 
-                               value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
+                               value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）" autocomplete="off" />
                         </div>
                         <div class="domains-tags">
                             <#list domains as domain>

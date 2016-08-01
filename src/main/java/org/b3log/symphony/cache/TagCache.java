@@ -47,7 +47,7 @@ import org.jsoup.Jsoup;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.0, Jul 26, 2016
+ * @version 1.2.2.0, Aug 1, 2016
  * @since 1.4.0
  */
 @Named
@@ -177,7 +177,21 @@ public class TagCache {
                 final JSONObject tag = iterator.next();
 
                 String title = tag.optString(Tag.TAG_TITLE);
-                if (StringUtils.contains(title, " ") || StringUtils.isBlank(Tag.formatTags(title))) { // filter legacy data
+                if (StringUtils.contains(title, " ") || StringUtils.contains(title, "　")) { // filter legacy data
+                    iterator.remove();
+
+                    continue;
+                }
+
+                if (!Tag.containsWhiteListTags(title)) {
+                    if (!Tag.TAG_TITLE_PATTERN.matcher(title).matches() || title.length() > Tag.MAX_TAG_TITLE_LENGTH) {
+                        iterator.remove();
+
+                        continue;
+                    }
+                }
+
+                if (tag.optInt(Tag.TAG_REFERENCE_CNT) < 3) {
                     iterator.remove();
 
                     continue;
