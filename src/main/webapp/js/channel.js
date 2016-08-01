@@ -113,20 +113,20 @@ var ArticleChannel = {
 
                     if (Label.isLoggedIn) {
                         if (data.commentAuthorName !== Label.currentUserName) {
-                            template += '<span class="fn-none hover-show fn-pointer ft-smaller ft-fade" id="' + data.commentId + 'Thx"'
-                                    + ' onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
-                                    + '\', \'' + data.commentThankLabel + '\',' 
-                                    + (data.commentAuthorName === 'someone' ? 1 : 0) + ')">' + Label.thankLabel + '</span> ';
+                            template += '<span class="fn-hidden hover-show fn-pointer ft-smaller ft-fade tooltipped tooltipped-s" id="' + data.commentId + 'Thx"'
+                                    + ' aria-label="' + Label.thankLabel + '" onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
+                                    + '\', \'' + data.commentThankLabel + '\','
+                                    + (data.commentAuthorName === 'someone' ? 1 : 0) + ')"><span class="icon-heart"></span></span> ';
                         }
-                        
-                        template += '<span id="voteUp_comment' + data.commentId + '" class="tooltipped tooltipped-s fn-pointer fn-none hover-show ft-fade" '
-                                                      + 'aria-label="' + Label.upLabel + ' 0"'
-                                                      + 'onclick="Util.voteUp(\'' + data.commentId + '\', \'comment\')">'
-                                                    + '<span class="icon-thumbs-up"></span></span> '
-                                                + '<span id="voteDown_comment' + data.commentId + '" class="tooltipped tooltipped-s fn-pointer fn-none hover-show ft-fade"'
-                                                      + 'aria-label="' + Label.downLabel + ' 0" '
-                                                      + 'onclick="Util.voteDown(\'' + data.commentId + '\', \'comment\')">'
-                                                    + '<span class="icon-thumbs-down"></span></span> ';
+
+                        template += '<span id="voteUp_comment' + data.commentId + '" class="tooltipped tooltipped-s fn-pointer fn-hidden hover-show ft-fade" '
+                                + 'aria-label="' + Label.upLabel + ' 0"'
+                                + 'onclick="Article.voteUp(\'' + data.commentId + '\', \'comment\')">'
+                                + '<span class="icon-thumbs-up"></span></span> '
+                                + '<span id="voteDown_comment' + data.commentId + '" class="tooltipped tooltipped-s fn-pointer fn-hidden hover-show ft-fade"'
+                                + 'aria-label="' + Label.downLabel + ' 0" '
+                                + 'onclick="Article.voteDown(\'' + data.commentId + '\', \'comment\')">'
+                                + '<span class="icon-thumbs-down"></span></span> ';
 
                         if (data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') {
                             template += ' <span aria-label="@' + data.commentAuthorName + '" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay(\'@'

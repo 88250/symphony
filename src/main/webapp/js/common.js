@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.30.17.22, Jul 31, 2016
+ * @version 1.30.17.23, Aug 1, 2016
  */
 
 /**
@@ -601,96 +601,6 @@ var Util = {
             },
             complete: function () {
                 $(it).removeClass("disabled");
-            }
-        });
-    },
-    /**
-     * @description 赞同
-     * @param {String} id 赞同的实体数据 id
-     * @param {String} type 赞同的实体类型
-     */
-    voteUp: function (id, type) {
-        var voteUpId = "#voteUp_" + type + id;
-        var voteDownId = "#voteDown_" + type + id;
-
-        if ($(voteUpId).hasClass("disabled")) {
-            return false;
-        }
-
-        var requestJSONObject = {
-            dataId: id
-        };
-
-        $(voteUpId).addClass("disabled");
-
-        $.ajax({
-            url: Label.servePath + "/vote/up/" + type,
-            type: "POST",
-            cache: false,
-            data: JSON.stringify(requestJSONObject),
-            success: function (result, textStatus) {
-                $(voteUpId).removeClass("disabled");
-                var upCnt = parseInt($(voteUpId).attr('aria-label').substr(3)),
-                        downCnt = parseInt($(voteDownId).attr('aria-label').substr(3));
-                if (result.sc) {
-                    if (0 === result.type) { // cancel up
-                        $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
-                    } else {
-                        $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt + 1)).children().addClass("ft-red");
-                        if ($(voteDownId).children().hasClass('ft-red')) {
-                            $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
-                        }
-                    }
-
-                    return;
-                }
-
-                alert(result.msg);
-            }
-        });
-    },
-    /**
-     * @description 反对
-     * @param {String} id 反对的实体数据 id
-     * @param {String} type 反对的实体类型
-     */
-    voteDown: function (id, type) {
-        var voteUpId = "#voteUp_" + type + id;
-        var voteDownId = "#voteDown_" + type + id;
-
-        if ($(voteDownId).hasClass("disabled")) {
-            return false;
-        }
-
-        var requestJSONObject = {
-            dataId: id
-        };
-
-        $(voteDownId).addClass("disabled");
-
-        $.ajax({
-            url: Label.servePath + "/vote/down/" + type,
-            type: "POST",
-            cache: false,
-            data: JSON.stringify(requestJSONObject),
-            success: function (result, textStatus) {
-                $(voteDownId).removeClass("disabled");
-                var upCnt = parseInt($(voteUpId).attr('aria-label').substr(3)),
-                        downCnt = parseInt($(voteDownId).attr('aria-label').substr(3));
-                if (result.sc) {
-                    if (1 === result.type) { // cancel down
-                        $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
-                    } else {
-                        $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children().addClass("ft-red");
-                        if ($(voteUpId).children().hasClass('ft-red')) {
-                            $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
-                        }
-                    }
-
-                    return;
-                }
-
-                alert(result.msg);
             }
         });
     },
