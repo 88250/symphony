@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.4.4, Jul 31, 2016
+ * @version 1.4.4.5, Aug 1, 2016
  */
 
 /* start reset */
@@ -393,6 +393,10 @@ textarea {
 
 .fn-none {
     display: none;
+}
+
+.fn-hidden {
+    visibility: hidden;
 }
 
 .fn-ellipsis {
@@ -1773,7 +1777,7 @@ h2.article-title {
 }
 
 #comments li:hover .hover-show {
-    display: initial;
+    display: visible;
 }
 
 #comments .comment > p {

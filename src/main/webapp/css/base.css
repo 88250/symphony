@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.13.26, Jun 28, 2016
+ * @version 1.20.13.27, Aug 1, 2016
  */
 
 /* start reset */
@@ -363,6 +363,10 @@ code.hljs,
 
 .fn-none {
     display: none;
+}
+
+.fn-hidden {
+    visibility: hidden;
 }
 
 .fn-ellipsis {

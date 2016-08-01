@@ -218,10 +218,12 @@ var Comment = {
                             cnt = parseInt($cnt.text());
                     if ($cnt.length <= 0) {
                         $('#' + id + ' .comment-info > .fn-left .ft-smaller:last').
-                                append('&nbsp;<span title=""><span class="icon-heart ft-smaller ft-red"></span><span class="ft-smaller ft-red"> 1</span></span>');
+                                append('&nbsp;<span aria-label="' + Label.thankedLabel + ' 1" id="' +
+                                        id + 'RewardedCnt" class="tooltipped tooltipped-s ft-smaller ft-red">'
+                                        + '<span class="icon-heart"></span> 1</span>');
                     } else {
-                        $cnt.text(' ' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
-                        $cnt.prev().addClass('ft-red').removeClass('ft-fade');
+                        $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
+                        $cnt.html('<span class="icon-heart"></span> ' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
                     }
                 } else {
                     alert(result.msg);
@@ -346,6 +348,111 @@ var Comment = {
 };
 
 var Article = {
+    /**
+     * @description 赞同
+     * @param {String} id 赞同的实体数据 id
+     * @param {String} type 赞同的实体类型
+     */
+    voteUp: function (id, type) {
+        var voteUpId = "#voteUp_" + type + id;
+        var voteDownId = "#voteDown_" + type + id;
+
+        if ($(voteUpId).hasClass("disabled")) {
+            return false;
+        }
+
+        var requestJSONObject = {
+            dataId: id
+        };
+
+        $(voteUpId).addClass("disabled");
+
+        $.ajax({
+            url: Label.servePath + "/vote/up/" + type,
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+                $(voteUpId).removeClass("disabled");
+                var upCnt = parseInt($(voteUpId).attr('aria-label').substr(3)),
+                        downCnt = parseInt($(voteDownId).attr('aria-label').substr(3));
+                if (result.sc) {
+                    if (0 === result.type) { // cancel up
+                        $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
+                        if ('comment' === type && upCnt - 1 < 1) {
+                            $(voteUpId).addClass('fn-hidden').addClass('hover-show');
+                        }
+                    } else {
+                        $(voteUpId).removeClass('fn-hidden').removeClass('hover-show').attr('aria-label', Label.upLabel + ' ' + (upCnt + 1)).children()
+                                .addClass("ft-red");
+                        if ($(voteDownId).children().hasClass('ft-red')) {
+                            $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
+                            if ('comment' === type && downCnt - 1 < 1) {
+                                $(voteDownId).addClass('fn-hidden').addClass('hover-show');
+                            }
+                        }
+                    }
+
+                    return;
+                }
+
+                alert(result.msg);
+            }
+        });
+    },
+    /**
+     * @description 反对
+     * @param {String} id 反对的实体数据 id
+     * @param {String} type 反对的实体类型
+     */
+    voteDown: function (id, type) {
+        var voteUpId = "#voteUp_" + type + id;
+        var voteDownId = "#voteDown_" + type + id;
+
+        if ($(voteDownId).hasClass("disabled")) {
+            return false;
+        }
+
+        var requestJSONObject = {
+            dataId: id
+        };
+
+        $(voteDownId).addClass("disabled");
+
+        $.ajax({
+            url: Label.servePath + "/vote/down/" + type,
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+                $(voteDownId).removeClass("disabled");
+                var upCnt = parseInt($(voteUpId).attr('aria-label').substr(3)),
+                        downCnt = parseInt($(voteDownId).attr('aria-label').substr(3));
+                if (result.sc) {
+                    if (1 === result.type) { // cancel down
+                        $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
+                        if ('comment' === type && downCnt - 1 < 1) {
+                            $(voteDownId).addClass('fn-hidden').addClass('hover-show');
+                        }
+                    } else {
+                        $(voteDownId).removeClass('fn-hidden').removeClass('hover-show')
+                                .attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children()
+                                .addClass("ft-red");
+                        if ($(voteUpId).children().hasClass('ft-red')) {
+                            $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
+                            if ('comment' === type && upCnt - 1 < 1) {
+                                $(voteUpId).addClass('fn-hidden').addClass('hover-show');
+                            }
+                        }
+                    }
+
+                    return false;
+                }
+
+                alert(result.msg);
+            }
+        });
+    },
     /**
      * @description 初始化文章
      */
