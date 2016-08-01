@@ -390,7 +390,6 @@
             Label.thankSentLabel = "${thankSentLabel}";
             Label.articleOId = "${article.oId}";
             Label.articleTitle = "${article.articleTitle}";
-            Label.articlePermalink = "${article.articlePermalink}";
             Label.recordDeniedLabel = "${recordDeniedLabel}";
             Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
             Label.csrfToken = "${csrfToken}";

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.25.15, Jul 31, 2016
+ * @version 1.21.26.15, Aug 1, 2016
  */
 
 /**
@@ -381,7 +381,7 @@ var Article = {
      */
     revision: function (articleId) {
         if (!Label.isLoggedIn) {
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
             Util.showLogin();
             return false;
         }
@@ -475,10 +475,9 @@ var Article = {
      * @description 分享按钮
      */
     share: function () {
-        var userName = Label.currentUserName ? '?r=' + Label.currentUserName : '';
         $('#qrCode').qrcode({
             width: 90, height: 90,
-            text: location.protocol + '//' + location.host + Label.articlePermalink + userName
+            text: $('#shareClipboard').data('clipboard-text')
         });
 
         $('body').click(function () {
@@ -497,7 +496,7 @@ var Article = {
             }
 
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
-                    url = encodeURIComponent(location.protocol + '//' + location.host + Label.articlePermalink + userName),
+                    url = encodeURIComponent($('#shareClipboard').data('clipboard-text')),
                     pic = $(".content-reset img").attr("src");
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
