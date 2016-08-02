@@ -79,7 +79,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.11, Jul 22, 2016
+ * @version 1.8.4.11, Aug 2, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -392,12 +392,15 @@ public class LoginProcessor {
             verifycode.put(Verifycode.USER_ID, newUserId);
             verifycodeMgmtService.addVerifycode(verifycode);
 
-            final JSONObject ic = invitecodeQueryService.getInvitecode(invitecode);
-            ic.put(Invitecode.USER_ID, newUserId);
-            ic.put(Invitecode.USE_TIME, System.currentTimeMillis());
-            final String icId = ic.optString(Keys.OBJECT_ID);
+            final String allowRegister = optionQueryService.getAllowRegister();
+            if ("2".equals(allowRegister)) {
+                final JSONObject ic = invitecodeQueryService.getInvitecode(invitecode);
+                ic.put(Invitecode.USER_ID, newUserId);
+                ic.put(Invitecode.USE_TIME, System.currentTimeMillis());
+                final String icId = ic.optString(Keys.OBJECT_ID);
 
-            invitecodeMgmtService.updateInvitecode(icId, ic);
+                invitecodeMgmtService.updateInvitecode(icId, ic);
+            }
 
             context.renderTrueResult().renderMsg(langPropsService.get("verifycodeSentLabel"));
         } catch (final ServiceException e) {
