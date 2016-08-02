@@ -65,6 +65,7 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Crypts;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -408,7 +409,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
                             continue;
                         }
 
-                        final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
+                        final String value = Crypts.decryptByAES(cookie.getValue(), Symphonys.get("cookie.secret"));
+                        final JSONObject cookieJSONObject = new JSONObject(value);
 
                         final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
                         if (Strings.isEmptyOrNull(userId)) {
@@ -423,7 +425,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
                         }
                     }
                 } catch (final Exception e) {
-                    LOGGER.warn(e.getMessage());
+                    LOGGER.log(Level.ERROR, "Read cookie failed", e);
                 }
 
                 if (null == user) {
