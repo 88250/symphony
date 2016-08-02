@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * User block check. Gets user from request attribute named "user".
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.1, Apr 21, 2016
+ * @version 1.1.3.1, Aug 2, 2016
  * @since 0.2.5
  */
 @Named
@@ -65,7 +65,7 @@ public class UserBlockCheck extends BeforeRequestProcessAdvice {
 
         JSONObject user;
         final String userName = (String) args.get("userName");
-        if (UserExt.DEFAULT_CMTER_NAME.equals(userName) || UserExt.NULL_USER_NAME.equals(userName)) {
+        if (UserExt.NULL_USER_NAME.equals(userName)) {
             exception.put(Keys.MSG, "Nil User [" + userName + ", requestURI=" + request.getRequestURI() + "]");
             throw new RequestProcessAdviceException(exception);
         }
