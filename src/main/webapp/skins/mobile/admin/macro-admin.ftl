@@ -42,6 +42,9 @@
         <#if type == "invitecodes">
         <@head title="${invitecodeAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
+        <#if type == "ad">
+        <@head title="${adAdminLabel} - ${symphonyLabel}"></@head>
+        </#if>
         <#if type == "misc">
         <@head title="${miscAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
@@ -67,6 +70,8 @@
                     ${reservedWordAdminLabel}
                     <#elseif type == "invitecodes">
                     ${invitecodeAdminLabel}
+                    <#elseif type == "ad">
+                    ${adAdminLabel}
                     <#elseif type == "misc">
                     ${miscAdminLabel}
                     </#if>
@@ -82,6 +87,7 @@
                     <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="${servePath}/admin/tags">${tagAdminLabel}</a></li>
                     <li<#if type == "reservedWords" || type == "addReservedWord"> class="fn-none"</#if>><a href="${servePath}/admin/reserved-words">${reservedWordAdminLabel}</a></li>
                     <li<#if type == "invitecodes"> class="current"</#if>><a href="${servePath}/admin/invitecodes">${invitecodeAdminLabel}</a></li>
+                    <li<#if type == "ad"> class="current"</#if>><a href="${servePath}/admin/ad">${adAdminLabel}</a></li>
                     <li<#if type == "misc"> class="fn-none"</#if>><a href="${servePath}/admin/misc">${miscAdminLabel}</a></li>
                 </ul>
             </div>

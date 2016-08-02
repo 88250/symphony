@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.2.15, Jul 30, 2016
+ * @version 1.8.2.15, Aug 2, 2016
  * @since 0.2.0
  */
 @Service
@@ -415,8 +415,11 @@ public class Filler {
      * @param dataModel the specified data model
      */
     private void fillSideAd(final Map<String, Object> dataModel) {
-        if (Math.random() > 0.8) {
-            dataModel.put("ADLabel", langPropsService.get("ADImgLabel"));
+        final JSONObject adOption = optionQueryService.getOption(Option.ID_C_SIDE_FULL_AD);
+        if (null == adOption) {
+            dataModel.put("ADLabel", "");
+        } else {
+            dataModel.put("ADLabel", adOption.optString(Option.OPTION_VALUE));
         }
     }
 

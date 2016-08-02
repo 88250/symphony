@@ -124,10 +124,12 @@ import org.json.JSONObject;
  * <li>Updates miscellaneous (/admin/misc), POST</li>
  * <li>Search index (/admin/search/index), POST</li>
  * <li>Search index one article (/admin/search-index-article), POST</li>
+ * <li>Shows ad (/admin/ad), GET</li>
+ * <li>Updates ad (/admin/ad), POST</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.19.3.6, Jul 28, 2016
+ * @version 2.20.3.6, Aug 2, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -269,6 +271,73 @@ public class AdminProcessor {
     private static final int PAGE_SIZE = 20;
 
     /**
+     * Updates ad.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param invitecodeId the specified invitecode id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/ad", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void updateAd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String invitecodeId) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/ad.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final String sideFullAd = request.getParameter("sideFullAd");
+        dataModel.put("sideFullAd", sideFullAd);
+
+        JSONObject adOption = optionQueryService.getOption(Option.ID_C_SIDE_FULL_AD);
+        if (null == adOption) {
+            adOption = new JSONObject();
+            adOption.put(Keys.OBJECT_ID, Option.ID_C_SIDE_FULL_AD);
+            adOption.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_AD);
+            adOption.put(Option.OPTION_VALUE, sideFullAd);
+
+            optionMgmtService.addOption(adOption);
+        } else {
+            adOption.put(Option.OPTION_VALUE, sideFullAd);
+
+            optionMgmtService.updateOption(Option.ID_C_SIDE_FULL_AD, adOption);
+        }
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows ad.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/admin/ad", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showAd(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("admin/ad.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModel.put("sideFullAd", "");
+
+        JSONObject adOption = optionQueryService.getOption(Option.ID_C_SIDE_FULL_AD);
+        if (null != adOption) {
+            dataModel.put("sideFullAd", adOption.optString(Option.OPTION_VALUE));
+        }
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
      * Shows add tag.
      *
      * @param context the specified context
@@ -307,8 +376,8 @@ public class AdminProcessor {
             if (Strings.isEmptyOrNull(title)) {
                 throw new Exception(langPropsService.get("tagsErrorLabel"));
             }
-            
-             title = Tag.formatTags(title);
+
+            title = Tag.formatTags(title);
 
             if (!Tag.containsWhiteListTags(title)) {
                 if (!Tag.TAG_TITLE_PATTERN.matcher(title).matches()) {
