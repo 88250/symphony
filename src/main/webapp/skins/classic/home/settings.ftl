@@ -276,7 +276,7 @@
 <script type="text/javascript" src="${staticServePath}/js/lib/zeroclipboard/ZeroClipboard.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
 <script>
-            Util.initUpload({
+            Settings.initUploadAvatar({
                 id: 'avatarUpload',
                 qiniuUploadToken: '${qiniuUploadToken}',
                 userId: '${currentUser.oId}',
