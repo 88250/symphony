@@ -24,9 +24,11 @@
                         <span id="thankArticle" aria-label="${thankLabel} ${article.thankedCnt}"
                                   class="fn-pointer tooltipped tooltipped-s"
                                   <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
-                        <span id="voteUp_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}" onclick="Util.voteUp('${article.oId}', 'article')">
+                        <span id="voteUp_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}" 
+                              onclick="Article.voteUp('${article.oId}', 'article')">
                             <span class="icon-thumbs-up<#if 0 == article.articleVote> ft-red</#if>"></span></span>
-                        <span id="voteDown_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}" onclick="Util.voteDown('${article.oId}', 'article')">
+                        <span id="voteDown_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}" 
+                              onclick="Article.voteDown('${article.oId}', 'article')">
                             <span class="icon-thumbs-down<#if 1 == article.articleVote> ft-red</#if>"></span></span>
                         <#if isFollowing>
                         <span aria-label="${uncollectLabel} ${article.articleCollectCnt}" onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
@@ -327,7 +329,6 @@
             Label.thankArticleConfirmLabel = "${thankArticleConfirmLabel?replace('{point}', pointThankArticle)}";
             Label.articleOId = "${article.oId}";
             Label.articleTitle = "${article.articleTitle}";
-            Label.articlePermalink = "${article.articlePermalink}";
             Label.recordDeniedLabel = "${recordDeniedLabel}";
             Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
             Label.csrfToken = "${csrfToken}";
