@@ -488,7 +488,6 @@ var Article = {
      */
     revision: function (articleId) {
         if (!Label.isLoggedIn) {
-            window.scrollTo(0, 0);
             Util.showLogin();
             return false;
         }
