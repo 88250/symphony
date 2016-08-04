@@ -3,7 +3,7 @@
 <div class="wrapper">
     <div class="fn-hr10"></div>
     <div>
-        ${onlineVisitorCountLabel} ${onlineVisitorCnt?c}${commaLabel}${onlineMemberCountLabel} ${onlineMemberCnt?c}${commaLabel}${maxOnlineVisitorCountLabel} ${statistic.statisticMaxOnlineVisitorCount?c}${commaLabel}${memberLabel} ${statistic.statisticMemberCount?c}${commaLabel}${articleLabel} ${statistic.statisticArticleCount?c}${commaLabel}${tagLabel} ${statistic.statisticTagCount?c}${commaLabel}${cmtLabel} ${statistic.statisticCmtCount?c}
+        ${onlineVisitorCountLabel} ${onlineVisitorCnt?c}${commaLabel}${onlineMemberCountLabel} ${onlineMemberCnt?c}${commaLabel}${maxOnlineVisitorCountLabel} ${statistic.statisticMaxOnlineVisitorCount?c}${commaLabel}${memberLabel} ${statistic.statisticMemberCount?c}${commaLabel}${articleLabel} ${statistic.statisticArticleCount?c}${commaLabel}${domainLabel} ${statistic.statisticDomainCount?c}${commaLabel}${tagLabel} ${statistic.statisticTagCount?c}${commaLabel}${cmtLabel} ${statistic.statisticCmtCount?c}
     </div>
     <div>
         ${currentVersionLabel} <span id="version">${version}</span>${commaLabel}

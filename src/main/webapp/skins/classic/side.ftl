@@ -72,7 +72,7 @@ ${ADLabel}
 <div class="module">
     <div class="module-header">
         <h2>
-            ${tagLabel}
+            ${recommendedTags}
         </h2>
     </div>
     <div class="module-panel">
