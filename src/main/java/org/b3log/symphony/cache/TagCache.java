@@ -47,7 +47,7 @@ import org.jsoup.Jsoup;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.0, Aug 1, 2016
+ * @version 1.2.3.0, Aug 4, 2016
  * @since 1.4.0
  */
 @Named
@@ -189,12 +189,6 @@ public class TagCache {
 
                         continue;
                     }
-                }
-
-                if (tag.optInt(Tag.TAG_REFERENCE_CNT) < 3) {
-                    iterator.remove();
-
-                    continue;
                 }
 
                 String description = tag.optString(Tag.TAG_DESCRIPTION);

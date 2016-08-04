@@ -24,10 +24,11 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.cache.DomainCache;
+import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
@@ -43,7 +44,7 @@ import org.json.JSONObject;
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Jul 28, 2016
+ * @version 1.2.1.0, Aug 4, 2016
  * @since 1.1.0
  */
 @Service
@@ -91,6 +92,18 @@ public class TagMgmtService {
     private LangPropsService langPropsService;
 
     /**
+     * Domain cache.
+     */
+    @Inject
+    private DomainCache domainCache;
+
+    /**
+     * Tag cache.
+     */
+    @Inject
+    private TagCache tagCache;
+
+    /**
      * Adds a tag.
      *
      * <b>Note</b>: This method just for admin console.
@@ -100,9 +113,10 @@ public class TagMgmtService {
      * @return tag id
      * @throws ServiceException service exception
      */
-    @Transactional
     public String addTag(final String userId, final String tagTitle) throws ServiceException {
         String ret;
+
+        final Transaction transaction = tagRepository.beginTransaction();
 
         try {
             if (null != tagRepository.getByTitle(tagTitle)) {
@@ -144,8 +158,17 @@ public class TagMgmtService {
             userTagRelation.put(Common.TYPE, Tag.TAG_TYPE_C_CREATOR);
             userTagRepository.add(userTagRelation);
 
+            transaction.commit();
+
+            tagCache.loadAllTags();
+            domainCache.loadDomains();
+
             return ret;
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
             LOGGER.log(Level.ERROR, "Adds tag failed", e);
 
             throw new ServiceException(e.getMessage());
@@ -154,6 +177,8 @@ public class TagMgmtService {
 
     /**
      * Updates the specified tag by the given tag id.
+     *
+     * <b>Note</b>: This method just for admin console.
      *
      * @param tagId the given tag id
      * @param tag the specified tag
@@ -168,6 +193,9 @@ public class TagMgmtService {
             tagRepository.update(tagId, tag);
 
             transaction.commit();
+
+            tagCache.loadAllTags();
+            domainCache.loadDomains();
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
