@@ -340,7 +340,6 @@
             Label.audioRecordingLabel = '${audioRecordingLabel}';
             Label.thankedLabel = "${thankedLabel}";
             Label.thankLabel = "${thankLabel}";
-            Label.isLoggedIn = ${isLoggedIn?c};
             Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
             Label.adminLabel = '${adminLabel}';
             <#if isLoggedIn>

@@ -404,7 +404,6 @@
             Label.noRevisionLabel = "${noRevisionLabel}";
             Label.thankedLabel = "${thankedLabel}";
             Label.thankLabel = "${thankLabel}";
-            Label.isLoggedIn = ${isLoggedIn?c};
             Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
             Label.adminLabel = '${adminLabel}';
             qiniuToken = "${qiniuUploadToken}";
