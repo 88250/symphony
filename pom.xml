@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.11.2.37, Aug 4, 2016
+    Version: 2.11.3.37, Aug 4, 2016
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -298,12 +298,15 @@
                     <jsTargetDir>${basedir}/src/main/webapp/js</jsTargetDir>
                 </configuration>
                 <executions>
+                    <!-- 
+                    eclipse sucks!
                     <execution>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>min</goal>
                         </goals>
                     </execution>
+                    -->
                 </executions>
             </plugin>
             
@@ -342,12 +345,15 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
+                    <!-- 
+                    eclipse sucks!!
                     <execution>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>format</goal>
                         </goals>
                     </execution>
+                    -->
                 </executions>
             </plugin>
         </plugins>
