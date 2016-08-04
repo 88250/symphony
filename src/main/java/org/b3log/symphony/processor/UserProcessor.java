@@ -104,7 +104,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.9.19, Jul 25, 2016
+ * @version 1.18.9.19, Aug 4, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1034,6 +1034,8 @@ public class UserProcessor {
         final boolean timelineStatus = requestJSONObject.optBoolean(UserExt.USER_TIMELINE_STATUS);
         final boolean uaStatus = requestJSONObject.optBoolean(UserExt.USER_UA_STATUS);
         final boolean notifyStatus = requestJSONObject.optBoolean(UserExt.USER_NOTIFY_STATUS);
+        final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
+        final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
         String userListPageSizeStr = requestJSONObject.optString(UserExt.USER_LIST_PAGE_SIZE);
 
         int userListPageSize;
@@ -1075,6 +1077,12 @@ public class UserProcessor {
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_NOTIFY_STATUS, notifyStatus
                 ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
+        user.put(UserExt.USER_JOIN_POINT_RANK,
+                userJoinPointRank
+                        ? UserExt.USER_JOIN_POINT_RANK_C_JOIN : UserExt.USER_JOIN_POINT_RANK_C_NOT_JOIN);
+        user.put(UserExt.USER_JOIN_USED_POINT_RANK,
+                userJoinUsedPointRank
+                        ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
         user.put(UserExt.USER_LIST_PAGE_SIZE, userListPageSize);
 
         try {
@@ -1108,8 +1116,6 @@ public class UserProcessor {
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         final String userNickname = requestJSONObject.optString(UserExt.USER_NICKNAME);
         final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
-        final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
-        final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
         final int userCommentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
         final JSONObject user = userQueryService.getCurrentUser(request);
@@ -1120,12 +1126,6 @@ public class UserProcessor {
         user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
         user.put(UserExt.USER_NICKNAME, userNickname.replace("<", "&lt;").replace(">", "&gt"));
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
-        user.put(UserExt.USER_JOIN_POINT_RANK,
-                userJoinPointRank
-                        ? UserExt.USER_JOIN_POINT_RANK_C_JOIN : UserExt.USER_JOIN_POINT_RANK_C_NOT_JOIN);
-        user.put(UserExt.USER_JOIN_USED_POINT_RANK,
-                userJoinUsedPointRank
-                        ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
         user.put(UserExt.USER_COMMENT_VIEW_MODE, userCommentViewMode);
 
         if (Symphonys.getBoolean("qiniu.enabled")) {
