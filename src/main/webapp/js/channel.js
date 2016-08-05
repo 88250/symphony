@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.8.8, Jul 31, 2016
+ * @version 1.9.8.9, Aug 5, 2016
  */
 
 /**
@@ -119,23 +119,23 @@ var ArticleChannel = {
                                     + (data.commentAuthorName === 'someone' ? 1 : 0) + ')"><span class="icon-heart"></span></span> ';
                         }
 
-                        template += '<span id="voteUp_comment' + data.commentId + '" class="tooltipped tooltipped-s fn-pointer fn-hidden hover-show ft-fade" '
+                        template += '<span id="voteUp_comment' + data.commentId + '" class="ft-smaller tooltipped tooltipped-s fn-pointer fn-hidden hover-show ft-fade" '
                                 + 'aria-label="' + Label.upLabel + ' 0"'
                                 + 'onclick="Article.voteUp(\'' + data.commentId + '\', \'comment\')">'
                                 + '<span class="icon-thumbs-up"></span></span> '
-                                + '<span id="voteDown_comment' + data.commentId + '" class="tooltipped tooltipped-s fn-pointer fn-hidden hover-show ft-fade"'
+                                + '<span id="voteDown_comment' + data.commentId + '" class="ft-smaller tooltipped tooltipped-s fn-pointer fn-hidden hover-show ft-fade"'
                                 + 'aria-label="' + Label.downLabel + ' 0" '
                                 + 'onclick="Article.voteDown(\'' + data.commentId + '\', \'comment\')">'
                                 + '<span class="icon-thumbs-down"></span></span> ';
 
                         if (data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') {
-                            template += ' <span aria-label="@' + data.commentAuthorName + '" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay(\'@'
+                            template += ' <span aria-label="@' + data.commentAuthorName + '" class="ft-smaller fn-pointer tooltipped tooltipped-s" onclick="Comment.replay(\'@'
                                     + data.commentAuthorName + ' \')"><span class="icon-reply"></span></span> ';
                         }
                     }
 
                     if (Label.isAdminLoggedIn) {
-                        template += '<a class="tooltipped tooltipped-s ft-a-icon" href="/admin/comment/' + data.commentId
+                        template += '<a class="ft-smaller tooltipped tooltipped-s ft-a-icon" href="/admin/comment/' + data.commentId
                                 + '" aria-label="' + Label.adminLabel + '"><span class="icon-setting"></span></a> ';
                     }
 

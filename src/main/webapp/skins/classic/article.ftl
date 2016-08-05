@@ -122,7 +122,8 @@
 
                     <div class="fn-clear">
                         <div class="share fn-right">
-                            <div id="qrCode" class="fn-none"></div>
+                            <div id="qrCode" class="fn-none"
+                                 data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
                             <span class="tooltipped tooltipped-s" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span>
                             <span class="tooltipped tooltipped-s" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
                             <span class="tooltipped tooltipped-s" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
@@ -221,7 +222,7 @@
                                                     <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>" 
                                                           id="${comment.oId}RewardedCnt"
                                                           class="tooltipped tooltipped-s ft-smaller <#if hasRewarded>ft-red<#else>ft-fade</#if>">
-                                                        <span class="icon-heart"></span> ${comment.rewardedCnt}
+                                                        <span class="icon-heart"></span>${comment.rewardedCnt}
                                                     </span>
                                                     </#if>
                                                 </span>
@@ -235,21 +236,23 @@
                                                     </#if>
                                                     </#if>
 
-                                                    <span id="voteUp_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer <#if comment.commentGoodCnt < 1>fn-hidden hover-show</#if> ft-fade" 
+                                                    <span id="voteUp_comment${comment.oId}" class="ft-smaller tooltipped tooltipped-s fn-pointer <#if comment.commentGoodCnt < 1>fn-hidden hover-show</#if> ft-fade" 
                                                           aria-label="${upLabel} ${comment.commentGoodCnt}"
                                                           onclick="Article.voteUp('${comment.oId}', 'comment')">
                                                         <span class="icon-thumbs-up<#if 0 == comment.commentVote> ft-red</#if>"></span></span>
-                                                    <span id="voteDown_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer <#if comment.commentBadCnt < 1>fn-hidden hover-show</#if> ft-fade"
+                                                    <span id="voteDown_comment${comment.oId}" class="ft-smaller tooltipped tooltipped-s fn-pointer <#if comment.commentBadCnt < 1>fn-hidden hover-show</#if> ft-fade"
                                                           aria-label="${downLabel} ${comment.commentBadCnt}" 
                                                           onclick="Article.voteDown('${comment.oId}', 'comment')">
                                                         <span class="icon-thumbs-down<#if 1 == comment.commentVote> ft-red</#if>"></span></span>
                                                     
                                                     <#if comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0>
-                                                    <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-s" onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
+                                                    <span aria-label="@${comment.commentAuthorName}" class="ft-smaller fn-pointer tooltipped tooltipped-s" 
+                                                          onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
                                                     </#if>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
-                                                    <a class="tooltipped tooltipped-s ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                                                    <a class="ft-smaller tooltipped tooltipped-s ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" 
+                                                       aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                     </#if>
                                                     #<i><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
                                                 </span>    
