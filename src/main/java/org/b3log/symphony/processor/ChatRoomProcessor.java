@@ -72,7 +72,7 @@ import org.jsoup.Jsoup;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.6, Jul 30, 2016
+ * @version 1.2.5.6, Aug 5, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -170,7 +170,8 @@ public class ChatRoomProcessor {
 
             final String xiaoVUserId = xiaoV.optString(Keys.OBJECT_ID);
             final String xiaoVEmail = xiaoV.optString(User.USER_EMAIL);
-            final JSONObject result = notificationQueryService.getAtNotifications(xiaoVUserId, 1, 1);
+            final JSONObject result
+                    = notificationQueryService.getAtNotifications(xiaoVUserId, 1, 1); // Just get the latest one
             final List<JSONObject> notifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
             for (final JSONObject notification : notifications) {
@@ -201,7 +202,12 @@ public class ChatRoomProcessor {
 
                 if (StringUtils.isNotBlank(q)) {
                     q = Jsoup.parse(q).text();
-                    q = StringUtils.replace(q, "@" + TuringQueryService.ROBOT_NAME, "");
+
+                    if (!StringUtils.contains(q, "@" + TuringQueryService.ROBOT_NAME + " ")) {
+                        continue;
+                    }
+
+                    q = StringUtils.replace(q, "@" + TuringQueryService.ROBOT_NAME + " ", "");
 
                     xiaoVSaid = turingQueryService.chat(articleId, q);
 
@@ -211,6 +217,7 @@ public class ChatRoomProcessor {
                     comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
 
                     xiaoV.remove(UserExt.USER_T_POINT_CC);
+                    xiaoV.remove(UserExt.USER_T_POINT_HEX);
                     comment.put(Comment.COMMENT_T_COMMENTER, xiaoV);
 
                     commentMgmtService.addComment(comment);
