@@ -91,8 +91,9 @@ import org.json.JSONObject;
  * <li>User following articles (/member/{userName}/following/articles), GET</li>
  * <li>User followers (/member/{userName}/followers), GET</li>
  * <li>User points (/member/{userName}/points), GET</li>
- * <li>Settings (/settings), GET</li>
- * <li>Profiles (/settings/profiles), POST</li>
+ * <li>Shows settings (/settings), GET</li>
+ * <li>Updates profiles (/settings/profiles), POST</li>
+ * <li>Updates user avatar (/settings/avatar), POST</li>
  * <li>Geo status (/settings/geo/status), POST</li>
  * <li>Sync (/settings/sync/b3), POST</li>
  * <li>Misc (/settings/misc), POST</li>
@@ -104,7 +105,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.9.19, Aug 4, 2016
+ * @version 1.19.9.19, Aug 8, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1143,6 +1144,52 @@ public class UserProcessor {
 
         try {
             userMgmtService.updateProfiles(user);
+
+            context.renderTrueResult();
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
+
+    /**
+     * Updates user avatar.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/settings/avatar", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdateProfilesValidation.class})
+    public void updateAvatar(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        context.renderJSON();
+
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
+
+        final long now = System.currentTimeMillis();
+
+        final JSONObject user = userQueryService.getCurrentUser(request);
+
+        user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
+        user.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
+
+        if (Symphonys.getBoolean("qiniu.enabled")) {
+            final String qiniuDomain = Symphonys.get("qiniu.domain");
+
+            if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {
+                user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
+            } else {
+                user.put(UserExt.USER_AVATAR_URL, qiniuDomain + "/avatar/" + user.optString(Keys.OBJECT_ID)
+                        + "?" + now);
+            }
+        } else {
+            user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
+        }
+
+        try {
+            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
 
             context.renderTrueResult();
         } catch (final ServiceException e) {

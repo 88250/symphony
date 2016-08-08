@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.5.10, Aug 4, 2016
+ * @version 1.13.5.11, Aug 8, 2016
  */
 
 /**
@@ -87,6 +87,7 @@ var Settings = {
                         alert("Upload error");
                         return;
                     }
+
                     succCBQN(data);
                 },
                 fail: function (e, data) {
@@ -252,6 +253,33 @@ var Settings = {
         });
     },
     /**
+     * @description 需要在上传完成后调用该函数来更新用户头像数据.
+     * @argument {String} csrfToken CSRF token
+     */
+    updateAvatar: function (csrfToken) {
+        var requestJSONObject = {
+            userAvatarURL: $("#avatarURL").data("imageurl"),
+        };
+
+        $.ajax({
+            url: Label.servePath + "/settings/avatar",
+            type: "POST",
+            headers: {"csrfToken": csrfToken},
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            beforeSend: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            },
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    $('#avatarURLDom, .user-nav .avatar-small').attr('style', 'background-image:url(' + requestJSONObject.userAvatarURL + ')');
+                }
+            }
+        });
+    },
+    /**
      * @description settings 页面 profiles 数据校验
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
@@ -281,17 +309,12 @@ var Settings = {
                     "min": 0,
                     "max": 255,
                     "msg": Label.invalidUserIntroLabel
-                }, {
-                    "target": $("#avatarURL"),
-                    "type": "imgStyle",
-                    "msg": Label.invalidAvatarURLLabel
                 }]})) {
             return {
                 userNickname: $("#userNickname").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userTags: $("#userTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userURL: $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userIntro: $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, ""),
-                userAvatarURL: $("#avatarURL").data("imageurl"),
                 userCommentViewMode: $("#userCommentViewMode").val()
             };
         } else {

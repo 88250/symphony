@@ -28,19 +28,18 @@
                 <option value="1"<#if 1 == currentUser.userCommentViewMode> selected</#if>>${realTimeLabel}</option>
             </select>
 
-            <div class="fn-clear"></div>
-            <label>
-                ${joinBalanceRankLabel}
-                <input id="joinPointRank" <#if 0 == currentUser.userJoinPointRank> checked="checked"</#if> type="checkbox" /> 
-            </label>
+            <div class="tip" id="profilesTip"></div>
+            <br/>
+            <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
+        </div>
+    </div>
 
-            <label> &nbsp; &nbsp;
-                ${joinCosumptionRankLabel}
-                <input id="joinUsedPointRank" <#if 0 == currentUser.userJoinUsedPointRank> checked="checked"</#if> type="checkbox" /> 
-            </label>
-            <div class="fn-clear"></div>
-
-            <label>${avatarLabel}</label><br/>
+    <div class="module">
+        <div class="module-header fn-clear">
+            <h2>${avatarUploadLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <br/>
             <div class="fn-clear"></div>
             <form class="fn-right" id="avatarUpload" method="POST" enctype="multipart/form-data">
                 <label class="btn">
@@ -51,20 +50,19 @@
                 <div>
                     <div class="avatar-big" id="avatarURL" data-imageurl="${currentUser.userAvatarURL}"
                          style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp; 
-                    <div class="fn-hr5"></div> 
+                    <div class="responsive-show fn-hr5"></div>
                     <div class="avatar-mid" id="avatarURLMid" data-imageurl="${currentUser.userAvatarURL}"
                          style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp;
+                    <div class="responsive-show fn-hr5"></div>
                     <div class="avatar" id="avatarURLNor" data-imageurl="${currentUser.userAvatarURL}"
                          style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div>
                 </div>
                 <div class="fn-hr5"></div>
-                <div class="content-reset">
+                <div class="fn-right">
                     ${updateAvatarTipLabel}
                 </div>
             </div>
-            <div class="tip" id="profilesTip"></div>
             <br/>
-            <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
         </div>
     </div>
 
@@ -185,6 +183,14 @@
                 <input id="userOnlineStatus" <#if 0 == currentUser.userOnlineStatus> checked="checked"</#if> type="checkbox" /> 
             </label>
             <label>
+                ${joinBalanceRankLabel}
+                <input id="joinPointRank" <#if 0 == currentUser.userJoinPointRank> checked="checked"</#if> type="checkbox" /> 
+            </label>
+            <label>
+                ${joinCosumptionRankLabel}
+                <input id="joinUsedPointRank" <#if 0 == currentUser.userJoinUsedPointRank> checked="checked"</#if> type="checkbox" /> 
+            </label>
+            <label>
                 ${userTimelineStatusLabel}
                 <input id="userTimelineStatus" <#if 0 == currentUser.userTimelineStatus> checked="checked"</#if> type="checkbox" /> 
             </label>
@@ -218,7 +224,7 @@
 </@home>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
 <script>
-                Util.initUpload({
+                Settings.initUploadAvatar({
                     id: 'avatarUpload',
                     qiniuUploadToken: '${qiniuUploadToken}',
                     userId: '${currentUser.oId}'
@@ -227,11 +233,15 @@
                     $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
                     $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
                     $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+
+                    Settings.updateAvatar('${csrfToken}');
                 }, function (data) {
                     var qiniuKey = data.result.key,
                             t = new Date().getTime();
                     $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
                     $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
                     $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+
+                    Settings.updateAvatar('${csrfToken}');
                 });
 </script>

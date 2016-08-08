@@ -31,8 +31,19 @@
             <option value="0"<#if 0 == currentUser.userCommentViewMode> selected</#if>>${traditionLabel}</option>
             <option value="1"<#if 1 == currentUser.userCommentViewMode> selected</#if>>${realTimeLabel}</option>
         </select>
+        
+        <div class="tip" id="profilesTip"></div>
+        <br/>
+        <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
+    </div>
+</div>
 
-        <label>${avatarLabel}</label><br/>
+<div class="module">
+    <div class="module-header fn-clear">
+        <h2>${avatarUploadLabel}</h2>
+    </div>
+    <div class="module-panel form fn-clear">
+        <br/>
         <div class="fn-clear"></div>
         <form class="fn-right" id="avatarUpload" method="POST" enctype="multipart/form-data">
             <label class="btn">
@@ -56,9 +67,6 @@
             </div>
         </div>
         <br/>
-        <div class="tip" id="profilesTip"></div>
-        <br/>
-        <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 
@@ -213,7 +221,7 @@
                 </label>
             </div>
         </div>
-        
+
         <div class="fn-clear settings-secret">
             <div>
                 <label>
@@ -228,7 +236,7 @@
                 </label>
             </div>
         </div>
-        
+
         <div class="fn-clear settings-secret">
             <div>
                 <label>
@@ -290,13 +298,18 @@
                 $('#avatarURL').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
                 $('#avatarURLMid').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
                 $('#avatarURLNor').css("background-image", 'url(' + qiniuKey + ')').data('imageurl', qiniuKey);
+                
+                Settings.updateAvatar('${csrfToken}');
             }, function (data) {
                 var qiniuKey = data.result.key,
                         t = new Date().getTime();
                 $('#avatarURL').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
                 $('#avatarURLMid').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
                 $('#avatarURLNor').css("background-image", 'url(${qiniuDomain}/' + qiniuKey + '?' + t + ')').data('imageurl', '${qiniuDomain}/' + qiniuKey);
+                
+                Settings.updateAvatar('${csrfToken}');
             });
+            
             var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
             shareClipboard.on("ready", function (readyEvent) {
                 shareClipboard.on("aftercopy", function (event) {
