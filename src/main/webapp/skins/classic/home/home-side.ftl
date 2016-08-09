@@ -44,20 +44,7 @@
             <span class="ft-gray">${symphonyLabel}</span>
             ${user.userNo?c}
             <span class="ft-gray">${numVIPLabel}</span>, <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
-        </div>
-        <#if "" != user.userTags>
-        <div class="user-info">
-            <span class="ft-gray">${selfTagLabel}</span> 
-            <span id="userTagsDom"><#list user.userTags?split(',') as tag> ${tag?html}<#if tag_has_next>,</#if></#list></span>
-        </div>
-        </#if>
-        <#if "" != user.userCity && 0 == user.userGeoStatus>
-        <div class="user-info">
-            <span class="ft-gray">${geoLable}</span> <#if "中国" == user.userCountry>${user.userCity}<#else>${user.userCountry} ${user.userCity}</#if>
-        </div>
-        </#if>
-        <div class="user-info">
-            <span class="ft-gray">${pointLabel}</span>
+        <span class="ft-gray">${pointLabel}</span>
             <a href="${servePath}/member/${user.userName}/points" title="${user.userPoint?c}">
                 <#if 0 == user.userAppRole>
                 0x${user.userPointHex}
@@ -66,6 +53,17 @@
                 </#if>
             </a>
         </div>
+        <#if "" != user.userTags || ("" != user.userCity && 0 == user.userGeoStatus)>
+        <div class="user-info">
+            <#if "" != user.userTags>
+            <span class="ft-gray">${selfTagLabel}</span> 
+            <span id="userTagsDom"><#list user.userTags?split(',') as tag> ${tag?html}<#if tag_has_next>,</#if></#list></span>
+            </#if>
+            <#if "" != user.userCity && 0 == user.userGeoStatus>
+            <span class="ft-gray">${geoLable}</span> <#if "中国" == user.userCountry>${user.userCity}<#else>${user.userCountry} ${user.userCity}</#if>
+            </#if>
+        </div>
+        </#if>
         <#if user.userURL!="">
         <div class="user-info">
             <a id="userURLDom" target="_blank" rel="friend" href="${user.userURL?html}">${user.userURL?html}</a>

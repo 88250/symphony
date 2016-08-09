@@ -27,9 +27,9 @@
                 <option value="0"<#if 0 == currentUser.userCommentViewMode> selected</#if>>${traditionLabel}</option>
                 <option value="1"<#if 1 == currentUser.userCommentViewMode> selected</#if>>${realTimeLabel}</option>
             </select>
-
+            <div class="fn-hr10"></div>
             <div class="tip" id="profilesTip"></div>
-            <br/>
+            <div class="fn-hr10"></div>
             <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
         </div>
     </div>
@@ -38,7 +38,7 @@
         <div class="module-header fn-clear">
             <h2>${avatarUploadLabel}</h2>
         </div>
-        <div class="module-panel form fn-clear">
+        <div class="module-panel form fn-clear settings-avatar">
             <br/>
             <div class="fn-clear"></div>
             <form class="fn-right" id="avatarUpload" method="POST" enctype="multipart/form-data">
@@ -49,20 +49,15 @@
             <div class="fn-clear">
                 <div>
                     <div class="avatar-big" id="avatarURL" data-imageurl="${currentUser.userAvatarURL}"
-                         style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp; 
-                    <div class="responsive-show fn-hr5"></div>
+                         style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div>
                     <div class="avatar-mid" id="avatarURLMid" data-imageurl="${currentUser.userAvatarURL}"
                          style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp;
-                    <div class="responsive-show fn-hr5"></div>
                     <div class="avatar" id="avatarURLNor" data-imageurl="${currentUser.userAvatarURL}"
                          style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div>
                 </div>
                 <div class="fn-hr5"></div>
-                <div class="fn-right">
-                    ${updateAvatarTipLabel}
-                </div>
+                ${updateAvatarTipLabel}
             </div>
-            <br/>
         </div>
     </div>
 

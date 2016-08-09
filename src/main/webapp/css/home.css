@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.8.10, Jul 29 2016
+ * @version 2.4.9.10, Aug 9 2016
  */
 
 /* start home side */
@@ -451,5 +451,9 @@ label.article-anonymous {
 .settings-secret > div {
     float: left;
     width: 50%
+}
+
+.settings-avatar .btn {
+    margin-top: 0;
 }
 /* end settings */

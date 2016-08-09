@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.13.28, Aug 4, 2016
+ * @version 1.20.14.28, Aug 9, 2016
  */
 
 /* start reset */
@@ -1004,17 +1004,17 @@ a[class*=" icon-"]:hover {
 }
 
 .avatar-big {
-    border: 15px solid #EEEEEE;
+    border: 1px solid #EEEEEE;
     height: 210px;
     width: 210px;
-    border-radius: 10px;
+    border-radius: 6px;
 }
 
 .avatar-mid {
-    border: 5px solid #EEEEEE;
+    border: 1px solid #EEEEEE;
     height: 118px;
     width: 118px;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 /* end avatar */
 
@@ -1230,7 +1230,7 @@ a[class*=" icon-"]:hover {
 }
 
 .main {
-    background-color: #FDFDFD;
+    background-color: #FFF;
     padding: 20px 0 40px;
 }
 
