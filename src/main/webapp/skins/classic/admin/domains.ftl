@@ -24,7 +24,7 @@
                 <#if item.domainIconPath != ''>
                 ${item.domainIconPath}
                 </#if>
-                <span class="domains">${item.domainDescription}</span>
+                ${item.domainDescription}
             </div>
         </li>
         </#list>

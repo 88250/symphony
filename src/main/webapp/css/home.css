@@ -217,34 +217,6 @@ label.article-anonymous {
 /* end add article */
 
 /* start home */
-.tab {
-    border-bottom: 1px solid #DDD;
-}
-
-.tab > li {
-    border: 1px solid transparent;
-    border-bottom: 0;
-    float: left;
-    list-style: none outside none;
-    margin-bottom: -1px;
-}
-
-.tab > li.current {
-    background-color: #FFFFFF;
-    border-color: #DDD;
-    font-weight: bold;
-    line-height: 20px;
-    border-radius: 3px 3px 0 0;
-}
-
-.tab > li > a {
-    color: #666666;
-    line-height: 20px;
-    text-decoration: none;
-    padding: 8px;
-    display: block;
-}
-
 .home-invisible {
     margin: 50px 0;
 }

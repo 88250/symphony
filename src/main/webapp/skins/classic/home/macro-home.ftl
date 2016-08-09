@@ -48,43 +48,23 @@
     </head>
     <body>
         <#include "../header.ftl">
+        <div class="tabs">
+            <div class="fn-clear wrapper">
+                <a <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
+                    class="selected"</#if>
+                    href="${servePath}/member/${user.userName}">${postLabel}</a>
+                <a <#if type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="selected"</#if>
+                    href="${servePath}/member/${user.userName}/following/users">${followLabel}</a>
+                <a <#if type == "points"> class="selected"</#if> href="${servePath}/member/${user.userName}/points">${pointLabel}</a>
+                <#if currentUser?? && currentUser.userName == user.userName>
+                <a <#if type == "settings"> class="selected"</#if>
+                    href="${servePath}/settings"><svg height="16" version="1.1" viewBox="0 0 14 16" width="14"><path d="M14 8.77v-1.6l-1.94-.64-.45-1.09.88-1.84-1.13-1.13-1.81.91-1.09-.45-.69-1.92h-1.6l-.63 1.94-1.11.45-1.84-.88-1.13 1.13.91 1.81-.45 1.09L0 7.23v1.59l1.94.64.45 1.09-.88 1.84 1.13 1.13 1.81-.91 1.09.45.69 1.92h1.59l.63-1.94 1.11-.45 1.84.88 1.13-1.13-.92-1.81.47-1.09L14 8.75v.02zM7 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"></path></svg> ${settingsLabel}</a>
+                </#if>
+            </div>
+        </div>
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <ul class="tab fn-clear">
-                        <li<#if type == "home"> class="current"</#if>>
-                            <a href="${servePath}/member/${user.userName}">${articleLabel}</a>
-                        </li>
-                        <li<#if type == "comments"> class="current"</#if>>
-                            <a href="${servePath}/member/${user.userName}/comments">${cmtLabel}</a>
-                        </li>
-                        <li<#if type == "followingUsers"> class="current"</#if>>
-                            <a href="${servePath}/member/${user.userName}/following/users">${followingUsersLabel}</a>
-                        </li>
-                        <li<#if type == "followingTags"> class="current"</#if>>
-                            <a href="${servePath}/member/${user.userName}/following/tags">${followingTagsLabel}</a>
-                        </li>
-                        <li<#if type == "followingArticles"> class="current"</#if>>
-                            <a href="${servePath}/member/${user.userName}/following/articles">${followingArticlesLabel}</a>
-                        </li>
-                        <li<#if type == "followers"> class="current"</#if>>
-                            <a href="${servePath}/member/${user.userName}/followers">${followersLabel}</a>
-                        </li>
-                        <li<#if type == "points"> class="current"</#if>>
-                            <a href="${servePath}/member/${user.userName}/points">${pointLabel}</a>
-                        </li>
-                        <#if currentUser?? && currentUser.userName == user.userName>
-                        <li<#if type == "articlesAnonymous"> class="current"</#if>>
-                            <a href="${servePath}/member/${user.userName}/articles/anonymous">${anonymousArticleLabel}</a>
-                        </li>
-                        <li<#if type == "commentsAnonymous"> class="current"</#if>>
-                            <a href="${servePath}/member/${user.userName}/comments/anonymous">${anonymousCommentLabel}</a>
-                        </li>
-                        <li<#if type == "settings"> class="current"</#if>>
-                            <a href="${servePath}/settings"><b class="ft-red">${settingsLabel}</b></a>
-                        </li>
-                        </#if>
-                    </ul>
                     <div class="fn-clear">
                         <#nested>
                     </div>
@@ -113,7 +93,7 @@
             Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
             Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
             Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
-            Label.invalidUserNicknameLabel= "${invalidUserNicknameLabel}";
+            Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
         </script>
     </body>
 </html>

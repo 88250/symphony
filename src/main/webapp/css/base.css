@@ -950,6 +950,76 @@ a[class*=" icon-"]:hover {
 }
 /* end icon */
 
+/* start tabs */
+.tabs {
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+    padding-top: 30px;
+}
+
+.tabs a {
+    float: left;
+    padding: 5px 15px 6px;
+    color: #666;
+    white-space: nowrap;
+    border: solid transparent;
+    border-width: 3px 1px 1px;
+    border-radius: 3px 3px 0 0;
+    text-decoration: none;
+}
+
+.tabs a.selected {
+    margin-bottom: -1px;
+    background-color: #FFF;
+    border-color: #d26911 #e5e5e5 transparent;
+    color: #111;
+}
+
+.tabs a:hover {
+    color: #333;
+}
+
+.tabs svg {
+    color: #bbb;
+    vertical-align: text-top;
+    fill: currentColor;
+}
+
+.tabs a.selected svg {
+    color: inherit;
+}
+
+.tabs-sub a {
+    float: left;
+    padding: 5px 10px;
+    color: #333;
+    border: 1px solid #e5e5e5;
+    line-height: 18px;
+    text-decoration: none;
+    font-size: 13px;
+    margin-left: -1px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.tabs-sub a:hover,
+.tabs-sub a.current {
+    color: #FFF;
+    background-color: #4078c0;
+    border-color: #4078c0;
+}
+
+.tabs-sub a:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.tabs-sub a:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+/* end tab */
+
 /* start tip */
 .tip.error {
     color: #911;

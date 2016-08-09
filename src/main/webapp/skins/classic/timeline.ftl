@@ -9,7 +9,7 @@
     </head>
     <body>
         <#include "header.ftl">
-        <div class="domains fn-clear">
+        <div class="tabs fn-clear">
             <div class="wrapper fn-clear">
                 <#list domains as domain>
                 <a href="${servePath}/domain/${domain.domainURI}">${domain.domainIconPath}&nbsp;${domain.domainTitle}</a>

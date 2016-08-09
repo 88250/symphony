@@ -12,7 +12,7 @@
     </head>
     <body>
         <#include "header.ftl">
-        <div class="domains">
+        <div class="tabs">
             <div class="wrapper fn-clear">
                 <#list domains as navDomain>
                 <a href="${servePath}/domain/${navDomain.domainURI}" <#if navDomain.domainURI == domain.domainURI>class="selected"</#if>>${navDomain.domainIconPath}&nbsp;${navDomain.domainTitle}</a>
@@ -34,11 +34,11 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="domain-tags fn-clear">
+                    <div class="tabs-sub fn-clear">
                         <#list domains as navDomain>
                         <#if navDomain.domainURI == domain.domainURI>
                         <#list navDomain.domainTags as tag>
-                        <a rel="nofollow" class="ft-gray" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>  
+                        <a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>  
                         </#list>
                         </#if>
                         </#list>
