@@ -10,7 +10,7 @@
                 <#if article.articleAnonymous == 0>
                 <a rel="nofollow" class="ft-gray"
                    href="${servePath}/member/${article.articleAuthorName}"
-                   ></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
+                   ></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div><#if article.articleAnonymous == 0></a></#if>
                 <div class="fn-flex-1 has-view">
                     <h2>
                         <#if 1 == article.articleType>

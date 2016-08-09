@@ -13,7 +13,7 @@
             <a href="${servePath}/admin" title="${adminLabel}" class="last icon-userrole"></a>
             </#if>
             <a href="${servePath}/member/${currentUser.userName}" title="Home" class="<#if 'adminRole' != userRole>last </#if>nav-avatar">
-                <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL}-64.jpg?${currentUser.userUpdateTime?c}')"></span>
+                <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
             </a>
             <a href="${servePath}/activities" title="${activityLabel}" class="icon-flag"></a>
             <a href="${servePath}/pre-post" title="${addArticleLabel}" 

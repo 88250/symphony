@@ -34,8 +34,6 @@ var Settings = {
      */
     initUploadAvatar: function (params, succCB, succCBQN) {
         var ext = "";
-        var now = new Date().getTime();
-
         if ("" === params.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
             $('#' + params.id).fileupload({
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -44,6 +42,34 @@ var Settings = {
                 pasteZone: null,
                 dropZone: null,
                 url: "/upload",
+                add: function (e, data) {
+                    ext = data.files[0].type.split("/")[1];
+
+                    if (window.File && window.FileReader && window.FileList && window.Blob) {
+                        var reader = new FileReader();
+                        reader.readAsArrayBuffer(data.files[0]);
+                        reader.onload = function (evt) {
+                            var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
+                            var isImg = isImage(fileBuf);
+
+                            if (!isImg) {
+                                alert("Image only~");
+
+                                return;
+                            }
+
+                            if (evt.target.result.byteLength > 1024 * 1024) {
+                                alert("This image is too large (max 1M)");
+
+                                return;
+                            }
+
+                            data.submit();
+                        };
+                    } else {
+                        data.submit();
+                    }
+                },
                 formData: function (form) {
                     var data = form.serializeArray();
                     return data;
@@ -79,12 +105,35 @@ var Settings = {
                 add: function (e, data) {
                     ext = data.files[0].type.split("/")[1];
 
-                    data.submit();
+                    if (window.File && window.FileReader && window.FileList && window.Blob) {
+                        var reader = new FileReader();
+                        reader.readAsArrayBuffer(data.files[0]);
+                        reader.onload = function (evt) {
+                            var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
+                            var isImg = isImage(fileBuf);
+
+                            if (!isImg) {
+                                alert("Image only~");
+
+                                return;
+                            }
+
+                            if (evt.target.result.byteLength > 1024 * 1024) {
+                                alert("This image is too large (max 1M)");
+
+                                return;
+                            }
+
+                            data.submit();
+                        };
+                    } else {
+                        data.submit();
+                    }
                 },
                 formData: function (form) {
                     var data = form.serializeArray();
                     data.push({name: 'token', value: params.qiniuUploadToken});
-                    data.push({name: 'key', value: 'avatar/' + params.userId + "_" + now + "." + ext});
+                    data.push({name: 'key', value: 'avatar/' + params.userId + "_" + new Date().getTime() + "." + ext});
 
                     console.log(data);
 

@@ -27,7 +27,7 @@
                 <a href="${servePath}/admin/article/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>  
             </div>
             <div class="fn-clear">
-                <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL}-64.jpg?${item.articleAuthor.userUpdateTime?c}')"></div>${item.articleAuthorName} &nbsp;
+                <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>${item.articleAuthorName} &nbsp;
                 <span class="icon-tags" title="${tagLabel}"></span>
                 <span class="tags">
                     ${item.articleTags}

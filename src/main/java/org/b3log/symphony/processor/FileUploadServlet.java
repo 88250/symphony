@@ -90,8 +90,8 @@ public class FileUploadServlet extends HttpServlet {
 
         final String uri = req.getRequestURI();
         String key = uri.substring("/upload/".length());
-        key = StringUtils.substringBeforeLast(key, "-64.jpg"); // Erase Qiniu template
-        key = StringUtils.substringBeforeLast(key, "-260.jpg"); // Erase Qiniu template
+        key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template
+        key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template
 
         String path = UPLOAD_DIR + key;
         path = URLDecoder.decode(path, "UTF-8");

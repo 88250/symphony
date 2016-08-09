@@ -201,7 +201,7 @@ var Util = {
 
                         autocompleteHints.push({
                             displayText: "<span style='font-size: 1rem;line-height:22px'><img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='" + avatar
-                                    + "-64.jpg?" + updateTime + "'> " + name + "</span>",
+                                    + "?imageView2/1/w/64/h/64/interlace/0/q/80'> " + name + "</span>",
                             text: name + " "
                         });
                     }

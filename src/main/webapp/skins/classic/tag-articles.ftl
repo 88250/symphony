@@ -86,7 +86,7 @@
                                href="${servePath}/member/${tag.tagCreatorName}"></#if>
                                 <div class="avatar tooltipped tooltipped-se" 
                                      aria-label="${creatorLabel} ${tag.tagCreatorName}" 
-                                     style="background-image:url('${tag.tagCreatorThumbnailURL}-64.jpg?${tag.tagCreatorThumbnailUpdateTime?c}')"></div>
+                                     style="background-image:url('${tag.tagCreatorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                             <#if "someone" != tag.tagCreatorName></a></#if>
                             <div class="fn-right">
                                 <#list tag.tagParticipants as commenter>
@@ -96,7 +96,7 @@
                                    href="${servePath}/member/${commenter.tagParticipantName}"></#if>
                                     <div class="avatar tooltipped tooltipped-sw"
                                          aria-label="${contributorLabel} ${commenter.tagParticipantName}"
-                                         style="background-image:url('${commenter.tagParticipantThumbnailURL}-64.jpg?${commenter.tagParticipantThumbnailUpdateTime?c}')"></div>
+                                         style="background-image:url('${commenter.tagParticipantThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                                 <#if "someone" != commenter.tagParticipantName></a></#if>
                                 </#if>
                                 </#list>

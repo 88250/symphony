@@ -47,7 +47,7 @@
                             <h2 class="fn-flex-1">
                                 <a rel="author" href="/member/${article.articleAuthorName}" class="ft-small"
                                    title="${article.articleAuthorName}">
-                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}" />
+                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80" />
                                 </a> &nbsp;
                                 <a href="${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
@@ -135,7 +135,7 @@
                                     <div class="fn-flex">
                                         <a class="responsive-hide" rel="nofollow" href="/member/${comment.commentAuthorName}">
                                             <img class="avatar" 
-                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}" />
+                                                 title="${comment.commentAuthorName}" src="${comment.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80" />
                                         </a>
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
@@ -186,7 +186,7 @@
                                 <li<#if !relevantArticle_has_next> class="last"</#if>>
                                     <a class="avatar-small slogan" rel="nofollow" 
                                        title="${relevantArticle.articleAuthorName}"
-                                       style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
+                                       style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"
                                        href="/member/${relevantArticle.articleAuthorName}"></a>
                                     <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                                 </li>
@@ -208,7 +208,7 @@
                                     <a class="avatar-small slogan" rel="nofollow"
                                        href="/member/${randomArticle.articleAuthorName}"
                                        title="${randomArticle.articleAuthorName}"
-                                       style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></a>
+                                       style="background-image:url('${randomArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></a>
                                     <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitle}</a>
                                 </li>
                                 </#list>

@@ -1180,7 +1180,7 @@ public class UserProcessor {
             if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {
                 user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
             } else {
-                user.put(UserExt.USER_AVATAR_URL, userAvatarURL + "?" + now);
+                user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
             }
         } else {
             user.put(UserExt.USER_AVATAR_URL, userAvatarURL);

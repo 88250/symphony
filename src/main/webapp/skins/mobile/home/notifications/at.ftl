@@ -7,7 +7,7 @@
         <#if "someone" != notification.authorName>
         <a rel="nofollow" href="${servePath}/member/${notification.authorName}" 
            title="${notification.authorName}"></#if>
-            <div class="avatar" style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
+            <div class="avatar" style="background-image:url('${notification.thumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
         <#if "someone" != notification.authorName></a></#if>
 
         <#if !notification.atInArticle>

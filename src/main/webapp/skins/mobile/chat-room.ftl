@@ -49,11 +49,11 @@
                                         <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
                                         <a rel="nofollow" href="${servePath}/member/${msg.userName}">
                                             <div class="avatar" 
-                                                 title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}-64.jpg')"></div>
+                                                 title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                                         </a>
                                         <#else>
                                         <div class="avatar" 
-                                             title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}-64.jpg')"></div>
+                                             title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                                         </#if>
                                         <div class="fn-flex-1">
                                             <div class="fn-clear">

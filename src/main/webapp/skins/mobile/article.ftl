@@ -65,7 +65,7 @@
                 <div class="article-info">
                     <#if article.articleAnonymous == 0>
                     <a rel="author" href="${servePath}/member/${article.articleAuthorName}"
-                       title="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div><#if article.articleAnonymous == 0></a></#if>
+                       title="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div><#if article.articleAnonymous == 0></a></#if>
                     <div class="article-params">
                         <#if article.articleAnonymous == 0>
                         <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-black"
@@ -175,11 +175,11 @@
                                     <#if comment.commentAnonymous == 0>
                                     <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
                                         <div class="avatar" 
-                                             title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
+                                             title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                                         <#if comment.commentAnonymous == 0></a></#if>
                                     <#else>
                                     <div class="avatar" 
-                                         title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
+                                         title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                                     </#if>
                                     <div class="fn-flex-1 comment-content">
                                         <div class="fn-clear comment-info">
@@ -281,7 +281,7 @@
                                 <a rel="nofollow" 
                                href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
                                     <span class="avatar-small slogan"
-                                          style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}-64.jpg?${relevantArticle.articleAuthor.userUpdateTime?c}')"
+                                          style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"
                                           ></span>
                                     <#if "someone" != relevantArticle.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
@@ -306,7 +306,7 @@
                                 <a  rel="nofollow"
                                 href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
                                     <span class="avatar-small"
-                                          style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"></span>
+                                          style="background-image:url('${randomArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
                                 <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                             </li>

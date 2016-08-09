@@ -7,7 +7,7 @@
         <#if "someone" != notification.authorName>
         <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.authorName}"></#if>
             <div class="avatar" title="${notification.authorName}"
-                 style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
+                 style="background-image:url('${notification.thumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
         <#if "someone" != notification.authorName></a></#if>
         <div class="fn-flex-1 has-view">
             <h2>

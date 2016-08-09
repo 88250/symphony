@@ -9,7 +9,7 @@
             <#if comment.commentArticleAuthorName != "someone">
             <a target="_blank" class="tooltipped tooltipped-s" rel="nofollow" href="${servePath}/member/${comment.commentArticleAuthorName}" 
                aria-label="${comment.commentArticleAuthorName}"></#if>
-                <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
+                <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
             <#if comment.commentArticleAuthorName != "someone">
             </a>
             </#if>

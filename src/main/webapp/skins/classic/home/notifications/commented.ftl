@@ -7,7 +7,7 @@
         <#if "someone" != notification.commentAuthorName>
         <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.commentAuthorName}"></#if>
             <div class="avatar" title="${notification.commentAuthorName}"
-                 style="background-image:url('${notification.commentAuthorThumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
+                 style="background-image:url('${notification.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
         <#if "someone" != notification.commentAuthorName></a></#if>
         <div class="fn-flex-1">
             <div class="fn-flex">

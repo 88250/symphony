@@ -9,13 +9,13 @@
             <div class="fn-flex">
                 <a rel="nofollow" class="ft-small"
                    href="/member/${article.articleAuthorName}" 
-                   title="${article.articleAuthorName}"><img class="avatar responsive-hide" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c" /></a>
+                   title="${article.articleAuthorName}"><img class="avatar responsive-hide" src="${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80" /></a>
                 <div class="fn-flex-1 has-view">
                     <h2>
                         <a rel="nofollow" class="ft-small"
                            href="/member/${article.articleAuthorName}" 
                            title="${article.articleAuthorName}">
-                            <img class="avatar-small responsive-show" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c" />
+                            <img class="avatar-small responsive-show" src="${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80" />
                         </a>
                         <a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
                     <span class="ft-small">
@@ -36,7 +36,7 @@
             <div class="commenters">
                 <#list article.articleParticipants as comment>
                 <a rel="nofollow" href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}">
-                    <img class="avatar-small" src="${comment.articleParticipantThumbnailURL}-64.jpg?${comment.articleParticipantThumbnailUpdateTime?c}" />
+                    <img class="avatar-small" src="${comment.articleParticipantThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80" />
                 </a>
                 </#list>
             </div>

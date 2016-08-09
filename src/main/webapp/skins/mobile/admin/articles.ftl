@@ -15,7 +15,7 @@
         <#list articles as item>
         <li>
             <div class="fn-clear first">
-                <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL}-64.jpg?${item.articleAuthor.userUpdateTime?c}')"></div>
+                <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                 <a href="${item.articlePermalink}">${item.articleTitle}</a> 
                 <#if item.articleStatus == 0>
                 <span class="ft-gray">${validLabel}</span>

@@ -59,7 +59,7 @@ ${ADLabel}
                 <a rel="nofollow" href="${servePath}/member/${hotArticle.articleAuthorName}"></#if>
                     <span class="avatar-small tooltipped tooltipped-se slogan"
                         aria-label="${hotArticle.articleAuthorName}"
-                          style="background-image:url('${hotArticle.articleAuthorThumbnailURL}-64.jpg?${hotArticle.articleAuthor.userUpdateTime?c}')"></span>
+                          style="background-image:url('${hotArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
                 <#if "someone" != hotArticle.articleAuthorName></a></#if>
                 <a rel="nofollow" class="title" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
@@ -113,7 +113,7 @@ ${ADLabel}
                 <#if "someone" != randomArticle.articleAuthorName>
                 <a rel="nofollow" href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
                     <span aria-label="${randomArticle.articleAuthorName}"
-                    style="background-image:url('${randomArticle.articleAuthorThumbnailURL}-64.jpg?${randomArticle.articleAuthor.userUpdateTime?c}')"
+                    style="background-image:url('${randomArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"
                     class="avatar-small tooltipped tooltipped-se slogan"></span>
                 <#if "someone" != randomArticle.articleAuthorName></a></#if>
                 <a class="title" rel="nofollow" title="${randomArticle.articleTitle}" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>

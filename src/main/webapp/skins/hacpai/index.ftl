@@ -57,7 +57,7 @@
                             </div>
                             <div class="info">
                                 <div class="fn-flex">
-                                    <img class="avatar" src="${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}"/>
+                                    <img class="avatar" src="${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80"/>
                                     <div class="fn-flex-1">
                                         <div class="fn-ellipsis">
                                             <span class="cmt-name">评论人：</span>

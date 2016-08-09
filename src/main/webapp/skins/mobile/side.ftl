@@ -56,7 +56,7 @@ ${ADLabel}
                 <#if "someone" != hotArticle.articleAuthorName>
                 <a rel="nofollow" href="${servePath}/member/${hotArticle.articleAuthorName}"></#if>
                     <span class="avatar-small slogan"
-                          style="background-image:url('${hotArticle.articleAuthorThumbnailURL}-64.jpg?${hotArticle.articleAuthor.userUpdateTime?c}')"></span>
+                          style="background-image:url('${hotArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
                 <#if "someone" != hotArticle.articleAuthorName></a></#if>
                 <a rel="nofollow" class="title" title="${hotArticle.articleTitle}" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
