@@ -543,6 +543,12 @@ span.CodeMirror-selectedtext { background: none; }
     border-color: #95a5a6;
     color: #777;
 }
+
+.editor-toolbar a.active {
+    color: #911;
+    border-color: #911;
+}
+
 .editor-toolbar a:before,
 .editor-toolbar label:before {
     line-height: 24px;
@@ -554,6 +560,7 @@ span.CodeMirror-selectedtext { background: none; }
     width: 21px;
     vertical-align: bottom;
     float: none;
+    overflow: hidden;
 }
 .editor-toolbar input {
     height: 1px;
