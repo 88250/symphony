@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.5.11, Aug 8, 2016
+ * @version 1.13.6.11, Aug 9, 2016
  */
 
 /**
@@ -33,6 +33,9 @@ var Settings = {
      * @returns {Boolean}
      */
     initUploadAvatar: function (params, succCB, succCBQN) {
+        var ext = "";
+        var now = new Date().getTime();
+
         if ("" === params.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
             $('#' + params.id).fileupload({
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -73,10 +76,18 @@ var Settings = {
                 pasteZone: null,
                 dropZone: null,
                 url: "https://up.qbox.me/",
+                add: function (e, data) {
+                    ext = data.files[0].type.split("/")[1];
+
+                    data.submit();
+                },
                 formData: function (form) {
                     var data = form.serializeArray();
                     data.push({name: 'token', value: params.qiniuUploadToken});
-                    data.push({name: 'key', value: 'avatar/' + params.userId});
+                    data.push({name: 'key', value: 'avatar/' + params.userId + "_" + now + "." + ext});
+
+                    console.log(data);
+
                     return data;
                 },
                 submit: function (e, data) {

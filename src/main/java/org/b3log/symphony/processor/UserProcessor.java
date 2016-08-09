@@ -105,7 +105,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.9.19, Aug 8, 2016
+ * @version 1.19.10.19, Aug 9, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -929,8 +929,7 @@ public class UserProcessor {
 
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"),
-                "avatar/" + user.optString(Keys.OBJECT_ID));
+        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
         dataModel.put("qiniuUploadToken", uploadToken);
         dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
 
@@ -1181,8 +1180,7 @@ public class UserProcessor {
             if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {
                 user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
             } else {
-                user.put(UserExt.USER_AVATAR_URL, qiniuDomain + "/avatar/" + user.optString(Keys.OBJECT_ID)
-                        + "?" + now);
+                user.put(UserExt.USER_AVATAR_URL, userAvatarURL + "?" + now);
             }
         } else {
             user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
