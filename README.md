@@ -116,6 +116,14 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 
 如果遇到问题，可以参考一下这篇[帖子](https://hacpai.com/article/1468824093225)。
 
+## 案例
+
+* [黑客派](https://hacpai.com)
+* [宽客网](http://www.cnq.net)
+* [贵州IT](http://www.gzit.info)
+
+如果你也搭建好了，欢迎通过 Pull Request 将你的站点加到这个列表中 :-p
+
 ## 商用授权
 
 请看[这里](https://github.com/b3log/symphony/wiki/%E5%95%86%E7%94%A8%E6%8E%88%E6%9D%83)。
