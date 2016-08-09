@@ -105,7 +105,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.10.19, Aug 9, 2016
+ * @version 1.19.11.19, Aug 9, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1115,7 +1115,6 @@ public class UserProcessor {
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         final String userNickname = requestJSONObject.optString(UserExt.USER_NICKNAME);
-        final String userAvatarURL = requestJSONObject.optString(UserExt.USER_AVATAR_URL);
         final int userCommentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
         final JSONObject user = userQueryService.getCurrentUser(request);
@@ -1127,19 +1126,6 @@ public class UserProcessor {
         user.put(UserExt.USER_NICKNAME, userNickname.replace("<", "&lt;").replace(">", "&gt"));
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
         user.put(UserExt.USER_COMMENT_VIEW_MODE, userCommentViewMode);
-
-        if (Symphonys.getBoolean("qiniu.enabled")) {
-            final String qiniuDomain = Symphonys.get("qiniu.domain");
-
-            if (!StringUtils.startsWith(userAvatarURL, qiniuDomain)) {
-                user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
-            } else {
-                user.put(UserExt.USER_AVATAR_URL, qiniuDomain + "/avatar/" + user.optString(Keys.OBJECT_ID)
-                        + "?" + new Date().getTime());
-            }
-        } else {
-            user.put(UserExt.USER_AVATAR_URL, userAvatarURL);
-        }
 
         try {
             userMgmtService.updateProfiles(user);
