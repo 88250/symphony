@@ -1002,7 +1002,10 @@ a[class*=" icon-"]:hover {
     box-sizing: border-box;
 }
 
-.tabs-sub a:hover,
+.tabs-sub a:hover {
+    background-color: #F5F5F5;
+}
+
 .tabs-sub a.current {
     color: #FFF;
     background-color: #4078c0;
