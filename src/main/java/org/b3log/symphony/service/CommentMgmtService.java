@@ -233,7 +233,7 @@ public class CommentMgmtService {
 
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == comment.optInt(Comment.COMMENT_ANONYMOUS)) {
                 final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
-                        Pointtransfer.TRANSFER_TYPE_C_COMMENT_REWARD, rewardPoint, rewardId);
+                        Pointtransfer.TRANSFER_TYPE_C_COMMENT_REWARD, rewardPoint, rewardId, System.currentTimeMillis());
 
                 if (!succ) {
                     throw new ServiceException(langPropsService.get("transferFailLabel"));
@@ -422,11 +422,11 @@ public class CommentMgmtService {
                 if (articleAuthorId.equals(commentAuthorId)) {
                     pointtransferMgmtService.transfer(commentAuthorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT,
-                            commentId);
+                            commentId, System.currentTimeMillis());
                 } else {
                     pointtransferMgmtService.transfer(commentAuthorId, articleAuthorId,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_COMMENT, Pointtransfer.TRANSFER_SUM_C_ADD_COMMENT,
-                            commentId);
+                            commentId, System.currentTimeMillis());
                 }
 
                 livenessMgmtService.incLiveness(commentAuthorId, Liveness.LIVENESS_COMMENT);

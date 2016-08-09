@@ -1222,7 +1222,7 @@ public class UserProcessor {
         final String toId = toUser.optString(Keys.OBJECT_ID);
 
         final String transferId = pointtransferMgmtService.transfer(fromId, toId,
-                Pointtransfer.TRANSFER_TYPE_C_ACCOUNT2ACCOUNT, amount, toId);
+                Pointtransfer.TRANSFER_TYPE_C_ACCOUNT2ACCOUNT, amount, toId, System.currentTimeMillis());
         final boolean succ = null != transferId;
         ret.put(Keys.STATUS_CODE, succ);
         if (!succ) {

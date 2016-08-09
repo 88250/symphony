@@ -272,7 +272,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
                 final int sum = count * Pointtransfer.TRANSFER_SUM_C_AT_PARTICIPANTS;
                 pointtransferMgmtService.transfer(commenterId, Pointtransfer.ID_C_SYS,
-                        Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS, sum, commentId);
+                        Pointtransfer.TRANSFER_TYPE_C_AT_PARTICIPANTS, sum, commentId, System.currentTimeMillis());
 
                 return;
             }

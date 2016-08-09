@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Pointtransfer management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.2, Jul 5, 2016
+ * @version 1.2.1.3, Aug 9, 2016
  * @since 1.3.0
  */
 @Service
@@ -56,21 +56,6 @@ public class PointtransferMgmtService {
      */
     @Inject
     private UserRepository userRepository;
-
-    /**
-     * Transfers point from the specified from id to the specified to id with type, sum and data id.
-     *
-     * @param fromId the specified from id, may be system "sys"
-     * @param toId the specified to id, may be system "sys"
-     * @param type the specified type
-     * @param sum the specified sum
-     * @param dataId the specified data id
-     * @return transfer record id, returns {@code null} if transfer failed
-     */
-    public synchronized String transfer(final String fromId, final String toId, final int type, final int sum,
-            final String dataId) {
-        return transfer(fromId, toId, type, sum, dataId, System.currentTimeMillis());
-    }
 
     /**
      * Transfers point from the specified from id to the specified to id with type, sum, data id and time.
