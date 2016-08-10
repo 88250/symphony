@@ -57,7 +57,7 @@ gulp.task('cc', function () {
             .pipe(concat('codemirror.min.js'))
             .pipe(gulp.dest('./src/main/webapp/js/lib/editor/'));
 
-    var jsCommonLib = ['./src/main/webapp/js/lib/jquery/jquery.min.js',
+    var jsCommonLib = ['./src/main/webapp/js/lib/jquery/jquery-3.1.0.min.js',
         './src/main/webapp/js/lib/md5.js',
         './src/main/webapp/js/lib/reconnecting-websocket.min.js',
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',

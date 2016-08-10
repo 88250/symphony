@@ -431,7 +431,7 @@ var AddArticle = {
         });
 
         // 移除 tag
-        $('.tags-input .tag > span.close').live('click', function () {
+        $('.tags-input .tag > span.close').on('click', function () {
             $(this).parent().remove();
             if ($.ua.device.type !== 'mobile') {
                 $('.post .domains-tags, #articleTagsSelectedPanel').css('left', $('.post .tags-selected').width() + 'px');

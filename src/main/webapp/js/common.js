@@ -569,7 +569,7 @@ var Util = {
      * @description 禁止 IE7 以下浏览器访问
      */
     _kill: function () {
-        if ($.browser.msie && parseInt($.browser.version) < 10) {
+        if ($.ua.browser.name === 'IE' && parseInt($.ua.browser.version) < 10) {
             $.ajax({
                 url: Label.servePath + "/kill-browser",
                 type: "GET",
