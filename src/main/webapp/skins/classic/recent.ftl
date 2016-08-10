@@ -34,7 +34,7 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <@list listData=latestArticles/>
-                    <@pagination url="${servePath}/"/>
+                    <@pagination url="${servePath}/recent"/>
                     <#if domains?size != 0>
                     <br/> <br/> <br/> <br/>
 

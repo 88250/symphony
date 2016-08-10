@@ -15,7 +15,7 @@
                     <#list domains as domain>
                     <a href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
                     </#list>
-                    <a href="${servePath}/">${latestLabel}</a>
+                    <a href="${servePath}/recent">${latestLabel}</a>
                     <a href="${servePath}/hot" class="selected">${hotLabel}</a>
                     <#if isLoggedIn && "" != currentUser.userCity>
                     <a href="${servePath}/city/my">${currentUser.userCity}</a>
@@ -24,7 +24,7 @@
                     <a href="${servePath}/community">${communityGroupLabel}</a>
                 </div>
                 <@list listData=indexArticles/>
-                <a href="${servePath}/" class="ft-gray more-article">${moreRecentArticleLabel}</a>
+                <a href="${servePath}/recent" class="ft-gray more-article">${moreRecentArticleLabel}</a>
             </div>
             <div class="side wrapper">
                 <#include "side.ftl">
