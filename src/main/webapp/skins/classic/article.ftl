@@ -304,7 +304,17 @@
                     <#include 'common/person-info.ftl'/>
                     
                     <#if ADLabel!="">
-                    ${ADLabel}
+                    <div class="module">
+                        <div class="module-header">
+                            <h2>
+                                ${sponsorLabel} 
+                                <a href="https://hacpai.com/article/1460083956075" class="fn-right ft-13 ft-gray" target="_blank">${wantPutOnLabel}</a>
+                            </h2>
+                        </div>
+                        <div class="module-panel ad fn-clear">
+                            ${ADLabel}
+                        </div>
+                    </div>
                     </#if>
                     <#if "" != article.articleToC && 3 != article.articleType>
                     <div class="module" id="articleToC">

@@ -2253,30 +2253,101 @@ code .dec { color: initial; } /* decimal - blue */
     overflow: auto;
 }
 /* end chat room */
+/* start index */
+.index .index-wrap {
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    padding: 10px 0;
+}
 
-/**
- * Copyright (c) 2012-2016, b3log.org & hacpai.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+.index .index-wrap.first {
+    border-top: 0;
+}
 
-/**
- * 后台样式.
- *
- * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.6.9, Apr 6, 2016
- */
+.index .index-wrap.last {
+    border-bottom: 0;
+}
+
+.index .index-wrap .slogan {
+    padding: 10px;
+    color: #767676;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.index .index-wrap .slogan svg {
+    color: #bbb;
+    vertical-align: middle;
+    fill: currentColor;
+}
+
+.index .domains a {
+       color: #666;
+    display: initial;
+    width: 20%;
+    margin: 10px;
+    text-align: center;
+}
+
+.index .domains a:hover {
+    color: #111;
+    text-decoration: none;
+}
+
+.index .domains svg {
+    color: #bbb;
+    vertical-align: text-top;
+    fill: currentColor;
+}
+
+.index .domains a:hover svg {
+    color: inherit;
+}
+
+.index .item {
+    margin: 10px 0;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px;
+    color: #555;
+    border: 1px solid rgba(0,0,0,0.075);
+    border-bottom-color: rgba(0,0,0,0.125);
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05),0 5px 10px rgba(0,0,0,0.05);
+    transition: border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+}
+
+.index .item:hover {
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.15);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05),0 8px 15px rgba(0,0,0,0.1)
+}
+
+.index .item-header {
+    height: 20px;
+    margin: -21px -21px 20px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    opacity: 0.8;
+    transition: opacity 0.1s ease-in-out;
+}
+
+.index .item:hover .item-header  {
+    opacity: 1
+}
+
+.index .item-header a {
+    color: #333;
+    float: right;
+    font-size: 13px;
+    line-height: 22px;
+    margin-right: 6px
+}
+/* end index */
 
 /* start home side */
 .user-name {

@@ -24,7 +24,7 @@
                 </div>
 
                 <#if timelines?size <= 0>
-                <div id="emptyTimeline">${emptyTimelineLabel}</div>
+                <div id="emptyTimeline" class="wrapper">${emptyTimelineLabel}</div>
                 </#if>
                 <div class="list single-line">
                     <ul id="ul">
