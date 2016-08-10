@@ -19,7 +19,7 @@
             </a>
             <#else>
             <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}"
-               class="tooltipped tooltipped-se fn-left" aria-label="${followingTag.tagTitle}"><div class="icon-tags"  
+               class="tooltipped tooltipped-se fn-left ft-a-icon" aria-label="${followingTag.tagTitle}"><div class="icon-tags"  
                    ></div></a>
             </#if>
             <div class="fn-left">

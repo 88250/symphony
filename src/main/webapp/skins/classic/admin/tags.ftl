@@ -18,7 +18,7 @@
                 <#else>
                 <font class="ft-red">${banLabel}</font>
                 </#if>
-                <a href="${servePath}/admin/tag/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
+                <a href="${servePath}/admin/tag/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-icon" aria-label="${editLabel}"><span class="icon-edit"></span></a>
             </div>
             <div class="fn-clear">
                 <#if item.tagIconPath != ''>
@@ -26,11 +26,11 @@
                 </#if>
                 <span class="tags">${item.tagDescription}</span>
                 <span class="fn-right ft-gray">
-                    <span class="icon-view" title="${refCountLabel}"></span>
+                    <span class="tooltipped tooltipped-n" aria-label="${refCountLabel}"><span class="icon-view"></span></span>
                     ${item.tagReferenceCount} &nbsp;
-                    <span class="icon-cmts" title="${commentCountLabel}"></span>
+                    <span class="tooltipped tooltipped-n" aria-label="${commentCountLabel}"><span class="icon-cmts"></span></span>
                     ${item.tagCommentCount} &nbsp;
-                    <span class="icon-date" title="${createTimeLabel}"></span>
+                    <span class="tooltipped tooltipped-n" aria-label="${createTimeLabel}"><span class="icon-date"></span></span>
                     ${item.tagCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>

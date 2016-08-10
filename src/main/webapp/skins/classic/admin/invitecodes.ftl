@@ -21,7 +21,7 @@
                 <font class="ft-red">${stopUseLabel}</font>
                 </#if>
                 <font class="ft-gray">${item.memo}</font>
-                <a href="${servePath}/admin/invitecode/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
+                <a href="${servePath}/admin/invitecode/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-icon" aria-label="${editLabel}"><span class="icon-edit"></span></a>
             </div>
         </li>
         </#list>

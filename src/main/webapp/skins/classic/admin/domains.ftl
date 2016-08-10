@@ -5,7 +5,7 @@
     <form method="GET" action="domains" class="form">
         <input name="title" type="text" placeholder="${domainLabel}"/>
         <button type="submit" class="green">${searchLabel}</button>
-    <button type="button" class="btn red" onclick="window.location = '/admin/add-domain'">${addDomainLabel}</button>
+        <button type="button" class="btn red" onclick="window.location = '/admin/add-domain'">${addDomainLabel}</button>
     </form>
     <br/>
     <ul>
@@ -18,7 +18,7 @@
                 <#else>
                 <font class="ft-red">${banLabel}</font>
                 </#if>
-                <a href="${servePath}/admin/domain/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
+                <a href="${servePath}/admin/domain/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-icon" aria-label="${editLabel}"><span class="icon-edit"></span></a>
             </div>
             <div class="fn-clear">
                 <#if item.domainIconPath != ''>

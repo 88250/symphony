@@ -24,41 +24,41 @@
                         <span class="fn-right">
                             <#if "" != article.articleToC>
                             <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
-                                  class="fn-pointer tooltipped tooltipped-s"><span class="icon-unordered-list ft-red"></span></span>
+                                  class="fn-pointer tooltipped tooltipped-n"><span class="icon-unordered-list ft-red"></span></span>
                             </#if>
                             <#if isLoggedIn>
                             <span id="thankArticle" aria-label="${thankLabel} ${article.thankedCnt}"
-                                  class="fn-pointer tooltipped tooltipped-s"
+                                  class="fn-pointer tooltipped tooltipped-n"
                                   <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
-                            <span id="voteUp_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}"
+                            <span id="voteUp_article${article.oId}" class="tooltipped tooltipped-n fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}"
                                   onclick="Article.voteUp('${article.oId}', 'article')">
                                 <span class="icon-thumbs-up<#if 0 == article.articleVote> ft-red</#if>"></span></span>
-                            <span id="voteDown_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}"
+                            <span id="voteDown_article${article.oId}" class="tooltipped tooltipped-n fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}"
                                   onclick="Article.voteDown('${article.oId}', 'article')">
                                 <span class="icon-thumbs-down<#if 1 == article.articleVote> ft-red</#if>"></span></span>
                             <#if isFollowing>
-                            <span class="tooltipped tooltipped-s fn-pointer" aria-label="${uncollectLabel} ${article.articleCollectCnt}" onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
+                            <span class="tooltipped tooltipped-n fn-pointer" aria-label="${uncollectLabel} ${article.articleCollectCnt}" onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
                             <#else>
-                            <span class="tooltipped tooltipped-s fn-pointer" aria-label="${collectLabel} ${article.articleCollectCnt}" onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
+                            <span class="tooltipped tooltipped-n fn-pointer" aria-label="${collectLabel} ${article.articleCollectCnt}" onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
                             </#if>
                             <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                                  class="fn-pointer tooltipped tooltipped-s"><span class="icon-refresh"></span></span>
+                                  class="fn-pointer tooltipped tooltipped-n"><span class="icon-refresh"></span></span>
                             <#else>
-                            <span class="tooltipped tooltipped-s fn-pointer" aria-label="${collectLabel} ${article.articleCollectCnt}" 
+                            <span class="tooltipped tooltipped-n fn-pointer" aria-label="${collectLabel} ${article.articleCollectCnt}" 
                                   onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
                             <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                                  class="fn-pointer tooltipped tooltipped-s"><span class="icon-refresh"></span></span>
+                                  class="fn-pointer tooltipped tooltipped-n"><span class="icon-refresh"></span></span>
                             </#if>
                             
                             <#if article.isMyArticle && 3 != article.articleType>
-                            <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" class="tooltipped tooltipped-s"><span class="icon-edit"></span></a>
+                            <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" class="tooltipped tooltipped-n"><span class="icon-edit"></span></a>
                             </#if>
                             <#if article.isMyArticle>
-                            <a class="tooltipped tooltipped-s" aria-label="${stickLabel}" 
+                            <a class="tooltipped tooltipped-n" aria-label="${stickLabel}" 
                                href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a>
                             </#if>
                             <#if isAdminLoggedIn>
-                            <a class="tooltipped tooltipped-s" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                            <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                             </#if>
                         </span>
                     </div>
