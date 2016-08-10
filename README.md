@@ -110,6 +110,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 本地配置完成部署后，还需要对七牛（如果使用了）和 SendCloud 进行服务配置：
 
 * 配置_两个_七牛图片样式：
+ 
   ![qiniu](https://cloud.githubusercontent.com/assets/873584/17539639/50871ae4-5ee2-11e6-8c60-b2f2bbec2274.png)
   
   分别设置为 64*64、260*260 的缩略方式。
