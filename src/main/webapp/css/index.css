@@ -751,12 +751,12 @@ code .dec { color: initial; } /* decimal - blue */
     fill: currentColor;
 }
 
-.index .index-wrap .slogan .text {
-    margin: 0 10px;
-}
-
 .index .domains a {
-    color: #666;
+       color: #666;
+    display: initial;
+    width: 20%;
+    margin: 10px 0;
+    text-align: center;
 }
 
 .index .domains a:hover {
@@ -809,12 +809,11 @@ code .dec { color: initial; } /* decimal - blue */
     opacity: 1
 }
 
-.index .item h3 {
-    margin-top: 0;
-    margin-bottom: 5px;
-    font-size: 20px;
-    font-weight: normal;
-    line-height: 1.2;
+.index .item-header a {
     color: #333;
+    float: right;
+    font-size: 13px;
+    line-height: 22px;
+    margin-right: 6px
 }
 /* end index */

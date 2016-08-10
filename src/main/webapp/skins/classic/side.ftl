@@ -1,7 +1,17 @@
 <#include 'common/person-info.ftl'/>
 
 <#if ADLabel!="">
-${ADLabel}
+<div class="module">
+    <div class="module-header">
+        <h2>
+            ${sponsorLabel} 
+            <a href="https://hacpai.com/article/1460083956075" class="fn-right ft-13 ft-gray" target="_blank">${wantPutOnLabel}</a>
+        </h2>
+    </div>
+    <div class="module-panel ad fn-clear">
+        ${ADLabel}
+    </div>
+</div>
 </#if>
 <div class="module">
     <div class="module-header">
@@ -58,9 +68,9 @@ ${ADLabel}
                 <#if "someone" != hotArticle.articleAuthorName>
                 <a rel="nofollow" href="${servePath}/member/${hotArticle.articleAuthorName}"></#if>
                     <span class="avatar-small tooltipped tooltipped-se slogan"
-                        aria-label="${hotArticle.articleAuthorName}"
+                          aria-label="${hotArticle.articleAuthorName}"
                           style="background-image:url('${hotArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
-                <#if "someone" != hotArticle.articleAuthorName></a></#if>
+                    <#if "someone" != hotArticle.articleAuthorName></a></#if>
                 <a rel="nofollow" class="title" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
             </#list>
@@ -113,9 +123,9 @@ ${ADLabel}
                 <#if "someone" != randomArticle.articleAuthorName>
                 <a rel="nofollow" href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
                     <span aria-label="${randomArticle.articleAuthorName}"
-                    style="background-image:url('${randomArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"
-                    class="avatar-small tooltipped tooltipped-se slogan"></span>
-                <#if "someone" != randomArticle.articleAuthorName></a></#if>
+                          style="background-image:url('${randomArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"
+                          class="avatar-small tooltipped tooltipped-se slogan"></span>
+                    <#if "someone" != randomArticle.articleAuthorName></a></#if>
                 <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
             </li>
             </#list>
