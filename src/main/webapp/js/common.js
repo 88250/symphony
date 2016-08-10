@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.30.18.23, Aug 2, 2016
+ * @version 1.30.19.23, Aug 10, 2016
  */
 
 /**
@@ -724,14 +724,17 @@ var Util = {
      * @description 设置导航状态
      */
     _initNav: function () {
-        var pathname = location.pathname;
-        $(".nav div > a").each(function () {
-            if (pathname.indexOf($(this).attr("href")) === 0) {
+        var href = location.href;
+        $(".user-nav a").each(function () {
+            if (href.indexOf($(this).attr("href")) === 0) {
                 // 用户下面有两个页面：用户的评论及文章列表
                 $(this).addClass("current");
-            } else if (pathname === "/register") {
+            } else if (location.pathname === "/register") {
                 // 注册没有使用 href，对其进行特殊处理
                 $("#aRegister").addClass("current");
+            } else if (location.pathname === "/settings") {
+                // 注册没有使用 href，对其进行特殊处理
+                $(".user-nav .nav-avatar").addClass("current");
             }
         });
     },

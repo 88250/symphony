@@ -18,7 +18,6 @@
             dataType: "jsonp",
             jsonp: "callback",
             success: function (data, textStatus) {
-                console.log($("#version").text());
                 if ($("#version").text() === data.symphonyVersion) {
                     $("#upgrade").text('${upToDateLabel}');
                 } else {
