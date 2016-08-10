@@ -91,7 +91,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 * 图片上传默认是上传服务器本地，要使用[七牛](http://www.qiniu.com)可配置 `symphony.properties` 中的 `qiniu.*` 属性
 * 邮件发送使用的是 [SendCloud](http://sendcloud.sohu.com)，需要配置 `symphony.properties` 中的 `sendcloud.*` 属性
 * 将 WEB-INF/cron.xml 中注释掉的部分打开
-* 如果部署在***非*** Jetty 容器中，需要把 WEB-INF/web.xml 中如下配置注释掉：
+* 如果部署在***非 Jetty 容器***中，需要把 WEB-INF/web.xml 中如下配置注释掉：
 ```xml
   <servlet>
       <servlet-name>default</servlet-name>
@@ -109,8 +109,9 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 
 本地配置完成部署后，还需要对七牛（如果使用了）和 SendCloud 进行服务配置：
 
-* 配置_两个_七牛图片数据处理样式：
-  ![qiniu](https://cloud.githubusercontent.com/assets/873584/10298674/3c7230aa-6c14-11e5-9014-2ae4e457a364.png)
+* 配置_两个_七牛图片样式：
+  ![qiniu](https://cloud.githubusercontent.com/assets/873584/17539639/50871ae4-5ee2-11e6-8c60-b2f2bbec2274.png)
+  分别设置为 64*64、260*260 的缩略方式。
 * 配置 SendCloud 邮件模版：
   ![sendcloud](https://cloud.githubusercontent.com/assets/873584/10298675/3cb11b08-6c14-11e5-9fd4-025122336469.png)
 
