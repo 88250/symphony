@@ -15,7 +15,7 @@
                     <#list domains as navDomain>
                     <a href="${servePath}/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
                     </#list>
-                    <a href="${servePath}/">${latestLabel}</a>
+                    <a href="${servePath}/recent">${latestLabel}</a>
                     <a href="${servePath}/hot">${hotLabel}</a>
                     <#if isLoggedIn && "" != currentUser.userCity>
                     <a href="${servePath}/city/my" class="selected">${currentUser.userCity}</a>
