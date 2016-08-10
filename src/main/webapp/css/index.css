@@ -719,3 +719,102 @@ code .dec { color: initial; } /* decimal - blue */
     overflow: auto;
 }
 /* end chat room */
+
+/* start index */
+.index .index-wrap {
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.index .index-wrap.first {
+    border-top: 0;
+}
+
+.index .index-wrap.last {
+    border-bottom: 0;
+}
+
+.index .index-wrap .slogan {
+    padding: 10px;
+    color: #767676;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.index .index-wrap .slogan svg {
+    color: #bbb;
+    vertical-align: middle;
+    fill: currentColor;
+}
+
+.index .index-wrap .slogan .text {
+    margin: 0 10px;
+}
+
+.index .domains a {
+    color: #666;
+}
+
+.index .domains a:hover {
+    color: #111;
+    text-decoration: none;
+}
+
+.index .domains svg {
+    color: #bbb;
+    vertical-align: text-top;
+    fill: currentColor;
+}
+
+.index .domains a:hover svg {
+    color: inherit;
+}
+
+.index .item {
+    float: left;
+    width: 34%;
+    padding: 20px;
+    color: #555;
+    border: 1px solid rgba(0,0,0,0.075);
+    border-bottom-color: rgba(0,0,0,0.125);
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05),0 5px 10px rgba(0,0,0,0.05);
+    transition: border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+}
+
+.index .item.mid {
+    margin: 0 3%;
+}
+
+.index .item:hover {
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.15);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05),0 8px 15px rgba(0,0,0,0.1)
+}
+
+.index .item-header {
+    height: 20px;
+    margin: -21px -21px 20px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    opacity: 0.8;
+    transition: opacity 0.1s ease-in-out;
+}
+
+.index .item:hover .item-header  {
+    opacity: 1
+}
+
+.index .item h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 1.2;
+    color: #333;
+}
+/* end index */

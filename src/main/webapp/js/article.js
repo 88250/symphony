@@ -885,7 +885,7 @@ var Article = {
                 if (scrollTop < toc[i].offsetTop - 5) {
                     $articleToc.find('li').removeClass('current');
                     var index = i > 0 ? i - 1 : 0;
-                    $articleToc.find('a[href=#' + toc[index].id + ']').parent().addClass('current');
+                    $articleToc.find('a[href="#' + toc[index].id + '"]').parent().addClass('current');
                     break;
                 }
             }
