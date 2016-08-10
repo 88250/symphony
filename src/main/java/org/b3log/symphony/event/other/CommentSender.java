@@ -16,6 +16,7 @@
 package org.b3log.symphony.event.other;
 
 import java.net.URL;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
@@ -52,7 +53,7 @@ import org.json.JSONObject;
  * Sends comment to client.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.0, Apr 7, 2016
+ * @version 1.1.2.1, Aug 10, 2016
  * @since 1.4.0
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -141,9 +142,14 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             comment.put(Common.IP, originalComment.optString(Comment.COMMENT_IP));
             comment.put(Common.UA, originalComment.optString(Comment.COMMENT_UA));
             comment.put(Article.ARTICLE_T_ID, originalArticle.optString(Article.ARTICLE_CLIENT_ARTICLE_ID));
-            comment.put(Common.AUTHOR_NAME, commenter.optString(User.USER_NAME));
+            final String authorName = commenter.optString(User.USER_NAME);
+            comment.put(Common.AUTHOR_NAME, authorName);
             comment.put(Common.AUTHOR_EMAIL, commenter.optString(User.USER_EMAIL));
-            comment.put(Common.AUTHOR_URL, commenter.optString(User.USER_URL));
+            String authorURL = commenter.optString(User.USER_URL);
+            if (StringUtils.isBlank(authorURL)) {
+                authorURL = Latkes.getServePath() + "/member/" + authorName;
+            }
+            comment.put(Common.AUTHOR_URL, authorURL);
             comment.put(Common.IS_ARTICLE_AUTHOR,
                     originalArticle.optString(Article.ARTICLE_AUTHOR_ID)
                     .equals(commenter.optString(Keys.OBJECT_ID)));
