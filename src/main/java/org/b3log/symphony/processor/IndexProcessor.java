@@ -32,6 +32,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
@@ -49,6 +50,8 @@ import org.json.JSONObject;
  *
  * <ul>
  * <li>Shows index (/), GET</li>
+ * <li>Shows recent articles (/recent), GET</li>
+ * <li>Shows hot articles (/hot), GET</li>
  * <li>Shows about (/about), GET</li>
  * <li>Shows b3log (/b3log), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
@@ -56,7 +59,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.4.1.13, Aug 3, 2016
+ * @version 1.4.1.14, Aug 11, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -109,6 +112,38 @@ public class IndexProcessor {
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        final int moduleListSize = 7;
+
+        JSONObject result = articleQueryService.getRecentArticles(1, moduleListSize);
+        final List<JSONObject> recentArticles = (List<JSONObject>) result.get(Article.ARTICLES);
+        dataModel.put(Common.RECENT_ARTICLES, recentArticles);
+
+        final List<JSONObject> hotArticles = articleQueryService.getHotArticles(moduleListSize);
+        dataModel.put(Common.HOT_ARTICLES, hotArticles);
+
+        filler.fillDomainNav(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
+        filler.fillSideTags(dataModel);
+    }
+
+    /**
+     * Shows recent articles.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/recent", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showRecent(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("recent.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
             pageNumStr = "1";
@@ -129,7 +164,7 @@ public class IndexProcessor {
 
         for (final JSONObject article : latestArticles) {
             article.put(Article.ARTICLE_T_IS_STICK, article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0);
-            
+
             final String tagStr = article.optString(Article.ARTICLE_TAGS);
             final String[] tagTitles = tagStr.split(",");
             if (tagTitles.length > 1) {
@@ -153,9 +188,52 @@ public class IndexProcessor {
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillSideHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+    }
+
+    /**
+     * Shows hot articles.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/hot", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showHotArticles(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("hot.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        int pageSize = Symphonys.getInt("indexArticlesCnt");
+
+        final JSONObject user = userQueryService.getCurrentUser(request);
+        if (null != user) {
+            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+        }
+
+        final List<JSONObject> indexArticles = articleQueryService.getHotArticles(pageSize);
+        dataModel.put(Common.INDEX_ARTICLES, indexArticles);
+
+        Stopwatchs.start("Fills");
+        try {
+            filler.fillHeaderAndFooter(request, response, dataModel);
+            filler.fillDomainNav(dataModel);
+            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
+                filler.fillRandomArticles(dataModel);
+            }
+            filler.fillSideHotArticles(dataModel);
+            filler.fillSideTags(dataModel);
+            filler.fillLatestCmts(dataModel);
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -178,7 +256,7 @@ public class IndexProcessor {
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillSideHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
@@ -203,7 +281,7 @@ public class IndexProcessor {
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillSideHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

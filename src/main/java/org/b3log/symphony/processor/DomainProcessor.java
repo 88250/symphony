@@ -29,7 +29,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.Article;
@@ -57,7 +56,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, May 6, 2016
+ * @version 1.0.0.4, Aug 11, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -191,7 +190,7 @@ public class DomainProcessor {
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillSideHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
@@ -224,48 +223,5 @@ public class DomainProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
-    }
-
-    /**
-     * Shows hot articles.
-     *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/hot", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void showHotArticles(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("hot.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        int pageSize = Symphonys.getInt("indexArticlesCnt");
-
-        final JSONObject user = userQueryService.getCurrentUser(request);
-        if (null != user) {
-            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
-        }
-
-        final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
-        dataModel.put(Common.INDEX_ARTICLES, indexArticles);
-
-        Stopwatchs.start("Fills");
-        try {
-            filler.fillHeaderAndFooter(request, response, dataModel);
-            filler.fillDomainNav(dataModel);
-            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-                filler.fillRandomArticles(dataModel);
-            }
-            filler.fillHotArticles(dataModel);
-            filler.fillSideTags(dataModel);
-            filler.fillLatestCmts(dataModel);
-        } finally {
-            Stopwatchs.end();
-        }
     }
 }

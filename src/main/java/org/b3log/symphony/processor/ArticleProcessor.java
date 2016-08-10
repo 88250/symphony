@@ -124,7 +124,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.17.30, Jul 27, 2016
+ * @version 1.21.17.31, Aug 11, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -600,7 +600,7 @@ public class ArticleProcessor {
 
         filler.fillRelevantArticles(dataModel, article);
         filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillSideHotArticles(dataModel);
 
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));

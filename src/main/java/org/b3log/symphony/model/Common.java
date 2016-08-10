@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.36.1.11, Jul 22, 2016
+ * @version 1.37.1.11, Aug 11, 2016
  * @since 0.2.0
  */
 public final class Common {
@@ -93,7 +93,7 @@ public final class Common {
      * Key of rewarded count.
      */
     public static final String REWARED_COUNT = "rewardedCnt";
-    
+
     /**
      * Key of thanked count.
      */
@@ -288,6 +288,11 @@ public final class Common {
      * Key of recent articles.
      */
     public static final String RECENT_ARTICLES = "recentArticles";
+
+    /**
+     * Key of hot articles.
+     */
+    public static final String HOT_ARTICLES = "hotArticles";
 
     /**
      * Key of side tags.

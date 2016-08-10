@@ -86,7 +86,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.19.14.24, Jul 23, 2016
+ * @version 2.19.14.25, Aug 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -947,13 +947,13 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets hot articles with the specified fetch size.
+     * Gets side hot articles with the specified fetch size.
      *
      * @param fetchSize the specified fetch size
      * @return recent articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getHotArticles(final int fetchSize) throws ServiceException {
+    public List<JSONObject> getSideHotArticles(final int fetchSize) throws ServiceException {
         final String id = String.valueOf(DateUtils.addDays(new Date(), -7).getTime());
 
         try {
@@ -1142,13 +1142,13 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets the index articles with the specified fetch size.
+     * Gets the hot articles with the specified fetch size.
      *
      * @param fetchSize the specified fetch size
-     * @return recent articles, returns an empty list if not found
+     * @return hot articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getIndexArticles(final int fetchSize) throws ServiceException {
+    public List<JSONObject> getHotArticles(final int fetchSize) throws ServiceException {
         final Query query = makeTopQuery(1, fetchSize);
 
         try {

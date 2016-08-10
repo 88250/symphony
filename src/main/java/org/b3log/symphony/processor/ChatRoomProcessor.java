@@ -72,7 +72,7 @@ import org.jsoup.Jsoup;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.5.6, Aug 5, 2016
+ * @version 1.2.5.7, Aug 11, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -346,7 +346,7 @@ public class ChatRoomProcessor {
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillSideHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

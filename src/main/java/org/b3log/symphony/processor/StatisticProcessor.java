@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 23, 2016
+ * @version 1.0.0.2, Aug 11, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -215,7 +215,7 @@ public class StatisticProcessor {
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillSideHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

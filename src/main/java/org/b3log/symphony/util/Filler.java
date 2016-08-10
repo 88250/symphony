@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.2.15, Aug 2, 2016
+ * @version 1.8.2.16, Aug 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -195,15 +195,16 @@ public class Filler {
     }
 
     /**
-     * Fills hot articles.
+     * Fills side hot articles.
      *
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    public void fillHotArticles(final Map<String, Object> dataModel) throws Exception {
+    public void fillSideHotArticles(final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills hot articles");
         try {
-            dataModel.put(Common.SIDE_HOT_ARTICLES, articleQueryService.getHotArticles(Symphonys.getInt("sideHotArticlesCnt")));
+            dataModel.put(Common.SIDE_HOT_ARTICLES, 
+                    articleQueryService.getSideHotArticles(Symphonys.getInt("sideHotArticlesCnt")));
         } finally {
             Stopwatchs.end();
         }

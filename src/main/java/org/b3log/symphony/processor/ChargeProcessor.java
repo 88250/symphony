@@ -39,7 +39,7 @@ import org.b3log.symphony.util.Filler;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 7, 2015
+ * @version 1.0.0.1, Aug 11, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -76,7 +76,7 @@ public class ChargeProcessor {
 
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillSideHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

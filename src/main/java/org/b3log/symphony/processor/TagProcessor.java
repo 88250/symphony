@@ -59,7 +59,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.3, Jul 26, 2016
+ * @version 1.4.0.4, Aug 11, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -277,7 +277,7 @@ public class TagProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillSideHotArticles(dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
