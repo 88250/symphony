@@ -12,8 +12,11 @@
     <ol>
         <#list userHomeFollowingUsers as followingUser>
         <li class="fn-clear">
-            <a rel="nofollow" title="${followingUser.userName} <#if followingUser.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" href="${servePath}/member/${followingUser.userName}">
-                <div class="avatar fn-left" style="background-image:url('${followingUser.userAvatarURL}')"></div>
+            <a rel="nofollow ft-gray"  
+                   href="${servePath}/member/${followingUser.userName}">
+                <div class="avatar fn-left tooltipped tooltipped-se" 
+                   aria-label="${followingUser.userName} <#if followingUser.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" 
+                   style="background-image:url('${followingUser.userAvatarURL}')"></div>
             </a>
             <div class="fn-left">
                 <h3 class="fn-inline">

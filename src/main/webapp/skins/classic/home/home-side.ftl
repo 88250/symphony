@@ -1,5 +1,6 @@
 <div class="ft-center">
-    <div id="avatarURLDom" class="avatar-big" title="${user.userName}" style="background-image:url('${user.userAvatarURL}?imageView2/1/w/260/h/260/interlace/0/q/80')"></div>
+    <div id="avatarURLDom" class="avatar-big tooltipped tooltipped-s" aria-label="${user.userName}"
+         style="background-image:url('${user.userAvatarURL}?imageView2/1/w/260/h/260/interlace/0/q/80')"></div>
     <div>
         <div class="user-name">
             <#if user.userNickname != "">
@@ -45,7 +46,7 @@
             ${user.userNo?c}
             <span class="ft-gray">${numVIPLabel}</span>, <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
         <span class="ft-gray">${pointLabel}</span>
-            <a href="${servePath}/member/${user.userName}/points" title="${user.userPoint?c}">
+        <a href="${servePath}/member/${user.userName}/points" class="tooltipped tooltipped-s" aria-label="${user.userPoint?c}">
                 <#if 0 == user.userAppRole>
                 0x${user.userPointHex}
                 <#else>

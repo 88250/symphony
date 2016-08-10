@@ -25,9 +25,8 @@
                class="tooltipped tooltipped-s responsive-show"><span class="icon-addfile"></span></a>
             <a id="aNotifications" class="tooltipped tooltipped-s <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
             <#else>
-            <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin" 
-               title="${registerLabel}">${registerLabel}</a>
-            <a href="javascript: Util.showLogin();" title="${loginLabel}" class="unlogin">${loginLabel}</a>
+            <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin">${registerLabel}</a>
+            <a href="javascript: Util.showLogin();" class="unlogin">${loginLabel}</a>
             <div class="form fn-none">
                 <table cellspacing="0" cellpadding="0">
                     <tr>

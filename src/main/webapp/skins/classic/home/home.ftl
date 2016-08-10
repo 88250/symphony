@@ -17,11 +17,11 @@
             <div class="has-view">
                 <h2>
                     <#if 1 == article.articleType>
-                    <span class="icon-locked" title="${discussionLabel}"></span>
+                    <span class="tooltipped tooltipped-e" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
                     <#elseif 2 == article.articleType>
-                    <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                    <span class="tooltipped tooltipped-e" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
                     <#elseif 3 == article.articleType>
-                    <span class="icon-video" title="${thoughtLabel}"></span>
+                    <span class="tooltipped tooltipped-e" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                     </#if>
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
@@ -40,7 +40,7 @@
             </div>
             <#else>
             <#if article.articleCommentCount != 0>
-            <div class="cmts" title="${cmtLabel}">
+            <div class="cmts tooltipped tooltipped-w" aria-label="${cmtLabel}${quantityLabel}">
                 <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>

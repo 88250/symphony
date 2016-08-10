@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.8.9, Aug 5, 2016
+ * @version 1.9.8.10, Aug 10, 2016
  */
 
 /**
@@ -72,19 +72,19 @@ var ArticleChannel = {
                     }
 
                     var template = '<li id="' + data.commentId + '" class="fn-none">'
-                            + '<div class="fn-flex">';
+                            + bottomCmt + '<div class="fn-flex">';
 
                     if (!data.fromClient) {
                         if (data.commentAuthorName !== 'someone') {
                             template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
                         }
-                        template += '<div class="avatar" title="' + data.commentAuthorName + '" style="background-image:url('
+                        template += '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.commentAuthorName + '" style="background-image:url('
                                 + data.commentAuthorThumbnailURL + '?imageView2/1/w/64/h/64/interlace/0/q/80)"></div>';
                         if (data.commentAuthorName !== 'someone') {
                             template += '</a>';
                         }
                     } else {
-                        template += '<div class="avatar" title="' + data.commentAuthorName + '" style="background-image:url('
+                        template += '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.commentAuthorName + '" style="background-image:url('
                                 + data.commentAuthorThumbnailURL + '?imageView2/1/w/64/h/64/interlace/0/q/80)"></div>';
                     }
 
@@ -94,7 +94,7 @@ var ArticleChannel = {
 
                     if (!data.fromClient) {
                         if (data.commentAuthorName !== 'someone') {
-                            template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '" title="' + data.commentAuthorName + '">';
+                            template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
                         }
                         template += data.commentAuthorName;
                         if (data.commentAuthorName !== 'someone') {
@@ -337,16 +337,15 @@ var ChatRoomChannel = {
                 case "msg":
                     var enableUserLink = data.userAvatarURL.indexOf("user-thumbnail.png") < 0;
                     var avatarPart = '<a rel="nofollow" href="/member/' + data.userName + '">'
-                            + '<div class="avatar" '
-                            + 'title="' + data.userName + '" style="background-image:url(' + data.userAvatarURL + '?imageView2/1/w/64/h/64/interlace/0/q/80)"></div>'
+                            + '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.userName 
+                            + '" style="background-image:url(' + data.userAvatarURL + '?imageView2/1/w/64/h/64/interlace/0/q/80)"></div>'
                             + '</a>';
                     if (!enableUserLink) {
-                        avatarPart = '<div class="avatar" '
-                                + 'title="' + data.userName + '" style="background-image:url(' + data.userAvatarURL + '?imageView2/1/w/64/h/64/interlace/0/q/80)"></div>';
+                        avatarPart = '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.userName 
+                                + '" style="background-image:url(' + data.userAvatarURL + '?imageView2/1/w/64/h/64/interlace/0/q/80)"></div>';
                     }
 
-                    var namePart = '<a rel="nofollow" href="/member/' + data.userName + '" '
-                            + 'title="' + data.userName + '">' + data.userName + '</a>';
+                    var namePart = '<a rel="nofollow" href="/member/' + data.userName + '">' + data.userName + '</a>';
                     if (!enableUserLink) {
                         namePart = data.userName;
                     }
@@ -360,7 +359,7 @@ var ChatRoomChannel = {
                             + namePart
                             + '</span>'
                             + '</div>'
-                            + '<div class="content-reset">'
+                            + '<div class="content-reset comment">'
                             + data.content
                             + '</div>'
                             + '</div>'

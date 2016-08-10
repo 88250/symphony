@@ -9,8 +9,9 @@
         <li>
             <div class="fn-flex">
                 <a rel="nofollow"
+                   class="tooltipped tooltipped-se"
                    href="${servePath}/member/${user.userName}" 
-                   title="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div></a>
+                   aria-label="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div></a>
                 <div class="has-view fn-flex-1">
                     <h2>
                         ${user_index + 1}.
@@ -32,7 +33,7 @@
                             <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
                         </div>
                     </div>
-                    <div class="cmts" title="${user.userUsedPoint?c}">
+                    <div class="cmts tooltipped tooltipped-w" aria-label="${pointLabel} ${user.userUsedPoint?c}">
                         <a href="${servePath}/member/${user.userName}/points">
                             ${user.userUsedPoint?c}
                         </a>

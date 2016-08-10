@@ -65,11 +65,11 @@
 
                     <h2 class="article-title">
                         <#if 1 == article.articleType>
-                        <span class="icon-locked" title="${discussionLabel}"></span>
+                        <span class="tooltipped tooltipped-e" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
                         <#elseif 2 == article.articleType>
-                        <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                        <span class="tooltipped tooltipped-e" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
                         <#elseif 3 == article.articleType>
-                        <span class="icon-video" title="${thoughtLabel}"></span>
+                        <span class="tooltipped tooltipped-e" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                         </#if>
                         <a href="${servePath}${article.articlePermalink}" rel="bookmark">
                             ${article.articleTitleEmoj}
@@ -77,12 +77,11 @@
                     </h2> 
                     <div class="article-info fn-flex">
                         <#if article.articleAnonymous == 0>
-                        <a rel="author" href="${servePath}/member/${article.articleAuthorName}"
-                            title="${article.articleAuthorName}"></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div><#if article.articleAnonymous == 0></a></#if>
+                        <a rel="author" href="${servePath}/member/${article.articleAuthorName}"></#if><div 
+                           class="avatar tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div><#if article.articleAnonymous == 0></a></#if>
                         <div class="fn-flex-1">
                             <#if article.articleAnonymous == 0>
-                            <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-black"
-                               title="${article.articleAuthorName}"></#if><strong>${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
+                            <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-black"></#if><strong>${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
                             <span class="ft-gray">
                                 <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
                                 • <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
@@ -98,7 +97,7 @@
                                 </#if>
                                 •
                             </span>
-                            <a title="${cmtLabel}" rel="nofollow" class="ft-gray" href="#comments">
+                            <a rel="nofollow" class="ft-gray" href="#comments">
                                 ${cmtLabel} ${article.articleCommentCount}
                             </a> 
                             <br/>
@@ -200,20 +199,19 @@
                                         <#if !comment.fromClient>
                                         <#if comment.commentAnonymous == 0>
                                         <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
-                                            <div class="avatar" 
-                                                 title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                                            <div class="avatar tooltipped tooltipped-se" 
+                                                 aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                                         <#if comment.commentAnonymous == 0></a></#if>
                                         <#else>
-                                        <div class="avatar" 
-                                             title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                                        <div class="avatar tooltipped tooltipped-se" 
+                                             aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                                         </#if>
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
                                                 <span class="fn-left">
                                                     <#if !comment.fromClient>
                                                     <#if comment.commentAnonymous == 0>
-                                                    <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"
-                                                       title="${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
+                                                    <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
                                                        via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
                                                         <#if 0 == comment.commenter.userUAStatus><span class="cmt-via" data-ua="${comment.commentUA}"></span></#if>
                                                     </span>

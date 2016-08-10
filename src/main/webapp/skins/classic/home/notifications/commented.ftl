@@ -6,16 +6,19 @@
     <li class="fn-flex comment-list-item<#if notification.hasRead> read</#if>">
         <#if "someone" != notification.commentAuthorName>
         <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.commentAuthorName}"></#if>
-            <div class="avatar" title="${notification.commentAuthorName}"
+            <div class="avatar tooltipped tooltipped-se"  
+                   aria-label="${notification.commentAuthorName}"
                  style="background-image:url('${notification.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
         <#if "someone" != notification.commentAuthorName></a></#if>
         <div class="fn-flex-1">
             <div class="fn-flex">
                 <h2 class="fn-flex-1">
-                    <#if notification.commentArticleType == 1>
-                    <span class="icon-locked" title="${discussionLabel}"></span>
-                    <#elseif notification.commentArticleType == 2>
-                    <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                    <#if 1 == notification.commentArticleType>
+                    <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
+                    <#elseif 2 == notification.commentArticleType>
+                    <span class="tooltipped tooltipped-w" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
+                    <#elseif 3 == notification.commentArticleType>
+                    <span class="tooltipped tooltipped-w" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                     </#if>
                     <a rel="bookmark" href="${notification.commentSharpURL}"> ${notification.commentArticleTitle}</a>
                 </h2>

@@ -14,10 +14,13 @@
         <li class="fn-clear">
             <#if "" != followingTag.tagIconPath>
             <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}">
-                <div title="${followingTag.tagTitle}" class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
+                <div class="avatar fn-left ft-gray tooltipped tooltipped-se"  
+                   aria-label="${followingTag.tagTitle}" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
             </a>
             <#else>
-            <a class="icon-tags fn-left" href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}"></a>
+            <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}"
+               class="tooltipped tooltipped-se fn-left" aria-label="${followingTag.tagTitle}"><div class="icon-tags"  
+                   ></div></a>
             </#if>
             <div class="fn-left">
                 <h3 class="fn-inline">

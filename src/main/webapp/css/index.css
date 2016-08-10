@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.13.22, Aug 1, 2016
+ * @version 2.12.13.23, Aug 10, 2016
  */
 
 /* start module */
@@ -212,7 +212,7 @@ label.cmt-anonymous {
 }
 
 #comments .comment > p {
-    margin-top: 13px;
+    margin-top: 10px;
 }
 
 #comments .comment-info {

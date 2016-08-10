@@ -60,32 +60,31 @@
                             </#if>
                         </div>
                         <br/>
-                        <div class="list">
+                        <div class="list" id="comments">
                             <ul>
                                 <#list messages as msg>
                                 <li>
                                     <div class="fn-flex">
                                         <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
                                         <a rel="nofollow" href="${servePath}/member/${msg.userName}">
-                                            <div class="avatar" 
-                                                 title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                                            <div class="avatar tooltipped tooltipped-se" 
+                                                 aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                                         </a>
                                         <#else>
-                                        <div class="avatar" 
-                                             title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                                        <div class="avatar tooltipped tooltipped-se" 
+                                             aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
                                         </#if>
                                         <div class="fn-flex-1">
                                             <div class="fn-clear">
                                                 <span class="fn-left">
                                                     <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
-                                                    <a rel="nofollow" href="${servePath}/member/${msg.userName}"
-                                                       title="${msg.userName}">${msg.userName}</a>
+                                                    <a rel="nofollow" href="${servePath}/member/${msg.userName}">${msg.userName}</a>
                                                     <#else>
                                                     ${msg.userName}
                                                     </#if>
                                                 </span>
                                             </div>
-                                            <div class="content-reset">
+                                            <div class="content-reset comment">
                                                 ${msg.content}
                                             </div>
                                         </div>
