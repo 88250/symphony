@@ -111,6 +111,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 
 * 配置_两个_七牛图片样式：
   ![qiniu](https://cloud.githubusercontent.com/assets/873584/17539639/50871ae4-5ee2-11e6-8c60-b2f2bbec2274.png)
+  
   分别设置为 64*64、260*260 的缩略方式。
 * 配置 SendCloud 邮件模版：
   ![sendcloud](https://cloud.githubusercontent.com/assets/873584/10298675/3cb11b08-6c14-11e5-9fd4-025122336469.png)
