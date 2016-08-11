@@ -64,7 +64,7 @@ public class NotificationMgmtService {
      * @param type the specified notification type
      */
     public void makeRead(final String userId, final int type) {
-        final Query query = new Query().setPageCount(-1).setFilter(
+        final Query query = new Query().setFilter(
                 CompositeFilterOperator.and(
                         new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId),
                         new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false),
@@ -91,7 +91,7 @@ public class NotificationMgmtService {
         final Set<String> dataIds = new HashSet<String>(commentIds);
         dataIds.add(articleId);
 
-        final Query query = new Query().setPageCount(-1).setFilter(
+        final Query query = new Query().setFilter(
                 CompositeFilterOperator.and(
                         new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId),
                         new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false),

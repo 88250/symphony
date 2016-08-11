@@ -108,7 +108,7 @@ public class PostExportService {
 
         final JSONArray posts = new JSONArray();
 
-        Query query = new Query().setPageCount(-1).setFilter(
+        Query query = new Query().setFilter(
                 new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, userId)).
                 addProjection(Keys.OBJECT_ID, String.class).
                 addProjection(Article.ARTICLE_TITLE, String.class).
@@ -142,7 +142,7 @@ public class PostExportService {
             return null;
         }
 
-        query = new Query().setPageCount(-1).setFilter(
+        query = new Query().setFilter(
                 new PropertyFilter(Comment.COMMENT_AUTHOR_ID, FilterOperator.EQUAL, userId)).
                 addProjection(Keys.OBJECT_ID, String.class).
                 addProjection(Comment.COMMENT_CONTENT, String.class).
