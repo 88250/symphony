@@ -27,6 +27,7 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.TimelineMgmtService;
@@ -41,7 +42,7 @@ import org.b3log.symphony.util.Symphonys;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Aug 11, 2016
+ * @version 1.0.0.5, Aug 11, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -90,6 +91,6 @@ public class TimelineProcessor {
         filler.fillLatestCmts(dataModel);
 
         dataModel.put("timelineCnt", Symphonys.getInt("timelineCnt"));
-        dataModel.put("timelines", timelineMgmtService.getTimelines());
+        dataModel.put(Common.TIMELINES, timelineMgmtService.getTimelines());
     }
 }

@@ -18,7 +18,10 @@ package org.b3log.symphony.util;
 import org.b3log.symphony.service.AvatarQueryService;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,7 +58,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.2.16, Aug 11, 2016
+ * @version 1.9.2.16, Aug 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -65,6 +68,16 @@ public class Filler {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
+
+    /**
+     * Icon configuration.
+     */
+    private static final ResourceBundle ICON_CONF = ResourceBundle.getBundle("icon");
+
+    /**
+     * Icons.
+     */
+    private static Map<String, String> ICONS;
 
     /**
      * Language service.
@@ -203,7 +216,7 @@ public class Filler {
     public void fillSideHotArticles(final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills hot articles");
         try {
-            dataModel.put(Common.SIDE_HOT_ARTICLES, 
+            dataModel.put(Common.SIDE_HOT_ARTICLES,
                     articleQueryService.getSideHotArticles(Symphonys.getInt("sideHotArticlesCnt")));
         } finally {
             Stopwatchs.end();
@@ -246,12 +259,12 @@ public class Filler {
         dataModel.put("algoliaAppId", Symphonys.get("algolia.appId"));
         dataModel.put("algoliaSearchKey", Symphonys.get("algolia.searchKey"));
         dataModel.put("algoliaIndex", Symphonys.get("algolia.index"));
-        dataModel.put("logoIcon", Symphonys.get("icon.logo").replace("${servePath}", Latkes.getServePath()));
 
         // fillTrendTags(dataModel);
         fillPersonalNav(request, response, dataModel);
 
         fillLangs(dataModel);
+        fillIcons(dataModel);
         fillSideAd(dataModel);
     }
 
@@ -405,6 +418,36 @@ public class Filler {
         Stopwatchs.start("Fills lang");
         try {
             dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
+        } finally {
+            Stopwatchs.end();
+        }
+    }
+
+    /**
+     * Fills the all icons.
+     *
+     * @param dataModel the specified data model
+     */
+    private void fillIcons(final Map<String, Object> dataModel) {
+        Stopwatchs.start("Fills icons");
+        try {
+            if (null == ICONS) {
+                ICONS = new HashMap<>();
+
+                final Enumeration<String> keys = ICON_CONF.getKeys();
+                while (keys.hasMoreElements()) {
+                    final String key = keys.nextElement();
+                    String value = ICON_CONF.getString(key);
+
+                    if ("logoIcon".equals(key)) {
+                        value = value.replace("${servePath}", Latkes.getServePath());
+                    }
+
+                    ICONS.put(key, value);
+                }
+            }
+
+            dataModel.putAll(ICONS);
         } finally {
             Stopwatchs.end();
         }

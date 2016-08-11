@@ -288,6 +288,11 @@ public final class Common {
      * Key of recent articles.
      */
     public static final String RECENT_ARTICLES = "recentArticles";
+    
+    /**
+     * Key of timelines.
+     */
+    public static final String TIMELINES = "timelines";
 
     /**
      * Key of hot articles.

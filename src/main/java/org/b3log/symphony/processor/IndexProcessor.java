@@ -40,6 +40,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
@@ -59,7 +60,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.4.1.14, Aug 11, 2016
+ * @version 1.5.1.14, Aug 11, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -95,6 +96,12 @@ public class IndexProcessor {
     private LangPropsService langPropsService;
 
     /**
+     * Timeline management service.
+     */
+    @Inject
+    private TimelineMgmtService timelineMgmtService;
+
+    /**
      * Shows index.
      *
      * @param context the specified context
@@ -120,6 +127,9 @@ public class IndexProcessor {
 
         final List<JSONObject> hotArticles = articleQueryService.getHotArticles(moduleListSize);
         dataModel.put(Common.HOT_ARTICLES, hotArticles);
+
+        final List<JSONObject> timelines = timelineMgmtService.getTimelines();
+        dataModel.put(Common.TIMELINES, timelines);
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
