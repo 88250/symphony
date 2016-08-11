@@ -175,6 +175,11 @@ public class ArticleQueryService {
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
 
     /**
+     * Index list size.
+     */
+    private static final int INDEX_LIST_SIZE = 7;
+
+    /**
      * Gets article count of the specified day.
      *
      * @param day the specified day
@@ -1142,6 +1147,54 @@ public class ArticleQueryService {
     }
 
     /**
+     * Gets the index recent (sort by create time) articles.
+     *
+     * @return recent articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getIndexRecentArticles() throws ServiceException {
+        final Query query = new Query()
+                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
+                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setPageSize(INDEX_LIST_SIZE).setCurrentPageNum(1).setPageCount(1);
+        query.setFilter(makeRecentArticleShowingFilter());
+        query.addProjection(Keys.OBJECT_ID, String.class).
+                addProjection(Article.ARTICLE_STICK, Long.class).
+                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
+                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                addProjection(Article.ARTICLE_TITLE, String.class).
+                addProjection(Article.ARTICLE_STATUS, Integer.class).
+                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                addProjection(Article.ARTICLE_TYPE, Integer.class).
+                addProjection(Article.ARTICLE_PERMALINK, String.class).
+                addProjection(Article.ARTICLE_TAGS, String.class).
+                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
+                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
+                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class);
+
+        try {
+            List<JSONObject> ret;
+            Stopwatchs.start("Query index recent articles");
+            try {
+                final JSONObject result = articleRepository.get(query);
+                ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            } finally {
+                Stopwatchs.end();
+            }
+
+            organizeArticles(ret);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets index recent articles failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets the hot articles with the specified fetch size.
      *
      * @param fetchSize the specified fetch size
@@ -1153,7 +1206,7 @@ public class ArticleQueryService {
 
         try {
             List<JSONObject> ret;
-            Stopwatchs.start("Query articles");
+            Stopwatchs.start("Query hot articles");
             try {
                 final JSONObject result = articleRepository.get(query);
                 ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
@@ -1183,6 +1236,54 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets index articles failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the index hot articles with the specified fetch size.
+     *
+     * @return hot articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getIndexHotArticles() throws ServiceException {
+        final Query query = new Query()
+                .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
+                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
+                .setPageCount(1).setPageSize(INDEX_LIST_SIZE).setCurrentPageNum(1);
+        query.setFilter(makeArticleShowingFilter());
+        query.addProjection(Keys.OBJECT_ID, String.class).
+                addProjection(Article.ARTICLE_STICK, Long.class).
+                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
+                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                addProjection(Article.ARTICLE_TITLE, String.class).
+                addProjection(Article.ARTICLE_STATUS, Integer.class).
+                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                addProjection(Article.ARTICLE_TYPE, Integer.class).
+                addProjection(Article.ARTICLE_PERMALINK, String.class).
+                addProjection(Article.ARTICLE_TAGS, String.class).
+                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
+                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
+                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class);
+
+        try {
+            List<JSONObject> ret;
+            Stopwatchs.start("Query index hot articles");
+            try {
+                final JSONObject result = articleRepository.get(query);
+                ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            } finally {
+                Stopwatchs.end();
+            }
+
+            organizeArticles(ret);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets index hot articles failed", e);
             throw new ServiceException(e);
         }
     }

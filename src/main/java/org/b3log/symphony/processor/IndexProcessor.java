@@ -119,13 +119,10 @@ public class IndexProcessor {
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final int moduleListSize = 7;
-
-        JSONObject result = articleQueryService.getRecentArticles(1, moduleListSize);
-        final List<JSONObject> recentArticles = (List<JSONObject>) result.get(Article.ARTICLES);
+        final List<JSONObject> recentArticles = articleQueryService.getIndexRecentArticles();
         dataModel.put(Common.RECENT_ARTICLES, recentArticles);
 
-        final List<JSONObject> hotArticles = articleQueryService.getHotArticles(moduleListSize);
+        final List<JSONObject> hotArticles = articleQueryService.getIndexHotArticles();
         dataModel.put(Common.HOT_ARTICLES, hotArticles);
 
         final List<JSONObject> timelines = timelineMgmtService.getTimelines();
