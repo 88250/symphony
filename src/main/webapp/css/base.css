@@ -1487,6 +1487,7 @@ a[class*=" icon-"]:hover {
     padding: 10px 0;
     position: relative;
     z-index: 1;
+    background-color: #F8F8F8;
 }
 
 .footer .info,

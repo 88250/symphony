@@ -752,7 +752,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .index .domains a {
-       color: #666;
+    color: #666;
     display: initial;
     width: 20%;
     margin: 10px 0;
@@ -813,7 +813,17 @@ code .dec { color: initial; } /* decimal - blue */
     color: #333;
     float: right;
     font-size: 13px;
-    line-height: 22px;
-    margin-right: 6px
+    line-height: 21px;
+    margin-right: 6px;
+    text-shadow: 0px 0px 1px #fff;
+    font-weight: bold;
+}
+
+.index .tag-desc > li:hover > span {
+    border-bottom-style: solid;
+    border-radius: 3px;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    z-index: 3;
 }
 /* end index */
