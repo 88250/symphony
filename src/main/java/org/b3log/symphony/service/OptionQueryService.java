@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.7, Jul 22, 2016
+ * @version 1.4.0.8, Aug 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -136,7 +136,8 @@ public class OptionQueryService {
         final JSONObject ret = new JSONObject();
 
         final Query query = new Query().
-                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_STATISTIC));
+                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_STATISTIC))
+                .setPageCount(1);
         try {
             final JSONObject result = optionRepository.get(query);
             final JSONArray options = result.optJSONArray(Keys.RESULTS);

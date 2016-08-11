@@ -43,6 +43,7 @@ import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -58,7 +59,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.2.16, Aug 11, 2016
+ * @version 1.9.2.17, Aug 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -237,6 +238,21 @@ public class Filler {
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
                 fillNewTags(dataModel);
             }
+        } finally {
+            Stopwatchs.end();
+        }
+    }
+
+    /**
+     * Fills index tags.
+     *
+     * @param dataModel the specified data model
+     * @throws Exception exception
+     */
+    public void fillIndexTags(final Map<String, Object> dataModel) throws Exception {
+        Stopwatchs.start("Fills index tags");
+        try {
+            dataModel.put(Tag.TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
         } finally {
             Stopwatchs.end();
         }

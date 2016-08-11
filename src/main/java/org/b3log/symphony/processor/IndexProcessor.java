@@ -130,7 +130,7 @@ public class IndexProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillSideTags(dataModel);
+        filler.fillIndexTags(dataModel);
     }
 
     /**

@@ -108,7 +108,7 @@
         <div class="index-wrap last">
             <div class="wrapper">
                 <ul class="tag-desc fn-clear">
-                    <#list sideTags as tag>
+                    <#list tags as tag>
                     <li>
                         <span>
                             <#if tag.tagIconPath!="">
