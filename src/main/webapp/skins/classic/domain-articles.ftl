@@ -13,7 +13,7 @@
     </head>
     <body>
         <#include "header.ftl">
-        <@subNav '' '${domain.domainURI}' ''/>
+        <@subNav '' '${domain.domainURI}'/>
         <div class="main">
             <div class="wrapper">
                 <div class="content">
