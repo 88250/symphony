@@ -68,8 +68,20 @@
                 </div>
                 <div class="item">
                     <a href="/hot" class="item-header" style="background-image: url(${perfectBgIcon});">${perfectLabel}</a>
-                    <div>
-                        Coming Soon!
+                    <div class="module-panel">
+                        <ul class="module-list">
+                            <#list perfectArticles as article>
+                            <li<#if !article_has_next> class="last"</#if>>
+                                <#if "someone" != article.articleAuthorName>
+                                <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
+                                    <span class="avatar-small tooltipped tooltipped-se slogan"
+                                          aria-label="${article.articleAuthorName}"
+                                          style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
+                                    <#if "someone" != article.articleAuthorName></a></#if>
+                                <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                            </li>
+                            </#list>
+                        </ul>
                     </div>
                 </div>
             </div>
