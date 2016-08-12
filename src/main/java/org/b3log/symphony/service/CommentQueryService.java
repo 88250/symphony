@@ -63,7 +63,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.6.18, Jun 23, 2016
+ * @version 2.7.6.19, Aug 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -324,6 +324,7 @@ public class CommentQueryService {
                         : Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
                 comment.put(Comment.COMMENT_T_ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
                 comment.put(Comment.COMMENT_T_ARTICLE_PERMALINK, article.optString(Article.ARTICLE_PERMALINK));
+                comment.put(Comment.COMMENT_T_ARTICLE_PERFECT, article.optInt(Article.ARTICLE_PERFECT));
 
                 final JSONObject commenter = userRepository.get(userId);
                 comment.put(Comment.COMMENT_T_COMMENTER, commenter);
