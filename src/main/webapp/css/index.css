@@ -770,8 +770,9 @@ code .dec { color: initial; } /* decimal - blue */
     fill: currentColor;
 }
 
-.index .domains a:hover svg {
-    color: inherit;
+.index .domains a:hover svg,
+.index .index-wrap .slogan a:hover svg {
+    color: #4183C4;
 }
 
 .index .item {

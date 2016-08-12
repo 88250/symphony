@@ -70,7 +70,7 @@
                                 <#if unreadCommentedNotificationCnt &gt; 0>
                                 <span class="counter">${unreadCommentedNotificationCnt}</span>
                                 <span onclick="Util.makeNotificationRead('commented')" aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-sw">
-                                    <svg height="18" viewBox="0 0 12 16" width="12"><path d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z"></path></svg>
+                                    <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                 </span>
                                 </#if>
                             </a> 
@@ -81,7 +81,7 @@
                                 <#if unreadAtNotificationCnt &gt; 0>
                                 <span class="counter">${unreadAtNotificationCnt}</span>
                                 <span onclick="Util.makeNotificationRead('at')" aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-sw">
-                                    <svg height="18" viewBox="0 0 12 16" width="12"><path d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z"></path></svg>
+                                    <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                 </span>
                                 </#if>
                             </a>
@@ -92,7 +92,7 @@
                                 <#if unreadFollowingUserNotificationCnt &gt; 0>
                                 <span class="counter">${unreadFollowingUserNotificationCnt}</span>
                                 <span onclick="Util.makeNotificationRead('followingUser')" aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-sw">
-                                    <svg height="18" viewBox="0 0 12 16" width="12"><path d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z"></path></svg>
+                                    <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                 </span>
                                 </#if>
                             </a>
