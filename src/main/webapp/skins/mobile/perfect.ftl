@@ -12,7 +12,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <@subNav 'perfect'/>
+            <@subNav 'perfect' ''/>
             <div class="content fn-clear">
                 <@list listData=perfectArticles/>
                 <@pagination url="${servePath}/perfect"/>

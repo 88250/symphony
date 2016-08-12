@@ -11,7 +11,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <@subNav 'hot'/>
+            <@subNav 'hot' ''/>
             <div class="content fn-clear">
                 <@list listData=indexArticles/>
                 <a href="${servePath}/recent" class="ft-gray more-article">${moreRecentArticleLabel}</a>

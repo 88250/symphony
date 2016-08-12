@@ -11,7 +11,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <@subNav 'community'/>
+            <@subNav 'community' ''/>
             <div class="wrapper">
                 <div class="content chat-room">
                     <div class="content-reset">

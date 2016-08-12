@@ -10,7 +10,7 @@
     </head>
     <body>
         <#include "header.ftl">
-        <@subNav 'timeline'/>
+        <@subNav 'timeline' ''/>
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">

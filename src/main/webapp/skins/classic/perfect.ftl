@@ -12,7 +12,7 @@
     </head>
     <body>
         <#include "header.ftl">
-        <@subNav 'perfect'/>
+        <@subNav 'perfect' ''/>
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">

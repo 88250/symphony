@@ -12,7 +12,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <@subNav 'recent'/>
+            <@subNav 'recent' ''/>
             <div class="content fn-clear">
                 <@list listData=latestArticles/>
                 <@pagination url="${servePath}/recent"/>

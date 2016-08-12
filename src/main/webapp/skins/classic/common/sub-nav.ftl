@@ -1,8 +1,8 @@
-<#macro subNav type>
+<#macro subNav type curDomain>
 <div class="tabs fn-clear">
     <div class="wrapper fn-clear">
         <#list domains as domain>
-        <a href="${servePath}/domain/${domain.domainURI}">${domain.domainIconPath}&nbsp;${domain.domainTitle}</a>
+        <a href="${servePath}/domain/${domain.domainURI}"<#if curDomain == domain.domainURI> class="selected"</#if>>${domain.domainIconPath}&nbsp;${domain.domainTitle}</a>
         </#list>
         <a href="${servePath}/perfect"<#if 'perfect' == type> class="selected"</#if>>
             <svg height="16" viewBox="3 2 11 12" width="14">${perfectIcon}</svg>&nbsp;${perfectLabel}</a>

@@ -11,7 +11,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <@subNav ''/>
+            <@subNav '' ''/>
             <div class="wrapper">
                 <div class="content fn-clear">
                     <@list listData=articles/>

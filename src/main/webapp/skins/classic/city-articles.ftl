@@ -11,7 +11,7 @@
     </head>
     <body>
         <#include "header.ftl">
-        <@subNav 'city/my'/>
+        <@subNav 'city/my' ''/>
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">

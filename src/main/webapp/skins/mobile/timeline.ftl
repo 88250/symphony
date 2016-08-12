@@ -10,7 +10,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <@subNav 'timeline'/>
+            <@subNav 'timeline' ''/>
             <div class="content fn-clear">
                 <#if timelines?size <= 0>
                 <div id="emptyTimeline" class="wrapper">${emptyTimelineLabel}</div>

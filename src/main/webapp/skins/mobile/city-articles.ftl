@@ -11,7 +11,7 @@
     <body>
         <#include "header.ftl">
         <div class="main">
-            <@subNav 'city/my'/>
+            <@subNav 'city/my' ''/>
             <div class="content fn-clear">
                 <#if articles?size gt 0>
                 <div class="fn-clear">
