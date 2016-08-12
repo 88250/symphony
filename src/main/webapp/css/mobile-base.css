@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.6.5, Aug 9, 2016
+ * @version 1.4.6.6, Aug 12, 2016
  */
 
 /* start reset */
@@ -201,6 +201,12 @@ input[type="search"]::-webkit-search-cancel-button {
 textarea {
     overflow: auto;
 }
+
+svg {
+    vertical-align: text-top;
+    fill: currentColor;
+}
+
 @-webkit-keyframes spaceboots {
     0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
     30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
@@ -2258,60 +2264,31 @@ code .dec { color: initial; } /* decimal - blue */
     background-color: #fafafa;
     border-bottom: 1px solid #eee;
     border-top: 1px solid #eee;
-    padding: 10px 0;
 }
 
-.index .index-wrap.first {
-    border-top: 0;
-}
-
-.index .index-wrap.last {
-    border-bottom: 0;
-}
-
-.index .index-wrap .slogan {
+.index > .slogan {
     padding: 10px;
     color: #767676;
-    background-color: #fff;
-    border: 1px solid #eee;
-    border-radius: 3px;
-    width: 100%;
-    box-sizing: border-box;
+    background-color: #FFF;
 }
 
-.index .index-wrap .slogan svg {
-    color: #bbb;
-    vertical-align: middle;
-    fill: currentColor;
+.index > .slogan a:hover svg {
+    color: #4183C4;
 }
 
 .index .domains a {
-       color: #666;
     display: initial;
     width: 20%;
-    margin: 10px;
+    color: #333;
     text-align: center;
 }
 
 .index .domains a:hover {
-    color: #111;
+    color: #4183C4;
     text-decoration: none;
 }
 
-.index .domains svg {
-    color: #bbb;
-    vertical-align: text-top;
-    fill: currentColor;
-}
-
-.index .domains a:hover svg {
-    color: inherit;
-}
-
 .index .item {
-    margin: 10px 0;
-    box-sizing: border-box;
-    width: 100%;
     padding: 20px;
     color: #555;
     border: 1px solid rgba(0,0,0,0.075);
@@ -2319,6 +2296,7 @@ code .dec { color: initial; } /* decimal - blue */
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05),0 5px 10px rgba(0,0,0,0.05);
     transition: border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    margin: 10px 0;
 }
 
 .index .item:hover {
@@ -2334,18 +2312,33 @@ code .dec { color: initial; } /* decimal - blue */
     border-top-right-radius: 4px;
     opacity: 0.8;
     transition: opacity 0.1s ease-in-out;
+    padding: 5px;
+    display: block;
+    text-align: right;
+    color: #000;
 }
+
+.index .item-header:hover {
+    color: #FFF;
+    text-decoration: none;
+} 
 
 .index .item:hover .item-header  {
-    opacity: 1
+    opacity: 1;
 }
 
-.index .item-header a {
-    color: #333;
-    float: right;
-    font-size: 13px;
-    line-height: 22px;
-    margin-right: 6px
+.index .tag-desc > li:hover > span {
+    border-bottom-style: solid;
+    border-radius: 3px;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    z-index: 3;
+}
+
+.index .module-list .title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 /* end index */
 

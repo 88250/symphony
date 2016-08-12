@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.14.28, Aug 9, 2016
+ * @version 1.20.14.29, Aug 12, 2016
  */
 
 /* start reset */
@@ -201,6 +201,12 @@ input[type="search"]::-webkit-search-cancel-button {
 textarea {
     overflow: auto;
 }
+
+svg {
+    vertical-align: text-top;
+    fill: currentColor;
+}
+
 @-webkit-keyframes spaceboots {
     0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
     30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
@@ -978,12 +984,6 @@ a[class*=" icon-"]:hover {
 
 .tabs a:hover {
     color: #333;
-}
-
-.tabs svg {
-    color: #bbb;
-    vertical-align: text-top;
-    fill: currentColor;
 }
 
 .tabs a.selected svg {

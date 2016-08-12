@@ -19,8 +19,7 @@
             <a href="${servePath}/pre-post" title="${addArticleLabel}" 
                class="icon-addfile"></a>
             <a id="aNotifications" class="<#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" title="${messageLabel}">${unreadNotificationCount}</a>
-            <a href="${servePath}/recent" title="RSS" 
-               class="icon-star"></a>
+            <a href="${servePath}/recent" class="icon-refresh"></a>
             <#else>
             <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin" 
                title="${registerLabel}">${registerLabel}</a>

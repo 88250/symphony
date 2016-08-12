@@ -24,8 +24,8 @@
             <a href="${servePath}/pre-post" aria-label="${addArticleLabel}" 
                class="tooltipped tooltipped-w responsive-show"><span class="icon-addfile"></span></a>
             <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
-            <a href="${servePath}/recent" aria-label="RSS" 
-               class="tooltipped tooltipped-w"><span class="icon-star"></span></a>
+            <a href="${servePath}/recent" aria-label="List" 
+               class="tooltipped tooltipped-w"><span class="icon-refresh"></span></a>
             <#else>
             <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin">${registerLabel}</a>
             <a href="javascript: Util.showLogin();" class="unlogin">${loginLabel}</a>
