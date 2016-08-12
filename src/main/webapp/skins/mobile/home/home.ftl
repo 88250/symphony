@@ -15,7 +15,7 @@
                     <#elseif 3 == article.articleType>
                     <span class="icon-video" title="${thoughtLabel}"></span>
                     </#if>
-                    <a rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                    <a rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
                 <span class="ft-gray">
                     <#list article.articleTags?split(",") as articleTag>
@@ -33,7 +33,7 @@
             <#else>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">
-                <a class="count ft-gray" href="${article.articlePermalink}">${article.articleCommentCount}</a>
+                <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
             </#if>

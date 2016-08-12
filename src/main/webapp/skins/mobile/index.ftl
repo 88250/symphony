@@ -41,7 +41,7 @@
                                           aria-label="${article.articleAuthorName}"
                                           style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
                                     <#if "someone" != article.articleAuthorName></a></#if>
-                                <a rel="nofollow" class="title" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                                <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                             </li>
                             </#list>
                         </ul>
@@ -59,7 +59,7 @@
                                           aria-label="${article.articleAuthorName}"
                                           style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
                                     <#if "someone" != article.articleAuthorName></a></#if>
-                                <a rel="nofollow" class="title" href="${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                                <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                             </li>
                             </#list>
                         </ul>
@@ -94,31 +94,42 @@
             <div class="wrapper">
                 <div class="item">
                     <a href="${servePath}/timeline" class="item-header" style="background-image: url(${timelineBgIcon});">${timelineLabel}</a>
-                    <div>
-                        Coming Soon!
-                    </div>
-                </div>
-                <#if ADLabel != ''>
-                <div class="item mid">
-                    <a class="item-header" style="background-image: url(${adBgIcon})" href="https://hacpai.com/article/1460083956075">${wantPutOnLabel}</a>
-                    <div class="ad module-panel">
-                        ${ADLabel}
-                    </div>
-                </div>
-                </#if>
-                <div class="item">
-                    <a class="item-header" style="background-image: url(${activityBgIcon});" href="${servePath}/pre-post">${postArticleLabel}</a>
                     <div class="module-panel">
+                        <#if timelines?size <= 0>
+                        <div id="emptyTimeline">${emptyTimelineLabel}</div>
+                        </#if>
                         <ul class="module-list">
-                            <li><a class="title" href="<#if useCaptchaCheckin??>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a></li>
-                            <li><a class="title" href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
-                            <li><a class="title" href="${servePath}/activity/1A0001">${activity1A0001Label}</a></li>
-                            <li><a class="title" href="${servePath}/activity/character">${characterLabel}</a></li>
-                        </ul>
-                    </div>
+                            <#list timelines as article>
+                            <#if article_index < 3>
+                            <li<#if !article_has_next> class="last"</#if>>
+                                ${article.content}
+                            </#if>
+                        </li>
+                        </#list>
+                    </ul>
+                </div>
+            </div>
+            <#if ADLabel != ''>
+            <div class="item mid">
+                <a class="item-header" style="background-image: url(${adBgIcon})" href="https://hacpai.com/article/1460083956075">${wantPutOnLabel}</a>
+                <div class="ad module-panel">
+                    ${ADLabel}
+                </div>
+            </div>
+            </#if>
+            <div class="item">
+                <a class="item-header" style="background-image: url(${activityBgIcon});" href="${servePath}/pre-post">${postArticleLabel}</a>
+                <div class="module-panel">
+                    <ul class="module-list">
+                        <li><a class="title" href="<#if useCaptchaCheckin??>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a></li>
+                        <li><a class="title" href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
+                        <li><a class="title" href="${servePath}/activity/1A0001">${activity1A0001Label}</a></li>
+                        <li><a class="title" href="${servePath}/activity/character">${characterLabel}</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <#include "footer.ftl">
-    </body>
+    </div>
+    <#include "footer.ftl">
+</body>
 </html>

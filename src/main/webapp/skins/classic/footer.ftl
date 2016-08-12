@@ -22,9 +22,9 @@
                     <span class="ft-gray">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
                     <span class="ft-gray">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
                     <span class="ft-gray">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
+                    <span class="ft-gray">${cmtLabel}</span> ${statistic.statisticCmtCount?c} &nbsp;
                     <span class="ft-gray">${domainLabel}</span> ${statistic.statisticDomainCount?c} &nbsp;
-                    <span class="ft-gray">${tagLabel}</span> ${statistic.statisticTagCount?c} &nbsp;
-                    <span class="ft-gray">${cmtLabel}</span> ${statistic.statisticCmtCount?c}
+                    <span class="ft-gray">${tagLabel}</span> ${statistic.statisticTagCount?c} 
                 </div>
                 <div class="fn-right">
                     <span class="ft-gray">Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • 

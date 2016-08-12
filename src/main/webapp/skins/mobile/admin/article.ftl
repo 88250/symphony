@@ -23,7 +23,7 @@
             <input type="text" id="articleViewCount" name="articleViewCount" value="${article.articleViewCount?c}" readonly="readonly" />
 
             <label for="articlePermalink">${permalinkLabel}</label>
-            <input type="text" id="articlePermalink" name="articlePermalink" value="${article.articlePermalink}" />
+            <input type="text" id="articlePermalink" name="articlePermalink" value="${servePath}${article.articlePermalink}" />
 
             <label for="articleCreateTime">${createTimeLabel}</label>
             <input type="text" id="articleCreateTime" name="articleCreateTime" value="${article.articleCreateTime?c}" />

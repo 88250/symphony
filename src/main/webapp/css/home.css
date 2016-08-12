@@ -22,6 +22,19 @@
  * @version 2.4.9.12, Aug 12 2016
  */
 
+
+/* start home header */
+.home-nav {
+    position: relative
+}
+
+.home-nav button {
+    position: absolute;
+    right: 0;
+    top: -13px
+}
+/* end home header */
+
 /* start home side */
 .user-name {
     border-bottom: 1px dotted #CCCCCC;

@@ -2334,12 +2334,6 @@ code .dec { color: initial; } /* decimal - blue */
     filter: alpha(opacity=70);
     z-index: 3;
 }
-
-.index .module-list .title {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
 /* end index */
 
 /* start home side */

@@ -786,13 +786,9 @@ code .dec { color: initial; } /* decimal - blue */
     color: #000;
 }
 
-.index .item-header:hover {
-    color: #FFF;
-    text-decoration: none;
-} 
-
 .index .item:hover .item-header  {
     opacity: 1;
+    color: #FFF;
 }
 
 .index .tag-desc > li:hover > span {

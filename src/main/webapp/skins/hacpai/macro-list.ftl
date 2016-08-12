@@ -17,7 +17,7 @@
                            title="${article.articleAuthorName}">
                             <img class="avatar-small responsive-show" src="${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80" />
                         </a>
-                        <a data-id="${article.oId}" rel="bookmark" href="${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
+                        <a data-id="${article.oId}" rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a></h2>
                     <span class="ft-small">
                         <span class="icon icon-tags"></span>
                         <#list article.articleTags?split(",") as articleTag>
@@ -30,12 +30,12 @@
             </div>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">
-                <a class="count ft-small" href="${article.articlePermalink}">${article.articleCommentCount}</a>
+                <a class="count ft-small" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
             <div class="commenters">
                 <#list article.articleParticipants as comment>
-                <a rel="nofollow" href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}">
+                <a rel="nofollow" href="${servePath}${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}">
                     <img class="avatar-small" src="${comment.articleParticipantThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80" />
                 </a>
                 </#list>

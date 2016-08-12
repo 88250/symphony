@@ -21,7 +21,7 @@
                         <span class="icon-video" title="${thoughtLabel}"></span>
                         </#if>
                         <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark"
-                           href="${article.articlePermalink}">${article.articleTitleEmoj}
+                           href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                         </a>
                         <#if articleStickCheck??>
                         <#if article.articleStick < 9223372036854775807>
@@ -44,7 +44,7 @@
             </div>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">
-                <a class="count ft-gray" href="${article.articlePermalink}">${article.articleCommentCount}</a>
+                <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
             <i class="heat" style="width:${article.articleHeat*3}px"></i>

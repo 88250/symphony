@@ -49,7 +49,7 @@
                                    title="${article.articleAuthorName}">
                                     <img class="avatar-small" src="${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80" />
                                 </a> &nbsp;
-                                <a href="${article.articlePermalink}" rel="bookmark">
+                                <a href="${servePath}${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}
                                 </a> &nbsp;
                             </h2> 
@@ -226,7 +226,7 @@
                     Label.rewardConfirmLabel = "${rewardConfirmLabel?replace("{point}", article.articleRewardPoint)}"
                     Label.articleOId = "${article.oId}";
                     Label.articleTitle = "${article.articleTitle}";
-                    Label.articlePermalink = "${article.articlePermalink}";
+                    Label.articlePermalink = "${servePath}${article.articlePermalink}";
                     Label.csrfToken = "${csrfToken}";                            
         </script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js"></script>
