@@ -8,6 +8,9 @@
         <li>
             <div class="has-view">
                 <h2>
+                    <#if 1 == article.articlePerfect>
+                    <svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg>
+                    </#if>
                     <#if 1 == article.articleType>
                     <span class="icon-locked" title="${discussionLabel}"></span>
                     <#elseif 2 == article.articleType>
