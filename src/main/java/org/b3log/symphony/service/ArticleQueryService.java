@@ -86,7 +86,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.14.25, Aug 12, 2016
+ * @version 2.20.14.26, Aug 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -1050,7 +1050,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
                 addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class);
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
+                addProjection(Article.ARTICLE_PERFECT, Integer.class);
 
         return ret;
     }
@@ -1168,7 +1169,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
                 addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class);
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
+                addProjection(Article.ARTICLE_PERFECT, Integer.class);
 
         try {
             List<JSONObject> ret;
@@ -1334,7 +1336,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
                 addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class);
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
+                addProjection(Article.ARTICLE_PERFECT, Integer.class);
 
         try {
             List<JSONObject> ret;
@@ -1381,7 +1384,8 @@ public class ArticleQueryService {
                 addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
                 addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
                 addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
-                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class);
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
+                addProjection(Article.ARTICLE_PERFECT, Integer.class);
 
         try {
             List<JSONObject> ret;
