@@ -1884,6 +1884,7 @@ h2.article-title {
 }
 
 .domains a {
+    height: 17px;
     float: left;
     padding: 4px 8px;
     color: #999;
