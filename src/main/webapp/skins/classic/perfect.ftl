@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${hotLabel} - ${symphonyLabel}">
-        <meta name="description" content="${recentArticleLabel}"/>
+        <@head title="${perfectLabel} - ${symphonyLabel}">
+        <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
@@ -16,9 +16,9 @@
                 <#list domains as domain>
                 <a href="${servePath}/domain/${domain.domainURI}">${domain.domainIconPath}&nbsp;${domain.domainTitle}</a>
                 </#list>
-                <a href="${servePath}/recent">
+                <a href="${servePath}/recent" class="selected">
                     <svg height="16" viewBox="0 0 14 16" width="14">${timeIcon}</svg>&nbsp;${latestLabel}</a>
-                <a href="${servePath}/hot" class="selected">
+                <a href="${servePath}/hot">
                     <svg height="16" viewBox="0 0 12 16" width="12">${hotIcon}</svg>&nbsp;${hotLabel}</a>
                 <#if isLoggedIn && "" != currentUser.userCity>
                 <a href="${servePath}/city/my">
@@ -33,11 +33,11 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
-                    <@list listData=indexArticles/>
-                    <@pagination url="/hot"/>
-                    <br>
-                    <a href="${servePath}/recent" class="ft-gray">${moreRecentArticleLabel}</a>
-                    <br><br>
+                    <@list listData=perfectArticles/>
+                    <@pagination url="${servePath}/perfect"/>
+                    <#if domains?size != 0>
+                    <br/> <br/> <br/> <br/>
+
                     <div class="module">
                         <div class="module-header">
                             <h2>${domainLabel}${navigationLabel}</h2>
@@ -60,7 +60,9 @@
                             </ul>
                         </div>
                     </div>
+                    </#if>
                 </div>
+
                 <div class="side">
                     <#include "side.ftl">
                 </div>

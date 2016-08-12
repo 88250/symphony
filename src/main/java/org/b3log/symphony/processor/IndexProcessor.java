@@ -53,6 +53,7 @@ import org.json.JSONObject;
  * <li>Shows index (/), GET</li>
  * <li>Shows recent articles (/recent), GET</li>
  * <li>Shows hot articles (/hot), GET</li>
+ * <li>Shows perfect articles (/perfect), GET</li>
  * <li>Shows about (/about), GET</li>
  * <li>Shows b3log (/b3log), GET</li>
  * <li>Shows kill browser (/kill-browser), GET</li>
@@ -60,7 +61,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.5.1.14, Aug 11, 2016
+ * @version 1.6.1.14, Aug 12, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -124,6 +125,9 @@ public class IndexProcessor {
 
         final List<JSONObject> hotArticles = articleQueryService.getIndexHotArticles();
         dataModel.put(Common.HOT_ARTICLES, hotArticles);
+
+        final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles();
+        dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
 
         final List<JSONObject> timelines = timelineMgmtService.getTimelines();
         dataModel.put(Common.TIMELINES, timelines);
@@ -241,6 +245,61 @@ public class IndexProcessor {
         } finally {
             Stopwatchs.end();
         }
+    }
+
+    /**
+     * Shows perfect articles.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/perfect", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showPerfectArticles(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("perfect.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        final JSONObject user = userQueryService.getCurrentUser(request);
+        if (null != user) {
+            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+        }
+
+        final JSONObject result = articleQueryService.getPerfectArticles(pageNum, pageSize);
+        final List<JSONObject> perfectArticles = (List<JSONObject>) result.get(Article.ARTICLES);
+        dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
+
+        final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
+        final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final List<Integer> pageNums = (List<Integer>) pagination.get(Pagination.PAGINATION_PAGE_NUMS);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillDomainNav(dataModel);
+        filler.fillHeaderAndFooter(request, response, dataModel);
+        filler.fillRandomArticles(dataModel);
+        filler.fillSideHotArticles(dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
     }
 
     /**

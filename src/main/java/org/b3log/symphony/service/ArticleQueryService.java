@@ -86,7 +86,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.19.14.25, Aug 11, 2016
+ * @version 2.20.14.25, Aug 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -1236,6 +1236,78 @@ public class ArticleQueryService {
     }
 
     /**
+     * Gets the perfect articles with the specified fetch size.
+     *
+     * @param currentPageNum the specified current page number
+     * @param fetchSize the specified fetch size
+     * @return for example,      <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "articles": [{
+     *         "oId": "",
+     *         "articleTitle": "",
+     *         "articleContent": "",
+     *         ....
+     *      }, ....]
+     * }
+     * </pre>
+     * @throws ServiceException service exception
+     */
+    public JSONObject getPerfectArticles(final int currentPageNum, final int fetchSize) throws ServiceException {
+        final Query query = new Query()
+                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setCurrentPageNum(currentPageNum).setPageSize(fetchSize);
+        query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
+
+        final JSONObject ret = new JSONObject();
+
+        JSONObject result = null;
+
+        try {
+            Stopwatchs.start("Query recent articles");
+
+            result = articleRepository.get(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets articles failed", e);
+
+            throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
+        }
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+
+        final int windowSize = Symphonys.getInt("latestArticlesWindowSize");
+
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, fetchSize, pageCount, windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
+
+        final JSONArray data = result.optJSONArray(Keys.RESULTS);
+        final List<JSONObject> articles = CollectionUtils.<JSONObject>jsonArrayToList(data);
+
+        try {
+            organizeArticles(articles);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Organizes articles failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        //final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
+        //genParticipants(articles, participantsCnt);
+        ret.put(Article.ARTICLES, (Object) articles);
+
+        return ret;
+    }
+
+    /**
      * Gets the index hot articles with the specified fetch size.
      *
      * @return hot articles, returns an empty list if not found
@@ -1279,6 +1351,53 @@ public class ArticleQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets index hot articles failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the index perfect articles with the specified fetch size.
+     *
+     * @return hot articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getIndexPerfectArticles() throws ServiceException {
+        final Query query = new Query()
+                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setPageCount(1).setPageSize(Symphonys.getInt("indexListCnt")).setCurrentPageNum(1);
+        query.setFilter(new PropertyFilter(Article.ARTICLE_PERFECT, FilterOperator.EQUAL, Article.ARTICLE_PERFECT_C_PERFECT));
+        query.addProjection(Keys.OBJECT_ID, String.class).
+                addProjection(Article.ARTICLE_STICK, Long.class).
+                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
+                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                addProjection(Article.ARTICLE_TITLE, String.class).
+                addProjection(Article.ARTICLE_STATUS, Integer.class).
+                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                addProjection(Article.ARTICLE_TYPE, Integer.class).
+                addProjection(Article.ARTICLE_PERMALINK, String.class).
+                addProjection(Article.ARTICLE_TAGS, String.class).
+                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
+                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
+                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class);
+
+        try {
+            List<JSONObject> ret;
+            Stopwatchs.start("Query index perfect articles");
+            try {
+                final JSONObject result = articleRepository.get(query);
+                ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            } finally {
+                Stopwatchs.end();
+            }
+
+            organizeArticles(ret);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets index perfect articles failed", e);
             throw new ServiceException(e);
         }
     }

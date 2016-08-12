@@ -24,8 +24,8 @@
                     <a href="${servePath}/timeline">${timelineLabel}</a>
                     <a href="${servePath}/community">${communityGroupLabel}</a>
                 </div>
-                <@list listData=latestArticles/>
-                <@pagination url="${servePath}/recent"/>
+                <@list listData=perfectArticles/>
+                <@pagination url="${servePath}/perfect"/>
                 <#if domains?size != 0>
                 <div class="wrapper">
                     <div class="module">

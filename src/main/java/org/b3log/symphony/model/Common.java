@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.37.1.11, Aug 11, 2016
+ * @version 1.38.1.11, Aug 12, 2016
  * @since 0.2.0
  */
 public final class Common {
@@ -298,6 +298,11 @@ public final class Common {
      * Key of hot articles.
      */
     public static final String HOT_ARTICLES = "hotArticles";
+
+    /**
+     * Key of perfect articles.
+     */
+    public static final String PERFECT_ARTICLES = "perfectArticles";
 
     /**
      * Key of side tags.

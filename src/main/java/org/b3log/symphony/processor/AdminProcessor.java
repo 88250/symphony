@@ -129,7 +129,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.3.6, Aug 2, 2016
+ * @version 2.20.3.7, Aug 12, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1561,7 +1561,8 @@ public class AdminProcessor {
                     || name.equals(Article.ARTICLE_STATUS)
                     || name.equals(Article.ARTICLE_TYPE)
                     || name.equals(Article.ARTICLE_GOOD_CNT)
-                    || name.equals(Article.ARTICLE_BAD_CNT)) {
+                    || name.equals(Article.ARTICLE_BAD_CNT)
+                    || name.equals(Article.ARTICLE_PERFECT)) {
                 article.put(name, Integer.valueOf(value));
             } else {
                 article.put(name, value);

@@ -71,6 +71,12 @@
                 <label for="articleRewardPoint">${rewardPointLabel}</label>
                 <input type="text" id="articleRewardPoint" name="articleRewardPoint" value="${article.articleRewardPoint?c}"/>
 
+                <label>${perfectLabel}</label>
+                <select id="articlePerfect" name="articlePerfect">
+                    <option value="0"<#if 0 == article.articlePerfect> selected</#if>>${noLabel}</option>
+                    <option value="1"<#if 1 == article.articlePerfect> selected</#if>>${yesLabel}</option>
+                </select>
+
                 <label>${commentableLabel}</label>
                 <select id="articleCommentable" name="articleCommentable">
                     <option value="true"<#if article.articleCommentable> selected</#if>>${yesLabel}</option>

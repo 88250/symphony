@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${hotTopicLabel} - ${symphonyLabel}">
+        <@head title="${hotLabel} - ${symphonyLabel}">
         <meta name="description" content="${recentArticleLabel}"/>
         </@head>
     </head>
