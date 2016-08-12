@@ -22,8 +22,8 @@
                     <div class="fn-right">
                         <#if isLoggedIn>
                         <span id="thankArticle" aria-label="${thankLabel} ${article.thankedCnt}"
-                                  class="fn-pointer tooltipped tooltipped-s"
-                                  <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
+                              class="fn-pointer tooltipped tooltipped-s"
+                              <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
                         <span id="voteUp_article${article.oId}" class="tooltipped tooltipped-s fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}" 
                               onclick="Article.voteUp('${article.oId}', 'article')">
                             <span class="icon-thumbs-up<#if 0 == article.articleVote> ft-red</#if>"></span></span>
@@ -51,6 +51,9 @@
                     </div>
                 </div>
                 <h2 class="article-title">
+                    <#if 1 == article.articlePerfect>
+                    <svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg>
+                    </#if>
                     <#if 1 == article.articleType>
                     <span class="icon-locked" title="${discussionLabel}"></span>
                     <#elseif 2 == article.articleType>
@@ -188,7 +191,7 @@
                                                 <#if comment.commentAnonymous == 0>
                                                 <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"
                                                    title="${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
-                                                   via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
+                                                via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via" data-ua="${comment.commentUA}"></span></#if>
                                                 </span>
                                                 <#if comment.rewardedCnt gt 0>
@@ -275,7 +278,7 @@
                         ${ADLabel}
                     </div>
                 </div>
-</#if>
+                </#if>
                 <#if sideRelevantArticles?size != 0>
                 <div class="module">
                     <div class="module-header">
@@ -334,72 +337,71 @@
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-            Label.commentErrorLabel = "${commentErrorLabel}";
-            Label.symphonyLabel = "${symphonyLabel}";
-            Label.rewardConfirmLabel = "${rewardConfirmLabel?replace('{point}', article.articleRewardPoint)}";
-            Label.thankArticleConfirmLabel = "${thankArticleConfirmLabel?replace('{point}', pointThankArticle)}";
-            Label.articleOId = "${article.oId}";
-            Label.articleTitle = "${article.articleTitle}";
-            Label.recordDeniedLabel = "${recordDeniedLabel}";
-            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-            Label.csrfToken = "${csrfToken}";
-            Label.upLabel = "${upLabel}";
-            Label.downLabel = "${downLabel}";
-            Label.uploadLabel = "${uploadLabel}";
-            Label.userCommentViewMode = ${userCommentViewMode};
-            Label.stickConfirmLabel = "${stickConfirmLabel}";
-            Label.audioRecordingLabel = '${audioRecordingLabel}';
-            Label.thankedLabel = "${thankedLabel}";
-            Label.thankLabel = "${thankLabel}";
-            Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
-            Label.adminLabel = '${adminLabel}';
-            <#if isLoggedIn>
-                    Label.currentUserName = '${currentUser.userName}';
-            </#if>            
-            // Init [Article] channel
-            ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
-            $(document).ready(function () {
-                // jQuery File Upload
-                Util.uploadFile({
-                    "type": "img",
-                    "id": "fileUpload",
-                    "pasteZone": $(".CodeMirror"),
-                    "qiniuUploadToken": "${qiniuUploadToken}",
-                    "editor": Comment.editor,
-                    "uploadingLabel": "${uploadingLabel}",
-                    "qiniuDomain": "${qiniuDomain}",
-                    "imgMaxSize": ${imgMaxSize?c},
-                    "fileMaxSize": ${fileMaxSize?c}
-                });
-            });
-            <#if 3 == article.articleType>
-            Article.playThought('${article.articleContent}');
-            </#if>
-            Comment.init(${isLoggedIn?c});
-            <#if isLoggedIn>
-            Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
-
-            setTimeout(function() {
-                Util.setUnreadNotificationCount();
-            }, 1000);
-            </#if>            
+                            Label.commentErrorLabel = "${commentErrorLabel}";
+                            Label.symphonyLabel = "${symphonyLabel}";
+                            Label.rewardConfirmLabel = "${rewardConfirmLabel?replace('{point}', article.articleRewardPoint)}";
+                            Label.thankArticleConfirmLabel = "${thankArticleConfirmLabel?replace('{point}', pointThankArticle)}";
+                            Label.articleOId = "${article.oId}";
+                            Label.articleTitle = "${article.articleTitle}";
+                            Label.recordDeniedLabel = "${recordDeniedLabel}";
+                            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
+                            Label.csrfToken = "${csrfToken}";
+                            Label.upLabel = "${upLabel}";
+                            Label.downLabel = "${downLabel}";
+                            Label.uploadLabel = "${uploadLabel}";
+                            Label.userCommentViewMode = ${userCommentViewMode};
+                            Label.stickConfirmLabel = "${stickConfirmLabel}";
+                            Label.audioRecordingLabel = '${audioRecordingLabel}';
+                            Label.thankedLabel = "${thankedLabel}";
+                            Label.thankLabel = "${thankLabel}";
+                            Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
+                            Label.adminLabel = '${adminLabel}';
+                            < #if isLoggedIn >
+                                    Label.currentUserName = '${currentUser.userName}';
+                            < /#if>            
+                                    // Init [Article] channel
+                                    ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
+                            $(document).ready(function () {
+                            // jQuery File Upload
+                            Util.uploadFile({
+                            "type": "img",
+                                    "id": "fileUpload",
+                                    "pasteZone": $(".CodeMirror"),
+                                    "qiniuUploadToken": "${qiniuUploadToken}",
+                                    "editor": Comment.editor,
+                                    "uploadingLabel": "${uploadingLabel}",
+                                    "qiniuDomain": "${qiniuDomain}",
+                                    "imgMaxSize": ${imgMaxSize?c},
+                                    "fileMaxSize": ${fileMaxSize?c}
+                            });
+                            });
+                            < #if 3 == article.articleType >
+                                    Article.playThought('${article.articleContent}');
+                            < /#if>
+                                    Comment.init(${isLoggedIn?c});
+                            < #if isLoggedIn >
+                                    Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
+                            setTimeout(function() {
+                            Util.setUnreadNotificationCount();
+                            }, 1000);
+                            < /#if>            
         </script>
         <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
-                tex2jax: {
-                    inlineMath: [['$','$'], ["\\(","\\)"] ],
-                    displayMath: [['$$','$$']],
-                    processEscapes: true,
-                    processEnvironments: true,
-                    skipTags: ['pre','code'],
-                }
+            tex2jax: {
+            inlineMath: [['$','$'], ["\\(","\\)"] ],
+            displayMath: [['$$','$$']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['pre','code'],
+            }
             });
             MathJax.Hub.Queue(function() {
-                var all = MathJax.Hub.getAllJax(), i;
-                for(i = 0; i < all.length; i += 1) {
-                    all[i].SourceElement().parentNode.className += 'has-jax';
-                }
+            var all = MathJax.Hub.getAllJax(), i;
+            for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += 'has-jax';
+            }
             });
         </script>
     </body>

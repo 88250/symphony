@@ -16,6 +16,9 @@
         <li>
             <div class="has-view">
                 <h2>
+                    <#if 1 == article.articlePerfect>
+                    <span class="tooltipped tooltipped-e" aria-label="${perfectLabel}"><svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
+                    </#if>
                     <#if 1 == article.articleType>
                     <span class="tooltipped tooltipped-e" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
                     <#elseif 2 == article.articleType>

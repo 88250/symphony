@@ -13,6 +13,9 @@
         <div class="fn-flex-1">
             <div class="fn-flex">
                 <h2 class="fn-flex-1">
+                    <#if 1 == notification.commentArticlePerfect>
+                    <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
+                    </#if>
                     <#if 1 == notification.commentArticleType>
                     <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
                     <#elseif 2 == notification.commentArticleType>

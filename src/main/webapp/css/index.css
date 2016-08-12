@@ -761,6 +761,7 @@ code .dec { color: initial; } /* decimal - blue */
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05),0 5px 10px rgba(0,0,0,0.05);
     transition: border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    box-sizing: border-box;
 }
 
 .index .item.mid {

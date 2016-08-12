@@ -16,6 +16,9 @@
         <div class="fn-flex-1">
             <div class="fn-flex">
                 <h2 class="fn-flex-1">
+                    <#if 1 == notification.articlePerfect>
+                    <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
+                    </#if>
                     <#if 1 == notification.articleType>
                     <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
                     <#elseif 2 == notification.articleType>
@@ -37,6 +40,9 @@
         <#else>
         <div class="fn-flex-1 has-view">
             <h2>
+                <#if 1 == notification.articlePerfect>
+                <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
+                </#if>
                 <#if 1 == notification.articleType>
                 <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
                 <#elseif 2 == notification.articleType>
