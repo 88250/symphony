@@ -175,11 +175,6 @@ public class ArticleQueryService {
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
 
     /**
-     * Index list size.
-     */
-    private static final int INDEX_LIST_SIZE = 7;
-
-    /**
      * Gets article count of the specified day.
      *
      * @param day the specified day
@@ -1156,7 +1151,7 @@ public class ArticleQueryService {
         final Query query = new Query()
                 .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setPageSize(INDEX_LIST_SIZE).setCurrentPageNum(1).setPageCount(1);
+                .setPageSize(Symphonys.getInt("indexListCnt")).setCurrentPageNum(1).setPageCount(1);
         query.setFilter(makeRecentArticleShowingFilter());
         query.addProjection(Keys.OBJECT_ID, String.class).
                 addProjection(Article.ARTICLE_STICK, Long.class).
@@ -1250,7 +1245,7 @@ public class ArticleQueryService {
         final Query query = new Query()
                 .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
                 .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
-                .setPageCount(1).setPageSize(INDEX_LIST_SIZE).setCurrentPageNum(1);
+                .setPageCount(1).setPageSize(Symphonys.getInt("indexListCnt")).setCurrentPageNum(1);
         query.setFilter(makeArticleShowingFilter());
         query.addProjection(Keys.OBJECT_ID, String.class).
                 addProjection(Article.ARTICLE_STICK, Long.class).

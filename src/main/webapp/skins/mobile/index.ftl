@@ -9,10 +9,9 @@
     <body class="index">
         <#include "header.ftl">        
         <div class="slogan">
-            ${indexIntroLabel}
+            ${indexIntroLabel}&nbsp;
             <a href="https://github.com/b3log/symphony" target="_blank">
                 <svg class="ft-gray" height="18" version="1.1" viewBox="0 0 16 16" width="18">${githubIcon}</svg></a>
-            &nbsp;
             <a target="_blank"
                href="http://shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5">
                 <svg class="ft-gray" width="18" height="18" viewBox="0 0 30 30">${qqIcon}</svg></a>
