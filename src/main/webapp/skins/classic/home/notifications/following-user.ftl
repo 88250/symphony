@@ -12,7 +12,7 @@
         <#if "someone" != notification.authorName></a></#if>
         <div class="fn-flex-1 has-view">
             <h2>
-                <#if 1 == notification.aticlePerfect>
+                <#if 1 == notification.articlePerfect>
                 <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
                 </#if>
                 <#if notification.articleType == 1>
