@@ -1,5 +1,6 @@
 <#include "macro-head.ftl">
 <#include "macro-list.ftl">
+<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,19 +11,8 @@
     <body>
         <#include "header.ftl">
         <div class="main">
+            <@subNav 'hot'/>
             <div class="content fn-clear">
-                <div class="domains fn-clear">
-                    <#list domains as domain>
-                    <a href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
-                    </#list>
-                    <a href="${servePath}/recent">${latestLabel}</a>
-                    <a href="${servePath}/hot" class="selected">${hotLabel}</a>
-                    <#if isLoggedIn && "" != currentUser.userCity>
-                    <a href="${servePath}/city/my">${currentUser.userCity}</a>
-                    </#if>
-                    <a href="${servePath}/timeline">${timelineLabel}</a>
-                    <a href="${servePath}/community">${communityGroupLabel}</a>
-                </div>
                 <@list listData=indexArticles/>
                 <a href="${servePath}/recent" class="ft-gray more-article">${moreRecentArticleLabel}</a>
             </div>

@@ -1279,14 +1279,6 @@ a[class*=" icon-"]:hover {
     margin: 0;
 }
 
-.list.single-line li {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    word-wrap: normal;
-    word-break: normal;
-}
-
 .has-view {
     margin-right: 40px;
 }

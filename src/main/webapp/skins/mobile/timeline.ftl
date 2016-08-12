@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,24 +10,12 @@
     <body>
         <#include "header.ftl">
         <div class="main">
+            <@subNav 'timeline'/>
             <div class="content fn-clear">
-                <div class="domains fn-clear">
-                    <#list domains as navDomain>
-                    <a href="${servePath}/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
-                    </#list>
-                    <a href="${servePath}/recent">${latestLabel}</a>
-                    <a href="${servePath}/hot">${hotLabel}</a>
-                    <#if isLoggedIn && "" != currentUser.userCity>
-                    <a href="${servePath}/city/my">${currentUser.userCity}</a>
-                    </#if>
-                    <a href="${servePath}/timeline" class="selected">${timelineLabel}</a>
-                    <a href="${servePath}/community">${communityGroupLabel}</a>
-                </div>
-
                 <#if timelines?size <= 0>
                 <div id="emptyTimeline" class="wrapper">${emptyTimelineLabel}</div>
                 </#if>
-                <div class="list single-line">
+                <div class="list">
                     <ul id="ul">
                         <#list timelines as timeline>
                         <li>${timeline.content}</li>
