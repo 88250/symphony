@@ -294,8 +294,7 @@
                                 <a rel="nofollow" 
                                href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
                                     <span class="avatar-small slogan"
-                                          style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"
-                                          ></span>
+                                          style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
                                     <#if "someone" != relevantArticle.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
                             </li>
@@ -356,9 +355,9 @@
                             Label.thankLabel = "${thankLabel}";
                             Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
                             Label.adminLabel = '${adminLabel}';
-                            < #if isLoggedIn >
+                            <#if isLoggedIn>
                                     Label.currentUserName = '${currentUser.userName}';
-                            < /#if>            
+                            </#if>            
                                     // Init [Article] channel
                                     ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
                             $(document).ready(function () {
@@ -375,16 +374,16 @@
                                     "fileMaxSize": ${fileMaxSize?c}
                             });
                             });
-                            < #if 3 == article.articleType >
+                            <#if 3 == article.articleType>
                                     Article.playThought('${article.articleContent}');
-                            < /#if>
+                            </#if>
                                     Comment.init(${isLoggedIn?c});
-                            < #if isLoggedIn >
+                            <#if isLoggedIn>
                                     Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
                             setTimeout(function() {
                             Util.setUnreadNotificationCount();
                             }, 1000);
-                            < /#if>            
+                            </#if>            
         </script>
         <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">

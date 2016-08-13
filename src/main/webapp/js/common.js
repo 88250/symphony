@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.30.19.23, Aug 10, 2016
+ * @version 1.30.19.24, Aug 13, 2016
  */
 
 /**
@@ -104,7 +104,7 @@ var Util = {
         $('#search').autocomplete({
             hint: false,
             templates: {
-                footer: '<div class="fn-right fn-pointer" onclick="window.open(\'https://www.algolia.com/\')">'
+                footer: '<div class="fn-right fn-pointer" onclick="window.open(\'https://www.algolia.com/referrals/1faf0d17/join\')">'
                         + '<span class="ft-gray">With &hearts; from</span> <img src="' + Label.staticServePath + '/images/services/algolia128x40.png" /> </div>'
             }
         }, [{
