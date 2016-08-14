@@ -88,9 +88,9 @@
                 </label>
             </div>
         </div>
-        <div id="miscTip" class="tip"></div>
+        <div id="privacyTip" class="tip"></div>
         <div class="fn-hr5"></div>
-        <button class="green fn-right" onclick="Settings.update('misc', '${csrfToken}')">${saveLabel}</button>
+        <button class="green fn-right" onclick="Settings.update('privacy', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 </@home>

@@ -18,9 +18,9 @@
             <input id="userNotifyStatus" <#if 0 == currentUser.userNotifyStatus> checked="checked"</#if> type="checkbox" /> 
         </label>   
         <div class="fn-clear"></div>
-        <div id="miscTip" class="tip"></div>
+        <div id="functionTip" class="tip"></div>
         <div class="fn-hr5"></div>
-        <button class="green fn-right" onclick="Settings.update('misc', '${csrfToken}')">${saveLabel}</button>
+        <button class="green fn-right" onclick="Settings.update('function', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 </@home>
