@@ -13,7 +13,7 @@
         <div class="fn-flex-1 has-view">
             <h2>
                 <#if 1 == notification.articlePerfect>
-                <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
+                <span class="tooltipped tooltipped-w" aria-label="${perfectLabel}"><svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg></span>
                 </#if>
                 <#if notification.articleType == 1>
                 <span class="tooltipped tooltipped-w" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>

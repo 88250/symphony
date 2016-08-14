@@ -15,12 +15,12 @@
             <#if "someone" != article.articleAuthorName>
             <a aria-label="${article.articleAuthorName}" class="tooltipped tooltipped-s"
                target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
-                <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}')"></div>
+                <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div>
             <#if "someone" != article.articleAuthorName></a></#if>
             <div class="fn-flex-1 has-view">
                 <h2>
                     <#if 1 == article.articlePerfect>
-                    <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
+                    <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg></span>
                     </#if>
                     <#if 1 == article.articleType>
                     <span class="tooltipped tooltipped-n" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
