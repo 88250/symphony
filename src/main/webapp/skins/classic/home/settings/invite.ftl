@@ -6,7 +6,7 @@
     </div>
     <div class="module-panel form">
         <br/>
-        <input type="text" value="${serverScheme}://${serverHost}/register?r=${currentUser.userName}" onclick="this.select()"/>
+        <input readonly="" type="text" value="${serverScheme}://${serverHost}/register?r=${currentUser.userName}" onclick="this.select()"/>
         <button class="red btn" id="shareClipboard"
                 data-clipboard-text="${serverScheme}://${serverHost}/register?r=${currentUser.userName}">${copyLabel}</button>
     </div>

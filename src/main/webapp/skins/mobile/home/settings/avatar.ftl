@@ -3,9 +3,10 @@
 <div class="module">
     <div class="module-header">${updateAvatarTipLabel}</div>
     <div class="module-panel form">
-        <div class="fn-clear">
+        <div class="fn-clear ft-center"> <br/>
             <div class="avatar-big" id="avatarURL" data-imageurl="${currentUser.userAvatarURL}"
                  style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp; &nbsp; 
+            <br/> <br/>
             <div class="avatar" id="avatarURLMid" data-imageurl="${currentUser.userAvatarURL}"
                  style="background-image:url('${currentUser.userAvatarURL}?${currentUser.userUpdateTime?c}')"></div> &nbsp; &nbsp; 
             <div class="avatar-small" id="avatarURLNor" data-imageurl="${currentUser.userAvatarURL}"
@@ -18,7 +19,6 @@
                     ${uploadLabel}<input type="file" name="file">
                 </label>
             </form>
-            <label class="btn" onclick="Settings.preview(this)">${previewLabel}</label>
         </div>
     </div>
 </div>

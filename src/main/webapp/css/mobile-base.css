@@ -1895,6 +1895,7 @@ h2.article-title {
     border: 1px solid #DDD;
     font-size: 12px;
     line-height: 16px;
+    width: 44px;
 }
 
 .domains a.selected {
