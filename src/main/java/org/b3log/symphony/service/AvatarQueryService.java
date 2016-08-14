@@ -18,7 +18,6 @@ package org.b3log.symphony.service;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
@@ -40,17 +39,11 @@ public class AvatarQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AvatarQueryService.class.getName());
-    
+
     /**
      * Default avatar URL.
      */
     private static final String DEFAULT_AVATAR_URL = Symphonys.get("defaultThumbnailURL");
-    
-    /**
-     * User query service.
-     */
-    @Inject
-    private UserQueryService userQueryService;
 
     /**
      * Fills the specified user thumbnail URL.
@@ -91,7 +84,7 @@ public class AvatarQueryService {
         if (null == user) {
             return DEFAULT_AVATAR_URL;
         }
-        
+
         final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
 
         String originalURL = user.optString(UserExt.USER_AVATAR_URL);
