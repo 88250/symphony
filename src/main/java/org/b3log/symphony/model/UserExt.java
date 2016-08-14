@@ -22,11 +22,16 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.23.1.11, Jul 24, 2016
+ * @version 2.24.1.11, Aug 14, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+
+    /**
+     * Key of user avatar view mode.
+     */
+    public static final String USER_AVATAR_VIEW_MODE = "userAvatarViewMode";
 
     /**
      * Key of user list page size.
@@ -404,6 +409,17 @@ public final class UserExt {
      * User XXX (UA) status - disabled.
      */
     public static final int USER_XXX_STATUS_C_DISABLED = 1;
+
+    //// Avatar View Mode constants
+    /**
+     * User avatar view mode - dynamic.
+     */
+    public static final int USER_AVATAR_VIEW_MODE_C_DYNAMIC = 0;
+
+    /**
+     * User avatar view mode - static.
+     */
+    public static final int USER_AVATAR_VIEW_MODE_C_STATIC = 1;
 
     //// Comment View Mode constants
     /**

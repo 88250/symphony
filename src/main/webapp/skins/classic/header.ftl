@@ -18,7 +18,7 @@
             <a href="${servePath}/admin" aria-label="${adminLabel}" class="tooltipped tooltipped-w last"><span class="icon-userrole"></span></a>
             </#if>
             <a href="${servePath}/member/${currentUser.userName}" aria-label="Go Home" class="tooltipped tooltipped-w <#if 'adminRole' != userRole>last </#if>nav-avatar">
-                <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
+                <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
             </a>
             <a href="${servePath}/activities" aria-label="${activityLabel}" class="tooltipped tooltipped-w"><span class="icon-flag"></span></a>
             <a href="${servePath}/pre-post" aria-label="${addArticleLabel}" 

@@ -603,7 +603,7 @@ public class NotificationQueryService {
                     atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                     atNotification.put(Common.AUTHOR_NAME, articleAuthor.optString(User.USER_NAME));
                     atNotification.put(Common.CONTENT, "");
-                    final String thumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor);
+                    final String thumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor, "48");
                     atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                     atNotification.put(Common.THUMBNAIL_UPDATE_TIME, articleAuthor.optLong(UserExt.USER_UPDATE_TIME));
                     atNotification.put(Article.ARTICLE_TITLE, Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
@@ -716,7 +716,7 @@ public class NotificationQueryService {
                 followingUserNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 followingUserNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 followingUserNotification.put(Common.CONTENT, "");
-                followingUserNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
+                followingUserNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author, "48"));
                 followingUserNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
                 followingUserNotification.put(Article.ARTICLE_TITLE, Emotions.convert(articleTitle));
                 followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
@@ -828,7 +828,7 @@ public class NotificationQueryService {
                 broadcastNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 broadcastNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 broadcastNotification.put(Common.CONTENT, "");
-                broadcastNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author));
+                broadcastNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author, "48"));
                 broadcastNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
                 broadcastNotification.put(Article.ARTICLE_TITLE, articleTitle);
                 broadcastNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));

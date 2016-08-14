@@ -12,7 +12,7 @@
                    href="${servePath}/member/${article.articleAuthorName}"></#if><div
                    class="avatar ft-gray tooltipped tooltipped-se"  
                    aria-label="${article.articleAuthorName}"
-                   style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div><#if article.articleAnonymous == 0></a></#if>
+                   style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
                 <div class="fn-flex-1 has-view">
                     <h2>
                         <#if 1 == article.articlePerfect>

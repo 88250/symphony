@@ -492,7 +492,7 @@ public class TagQueryService {
 
             final String creatorId = creatorTagRelation.optString(User.USER + '_' + Keys.OBJECT_ID);
             if (UserExt.ANONYMOUS_USER_ID.equals(creatorId)) {
-                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
+                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
                 ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, 0L);
                 ret.put(Tag.TAG_T_CREATOR_NAME, UserExt.ANONYMOUS_USER_NAME);
 
@@ -501,7 +501,7 @@ public class TagQueryService {
 
             final JSONObject creator = userRepository.get(creatorId);
 
-            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(creator);
+            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(creator, "48");
 
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, creator.optLong(UserExt.USER_UPDATE_TIME));
@@ -559,7 +559,7 @@ public class TagQueryService {
 
                 participant.put(Tag.TAG_T_PARTICIPANT_NAME, user.optString(User.USER_NAME));
 
-                final String thumbnailURL = avatarQueryService.getAvatarURLByUser(user);
+                final String thumbnailURL = avatarQueryService.getAvatarURLByUser(user, "48");
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME, user.optLong(UserExt.USER_UPDATE_TIME));
 

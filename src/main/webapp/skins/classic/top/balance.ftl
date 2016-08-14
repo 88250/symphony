@@ -13,7 +13,7 @@
                 <a rel="nofollow"
                    class="tooltipped tooltipped-se"
                    href="${servePath}/member/${user.userName}" 
-                   aria-label="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div></a>
+                   aria-label="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}')"></div></a>
                 <div class="has-view fn-flex-1">
                     <h2>
                         ${user_index + 1}.

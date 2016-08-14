@@ -8,7 +8,7 @@
             <div class="fn-flex">
                 <a rel="nofollow"
                    href="${servePath}/member/${user.userName}" 
-                   title="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div></a>
+                   title="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}')"></div></a>
                 <div class="fn-flex-1">
                     <div class="fn-clear">
                         <h2 class="fn-left">

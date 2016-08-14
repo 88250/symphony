@@ -9,7 +9,7 @@
             <#if "someone" != article.articleAuthorName>
             <a title="${article.articleAuthorName}"
                target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
-                <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}')"></div>
             <#if "someone" != article.articleAuthorName></a></#if>
             <div class="fn-flex-1 has-view">
                 <h2>

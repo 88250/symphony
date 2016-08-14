@@ -39,7 +39,7 @@
                                 <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
                                     <span class="avatar-small tooltipped tooltipped-se slogan"
                                           aria-label="${article.articleAuthorName}"
-                                          style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
+                                          style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != article.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                             </li>
@@ -57,7 +57,7 @@
                                 <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
                                     <span class="avatar-small tooltipped tooltipped-se slogan"
                                           aria-label="${article.articleAuthorName}"
-                                          style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
+                                          style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != article.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                             </li>
@@ -75,7 +75,7 @@
                                 <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
                                     <span class="avatar-small tooltipped tooltipped-se slogan"
                                           aria-label="${article.articleAuthorName}"
-                                          style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
+                                          style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != article.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                             </li>

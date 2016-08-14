@@ -69,7 +69,7 @@
                 <a rel="nofollow" href="${servePath}/member/${hotArticle.articleAuthorName}"></#if>
                     <span class="avatar-small tooltipped tooltipped-se slogan"
                           aria-label="${hotArticle.articleAuthorName}"
-                          style="background-image:url('${hotArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
+                          style="background-image:url('${hotArticle.articleAuthorThumbnailURL20}')"></span>
                     <#if "someone" != hotArticle.articleAuthorName></a></#if>
                 <a rel="nofollow" class="title" href="${hotArticle.articlePermalink}">${hotArticle.articleTitleEmoj}</a>
             </li>
@@ -123,7 +123,7 @@
                 <#if "someone" != randomArticle.articleAuthorName>
                 <a rel="nofollow" href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
                     <span aria-label="${randomArticle.articleAuthorName}"
-                          style="background-image:url('${randomArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"
+                          style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"
                           class="avatar-small tooltipped tooltipped-se slogan"></span>
                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
                 <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>

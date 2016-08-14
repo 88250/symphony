@@ -9,7 +9,7 @@
             <#if comment.commentArticleAuthorName != "someone">
             <a rel="nofollow" href="${servePath}/member/${comment.commentArticleAuthorName}" 
                title="${comment.commentArticleAuthorName}"></#if>
-                <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}')"></div>
             <#if comment.commentArticleAuthorName != "someone">
             </a>
             </#if>

@@ -81,7 +81,7 @@
                     <div class="article-info fn-flex">
                         <#if article.articleAnonymous == 0>
                         <a rel="author" href="${servePath}/member/${article.articleAuthorName}"></#if><div 
-                           class="avatar tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div><#if article.articleAnonymous == 0></a></#if>
+                           class="avatar tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
                         <div class="fn-flex-1">
                             <#if article.articleAnonymous == 0>
                             <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-black"></#if><strong>${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
@@ -203,11 +203,11 @@
                                         <#if comment.commentAnonymous == 0>
                                         <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
                                             <div class="avatar tooltipped tooltipped-se" 
-                                                 aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                                                 aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         <#if comment.commentAnonymous == 0></a></#if>
                                         <#else>
                                         <div class="avatar tooltipped tooltipped-se" 
-                                             aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                                             aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         </#if>
                                         <div class="fn-flex-1 comment-content">
                                             <div class="fn-clear comment-info">
@@ -348,7 +348,7 @@
                                     <a rel="nofollow" 
                                    href="${servePath}/member/${relevantArticle.articleAuthorName}"></#if>
                                         <span class="avatar-small slogan tooltipped tooltipped-se" aria-label="${relevantArticle.articleAuthorName}"
-                                   style="background-image:url('${relevantArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"
+                                   style="background-image:url('${relevantArticle.articleAuthorThumbnailURL20}')"
                                    ></span>
                                     <#if "someone" != relevantArticle.articleAuthorName></a></#if>
                                     <a rel="nofollow" class="title" href="${relevantArticle.articlePermalink}">${relevantArticle.articleTitleEmoj}</a>
@@ -375,7 +375,7 @@
                                    href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
                                         <span class="avatar-small slogan tooltipped tooltipped-se"
                                    aria-label="${randomArticle.articleAuthorName}"
-                                   style="background-image:url('${randomArticle.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></span>
+                                   style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
                                     <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
                                 </li>

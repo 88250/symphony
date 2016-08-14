@@ -6,7 +6,7 @@
         <#list comments as item>
         <li>
             <div class="fn-clear">
-                <div class="avatar tooltipped tooltipped-w" style="background-image:url('${item.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')" 
+                <div class="avatar tooltipped tooltipped-w" style="background-image:url('${item.commentAuthorThumbnailURL20}')" 
                      aria-label="${item.commentAuthorName}"></div>
                 <a href="${item.commentSharpURL}">${item.commentArticleTitle}</a> &nbsp;
                 <#if item.commentStatus == 0>

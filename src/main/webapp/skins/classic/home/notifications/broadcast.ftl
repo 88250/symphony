@@ -8,7 +8,7 @@
         <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.authorName}"></#if>
             <div class="avata tooltipped tooltipped-se"  
                    aria-label="${notification.authorName}"
-                 style="background-image:url('${notification.thumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                 style="background-image:url('${notification.thumbnailURL}')"></div>
         <#if "someone" != notification.authorName></a></#if>
         <div class="fn-flex-1 has-view">
             <h2>

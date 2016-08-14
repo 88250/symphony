@@ -159,10 +159,7 @@ public class UserQueryService {
                 u.put(User.USER_NAME, user.optString(User.USER_NAME));
                 u.put(UserExt.USER_T_NAME_LOWER_CASE, user.optString(User.USER_NAME).toLowerCase());
 
-                String avatar = user.optString(UserExt.USER_AVATAR_URL);
-                if (StringUtils.isBlank(avatar)) {
-                    avatar = AvatarQueryService.DEFAULT_AVATAR_URL;
-                }
+                final String avatar = avatarQueryService.getAvatarURLByUser(user, "20");
                 u.put(UserExt.USER_AVATAR_URL, avatar);
 
                 userNames.add(u);

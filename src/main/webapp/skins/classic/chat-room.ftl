@@ -51,11 +51,11 @@
                                         <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
                                         <a rel="nofollow" href="${servePath}/member/${msg.userName}">
                                             <div class="avatar tooltipped tooltipped-se" 
-                                                 aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                                                 aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}')"></div>
                                         </a>
                                         <#else>
                                         <div class="avatar tooltipped tooltipped-se" 
-                                             aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                                             aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}')"></div>
                                         </#if>
                                         <div class="fn-flex-1">
                                             <div class="fn-clear">

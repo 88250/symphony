@@ -585,7 +585,7 @@ public class UserMgmtService {
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Generates avatar error", e);
 
-                    user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
+                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
                 }
 
                 final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);

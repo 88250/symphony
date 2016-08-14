@@ -8,7 +8,7 @@
         <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.commentAuthorName}"></#if>
             <div class="avatar tooltipped tooltipped-se"  
                    aria-label="${notification.commentAuthorName}"
-                 style="background-image:url('${notification.commentAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                 style="background-image:url('${notification.commentAuthorThumbnailURL}')"></div>
         <#if "someone" != notification.commentAuthorName></a></#if>
         <div class="fn-flex-1">
             <div class="fn-flex">

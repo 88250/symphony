@@ -27,7 +27,7 @@
                 <a href="${servePath}/admin/article/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-icon" aria-label="${editLabel}"><span class="icon-edit"></span></a>
             </div>
             <div class="fn-clear">
-                <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>${item.articleAuthorName} &nbsp;
+                <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL20}')"></div>${item.articleAuthorName} &nbsp;
                 <span class="tooltipped tooltipped-w" aria-label="${tagLabel}"><span class="icon-tags"></span></span>
                 <span class="tags">
                     ${item.articleTags}

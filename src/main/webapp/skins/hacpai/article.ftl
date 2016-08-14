@@ -47,7 +47,7 @@
                             <h2 class="fn-flex-1">
                                 <a rel="author" href="/member/${article.articleAuthorName}" class="ft-small"
                                    title="${article.articleAuthorName}">
-                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80" />
+                                    <img class="avatar-small" src="${article.articleAuthorThumbnailURL}" />
                                 </a> &nbsp;
                                 <a href="${servePath}${article.articlePermalink}" rel="bookmark">
                                     ${article.articleTitleEmoj}

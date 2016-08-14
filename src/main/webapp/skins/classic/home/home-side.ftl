@@ -1,6 +1,6 @@
 <div class="ft-center">
     <div id="avatarURLDom" class="avatar-big tooltipped tooltipped-s" aria-label="${user.userName}"
-         style="background-image:url('${user.userAvatarURL}?imageView2/1/w/260/h/260/interlace/0/q/80')"></div>
+         style="background-image:url('${user.userAvatarURL}')"></div>
     <div>
         <div class="user-name">
             <#if user.userNickname != "">

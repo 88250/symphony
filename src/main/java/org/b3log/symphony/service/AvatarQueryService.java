@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * User avatar query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.3, Mar 17, 2016
+ * @version 1.5.1.3, Aug 14, 2016
  * @since 0.3.0
  */
 @Service
@@ -43,7 +43,7 @@ public class AvatarQueryService {
     /**
      * Default avatar URL.
      */
-    public static final String DEFAULT_AVATAR_URL = Symphonys.get("defaultThumbnailURL");
+    private static final String DEFAULT_AVATAR_URL = Symphonys.get("defaultThumbnailURL");
 
     /**
      * Fills the specified user thumbnail URL.
@@ -51,46 +51,70 @@ public class AvatarQueryService {
      * @param user the specified user
      */
     public void fillUserAvatarURL(final JSONObject user) {
-        final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
-
-        if (Symphonys.getBoolean("qiniu.enabled")) {
-            final String qiniuDomain = Symphonys.get("qiniu.domain");
-
-            if (!StringUtils.startsWith(originalURL, qiniuDomain)) {
-                user.put(UserExt.USER_AVATAR_URL, DEFAULT_AVATAR_URL);
-
-                return;
-            }
-        }
-
-        user.put(UserExt.USER_AVATAR_URL, StringUtils.substringBeforeLast(originalURL, "?"));
+        user.put(UserExt.USER_AVATAR_URL + "210", getAvatarURLByUser(user, "210"));
+        user.put(UserExt.USER_AVATAR_URL + "48", getAvatarURLByUser(user, "48"));
+        user.put(UserExt.USER_AVATAR_URL + "20", getAvatarURLByUser(user, "20"));
     }
 
     /**
-     * Gets the avatar URL for the specified user id with the specified size.
+     * Gets the default avatar URL with the specified size.
+     *
+     * @param size the specified size
+     * @return the default avatar URL
+     */
+    public String getDefaultAvatarURL(final String size) {
+        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
+        if (qiniuEnabled) {
+            return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + size + "/h/" + size + "/interlace/0/q/100";
+        } else {
+            return DEFAULT_AVATAR_URL;
+        }
+    }
+
+    /**
+     * Gets the avatar URL for the specified user with the specified size.
      *
      * @param user the specified user
+     * @param size the specified size
      * @return the avatar URL
      */
-    public String getAvatarURLByUser(final JSONObject user) {
+    public String getAvatarURLByUser(final JSONObject user, final String size) {
         if (null == user) {
             return DEFAULT_AVATAR_URL;
         }
 
-        final String originalURL = user.optString(UserExt.USER_AVATAR_URL);
+        final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
+
+        String originalURL = user.optString(UserExt.USER_AVATAR_URL);
         if (StringUtils.isBlank(originalURL)) {
-            return DEFAULT_AVATAR_URL;
+            originalURL = DEFAULT_AVATAR_URL;
         }
 
-        if (Symphonys.getBoolean("qiniu.enabled")) {
+        String avatarURL = StringUtils.substringBeforeLast(originalURL, "?");
+
+        if (UserExt.USER_AVATAR_VIEW_MODE_C_DYNAMIC == user.optInt(UserExt.USER_AVATAR_VIEW_MODE)) {
+            if (qiniuEnabled) {
+                final String qiniuDomain = Symphonys.get("qiniu.domain");
+
+                if (!StringUtils.startsWith(avatarURL, qiniuDomain)) {
+                    return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + size + "/h/" + size + "/interlace/0/q/100";
+                } else {
+                    return avatarURL + "?imageView2/1/w/" + size + "/h/" + size + "/interlace/0/q/100";
+                }
+            } else {
+                return avatarURL;
+            }
+        } else if (qiniuEnabled) {
             final String qiniuDomain = Symphonys.get("qiniu.domain");
 
-            if (!StringUtils.startsWith(originalURL, qiniuDomain)) {
-                return DEFAULT_AVATAR_URL;
+            if (!StringUtils.startsWith(avatarURL, qiniuDomain)) {
+                return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + size + "/h/" + size + "/format/jpg/interlace/0/q/100";
+            } else {
+                return avatarURL + "?imageView2/1/w/" + size + "/h/" + size + "/format/jpg/interlace/0/q/100";
             }
+        } else {
+            return avatarURL;
         }
-
-        return StringUtils.substringBeforeLast(originalURL, "?");
     }
 
     /**

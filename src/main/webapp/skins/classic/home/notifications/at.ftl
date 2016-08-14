@@ -9,7 +9,7 @@
         </#if>
             <div class="avatar tooltipped tooltipped-se"  
                    aria-label="${notification.authorName}"
-                 style="background-image:url('${notification.thumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80')"></div>
+                 style="background-image:url('${notification.thumbnailURL}')"></div>
         <#if "someone" != notification.authorName></a></#if>
 
         <#if !notification.atInArticle>

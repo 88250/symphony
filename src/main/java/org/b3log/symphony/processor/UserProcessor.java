@@ -1044,6 +1044,7 @@ public class UserProcessor {
         final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
         final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
         String userListPageSizeStr = requestJSONObject.optString(UserExt.USER_LIST_PAGE_SIZE);
+        final int userAvatarViewMode = requestJSONObject.optInt(UserExt.USER_AVATAR_VIEW_MODE);
 
         int userListPageSize;
         try {
@@ -1091,6 +1092,7 @@ public class UserProcessor {
                 userJoinUsedPointRank
                         ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
         user.put(UserExt.USER_LIST_PAGE_SIZE, userListPageSize);
+        user.put(UserExt.USER_AVATAR_VIEW_MODE, userAvatarViewMode);
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
@@ -1460,10 +1462,7 @@ public class UserProcessor {
                 final JSONObject userName = new JSONObject();
                 userName.put(User.USER_NAME, admin.optString(User.USER_NAME));
 
-                String avatar = admin.optString(UserExt.USER_AVATAR_URL);
-                if (StringUtils.isBlank(avatar)) {
-                    avatar = AvatarQueryService.DEFAULT_AVATAR_URL;
-                }
+                final String avatar = avatarQueryService.getAvatarURLByUser(admin, "20");
                 userName.put(UserExt.USER_AVATAR_URL, avatar);
 
                 userNames.add(userName);

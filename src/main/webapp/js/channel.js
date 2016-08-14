@@ -79,13 +79,13 @@ var ArticleChannel = {
                             template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
                         }
                         template += '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.commentAuthorName + '" style="background-image:url('
-                                + data.commentAuthorThumbnailURL + '?imageView2/1/w/64/h/64/interlace/0/q/80)"></div>';
+                                + data.commentAuthorThumbnailURL + ')"></div>';
                         if (data.commentAuthorName !== 'someone') {
                             template += '</a>';
                         }
                     } else {
                         template += '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.commentAuthorName + '" style="background-image:url('
-                                + data.commentAuthorThumbnailURL + '?imageView2/1/w/64/h/64/interlace/0/q/80)"></div>';
+                                + data.commentAuthorThumbnailURL + ')"></div>';
                     }
 
                     template += '<div class="fn-flex-1 comment-content">'
@@ -338,11 +338,11 @@ var ChatRoomChannel = {
                     var enableUserLink = data.userAvatarURL.indexOf("user-thumbnail.png") < 0;
                     var avatarPart = '<a rel="nofollow" href="/member/' + data.userName + '">'
                             + '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.userName 
-                            + '" style="background-image:url(' + data.userAvatarURL + '?imageView2/1/w/64/h/64/interlace/0/q/80)"></div>'
+                            + '" style="background-image:url(' + data.userAvatarURL + ')"></div>'
                             + '</a>';
                     if (!enableUserLink) {
                         avatarPart = '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.userName 
-                                + '" style="background-image:url(' + data.userAvatarURL + '?imageView2/1/w/64/h/64/interlace/0/q/80)"></div>';
+                                + '" style="background-image:url(' + data.userAvatarURL + ')"></div>';
                     }
 
                     var namePart = '<a rel="nofollow" href="/member/' + data.userName + '">' + data.userName + '</a>';
