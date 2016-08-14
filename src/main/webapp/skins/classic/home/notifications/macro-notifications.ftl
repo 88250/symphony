@@ -63,7 +63,7 @@
                 </div>
                 <div class="side">
                     <#include '../../common/person-info.ftl'/>
-                    <ul class="note-list responsive-hide">
+                    <ul class="home-list responsive-hide">
                         <li<#if type == "commented"> class="current"</#if>>
                             <a href="${servePath}/notifications/commented">
                                 <span>${notificationCommentedLabel}</span>

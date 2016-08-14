@@ -60,8 +60,6 @@
                 <a <#if type == "settings"> class="selected"</#if>
                     href="${servePath}/settings"><svg height="18" version="1.1" viewBox="0 0 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
                 </#if>
-                 <button class="red tooltipped tooltipped-w" aria-label="${addArticleLabel}"
-                onclick="window.location = '${servePath}/pre-post'">${postArticleLabel}</button>
             </div>
         </div>
         <div class="main">
@@ -72,7 +70,11 @@
                     </div>
                 </div>
                 <div class="side">
+                    <#if currentUser?? && currentUser.userName == user.userName>
+                    <#include "../common/person-info.ftl"><br/>
+                    <#else>
                     <#include "home-side.ftl">
+                    </#if>
                 </div>
             </div>
         </div>

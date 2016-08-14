@@ -26,14 +26,14 @@
 .module-list .slogan {
     position: absolute;
     top: 50%;
-    margin-top: -12px;
+    margin-top: -10px;
 }
 
 .module-list .title {
     color: #767676;
-    margin: 5px 0 5px 36px;
+    margin: 2px 0 2px 36px;
     display: block;
-    line-height: 19px;
+    line-height: 20px;
 }
 
 .module-list.open-source .title {

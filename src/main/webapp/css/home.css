@@ -23,17 +23,58 @@
  */
 
 
-/* start home header */
-.home-nav {
-    position: relative
+/* start home common */
+.home-list {
+    background-image: linear-gradient(to right, #F6F6F6 0%, #FDFDFD 8px);
+    box-shadow: 1px 0 0 #EEEEEE inset;
+    list-style: none;
+    padding: 15px 0;
 }
 
-.home-nav button {
-    position: absolute;
-    right: 0;
-    top: -13px
+.home-list li a {
+    cursor: pointer;
+    margin: 5px 0;
+    display: block;
+    padding: 8px 10px;
+    text-decoration: none;
 }
-/* end home header */
+
+.home-list li a:hover {
+    box-shadow: 2px 0 0 #CCC inset;
+}
+
+.home-list li a > span.counter {
+    background-color: #EEEEEE;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 0 -1px 0 #E3E3E3 inset;
+    color: #999;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 5px;
+    margin-left: 5px;
+}
+
+.home-list li.current a {
+    background: none repeat scroll 0 0 #FDFDFD;    
+    box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    font-weight: bold;
+    position: relative;
+    border: 1px solid #EEE;
+    border-left-width: 0;
+}
+
+.home-list li.current a:after {
+    background-image: linear-gradient(#D26911, #BA5D0F);
+    bottom: -1px;
+    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1) inset;
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    width: 3px;
+}
+/* end home common */
 
 /* start home side */
 .user-name {
@@ -236,57 +277,6 @@ label.article-anonymous {
 /* end home */
 
 /* start notifications */
-.note-list {
-    background-image: linear-gradient(to right, #F6F6F6 0%, #FDFDFD 8px);
-    box-shadow: 1px 0 0 #EEEEEE inset;
-    list-style: none;
-    padding: 15px 0;
-}
-
-.note-list li a {
-    cursor: pointer;
-    margin: 5px 0;
-    display: block;
-    padding: 8px 10px;
-    text-decoration: none;
-}
-
-.note-list li a:hover {
-    box-shadow: 2px 0 0 #CCC inset;
-}
-
-.note-list li a > span.counter {
-    background-color: #EEEEEE;
-    border-radius: 2px 2px 2px 2px;
-    box-shadow: 0 -1px 0 #E3E3E3 inset;
-    color: #999;
-    font-size: 11px;
-    font-weight: bold;
-    padding: 2px 5px;
-    margin-left: 5px;
-}
-
-.note-list li.current a {
-    background: none repeat scroll 0 0 #FDFDFD;    
-    box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.05);
-    color: #333333;
-    font-weight: bold;
-    position: relative;
-    border: 1px solid #EEE;
-    border-left-width: 0;
-}
-
-.note-list li.current a:after {
-    background-image: linear-gradient(#D26911, #BA5D0F);
-    bottom: -1px;
-    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1) inset;
-    content: "";
-    position: absolute;
-    right: -1px;
-    top: -1px;
-    width: 3px;
-}
-
 .notification .read {
     background-color: #FAFAFA;
     opacity: 0.5;
@@ -432,7 +422,9 @@ label.article-anonymous {
     width: 50%
 }
 
-.settings-avatar .btn {
-    margin-top: 0;
+#homeSidePanel {
+    position: absolute;
+    top: 0;
+    background-color: #FFF;
 }
 /* end settings */

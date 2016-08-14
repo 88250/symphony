@@ -40,7 +40,7 @@ var Util = {
                         if (1 === node.attributes.length) {
                             return "";
                         }
-                        
+
                         var requestJSONObject = {
                             url: node.src
                         };
@@ -467,7 +467,7 @@ var Util = {
             Util.showLogin();
             return false;
         }
-        
+
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -727,13 +727,11 @@ var Util = {
         var href = location.href;
         $(".user-nav a").each(function () {
             if (href.indexOf($(this).attr("href")) === 0) {
-                // 用户下面有两个页面：用户的评论及文章列表
                 $(this).addClass("current");
             } else if (location.pathname === "/register") {
                 // 注册没有使用 href，对其进行特殊处理
                 $("#aRegister").addClass("current");
-            } else if (location.pathname === "/settings") {
-                // 注册没有使用 href，对其进行特殊处理
+            } else if (href.indexOf(Label.servePath + '/settings') === 0) {
                 $(".user-nav .nav-avatar").addClass("current");
             }
         });

@@ -28,6 +28,20 @@
  */
 var Settings = {
     /**
+     * 个人设置预览
+     */
+    preview: function (it) {
+        if ($('#homeSidePanel').css('display') === 'block') {
+            $('#homeSidePanel').hide();
+            $('.home-list').show();
+            $(it).text(Label.previewLabel);
+        } else {
+            $('#homeSidePanel').show();
+            $('.home-list').hide();
+             $(it).text(Label.unPreviewLabel);
+        }
+    },
+    /**
      * 初始化个人设置中的头像图片上传.
      * 
      * @returns {Boolean}
@@ -373,8 +387,7 @@ var Settings = {
                 userNickname: $("#userNickname").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userTags: $("#userTags").val().replace(/(^\s*)|(\s*$)/g, ""),
                 userURL: $("#userURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-                userIntro: $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, ""),
-                userCommentViewMode: $("#userCommentViewMode").val()
+                userIntro: $("#userIntro").val().replace(/(^\s*)|(\s*$)/g, "")
             };
         } else {
             return false;
@@ -434,7 +447,8 @@ var Settings = {
             userTimelineStatus: $("#userTimelineStatus").prop("checked"),
             userJoinPointRank: $("#joinPointRank").prop("checked"),
             userJoinUsedPointRank: $("#joinUsedPointRank").prop("checked"),
-            userListPageSize: $("#userListPageSize").val()
+            userListPageSize: $("#userListPageSize").val(),
+            userCommentViewMode: $("#userCommentViewMode").val()
         };
     },
     /**
