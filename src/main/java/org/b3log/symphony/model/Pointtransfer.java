@@ -291,7 +291,7 @@ public final class Pointtransfer {
     /**
      * Transfer sum - Buy Invitecode.
      */
-    public static final int TRANSFER_SUM_C_BUY_INVITECODE = Symphonys.getInt("pointInit");
+    public static final int TRANSFER_SUM_C_BUY_INVITECODE = Symphonys.getInt("pointInvitecode");
 
     /**
      * Private constructor.

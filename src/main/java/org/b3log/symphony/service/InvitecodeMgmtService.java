@@ -52,16 +52,17 @@ public class InvitecodeMgmtService {
      * User generates an invitecode.
      *
      * @param userId the specified user id
+     * @param userName the specified user name
      * @return invitecode
      */
-    public String userGenerateInvitecode(final String userId) {
+    public String userGenerateInvitecode(final String userId, final String userName) {
         final Transaction transaction = invitecodeRepository.beginTransaction();
 
         try {
             final String ret = RandomStringUtils.randomAlphanumeric(16);
             final JSONObject invitecode = new JSONObject();
             invitecode.put(Invitecode.CODE, ret);
-            invitecode.put(Invitecode.MEMO, "用户 [" + userId + "] 生成");
+            invitecode.put(Invitecode.MEMO, "用户 [" + userName + "," + userId + "] 生成");
             invitecode.put(Invitecode.STATUS, Invitecode.STATUS_C_UNUSED);
             invitecode.put(Invitecode.USER_ID, "");
             invitecode.put(Invitecode.USE_TIME, 0);

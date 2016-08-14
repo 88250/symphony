@@ -225,8 +225,9 @@ public class UserProcessor {
 
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
+        final String userName = currentUser.optString(User.USER_NAME);
 
-        final String invitecode = invitecodeMgmtService.userGenerateInvitecode(fromId);
+        final String invitecode = invitecodeMgmtService.userGenerateInvitecode(fromId, userName);
 
         final String transferId = pointtransferMgmtService.transfer(fromId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_BUY_INVITECODE, Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE,
@@ -297,7 +298,8 @@ public class UserProcessor {
         dataModel.put("pointTransferTipLabel", pointTransferTipLabel);
 
         String dataExportTipLabel = (String) dataModel.get("dataExportTipLabel");
-        dataExportTipLabel = dataExportTipLabel.replace("{point}", Symphonys.get("pointDataExport"));
+        dataExportTipLabel = dataExportTipLabel.replace("{point}",
+                String.valueOf(Pointtransfer.TRANSFER_SUM_C_DATA_EXPORT));
         dataModel.put("dataExportTipLabel", dataExportTipLabel);
 
         final String allowRegister = optionQueryService.getAllowRegister();
