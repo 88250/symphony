@@ -1883,6 +1883,10 @@ h2.article-title {
     margin: 5px;
 }
 
+.domains svg {
+    vertical-align: sub;
+}
+
 .domains a {
     height: 17px;
     float: left;
@@ -2179,6 +2183,10 @@ h2.article-title {
 
 .tag-articles .btn.red {
     vertical-align: super;
+}
+
+.tag-articles .article-action .fn-right {
+    margin-top: -8px;
 }
 /* end side tags */
 

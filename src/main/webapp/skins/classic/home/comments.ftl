@@ -25,7 +25,7 @@
                 <div class="fn-flex">
                     <h2 class="fn-flex-1">
                         <#if 1 == comment.commentArticlePerfect>
-                        <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg></span>
+                        <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg></span>
                         </#if>
                         <#if 1 == comment.commentArticleType>
                         <span class="tooltipped tooltipped-n" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>

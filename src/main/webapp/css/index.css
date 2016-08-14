@@ -753,7 +753,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .index .item {
     float: left;
-    width: 34%;
+    width: 30%;
     padding: 20px;
     color: #555;
     border: 1px solid rgba(0,0,0,0.075);
@@ -765,7 +765,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .index .item.mid {
-    margin: 0 3%;
+    margin: 0 5%;
 }
 
 .index .item:hover {
