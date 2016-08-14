@@ -178,11 +178,11 @@
                                     <#if comment.commentAnonymous == 0>
                                     <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>
                                         <div class="avatar" 
-                                             title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL48}')"></div>
+                                             title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         <#if comment.commentAnonymous == 0></a></#if>
                                     <#else>
                                     <div class="avatar" 
-                                         title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL48}')"></div>
+                                         title="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                     </#if>
                                     <div class="fn-flex-1 comment-content">
                                         <div class="fn-clear comment-info">
