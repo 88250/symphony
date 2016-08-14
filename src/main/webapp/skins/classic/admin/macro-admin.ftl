@@ -71,7 +71,7 @@
                 </div>
                 <#nested>
                 <div class="side">
-                    <ul class="note-list responsive-hide">
+                    <ul class="home-list responsive-hide">
                         <li<#if type == "index"> class="current"</#if>><a href="${servePath}/admin">${consoleIndexLabel}</a></li>
                         <li<#if type == "users" || type == "addUser"> class="current"</#if>><a href="${servePath}/admin/users">${userAdminLabel}</a></li>
                         <li<#if type == "articles" || type == "addArticle"> class="current"</#if>><a href="${servePath}/admin/articles">${articleAdminLabel}</a></li>

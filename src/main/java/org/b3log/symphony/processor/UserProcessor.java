@@ -207,7 +207,7 @@ public class UserProcessor {
         final String requestURI = request.getRequestURI();
         String page = StringUtils.substringAfter(requestURI, "/settings/");
         if (StringUtils.isBlank(page)) {
-            page = "/profile";
+            page = "profile";
         }
         page += ".ftl";
         renderer.setTemplateName("/home/settings/" + page);

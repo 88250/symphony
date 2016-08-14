@@ -651,7 +651,8 @@ button:active,
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset;
 }
 
-button.green {
+button.green,
+.btn.green {
     color: #fff;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
     background-color: #60b044;
@@ -660,7 +661,8 @@ button.green {
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#8ADD6D', endColorstr='#60B044');
 }
 
-button.green:hover {
+button.green:hover,
+.btn.green:hover{
     background-color: #69d344;
     background: linear-gradient(#79d858, #569e3d);
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#79d858', endColorstr='#569e3d');
@@ -1073,8 +1075,8 @@ a[class*=" icon-"]:hover {
 }
 
 .avatar-small {
-    height: 25px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
 }
 
 .avatar-big {
@@ -1082,13 +1084,6 @@ a[class*=" icon-"]:hover {
     height: 210px;
     width: 210px;
     border-radius: 6px;
-}
-
-.avatar-mid {
-    border: 1px solid #EEEEEE;
-    height: 118px;
-    width: 118px;
-    border-radius: 4px;
 }
 /* end avatar */
 
@@ -1310,6 +1305,8 @@ a[class*=" icon-"]:hover {
 
 .side {
     width: 28%;
+    position: relative;
+    min-height: 572px;
     min-width: 236px;
 }
 
@@ -1388,8 +1385,6 @@ a[class*=" icon-"]:hover {
 }
 
 .nav .avatar-small {
-    height: 20px;
-    width: 20px;
     vertical-align: super;
 }
 
