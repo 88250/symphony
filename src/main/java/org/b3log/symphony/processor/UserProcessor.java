@@ -97,7 +97,8 @@ import org.json.JSONObject;
  * <li>Updates user avatar (/settings/avatar), POST</li>
  * <li>Geo status (/settings/geo/status), POST</li>
  * <li>Sync (/settings/sync/b3), POST</li>
- * <li>Misc (/settings/misc), POST</li>
+ * <li>Privacy (/settings/privacy), POST</li>
+ * <li>Function (/settings/function), POST</li>
  * <li>Password (/settings/password), POST</li>
  * <li>SyncUser (/apis/user), POST</li>
  * <li>Lists usernames (/users/names), GET</li>
@@ -1007,16 +1008,16 @@ public class UserProcessor {
     }
 
     /**
-     * Updates user misc.
+     * Updates user privacy.
      *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/settings/misc", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/settings/privacy", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
-    public void updateMisc(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    public void updatePrivacy(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         context.renderJSON();
 
@@ -1030,7 +1031,6 @@ public class UserProcessor {
             requestJSONObject = new JSONObject();
         }
 
-        final boolean onlineStatus = requestJSONObject.optBoolean(UserExt.USER_ONLINE_STATUS);
         final boolean articleStatus = requestJSONObject.optBoolean(UserExt.USER_ARTICLE_STATUS);
         final boolean commentStatus = requestJSONObject.optBoolean(UserExt.USER_COMMENT_STATUS);
         final boolean followingUserStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWING_USER_STATUS);
@@ -1038,28 +1038,12 @@ public class UserProcessor {
         final boolean followingArticleStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWING_ARTICLE_STATUS);
         final boolean followerStatus = requestJSONObject.optBoolean(UserExt.USER_FOLLOWER_STATUS);
         final boolean pointStatus = requestJSONObject.optBoolean(UserExt.USER_POINT_STATUS);
+        final boolean onlineStatus = requestJSONObject.optBoolean(UserExt.USER_ONLINE_STATUS);
         final boolean timelineStatus = requestJSONObject.optBoolean(UserExt.USER_TIMELINE_STATUS);
         final boolean uaStatus = requestJSONObject.optBoolean(UserExt.USER_UA_STATUS);
         final boolean notifyStatus = requestJSONObject.optBoolean(UserExt.USER_NOTIFY_STATUS);
         final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
         final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
-        String userListPageSizeStr = requestJSONObject.optString(UserExt.USER_LIST_PAGE_SIZE);
-        final int userAvatarViewMode = requestJSONObject.optInt(UserExt.USER_AVATAR_VIEW_MODE);
-
-        int userListPageSize;
-        try {
-            userListPageSize = Integer.valueOf(userListPageSizeStr);
-
-            if (15 > userListPageSize) {
-                userListPageSize = 15;
-            }
-
-            if (userListPageSize > 41) {
-                userListPageSize = 41;
-            }
-        } catch (final Exception e) {
-            userListPageSize = Symphonys.getInt("indexArticlesCnt");
-        }
 
         final JSONObject user = userQueryService.getCurrentUser(request);
 
@@ -1091,7 +1075,63 @@ public class UserProcessor {
         user.put(UserExt.USER_JOIN_USED_POINT_RANK,
                 userJoinUsedPointRank
                         ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
+
+        try {
+            userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
+
+            context.renderTrueResult();
+        } catch (final ServiceException e) {
+            context.renderMsg(e.getMessage());
+        }
+    }
+
+    /**
+     * Updates user function.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/settings/function", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    public void updateFunction(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        context.renderJSON();
+
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            request.setAttribute(Keys.REQUEST, requestJSONObject);
+        } catch (final Exception e) {
+            LOGGER.warn(e.getMessage());
+
+            requestJSONObject = new JSONObject();
+        }
+
+        String userListPageSizeStr = requestJSONObject.optString(UserExt.USER_LIST_PAGE_SIZE);
+        final int userCommentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
+        final int userAvatarViewMode = requestJSONObject.optInt(UserExt.USER_AVATAR_VIEW_MODE);
+
+        int userListPageSize;
+        try {
+            userListPageSize = Integer.valueOf(userListPageSizeStr);
+
+            if (15 > userListPageSize) {
+                userListPageSize = 15;
+            }
+
+            if (userListPageSize > 41) {
+                userListPageSize = 41;
+            }
+        } catch (final Exception e) {
+            userListPageSize = Symphonys.getInt("indexArticlesCnt");
+        }
+
+        final JSONObject user = userQueryService.getCurrentUser(request);
+
         user.put(UserExt.USER_LIST_PAGE_SIZE, userListPageSize);
+        user.put(UserExt.USER_COMMENT_VIEW_MODE, userCommentViewMode);
         user.put(UserExt.USER_AVATAR_VIEW_MODE, userAvatarViewMode);
 
         try {
@@ -1124,7 +1164,6 @@ public class UserProcessor {
         final String userQQ = requestJSONObject.optString(UserExt.USER_QQ);
         final String userIntro = requestJSONObject.optString(UserExt.USER_INTRO);
         final String userNickname = requestJSONObject.optString(UserExt.USER_NICKNAME);
-        final int userCommentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
         final JSONObject user = userQueryService.getCurrentUser(request);
 
@@ -1134,7 +1173,6 @@ public class UserProcessor {
         user.put(UserExt.USER_INTRO, userIntro.replace("<", "&lt;").replace(">", "&gt"));
         user.put(UserExt.USER_NICKNAME, userNickname.replace("<", "&lt;").replace(">", "&gt"));
         user.put(UserExt.USER_AVATAR_TYPE, UserExt.USER_AVATAR_TYPE_C_UPLOAD);
-        user.put(UserExt.USER_COMMENT_VIEW_MODE, userCommentViewMode);
 
         try {
             userMgmtService.updateProfiles(user);
