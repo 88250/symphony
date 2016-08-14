@@ -64,9 +64,11 @@ public class AvatarQueryService {
      * @return the default avatar URL
      */
     public String getDefaultAvatarURL(final String size) {
+        final String finerSize = String.valueOf(Integer.valueOf(size) + 32);
+
         final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
         if (qiniuEnabled) {
-            return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + size + "/h/" + size + "/interlace/0/q/100";
+            return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + finerSize + "/h/" + finerSize + "/interlace/0/q/100";
         } else {
             return DEFAULT_AVATAR_URL;
         }
@@ -92,6 +94,8 @@ public class AvatarQueryService {
             originalURL = DEFAULT_AVATAR_URL;
         }
 
+        final String finerSize = String.valueOf(Integer.valueOf(size) + 32);
+
         String avatarURL = StringUtils.substringBeforeLast(originalURL, "?");
 
         if (UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL == viewMode) {
@@ -99,9 +103,9 @@ public class AvatarQueryService {
                 final String qiniuDomain = Symphonys.get("qiniu.domain");
 
                 if (!StringUtils.startsWith(avatarURL, qiniuDomain)) {
-                    return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + size + "/h/" + size + "/interlace/0/q/100";
+                    return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + finerSize + "/h/" + finerSize + "/interlace/0/q/100";
                 } else {
-                    return avatarURL + "?imageView2/1/w/" + size + "/h/" + size + "/interlace/0/q/100";
+                    return avatarURL + "?imageView2/1/w/" + finerSize + "/h/" + finerSize + "/interlace/0/q/100";
                 }
             } else {
                 return avatarURL;
@@ -110,9 +114,9 @@ public class AvatarQueryService {
             final String qiniuDomain = Symphonys.get("qiniu.domain");
 
             if (!StringUtils.startsWith(avatarURL, qiniuDomain)) {
-                return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + size + "/h/" + size + "/format/jpg/interlace/0/q/100";
+                return DEFAULT_AVATAR_URL + "?imageView2/1/w/" + finerSize + "/h/" + finerSize + "/format/jpg/interlace/0/q/100";
             } else {
-                return avatarURL + "?imageView2/1/w/" + size + "/h/" + size + "/format/jpg/interlace/0/q/100";
+                return avatarURL + "?imageView2/1/w/" + finerSize + "/h/" + finerSize + "/format/jpg/interlace/0/q/100";
             }
         } else {
             return avatarURL;

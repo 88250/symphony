@@ -1,5 +1,5 @@
 <div class="ft-center">
-    <div id="avatarURLDom" class="avatar-big" title="${user.userName}" style="background-image:url('${user.userAvatarURL}')"></div>
+    <div id="avatarURLDom" class="avatar-big" title="${user.userName}" style="background-image:url('${user.userAvatarURL210}')"></div>
     <div>
         <div class="user-name">
             <#if user.userNickname != "">
