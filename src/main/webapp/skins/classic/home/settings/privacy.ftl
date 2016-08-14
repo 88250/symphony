@@ -1,6 +1,7 @@
 <#include "macro-settings.ftl">
 <@home "privacy">
 <div class="module">
+    <div class="module-header">${privacyTipLabel}</div>
     <div class="module-panel form fn-clear">
         <div class="fn-clear settings-secret">
             <div>
