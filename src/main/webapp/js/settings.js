@@ -38,7 +38,7 @@ var Settings = {
         } else {
             $('#homeSidePanel').show();
             $('.home-list').hide();
-             $(it).text(Label.unPreviewLabel);
+            $(it).text(Label.unPreviewLabel);
         }
     },
     /**
@@ -281,8 +281,29 @@ var Settings = {
             case "password":
                 requestJSONObject = this._validatePassword();
                 break;
-            case "misc":
-                requestJSONObject = this._validateMisc();
+            case "privacy":
+                requestJSONObject = {
+                    userArticleStatus: $("#userArticleStatus").prop("checked"),
+                    userCommentStatus: $("#userCommentStatus").prop("checked"),
+                    userFollowingUserStatus: $("#userFollowingUserStatus").prop("checked"),
+                    userFollowingTagStatus: $("#userFollowingTagStatus").prop("checked"),
+                    userFollowingArticleStatus: $("#userFollowingArticleStatus").prop("checked"),
+                    userFollowerStatus: $("#userFollowerStatus").prop("checked"),
+                    userPointStatus: $("#userPointStatus").prop("checked"),
+                    userOnlineStatus: $("#userOnlineStatus").prop("checked"),
+                    userJoinPointRank: $("#joinPointRank").prop("checked"),
+                    userJoinUsedPointRank: $("#joinUsedPointRank").prop("checked"),
+                    userUAStatus: $("#userUAStatus").prop("checked"),
+                    userTimelineStatus: $("#userTimelineStatus").prop("checked")
+                };
+                break;
+            case "function":
+                requestJSONObject = {
+                    userListPageSize: $("#userListPageSize").val(),
+                    userCommentViewMode: $("#userCommentViewMode").val(),
+                    userAvatarViewMode: $("#userAvatarViewMode").val(),
+                    userNotifyStatus: $('#userNotifyStatus').prop("checked")
+                };
                 break;
             default:
                 console.log("update settings has no type");
@@ -427,29 +448,6 @@ var Settings = {
         } else {
             return false;
         }
-    },
-    /**
-     * @description settings 页面其他（杂项）数据校验
-     * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
-     */
-    _validateMisc: function () {
-        return {
-            userUAStatus: $("#userUAStatus").prop("checked"),
-            userNotifyStatus: $("#userNotifyStatus").prop("checked"),
-            userArticleStatus: $("#userArticleStatus").prop("checked"),
-            userCommentStatus: $("#userCommentStatus").prop("checked"),
-            userFollowingUserStatus: $("#userFollowingUserStatus").prop("checked"),
-            userFollowingTagStatus: $("#userFollowingTagStatus").prop("checked"),
-            userFollowingArticleStatus: $("#userFollowingArticleStatus").prop("checked"),
-            userFollowerStatus: $("#userFollowerStatus").prop("checked"),
-            userPointStatus: $("#userPointStatus").prop("checked"),
-            userOnlineStatus: $("#userOnlineStatus").prop("checked"),
-            userTimelineStatus: $("#userTimelineStatus").prop("checked"),
-            userJoinPointRank: $("#joinPointRank").prop("checked"),
-            userJoinUsedPointRank: $("#joinUsedPointRank").prop("checked"),
-            userListPageSize: $("#userListPageSize").val(),
-            userCommentViewMode: $("#userCommentViewMode").val()
-        };
     },
     /**
      * @description settings 页面密码校验

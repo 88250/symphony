@@ -29,9 +29,9 @@
                         <li<#if 'profile' == type> class="current"</#if>><a href="${servePath}/settings">${profilesLabel}</a></li>
                         <li<#if 'avatar' == type> class="current"</#if>><a href="${servePath}/settings/avatar">${avatarUploadLabel}</a></li>
                         <li<#if 'invite' == type> class="current"</#if>><a href="${servePath}/settings/invite">${inviteLabel}</a></li>
-                        <li<#if 'pointer' == type> class="current"</#if>><a href="${servePath}/settings/pointer">${pointTransferLabel}</a></li>
+                        <li<#if 'pointer' == type> class="current"</#if>><a href="${servePath}/settings/pointer">${pointLabel}</a></li>
                         <li<#if 'location' == type> class="current"</#if>><a href="${servePath}/settings/location">${geoLable}</a></li>
-                        <li<#if 'b3' == type> class="current"</#if>><a href="${servePath}/settings/b3">${syncLabel} (?)</a></li>
+                        <li<#if 'b3' == type> class="current"</#if>><a href="${servePath}/settings/b3">${syncLabel}</a></li>
                         <li<#if 'function' == type> class="current"</#if>><a href="${servePath}/settings/function">${functionConfigLabel}</a></li>
                         <li<#if 'privacy' == type> class="current"</#if>><a href="${servePath}/settings/privacy">${privacyConfigLabel}</a></li>
                         <li<#if 'password' == type> class="current"</#if>><a href="${servePath}/settings/password">${passwordLabel}</a></li>

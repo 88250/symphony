@@ -1,41 +1,96 @@
 <#include "macro-settings.ftl">
 <@home "privacy">
 <div class="module">
-    <div class="module-header fn-clear">
-        <a rel="nofollow" href="${servePath}/member/${currentUser.userName}" target="_blank">${currentUser.userName}</a>
-        <h2>${profilesLabel}</h2>
-        <span>(${currentUser.userEmail})</span>
-        <a class="ft-red fn-right" href="javascript:Util.logout()">${logoutLabel}</a>
-    </div>
     <div class="module-panel form fn-clear">
-        <label>${nicknameLabel}</label><br/>
-        <input id="userNickname" type="text" value="${currentUser.userNickname}" placeholder="${selfNicknameLabel}"/>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${userArticleStatusLabel}
+                    <input id="userArticleStatus" <#if 0 == currentUser.userArticleStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userCommentStatusLabel}
+                    <input id="userCommentStatus" <#if 0 == currentUser.userCommentStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${userFollowingUserStatusLabel}
+                    <input id="userFollowingUserStatus" <#if 0 == currentUser.userFollowingUserStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userFollowingTagStatusLabel}
+                    <input id="userFollowingTagStatus" <#if 0 == currentUser.userFollowingTagStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${userFollowingArticleStatusLabel}
+                    <input id="userFollowingArticleStatus" <#if 0 == currentUser.userFollowingArticleStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userFollowerStatusLabel}
+                    <input id="userFollowerStatus" <#if 0 == currentUser.userFollowerStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${userPointStatusLabel}
+                    <input id="userPointStatus" <#if 0 == currentUser.userPointStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userOnlineStatusLabel}
+                    <input id="userOnlineStatus" <#if 0 == currentUser.userOnlineStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
 
-        <label>${selfTagLabel}</label><br/>
-        <input id="userTags" type="text" value="${currentUser.userTags}" placeholder="${selfDescriptionLabel}"/>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${joinBalanceRankLabel}
+                    <input id="joinPointRank" <#if 0 == currentUser.userJoinPointRank> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${joinCosumptionRankLabel}
+                    <input id="joinUsedPointRank" <#if 0 == currentUser.userJoinUsedPointRank> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
 
-        <label>URL</label><br/>
-        <input id="userURL" type="text" value="${currentUser.userURL}" placeholder="${selfURLLabel}"/>
-
-        <#--
-        <label>QQ</label><br/>
-        <input id="userQQ" type="text" value="${currentUser.userQQ}" />
-        -->
-
-        <label>${userIntroLabel}</label><br/>
-        <textarea id="userIntro" placeholder="${selfIntroLabel}">${currentUser.userIntro}</textarea>
-
-        <label>${cmtViewModeLabel}</label><br/>
-        <select id="userCommentViewMode" name="userCommentViewMode">
-            <option value="0"<#if 0 == currentUser.userCommentViewMode> selected</#if>>${traditionLabel}</option>
-            <option value="1"<#if 1 == currentUser.userCommentViewMode> selected</#if>>${realTimeLabel}</option>
-        </select>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${displayUALabel}
+                    <input id="userUAStatus" <#if 0 == currentUser.userUAStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userTimelineStatusLabel}
+                    <input id="userTimelineStatus" <#if 0 == currentUser.userTimelineStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+        <div id="miscTip" class="tip"></div>
         <div class="fn-hr5"></div>
-        <div class="fn-hr5"></div>
-        <div class="tip" id="profilesTip"></div>
-        <div class="fn-hr5"></div>
-        <div class="fn-hr5"></div>
-        <button class="green fn-right" onclick="Settings.update('profiles', '${csrfToken}')">${saveLabel}</button>
+        <button class="green fn-right" onclick="Settings.update('misc', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
 </@home>

@@ -681,7 +681,8 @@ button.red,
 }
 
 button.red:hover,
-.btn.red:hover {
+.btn.red:hover,
+.btn.red-hover {
     color: #FFF;
     background-color: #b33630;
     background-image: linear-gradient(#dc5f59, #b33630);
