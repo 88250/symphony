@@ -1,6 +1,7 @@
 <#include "macro-settings.ftl">
 <@home "function">
 <div class="module">
+    <div class="module-header">${functionTipLabel}</div>
     <div class="module-panel form fn-clear">
         <label>${userListPageSizeLabel}</label>
         <input id="userListPageSize" type="number" value="${currentUser.userListPageSize}" /> 
