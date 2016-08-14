@@ -412,9 +412,9 @@ public final class UserExt {
 
     //// Avatar View Mode constants
     /**
-     * User avatar view mode - dynamic.
+     * User avatar view mode - original.
      */
-    public static final int USER_AVATAR_VIEW_MODE_C_DYNAMIC = 0;
+    public static final int USER_AVATAR_VIEW_MODE_C_ORIGINAL = 0;
 
     /**
      * User avatar view mode - static.

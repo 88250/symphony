@@ -92,7 +92,7 @@ public class AvatarQueryService {
 
         String avatarURL = StringUtils.substringBeforeLast(originalURL, "?");
 
-        if (UserExt.USER_AVATAR_VIEW_MODE_C_DYNAMIC == user.optInt(UserExt.USER_AVATAR_VIEW_MODE)) {
+        if (UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL == user.optInt(UserExt.USER_AVATAR_VIEW_MODE)) {
             if (qiniuEnabled) {
                 final String qiniuDomain = Symphonys.get("qiniu.domain");
 
