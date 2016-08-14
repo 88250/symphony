@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * Invitecode management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 18, 2016
+ * @version 1.1.0.1, Aug 14, 2016
  * @since 1.4.0
  */
 @Service
@@ -41,11 +41,46 @@ public class InvitecodeMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InvitecodeMgmtService.class.getName());
+
     /**
      * Invitecode repository.
      */
     @Inject
     private InvitecodeRepository invitecodeRepository;
+
+    /**
+     * User generates an invitecode.
+     *
+     * @param userId the specified user id
+     * @return invitecode
+     */
+    public String userGenerateInvitecode(final String userId) {
+        final Transaction transaction = invitecodeRepository.beginTransaction();
+
+        try {
+            final String ret = RandomStringUtils.randomAlphanumeric(16);
+            final JSONObject invitecode = new JSONObject();
+            invitecode.put(Invitecode.CODE, ret);
+            invitecode.put(Invitecode.MEMO, "用户 [" + userId + "] 生成");
+            invitecode.put(Invitecode.STATUS, Invitecode.STATUS_C_UNUSED);
+            invitecode.put(Invitecode.USER_ID, "");
+            invitecode.put(Invitecode.USE_TIME, 0);
+
+            invitecodeRepository.add(invitecode);
+
+            transaction.commit();
+
+            return ret;
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Generates invitecode failed", e);
+
+            return null;
+        }
+    }
 
     /**
      * Generates invitecodes with the specified quantity and memo.
@@ -65,10 +100,10 @@ public class InvitecodeMgmtService {
                 invitecode.put(Invitecode.STATUS, Invitecode.STATUS_C_UNUSED);
                 invitecode.put(Invitecode.USER_ID, "");
                 invitecode.put(Invitecode.USE_TIME, 0);
-                
+
                 invitecodeRepository.add(invitecode);
             }
-            
+
             transaction.commit();
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {

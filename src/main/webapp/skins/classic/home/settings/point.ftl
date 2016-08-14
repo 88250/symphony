@@ -1,11 +1,11 @@
 <#include "macro-settings.ftl">
-<@home "pointer">
+<@home "point">
 
 <div class="module">
     <div class="module-header">
         <h2>${pointTransferTipLabel}</h2>
-        <span class="fn-right ft-green">
-            ♦ <a class="ft-green" href="${servePath}/charge/point">${chargePointLabel}</a>
+        <span class="fn-right">
+            <a class="ft-green" href="${servePath}/charge/point">${rechargePointLabel}</a>
         </span>
     </div>
     <div class="module-panel form fn-clear">

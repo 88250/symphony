@@ -18,8 +18,8 @@
                     ${avatarLabel}
                     <#elseif type == "invite">
                     ${inviteLabel}
-                    <#elseif type == "pointer">
-                    ${pointerLabel}
+                    <#elseif type == "point">
+                    ${pointLabel}
                     <#elseif type == "location">
                     ${geoLabel}
                     <#elseif type == "b3">

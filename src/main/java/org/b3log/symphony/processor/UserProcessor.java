@@ -66,7 +66,9 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
+import org.b3log.symphony.service.InvitecodeMgmtService;
 import org.b3log.symphony.service.NotificationMgmtService;
+import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.service.PostExportService;
@@ -96,10 +98,12 @@ import org.json.JSONObject;
  * <li>Updates profiles (/settings/profiles), POST</li>
  * <li>Updates user avatar (/settings/avatar), POST</li>
  * <li>Geo status (/settings/geo/status), POST</li>
+ * <li>Transfer point (/point/transfer), POST</li>
  * <li>Sync (/settings/sync/b3), POST</li>
  * <li>Privacy (/settings/privacy), POST</li>
  * <li>Function (/settings/function), POST</li>
  * <li>Password (/settings/password), POST</li>
+ * <li>Point buy invitecode (/point/buy-invitecode), POST</li>
  * <li>SyncUser (/apis/user), POST</li>
  * <li>Lists usernames (/users/names), GET</li>
  * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
@@ -191,6 +195,52 @@ public class UserProcessor {
     private PostExportService postExportService;
 
     /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    @Inject
+    private InvitecodeMgmtService invitecodeMgmtService;
+
+    /**
+     * Point buy invitecode.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/point/buy-invitecode", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    public void pointBuy(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final JSONObject ret = Results.falseResult();
+        context.renderJSON(ret);
+
+        final String allowRegister = optionQueryService.getAllowRegister();
+        if (!"2".equals(allowRegister)) {
+            return;
+        }
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String fromId = currentUser.optString(Keys.OBJECT_ID);
+
+        final String invitecode = invitecodeMgmtService.userGenerateInvitecode(fromId);
+
+        final String transferId = pointtransferMgmtService.transfer(fromId, Pointtransfer.ID_C_SYS,
+                Pointtransfer.TRANSFER_TYPE_C_BUY_INVITECODE, Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE,
+                invitecode, System.currentTimeMillis());
+        final boolean succ = null != transferId;
+        ret.put(Keys.STATUS_CODE, succ);
+        if (!succ) {
+            ret.put(Keys.MSG, langPropsService.get("exchangeFailedLabel"));
+        } else {
+            ret.put(Keys.MSG, invitecode + " " + langPropsService.get("invitecodeTipLabel"));
+        }
+    }
+
+    /**
      * Shows settings pages.
      *
      * @param context the specified context
@@ -247,6 +297,14 @@ public class UserProcessor {
         String dataExportTipLabel = (String) dataModel.get("dataExportTipLabel");
         dataExportTipLabel = dataExportTipLabel.replace("{point}", Symphonys.get("pointDataExport"));
         dataModel.put("dataExportTipLabel", dataExportTipLabel);
+
+        final String allowRegister = optionQueryService.getAllowRegister();
+        dataModel.put("allowRegister", allowRegister);
+
+        String buyInvitecodeLabel = langPropsService.get("buyInvitecodeLabel");
+        buyInvitecodeLabel = buyInvitecodeLabel.replace("${point}",
+                String.valueOf(Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE));
+        dataModel.put("buyInvitecodeLabel", buyInvitecodeLabel);
 
         dataModel.put(Common.TYPE, "settings");
     }

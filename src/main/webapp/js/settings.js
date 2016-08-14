@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.7.11, Aug 9, 2016
+ * @version 1.14.7.11, Aug 14, 2016
  */
 
 /**
@@ -263,6 +263,36 @@ var Settings = {
                 }
             });
         }
+    },
+    /**
+     * @description 积分兑换邀请码
+     * @argument {String} csrfToken CSRF token
+     */
+    pointBuyInvitecode: function (csrfToken) {
+        var requestJSONObject = {};
+
+        $.ajax({
+            url: Label.servePath + "/point/buy-invitecode",
+            type: "POST",
+            headers: {"csrfToken": csrfToken},
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            beforeSend: function () {
+                $("#pointBuyInvitecodeTip").removeClass("succ").removeClass("error").html("");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            },
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    $("#pointBuyInvitecodeTip").addClass("succ").removeClass("error").html('<ul><li>' + result.msg + '</li></ul>');
+                } else {
+                    $("#pointBuyInvitecodeTip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
+                }
+
+                $("#pointBuyInvitecodeTip").show();
+            }
+        });
     },
     /**
      * @description 更新 settings 页面数据.
