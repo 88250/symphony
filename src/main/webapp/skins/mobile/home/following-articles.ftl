@@ -9,12 +9,12 @@
             <#if "someone" != article.articleAuthorName>
             <a title="${article.articleAuthorName}"
                target="_blank" rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
-                <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}')"></div>
+                <div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div>
             <#if "someone" != article.articleAuthorName></a></#if>
             <div class="fn-flex-1 has-view">
                 <h2>
                     <#if 1 == article.articlePerfect>
-                    <svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg>
+                    <svg height="20" viewBox="3 4 11 12" width="14">${perfectIcon}</svg>
                     </#if>
                     <#if 1 == article.articleType>
                     <span class="icon-locked" title="${discussionLabel}"></span>

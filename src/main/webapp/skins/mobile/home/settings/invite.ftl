@@ -18,6 +18,7 @@
         </span>
     </div>
     <div class="module-panel form fn-clear">
+         <br/>
         <div id="pointBuyInvitecodeTip" class="tip"></div> <br/>
         <button class="red fn-right" onclick="Settings.pointBuyInvitecode('${csrfToken}')">${confirmExchangeLabel}</button>
     </div>

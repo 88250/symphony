@@ -14,7 +14,7 @@
                 <div class="fn-flex-1 has-view">
                     <h2>
                         <#if 1 == article.articlePerfect>
-                        <svg height="14" viewBox="2 0 11 12" width="12">${perfectIcon}</svg>
+                        <svg height="14" viewBox="2 1 11 12" width="12">${perfectIcon}</svg>
                         </#if>
                         <#if 1 == article.articleType>
                         <span class="icon-locked" title="${discussionLabel}"></span>

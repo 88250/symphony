@@ -14,7 +14,7 @@
        <svg height="16" viewBox="0 0 12 16" width="12">${localIcon}</svg>&nbsp;${currentUser.userCity}</a>
     </#if>
     <a href="${servePath}/timeline"<#if 'timeline' == type> class="selected"</#if>>
-       <svg height="14" viewBox="0 0 16 14" width="16">${timelineIcon}</svg>&nbsp;${timelineLabel}</a>
+       <svg height="14" viewBox="0 1 16 14" width="16">${timelineIcon}</svg>&nbsp;${timelineLabel}</a>
     <a href="${servePath}/community"<#if 'community' == type> class="selected"</#if>>
        <svg height="16" viewBox="0 0 14 16" width="16">${noticeIcon}</svg>&nbsp;${communityGroupLabel}</a>
 </div>
