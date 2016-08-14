@@ -92,6 +92,7 @@ import org.json.JSONObject;
  * <li>User followers (/member/{userName}/followers), GET</li>
  * <li>User points (/member/{userName}/points), GET</li>
  * <li>Shows settings (/settings), GET</li>
+ * <li>Shows settings pages (/settings/*), GET</li>
  * <li>Updates profiles (/settings/profiles), POST</li>
  * <li>Updates user avatar (/settings/avatar), POST</li>
  * <li>Geo status (/settings/geo/status), POST</li>
@@ -105,7 +106,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.19.11.19, Aug 9, 2016
+ * @version 1.20.11.19, Aug 14, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -187,6 +188,67 @@ public class UserProcessor {
      */
     @Inject
     private PostExportService postExportService;
+
+    /**
+     * Shows settings pages.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = {"/settings", "/settings/*"}, method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
+    public void showSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        final String requestURI = request.getRequestURI();
+        String page = StringUtils.substringAfter(requestURI, "/settings/");
+        if (StringUtils.isBlank(page)) {
+            page = "/profile";
+        }
+        page += ".ftl";
+        renderer.setTemplateName("/home/settings/" + page);
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+        fillHomeUser(dataModel, user);
+        avatarQueryService.fillUserAvatarURL(user);
+
+        // Qiniu file upload authenticate
+        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
+        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
+        dataModel.put("qiniuUploadToken", uploadToken);
+        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
+
+        if (!Symphonys.getBoolean("qiniu.enabled")) {
+            dataModel.put("qiniuUploadToken", "");
+        }
+
+        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
+        dataModel.put("imgMaxSize", imgMaxSize);
+        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
+        dataModel.put("fileMaxSize", fileMaxSize);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+
+        String inviteTipLabel = (String) dataModel.get("inviteTipLabel");
+        inviteTipLabel = inviteTipLabel.replace("{point}", String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER));
+        dataModel.put("inviteTipLabel", inviteTipLabel);
+
+        String pointTransferTipLabel = (String) dataModel.get("pointTransferTipLabel");
+        pointTransferTipLabel = pointTransferTipLabel.replace("{point}", Symphonys.get("pointTransferMin"));
+        dataModel.put("pointTransferTipLabel", pointTransferTipLabel);
+
+        String dataExportTipLabel = (String) dataModel.get("dataExportTipLabel");
+        dataExportTipLabel = dataExportTipLabel.replace("{point}", Symphonys.get("pointDataExport"));
+        dataModel.put("dataExportTipLabel", dataExportTipLabel);
+
+        dataModel.put(Common.TYPE, "settings");
+    }
 
     /**
      * Shows user home anonymous comments page.
@@ -902,61 +964,6 @@ public class UserProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         dataModel.put(Common.TYPE, "points");
-    }
-
-    /**
-     * Shows settings page.
-     *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/settings", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
-    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
-    public void showSettings(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("/home/settings.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-        fillHomeUser(dataModel, user);
-        avatarQueryService.fillUserAvatarURL(user);
-
-        // Qiniu file upload authenticate
-        final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
-        final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
-        dataModel.put("qiniuUploadToken", uploadToken);
-        dataModel.put("qiniuDomain", Symphonys.get("qiniu.domain"));
-
-        if (!Symphonys.getBoolean("qiniu.enabled")) {
-            dataModel.put("qiniuUploadToken", "");
-        }
-
-        final long imgMaxSize = Symphonys.getLong("upload.img.maxSize");
-        dataModel.put("imgMaxSize", imgMaxSize);
-        final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
-        dataModel.put("fileMaxSize", fileMaxSize);
-
-        filler.fillHeaderAndFooter(request, response, dataModel);
-
-        String inviteTipLabel = (String) dataModel.get("inviteTipLabel");
-        inviteTipLabel = inviteTipLabel.replace("{point}", String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER));
-        dataModel.put("inviteTipLabel", inviteTipLabel);
-
-        String pointTransferTipLabel = (String) dataModel.get("pointTransferTipLabel");
-        pointTransferTipLabel = pointTransferTipLabel.replace("{point}", Symphonys.get("pointTransferMin"));
-        dataModel.put("pointTransferTipLabel", pointTransferTipLabel);
-
-        String dataExportTipLabel = (String) dataModel.get("dataExportTipLabel");
-        dataExportTipLabel = dataExportTipLabel.replace("{point}", Symphonys.get("pointDataExport"));
-        dataModel.put("dataExportTipLabel", dataExportTipLabel);
-
-        dataModel.put(Common.TYPE, "settings");
     }
 
     /**
