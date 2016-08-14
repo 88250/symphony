@@ -169,9 +169,11 @@ public class SearchProcessor {
             total = result.optInt("nbHits");
         }
 
-        articleQueryService.organizeArticles(articles);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        articleQueryService.organizeArticles(avatarViewMode, articles);
         final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
-        articleQueryService.genParticipants(articles, participantsCnt);
+        articleQueryService.genParticipants(avatarViewMode, articles, participantsCnt);
 
         dataModel.put(Article.ARTICLES, articles);
 
@@ -188,8 +190,8 @@ public class SearchProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideHotArticles(dataModel);
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

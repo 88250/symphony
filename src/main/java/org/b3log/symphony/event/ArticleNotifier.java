@@ -136,7 +136,8 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             // 'FollowingUser' Notification
             if (Article.ARTICLE_TYPE_C_DISCUSSION != originalArticle.optInt(Article.ARTICLE_TYPE)
                     && Article.ARTICLE_ANONYMOUS_C_PUBLIC == originalArticle.optInt(Article.ARTICLE_ANONYMOUS)) {
-                final JSONObject followerUsersResult = followQueryService.getFollowerUsers(articleAuthorId, 1, Integer.MAX_VALUE);
+                final JSONObject followerUsersResult = followQueryService.getFollowerUsers(
+                        UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleAuthorId, 1, Integer.MAX_VALUE);
                 @SuppressWarnings("unchecked")
                 final List<JSONObject> followerUsers = (List) followerUsersResult.opt(Keys.RESULTS);
                 for (final JSONObject followerUser : followerUsers) {

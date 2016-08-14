@@ -27,6 +27,7 @@ import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.json.JSONObject;
 
@@ -64,7 +65,7 @@ public class ShowArticleUpdateValidation extends BeforeRequestProcessAdvice {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("updateArticleNotFoundLabel")));
             }
 
-            article = articleQueryService.getArticleById(articleId);
+            article = articleQueryService.getArticleById(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId);
             if (null == article) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("updateArticleNotFoundLabel")));
             }

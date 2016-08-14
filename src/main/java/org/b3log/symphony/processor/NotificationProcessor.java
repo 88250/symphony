@@ -376,7 +376,10 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("commentedNotificationsCnt");
         final int windowSize = Symphonys.getInt("commentedNotificationsWindowSize");
 
-        final JSONObject result = notificationQueryService.getCommentedNotifications(userId, pageNum, pageSize);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject result = notificationQueryService.getCommentedNotifications(
+                avatarViewMode, userId, pageNum, pageSize);
         @SuppressWarnings("unchecked")
         final List<JSONObject> commentedNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
         dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
@@ -436,7 +439,9 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("atNotificationsCnt");
         final int windowSize = Symphonys.getInt("atNotificationsWindowSize");
 
-        final JSONObject result = notificationQueryService.getAtNotifications(userId, pageNum, pageSize);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject result = notificationQueryService.getAtNotifications(avatarViewMode, userId, pageNum, pageSize);
         @SuppressWarnings("unchecked")
         final List<JSONObject> atNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
@@ -497,7 +502,10 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("followingUserNotificationsCnt");
         final int windowSize = Symphonys.getInt("followingUserNotificationsWindowSize");
 
-        final JSONObject result = notificationQueryService.getFollowingUserNotifications(userId, pageNum, pageSize);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject result = notificationQueryService.getFollowingUserNotifications(
+                avatarViewMode, userId, pageNum, pageSize);
         @SuppressWarnings("unchecked")
         final List<JSONObject> followingUserNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
@@ -558,7 +566,10 @@ public class NotificationProcessor {
         final int pageSize = Symphonys.getInt("broadcastNotificationsCnt");
         final int windowSize = Symphonys.getInt("broadcastNotificationsWindowSize");
 
-        final JSONObject result = notificationQueryService.getBroadcastNotifications(userId, pageNum, pageSize);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject result = notificationQueryService.getBroadcastNotifications(
+                avatarViewMode, userId, pageNum, pageSize);
         @SuppressWarnings("unchecked")
         final List<JSONObject> broadcastNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 

@@ -421,6 +421,7 @@ public class NotificationQueryService {
     /**
      * Gets 'commented' type notifications with the specified user id, current page number and page size.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -443,8 +444,8 @@ public class NotificationQueryService {
      *
      * @throws ServiceException service exception
      */
-    public JSONObject getCommentedNotifications(final String userId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public JSONObject getCommentedNotifications(final int avatarViewMode,
+            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<JSONObject>();
 
@@ -470,7 +471,7 @@ public class NotificationQueryService {
                 final JSONObject notification = results.optJSONObject(i);
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
 
-                final JSONObject comment = commentQueryService.getCommentById(commentId);
+                final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
 
                 final Query q = new Query().setPageCount(1).
                         addProjection(Article.ARTICLE_TITLE, String.class).
@@ -511,6 +512,7 @@ public class NotificationQueryService {
     /**
      * Gets 'at' type notifications with the specified user id, current page number and page size.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -536,8 +538,8 @@ public class NotificationQueryService {
      *
      * @throws ServiceException service exception
      */
-    public JSONObject getAtNotifications(final String userId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public JSONObject getAtNotifications(final int avatarViewMode,
+            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<JSONObject>();
 
@@ -563,7 +565,7 @@ public class NotificationQueryService {
                 final JSONObject notification = results.optJSONObject(i);
                 final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
 
-                final JSONObject comment = commentQueryService.getCommentById(commentId);
+                final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
                 if (null != comment) {
                     final Query q = new Query().setPageCount(1).
                             addProjection(Article.ARTICLE_TITLE, String.class).
@@ -603,7 +605,7 @@ public class NotificationQueryService {
                     atNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                     atNotification.put(Common.AUTHOR_NAME, articleAuthor.optString(User.USER_NAME));
                     atNotification.put(Common.CONTENT, "");
-                    final String thumbnailURL = avatarQueryService.getAvatarURLByUser(articleAuthor, "48");
+                    final String thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, articleAuthor, "48");
                     atNotification.put(Common.THUMBNAIL_URL, thumbnailURL);
                     atNotification.put(Common.THUMBNAIL_UPDATE_TIME, articleAuthor.optLong(UserExt.USER_UPDATE_TIME));
                     atNotification.put(Article.ARTICLE_TITLE, Emotions.convert(article.optString(Article.ARTICLE_TITLE)));
@@ -631,6 +633,7 @@ public class NotificationQueryService {
     /**
      * Gets 'followingUser' type notifications with the specified user id, current page number and page size.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -656,8 +659,8 @@ public class NotificationQueryService {
      *
      * @throws ServiceException service exception
      */
-    public JSONObject getFollowingUserNotifications(final String userId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public JSONObject getFollowingUserNotifications(final int avatarViewMode,
+            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<JSONObject>();
 
@@ -716,7 +719,8 @@ public class NotificationQueryService {
                 followingUserNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 followingUserNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 followingUserNotification.put(Common.CONTENT, "");
-                followingUserNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author, "48"));
+                followingUserNotification.put(Common.THUMBNAIL_URL,
+                        avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "48"));
                 followingUserNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
                 followingUserNotification.put(Article.ARTICLE_TITLE, Emotions.convert(articleTitle));
                 followingUserNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));
@@ -743,6 +747,7 @@ public class NotificationQueryService {
     /**
      * Gets 'broadcast' type notifications with the specified user id, current page number and page size.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param userId the specified user id
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -768,8 +773,8 @@ public class NotificationQueryService {
      *
      * @throws ServiceException service exception
      */
-    public JSONObject getBroadcastNotifications(final String userId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public JSONObject getBroadcastNotifications(final int avatarViewMode,
+            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         final List<JSONObject> rslts = new ArrayList<JSONObject>();
 
@@ -828,7 +833,8 @@ public class NotificationQueryService {
                 broadcastNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
                 broadcastNotification.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
                 broadcastNotification.put(Common.CONTENT, "");
-                broadcastNotification.put(Common.THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(author, "48"));
+                broadcastNotification.put(Common.THUMBNAIL_URL,
+                        avatarQueryService.getAvatarURLByUser(avatarViewMode, author, "48"));
                 broadcastNotification.put(Common.THUMBNAIL_UPDATE_TIME, author.optLong(UserExt.USER_UPDATE_TIME));
                 broadcastNotification.put(Article.ARTICLE_TITLE, articleTitle);
                 broadcastNotification.put(Common.URL, article.optString(Article.ARTICLE_PERMALINK));

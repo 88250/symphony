@@ -170,7 +170,9 @@ public class DomainProcessor {
 
         final String domainId = domain.optString(Keys.OBJECT_ID);
 
-        final JSONObject result = articleQueryService.getDomainArticles(domainId, pageNum, pageSize);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject result = articleQueryService.getDomainArticles(avatarViewMode, domainId, pageNum, pageSize);
         final List<JSONObject> latestArticles = (List<JSONObject>) result.opt(Article.ARTICLES);
         dataModel.put(Common.LATEST_ARTICLES, latestArticles);
 
@@ -189,8 +191,8 @@ public class DomainProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideHotArticles(dataModel);
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

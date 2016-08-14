@@ -11,8 +11,8 @@
         </select>
         <label>${avatarViewModeLabel}</label>
         <select id="userAvatarViewMode" name="userAvatarViewMode">
-            <option value="0"<#if 0 == currentUser.userCommentViewMode> selected</#if>>${orgImgLabel}</option>
-            <option value="1"<#if 1 == currentUser.userCommentViewMode> selected</#if>>${staticImgLabel}</option>
+            <option value="0"<#if 0 == currentUser.userAvatarViewMode> selected</#if>>${orgImgLabel}</option>
+            <option value="1"<#if 1 == currentUser.userAvatarViewMode> selected</#if>>${staticImgLabel}</option>
         </select>
         <label>${useNotifyLabel} 
             <input id="userNotifyStatus" <#if 0 == currentUser.userNotifyStatus> checked="checked"</#if> type="checkbox" /> 

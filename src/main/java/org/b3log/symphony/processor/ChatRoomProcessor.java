@@ -168,10 +168,12 @@ public class ChatRoomProcessor {
                 return;
             }
 
+            final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
             final String xiaoVUserId = xiaoV.optString(Keys.OBJECT_ID);
             final String xiaoVEmail = xiaoV.optString(User.USER_EMAIL);
-            final JSONObject result
-                    = notificationQueryService.getAtNotifications(xiaoVUserId, 1, 1); // Just get the latest one
+            final JSONObject result = notificationQueryService.getAtNotifications(
+                    avatarViewMode, xiaoVUserId, 1, 1); // Just get the latest one
             final List<JSONObject> notifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
             for (final JSONObject notification : notifications) {
@@ -190,13 +192,13 @@ public class ChatRoomProcessor {
 
                 if (!StringUtils.isBlank(articleId)) {
                     final String originalCmtId = StringUtils.substringAfter(notification.optString(Common.URL), "#");
-                    final JSONObject originalCmt = commentQueryService.getCommentById(originalCmtId);
+                    final JSONObject originalCmt = commentQueryService.getCommentById(avatarViewMode, originalCmtId);
                     q = originalCmt.optString(Comment.COMMENT_CONTENT);
                 } else {
                     articleId = StringUtils.substringAfter(notification.optString(Common.URL),
                             "/article/");
 
-                    final JSONObject article = articleQueryService.getArticleById(articleId);
+                    final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
                     q = article.optString(Article.ARTICLE_CONTENT);
                 }
 
@@ -345,8 +347,11 @@ public class ChatRoomProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideHotArticles(dataModel);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

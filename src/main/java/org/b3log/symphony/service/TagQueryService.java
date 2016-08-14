@@ -198,7 +198,7 @@ public class TagQueryService {
         } else {
             while (end < tags.size() && end < index + fetchSize && tags.get(end).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
                 end++;
-                
+
                 if (end >= start + fetchSize) {
                     break;
                 }
@@ -458,6 +458,7 @@ public class TagQueryService {
     /**
      * Gets the creator of the specified tag of the given tag id.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param tagId the given tag id
      * @return tag creator, for example,      <pre>
      * {
@@ -469,7 +470,7 @@ public class TagQueryService {
      *
      * @throws ServiceException service exception
      */
-    public JSONObject getCreator(final String tagId) throws ServiceException {
+    public JSONObject getCreator(final int avatarViewMode, final String tagId) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
 
@@ -501,7 +502,7 @@ public class TagQueryService {
 
             final JSONObject creator = userRepository.get(creatorId);
 
-            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(creator, "48");
+            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, creator, "48");
 
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, creator.optLong(UserExt.USER_UPDATE_TIME));
@@ -517,6 +518,7 @@ public class TagQueryService {
     /**
      * Gets the participants (article ref) of the specified tag of the given tag id.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param tagId the given tag id
      * @param fetchSize the specified fetch size
      * @return tag participants, for example,      <pre>
@@ -531,7 +533,8 @@ public class TagQueryService {
      *
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getParticipants(final String tagId, final int fetchSize) throws ServiceException {
+    public List<JSONObject> getParticipants(final int avatarViewMode,
+            final String tagId, final int fetchSize) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
         filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 1));
@@ -559,7 +562,7 @@ public class TagQueryService {
 
                 participant.put(Tag.TAG_T_PARTICIPANT_NAME, user.optString(User.USER_NAME));
 
-                final String thumbnailURL = avatarQueryService.getAvatarURLByUser(user, "48");
+                final String thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, user, "48");
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME, user.optLong(UserExt.USER_UPDATE_TIME));
 

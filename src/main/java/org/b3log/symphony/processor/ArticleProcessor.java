@@ -516,7 +516,9 @@ public class ArticleProcessor {
         renderer.setTemplateName("/article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final JSONObject article = articleQueryService.getArticleById(articleId);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -598,9 +600,9 @@ public class ArticleProcessor {
             livenessMgmtService.incLiveness(viewer.optString(Keys.OBJECT_ID), Liveness.LIVENESS_PV);
         }
 
-        filler.fillRelevantArticles(dataModel, article);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideHotArticles(dataModel);
+        filler.fillRelevantArticles(avatarViewMode, dataModel, article);
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
 
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
@@ -642,8 +644,8 @@ public class ArticleProcessor {
         final int pageSize = Symphonys.getInt("articleCommentsPageSize");
         final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
 
-        final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, pageNum, pageSize,
-                cmtViewMode);
+        final List<JSONObject> articleComments = commentQueryService.getArticleComments(
+                avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         // Fill comment thank
@@ -819,7 +821,9 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject article = articleQueryService.getArticleById(articleId);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        
+        final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -903,7 +907,10 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject oldArticle = articleQueryService.getArticleById(id);
+        
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        
+        final JSONObject oldArticle = articleQueryService.getArticleById(avatarViewMode, id);
         if (null == oldArticle) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 

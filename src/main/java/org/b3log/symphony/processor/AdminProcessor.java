@@ -1490,8 +1490,10 @@ public class AdminProcessor {
         articleFields.put(Article.ARTICLE_TAGS, String.class);
         articleFields.put(Article.ARTICLE_STATUS, Integer.class);
         articleFields.put(Article.ARTICLE_STICK, Long.class);
+        
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        final JSONObject result = articleQueryService.getArticles(requestJSONObject, articleFields);
+        final JSONObject result = articleQueryService.getArticles(avatarViewMode, requestJSONObject, articleFields);
         dataModel.put(Article.ARTICLES, CollectionUtils.jsonArrayToList(result.optJSONArray(Article.ARTICLES)));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
@@ -1621,7 +1623,9 @@ public class AdminProcessor {
         commentFields.put(Comment.COMMENT_STATUS, Integer.class);
         commentFields.put(Comment.COMMENT_CONTENT, String.class);
 
-        final JSONObject result = commentQueryService.getComments(requestJSONObject, commentFields);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        
+        final JSONObject result = commentQueryService.getComments(avatarViewMode, requestJSONObject, commentFields);
         dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));
 
         final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);

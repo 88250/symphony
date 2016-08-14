@@ -120,13 +120,15 @@ public class IndexProcessor {
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final List<JSONObject> recentArticles = articleQueryService.getIndexRecentArticles();
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final List<JSONObject> recentArticles = articleQueryService.getIndexRecentArticles(avatarViewMode);
         dataModel.put(Common.RECENT_ARTICLES, recentArticles);
 
-        final List<JSONObject> hotArticles = articleQueryService.getIndexHotArticles();
+        final List<JSONObject> hotArticles = articleQueryService.getIndexHotArticles(avatarViewMode);
         dataModel.put(Common.HOT_ARTICLES, hotArticles);
 
-        final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles();
+        final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles(avatarViewMode);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
 
         final List<JSONObject> timelines = timelineMgmtService.getTimelines();
@@ -167,7 +169,9 @@ public class IndexProcessor {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
         }
 
-        final JSONObject result = articleQueryService.getRecentArticles(pageNum, pageSize);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject result = articleQueryService.getRecentArticles(avatarViewMode, pageNum, pageSize);
         final List<JSONObject> latestArticles = (List<JSONObject>) result.get(Article.ARTICLES);
         dataModel.put(Common.LATEST_ARTICLES, latestArticles);
 
@@ -198,8 +202,9 @@ public class IndexProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideHotArticles(dataModel);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
@@ -229,7 +234,9 @@ public class IndexProcessor {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
         }
 
-        final List<JSONObject> indexArticles = articleQueryService.getHotArticles(pageSize);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final List<JSONObject> indexArticles = articleQueryService.getHotArticles(avatarViewMode, pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
 
         Stopwatchs.start("Fills");
@@ -237,9 +244,9 @@ public class IndexProcessor {
             filler.fillHeaderAndFooter(request, response, dataModel);
             filler.fillDomainNav(dataModel);
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-                filler.fillRandomArticles(dataModel);
+                filler.fillRandomArticles(avatarViewMode, dataModel);
             }
-            filler.fillSideHotArticles(dataModel);
+            filler.fillSideHotArticles(avatarViewMode, dataModel);
             filler.fillSideTags(dataModel);
             filler.fillLatestCmts(dataModel);
         } finally {
@@ -277,7 +284,9 @@ public class IndexProcessor {
             pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
         }
 
-        final JSONObject result = articleQueryService.getPerfectArticles(pageNum, pageSize);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject result = articleQueryService.getPerfectArticles(avatarViewMode, pageNum, pageSize);
         final List<JSONObject> perfectArticles = (List<JSONObject>) result.get(Article.ARTICLES);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
 
@@ -296,8 +305,8 @@ public class IndexProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideHotArticles(dataModel);
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
@@ -321,8 +330,11 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideHotArticles(dataModel);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
@@ -346,8 +358,11 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideHotArticles(dataModel);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

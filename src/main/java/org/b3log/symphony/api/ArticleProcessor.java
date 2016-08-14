@@ -26,6 +26,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.json.JSONObject;
@@ -118,8 +119,10 @@ public class ArticleProcessor {
             currentPage = Integer.parseInt(page);
         }
 
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
         final JSONObject ret = new JSONObject();
-        ret.put("stories", this.articleQueryService.getTopArticlesWithComments(currentPage, pageSize));
+        ret.put("stories", this.articleQueryService.getTopArticlesWithComments(avatarViewMode, currentPage, pageSize));
 
         context.renderJSON(ret);
     }
@@ -141,9 +144,11 @@ public class ArticleProcessor {
         if (Strings.isNumeric(page)) {
             currentPage = Integer.parseInt(page);
         }
+        
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject ret = new JSONObject();
-        ret.put("stories", this.articleQueryService.getRecentArticlesWithComments(currentPage, pageSize));
+        ret.put("stories", this.articleQueryService.getRecentArticlesWithComments(avatarViewMode, currentPage, pageSize));
 
         context.renderJSON(ret);
     }

@@ -72,10 +72,11 @@ public class ActivityQueryService {
     /**
      * Gets the top checkin users with the specified fetch size.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param fetchSize the specified fetch size
      * @return users, returns an empty list if not found
      */
-    public List<JSONObject> getTopCheckinUsers(final int fetchSize) {
+    public List<JSONObject> getTopCheckinUsers(final int avatarViewMode, final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
         final Query query = new Query().addSort(UserExt.USER_LONGEST_CHECKIN_STREAK, SortDirection.DESCENDING).
@@ -93,7 +94,7 @@ public class ActivityQueryService {
                     user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
                 }
 
-                avatarQueryService.fillUserAvatarURL(user);
+                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
                 ret.add(user);
             }

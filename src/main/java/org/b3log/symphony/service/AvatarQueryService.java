@@ -18,6 +18,7 @@ package org.b3log.symphony.service;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
@@ -39,21 +40,28 @@ public class AvatarQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AvatarQueryService.class.getName());
-
+    
     /**
      * Default avatar URL.
      */
     private static final String DEFAULT_AVATAR_URL = Symphonys.get("defaultThumbnailURL");
+    
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Fills the specified user thumbnail URL.
      *
+     * @param viewMode the specified view mode, {@code 0} for original image, {@code 1} for static image
      * @param user the specified user
      */
-    public void fillUserAvatarURL(final JSONObject user) {
-        user.put(UserExt.USER_AVATAR_URL + "210", getAvatarURLByUser(user, "210"));
-        user.put(UserExt.USER_AVATAR_URL + "48", getAvatarURLByUser(user, "48"));
-        user.put(UserExt.USER_AVATAR_URL + "20", getAvatarURLByUser(user, "20"));
+    public void fillUserAvatarURL(final int viewMode, final JSONObject user) {
+        user.put(UserExt.USER_AVATAR_URL + "210", getAvatarURLByUser(viewMode, user, "210"));
+        user.put(UserExt.USER_AVATAR_URL + "48", getAvatarURLByUser(viewMode, user, "48"));
+        user.put(UserExt.USER_AVATAR_URL + "20", getAvatarURLByUser(viewMode, user, "20"));
     }
 
     /**
@@ -74,15 +82,16 @@ public class AvatarQueryService {
     /**
      * Gets the avatar URL for the specified user with the specified size.
      *
+     * @param viewMode the specified view mode, {@code 0} for original image, {@code 1} for static image
      * @param user the specified user
      * @param size the specified size
      * @return the avatar URL
      */
-    public String getAvatarURLByUser(final JSONObject user, final String size) {
+    public String getAvatarURLByUser(final int viewMode, final JSONObject user, final String size) {
         if (null == user) {
             return DEFAULT_AVATAR_URL;
         }
-
+        
         final boolean qiniuEnabled = Symphonys.getBoolean("qiniu.enabled");
 
         String originalURL = user.optString(UserExt.USER_AVATAR_URL);
@@ -92,7 +101,7 @@ public class AvatarQueryService {
 
         String avatarURL = StringUtils.substringBeforeLast(originalURL, "?");
 
-        if (UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL == user.optInt(UserExt.USER_AVATAR_VIEW_MODE)) {
+        if (UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL == viewMode) {
             if (qiniuEnabled) {
                 final String qiniuDomain = Symphonys.get("qiniu.domain");
 

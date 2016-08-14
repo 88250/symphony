@@ -253,15 +253,18 @@ public class TagProcessor {
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
         }
 
-        final List<JSONObject> articles = articleQueryService.getArticlesByTag(tag, pageNum, pageSize);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final List<JSONObject> articles = articleQueryService.getArticlesByTag(avatarViewMode, tag, pageNum, pageSize);
         dataModel.put(Article.ARTICLES, articles);
 
-        final JSONObject tagCreator = tagQueryService.getCreator(tagId);
+        final JSONObject tagCreator = tagQueryService.getCreator(avatarViewMode, tagId);
 
         tag.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, tagCreator.optString(Tag.TAG_T_CREATOR_THUMBNAIL_URL));
         tag.put(Tag.TAG_T_CREATOR_NAME, tagCreator.optString(Tag.TAG_T_CREATOR_NAME));
         tag.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, tagCreator.optLong(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME));
-        tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(tagId, Symphonys.getInt("tagParticipantsCnt")));
+        tag.put(Tag.TAG_T_PARTICIPANTS, (Object) tagQueryService.getParticipants(
+                avatarViewMode, tagId, Symphonys.getInt("tagParticipantsCnt")));
 
         final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_CNT);
         final int pageCount = (int) Math.ceil(tagRefCnt / (double) pageSize);
@@ -276,8 +279,8 @@ public class TagProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideHotArticles(dataModel);
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

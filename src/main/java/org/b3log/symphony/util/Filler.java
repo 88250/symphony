@@ -163,13 +163,16 @@ public class Filler {
     /**
      * Fills relevant articles.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param dataModel the specified data model
      * @param article the specified article
      * @throws Exception exception
      */
-    public void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
+    public void fillRelevantArticles(final int avatarViewMode,
+            final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                articleQueryService.getRelevantArticles(
+                        avatarViewMode, article, Symphonys.getInt("sideRelevantArticlesCnt")));
     }
 
     /**
@@ -191,15 +194,16 @@ public class Filler {
     /**
      * Fills random articles.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    public void fillRandomArticles(final Map<String, Object> dataModel) throws Exception {
+    public void fillRandomArticles(final int avatarViewMode, final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills random articles");
         try {
             final int fetchSize = Symphonys.getInt("sideRandomArticlesCnt");
             if (fetchSize > 0) {
-                dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(fetchSize));
+                dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(avatarViewMode, fetchSize));
             } else {
                 dataModel.put(Common.SIDE_RANDOM_ARTICLES, Collections.emptyList());
             }
@@ -211,14 +215,15 @@ public class Filler {
     /**
      * Fills side hot articles.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    public void fillSideHotArticles(final Map<String, Object> dataModel) throws Exception {
+    public void fillSideHotArticles(final int avatarViewMode, final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills hot articles");
         try {
             dataModel.put(Common.SIDE_HOT_ARTICLES,
-                    articleQueryService.getSideHotArticles(Symphonys.getInt("sideHotArticlesCnt")));
+                    articleQueryService.getSideHotArticles(avatarViewMode, Symphonys.getInt("sideHotArticlesCnt")));
         } finally {
             Stopwatchs.end();
         }
@@ -372,7 +377,7 @@ public class Filler {
             dataModel.put(User.USER_ROLE, userRole);
             dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ADMIN_ROLE.equals(userRole));
 
-            avatarQueryService.fillUserAvatarURL(curUser);
+            avatarQueryService.fillUserAvatarURL(curUser.optInt(UserExt.USER_AVATAR_VIEW_MODE), curUser);
 
             final String userId = curUser.optString(Keys.OBJECT_ID);
 

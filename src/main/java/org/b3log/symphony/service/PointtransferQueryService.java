@@ -145,10 +145,11 @@ public class PointtransferQueryService {
     /**
      * Gets the top balance users with the specified fetch size.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param fetchSize the specified fetch size
      * @return users, returns an empty list if not found
      */
-    public List<JSONObject> getTopBalanceUsers(final int fetchSize) {
+    public List<JSONObject> getTopBalanceUsers(final int avatarViewMode, final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
         final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
@@ -170,7 +171,7 @@ public class PointtransferQueryService {
 
                 user.put(Common.MONEY, (int) Math.floor(user.optInt(UserExt.USER_POINT) / moneyUnit));
 
-                avatarQueryService.fillUserAvatarURL(user);
+                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
                 ret.add(user);
             }
@@ -184,10 +185,11 @@ public class PointtransferQueryService {
     /**
      * Gets the top consumption users with the specified fetch size.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param fetchSize the specified fetch size
      * @return users, returns an empty list if not found
      */
-    public List<JSONObject> getTopConsumptionUsers(final int fetchSize) {
+    public List<JSONObject> getTopConsumptionUsers(final int avatarViewMode, final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
         final Query query = new Query().addSort(UserExt.USER_USED_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
@@ -209,7 +211,7 @@ public class PointtransferQueryService {
 
                 user.put(Common.MONEY, (int) Math.floor(user.optInt(UserExt.USER_USED_POINT) / moneyUnit));
 
-                avatarQueryService.fillUserAvatarURL(user);
+                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
                 ret.add(user);
             }

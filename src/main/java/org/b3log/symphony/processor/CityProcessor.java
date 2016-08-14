@@ -106,8 +106,11 @@ public class CityProcessor {
         renderer.setTemplateName("city-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillSideHotArticles(dataModel);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
         filler.fillDomainNav(dataModel);
@@ -154,7 +157,7 @@ public class CityProcessor {
 
         final JSONObject statistic = optionQueryService.getOption(queryCity + "-ArticleCount");
         if (null != statistic) {
-            articles = articleQueryService.getArticlesByCity(queryCity, pageNum, pageSize);
+            articles = articleQueryService.getArticlesByCity(avatarViewMode, queryCity, pageNum, pageSize);
             dataModel.put(Article.ARTICLES, articles);
         }
 
