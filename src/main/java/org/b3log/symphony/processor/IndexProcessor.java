@@ -61,7 +61,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.1.14, Aug 12, 2016
+ * @version 1.6.1.15, Aug 16, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -121,9 +121,6 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
-        final List<JSONObject> recentArticles = articleQueryService.getIndexRecentArticles(avatarViewMode);
-        dataModel.put(Common.RECENT_ARTICLES, recentArticles);
 
         final List<JSONObject> hotArticles = articleQueryService.getIndexHotArticles(avatarViewMode);
         dataModel.put(Common.HOT_ARTICLES, hotArticles);
