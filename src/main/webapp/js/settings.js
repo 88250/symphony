@@ -335,6 +335,9 @@ var Settings = {
                     userNotifyStatus: $('#userNotifyStatus').prop("checked")
                 };
                 break;
+			case "emotionList":
+            	requestJSONObject = this._validateEmotionList();
+            	break;
             default:
                 console.log("update settings has no type");
         }
@@ -510,5 +513,15 @@ var Settings = {
             return data;
         }
         return false;
+    },
+    
+    /**
+     * @description settings 页面表情校验（不知道有啥可校验的，暂不做校验）
+     * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
+     */
+    _validateEmotionList: function () {
+    	 return {
+             emotionList: $("#emotionList").val()
+         };
     }
 };
