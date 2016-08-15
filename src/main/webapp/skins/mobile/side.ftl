@@ -86,10 +86,11 @@
         <ul class="tag-desc fn-clear">
             <#list sideTags as tag>
             <li>
-                <span>
+                <a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">
                     <#if tag.tagIconPath!="">
-                    <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if><a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                </span>
+                    <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if>
+                    ${tag.tagTitle}
+                </a>
                 <div<#if tag.tagDescription == ''> style="width:auto"</#if>>
                     <div>${tag.tagDescription}</div>
                     <span class="fn-right">

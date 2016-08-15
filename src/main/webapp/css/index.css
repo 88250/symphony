@@ -582,8 +582,9 @@ label.cmt-anonymous {
     display: block;
 }
 
-.tag-desc > li > span {
+.tag-desc > li > a {
     float: left;
+    color: #999;
     padding: 2px 5px;
     border: 1px solid #DDDDDD;
     position: relative;
@@ -595,7 +596,11 @@ label.cmt-anonymous {
     line-height: 21px;
 }
 
-.tag-desc > li:hover > span {
+.tag-desc > li > a:hover {
+    text-decoration: none;
+}
+
+.tag-desc > li:hover > a {
     border-bottom-style: dotted;
     border-radius: 3px 3px 0 0;
     opacity: 0.7;
@@ -603,12 +608,12 @@ label.cmt-anonymous {
     z-index: 3;
 }
 
-.tag-desc > li > span > a {
+.tag-desc > li > a > span {
     text-decoration: none;
     color: #999;
 }
 
-.tag-desc > li > span > img {
+.tag-desc > li > a > img {
     border-radius: 2px 2px 2px 2px;
     height: 16px;
     width: 16px;
@@ -735,7 +740,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .index .footer .slogan {
     padding: 10px;
-    margin: 30px 0 60px;
+    margin: 30px 0 40px;
     color: #767676;
     background-color: #fff;
     border: 1px solid #eee;
@@ -801,12 +806,11 @@ code .dec { color: initial; } /* decimal - blue */
     padding: 5px;
     display: block;
     text-align: right;
-    color: #000;
+    color: #f8f8f8;
 }
 
 .index .item:hover .item-header  {
     opacity: 1;
-    color: #FFF;
 }
 
 .index .tag-desc > li:hover > span {

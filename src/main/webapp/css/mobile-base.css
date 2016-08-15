@@ -2116,20 +2116,25 @@ h2.article-title {
     display: block;
 }
 
-.tag-desc > li > span {
+.tag-desc > li > a {
     float: left;
-    padding: 4px 8px;
+    color: #999;
+    padding: 2px 5px;
     border: 1px solid #DDDDDD;
     position: relative;
     height: 20px;
     white-space: nowrap;
     word-wrap: normal;
     background-color: #F7F7F7;
-    border-radius: 3px;
-    line-height: 20px;
+    border-radius: 3px 3px 3px 3px;
+    line-height: 21px;
 }
 
-.tag-desc > li:hover > span {
+.tag-desc > li > a:hover {
+    text-decoration: none;
+}
+
+.tag-desc > li:hover > a {
     border-bottom-style: dotted;
     border-radius: 3px 3px 0 0;
     opacity: 0.7;
@@ -2137,12 +2142,12 @@ h2.article-title {
     z-index: 3;
 }
 
-.tag-desc > li > span > a {
+.tag-desc > li > a > span {
     text-decoration: none;
     color: #999;
 }
 
-.tag-desc > li > span > img {
+.tag-desc > li > a > img {
     border-radius: 2px 2px 2px 2px;
     height: 16px;
     width: 16px;
@@ -2311,13 +2316,8 @@ code .dec { color: initial; } /* decimal - blue */
     padding: 5px;
     display: block;
     text-align: right;
-    color: #000;
+    color: #f8f8f8;
 }
-
-.index .item-header:hover {
-    color: #FFF;
-    text-decoration: none;
-} 
 
 .index .item:hover .item-header  {
     opacity: 1;

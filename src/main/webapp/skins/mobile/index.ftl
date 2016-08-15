@@ -66,12 +66,12 @@
                 <ul class="tag-desc fn-clear">
                     <#list tags as tag>
                     <li>
-                        <span>
+                        <a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">
                             <#if tag.tagIconPath!="">
                             <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" />
                             </#if>
-                            <a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                        </span>
+                            ${tag.tagTitle}
+                        </a>
                     </li>
                     </#list>
                 </ul>
