@@ -98,7 +98,7 @@
             </div>
             <#if ADLabel != ''>
             <div class="item mid">
-                <a class="item-header" style="background-image: url(${adBgIcon})" href="https://hacpai.com/article/1460083956075">${wantPutOnLabel}</a>
+                <a class="item-header" style="background-image: url(${adBgIcon})" href="https://hacpai.com/article/1460083956075">${sponsorLabel}</a>
                 <div class="ad module-panel">
                     ${ADLabel}
                 </div>
