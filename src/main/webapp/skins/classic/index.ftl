@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,25 +9,9 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body class="index">
-        <#include "header.ftl">        
-        <div class="slogan">
-            ${indexIntroLabel}&nbsp;
-            <a href="https://github.com/b3log/symphony" target="_blank">
-                <svg class="ft-gray" height="16" width="16" viewBox="0 0 16 16">${githubIcon}</svg></a>
-            <a href="http://weibo.com/u/2778228501" target="_blank">
-                <svg class="ft-gray" width="18" height="18" viewBox="0 0 37 30">${weiboIcon}</svg></a>    
-            <a target="_blank"
-               href="http://shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5">
-                <svg class="ft-gray" width="16" height="16" viewBox="0 0 30 30">${qqIcon}</svg></a>
-        </div>
+        <#include "header.ftl">     
 
-        <div class="index-wrap">
-            <div class="domains wrapper fn-clear">
-                <#list domains as domain>
-                <a href="${servePath}/domain/${domain.domainURI}">${domain.domainIconPath} &nbsp; ${domain.domainTitle}</a>
-                </#list>
-            </div>
-        </div>
+        <@subNav '' ''/>
 
         <div class="main">
             <div class="wrapper">
@@ -111,12 +96,10 @@
                         <#if timelines?size <= 0>
                         <div id="emptyTimeline">${emptyTimelineLabel}</div>
                         </#if>
-                        <ul class="module-list">
+                        <ul class="module-list timeline">
                             <#list timelines as article>
-                            <#if article_index < 3>
                             <li<#if !article_has_next> class="last"</#if>>
                                 ${article.content}
-                            </#if>
                         </li>
                         </#list>
                     </ul>
@@ -143,6 +126,87 @@
             </div>
         </div>
     </div>
-    <#include "footer.ftl">
+    
+    <div class="footer">
+        <div class="wrapper">
+            <div class="slogan">
+                ${indexIntroLabel}&nbsp;
+                <a href="https://github.com/b3log/symphony" target="_blank">
+                    <svg class="ft-gray" height="16" width="16" viewBox="0 0 16 16">${githubIcon}</svg></a>
+                <a href="http://weibo.com/u/2778228501" target="_blank">
+                    <svg class="ft-gray" width="18" height="18" viewBox="0 0 37 30">${weiboIcon}</svg></a>    
+                <a target="_blank"
+                   href="http://shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5">
+                    <svg class="ft-gray" width="16" height="16" viewBox="0 0 30 30">${qqIcon}</svg></a>
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <div class="fn-flex-1">
+                <div class="footer-nav fn-clear">
+                    <a rel="help" href="https://hacpai.com/article/1440573175609">${aboutLabel}</a>
+                    <a href="https://hacpai.com/article/1457158841475">API</a>
+                    <a href="${servePath}/tag/系统公告">${symAnnouncementLabel}</a>
+                    <a href="${servePath}/tag/Q%26A">${qnaLabel}</a>
+                    <a href="${servePath}/domains">${domainLabel}</a>
+                    <a href="${servePath}/tags">${tagLabel}</a>
+                    <a href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
+                    <a href="${servePath}/statistic" class="last">${dataStatLabel}</a>
+
+                    <div class="fn-right">
+                        <span class="ft-gray">&COPY; ${year}</span>
+                        <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
+                        ${visionLabel}</div>
+                </div>
+                <div class="fn-clear ft-smaller">
+                    <div class="fn-left ft-gray">
+                        <span class="ft-fade">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c} &nbsp;
+                        <span class="ft-fade">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
+                        <span class="ft-fade">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
+                        <span class="ft-fade">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
+                        <span class="ft-fade">${cmtLabel}</span> ${statistic.statisticCmtCount?c} &nbsp;
+                        <span class="ft-fade">${domainLabel}</span> ${statistic.statisticDomainCount?c} &nbsp;
+                        <span class="ft-fade">${tagLabel}</span> ${statistic.statisticTagCount?c} 
+                    </div>
+                    <div class="fn-right ft-gray">
+                       Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • 
+                            <a href="https://github.com/b3log/symphony" target="_blank">Sym</a>
+                            ${version} • ${elapsed?c}ms
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="icon-up" onclick="Util.goTop()"></div>
+    <script type="text/javascript" src="${staticServePath}/js/lib/compress/libs.min.js"></script>
+    <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
+    <script>
+        var Label = {
+        invalidPasswordLabel: "${invalidPasswordLabel}",
+                loginNameErrorLabel: "${loginNameErrorLabel}",
+                followLabel: "${followLabel}",
+                unfollowLabel: "${unfollowLabel}",
+                symphonyLabel: "${symphonyLabel}",
+                visionLabel: "${visionLabel}",
+                cmtLabel: "${cmtLabel}",
+                collectLabel: "${collectLabel}",
+                uncollectLabel: "${uncollectLabel}",
+                desktopNotificationTemplateLabel: "${desktopNotificationTemplateLabel}",
+                servePath: "${servePath}",
+                staticServePath: "${staticServePath}",
+                isLoggedIn: ${isLoggedIn?c}
+        };
+        Util.init(${isLoggedIn?c});
+        <#if isLoggedIn>
+                // Init [User] channel
+                Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}${contextPath}/user-channel");
+        </#if>
+    </script>
+    <#if algoliaEnabled>
+    <script src="${staticServePath}/js/lib/algolia/algolia.min.js"></script>
+    <script>
+        Util.initSearch('${algoliaAppId}', '${algoliaSearchKey}', '${algoliaIndex}');
+    </script>
+    </#if>
 </body>
 </html>

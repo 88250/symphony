@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.13.24, Aug 12, 2016
+ * @version 2.12.13.25, Aug 15, 2016
  */
 
 /* start module */
@@ -728,11 +728,20 @@ code .dec { color: initial; } /* decimal - blue */
     padding: 10px 0;
 }
 
-.index > .slogan {
-    padding: 15px;
+.index .footer > .wrapper:last-child {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 40px;
+}
+
+.index .footer .slogan {
+    padding: 10px;
+    margin: 30px 0 60px;
     color: #767676;
-    text-align: center;
-    background-color: #FFF;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    border-bottom: 1px solid #eee;
+    width: 100%;
 }
 
 .index > .slogan a:hover svg {
@@ -800,9 +809,14 @@ code .dec { color: initial; } /* decimal - blue */
     z-index: 3;
 }
 
-.index .module-list .title {
+.index .module-list .title,
+.index .module-list.timeline li {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.index .tag-desc > li {
+    margin: 0 20px 15px 0;
 }
 /* end index */

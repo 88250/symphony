@@ -210,52 +210,52 @@
                                              aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         </#if>
                                         <div class="fn-flex-1 comment-content">
-                                            <div class="fn-clear comment-info">
+                                            <div class="fn-clear comment-info ft-smaller">
                                                 <span class="fn-left">
                                                     <#if !comment.fromClient>
                                                     <#if comment.commentAnonymous == 0>
                                                     <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
-                                                       via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade ft-smaller">&nbsp;•&nbsp;${comment.timeAgo} 
+                                                       via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade">&nbsp;•&nbsp;${comment.timeAgo} 
                                                         <#if 0 == comment.commenter.userUAStatus><span class="cmt-via" data-ua="${comment.commentUA}"></span></#if>
                                                     </span>
                                                     <#if comment.rewardedCnt gt 0>
                                                     <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
                                                     <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>" 
                                                           id="${comment.oId}RewardedCnt"
-                                                          class="tooltipped tooltipped-s ft-smaller <#if hasRewarded>ft-red<#else>ft-fade</#if>">
+                                                          class="tooltipped tooltipped-s <#if hasRewarded>ft-red<#else>ft-fade</#if>">
                                                         <span class="icon-heart"></span>${comment.rewardedCnt}
                                                     </span>
                                                     </#if>
                                                 </span>
-                                                <span class="fn-right">
+                                                <span class="fn-right ft-gray">
                                                     <#if isLoggedIn>
                                                     <#if comment.commentAuthorId != currentUser.oId>
                                                     <#if !comment.rewarded>
-                                                    <span class='fn-hidden hover-show fn-pointer ft-smaller ft-fade tooltipped tooltipped-s' id='${comment.oId}Thx'
+                                                    <span class='fn-hidden hover-show fn-pointer ft-fade tooltipped tooltipped-s' id='${comment.oId}Thx'
                                                           aria-label="${thankLabel}"
                                                           onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', ${comment.commentAnonymous})"><span class="icon-heart"></span></span>
                                                     </#if>
                                                     </#if>
 
-                                                    <span id="voteUp_comment${comment.oId}" class="ft-smaller tooltipped tooltipped-s fn-pointer <#if comment.commentGoodCnt < 1>fn-hidden hover-show</#if> ft-fade" 
+                                                    <span id="voteUp_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer <#if comment.commentGoodCnt < 1>fn-hidden hover-show</#if> ft-fade" 
                                                           aria-label="${upLabel} ${comment.commentGoodCnt}"
                                                           onclick="Article.voteUp('${comment.oId}', 'comment')">
                                                         <span class="icon-thumbs-up<#if 0 == comment.commentVote> ft-red</#if>"></span></span>
-                                                    <span id="voteDown_comment${comment.oId}" class="ft-smaller tooltipped tooltipped-s fn-pointer <#if comment.commentBadCnt < 1>fn-hidden hover-show</#if> ft-fade"
+                                                    <span id="voteDown_comment${comment.oId}" class="tooltipped tooltipped-s fn-pointer <#if comment.commentBadCnt < 1>fn-hidden hover-show</#if> ft-fade"
                                                           aria-label="${downLabel} ${comment.commentBadCnt}" 
                                                           onclick="Article.voteDown('${comment.oId}', 'comment')">
                                                         <span class="icon-thumbs-down<#if 1 == comment.commentVote> ft-red</#if>"></span></span>
                                                     
                                                     <#if comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0>
-                                                    <span aria-label="@${comment.commentAuthorName}" class="ft-smaller fn-pointer tooltipped tooltipped-s" 
+                                                    <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-s" 
                                                           onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
                                                     </#if>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
-                                                    <a class="ft-smaller tooltipped tooltipped-s ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" 
+                                                    <a class="tooltipped tooltipped-s ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" 
                                                        aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                     </#if>
-                                                    #<i><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
+                                                    <i class="ft-fade"><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
                                                 </span>    
                                             </div>
                                             <div class="content-reset comment">
