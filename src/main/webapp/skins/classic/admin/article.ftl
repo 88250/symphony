@@ -47,6 +47,12 @@
 
             <label for"articleStick">${stickLabel}</label>
             <input type="text" id="articleStick" name="articleStick" value="${article.articleStick?c}" readonly="readonly" />
+
+            <label for="articleAnonymous">${anonymousLabel}</label>
+            <select id="articleAnonymous" name="articleAnonymous" disabled="disabled">
+                <option value="0"<#if 0 == article.articleAnonymous> selected</#if>>${noLabel}</option>
+                <option value="1"<#if 1 == article.articleAnonymous> selected</#if>>${yesLabel}</option>
+            </select>
         </div>
     </div>
     <div class="module">
