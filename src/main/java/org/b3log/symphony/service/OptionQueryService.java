@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.8, Aug 11, 2016
+ * @version 1.4.0.9, Aug 16, 2016
  * @since 0.2.0
  */
 @Service
@@ -95,7 +95,7 @@ public class OptionQueryService {
      */
     public int getOnlineVisitorCount() {
         final int ret = ArticleChannel.SESSIONS.size() + ArticleListChannel.SESSIONS.size() + TimelineChannel.SESSIONS.size()
-                + ChatRoomChannel.SESSIONS.size();
+                + ChatRoomChannel.SESSIONS.size() + UserChannel.SESSIONS.size();
 
         try {
             final JSONObject maxOnlineMemberCntRecord = optionRepository.get(Option.ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT);

@@ -16,9 +16,7 @@
                     <div id="chart30" style="height:400px"></div>
                     <br><br>
                     <div id="chartHistory" style="height:400px"></div>
-                    
-                    <br><br>
-                    <h3>历史累计</h3>
+                    <hr>
                     <ul>
                         <li>
                             <span class="ft-gray">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c}
