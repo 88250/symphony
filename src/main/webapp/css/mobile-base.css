@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.6.6, Aug 12, 2016
+ * @version 1.4.6.7, Aug 16, 2016
  */
 
 /* start reset */
@@ -2271,23 +2271,17 @@ code .dec { color: initial; } /* decimal - blue */
 .index > .slogan {
     padding: 10px;
     color: #767676;
-    background-color: #FFF;
+    border-bottom: 1px solid #eee;
 }
 
 .index > .slogan a:hover svg {
     color: #4183C4;
 }
 
-.index .domains a {
-    display: initial;
-    width: 20%;
-    color: #333;
-    text-align: center;
-}
-
-.index .domains a:hover {
-    color: #4183C4;
-    text-decoration: none;
+.index .domains {
+    background-color: #FFF;
+    padding: 5px;
+    margin: 0;
 }
 
 .index .item {

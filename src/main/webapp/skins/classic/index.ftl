@@ -13,27 +13,9 @@
 
         <@subNav '' ''/>
 
-        <div class="main">
+        <div class="main first">
             <div class="wrapper">
-                <div class="item">
-                    <a class="item-header" style="background-image: url(${recentBgIcon});" href="${servePath}/recent">${latestLabel}</a>
-                    <div class="module-panel">
-                        <ul class="module-list">
-                            <#list recentArticles as article>
-                            <li<#if !article_has_next> class="last"</#if>>
-                                <#if "someone" != article.articleAuthorName>
-                                <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
-                                    <span class="avatar-small tooltipped tooltipped-se slogan"
-                                          aria-label="${article.articleAuthorName}"
-                                          style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
-                                    <#if "someone" != article.articleAuthorName></a></#if>
-                                <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
-                            </li>
-                            </#list>
-                        </ul>
-                    </div>
-                </div>
-                <div class="item mid">
+                <div class="item first">
                     <a href="${servePath}/hot" class="item-header" style="background-image: url(${hotBgIcon});">${hotLabel}</a>
                     <div class="module-panel">
                         <ul class="module-list">
@@ -98,8 +80,10 @@
                         </#if>
                         <ul class="module-list timeline">
                             <#list timelines as article>
+                            <#if article_index < 9>
                             <li<#if !article_has_next> class="last"</#if>>
                                 ${article.content}
+                            </#if>
                         </li>
                         </#list>
                     </ul>
@@ -130,12 +114,12 @@
     <div class="footer">
         <div class="wrapper">
             <div class="slogan">
-                ${indexIntroLabel}&nbsp;
-                <a href="https://github.com/b3log/symphony" target="_blank">
-                    <svg class="ft-gray" height="16" width="16" viewBox="0 0 16 16">${githubIcon}</svg></a>
-                <a href="http://weibo.com/u/2778228501" target="_blank">
-                    <svg class="ft-gray" width="18" height="18" viewBox="0 0 37 30">${weiboIcon}</svg></a>    
-                <a target="_blank"
+                ${indexIntroLabel} &nbsp; &nbsp;
+                <a href="https://github.com/b3log/symphony" target="_blank" class="tooltipped tooltipped-n" aria-label="${siteCodeLabel}">
+                    <svg class="ft-gray" height="16" width="16" viewBox="0 0 16 16">${githubIcon}</svg></a> &nbsp;
+                <a href="http://weibo.com/u/2778228501" target="_blank" class="tooltipped tooltipped-n" aria-label="${followWeiboLabel}">
+                    <svg class="ft-gray" width="18" height="18" viewBox="0 0 37 30">${weiboIcon}</svg></a>   &nbsp; 
+                <a target="_blank" class="tooltipped tooltipped-n" aria-label="${joinQQGroupLabel}"
                    href="http://shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5">
                     <svg class="ft-gray" width="16" height="16" viewBox="0 0 30 30">${qqIcon}</svg></a>
             </div>
@@ -158,19 +142,11 @@
                         <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
                         ${visionLabel}</div>
                 </div>
-                <div class="fn-clear ft-smaller">
-                    <div class="fn-left ft-gray">
-                        <span class="ft-fade">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c} &nbsp;
-                        <span class="ft-fade">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
-                        <span class="ft-fade">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
-                        <span class="ft-fade">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
-                        <span class="ft-fade">${cmtLabel}</span> ${statistic.statisticCmtCount?c} &nbsp;
-                        <span class="ft-fade">${domainLabel}</span> ${statistic.statisticDomainCount?c} &nbsp;
-                        <span class="ft-fade">${tagLabel}</span> ${statistic.statisticTagCount?c} 
-                    </div>
-                    <div class="fn-right ft-gray">
-                       Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • 
-                            <a href="https://github.com/b3log/symphony" target="_blank">Sym</a>
+                <div class="fn-clear ft-smaller ft-fade">
+                    ${sloganLabel}
+                    <div class="fn-right">
+                       Powered by <a href="http://b3log.org" target="_blank" class="ft-gray">B3log 开源</a> • 
+                            <a href="https://github.com/b3log/symphony" class="ft-gray" target="_blank">Sym</a>
                             ${version} • ${elapsed?c}ms
                     </div>
                 </div>

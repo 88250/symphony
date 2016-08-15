@@ -31,7 +31,7 @@
 
 .module-list .title {
     color: #767676;
-    margin: 2px 0 2px 36px;
+    margin: 5px 0 5px 36px;
     display: block;
     line-height: 20px;
 }
@@ -758,6 +758,14 @@ code .dec { color: initial; } /* decimal - blue */
 .index .domains a:hover {
     color: #4183C4;
     text-decoration: none;
+}
+
+.index .first .item {
+    width: 48%;
+}
+
+.index .first .item.first {
+   margin-right: 4%;
 }
 
 .index .item {

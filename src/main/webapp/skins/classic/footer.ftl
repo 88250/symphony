@@ -16,19 +16,11 @@
                     <a rel="copyright" href="https://hacpai.com" target="_blank">hacpai.com</a>
                     ${visionLabel}</div>
             </div>
-            <div class="fn-clear ft-smaller">
-                    <div class="fn-left ft-gray">
-                        <span class="ft-fade">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c} &nbsp;
-                        <span class="ft-fade">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
-                        <span class="ft-fade">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
-                        <span class="ft-fade">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
-                        <span class="ft-fade">${cmtLabel}</span> ${statistic.statisticCmtCount?c} &nbsp;
-                        <span class="ft-fade">${domainLabel}</span> ${statistic.statisticDomainCount?c} &nbsp;
-                        <span class="ft-fade">${tagLabel}</span> ${statistic.statisticTagCount?c} 
-                    </div>
-                    <div class="fn-right ft-gray">
-                       Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • 
-                            <a href="https://github.com/b3log/symphony" target="_blank">Sym</a>
+            <div class="fn-clear ft-smaller ft-fade">
+                       ${sloganLabel}
+                    <div class="fn-right">
+                       Powered by <a href="http://b3log.org" class="ft-gray" target="_blank">B3log 开源</a> • 
+                            <a href="https://github.com/b3log/symphony" class="ft-gray" target="_blank">Sym</a>
                             ${version} • ${elapsed?c}ms
                     </div>
                 </div>

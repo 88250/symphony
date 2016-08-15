@@ -16,6 +16,32 @@
                     <div id="chart30" style="height:400px"></div>
                     <br><br>
                     <div id="chartHistory" style="height:400px"></div>
+                    
+                    <br><br>
+                    <h3>历史累计</h3>
+                    <ul>
+                        <li>
+                            <span class="ft-gray">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c}
+                        </li>
+                        <li>
+                            <span class="ft-gray">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
+                        </li>
+                        <li>
+                            <span class="ft-gray">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
+                        </li>
+                        <li>
+                            <span class="ft-gray">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
+                        </li>
+                        <li>
+                            <span class="ft-gray">${cmtLabel}</span> ${statistic.statisticCmtCount?c} &nbsp;
+                        </li>
+                        <li>
+                            <span class="ft-gray">${domainLabel}</span> ${statistic.statisticDomainCount?c} &nbsp;
+                        </li>
+                        <li>
+                            <span class="ft-gray">${tagLabel}</span> ${statistic.statisticTagCount?c} 
+                        </li>
+                    </ul>
                 </div>
                 <div class="side">
                     <#include "side.ftl">
