@@ -824,6 +824,11 @@ code .dec { color: initial; } /* decimal - blue */
     overflow: hidden;
 }
 
+.index .module-list.timeline li {
+    padding: 10px;
+    line-height: 20px;
+}
+
 .index .tag-desc > li {
     margin: 0 20px 15px 0;
 }
