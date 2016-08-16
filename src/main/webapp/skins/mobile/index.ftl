@@ -9,16 +9,6 @@
     </head>
     <body class="index">
         <#include "header.ftl">     
-        <div class="slogan">
-            ${indexIntroLabel}&nbsp;
-            <a href="https://github.com/b3log/symphony" target="_blank">
-                <svg class="ft-gray" height="16" width="16" viewBox="0 0 16 16">${githubIcon}</svg></a>
-            <a href="http://weibo.com/u/2778228501" target="_blank">
-                <svg class="ft-gray" width="18" height="18" viewBox="0 0 37 30">${weiboIcon}</svg></a>    
-            <a target="_blank"
-               href="http://shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5">
-                <svg class="ft-gray" width="16" height="16" viewBox="0 0 30 30">${qqIcon}</svg></a>
-        </div>
         <@subNav '' ''/>
         <div class="main">
             <div class="wrapper">
@@ -90,7 +80,7 @@
                             <#if article_index < 3>
                             <li<#if !article_has_next> class="last"</#if>>
                                 ${article.content}
-                            </#if>
+                                </#if>
                         </li>
                         </#list>
                     </ul>
@@ -116,6 +106,17 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="slogan">
+        ${indexIntroLabel}&nbsp;
+        <a href="https://github.com/b3log/symphony" target="_blank">
+            <svg class="ft-gray" height="16" width="16" viewBox="0 0 16 16">${githubIcon}</svg></a>
+        <a href="http://weibo.com/u/2778228501" target="_blank">
+            <svg class="ft-gray" width="18" height="18" viewBox="0 0 37 30">${weiboIcon}</svg></a>    
+        <a target="_blank"
+           href="http://shang.qq.com/wpa/qunwpa?idkey=f77a54e7d2bd53bed4043f70838da92fa49eccda53e706ef2124943cb0df4df5">
+            <svg class="ft-gray" width="16" height="16" viewBox="0 0 30 30">${qqIcon}</svg></a>
     </div>
     <#include "footer.ftl">
 </body>
