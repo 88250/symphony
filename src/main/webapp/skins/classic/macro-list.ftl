@@ -53,7 +53,7 @@
                 <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
-            <i class="heat" style="width:${article.articleHeat*3}px"></i>
+            <i class="heat tooltipped tooltipped-n" aria-label="${postActivityLabel}" style="width:${article.articleHeat*3}px"></i>
         </li>
         </#list>
     </ul>
