@@ -217,10 +217,10 @@ var Comment = {
                     var $cnt = $("#" + id + 'RewardedCnt'),
                             cnt = parseInt($cnt.text());
                     if ($cnt.length <= 0) {
-                        $('#' + id + ' .comment-info > .fn-left .ft-smaller:last').
+                        $('#' + id + ' .comment-info > .fn-left .ft-fade:last').
                                 append('&nbsp;<span aria-label="' + Label.thankedLabel + ' 1" id="' +
-                                        id + 'RewardedCnt" class="tooltipped tooltipped-s ft-smaller ft-red">'
-                                        + '<span class="icon-heart"></span> 1</span>');
+                                        id + 'RewardedCnt" class="tooltipped tooltipped-n ft-red">'
+                                        + '<span class="icon-heart"></span>1</span>');
                     } else {
                         $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
                         $cnt.html('<span class="icon-heart"></span> ' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
