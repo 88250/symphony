@@ -16,6 +16,7 @@
 package org.b3log.symphony.service;
 
 import javax.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -26,7 +27,7 @@ import org.b3log.symphony.repository.EmotionRepository;
  * Emotion query service.
  *
  * @author Zephyr
- * @version 1.0.0.0, Aug 16, 2016
+ * @version 1.0.0.1, Aug 16, 2016
  * @since 1.5.0
  */
 @Service
@@ -47,11 +48,16 @@ public class EmotionQueryService {
      * Gets a user's emotion (emoji with type=0).
      *
      * @param userId the specified user id
-     * @return emoji string join with {@code ","}, returns {@code null} if not found
+     * @return emoji string join with {@code ","}, returns an empty string {@code ""} if not found
      */
     public String getEmojis(final String userId) {
         try {
-            return emotionRepository.getUserEmojis(userId);
+            final String ret = emotionRepository.getUserEmojis(userId);
+            if (StringUtils.isBlank(ret)) {
+                return "";
+            }
+            
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, e.getMessage());
 
