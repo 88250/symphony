@@ -22,7 +22,7 @@ import org.json.JSONObject;
  * This class defines all liveness model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 22, 2016
+ * @version 1.0.0.1, Aug 17, 2016
  * @since 1.4.0
  */
 public final class Liveness {
@@ -101,8 +101,8 @@ public final class Liveness {
         final int article = liveness.optInt(Liveness.LIVENESS_ARTICLE);
         final int comment = liveness.optInt(Liveness.LIVENESS_COMMENT);
         int pv = liveness.optInt(Liveness.LIVENESS_PV);
-        if (pv > 500) {
-            pv = 500;
+        if (pv > 50) {
+            pv = 50;
         }
         final int reward = liveness.optInt(Liveness.LIVENESS_REWARD);
         final int thank = liveness.optInt(Liveness.LIVENESS_THANK);
