@@ -37,7 +37,7 @@ public class EmotionRepository extends AbstractRepository {
     public String getUserEmojis(final String userId) throws RepositoryException {
         final Query query = new Query();
         query.setFilter(new PropertyFilter(Emotion.EmotionUser, FilterOperator.EQUAL, userId));
-        query.setFilter(new PropertyFilter(Emotion.EmotionType, FilterOperator.EQUAL, "0"));//建议用枚举
+        query.setFilter(new PropertyFilter(Emotion.EmotionType, FilterOperator.EQUAL, Emotion.EmotionType_Emoji));//建议用枚举
         query.addSort(Emotion.EmotionSort, SortDirection.ASCENDING);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);

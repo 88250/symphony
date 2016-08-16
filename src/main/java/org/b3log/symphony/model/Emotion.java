@@ -16,21 +16,23 @@
 package org.b3log.symphony.model;
 
 /**
- * This class defines all solo model relevant keys.
- *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Nov 19, 2012
- * @since 0.2.0
+ * Define the Emotion relative constants
+ * @author Zephyr
  */
 public final class Emotion {
 
+	//表结构定义
 	public static final String EmotionId="oId";
 	public static final String EmotionUser = "user_oId";
     public static final String EmotionContent = "emotionContent";
     public static final String EmotionSort = "emotionSort";
     public static final String EmotionType = "emotionType";
     
+    //页面ID定义
     public static final String EmotionList = "emotionList";
+    
+    //常量值定义
+    public static final String EmotionType_Emoji="0";
     private Emotion() {
     }
 }

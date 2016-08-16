@@ -32,11 +32,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Domain management service.
- *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.3.2, Jul 29, 2016
- * @since 1.4.0
+ * Emotion management service.
+ * @author Zephyr
  */
 @Service
 public class EmotionMgmtService {
@@ -64,26 +61,27 @@ public class EmotionMgmtService {
 	    			emotionRepository.remove(userEmotions.optJSONObject(i).getString(Keys.OBJECT_ID));
 	    	    }
             }
-            String[] emotionArray=emotionList.split(",");	
-            for(int i=0;i<emotionArray.length;i++){
-            	 final JSONObject userEmotion = new JSONObject();
-            	 userEmotion.put(Emotion.EmotionId, Ids.genTimeMillisId());
-            	 userEmotion.put(Emotion.EmotionUser, userId);
-            	 userEmotion.put(Emotion.EmotionContent, emotionArray[i]);
-            	 userEmotion.put(Emotion.EmotionSort, i+1);
-            	 userEmotion.put(Emotion.EmotionType, "0");//建议用枚举
-                 emotionRepository.add(userEmotion);
+            String[] emotionArray=emotionList.split(",");
+            if(emotionArray.length>0){
+            	for(int i=0;i<emotionArray.length;i++){
+            		final JSONObject userEmotion = new JSONObject();
+            		userEmotion.put(Emotion.EmotionId, Ids.genTimeMillisId());
+            		userEmotion.put(Emotion.EmotionUser, userId);
+            		userEmotion.put(Emotion.EmotionContent, emotionArray[i]);
+            		userEmotion.put(Emotion.EmotionSort, i+1);
+            		userEmotion.put(Emotion.EmotionType, Emotion.EmotionType_Emoji);
+            		emotionRepository.add(userEmotion);
+            	}
             }
             transaction.commit();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Updates user online status failed [id=" + userId + "]", e);
+            LOGGER.log(Level.ERROR, "RepositoryException:>set user emotion list failed [id=" + userId + "]", e);
             if (null != transaction && transaction.isActive()) {
                 transaction.rollback();
             }
             throw new ServiceException(e);
         } catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			LOGGER.log(Level.ERROR, "JSONException:>set user emotion list failed [id=" + userId + "]", e1);
 		}
     }
 

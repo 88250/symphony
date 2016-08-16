@@ -23,11 +23,8 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.repository.EmotionRepository;
 
 /**
- * Vote query service.
- *
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jul 31, 2016
- * @since 1.3.0
+ * Emotion query service.
+ * @author Zephyr
  */
 @Service
 public class EmotionQueryService {
