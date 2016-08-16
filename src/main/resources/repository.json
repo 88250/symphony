@@ -1207,7 +1207,7 @@
             ]
         },
         {
-            "name": "emotions",
+            "name": "emotion",
             "keys": [
                 {
                     "name": "oId",
@@ -1215,7 +1215,7 @@
                     "length": 19
                 },
                 {
-                    "name": "user_oId",
+                    "name": "emotionUserId",
                     "type": "String",
                     "length": 19
                 },
@@ -1230,7 +1230,8 @@
                 },
                 {
                     "name": "emotionType",
-                    "type": "int"
+                    "type": "int",
+                    "description": "0: emoji"
                 }
             ]
         }

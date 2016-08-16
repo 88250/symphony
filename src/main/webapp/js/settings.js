@@ -19,7 +19,8 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.7.11, Aug 14, 2016
+ * @author Zephyr
+ * @version 1.14.7.12, Aug 16, 2016
  */
 
 /**
@@ -335,9 +336,9 @@ var Settings = {
                     userNotifyStatus: $('#userNotifyStatus').prop("checked")
                 };
                 break;
-			case "emotionList":
-            	requestJSONObject = this._validateEmotionList();
-            	break;
+            case "emotionList":
+                requestJSONObject = this._validateEmotionList();
+                break;
             default:
                 console.log("update settings has no type");
         }
@@ -514,14 +515,13 @@ var Settings = {
         }
         return false;
     },
-    
     /**
      * @description settings 页面表情校验（不知道有啥可校验的，暂不做校验）
      * @returns {boolean/obj} 当校验不通过时返回 false，否则返回校验数据值。
      */
     _validateEmotionList: function () {
-    	 return {
-             emotionList: $("#emotionList").val()
-         };
+        return {
+            emotions: $("#emotionList").val()
+        };
     }
 };

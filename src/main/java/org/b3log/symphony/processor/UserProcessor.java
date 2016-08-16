@@ -115,7 +115,8 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.11.19, Aug 14, 2016
+ * @author Zephyr
+ * @version 1.20.11.20, Aug 16, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -161,12 +162,19 @@ public class UserProcessor {
      */
     @Inject
     private FollowQueryService followQueryService;
-    
+
+    /**
+     * Emotion query service.
+     */
     @Inject
     private EmotionQueryService emotionQueryService;
 
+    /**
+     * Emotion management service.
+     */
     @Inject
     private EmotionMgmtService emotionMgmtService;
+
     /**
      * Filler.
      */
@@ -318,6 +326,11 @@ public class UserProcessor {
         buyInvitecodeLabel = buyInvitecodeLabel.replace("${point}",
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE));
         dataModel.put("buyInvitecodeLabel", buyInvitecodeLabel);
+
+        if (requestURI.contains("function")) {
+            final String emojis = emotionQueryService.getEmojis(user.optString(Keys.OBJECT_ID));
+            dataModel.put(Emotion.EMOTIONS, emojis);
+        }
 
         dataModel.put(Common.TYPE, "settings");
     }
@@ -1441,7 +1454,7 @@ public class UserProcessor {
             context.renderMsg(msg);
         }
     }
-    
+
     /**
      * Updates user emotions.
      *
@@ -1457,14 +1470,13 @@ public class UserProcessor {
         context.renderJSON();
 
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
-        
-        final String emotionList = requestJSONObject.optString(Emotion.EmotionList);
+        final String emotionList = requestJSONObject.optString(Emotion.EMOTIONS);
 
         final JSONObject user = userQueryService.getCurrentUser(request);
 
-
         try {
-            emotionMgmtService.setEmotionList(user,emotionList);
+            emotionMgmtService.setEmotionList(user.optString(Keys.OBJECT_ID), emotionList);
+
             context.renderTrueResult();
         } catch (final ServiceException e) {
             final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
@@ -1654,13 +1666,15 @@ public class UserProcessor {
     @RequestProcessing(value = "/users/emotions", method = HTTPRequestMethod.GET)
     public void getEmotions(final HTTPRequestContext context, final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-    	String emotions;
         context.renderJSON();
+
         final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
-        final String userId = currentUser.optString(Keys.OBJECT_ID); 
-        emotions=emotionQueryService.getEmojis(userId);
-        context.renderJSONValue("emotions",emotions);
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+        final String emotions = emotionQueryService.getEmojis(userId);
+
+        context.renderJSONValue("emotions", emotions);
     }
+
     /**
      * Loads usernames.
      *
@@ -1693,20 +1707,4 @@ public class UserProcessor {
     private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
         dataModel.put(User.USER, user);
     }
-
-	public EmotionQueryService getEmotionQueryService() {
-		return emotionQueryService;
-	}
-
-	public void setEmotionQueryService(EmotionQueryService emotionQueryService) {
-		this.emotionQueryService = emotionQueryService;
-	}
-
-	public EmotionMgmtService getEmotionMgmtService() {
-		return emotionMgmtService;
-	}
-
-	public void setEmotionMgmtService(EmotionMgmtService emotionMgmtService) {
-		this.emotionMgmtService = emotionMgmtService;
-	}
 }

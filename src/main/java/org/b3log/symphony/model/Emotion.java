@@ -16,23 +16,50 @@
 package org.b3log.symphony.model;
 
 /**
- * Define the Emotion relative constants
+ * This class defines all emotion model relevant keys.
+ *
  * @author Zephyr
+ * @version 1.0.0.0, Aug 16, 2016
+ * @since 1.5.0
  */
 public final class Emotion {
 
-	//表结构定义
-	public static final String EmotionId="oId";
-	public static final String EmotionUser = "user_oId";
-    public static final String EmotionContent = "emotionContent";
-    public static final String EmotionSort = "emotionSort";
-    public static final String EmotionType = "emotionType";
-    
-    //页面ID定义
-    public static final String EmotionList = "emotionList";
-    
-    //常量值定义
-    public static final String EmotionType_Emoji="0";
+    /**
+     * Emotion.
+     */
+    public static final String EMOTION = "emotion";
+
+    /**
+     * Emotions.
+     */
+    public static final String EMOTIONS = "emotions";
+
+    /**
+     * Key of emotion user id.
+     */
+    public static final String EMOTION_USER_ID = "emotionUserId";
+
+    /**
+     * Key of emotion content.
+     */
+    public static final String EMOTION_CONTENT = "emotionContent";
+
+    /**
+     * Key of emotion sort.
+     */
+    public static final String EMOTION_SORT = "emotionSort";
+
+    /**
+     * Key of emotion type.
+     */
+    public static final String EMOTION_TYPE = "emotionType";
+
+    // Type constants
+    /**
+     * Emotion type - Emoji.
+     */
+    public static final int EMOTION_TYPE_C_EMOJI = 0;
+
     private Emotion() {
     }
 }

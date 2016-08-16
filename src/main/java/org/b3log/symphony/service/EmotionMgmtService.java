@@ -17,87 +17,70 @@ package org.b3log.symphony.service;
 
 import javax.inject.Inject;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Ids;
 import org.b3log.symphony.model.Emotion;
 import org.b3log.symphony.repository.EmotionRepository;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Emotion management service.
+ *
  * @author Zephyr
+ * @version 1.0.0.0, Aug 16, 2016
+ * @since 1.5.0
  */
 @Service
 public class EmotionMgmtService {
-	
-	private static final Logger LOGGER = Logger.getLogger(EmotionMgmtService.class.getName());
-	 
-	@Inject
-	private EmotionRepository emotionRepository;
-	
-	@Inject
-	private EmotionQueryService emtoionQueryService;
-	
-	public void setEmotionList(final JSONObject user, final String emotionList) throws ServiceException {
-        Transaction transaction = null;
-        if (null == user) {
-            return;
-        }
-        String userId="null";
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(EmotionMgmtService.class);
+
+    /**
+     * Emotion repository.
+     */
+    @Inject
+    private EmotionRepository emotionRepository;
+
+    /**
+     * Sets a user's emotions.
+     *
+     * @param userId the specified user id
+     * @param emotionList the specified emotions
+     * @throws ServiceException service exception
+     */
+    public void setEmotionList(final String userId, final String emotionList) throws ServiceException {
+        final Transaction transaction = emotionRepository.beginTransaction();
+
         try {
-        	userId=user.getString("oId");
-            JSONArray userEmotions=emotionRepository.getUserEmotions(userId);
-            transaction = emotionRepository.beginTransaction();
-            if(userEmotions!=null){
-		    	for(int i=0;i<userEmotions.length();i++){
-	    			emotionRepository.remove(userEmotions.optJSONObject(i).getString(Keys.OBJECT_ID));
-	    	    }
+            // clears the user all emotions
+            emotionRepository.removeUserEmotions(userId);
+
+            final String[] emotionArray = emotionList.split(",");
+            for (int i = 0; i < emotionArray.length; i++) {
+                final JSONObject userEmotion = new JSONObject();
+                userEmotion.put(Emotion.EMOTION_USER_ID, userId);
+                userEmotion.put(Emotion.EMOTION_CONTENT, emotionArray[i]);
+                userEmotion.put(Emotion.EMOTION_SORT, i + 1);
+                userEmotion.put(Emotion.EMOTION_TYPE, Emotion.EMOTION_TYPE_C_EMOJI);
+
+                emotionRepository.add(userEmotion);
             }
-            String[] emotionArray=emotionList.split(",");
-            if(emotionArray.length>0){
-            	for(int i=0;i<emotionArray.length;i++){
-            		final JSONObject userEmotion = new JSONObject();
-            		userEmotion.put(Emotion.EmotionId, Ids.genTimeMillisId());
-            		userEmotion.put(Emotion.EmotionUser, userId);
-            		userEmotion.put(Emotion.EmotionContent, emotionArray[i]);
-            		userEmotion.put(Emotion.EmotionSort, i+1);
-            		userEmotion.put(Emotion.EmotionType, Emotion.EmotionType_Emoji);
-            		emotionRepository.add(userEmotion);
-            	}
-            }
+
             transaction.commit();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "RepositoryException:>set user emotion list failed [id=" + userId + "]", e);
+            LOGGER.log(Level.ERROR, "Set user emotion list failed [id=" + userId + "]", e);
             if (null != transaction && transaction.isActive()) {
                 transaction.rollback();
             }
+
             throw new ServiceException(e);
-        } catch (JSONException e1) {
-			LOGGER.log(Level.ERROR, "JSONException:>set user emotion list failed [id=" + userId + "]", e1);
-		}
+        }
     }
-
-	public EmotionRepository getEmotionRepository() {
-		return emotionRepository;
-	}
-
-	public void setEmotionRepository(EmotionRepository emotionRepository) {
-		this.emotionRepository = emotionRepository;
-	}
-
-	public EmotionQueryService getEmtoionQueryService() {
-		return emtoionQueryService;
-	}
-
-	public void setEmtoionQueryService(EmotionQueryService emtoionQueryService) {
-		this.emtoionQueryService = emtoionQueryService;
-	}
 }

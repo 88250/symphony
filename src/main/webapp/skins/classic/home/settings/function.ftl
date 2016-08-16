@@ -30,8 +30,8 @@
         <h2>${setEmotionLabel}</h2>
     </div>
     <div class="module-panel form fn-clear">
-        <textarea id="emotionList" rows="3"></textarea>
-		<br/><br/>
+        <textarea id="emotionList" rows="3" >${emotions}</textarea>
+        <br/><br/>
         <button class="green fn-right" onclick="Settings.update('emotionList', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
