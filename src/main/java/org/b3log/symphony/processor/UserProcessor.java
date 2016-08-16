@@ -47,6 +47,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Emotion;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Pointtransfer;
@@ -58,12 +59,15 @@ import org.b3log.symphony.processor.advice.UserBlockCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.PointTransferValidation;
+import org.b3log.symphony.processor.advice.validate.UpdateEmotionListValidation;
 import org.b3log.symphony.processor.advice.validate.UpdatePasswordValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateProfilesValidation;
 import org.b3log.symphony.processor.advice.validate.UpdateSyncB3Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.EmotionMgmtService;
+import org.b3log.symphony.service.EmotionQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.InvitecodeMgmtService;
@@ -157,7 +161,12 @@ public class UserProcessor {
      */
     @Inject
     private FollowQueryService followQueryService;
+    
+    @Inject
+    private EmotionQueryService emotionQueryService;
 
+    @Inject
+    private EmotionMgmtService emotionMgmtService;
     /**
      * Filler.
      */
@@ -1432,6 +1441,38 @@ public class UserProcessor {
             context.renderMsg(msg);
         }
     }
+    
+    /**
+     * Updates user emotions.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/settings/emotionList", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class, UpdateEmotionListValidation.class})
+    public void updateEmoji(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        context.renderJSON();
+
+        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        
+        final String emotionList = requestJSONObject.optString(Emotion.EmotionList);
+
+        final JSONObject user = userQueryService.getCurrentUser(request);
+
+
+        try {
+            emotionMgmtService.setEmotionList(user,emotionList);
+            context.renderTrueResult();
+        } catch (final ServiceException e) {
+            final String msg = langPropsService.get("updateFailLabel") + " - " + e.getMessage();
+            LOGGER.log(Level.ERROR, msg, e);
+
+            context.renderMsg(msg);
+        }
+    }
 
     /**
      * Sync user. Experimental API.
@@ -1603,6 +1644,24 @@ public class UserProcessor {
     }
 
     /**
+     * Lists emotions.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/users/emotions", method = HTTPRequestMethod.GET)
+    public void getEmotions(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+    	String emotions;
+        context.renderJSON();
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String userId = currentUser.optString(Keys.OBJECT_ID); 
+        emotions=emotionQueryService.getEmojis(userId);
+        context.renderJSONValue("emotions",emotions);
+    }
+    /**
      * Loads usernames.
      *
      * @param context the specified context
@@ -1634,4 +1693,20 @@ public class UserProcessor {
     private void fillHomeUser(final Map<String, Object> dataModel, final JSONObject user) {
         dataModel.put(User.USER, user);
     }
+
+	public EmotionQueryService getEmotionQueryService() {
+		return emotionQueryService;
+	}
+
+	public void setEmotionQueryService(EmotionQueryService emotionQueryService) {
+		this.emotionQueryService = emotionQueryService;
+	}
+
+	public EmotionMgmtService getEmotionMgmtService() {
+		return emotionMgmtService;
+	}
+
+	public void setEmotionMgmtService(EmotionMgmtService emotionMgmtService) {
+		this.emotionMgmtService = emotionMgmtService;
+	}
 }
