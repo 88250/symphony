@@ -1205,6 +1205,34 @@
                     "length": 255
                 }
             ]
+        },
+        {
+            "name": "emotions",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "user_oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "emotionContent",
+                    "type": "String",
+                    "length": 25
+                },
+                {
+                    "name": "emotionSort",
+                    "type": "int"
+                },
+                {
+                    "name": "emotionType",
+                    "type": "int"
+                }
+            ]
         }
     ]
 }
