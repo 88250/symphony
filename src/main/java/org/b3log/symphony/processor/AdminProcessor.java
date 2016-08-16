@@ -129,7 +129,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.3.7, Aug 12, 2016
+ * @version 2.20.3.8, Aug 16, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -923,10 +923,11 @@ public class AdminProcessor {
 
         filler.fillHeaderAndFooter(request, response, dataModel);
 
-        if ((Boolean) dataModel.get(Common.IS_MOBILE)) {
-            final JSONObject statistic = optionQueryService.getStatistic();
-            dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
-        }
+        dataModel.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
+        dataModel.put(Common.ONLINE_MEMBER_CNT, optionQueryService.getOnlineMemberCount());
+
+        final JSONObject statistic = optionQueryService.getStatistic();
+        dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
     }
 
     /**
@@ -1490,7 +1491,7 @@ public class AdminProcessor {
         articleFields.put(Article.ARTICLE_TAGS, String.class);
         articleFields.put(Article.ARTICLE_STATUS, Integer.class);
         articleFields.put(Article.ARTICLE_STICK, Long.class);
-        
+
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
         final JSONObject result = articleQueryService.getArticles(avatarViewMode, requestJSONObject, articleFields);
@@ -1624,7 +1625,7 @@ public class AdminProcessor {
         commentFields.put(Comment.COMMENT_CONTENT, String.class);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        
+
         final JSONObject result = commentQueryService.getComments(avatarViewMode, requestJSONObject, commentFields);
         dataModel.put(Comment.COMMENTS, CollectionUtils.jsonArrayToList(result.optJSONArray(Comment.COMMENTS)));
 

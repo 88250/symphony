@@ -59,7 +59,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.2.17, Aug 11, 2016
+ * @version 1.9.2.18, Aug 16, 2016
  * @since 0.2.0
  */
 @Service
@@ -522,12 +522,5 @@ public class Filler {
      */
     private void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
-        dataModel.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
-        dataModel.put(Common.ONLINE_MEMBER_CNT, optionQueryService.getOnlineMemberCount());
-
-        if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-            final JSONObject statistic = optionQueryService.getStatistic();
-            dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
-        }
     }
 }

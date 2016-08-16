@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.8.10, Aug 10, 2016
+ * @version 1.9.8.11, Aug 15, 2016
  */
 
 /**
@@ -89,7 +89,7 @@ var ArticleChannel = {
                     }
 
                     template += '<div class="fn-flex-1 comment-content">'
-                            + '<div class="fn-clear comment-info">'
+                            + '<div class="fn-clear comment-info ft-smaller">'
                             + '<span class="fn-left">';
 
                     if (!data.fromClient) {
@@ -103,43 +103,43 @@ var ArticleChannel = {
                     } else {
                         template += data.commentAuthorName + ' via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
                     }
-                    template += '<span class="ft-fade ft-smaller"> • ' + data.timeAgo;
+                    template += '<span class="ft-fade"> • ' + data.timeAgo;
 
                     if (data.userUAStatus === 0) {
                         template += UAName;
                     }
 
-                    template += '</span></span><span class="fn-right">';
+                    template += '</span></span><span class="fn-right ft-gray">';
 
                     if (Label.isLoggedIn) {
                         if (data.commentAuthorName !== Label.currentUserName) {
-                            template += '<span class="fn-hidden hover-show fn-pointer ft-smaller ft-fade tooltipped tooltipped-s" id="' + data.commentId + 'Thx"'
+                            template += '<span class="fn-hidden hover-show fn-pointer ft-fade tooltipped tooltipped-n" id="' + data.commentId + 'Thx"'
                                     + ' aria-label="' + Label.thankLabel + '" onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
                                     + '\', \'' + data.commentThankLabel + '\','
                                     + (data.commentAuthorName === 'someone' ? 1 : 0) + ')"><span class="icon-heart"></span></span> ';
                         }
 
-                        template += '<span id="voteUp_comment' + data.commentId + '" class="ft-smaller tooltipped tooltipped-s fn-pointer fn-hidden hover-show ft-fade" '
+                        template += '<span id="voteUp_comment' + data.commentId + '" class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade" '
                                 + 'aria-label="' + Label.upLabel + ' 0"'
                                 + 'onclick="Article.voteUp(\'' + data.commentId + '\', \'comment\')">'
                                 + '<span class="icon-thumbs-up"></span></span> '
-                                + '<span id="voteDown_comment' + data.commentId + '" class="ft-smaller tooltipped tooltipped-s fn-pointer fn-hidden hover-show ft-fade"'
+                                + '<span id="voteDown_comment' + data.commentId + '" class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade"'
                                 + 'aria-label="' + Label.downLabel + ' 0" '
                                 + 'onclick="Article.voteDown(\'' + data.commentId + '\', \'comment\')">'
                                 + '<span class="icon-thumbs-down"></span></span> ';
 
                         if (data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') {
-                            template += ' <span aria-label="@' + data.commentAuthorName + '" class="ft-smaller fn-pointer tooltipped tooltipped-s" onclick="Comment.replay(\'@'
+                            template += ' <span aria-label="@' + data.commentAuthorName + '" class="fn-pointer tooltipped tooltipped-n" onclick="Comment.replay(\'@'
                                     + data.commentAuthorName + ' \')"><span class="icon-reply"></span></span> ';
                         }
                     }
 
                     if (Label.isAdminLoggedIn) {
-                        template += '<a class="ft-smaller tooltipped tooltipped-s ft-a-icon" href="/admin/comment/' + data.commentId
+                        template += '<a class="tooltipped tooltipped-n ft-a-icon" href="/admin/comment/' + data.commentId
                                 + '" aria-label="' + Label.adminLabel + '"><span class="icon-setting"></span></a> ';
                     }
 
-                    template += '#<i>' + cmtCount + '</i></span></div><div class="content-reset comment">'
+                    template += '<i class="ft-fade">' + cmtCount + '</i></span></div><div class="content-reset comment">'
                             + data.commentContent + '</div></div></div></li>';
 
                     if (0 === Label.userCommentViewMode) { // tranditional view mode

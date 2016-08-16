@@ -24,36 +24,38 @@ import org.b3log.symphony.repository.EmotionRepository;
 
 /**
  * Emotion query service.
+ *
  * @author Zephyr
+ * @version 1.0.0.0, Aug 16, 2016
+ * @since 1.5.0
  */
 @Service
 public class EmotionQueryService {
 
-    private static final Logger LOGGER = Logger.getLogger(EmotionQueryService.class.getName());
-   
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(EmotionQueryService.class);
+
+    /**
+     * Emotion repository.
+     */
     @Inject
     private EmotionRepository emotionRepository;
 
+    /**
+     * Gets a user's emotion (emoji with type=0).
+     *
+     * @param userId the specified user id
+     * @return emoji string join with {@code ","}, returns {@code null} if not found
+     */
     public String getEmojis(final String userId) {
         try {
-        	String emojis=emotionRepository.getUserEmojis(userId);
-        	if(emojis!=null&&emojis.length()!=0)
-        		return emojis;
-        	else
-        		return null;
+            return emotionRepository.getUserEmojis(userId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, e.getMessage());
+
             return null;
         }
     }
-    
-
-	public EmotionRepository getEmotionRepository() {
-		return emotionRepository;
-	}
-
-	public void setEmotionRepository(EmotionRepository emotionRepository) {
-		this.emotionRepository = emotionRepository;
-	}
-
 }

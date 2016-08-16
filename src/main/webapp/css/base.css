@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.14.29, Aug 12, 2016
+ * @version 1.20.14.30, Aug 15, 2016
  */
 
 /* start reset */
@@ -1485,12 +1485,6 @@ a[class*=" icon-"]:hover {
     position: relative;
     z-index: 1;
     background-color: #F8F8F8;
-}
-
-.footer .info,
-.tags > li > div > .fn-right {
-    color: #666;
-    font-size: 11px;
 }
 
 .footer-nav > a {

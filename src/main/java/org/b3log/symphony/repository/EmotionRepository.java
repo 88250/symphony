@@ -28,50 +28,71 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Emotion repository.
+ *
+ * @author Zephyr
+ * @version 1.0.0.0, Aug 16, 2016
+ * @since 1.5.0
+ */
 @Repository
 public class EmotionRepository extends AbstractRepository {
+
+    /**
+     * Public constructor.
+     */
     public EmotionRepository() {
-		super("emotions");
-	}
-    
+        super(Emotion.EMOTION);
+    }
+
+    /**
+     * Gets a user's emotion (emoji with type=0).
+     *
+     *
+     * @param userId the specified user id
+     * @return emoji string join with {@code ","}, returns {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
     public String getUserEmojis(final String userId) throws RepositoryException {
         final Query query = new Query();
-        query.setFilter(new PropertyFilter(Emotion.EmotionUser, FilterOperator.EQUAL, userId));
-        query.setFilter(new PropertyFilter(Emotion.EmotionType, FilterOperator.EQUAL, Emotion.EmotionType_Emoji));//建议用枚举
-        query.addSort(Emotion.EmotionSort, SortDirection.ASCENDING);
+        query.setFilter(new PropertyFilter(Emotion.EMOTION_USER_ID, FilterOperator.EQUAL, userId));
+        query.setFilter(new PropertyFilter(Emotion.EMOTION_TYPE, FilterOperator.EQUAL, Emotion.EMOTION_TYPE_C_EMOJI));
+        query.addSort(Emotion.EMOTION_SORT, SortDirection.ASCENDING);
+
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
         if (0 == array.length()) {
             return null;
         }
-        String resultString="";
-        try {
-			
-			for(int i=0;i<array.length();i++){
-	        	resultString+=array.optJSONObject(i).get("emotionContent").toString();
-	        	if(i!=array.length()-1)
-	        		resultString+=",";
-	        }
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return resultString;
+
+        final StringBuilder retBuilder = new StringBuilder();
+        for (int i = 0; i < array.length(); i++) {
+            retBuilder.append(array.optJSONObject(i).optString(Emotion.EMOTION_CONTENT));
+            if (i != array.length() - 1) {
+                retBuilder.append(",");
+            }
+        }
+
+        return retBuilder.toString();
     }
-    
-    public JSONArray getUserEmotions(final String userId) throws RepositoryException {
-        final PropertyFilter pf=new PropertyFilter(Emotion.EmotionUser, FilterOperator.EQUAL, userId);
+
+    /**
+     * Clears a user's emotions.
+     * 
+     * @param userId the specified user id
+     * @throws RepositoryException repository exception
+     */
+    public void removeUserEmotions(final String userId) throws RepositoryException {
+        final PropertyFilter pf = new PropertyFilter(Emotion.EMOTION_USER_ID, FilterOperator.EQUAL, userId);
         final Query query = new Query().setFilter(pf);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
         if (0 == array.length()) {
-            return null;
+            return;
         }
-        return array;
-    }
-    
-    @Override
-    public void update(final String id, final JSONObject user) throws RepositoryException {
-        super.update(id, user);
+
+        for (int i = 0; i < array.length(); i++) {
+            remove(array.optJSONObject(i).optString(Keys.OBJECT_ID));
+        }
     }
 }

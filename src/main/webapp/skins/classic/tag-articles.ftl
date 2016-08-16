@@ -48,10 +48,10 @@
                     <ul class="tag-desc fn-clear tag-articles-tag-desc">
                         <#list tag.tagRelatedTags as relatedTag>
                         <li>
-                            <span>
+                            <a rel="tag" href="${servePath}/tag/${relatedTag.tagTitle?url('utf-8')}">
                                 <#if relatedTag.tagIconPath != "">
-                                <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if><a rel="tag" href="${servePath}/tag/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
-                            </span>
+                                <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
+                                ${relatedTag.tagTitle}</a>
                             <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
                                 <div>${relatedTag.tagDescription}</div>
                                 <span class="fn-right">
