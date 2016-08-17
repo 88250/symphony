@@ -4,9 +4,9 @@
 
 [Sym](https://github.com/b3log/symphony) 是一个用 Java 写的实时论坛，欢迎来**[体验](https://hacpai.com/register)**！（如果你需要搭建一个企业内网论坛，请使用 [SymX](https://github.com/FangStarNet/symphonyx)）
 
-* [这里](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)是 Sym 功能点脑图，非常详细哦~
+* [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)，非常详细
 * 如果你在搭建或者二次开发时碰到问题，欢迎加 Q 群 17370164 进行讨论
-* 另外，[如果你想做个程序员相关的论坛，请三思](https://hacpai.com/article/1471007706462)
+* [如果你想做个程序员相关的论坛，请三思](https://hacpai.com/article/1471007706462)
 
 ### 作者
 
