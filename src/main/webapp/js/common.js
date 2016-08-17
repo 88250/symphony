@@ -170,9 +170,15 @@ var Util = {
         if ("" === emojString) {
             emojString = allEmoj;
         } else {
+        	var temp=emojString.split(",");
+        	for(var ti=0;ti<temp.length;ti++){
+//        		allEmoj=allEmoj.replace(new RegExp(temp[ti],"g"),'');//这段代码是个误会，不过学到了如何构建变量全局替换的正则表达式
+        		allEmoj=allEmoj.replace(temp[ti],'');
+        	}
             emojString = emojString + ',' + allEmoj;
         }
-
+        emojString=emojString.replace(/,+/g,',');//全局替换重复的逗号
+        
         var emojis = emojString.split(/,/);
         var emojiAutocompleteHints = [];
         for (var i = 0; i < emojis.length; i++) {
