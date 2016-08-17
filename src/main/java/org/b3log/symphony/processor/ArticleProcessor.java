@@ -124,7 +124,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.17.31, Aug 11, 2016
+ * @version 1.22.17.31, Aug 17, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -644,8 +644,23 @@ public class ArticleProcessor {
         final int pageSize = Symphonys.getInt("articleCommentsPageSize");
         final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
 
+        final List<JSONObject> niceComments = commentQueryService.getNiceComments(avatarViewMode, articleId, 3);
+        article.put(Article.ARTICLE_T_NICE_COMMENTS, niceComments);
+
+        double niceCmtScore = Double.MAX_VALUE;
+        if (!niceComments.isEmpty()) {
+            niceCmtScore = niceComments.get(niceComments.size() - 1).optDouble(Comment.COMMENT_SCORE);
+        }
+
         final List<JSONObject> articleComments = commentQueryService.getArticleComments(
                 avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
+
+        for (final JSONObject articleComment : articleComments) {
+            if (articleComment.optDouble(Comment.COMMENT_SCORE) >= niceCmtScore) {
+                articleComment.put(Comment.COMMENT_T_NICE, true);
+            }
+        }
+
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         // Fill comment thank
@@ -822,7 +837,7 @@ public class ArticleProcessor {
         }
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        
+
         final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -907,9 +922,8 @@ public class ArticleProcessor {
             return;
         }
 
-        
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        
+
         final JSONObject oldArticle = articleQueryService.getArticleById(avatarViewMode, id);
         if (null == oldArticle) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.7.6.19, Aug 13, 2016
+ * @version 2.8.6.19, Aug 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -115,6 +116,36 @@ public class CommentQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+    /**
+     * Gets nice comments of an article specified by the given article.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     * @param articleId the given article
+     * @param fetchSize the specified fetch size
+     * @return a list of nice comments, return an empty list if not found
+     */
+    public List<JSONObject> getNiceComments(final int avatarViewMode, final String articleId, final int fetchSize) {
+        final Query query = new Query().addSort(Comment.COMMENT_SCORE, SortDirection.DESCENDING).
+                setPageSize(fetchSize).setCurrentPageNum(1).setPageCount(1)
+                .setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
+                        new PropertyFilter(Comment.COMMENT_SCORE, FilterOperator.GREATER_THAN, 0D),
+                        new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
+                ));
+        try {
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(
+                    commentRepository.get(query).optJSONArray(Keys.RESULTS));
+
+            organizeComments(avatarViewMode, ret);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Count day comment failed", e);
+
+            return Collections.emptyList();
+        }
+    }
 
     /**
      * Gets comment count of the specified day.
