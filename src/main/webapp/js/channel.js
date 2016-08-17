@@ -55,7 +55,7 @@ var ArticleChannel = {
 
             switch (data.type) {
                 case "comment":
-                    var cmtCount = parseInt($("#comments .comment-header h2").text()) + 1;
+                    var cmtCount = parseInt($("#comments .comment-header .ft-smaller").text()) + 1;
                     // 总帖数更新
                     $("#comments .comment-header h2").text(cmtCount + ' ' + Label.cmtLabel);
 

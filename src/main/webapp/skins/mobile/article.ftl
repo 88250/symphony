@@ -123,8 +123,23 @@
                         <span class="icon-google" data-type="google"></span>
                     </div>
                 </div>
-                 <div class="list comments nice">
-                        <h2><span class="icon-thumbs-up"></span> ${niceCommentsLabel}</h2>
+                
+                <#if 0 < article.articleRewardPoint>
+                <div class="content-reset" id="articleRewardContent"<#if !article.rewarded> class="reward"</#if>>
+                     <#if !article.rewarded>
+                     <span>
+                        ${rewardTipLabel?replace("{articleId}", article.oId)?replace("{point}", article.articleRewardPoint)}
+                    </span>
+                    <#else>
+                    ${article.articleRewardContent}
+                    </#if>
+                </div>
+                </#if>
+                
+                <#if article.articleNiceComments?size != 0>
+                <br/>
+                    <div class="list comments nice">
+                        <span class="ft-smaller"> ${niceCommentsLabel}</span>
                         <ul>                
                             <#list article.articleNiceComments as comment>
                             <li>
@@ -183,18 +198,8 @@
                             </#list>  
                         </ul>
                     </div>
-                
-                <#if 0 < article.articleRewardPoint>
-                <div class="content-reset" id="articleRewardContent"<#if !article.rewarded> class="reward"</#if>>
-                     <#if !article.rewarded>
-                     <span>
-                        ${rewardTipLabel?replace("{articleId}", article.oId)?replace("{point}", article.articleRewardPoint)}
-                    </span>
-                    <#else>
-                    ${article.articleRewardContent}
                     </#if>
-                </div>
-                </#if>
+                    
                 <#if 1 == userCommentViewMode>
                 <#if isLoggedIn>
                 <#if discussionViewable && article.articleCommentable>
@@ -220,7 +225,7 @@
                 <div class="fn-clear">
                     <div class="list comments" id="comments">
                         <div class="fn-clear comment-header">
-                            <h2 class="fn-left">${article.articleCommentCount} ${cmtLabel}</h2>
+                            <span class="fn-left ft-smaller">${article.articleCommentCount} ${cmtLabel}</span>
                             <span<#if article.articleComments?size == 0> class="fn-none"</#if>>
                                 <a class="icon-chevron-down fn-right" href="#bottomComment" title="${jumpToBottomCommentLabel}"></a>
                                 <a class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if> fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
