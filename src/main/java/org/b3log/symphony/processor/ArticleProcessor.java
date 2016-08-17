@@ -645,26 +645,40 @@ public class ArticleProcessor {
         final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
 
         final List<JSONObject> niceComments = commentQueryService.getNiceComments(avatarViewMode, articleId, 3);
-        article.put(Article.ARTICLE_T_NICE_COMMENTS, niceComments);
+        article.put(Article.ARTICLE_T_NICE_COMMENTS, (Object) niceComments);
 
         double niceCmtScore = Double.MAX_VALUE;
         if (!niceComments.isEmpty()) {
             niceCmtScore = niceComments.get(niceComments.size() - 1).optDouble(Comment.COMMENT_SCORE);
+
+            for (final JSONObject comment : niceComments) {
+                String thankTemplate = langPropsService.get("thankConfirmLabel");
+                thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
+                        .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
+                comment.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
+
+                final String commentId = comment.optString(Keys.OBJECT_ID);
+                if (isLoggedIn) {
+                    comment.put(Common.REWARDED,
+                            rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
+                    final int commentVote = voteQueryService.isVoted(currentUserId, commentId);
+                    comment.put(Comment.COMMENT_T_VOTE, commentVote);
+                }
+
+                comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
+            }
         }
 
         final List<JSONObject> articleComments = commentQueryService.getArticleComments(
                 avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
 
-        for (final JSONObject articleComment : articleComments) {
-            if (articleComment.optDouble(Comment.COMMENT_SCORE) >= niceCmtScore) {
-                articleComment.put(Comment.COMMENT_T_NICE, true);
-            }
-        }
-
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         // Fill comment thank
         for (final JSONObject comment : articleComments) {
+            comment.put(Comment.COMMENT_T_NICE,
+                        comment.optDouble(Comment.COMMENT_SCORE) >= niceCmtScore);
+            
             String thankTemplate = langPropsService.get("thankConfirmLabel");
             thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
                     .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));

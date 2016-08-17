@@ -193,7 +193,7 @@ var Comment = {
      * @param {String} tip 确认提示
      * @param {Integer} 0：公开评论，1：匿名评论
      */
-    thank: function (id, csrfToken, tip, commentAnonymous) {
+    thank: function (id, csrfToken, tip, commentAnonymous, it) {
         if (0 === commentAnonymous && !confirm(tip)) {
             return false;
         }
@@ -213,18 +213,17 @@ var Comment = {
             },
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $("#" + id + 'Thx').remove();
-                    var $cnt = $("#" + id + 'RewardedCnt'),
+                    var $cnt = $(it).closest('.comment-info').find('.rewarded-cnt'),
                             cnt = parseInt($cnt.text());
                     if ($cnt.length <= 0) {
-                        $('#' + id + ' .comment-info > .fn-left .ft-fade:last').
-                                append('&nbsp;<span aria-label="' + Label.thankedLabel + ' 1" id="' +
-                                        id + 'RewardedCnt" class="tooltipped tooltipped-n ft-red">'
+                        $(it).closest('.comment-info').find('.fn-left .ft-fade:last').
+                                append('&nbsp;<span aria-label="' + Label.thankedLabel + ' 1" class="tooltipped tooltipped-n ft-red">'
                                         + '<span class="icon-heart"></span>1</span>');
                     } else {
                         $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
                         $cnt.html('<span class="icon-heart"></span> ' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
                     }
+                    $(it).remove();
                 } else {
                     alert(result.msg);
                 }
@@ -353,11 +352,11 @@ var Article = {
      * @param {String} id 赞同的实体数据 id
      * @param {String} type 赞同的实体类型
      */
-    voteUp: function (id, type) {
-        var voteUpId = "#voteUp_" + type + id;
-        var voteDownId = "#voteDown_" + type + id;
+    voteUp: function (id, type, it) {
+        var $voteUp = $(it);
+        var $voteDown = $voteUp.next();
 
-        if ($(voteUpId).hasClass("disabled")) {
+        if ($voteUp.hasClass("disabled")) {
             return false;
         }
 
@@ -365,7 +364,7 @@ var Article = {
             dataId: id
         };
 
-        $(voteUpId).addClass("disabled");
+        $voteUp.addClass("disabled");
 
         $.ajax({
             url: Label.servePath + "/vote/up/" + type,
@@ -373,22 +372,22 @@ var Article = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
-                $(voteUpId).removeClass("disabled");
-                var upCnt = parseInt($(voteUpId).attr('aria-label').substr(3)),
-                        downCnt = parseInt($(voteDownId).attr('aria-label').substr(3));
+                $voteUp.removeClass("disabled");
+                var upCnt = parseInt($voteUp.attr('aria-label').substr(3)),
+                        downCnt = parseInt($voteDown.attr('aria-label').substr(3));
                 if (result.sc) {
                     if (0 === result.type) { // cancel up
-                        $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
+                        $voteUp.attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
                         if ('comment' === type && upCnt - 1 < 1) {
-                            $(voteUpId).addClass('fn-hidden').addClass('hover-show');
+                            $voteUp.addClass('fn-hidden').addClass('hover-show');
                         }
                     } else {
-                        $(voteUpId).removeClass('fn-hidden').removeClass('hover-show').attr('aria-label', Label.upLabel + ' ' + (upCnt + 1)).children()
+                        $voteUp.removeClass('fn-hidden').removeClass('hover-show').attr('aria-label', Label.upLabel + ' ' + (upCnt + 1)).children()
                                 .addClass("ft-red");
-                        if ($(voteDownId).children().hasClass('ft-red')) {
-                            $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
+                        if ($voteDown.children().hasClass('ft-red')) {
+                            $voteDown.attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
                             if ('comment' === type && downCnt - 1 < 1) {
-                                $(voteDownId).addClass('fn-hidden').addClass('hover-show');
+                                $voteDown.addClass('fn-hidden').addClass('hover-show');
                             }
                         }
                     }
@@ -405,11 +404,11 @@ var Article = {
      * @param {String} id 反对的实体数据 id
      * @param {String} type 反对的实体类型
      */
-    voteDown: function (id, type) {
-        var voteUpId = "#voteUp_" + type + id;
-        var voteDownId = "#voteDown_" + type + id;
+    voteDown: function (id, type, it) {
+        var $voteDown = $(it);
+        var $voteUp = $voteDown.prev();
 
-        if ($(voteDownId).hasClass("disabled")) {
+        if ($voteDown.hasClass("disabled")) {
             return false;
         }
 
@@ -417,7 +416,7 @@ var Article = {
             dataId: id
         };
 
-        $(voteDownId).addClass("disabled");
+        $voteDown.addClass("disabled");
 
         $.ajax({
             url: Label.servePath + "/vote/down/" + type,
@@ -425,23 +424,23 @@ var Article = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
-                $(voteDownId).removeClass("disabled");
-                var upCnt = parseInt($(voteUpId).attr('aria-label').substr(3)),
-                        downCnt = parseInt($(voteDownId).attr('aria-label').substr(3));
+                $voteDown.removeClass("disabled");
+                var upCnt = parseInt($voteUp.attr('aria-label').substr(3)),
+                        downCnt = parseInt($voteDown.attr('aria-label').substr(3));
                 if (result.sc) {
                     if (1 === result.type) { // cancel down
-                        $(voteDownId).attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
+                        $voteDown.attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
                         if ('comment' === type && downCnt - 1 < 1) {
-                            $(voteDownId).addClass('fn-hidden').addClass('hover-show');
+                            $voteDown.addClass('fn-hidden').addClass('hover-show');
                         }
                     } else {
-                        $(voteDownId).removeClass('fn-hidden').removeClass('hover-show')
+                        $voteDown.removeClass('fn-hidden').removeClass('hover-show')
                                 .attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children()
                                 .addClass("ft-red");
-                        if ($(voteUpId).children().hasClass('ft-red')) {
-                            $(voteUpId).attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
+                        if ($voteUp.children().hasClass('ft-red')) {
+                            $voteUp.attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
                             if ('comment' === type && upCnt - 1 < 1) {
-                                $(voteUpId).addClass('fn-hidden').addClass('hover-show');
+                                $voteUp.addClass('fn-hidden').addClass('hover-show');
                             }
                         }
                     }
