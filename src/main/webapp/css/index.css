@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.13.25, Aug 15, 2016
+ * @version 2.12.13.26, Aug 16, 2016
  */
 
 /* start module */
@@ -317,56 +317,69 @@ label.cmt-anonymous {
 }
 
 .article-toc li {
-    padding: 5px 10px 5px 20px;
     list-style-type: none;
-    border-left: 2px solid transparent;
-}
-
-.article-toc li:last-child {
-    border-bottom-width: 0;
-}
-
-.article-toc li:hover {
-    border-left: 1px solid #4183c4;
-    background-color: #F8F8F8;
-}
-
-.article-toc li.current {
-    border-left: 2px solid #4183c4;
-    background-color: #f0f0f0;
-}
-
-.article-toc li.toc-h2 {
-    padding-left: 34px;
-}
-
-.article-toc li.toc-h3 {
-    padding-left: 48px;
-}
-
-.article-toc li.toc-h4 {
-    padding-left: 62px;
-}
-
-.article-toc li.toc-h5 {
-    padding-left: 86px;
 }
 
 .article-toc li a {
+    padding: 5px 10px 5px 20px;
+    border-left: 2px solid transparent;
     display: block;
     line-height: 20px;
     color: #767676;
 }
 
-.article-toc li:hover a {
+.article-toc li a:last-child {
+    border-bottom-width: 0;
+}
+
+.article-toc li a:hover {
+    border-left: 1px solid #4183c4;
+    background-color: #F8F8F8;
     padding-left: 1px;
     color: #4183C4;
     text-decoration: none;
 }
 
 .article-toc li.current a {
-    padding-left: 0;
+    border-left: 2px solid #4183c4;
+    background-color: #f0f0f0;
     color: #4183c4;
+}
+
+.article-toc li.toc-h2 a,
+.article-toc li.toc-h2.current a:hover {
+    padding-left: 34px;
+}
+
+.article-toc li.toc-h3 a,
+.article-toc li.toc-h3.current a:hover {
+    padding-left: 48px;
+}
+
+.article-toc li.toc-h4 a,
+.article-toc li.toc-h4.current a:hover {
+    padding-left: 62px;
+}
+
+.article-toc li.toc-h5 a,
+.article-toc li.toc-h5.current a:hover {
+    padding-left: 86px;
+}
+
+.article-toc li.toc-h2 a:hover {
+    padding-left: 35px;
+}
+
+.article-toc li.toc-h3 a:hover {
+    padding-left: 49px;
+}
+
+.article-toc li.toc-h4 a:hover {
+    padding-left: 63px;
+}
+
+.article-toc li.toc-h5 a:hover {
+    padding-left: 87px;
 }
 /* end article */
 

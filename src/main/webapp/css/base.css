@@ -591,7 +591,7 @@ code.hljs,
     bottom: 50%;
     margin-right: 5px;
     -webkit-transform: translateY(50%);
-    transform: translateY(50%)
+    transform: translateY(50%);
 }
 
 .tooltipped-w::before {
@@ -599,7 +599,7 @@ code.hljs,
     bottom: 50%;
     left: -5px;
     margin-top: -5px;
-    border-left-color: rgba(0,0,0,0.8)
+    border-left-color: rgba(0,0,0,0.8);
 }
 
 .tooltipped-e::after {

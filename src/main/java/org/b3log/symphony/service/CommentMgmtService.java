@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.10.7.17, Jul 31, 2016
+ * @version 2.11.7.17, Aug 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -314,6 +314,18 @@ public class CommentMgmtService {
                 throw new ServiceException(langPropsService.get("notAllowAddCommentLabel"));
             }
 
+            final int balance = commenter.optInt(UserExt.USER_POINT);
+
+            if (Comment.COMMENT_ANONYMOUS_C_ANONYMOUS == commentAnonymous) {
+                final int anonymousPoint = Symphonys.getInt("anonymous.point");
+                if (balance < anonymousPoint) {
+                    String anonymousEnabelPointLabel = langPropsService.get("anonymousEnabelPointLabel");
+                    anonymousEnabelPointLabel
+                            = anonymousEnabelPointLabel.replace("${point}", String.valueOf(anonymousPoint));
+                    throw new ServiceException(anonymousEnabelPointLabel);
+                }
+            }
+
             article = articleRepository.get(articleId);
 
             if (!fromClient && !TuringQueryService.ROBOT_NAME.equals(commenterName)) {
@@ -324,8 +336,6 @@ public class CommentMgmtService {
                 if (articleAuthorId.equals(commentAuthorId)) {
                     pointSum = Pointtransfer.TRANSFER_SUM_C_ADD_SELF_ARTICLE_COMMENT;
                 }
-
-                final int balance = commenter.optInt(UserExt.USER_POINT);
 
                 if (balance - pointSum < 0) {
                     throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
@@ -404,7 +414,7 @@ public class CommentMgmtService {
             commenter.put(UserExt.USER_COMMENT_COUNT, commenter.optInt(UserExt.USER_COMMENT_COUNT) + 1);
             commenter.put(UserExt.USER_LATEST_CMT_TIME, currentTimeMillis);
             userRepository.update(commenter.optString(Keys.OBJECT_ID), commenter);
-            
+
             comment.put(Comment.COMMENT_GOOD_CNT, 0);
             comment.put(Comment.COMMENT_BAD_CNT, 0);
             comment.put(Comment.COMMENT_SCORE, 0D);

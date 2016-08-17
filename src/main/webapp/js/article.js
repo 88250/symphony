@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.27.16, Aug 5, 2016
+ * @version 1.21.28.16, Aug 16, 2016
  */
 
 /**
@@ -866,10 +866,9 @@ var Article = {
 
         var toc = [];
         $('.article-content [id^=toc]').each(function (i) {
-            var $it = $(this);
             toc.push({
-                id: $it.attr('id'),
-                offsetTop: $it.offset().top
+                id: this.id,
+                offsetTop: this.offsetTop
             });
         });
 
@@ -890,7 +889,7 @@ var Article = {
                 }
             }
 
-            if ($(window).height() + scrollTop >= $('body').height()) {
+            if (scrollTop >= toc[toc.length - 1].offsetTop - 5) {
                 $articleToc.find('li').removeClass('current');
                 $articleToc.find('li:last').addClass('current');
             }
@@ -901,9 +900,9 @@ var Article = {
                 $articleToc.next().css('position', 'fixed');
                 $articleToc.next().next().css('position', 'fixed');
             } else {
-                $articleToc.css('position', 'inherit');
-                $articleToc.next().css('position', 'inherit');
-                $articleToc.next().next().css('position', 'inherit');
+                $articleToc.css('position', 'initial');
+                $articleToc.next().css('position', 'initial');
+                $articleToc.next().next().css('position', 'initial');
             }
         }).resize(function () {
             $articleToc.css('width', $('.side').width() + 'px');
@@ -933,13 +932,13 @@ var Article = {
         } else {
             $articleToc.show();
             $menu.addClass('ft-red');
-            $articleToc.css('position', 'inherit');
+            $articleToc.css('position', 'initial');
             $articleToc.find('li').removeClass('current');
             $articleToc.find('li:first').addClass('current');
         }
 
-        $articleToc.next().css('position', 'inherit');
-        $articleToc.next().next().css('position', 'inherit');
+        $articleToc.next().css('position', 'initial');
+        $articleToc.next().next().css('position', 'initial');
     },
     /**
      * @description 标记消息通知为已读状态.

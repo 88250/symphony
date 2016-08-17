@@ -388,7 +388,7 @@
                 </div>
             </div>
         </div>
-        <div id="heatBar">
+        <div id="heatBar" class="tooltipped tooltipped-s" aria-label="${postActivityLabel}">
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <div id="revision"><div id="revisions"></div></div>

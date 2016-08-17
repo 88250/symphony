@@ -74,7 +74,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.13.20.18, Jul 27, 2016
+ * @version 2.14.20.18, Aug 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -385,13 +385,23 @@ public class ArticleMgmtService {
                 throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
             }
 
+            final int balance = author.optInt(UserExt.USER_POINT);
+            if (Article.ARTICLE_ANONYMOUS_C_ANONYMOUS == articleAnonymous) {
+                final int anonymousPoint = Symphonys.getInt("anonymous.point");
+                if (balance < anonymousPoint) {
+                    String anonymousEnabelPointLabel = langPropsService.get("anonymousEnabelPointLabel");
+                    anonymousEnabelPointLabel
+                            = anonymousEnabelPointLabel.replace("${point}", String.valueOf(anonymousPoint));
+                    throw new ServiceException(anonymousEnabelPointLabel);
+                }
+            }
+
             if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 final int addition = (int) Math.round(Math.sqrt(followerCnt));
 
                 final int sum = Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition + rewardPoint;
-                final int balance = author.optInt(UserExt.USER_POINT);
 
                 if (balance - sum < 0) {
                     throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
