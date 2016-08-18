@@ -52,12 +52,13 @@ import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.6.17, Jul 26, 2016
+ * @version 1.5.7.17, Aug 18, 2016
  * @since 0.2.0
  */
 @Named
@@ -238,9 +239,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                         + "'>" + articleTitle + "</a>")
                         .replace("{comment}", cc.replaceAll("<p>", "").replaceAll("</p>", ""));
 
+                content = Jsoup.clean(content, Whitelist.none().addAttributes("a", "href", "rel", "target"));
                 timeline.put(Common.CONTENT, content);
 
-                timelineMgmtService.addTimeline(timeline);
+                if (StringUtils.isNotBlank(content)) {
+                    timelineMgmtService.addTimeline(timeline);
+                }
             }
 
             final String articleAuthorId = originalArticle.optString(Article.ARTICLE_AUTHOR_ID);
