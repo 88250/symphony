@@ -15,6 +15,6 @@
                 <div class="fn-hr10"></div>
             </div>
         </div>
-        <#include '../common/footer-dom.ftl'/>
+        <#include '../footer.ftl'/>
     </body>
 </html>

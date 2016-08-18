@@ -16,7 +16,7 @@
                 <br/>
             </div>
         </div>
-        <#include '../common/footer-dom.ftl'/>
+        <#include '../footer.ftl'/>
     </body>
     <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
     <script>
