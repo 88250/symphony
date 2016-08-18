@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.6.7, Aug 16, 2016
+ * @version 1.4.6.8, Aug 17, 2016
  */
 
 /* start reset */
@@ -1096,7 +1096,7 @@ a[class*=" icon-"]:hover {
     width: 100%;
     padding: 5px 0;
     z-index: 99;
-    background-color: #f5f5f5;
+    background-color: #f7f7f7;
     border-bottom: 1px solid #e5e5e5;
 }
 
@@ -1753,37 +1753,66 @@ h2.article-title {
 #comments .comment-header > h2 {
     margin-top: 5px;
 }
+.comments > .comment-header {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #CCCCCC;
+    margin: 20px 0 0;
+}
 
-#comments > div.comment-header .icon-chevron-down {
+.comments > div.comment-header .icon-chevron-down {
     margin: 0px 10px 0 0;
     font-size: 24px;
 }
 
-#comments > div.comment-header .icon-sortasc,
-#comments > div.comment-header .icon-time {
+.comments > div.comment-header a {
+    text-decoration: none;
+    color: #333;
+}
+
+.comments > div.comment-header .icon-sortasc,
+.comments > div.comment-header .icon-time {
     font-size: 16px;
     font-weight: bold;
     margin: 4px 10px 0 0;
+    display: inherit;
 }
 
-#comments li.shield {
+.comments li.shield {
     background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
     background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
-    background-color: #f5f5f5;
+    background-color: #f7f7f7;
     background-size: 45px 45px;
 }
 
-#comments li:hover .hover-show {
+.comments li.perfect {
+    background-color: #f9f6f6;
+}
+
+.comments li:hover .hover-show {
     visibility: visible;
 }
 
-#comments .comment > p {
-    margin-top: 5px;
+.comments li .hover-show:hover {
+    color: #999; 
 }
 
-#comments .comment-info {
+.comments .comment > p {
+    margin-top: 10px;
+}
+
+.comments .comment-info {
     line-height: 17px;
+}
+
+.comments.nice ul {
+    margin: 10px 0;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+}
+
+.comments.nice > ul > li:last-child {
+    border-bottom-width: 0;
 }
 
 .comment-login {
@@ -1807,7 +1836,7 @@ h2.article-title {
     background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
     background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
-    background-color: #f5f5f5;
+    background-color: #f7f7f7;
     background-size: 45px 45px;
 }
 
@@ -2518,7 +2547,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .post .completed-panel a.selected,
 .post .completed-panel a:hover {
-    background-color: #F5F5F5;
+    background-color: #F7F7F7;
 }
 /* end add article */
 

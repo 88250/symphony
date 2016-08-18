@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.8.11, Aug 15, 2016
+ * @version 1.9.9.11, Aug 17, 2016
  */
 
 /**
@@ -55,7 +55,7 @@ var ArticleChannel = {
 
             switch (data.type) {
                 case "comment":
-                    var cmtCount = parseInt($("#comments .comment-header h2").text()) + 1;
+                    var cmtCount = parseInt($("#comments .comment-header .ft-smaller").text()) + 1;
                     // 总帖数更新
                     $("#comments .comment-header h2").text(cmtCount + ' ' + Label.cmtLabel);
 
@@ -113,19 +113,19 @@ var ArticleChannel = {
 
                     if (Label.isLoggedIn) {
                         if (data.commentAuthorName !== Label.currentUserName) {
-                            template += '<span class="fn-hidden hover-show fn-pointer ft-fade tooltipped tooltipped-n" id="' + data.commentId + 'Thx"'
+                            template += '<span class="fn-hidden hover-show fn-pointer ft-fade tooltipped tooltipped-n" '
                                     + ' aria-label="' + Label.thankLabel + '" onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
                                     + '\', \'' + data.commentThankLabel + '\','
-                                    + (data.commentAuthorName === 'someone' ? 1 : 0) + ')"><span class="icon-heart"></span></span> ';
+                                    + (data.commentAuthorName === 'someone' ? 1 : 0) + ', this)"><span class="icon-heart"></span></span> ';
                         }
 
-                        template += '<span id="voteUp_comment' + data.commentId + '" class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade" '
+                        template += '<span class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade" '
                                 + 'aria-label="' + Label.upLabel + ' 0"'
-                                + 'onclick="Article.voteUp(\'' + data.commentId + '\', \'comment\')">'
+                                + 'onclick="Article.voteUp(\'' + data.commentId + '\', \'comment\', this)">'
                                 + '<span class="icon-thumbs-up"></span></span> '
-                                + '<span id="voteDown_comment' + data.commentId + '" class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade"'
+                                + '<span class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade"'
                                 + 'aria-label="' + Label.downLabel + ' 0" '
-                                + 'onclick="Article.voteDown(\'' + data.commentId + '\', \'comment\')">'
+                                + 'onclick="Article.voteDown(\'' + data.commentId + '\', \'comment\', this)">'
                                 + '<span class="icon-thumbs-down"></span></span> ';
 
                         if (data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') {

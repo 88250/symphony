@@ -124,7 +124,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.17.31, Aug 11, 2016
+ * @version 1.22.17.31, Aug 17, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -644,12 +644,41 @@ public class ArticleProcessor {
         final int pageSize = Symphonys.getInt("articleCommentsPageSize");
         final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
 
+        final List<JSONObject> niceComments = commentQueryService.getNiceComments(avatarViewMode, articleId, 3);
+        article.put(Article.ARTICLE_T_NICE_COMMENTS, (Object) niceComments);
+
+        double niceCmtScore = Double.MAX_VALUE;
+        if (!niceComments.isEmpty()) {
+            niceCmtScore = niceComments.get(niceComments.size() - 1).optDouble(Comment.COMMENT_SCORE);
+
+            for (final JSONObject comment : niceComments) {
+                String thankTemplate = langPropsService.get("thankConfirmLabel");
+                thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
+                        .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
+                comment.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
+
+                final String commentId = comment.optString(Keys.OBJECT_ID);
+                if (isLoggedIn) {
+                    comment.put(Common.REWARDED,
+                            rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
+                    final int commentVote = voteQueryService.isVoted(currentUserId, commentId);
+                    comment.put(Comment.COMMENT_T_VOTE, commentVote);
+                }
+
+                comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
+            }
+        }
+
         final List<JSONObject> articleComments = commentQueryService.getArticleComments(
                 avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
+
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         // Fill comment thank
         for (final JSONObject comment : articleComments) {
+            comment.put(Comment.COMMENT_T_NICE,
+                        comment.optDouble(Comment.COMMENT_SCORE) >= niceCmtScore);
+            
             String thankTemplate = langPropsService.get("thankConfirmLabel");
             thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
                     .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
@@ -822,7 +851,7 @@ public class ArticleProcessor {
         }
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        
+
         final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -907,9 +936,8 @@ public class ArticleProcessor {
             return;
         }
 
-        
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        
+
         final JSONObject oldArticle = articleQueryService.getArticleById(avatarViewMode, id);
         if (null == oldArticle) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

@@ -30,11 +30,11 @@
                             <span id="thankArticle" aria-label="${thankLabel} ${article.thankedCnt}"
                                   class="fn-pointer tooltipped tooltipped-n"
                                   <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
-                            <span id="voteUp_article${article.oId}" class="tooltipped tooltipped-n fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}"
-                                  onclick="Article.voteUp('${article.oId}', 'article')">
+                            <span class="tooltipped tooltipped-n fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}"
+                                  onclick="Article.voteUp('${article.oId}', 'article', this)">
                                 <span class="icon-thumbs-up<#if 0 == article.articleVote> ft-red</#if>"></span></span>
-                            <span id="voteDown_article${article.oId}" class="tooltipped tooltipped-n fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}"
-                                  onclick="Article.voteDown('${article.oId}', 'article')">
+                            <span  class="tooltipped tooltipped-n fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}"
+                                  onclick="Article.voteDown('${article.oId}', 'article', this)">
                                 <span class="icon-thumbs-down<#if 1 == article.articleVote> ft-red</#if>"></span></span>
                             <#if isFollowing>
                             <span class="tooltipped tooltipped-n fn-pointer" aria-label="${uncollectLabel} ${article.articleCollectCnt}" onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
@@ -121,7 +121,7 @@
                     <div id="thoughtProgress"><span class="bar"></span><span class="icon-video"></span><div data-text="" class="content-reset" id="thoughtProgressPreview"></div></div>
                     <div class="content-reset article-content"></div>
                     </#if>
-
+                    
                     <div class="fn-clear">
                         <div class="share fn-right">
                             <div id="qrCode" class="fn-none"
@@ -137,6 +137,7 @@
                                     class="icon-copy"></span></span>
                         </div>
                     </div>
+                    
                     <#if 0 < article.articleRewardPoint>
                     <div class="content-reset" id="articleRewardContent"<#if !article.rewarded> class="reward"</#if>>
                          <#if !article.rewarded>
@@ -148,6 +149,71 @@
                         </#if>
                     </div>
                     </#if>
+                    
+                    <#if article.articleNiceComments?size != 0>
+                    <br/>
+                    <div class="list comments nice">
+                        <span class="ft-smaller"> ${niceCommentsLabel}</span>
+                        <ul>                
+                            <#list article.articleNiceComments as comment>
+                            <li>
+                                <#if !comment?has_next><div id="bottomComment"></div></#if>
+                                <div class="fn-flex">
+                                    <div class="fn-flex-1 comment-content">
+                                        <div class="fn-clear comment-info ft-smaller">
+                                            <span class="fn-left">
+                                                <#if !comment.fromClient>
+                                                <#if comment.commentAnonymous == 0>
+                                                <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
+                                                   via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if>
+                                                <span class="ft-fade">&nbsp;•&nbsp;${comment.timeAgo} 
+                                                    <#if 0 == comment.commenter.userUAStatus><span class="cmt-via" data-ua="${comment.commentUA}"></span></#if>
+                                                </span>
+                                                <#if comment.rewardedCnt gt 0>
+                                                <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
+                                                <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>" 
+                                                      class="tooltipped tooltipped-n rewarded-cnt <#if hasRewarded>ft-red<#else>ft-fade</#if>">
+                                                    <span class="icon-heart"></span>${comment.rewardedCnt}
+                                                </span>
+                                                </#if>
+                                            </span>
+                                            <span class="fn-right ft-gray">
+                                                <#if isLoggedIn>
+                                                <#if comment.commentAuthorId != currentUser.oId>
+                                                <#if !comment.rewarded>
+                                                <span class="fn-hidden hover-show fn-pointer ft-fade tooltipped tooltipped-n"
+                                                      aria-label="${thankLabel}"
+                                                      onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', ${comment.commentAnonymous}, this)"><span class="icon-heart"></span></span>
+                                                </#if>
+                                                </#if>
+
+                                                <span class="tooltipped tooltipped-n fn-pointer <#if comment.commentGoodCnt < 1>fn-hidden hover-show</#if> ft-fade" 
+                                                      aria-label="${upLabel} ${comment.commentGoodCnt}"
+                                                      onclick="Article.voteUp('${comment.oId}', 'comment', this)">
+                                                    <span class="icon-thumbs-up<#if 0 == comment.commentVote> ft-red</#if>"></span></span>
+                                                <span class="tooltipped tooltipped-n fn-pointer <#if comment.commentBadCnt < 1>fn-hidden hover-show</#if> ft-fade"
+                                                      aria-label="${downLabel} ${comment.commentBadCnt}" 
+                                                      onclick="Article.voteDown('${comment.oId}', 'comment', this)">
+                                                    <span class="icon-thumbs-down<#if 1 == comment.commentVote> ft-red</#if>"></span></span>
+                                                </#if>
+                                                <#if isAdminLoggedIn>
+                                                <a class="tooltipped tooltipped-n ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" 
+                                                   aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                                                </#if>
+                                                <i class="ft-fade"><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
+                                            </span>    
+                                        </div>
+                                        <div class="content-reset comment">
+                                            ${comment.commentContent}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            </#list>  
+                        </ul>
+                    </div>
+                    </#if>
+                    
                     <#if 1 == userCommentViewMode>
                     <#if isLoggedIn>
                     <#if discussionViewable && article.articleCommentable>
@@ -182,9 +248,9 @@
                     </#if>
                     </#if>
                     <div class="fn-clear">
-                        <div class="list" id="comments">
+                        <div class="list comments" id="comments">
                             <div class="fn-clear comment-header">
-                                <h2 class="fn-left">${article.articleCommentCount} ${cmtLabel}</h2>
+                                <span class="fn-left ft-smaller">${article.articleCommentCount} ${cmtLabel}</span>
                                 <span<#if article.articleComments?size == 0> class="fn-none"</#if>>
                                     <a class="tooltipped tooltipped-sw fn-right" href="#bottomComment" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
                                     <a class="tooltipped tooltipped-sw fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
@@ -196,7 +262,8 @@
                                 <#list article.articleComments as comment>
                                 <#assign notificationCmtIds = notificationCmtIds + comment.oId>
                                 <#if comment_has_next><#assign notificationCmtIds = notificationCmtIds + ","></#if>
-                                <li id="${comment.oId}"<#if comment.commentStatus == 1>class="shield"</#if>>
+                                <li id="${comment.oId}" 
+                                    class="<#if comment.commentStatus == 1>shield</#if><#if comment.commentNice> perfect</#if>">
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
@@ -222,8 +289,7 @@
                                                     <#if comment.rewardedCnt gt 0>
                                                     <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
                                                     <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>" 
-                                                          id="${comment.oId}RewardedCnt"
-                                                          class="tooltipped tooltipped-n <#if hasRewarded>ft-red<#else>ft-fade</#if>">
+                                                          class="tooltipped tooltipped-n rewarded-cnt <#if hasRewarded>ft-red<#else>ft-fade</#if>">
                                                         <span class="icon-heart"></span>${comment.rewardedCnt}
                                                     </span>
                                                     </#if>
@@ -232,19 +298,19 @@
                                                     <#if isLoggedIn>
                                                     <#if comment.commentAuthorId != currentUser.oId>
                                                     <#if !comment.rewarded>
-                                                    <span class='fn-hidden hover-show fn-pointer ft-fade tooltipped tooltipped-n' id='${comment.oId}Thx'
+                                                    <span class="fn-hidden hover-show fn-pointer ft-fade tooltipped tooltipped-n"
                                                           aria-label="${thankLabel}"
-                                                          onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', ${comment.commentAnonymous})"><span class="icon-heart"></span></span>
+                                                          onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', ${comment.commentAnonymous}, this)"><span class="icon-heart"></span></span>
                                                     </#if>
                                                     </#if>
 
-                                                    <span id="voteUp_comment${comment.oId}" class="tooltipped tooltipped-n fn-pointer <#if comment.commentGoodCnt < 1>fn-hidden hover-show</#if> ft-fade" 
+                                                    <span class="tooltipped tooltipped-n fn-pointer <#if comment.commentGoodCnt < 1>fn-hidden hover-show</#if> ft-fade" 
                                                           aria-label="${upLabel} ${comment.commentGoodCnt}"
-                                                          onclick="Article.voteUp('${comment.oId}', 'comment')">
+                                                          onclick="Article.voteUp('${comment.oId}', 'comment', this)">
                                                         <span class="icon-thumbs-up<#if 0 == comment.commentVote> ft-red</#if>"></span></span>
-                                                    <span id="voteDown_comment${comment.oId}" class="tooltipped tooltipped-n fn-pointer <#if comment.commentBadCnt < 1>fn-hidden hover-show</#if> ft-fade"
+                                                    <span class="tooltipped tooltipped-n fn-pointer <#if comment.commentBadCnt < 1>fn-hidden hover-show</#if> ft-fade"
                                                           aria-label="${downLabel} ${comment.commentBadCnt}" 
-                                                          onclick="Article.voteDown('${comment.oId}', 'comment')">
+                                                          onclick="Article.voteDown('${comment.oId}', 'comment', this)">
                                                         <span class="icon-thumbs-down<#if 1 == comment.commentVote> ft-red</#if>"></span></span>
                                                     
                                                     <#if comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0>

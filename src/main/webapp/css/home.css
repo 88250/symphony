@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.9.12, Aug 12 2016
+ * @version 2.4.10.12, Aug 17 2016
  */
 
 
@@ -266,7 +266,7 @@ label.article-anonymous {
 
 .post .completed-panel a.selected,
 .post .completed-panel a:hover {
-    background-color: #F5F5F5;
+    background-color: #F7F7F7;
 }
 /* end add article */
 

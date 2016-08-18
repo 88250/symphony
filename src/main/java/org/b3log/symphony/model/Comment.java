@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.8, Aug 13, 2016
+ * @version 1.7.0.8, Aug 17, 2016
  * @since 0.2.0
  */
 public final class Comment {
@@ -114,7 +114,7 @@ public final class Comment {
      * Key of comment vote.
      */
     public static final String COMMENT_T_VOTE = "commentVote";
-    
+
     /**
      * Key of commenter.
      */
@@ -159,7 +159,7 @@ public final class Comment {
      * Key of comment article type.
      */
     public static final String COMMENT_T_ARTICLE_TYPE = "commentArticleType";
-    
+
     /**
      * Key of comment article perfect.
      */
@@ -189,6 +189,11 @@ public final class Comment {
      * Key of comment thank label.
      */
     public static final String COMMENT_T_THANK_LABEL = "commentThankLabel";
+
+    /**
+     * Key of comment nice.
+     */
+    public static final String COMMENT_T_NICE = "commentNice";
 
     //// Status constants
     /**
