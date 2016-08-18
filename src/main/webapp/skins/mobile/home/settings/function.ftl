@@ -24,4 +24,19 @@
         <button class="green fn-right" onclick="Settings.update('function', '${csrfToken}')">${saveLabel}</button>
     </div>
 </div>
+
+<div class="module">
+    <div class="module-header">
+        <h2>${setEmotionLabel}</h2>
+    </div>
+    <div class="module-panel form fn-clear">
+        <br>
+        <textarea id="emotionList" rows="3" >${emotions}</textarea>
+        <br><br>
+        <div class="fn-clear"></div>
+        <div id="emotionListTip" class="tip"></div>
+        <div class="fn-hr5"></div>
+        <button class="green fn-right" onclick="Settings.update('emotionList', '${csrfToken}')">${saveLabel}</button>
+    </div>
+</div>
 </@home>

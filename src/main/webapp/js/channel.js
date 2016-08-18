@@ -57,7 +57,7 @@ var ArticleChannel = {
                 case "comment":
                     var cmtCount = parseInt($("#comments .comment-header .ft-smaller").text()) + 1;
                     // 总帖数更新
-                    $("#comments .comment-header h2").text(cmtCount + ' ' + Label.cmtLabel);
+                    $("#comments .comment-header .ft-smaller").text(cmtCount + ' ' + Label.cmtLabel);
 
                     // 新增第一条评论时到底部的锚点
                     var bottomCmt = '';

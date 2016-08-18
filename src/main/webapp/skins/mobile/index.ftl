@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-
+        <#if tags?size != 0>
         <div class="index-wrap">
             <div class="wrapper">
                 <ul class="tag-desc fn-clear">
@@ -67,6 +67,7 @@
                 </ul>
             </div>
         </div>
+        </#if>
         <div class="main">
             <div class="wrapper">
                 <div class="item">

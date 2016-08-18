@@ -124,7 +124,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.22.17.31, Aug 17, 2016
+ * @version 1.22.18.31, Aug 18, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -631,6 +631,7 @@ public class ArticleProcessor {
         dataModel.put(Common.DISCUSSION_VIEWABLE, article.optBoolean(Common.DISCUSSION_VIEWABLE));
         if (!article.optBoolean(Common.DISCUSSION_VIEWABLE)) {
             article.put(Article.ARTICLE_T_COMMENTS, (Object) Collections.emptyList());
+            article.put(Article.ARTICLE_T_NICE_COMMENTS, (Object) Collections.emptyList());
 
             return;
         }

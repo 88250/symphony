@@ -53,7 +53,7 @@
                 </div>
             </div>
         </div>
-
+        <#if tags?size != 0>
         <div class="index-wrap">
             <div class="wrapper">
                 <ul class="tag-desc fn-clear">
@@ -70,9 +70,10 @@
                 </ul>
             </div>
         </div>
-        <div class="main">
+        </#if>
+        <div class="main<#if ADLabel == ''> first</#if>">
             <div class="wrapper">
-                <div class="item">
+                <div class="item<#if ADLabel == ''> first</#if>">
                     <a href="${servePath}/timeline" class="item-header" style="background-image: url(${timelineBgIcon});">${timelineLabel}</a>
                     <div class="module-panel">
                         <#if timelines?size <= 0>
