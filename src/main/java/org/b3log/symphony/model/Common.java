@@ -19,10 +19,15 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.38.1.11, Aug 12, 2016
+ * @version 1.39.1.11, Aug 18, 2016
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Mouse effects.
+     */
+    public static final String MOUSE_EFFECTS = "mouseEffects";
 
     /**
      * Key of is mobile device.

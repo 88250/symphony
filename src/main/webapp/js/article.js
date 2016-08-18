@@ -198,6 +198,11 @@ var Comment = {
             return false;
         }
 
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
+
         var requestJSONObject = {
             commentId: id
         };
@@ -304,6 +309,10 @@ var Comment = {
      * @param {String} userName 用户名称
      */
     replay: function (userName) {
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
         Comment.editor.focus();
         $.ua.set(navigator.userAgent);
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
@@ -353,6 +362,11 @@ var Article = {
      * @param {String} type 赞同的实体类型
      */
     voteUp: function (id, type, it) {
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
+
         var $voteUp = $(it);
         var $voteDown = $voteUp.next();
 
@@ -405,6 +419,10 @@ var Article = {
      * @param {String} type 反对的实体类型
      */
     voteDown: function (id, type, it) {
+         if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
         var $voteDown = $(it);
         var $voteUp = $voteDown.prev();
 
@@ -674,6 +692,10 @@ var Article = {
         if (0 === articleAnonymous && !confirm(Label.thankArticleConfirmLabel)) {
             return false;
         }
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
 
         $.ajax({
             url: Label.servePath + "/article/thank?articleId=" + articleId,
@@ -706,7 +728,7 @@ var Article = {
                 success: function (result, textStatus) {
                     alert(result.msg);
 
-                    window.location.href = "/";
+                    window.location.href = Label.servePath + "/recent";
                 }
             });
         }
