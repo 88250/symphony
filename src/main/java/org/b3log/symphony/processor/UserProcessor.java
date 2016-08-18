@@ -117,7 +117,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.20.11.21, Aug 18, 2016
+ * @version 1.20.12.21, Aug 18, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1149,7 +1149,6 @@ public class UserProcessor {
         final boolean onlineStatus = requestJSONObject.optBoolean(UserExt.USER_ONLINE_STATUS);
         final boolean timelineStatus = requestJSONObject.optBoolean(UserExt.USER_TIMELINE_STATUS);
         final boolean uaStatus = requestJSONObject.optBoolean(UserExt.USER_UA_STATUS);
-        final boolean notifyStatus = requestJSONObject.optBoolean(UserExt.USER_NOTIFY_STATUS);
         final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
         final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
 
@@ -1175,8 +1174,6 @@ public class UserProcessor {
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_UA_STATUS, uaStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_NOTIFY_STATUS, notifyStatus
-                ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
         user.put(UserExt.USER_JOIN_POINT_RANK,
                 userJoinPointRank
                         ? UserExt.USER_JOIN_POINT_RANK_C_JOIN : UserExt.USER_JOIN_POINT_RANK_C_NOT_JOIN);
@@ -1220,6 +1217,7 @@ public class UserProcessor {
         String userListPageSizeStr = requestJSONObject.optString(UserExt.USER_LIST_PAGE_SIZE);
         final int userCommentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         final int userAvatarViewMode = requestJSONObject.optInt(UserExt.USER_AVATAR_VIEW_MODE);
+        final boolean notifyStatus = requestJSONObject.optBoolean(UserExt.USER_NOTIFY_STATUS);
 
         int userListPageSize;
         try {
@@ -1241,6 +1239,8 @@ public class UserProcessor {
         user.put(UserExt.USER_LIST_PAGE_SIZE, userListPageSize);
         user.put(UserExt.USER_COMMENT_VIEW_MODE, userCommentViewMode);
         user.put(UserExt.USER_AVATAR_VIEW_MODE, userAvatarViewMode);
+        user.put(UserExt.USER_NOTIFY_STATUS, notifyStatus
+                ? UserExt.USER_XXX_STATUS_C_ENABLED : UserExt.USER_XXX_STATUS_C_DISABLED);
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);

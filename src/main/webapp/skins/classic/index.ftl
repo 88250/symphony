@@ -59,7 +59,7 @@
                 <ul class="tag-desc fn-clear">
                     <#list tags as tag>
                     <li>
-                         <a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">
+                        <a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">
                             <#if tag.tagIconPath!="">
                             <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" />
                             </#if>
@@ -84,7 +84,7 @@
                             <#if article_index < 9>
                             <li<#if !article_has_next> class="last"</#if>>
                                 ${article.content}
-                            </#if>
+                                </#if>
                         </li>
                         </#list>
                     </ul>
@@ -111,7 +111,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="footer">
         <div class="wrapper">
             <div class="slogan">
@@ -146,9 +146,9 @@
                 <div class="fn-clear ft-smaller ft-fade">
                     ${sloganLabel}
                     <div class="fn-right">
-                       Powered by <a href="http://b3log.org" target="_blank" class="ft-gray">B3log 开源</a> • 
-                            <a href="https://github.com/b3log/symphony" class="ft-gray" target="_blank">Sym</a>
-                            ${version} • ${elapsed?c}ms
+                        Powered by <a href="http://b3log.org" target="_blank" class="ft-gray">B3log 开源</a> • 
+                        <a href="https://github.com/b3log/symphony" class="ft-gray" target="_blank">Sym</a>
+                        ${version} • ${elapsed?c}ms
                     </div>
                 </div>
             </div>

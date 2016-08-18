@@ -8,11 +8,11 @@
     </head>
     <body>
         <#include "../header.ftl">
-        <div class="main">
-            <div class="wrapper ft-center">
-                <h2>${msg}</h2>
+         <div class="main">
+            <div class="wrapper">
+                 <h2>${msg}</h2>
             </div>
         </div>
-        <#include "../footer.ftl">
+        <#include '../common/footer-dom.ftl'/>
     </body>
 </html>

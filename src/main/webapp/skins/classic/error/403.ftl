@@ -10,11 +10,11 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content">
-                    <h2>${reloginLabel}</h2>
-                </div>
+                <div class="fn-hr10"></div>
+                <h2>${reloginLabel}</h2>
+                <div class="fn-hr10"></div>
             </div>
         </div>
-        <#include "../footer.ftl">
+        <#include '../common/footer-dom.ftl'/>
     </body>
 </html>
