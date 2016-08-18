@@ -61,7 +61,7 @@ public class EmotionQueryService {
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, e.getMessage());
 
-            return null;
+            return "";
         }
     }
 }
