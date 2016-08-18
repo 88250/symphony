@@ -193,7 +193,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         httpServletRequest.setAttribute(Common.IS_MOBILE, false);
-        
+
         httpServletRequest.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
 
         final String userAgentStr = httpServletRequest.getHeader("User-Agent");
@@ -438,7 +438,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             request.setAttribute(Keys.TEMAPLTE_DIR_NAME, (Boolean) request.getAttribute(Common.IS_MOBILE)
                     ? "mobile" : user.optString(UserExt.USER_SKIN));
             request.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
-            
+
             request.setAttribute(User.USER, user);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);

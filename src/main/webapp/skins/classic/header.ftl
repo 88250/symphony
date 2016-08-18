@@ -14,21 +14,21 @@
 
         <div class="fn-clear user-nav">
             <#if isLoggedIn>
-            <#if "adminRole" == userRole>
-            <a href="${servePath}/admin" aria-label="${adminLabel}" class="tooltipped tooltipped-w last"><span class="icon-userrole"></span></a>
-            </#if>
-            <a href="${servePath}/member/${currentUser.userName}" aria-label="Go Home" class="tooltipped tooltipped-w <#if 'adminRole' != userRole>last </#if>nav-avatar">
-                <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
-            </a>
+            <a href="${servePath}/recent" aria-label="${latestLabel}${listLabel}" 
+               class="tooltipped tooltipped-w"><span class="icon-refresh"></span></a>
+            <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
             <a href="${servePath}/activities" aria-label="${activityLabel}" class="tooltipped tooltipped-w"><span class="icon-flag"></span></a>
             <a href="${servePath}/pre-post" aria-label="${addArticleLabel}" 
                class="tooltipped tooltipped-w responsive-show"><span class="icon-addfile"></span></a>
-            <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
-            <a href="${servePath}/recent" aria-label="${latestLabel}${listLabel}" 
-               class="tooltipped tooltipped-w"><span class="icon-refresh"></span></a>
+            <a href="${servePath}/member/${currentUser.userName}" aria-label="Go Home" class="tooltipped tooltipped-w <#if 'adminRole' != userRole>last </#if>nav-avatar">
+                <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
+            </a>
+            <#if "adminRole" == userRole>
+            <a href="${servePath}/admin" aria-label="${adminLabel}" class="tooltipped tooltipped-w last"><span class="icon-userrole"></span></a>
+            </#if>
             <#else>
-            <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin">${registerLabel}</a>
             <a href="javascript: Util.showLogin();" class="unlogin">${loginLabel}</a>
+            <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin">${registerLabel}</a>
             <div class="form fn-none">
                 <table cellspacing="0" cellpadding="0">
                     <tr>
