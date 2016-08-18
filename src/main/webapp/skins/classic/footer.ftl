@@ -52,6 +52,10 @@
     // Init [User] channel
     Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}${contextPath}/user-channel");
     </#if>
+    
+    <#if mouseEffects>
+    Util.mouseClickEffects();
+    </#if>
 </script>
 <#if algoliaEnabled>
 <script src="${staticServePath}/js/lib/algolia/algolia.min.js"></script>
