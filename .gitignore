@@ -7,3 +7,16 @@ qrcode.png
 src/main/webapp/js/*.min.js
 src/main/webapp/css/*.min.css
 nb-configuration.xml
+.classpath
+.project
+.settings/.jsdtscope
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.jdt.core.prefs
+.settings/org.eclipse.m2e.core.prefs
+.settings/org.eclipse.wst.common.project.facet.core.xml
+.settings/org.eclipse.wst.jsdt.ui.superType.container
+.settings/org.eclipse.wst.common.component
+.settings/org.eclipse.wst.jsdt.ui.superType.name
+.settings/org.eclipse.wst.validation.prefs
+src/main/resources/local.properties
+src/main/resources/local.properties
