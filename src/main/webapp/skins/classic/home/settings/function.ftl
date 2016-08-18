@@ -30,6 +30,7 @@
         <h2>${setEmotionLabel}</h2>
     </div>
     <div class="module-panel form fn-clear">
+        <br>
         <textarea id="emotionList" rows="3" >${emotions}</textarea>
         <br><br>
         <div class="fn-clear"></div>
