@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.31.19.25, Aug 16, 2016
+ * @version 1.32.19.25, Aug 18, 2016
  */
 
 /**
@@ -170,15 +170,14 @@ var Util = {
         if ("" === emojString) {
             emojString = allEmoj;
         } else {
-        	var temp=emojString.split(",");
-        	for(var ti=0;ti<temp.length;ti++){
-//        		allEmoj=allEmoj.replace(new RegExp(temp[ti],"g"),'');//这段代码是个误会，不过学到了如何构建变量全局替换的正则表达式
-        		allEmoj=allEmoj.replace(temp[ti],'');
-        	}
+            var temp = emojString.split(",");
+            for (var ti = 0; ti < temp.length; ti++) {
+                allEmoj = allEmoj.replace(temp[ti], '');
+            }
             emojString = emojString + ',' + allEmoj;
         }
-        emojString=emojString.replace(/,+/g,',');//全局替换重复的逗号
-        
+        emojString = emojString.replace(/,+/g, ','); // 全局替换重复的逗号
+
         var emojis = emojString.split(/,/);
         var emojiAutocompleteHints = [];
         for (var i = 0; i < emojis.length; i++) {
@@ -718,6 +717,61 @@ var Util = {
                 );
         console && console.log("欢迎将你的开源项目提交到 B3log：https://github.com/b3log，我们一同构建中国最好的开源组织！\n细节请看：https://hacpai.com/article/1463025124998");
 
+        // mouse click special effects
+        var click_cnt = 0;
+        jQuery(document).ready(function ($) {
+            $("html").click(function (e) {
+                var n = 18;
+                //var $i=$("<b></b>").text("+"+n);
+                var $i;
+                click_cnt++;
+                if (click_cnt == 10) {
+                    $i = $("<b></b>").text("OωO");
+                } else if (click_cnt === 20) {
+                    $i = $("<b></b>").text("(๑•́ ∀ •̀๑)");
+                } else if (click_cnt === 30) {
+                    $i = $("<b></b>").text("(๑•́ ₃ •̀๑)");
+                } else if (click_cnt === 40) {
+                    $i = $("<b></b>").text("(๑•̀_•́๑)");
+                } else if (click_cnt === 50) {
+                    $i = $("<b></b>").text("（￣へ￣）");
+                } else if (click_cnt === 60) {
+                    $i = $("<b></b>").text("(╯°口°)╯(┴—┴");
+                } else if (click_cnt === 70) {
+                    $i = $("<b></b>").text("૮( ᵒ̌皿ᵒ̌ )ა");
+                } else if (click_cnt === 80) {
+                    $i = $("<b></b>").text("╮(｡>口<｡)╭");
+                } else if (click_cnt === 90) {
+                    $i = $("<b></b>").text("( ง ᵒ̌皿ᵒ̌)ง⁼³₌₃");
+                } else if (click_cnt >= 100 && click_cnt <= 105) {
+                    $i = $("<b></b>").text("(ꐦ°᷄д°᷅)");
+                } else {
+                    $i = $("<i class='icon-heart'></i>");
+                    n = Math.round(Math.random() * 14 + 6);
+                }
+                var x = e.pageX, y = e.pageY;
+                $i.css({
+                    "z-index": 9999,
+                    "top": y - 20,
+                    "left": x,
+                    "position": "absolute",
+                    "color": "#E94F06",
+                    "font-size": n,
+                    "-moz-user-select": "none",
+                    "-webkit-user-select": "none",
+                    "-ms-user-select": "none"
+                });
+                $("body").append($i);
+                $i.animate(
+                        {"top": y - 180, "opacity": 0},
+                        1500,
+                        function () {
+                            $i.remove();
+                        }
+                );
+                //e.stopPropagation();
+            });
+        });
     },
     /**
      * @description 用户状态 channel.

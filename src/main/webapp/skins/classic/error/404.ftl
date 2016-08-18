@@ -15,7 +15,7 @@
                     <br>
                     <script type="text/javascript">
                         var index = Math.round(Math.random() * 6);
-                        document.write('<img src="${staticServePath}/images/404/404_' + index + '.gif">');
+                        document.write('<img src="${staticServePath}/images/404/' + index + '.gif">');
                     </script>
                 </div>
             </div>
