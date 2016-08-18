@@ -709,7 +709,7 @@ var Article = {
                 success: function (result, textStatus) {
                     alert(result.msg);
 
-                    window.location.href = "/";
+                    window.location.href = Label.servePath + "/recent";
                 }
             });
         }
