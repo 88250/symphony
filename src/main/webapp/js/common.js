@@ -846,7 +846,7 @@ var Util = {
      * @return {Integer} 以匹配字符开头的位置
      */
     startsWith: function (string, prefix) {
-        return (string.match("^" + prefix)[0] === prefix);
+        return (string.match("^" + prefix) === prefix);
     },
     /**
      * @description 文件上传     
