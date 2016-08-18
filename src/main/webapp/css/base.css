@@ -1383,10 +1383,7 @@ a[class*=" icon-"]:hover {
 }
 
 .nav .user-nav {
-    flex: 1;
-    -webkit-box-flex: 1;
-    width: 30%;
-    min-width: 236px;
+    float: right;
     position: relative;
 }
 
@@ -1400,7 +1397,7 @@ a[class*=" icon-"]:hover {
     text-decoration: none;
     margin: 0 3px;
     padding: 4px 5px;
-    float: right;
+    float: left;
     font-size: 20px;
     line-height: 20px;
     height: 20px;
