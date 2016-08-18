@@ -111,6 +111,7 @@ import org.json.JSONObject;
  * <li>Point buy invitecode (/point/buy-invitecode), POST</li>
  * <li>SyncUser (/apis/user), POST</li>
  * <li>Lists usernames (/users/names), GET</li>
+ * <li>Lists emotions (/users/emotions), GET</li>
  * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
  * </ul>
  * </p>

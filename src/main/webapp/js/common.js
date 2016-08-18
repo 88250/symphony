@@ -717,13 +717,12 @@ var Util = {
             }, 60000);
         }
 
-        console && console.log("%cCopyright \xa9 2012-%s, b3log.org & hacpai.com\n\n%cHacPai%c 平等、自由、奔放",
+        console.log("%cCopyright \xa9 2012-%s, b3log.org & hacpai.com\n\n%cHacPai%c 平等、自由、奔放\n\n%cFeel easy about trust.",
                 'font-size:12px;color:#999999;', (new Date).getFullYear(),
                 'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:64px;color:#404040;-webkit-text-fill-color:#404040;-webkit-text-stroke: 1px #777;',
-                'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999; font-style:italic;'
+                'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999; font-style:italic;',
+                'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999;'
                 );
-        console && console.log("欢迎将你的开源项目提交到 B3log：https://github.com/b3log，我们一同构建中国最好的开源组织！\n细节请看：https://hacpai.com/article/1463025124998");
-
         if (isLoggedIn) {
             return false;
         }
