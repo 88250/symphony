@@ -10,8 +10,10 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper" style="display: inherit;text-align: center;">
+                <br/>
                 <h2>404 Not Found!</h2><br/>
                 <div></div>
+                <br/>
             </div>
         </div>
         <#include '../common/footer-dom.ftl'/>
