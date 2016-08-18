@@ -111,27 +111,25 @@ var ArticleChannel = {
 
                     template += '</span></span><span class="fn-right ft-gray">';
 
-                    if (Label.isLoggedIn) {
-                        if (data.commentAuthorName !== Label.currentUserName) {
-                            template += '<span class="fn-hidden hover-show fn-pointer ft-fade tooltipped tooltipped-n" '
-                                    + ' aria-label="' + Label.thankLabel + '" onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
-                                    + '\', \'' + data.commentThankLabel + '\','
-                                    + (data.commentAuthorName === 'someone' ? 1 : 0) + ', this)"><span class="icon-heart"></span></span> ';
-                        }
+                    if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName) || !Label.isLoggedIn) {
+                        template += '<span class="fn-hidden hover-show fn-pointer ft-fade tooltipped tooltipped-n" '
+                                + ' aria-label="' + Label.thankLabel + '" onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
+                                + '\', \'' + data.commentThankLabel + '\','
+                                + (data.commentAuthorName === 'someone' ? 1 : 0) + ', this)"><span class="icon-heart"></span></span> ';
+                    }
 
-                        template += '<span class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade" '
-                                + 'aria-label="' + Label.upLabel + ' 0"'
-                                + 'onclick="Article.voteUp(\'' + data.commentId + '\', \'comment\', this)">'
-                                + '<span class="icon-thumbs-up"></span></span> '
-                                + '<span class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade"'
-                                + 'aria-label="' + Label.downLabel + ' 0" '
-                                + 'onclick="Article.voteDown(\'' + data.commentId + '\', \'comment\', this)">'
-                                + '<span class="icon-thumbs-down"></span></span> ';
+                    template += '<span class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade" '
+                            + 'aria-label="' + Label.upLabel + ' 0"'
+                            + 'onclick="Article.voteUp(\'' + data.commentId + '\', \'comment\', this)">'
+                            + '<span class="icon-thumbs-up"></span></span> '
+                            + '<span class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade"'
+                            + 'aria-label="' + Label.downLabel + ' 0" '
+                            + 'onclick="Article.voteDown(\'' + data.commentId + '\', \'comment\', this)">'
+                            + '<span class="icon-thumbs-down"></span></span> ';
 
-                        if (data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') {
-                            template += ' <span aria-label="@' + data.commentAuthorName + '" class="fn-pointer tooltipped tooltipped-n" onclick="Comment.replay(\'@'
-                                    + data.commentAuthorName + ' \')"><span class="icon-reply"></span></span> ';
-                        }
+                    if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') || !Label.isLoggedIn) {
+                        template += ' <span aria-label="@' + data.commentAuthorName + '" class="fn-pointer tooltipped tooltipped-n" onclick="Comment.replay(\'@'
+                                + data.commentAuthorName + ' \')"><span class="icon-reply"></span></span> ';
                     }
 
                     if (Label.isAdminLoggedIn) {
@@ -147,10 +145,10 @@ var ArticleChannel = {
                     } else {
                         $("#comments > ul").prepend(template);
                     }
-                    
+
                     // 代码高亮
                     Article.parseLanguage();
-                     
+
                     $("#" + data.commentId).fadeIn(2000);
                     break;
                 case "articleHeat":
@@ -340,11 +338,11 @@ var ChatRoomChannel = {
                 case "msg":
                     var enableUserLink = data.userAvatarURL.indexOf("user-thumbnail.png") < 0;
                     var avatarPart = '<a rel="nofollow" href="/member/' + data.userName + '">'
-                            + '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.userName 
+                            + '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.userName
                             + '" style="background-image:url(' + data.userAvatarURL + ')"></div>'
                             + '</a>';
                     if (!enableUserLink) {
-                        avatarPart = '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.userName 
+                        avatarPart = '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.userName
                                 + '" style="background-image:url(' + data.userAvatarURL + ')"></div>';
                     }
 
