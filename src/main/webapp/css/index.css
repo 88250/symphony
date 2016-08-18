@@ -130,39 +130,6 @@ h2.article-title {
     margin-top: 0;
 } 
 
-.content-reset table {
-    width: 100%; 
-    border: 1px solid #dedede; 
-    margin: 15px auto;
-    border-collapse: collapse; 
-    empty-cells: show; 
-}
-
-.content-reset thead {
-    text-align: center;
-}
-
-.content-reset td,
-.content-reset th {
-    height: 35px; 
-    border: 1px solid #dedede; 
-    padding: 0 10px; 
-}
-
-.content-reset th {
-    font-weight: bold; 
-    text-align: center !important; 
-    background: rgba(158,188,226,0.2); 
-}
-
-.content-reset tbody tr:nth-child(2n) {
-    background: rgba(158,188,226,0.12); 
-}
-
-.content-reset tr:hover {
-    background: #efefef; 
-}
-
 .comment-submit {
     margin-top: 20px;
 }
@@ -223,8 +190,8 @@ label.cmt-anonymous {
     margin-top: 10px;
 }
 
-.comments .comment-info {
-    line-height: 17px;
+.comments .comment-info .icon-heart {
+    vertical-align: text-bottom;
 }
 
 .comments.nice ul {

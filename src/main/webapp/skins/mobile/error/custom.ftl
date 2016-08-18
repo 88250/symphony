@@ -9,13 +9,10 @@
     <body>
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper">
-                <div class="fn-hr10"></div>
-                <div class="content">
-                    <h2>${msg}</h2>
-                </div>
+            <div class="wrapper ft-center">
+                <h2>${msg}</h2>
             </div>
         </div>
-        <#include "../footer.ftl">
+        <#include '../common/footer-dom.ftl'/>
     </body>
 </html>

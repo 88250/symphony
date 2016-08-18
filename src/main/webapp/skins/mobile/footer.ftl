@@ -31,7 +31,8 @@
         desktopNotificationTemplateLabel: "${desktopNotificationTemplateLabel}",
         servePath: "${servePath}",
         staticServePath: "${staticServePath}",
-        isLoggedIn: ${isLoggedIn?c}
+        isLoggedIn: ${isLoggedIn?c},
+        funNeedLoginLabel: '${funNeedLoginLabel}'
     };
     Util.init(${isLoggedIn?c});
     

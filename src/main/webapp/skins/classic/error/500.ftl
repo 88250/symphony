@@ -17,6 +17,6 @@
                 </div>
             </div>
         </div>
-        <#include "../footer.ftl">
+        <#include '../common/footer-dom.ftl'/>
     </body>
 </html>

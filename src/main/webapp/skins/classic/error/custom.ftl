@@ -13,6 +13,6 @@
                 <h2>${msg}</h2>
             </div>
         </div>
-        <#include "../footer.ftl">
+        <#include '../common/footer-dom.ftl'/>
     </body>
 </html>

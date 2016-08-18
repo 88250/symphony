@@ -221,7 +221,7 @@ var Comment = {
                                         + '<span class="icon-heart"></span>1</span>');
                     } else {
                         $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
-                        $cnt.html('<span class="icon-heart"></span> ' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
+                        $cnt.html('<span class="icon-heart"></span>' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
                     }
                     $(it).remove();
                 } else {
@@ -487,7 +487,7 @@ var Article = {
      */
     revision: function (articleId) {
         if (!Label.isLoggedIn) {
-            Util.showLogin();
+            Util.needLogin();
             return false;
         }
         if ($('.CodeMirror-merge').length > 0) {
@@ -641,12 +641,9 @@ var Article = {
      * @description 解析语法高亮
      */
     parseLanguage: function () {
-        $(".content-reset pre").each(function () { // 兼容从 Solo 同步过来的文章
-            $(this).wrapInner('<code></code>');
-            $(this).removeAttr('class');
+        $('pre code').each(function (i, block) {
+            hljs.highlightBlock(block);
         });
-
-        hljs.initHighlightingOnLoad();
     },
     /**
      * @description 打赏

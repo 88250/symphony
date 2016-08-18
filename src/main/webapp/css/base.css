@@ -326,9 +326,43 @@ svg {
     border: 1px solid #ccc;
 }
 
+.content-reset table {
+    width: 100%; 
+    border: 1px solid #dedede; 
+    margin: 15px auto;
+    border-collapse: collapse; 
+    empty-cells: show; 
+}
+
+.content-reset thead {
+    text-align: center;
+}
+
+.content-reset td,
+.content-reset th {
+    height: 35px; 
+    border: 1px solid #dedede; 
+    padding: 0 10px; 
+}
+
+.content-reset th {
+    font-weight: bold; 
+    text-align: center !important; 
+    background: rgba(158,188,226,0.2); 
+}
+
+.content-reset tbody tr:nth-child(2n) {
+    background: rgba(158,188,226,0.12); 
+}
+
+.content-reset tr:hover {
+    background: #efefef; 
+}
+
 code.hljs,
 .hljs code {
     font-family: mononoki;
+    background-color: #efefef;
 }
 /* end reset */
 
