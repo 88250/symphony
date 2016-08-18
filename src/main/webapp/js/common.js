@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.32.19.25, Aug 18, 2016
+ * @version 1.31.19.25, Aug 16, 2016
  */
 
 /**
@@ -487,7 +487,7 @@ var Util = {
      */
     follow: function (it, id, type, index) {
         if (!Label.isLoggedIn) {
-            Util.showLogin();
+            Util.needLogin();
             return false;
         }
 
@@ -570,11 +570,18 @@ var Util = {
         $('html, body').animate({scrollTop: 0}, 800);
     },
     /**
-     * @description 页面初始化执行的函数 
+     * @description 显示登录界面 
      */
     showLogin: function () {
-        $(".nav .form").toggle();
+        $(".nav .form").show();
         $("#nameOrEmail").focus();
+    },
+    /**
+     * 
+     * @returns {undefined}
+     */
+    needLogin: function () {
+        alert(Label.funNeedLoginLabel);
     },
     /**
      * @description 跳转到注册页面
@@ -716,6 +723,17 @@ var Util = {
                 'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999; font-style:italic;'
                 );
         console && console.log("欢迎将你的开源项目提交到 B3log：https://github.com/b3log，我们一同构建中国最好的开源组织！\n细节请看：https://hacpai.com/article/1463025124998");
+
+        if (isLoggedIn) {
+            return false;
+        }
+
+        // 点击空白影藏登录框
+        $('body').click(function (event) {
+            if ($(event.target).closest('.nav .form').length === 0) {
+                $('.nav .form').hide();
+            }
+        });
     },
     /**
      * @description 用户状态 channel.
@@ -828,7 +846,7 @@ var Util = {
      * @return {Integer} 以匹配字符开头的位置
      */
     startsWith: function (string, prefix) {
-        return (string.match("^" + prefix) == prefix);
+        return (string.match("^" + prefix) === prefix);
     },
     /**
      * @description 文件上传     

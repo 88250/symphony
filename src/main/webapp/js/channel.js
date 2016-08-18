@@ -147,7 +147,10 @@ var ArticleChannel = {
                     } else {
                         $("#comments > ul").prepend(template);
                     }
+                    
+                    // 代码高亮
                     Article.parseLanguage();
+                     
                     $("#" + data.commentId).fadeIn(2000);
                     break;
                 case "articleHeat":

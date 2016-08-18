@@ -359,6 +359,11 @@ svg {
 .content-reset tr:hover {
     background: #efefef; 
 }
+
+code.hljs,
+.hljs code {
+    background-color: #efefef;
+}
 /* end reset */
 
 /* start function */
@@ -1802,8 +1807,8 @@ h2.article-title {
     margin-top: 10px;
 }
 
-.comments .comment-info {
-    line-height: 17px;
+.comments .comment-info .icon-heart {
+    vertical-align: text-bottom;
 }
 
 .comments.nice ul {
