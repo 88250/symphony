@@ -106,6 +106,7 @@ import org.json.JSONObject;
  * <li>Sync (/settings/sync/b3), POST</li>
  * <li>Privacy (/settings/privacy), POST</li>
  * <li>Function (/settings/function), POST</li>
+ * <li>Updates emotions (/settings/emotionList), POST</li>
  * <li>Password (/settings/password), POST</li>
  * <li>Point buy invitecode (/point/buy-invitecode), POST</li>
  * <li>SyncUser (/apis/user), POST</li>
@@ -116,7 +117,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.20.11.20, Aug 16, 2016
+ * @version 1.20.11.21, Aug 18, 2016
  * @since 0.2.0
  */
 @RequestProcessor

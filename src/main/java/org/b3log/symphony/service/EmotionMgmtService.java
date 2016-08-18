@@ -15,8 +15,10 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
-
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -31,7 +33,8 @@ import org.json.JSONObject;
  * Emotion management service.
  *
  * @author Zephyr
- * @version 1.0.0.0, Aug 16, 2016
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.1.0, Aug 18, 2016
  * @since 1.5.0
  */
 @Service
@@ -62,15 +65,23 @@ public class EmotionMgmtService {
             // clears the user all emotions
             emotionRepository.removeUserEmotions(userId);
 
+            final Set<String> emotionSet = new HashSet<>(); // for deduplication
             final String[] emotionArray = emotionList.split(",");
-            for (int i = 0; i < emotionArray.length; i++) {
+            for (int i = 0, sort = 0; i < emotionArray.length; i++) {
+                final String content = emotionArray[i];
+                if (StringUtils.isBlank(content) || emotionSet.contains(content)) {
+                    continue;
+                }
+
                 final JSONObject userEmotion = new JSONObject();
                 userEmotion.put(Emotion.EMOTION_USER_ID, userId);
-                userEmotion.put(Emotion.EMOTION_CONTENT, emotionArray[i]);
-                userEmotion.put(Emotion.EMOTION_SORT, i + 1);
+                userEmotion.put(Emotion.EMOTION_CONTENT, content);
+                userEmotion.put(Emotion.EMOTION_SORT, sort++);
                 userEmotion.put(Emotion.EMOTION_TYPE, Emotion.EMOTION_TYPE_C_EMOJI);
 
                 emotionRepository.add(userEmotion);
+
+                emotionSet.add(content);
             }
 
             transaction.commit();
