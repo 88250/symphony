@@ -17,6 +17,7 @@ package org.b3log.symphony.repository;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -25,14 +26,14 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Emotion;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Emotion repository.
  *
  * @author Zephyr
- * @version 1.0.0.0, Aug 16, 2016
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.1.0, Aug 18, 2016
  * @since 1.5.0
  */
 @Repository
@@ -55,8 +56,11 @@ public class EmotionRepository extends AbstractRepository {
      */
     public String getUserEmojis(final String userId) throws RepositoryException {
         final Query query = new Query();
-        query.setFilter(new PropertyFilter(Emotion.EMOTION_USER_ID, FilterOperator.EQUAL, userId));
-        query.setFilter(new PropertyFilter(Emotion.EMOTION_TYPE, FilterOperator.EQUAL, Emotion.EMOTION_TYPE_C_EMOJI));
+        query.setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Emotion.EMOTION_USER_ID, FilterOperator.EQUAL, userId),
+                new PropertyFilter(Emotion.EMOTION_TYPE, FilterOperator.EQUAL, Emotion.EMOTION_TYPE_C_EMOJI)
+        ));
+
         query.addSort(Emotion.EMOTION_SORT, SortDirection.ASCENDING);
 
         final JSONObject result = get(query);
@@ -78,7 +82,7 @@ public class EmotionRepository extends AbstractRepository {
 
     /**
      * Clears a user's emotions.
-     * 
+     *
      * @param userId the specified user id
      * @throws RepositoryException repository exception
      */
