@@ -172,7 +172,7 @@ var Util = {
         } else {
             var temp = emojString.split(",");
             for (var ti = 0; ti < temp.length; ti++) {
-                allEmoj = allEmoj.replace(temp[ti], '');
+            	allEmoj = allEmoj.replace(temp[ti]+',', ',');//如果按照replace(temp[ti],',')替换，会造成如替换a为空，将ball替换为了bll
             }
             emojString = emojString + ',' + allEmoj;
         }
