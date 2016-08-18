@@ -369,7 +369,7 @@
                     </div>
                 </div>
                 </#if>
-
+                <#if sideRandomArticles?size != 0>
                 <div class="module">
                     <div class="module-header">
                         <h2>
@@ -383,7 +383,7 @@
                                 <#if "someone" != randomArticle.articleAuthorName>
                                 <a  rel="nofollow"
                                 href="${servePath}/member/${randomArticle.articleAuthorName}"></#if>
-                                    <span class="avatar-small"
+                                    <span class="avatar-small slogan"
                                           style="background-image:url('${randomArticle.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != randomArticle.articleAuthorName></a></#if>
                                 <a class="title" rel="nofollow" href="${randomArticle.articlePermalink}">${randomArticle.articleTitleEmoj}</a>
@@ -392,6 +392,7 @@
                         </ul>
                     </div>
                 </div>
+                </#if>
             </div>
         </div>
         <div id="heatBar">
