@@ -301,7 +301,7 @@ public class Filler {
 
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.SITE_VISIT_STAT_CODE, Symphonys.get("siteVisitStatCode"));
-        dataModel.put(Common.MOUSE_EFFECTS, RandomUtils.nextDouble() > 0.9);
+        dataModel.put(Common.MOUSE_EFFECTS, RandomUtils.nextDouble() > 0.95);
     }
 
     /**
