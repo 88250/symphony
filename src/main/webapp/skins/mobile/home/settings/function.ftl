@@ -31,7 +31,7 @@
     </div>
     <div class="module-panel form fn-clear">
         <br>
-        <textarea id="emotionList" rows="3" >${emotions}</textarea>
+        <textarea id="emotionList" rows="3" placeholder="${setEmotionTipLabel}" >${emotions}</textarea>
         <br><br>
         <div class="fn-clear"></div>
         <div id="emotionListTip" class="tip"></div>
