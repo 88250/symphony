@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.2.18, Aug 18, 2016
+ * @version 1.10.2.19, Aug 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -301,7 +301,7 @@ public class Filler {
 
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.SITE_VISIT_STAT_CODE, Symphonys.get("siteVisitStatCode"));
-        dataModel.put(Common.MOUSE_EFFECTS, RandomUtils.nextDouble() > 0.8);
+        dataModel.put(Common.MOUSE_EFFECTS, RandomUtils.nextDouble() > 0.9);
     }
 
     /**
