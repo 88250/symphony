@@ -92,17 +92,6 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 * 图片上传默认是上传服务器本地，要使用[七牛](https://portal.qiniu.com/signup?code=3lewbghpvrqky)可配置 `symphony.properties` 中的 `qiniu.*` 属性
 * 邮件发送使用的是 [SendCloud](http://sendcloud.sohu.com)，需要配置 `symphony.properties` 中的 `sendcloud.*` 属性
 * 将 WEB-INF/cron.xml 中注释掉的部分打开
-* 如果部署在***非 Jetty 容器***中，需要把 WEB-INF/web.xml 中如下配置注释掉：
-```xml
-  <servlet>
-      <servlet-name>default</servlet-name>
-      <servlet-class>org.eclipse.jetty.servlet.DefaultServlet</servlet-class>
-      <init-param>
-          <param-name>useFileMappedBuffer</param-name>
-          <param-value>false</param-value>
-      </init-param>
-  </servlet>
-```
 
 用户注册时是启用邮件验证的，如果需要修改请参考相关代码。
 
