@@ -37,6 +37,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -61,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.1.16, Aug 17, 2016
+ * @version 1.7.1.16, Aug 20, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -111,7 +112,7 @@ public class IndexProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -145,7 +146,7 @@ public class IndexProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/recent", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showRecent(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -209,7 +210,7 @@ public class IndexProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/hot", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showHotArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
@@ -254,7 +255,7 @@ public class IndexProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/perfect", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showPerfectArticles(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {

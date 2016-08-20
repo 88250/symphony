@@ -73,7 +73,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.6.8, Aug 19, 2016
+ * @version 2.15.6.8, Aug 20, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -201,6 +201,10 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         BrowserType browserType = userAgent.getBrowser().getBrowserType();
 
+        if (BrowserType.UNKNOWN == browserType) {
+            LOGGER.log(Level.WARN, "Unknown UA [" + userAgentStr + "]");
+        }
+
         if (BrowserType.ROBOT == browserType) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
@@ -327,6 +331,12 @@ public final class SymphonyServletListener extends AbstractServletListener {
             option = new JSONObject();
             option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_REGISTER);
             option.put(Option.OPTION_VALUE, "0");
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
+            option.put(Option.OPTION_VALUE, "1"); // Not allow anonymous view
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
             optionRepository.add(option);
 
