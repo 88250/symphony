@@ -319,7 +319,7 @@ label.cmt-anonymous {
 
 .article-toc li a:hover {
     border-left: 1px solid #4183c4;
-    background-color: #F8F8F8;
+    background-color: #F7F7F7;
     padding-left: 1px;
     color: #4183C4;
     text-decoration: none;
@@ -804,7 +804,7 @@ code .dec { color: initial; } /* decimal - blue */
     padding: 5px;
     display: block;
     text-align: right;
-    color: #f8f8f8;
+    color: #F7F7F7;
 }
 
 .index .item:hover .item-header  {
