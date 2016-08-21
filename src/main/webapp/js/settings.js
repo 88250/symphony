@@ -525,3 +525,14 @@ var Settings = {
         };
     }
 };
+
+//表情点击事件
+$("#emojiGrid img").click(function(){
+	if($("#emotionList").val().search($(this).attr('alt'))!=-1)
+		return;
+	if($("#emotionList").val()!=""){
+		$("#emotionList").val($("#emotionList").val()+","+$(this).attr('alt'));
+	}else{
+		$("#emotionList").val($(this).attr('alt'));
+	}
+});
