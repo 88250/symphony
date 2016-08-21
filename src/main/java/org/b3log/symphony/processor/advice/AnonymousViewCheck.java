@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 20, 2016
+ * @version 1.0.1.0, Aug 21, 2016
  * @since 1.6.0
  */
 @Named
@@ -71,8 +71,13 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
-        
+
         if ((Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
+            return;
+        }
+
+        if (request.getRequestURI().contains("/article/1467552642279")) {
+            // Hard coding, skip https://hacpai.com/article/1467552642279
             return;
         }
 
