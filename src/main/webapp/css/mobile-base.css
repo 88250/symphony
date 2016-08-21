@@ -2735,4 +2735,30 @@ code .dec { color: initial; } /* decimal - blue */
 .settings-avatar li {
     margin-left: 20px;
 }
-/* end settings */
+/* end settings */  
+/* start 403 */
+.error-403 .slogan {
+    padding-top: 20px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+}
+
+.error-403 .slogan-border {
+    margin: 20px 0 20px;
+    color: #767676;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+}
+
+.error-403 .slogan-register {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.error-403 .slogan-text {
+    margin: 20px 10px;
+}
+/* end 403 */

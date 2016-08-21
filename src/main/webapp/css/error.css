@@ -57,6 +57,7 @@
     line-height: 35px;
 }
 
+.error-403 #emptyTimeline,
 .error-403 .list {
     width: 100%;
 }
