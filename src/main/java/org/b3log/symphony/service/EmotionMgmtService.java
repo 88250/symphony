@@ -27,6 +27,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Emotion;
 import org.b3log.symphony.repository.EmotionRepository;
+import org.b3log.symphony.util.Emotions;
 import org.json.JSONObject;
 
 /**
@@ -34,7 +35,7 @@ import org.json.JSONObject;
  *
  * @author Zephyr
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Aug 18, 2016
+ * @version 1.0.2.0, Aug 19, 2016
  * @since 1.5.0
  */
 @Service
@@ -69,7 +70,7 @@ public class EmotionMgmtService {
             final String[] emotionArray = emotionList.split(",");
             for (int i = 0, sort = 0; i < emotionArray.length; i++) {
                 final String content = emotionArray[i];
-                if (StringUtils.isBlank(content) || emotionSet.contains(content)) {
+                if (StringUtils.isBlank(content) || emotionSet.contains(content) || !Emotions.isEmoji(content)) {
                     continue;
                 }
 

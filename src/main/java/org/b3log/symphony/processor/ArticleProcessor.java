@@ -68,6 +68,7 @@ import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.CSRFToken;
 import org.b3log.symphony.processor.advice.LoginCheck;
@@ -124,7 +125,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.22.18.31, Aug 18, 2016
+ * @version 1.23.18.31, Aug 20, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -253,7 +254,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{articleId}/image", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {StopwatchEndAdvice.class})
     public void getArticleImage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String articleId) throws Exception {
@@ -506,7 +507,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String articleId) throws Exception {
@@ -678,8 +679,8 @@ public class ArticleProcessor {
         // Fill comment thank
         for (final JSONObject comment : articleComments) {
             comment.put(Comment.COMMENT_T_NICE,
-                        comment.optDouble(Comment.COMMENT_SCORE) >= niceCmtScore);
-            
+                    comment.optDouble(Comment.COMMENT_SCORE) >= niceCmtScore);
+
             String thankTemplate = langPropsService.get("thankConfirmLabel");
             thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
                     .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
@@ -1389,7 +1390,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/markdown", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {

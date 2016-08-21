@@ -36,6 +36,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 11, 2016
+ * @version 1.1.0.1, Aug 20, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -98,7 +99,7 @@ public class SearchProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/search", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void search(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {

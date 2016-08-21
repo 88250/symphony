@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.0.2, Aug 2, 2016
+ * @version 2.5.0.2, Aug 20, 2016
  * @since 0.2.0
  */
 public final class Option {
@@ -81,6 +81,11 @@ public final class Option {
     public static final String ID_C_MISC_ALLOW_REGISTER = "miscAllowRegister";
 
     /**
+     * Key of allow anonymous view.
+     */
+    public static final String ID_C_MISC_ALLOW_ANONYMOUS_VIEW = "miscAllowAnonymousView";
+    
+    /**
      * Key of allow add article.
      */
     public static final String ID_C_MISC_ALLOW_ADD_ARTICLE = "miscAllowAddArticle";
@@ -110,7 +115,7 @@ public final class Option {
      * Reserved words.
      */
     public static final String CATEGORY_C_RESERVED_WORDS = "reserved-words";
-    
+
     /**
      * Ad.
      */

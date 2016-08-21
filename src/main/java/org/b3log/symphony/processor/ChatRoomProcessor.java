@@ -41,6 +41,7 @@ import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.ChatMsgAddValidation;
@@ -72,7 +73,7 @@ import org.jsoup.Jsoup;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.5.7, Aug 11, 2016
+ * @version 1.3.5.7, Aug 20, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -321,7 +322,7 @@ public class ChatRoomProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = {"/cr", "/chat-room", "/community"}, method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showChatRoom(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
