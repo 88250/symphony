@@ -56,4 +56,8 @@
     margin: 20px 0;
     line-height: 35px;
 }
+
+.error-403 .list {
+    width: 100%;
+}
 /* end 403 */

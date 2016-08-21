@@ -31,7 +31,16 @@
         </div>
         <div class="main">
             <div class="wrapper">
+                <#if timelines?size <= 0>
                 <div id="emptyTimeline">${emptyTimelineLabel}</div>
+                </#if>
+                <div class="list">
+                    <ul id="ul">
+                        <#list timelines as timeline>
+                        <li>${timeline.content}</li>
+                        </#list>
+                    </ul>
+                </div>
             </div>
         </div> 
 
