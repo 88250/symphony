@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.event;
 
+import java.net.URL;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.apache.commons.lang.ArrayUtils;
@@ -39,7 +40,7 @@ import org.json.JSONObject;
  * Sends an article URL to Baidu.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.0, May 16, 2016
+ * @version 1.0.3.0, Aug 22, 2016
  * @since 1.3.0
  */
 @Named
@@ -51,15 +52,18 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleBaiduSender.class.getName());
 
+    /**
+     * Baidu data token.
+     */
+    private static final String TOKEN = Symphonys.get("baidu.data.token");
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, ArticleBaiduSender.class.getName()});
 
-        final String token = Symphonys.get("baidu.data.token");
-
-        if (RuntimeMode.PRODUCTION != Latkes.getRuntimeMode() || StringUtils.isBlank(token)) {
+        if (RuntimeMode.PRODUCTION != Latkes.getRuntimeMode() || StringUtils.isBlank(TOKEN)) {
             return;
         }
 
@@ -73,7 +77,6 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
             final String articlePermalink = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
 
             sendToBaidu(articlePermalink);
-
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article to Baidu error", e);
         }
@@ -83,8 +86,9 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
      * Sends the specified URLs to Baidu.
      *
      * @param urls the specified URLs
+     * @throws Exception exception
      */
-    public static void sendToBaidu(final String... urls) {
+    public static void sendToBaidu(final String... urls) throws Exception {
         if (ArrayUtils.isEmpty(urls)) {
             return;
         }
@@ -92,6 +96,7 @@ public class ArticleBaiduSender extends AbstractEventListener<JSONObject> {
         final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
         final HTTPRequest request = new HTTPRequest();
+        request.setURL(new URL("http://data.zz.baidu.com/urls?site=" + Latkes.getServerHost() + "&token=" + TOKEN));
         request.setRequestMethod(HTTPRequestMethod.POST);
         request.addHeader(new HTTPHeader("User-Agent", "curl/7.12.1"));
         request.addHeader(new HTTPHeader("Host", "data.zz.baidu.com"));
