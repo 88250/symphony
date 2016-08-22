@@ -43,7 +43,7 @@
                         </ul>
                     </div>
                 </div>
-                <div>
+                <div class="side">
                     <#include "../side.ftl">
                 </div>
             </div>

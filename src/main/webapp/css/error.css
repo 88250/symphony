@@ -18,7 +18,7 @@
  * 错误样式.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.0.1.0, Aug 21 2016
+ * @version 0.0.1.1, Aug 22 2016
  */
 
 /* start error */
@@ -28,7 +28,7 @@
 /* end error */
 
 /* start 403 */
-.error-403 .slogan {
+.error-403 .block .slogan {
     padding-top: 20px;
     background-color: #fafafa;
     border-bottom: 1px solid #eee;

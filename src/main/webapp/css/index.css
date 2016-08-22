@@ -19,58 +19,8 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.13.26, Aug 16, 2016
+ * @version 2.12.13.27, Aug 22, 2016
  */
-
-/* start module */
-.module-list .slogan {
-    position: absolute;
-    top: 50%;
-    margin-top: -10px;
-}
-
-.module-list .title {
-    color: #767676;
-    margin: 5px 0 5px 36px;
-    display: block;
-    line-height: 20px;
-}
-
-.module-list.open-source .title {
-    margin-left: 60px;
-}
-
-.module-list.open-source .slogan {
-    margin-top: -10px;
-}
-
-.module-list.domain .slogan {
-    text-align: center;
-    margin-top: -8px;
-    width: 60px;
-}
-
-.module-list.domain .title {
-    margin-left: 80px;
-}
-
-.module-list.domain .tag {
-    margin-right: 10px;
-}
-
-.module-panel.ad {
-    padding: 10px;
-    text-align: center;
-}
-
-.module-panel.ad .header {
-    color: #333;
-}
-
-.module-panel.ad img {
-    margin-bottom: 5px;
-}
-/* end module */
 
 /* start article */
 .article-action .fn-right > a,
@@ -553,17 +503,6 @@ label.cmt-anonymous {
 /* end register */
 
 /* start side tags */
-.module-panel .tags li {
-    float: left;
-    list-style: none;
-    line-height: 19px;
-    margin: 5px 10px 0 0;
-}
-
-.module-panel .tags {
-    margin: 0 0 10px 10px;    
-}
-
 .tag-desc.fn-clear {
     margin: 10px 0 0px 10px;    
 }
