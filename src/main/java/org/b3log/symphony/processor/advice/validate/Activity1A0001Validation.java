@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Validates for activity 1A0001.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Aug 20, 2016
+ * @version 1.0.0.3, Aug 22, 2016
  * @since 1.3.0
  */
 @Named
@@ -81,6 +81,7 @@ public class Activity1A0001Validation extends BeforeRequestProcessAdvice {
         if (liveness < livenessThreshold) {
             String msg = langPropsService.get("activityNeedLivenessLabel");
             msg = msg.replace("${liveness}", String.valueOf(livenessThreshold) + "%");
+            msg = msg.replace("${current}", String.format("%.2f", liveness) + "%");
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, msg));
         }
 

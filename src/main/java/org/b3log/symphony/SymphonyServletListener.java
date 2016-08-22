@@ -207,7 +207,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
                     && !StringUtils.containsIgnoreCase(userAgentStr, "MetaURI")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "Feed")) {
                 LOGGER.log(Level.WARN, "Unknown client [UA=" + userAgentStr + ", remoteAddr="
-                        + Requests.getRemoteAddr(httpServletRequest) + "]");
+                        + Requests.getRemoteAddr(httpServletRequest) + ", URI="
+                        + httpServletRequest.getRequestURI() + "]");
             }
         }
 
