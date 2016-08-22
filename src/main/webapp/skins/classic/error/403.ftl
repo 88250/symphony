@@ -31,15 +31,20 @@
         </div>
         <div class="main">
             <div class="wrapper">
-                <#if timelines?size <= 0>
-                <div id="emptyTimeline">${emptyTimelineLabel}</div>
-                </#if>
-                <div class="list single-line">
-                    <ul id="ul">
-                        <#list timelines as timeline>
-                        <li>${timeline.content}</li>
-                        </#list>
-                    </ul>
+                <div class="content">
+                    <#if timelines?size <= 0>
+                    <div id="emptyTimeline">${emptyTimelineLabel}</div>
+                    </#if>
+                    <div class="list single-line">
+                        <ul id="ul">
+                            <#list timelines as timeline>
+                            <li>${timeline.content}</li>
+                            </#list>
+                        </ul>
+                    </div>
+                </div>
+                <div class="side">
+                    <#include "../side.ftl">
                 </div>
             </div>
         </div> 
