@@ -32,7 +32,7 @@ body {
     margin: 0;
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     font-size: 14px;
-    background-color: #F8F8F8;
+    background-color: #F7F7F7;
     color: #333;
 }
 
@@ -1380,7 +1380,7 @@ ul.CodeMirror-hints {
 
 .module-header {
     border-radius: 3px 3px 0 0;
-    background-color: #f8f8f8;
+    background-color: #F7F7F7;
     border-bottom: 1px solid #e5e5e5;
     padding: 9px 10px 10px;
     text-shadow: 0 1px 0 #FFFFFF;
@@ -2351,7 +2351,7 @@ code .dec { color: initial; } /* decimal - blue */
     padding: 5px;
     display: block;
     text-align: right;
-    color: #f8f8f8;
+    color: #F7F7F7;
 }
 
 .index .item:hover .item-header  {
@@ -2735,4 +2735,30 @@ code .dec { color: initial; } /* decimal - blue */
 .settings-avatar li {
     margin-left: 20px;
 }
-/* end settings */
+/* end settings */  
+/* start 403 */
+.error-403 .slogan {
+    padding-top: 20px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+}
+
+.error-403 .slogan-border {
+    margin: 20px 0 20px;
+    color: #767676;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+}
+
+.error-403 .slogan-register {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.error-403 .slogan-text {
+    margin: 20px 10px;
+}
+/* end 403 */
