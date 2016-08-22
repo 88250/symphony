@@ -2737,7 +2737,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 /* end settings */  
 /* start 403 */
-.error-403 .slogan {
+.error-403 > .slogan {
     padding-top: 20px;
     background-color: #fafafa;
     border-bottom: 1px solid #eee;

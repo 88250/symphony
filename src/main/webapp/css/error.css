@@ -28,7 +28,7 @@
 /* end error */
 
 /* start 403 */
-.error-403 .block .slogan {
+.error-403 > .slogan {
     padding-top: 20px;
     background-color: #fafafa;
     border-bottom: 1px solid #eee;

@@ -30,6 +30,7 @@
         </div>
         <div class="main">
             <div class="wrapper">
+                <div class="content">
                 <#if timelines?size <= 0>
                 <div id="emptyTimeline">${emptyTimelineLabel}</div>
                 </#if>
@@ -39,6 +40,11 @@
                         <li>${timeline.content}</li>
                         </#list>
                     </ul>
+                </div>
+                </div>
+                <div class="fn-hr10"></div>
+                <div class="side">
+                    <#include "../side.ftl">
                 </div>
             </div>
         </div> 
