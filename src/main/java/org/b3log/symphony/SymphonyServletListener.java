@@ -42,6 +42,7 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
@@ -73,7 +74,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.6.8, Aug 20, 2016
+ * @version 2.15.6.9, Aug 22, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -202,8 +203,11 @@ public final class SymphonyServletListener extends AbstractServletListener {
         BrowserType browserType = userAgent.getBrowser().getBrowserType();
 
         if (BrowserType.UNKNOWN == browserType) {
-            if (!StringUtils.startsWithIgnoreCase(userAgentStr, "Java/")) {
-                LOGGER.log(Level.WARN, "Unknown UA [" + userAgentStr + "]");
+            if (!StringUtils.containsIgnoreCase(userAgentStr, "Java")
+                    && !StringUtils.containsIgnoreCase(userAgentStr, "MetaURI")
+                    && !StringUtils.containsIgnoreCase(userAgentStr, "Feed")) {
+                LOGGER.log(Level.WARN, "Unknown client [UA=" + userAgentStr + ", remoteAddr="
+                        + Requests.getRemoteAddr(httpServletRequest) + "]");
             }
         }
 
