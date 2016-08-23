@@ -129,7 +129,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.3.8, Aug 16, 2016
+ * @version 2.20.3.9, Aug 23, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -307,6 +307,7 @@ public class AdminProcessor {
         }
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -335,6 +336,7 @@ public class AdminProcessor {
         }
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -356,6 +358,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -397,6 +400,7 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, e.getMessage());
 
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -415,6 +419,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -531,6 +536,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -556,6 +562,7 @@ public class AdminProcessor {
         dataModel.put(Invitecode.INVITECODE, invitecode);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -593,6 +600,7 @@ public class AdminProcessor {
         dataModel.put(Invitecode.INVITECODE, invitecode);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -614,6 +622,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -639,6 +648,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, langPropsService.get("notFoundUserLabel"));
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -681,6 +691,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -711,6 +722,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, langPropsService.get("invalidReservedWordLabel"));
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -735,6 +747,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -761,6 +774,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -796,6 +810,7 @@ public class AdminProcessor {
         optionMgmtService.updateOption(id, word);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -819,6 +834,7 @@ public class AdminProcessor {
         dataModel.put(Common.WORDS, optionQueryService.getReservedWords());
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -844,6 +860,7 @@ public class AdminProcessor {
         dataModel.put(Common.WORD, word);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -922,12 +939,14 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
         dataModel.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
         dataModel.put(Common.ONLINE_MEMBER_CNT, optionQueryService.getOnlineMemberCount());
 
         final JSONObject statistic = optionQueryService.getStatistic();
         dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
+
     }
 
     /**
@@ -981,6 +1000,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1006,6 +1026,7 @@ public class AdminProcessor {
         dataModel.put(User.USER, user);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1027,6 +1048,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1066,6 +1088,7 @@ public class AdminProcessor {
             }
 
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -1088,6 +1111,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -1140,6 +1164,7 @@ public class AdminProcessor {
         userMgmtService.updateUser(userId, user);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1178,6 +1203,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -1221,6 +1247,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -1272,6 +1299,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -1309,6 +1337,7 @@ public class AdminProcessor {
 
                 dataModel.put(Keys.MSG, langPropsService.get("insufficientBalanceLabel"));
                 filler.fillHeaderAndFooter(request, response, dataModel);
+                dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
                 return;
             }
@@ -1331,6 +1360,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -1376,6 +1406,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -1413,6 +1444,7 @@ public class AdminProcessor {
 
                 dataModel.put(Keys.MSG, langPropsService.get("insufficientBalanceLabel"));
                 filler.fillHeaderAndFooter(request, response, dataModel);
+                dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
                 return;
             }
@@ -1435,6 +1467,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -1507,6 +1540,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1532,6 +1566,7 @@ public class AdminProcessor {
         dataModel.put(Article.ARTICLE, article);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1581,6 +1616,7 @@ public class AdminProcessor {
         dataModel.put(Article.ARTICLE, article);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1639,6 +1675,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1664,6 +1701,7 @@ public class AdminProcessor {
         dataModel.put(Comment.COMMENT, comment);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1701,6 +1739,7 @@ public class AdminProcessor {
         dataModel.put(Comment.COMMENT, comment);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1725,6 +1764,7 @@ public class AdminProcessor {
         dataModel.put(Option.OPTIONS, misc);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1768,6 +1808,7 @@ public class AdminProcessor {
         dataModel.put(Option.OPTIONS, misc);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1832,6 +1873,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1857,6 +1899,7 @@ public class AdminProcessor {
         dataModel.put(Tag.TAG, tag);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1900,6 +1943,7 @@ public class AdminProcessor {
         dataModel.put(Tag.TAG, tag);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1960,6 +2004,7 @@ public class AdminProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, CollectionUtils.jsonArrayToList(pageNums));
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -1985,6 +2030,7 @@ public class AdminProcessor {
         dataModel.put(Domain.DOMAIN, domain);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -2033,6 +2079,7 @@ public class AdminProcessor {
         dataModel.put(Domain.DOMAIN, domain);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -2054,6 +2101,7 @@ public class AdminProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+        dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
     }
 
     /**
@@ -2080,6 +2128,7 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, langPropsService.get("invalidDomainTitleLabel"));
 
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -2093,6 +2142,7 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, langPropsService.get("duplicatedDomainLabel"));
 
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -2114,6 +2164,7 @@ public class AdminProcessor {
 
             dataModel.put(Keys.MSG, e.getMessage());
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -2167,6 +2218,7 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, langPropsService.get("invalidTagLabel"));
 
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -2183,6 +2235,7 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, msg);
 
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }
@@ -2223,6 +2276,7 @@ public class AdminProcessor {
             dataModel.put(Keys.MSG, langPropsService.get("invalidTagLabel"));
 
             filler.fillHeaderAndFooter(request, response, dataModel);
+            dataModel.put(Common.SITE_VISIT_STAT_CODE, "");
 
             return;
         }

@@ -11,7 +11,7 @@
         </a>
         </#if>
     </div>
-    <div class="module-panel">
+    <div class="module-panel tooltipped tooltipped-s" aria-label="${todayActivityLabel} ${liveness}%">
         <ul class="status fn-flex">
             <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/tags'">
                 <strong>${currentUser.followingTagCnt?c}</strong>
@@ -35,10 +35,10 @@
                 <#if 0 == currentUser.userAppRole>0x${currentUser.userPointHex}<#else><div class="painter-point" style="background-color: #${currentUser.userPointCC}"></div></#if></a>
         </div>
     </div> 
-    <div class="top-left activity-board tooltipped tooltipped-n" aria-label="${todayActivityLabel}"></div>
-    <div class="top-right activity-board tooltipped tooltipped-n" aria-label="${todayActivityLabel}"></div>
-    <div class="right activity-board tooltipped tooltipped-w" aria-label="${todayActivityLabel}"></div>
-    <div class="bottom activity-board tooltipped tooltipped-n" aria-label="${todayActivityLabel}"></div>
-    <div class="left activity-board tooltipped tooltipped-w" aria-label="${todayActivityLabel}"></div>
+    <div class="top-left activity-board"></div>
+    <div class="top-right activity-board"></div>
+    <div class="right activity-board"></div>
+    <div class="bottom activity-board"></div>
+    <div class="left activity-board"></div>
 </div>
 </#if>
