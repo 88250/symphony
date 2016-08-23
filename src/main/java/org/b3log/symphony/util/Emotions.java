@@ -18,13 +18,12 @@ package org.b3log.symphony.util;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.regex.Pattern;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.util.Stopwatchs;
 
 /**
  * Emotions utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.2, May 10, 2016
+ * @version 1.2.1.2, Aug 19, 2016
  * @since 0.2.0
  */
 public final class Emotions {
@@ -43,6 +42,22 @@ public final class Emotions {
      * Emoji pattern.
      */
     public static final Pattern EMOJI_PATTERN = Pattern.compile(":.+:");
+    
+    /**
+     * Determines whether the specified string is a emoji or not.
+     * 
+     * @param string the specified string
+     * @return {@code true} if it is a emoji, returns {@code false} otherwise
+     */
+    public static boolean isEmoji(final String string) {
+        for (final String emoji : EMOJIS) {
+            if (emoji.equals(string)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     /**
      * Replaces the emoji's unicode occurrences by one of their alias (between 2 ':'). Example: "😄" gives ":smile:".
@@ -82,43 +97,37 @@ public final class Emotions {
      * @return converted content
      */
     public static String convert(final String content) {
-        Stopwatchs.start("Emoj convert");
+        final String staticServePath = Latkes.getStaticServePath();
 
-        try {
-            final String staticServePath = Latkes.getStaticServePath();
+        String ret = content;
 
-            String ret = content;
-
-            String emotionName;
-            for (int i = 0; i < EMOTION_CNT; i++) {
-                if (i < TEN) {
-                    emotionName = "em0" + i;
-                } else {
-                    emotionName = "em" + i;
-                }
-
-                ret = ret.replace('[' + emotionName + ']',
-                        "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
+        String emotionName;
+        for (int i = 0; i < EMOTION_CNT; i++) {
+            if (i < TEN) {
+                emotionName = "em0" + i;
+            } else {
+                emotionName = "em" + i;
             }
 
-            if (!EMOJI_PATTERN.matcher(ret).find()) {
-                return ret;
-            }
+            ret = ret.replace('[' + emotionName + ']',
+                    "<img src='" + staticServePath + "/images/emotions/ease/" + emotionName + ".png" + "' />");
+        }
 
-            for (final String emojiCode : EMOJIS) {
-                final String emoji = ":" + emojiCode + ":";
-                ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                        + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode
-                        + ".png\" title=\"" + emoji + "\"></img>");
-            }
+        if (!EMOJI_PATTERN.matcher(ret).find()) {
+            return ret;
+        }
+
+        for (final String emojiCode : EMOJIS) {
+            final String emoji = ":" + emojiCode + ":";
+            ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
+                    + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode
+                    + ".png\" title=\"" + emoji + "\"></img>");
+        }
 
 //        ret = ret.replaceAll("\ufe0f", "");
 //        ret = ret.replaceAll("\ufffd", "");
 //        ret = ret.replaceAll("⃣", "");
-            return ret;
-        } finally {
-            Stopwatchs.end();
-        }
+        return ret;
     }
 
     public static void main(String[] args) {

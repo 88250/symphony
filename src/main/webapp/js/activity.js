@@ -38,7 +38,7 @@ var Activity = {
         };
 
         $.ajax({
-            url: "/activity/1A0001/bet",
+            url: Label.servePath + "/activity/1A0001/bet",
             type: "POST",
             headers: {"csrfToken": csrfToken},
             cache: false,
@@ -68,7 +68,7 @@ var Activity = {
         };
 
         $.ajax({
-            url: "/activity/1A0001/collect",
+            url: Label.servePath + "/activity/1A0001/collect",
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
@@ -155,7 +155,7 @@ var Activity = {
         };
 
         $.ajax({
-            url: "/activity/character/submit",
+            url: Label.servePath + "/activity/character/submit",
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),

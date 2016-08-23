@@ -35,48 +35,47 @@
         <@head title="${settingsLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
+        <#elseif type == "articlesAnonymous">
+        <@head title="${anonymousArticleLabel} - ${user.userName} - ${symphonyLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
+        </@head>
+        <#elseif type == "commentsAnonymous">
+        <@head title="${anonymousCommentLabel} - ${user.userName} - ${symphonyLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
+        </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">
+        <div class="tabs">
+            <div class="fn-clear wrapper home-nav">
+                <a <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
+                    class="selected"</#if>
+                    href="${servePath}/member/${user.userName}"><svg height="18" version="1.1" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
+                <a <#if type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="selected"</#if>
+                    href="${servePath}/member/${user.userName}/following/users"><svg height="18" version="1.1" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
+                <a <#if type == "points"> class="selected"</#if> href="${servePath}/member/${user.userName}/points">
+                    <svg height="18" version="1.1" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
+                <#if currentUser?? && currentUser.userName == user.userName>
+                <a <#if type == "settings"> class="selected"</#if>
+                    href="${servePath}/settings"><svg height="18" version="1.1" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
+                </#if>
+            </div>
+        </div>
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <ul class="tab fn-clear">
-                        <li<#if type == "home"> class="current"</#if>>
-                            <a href="/member/${user.userName}">${articleLabel}</a>
-                        </li>
-                        <li<#if type == "comments"> class="current"</#if>>
-                            <a href="/member/${user.userName}/comments">${cmtLabel}</a>
-                        </li>
-                        <li<#if type == "followingUsers"> class="current"</#if>>
-                            <a href="/member/${user.userName}/following/users">${followingUsersLabel}</a>
-                        </li>
-                        <li<#if type == "followingTags"> class="current"</#if>>
-                            <a href="/member/${user.userName}/following/tags">${followingTagsLabel}</a>
-                        </li>
-                        <li<#if type == "followingArticles"> class="current"</#if>>
-                            <a href="/member/${user.userName}/following/articles">${followingArticlesLabel}</a>
-                        </li>
-                        <li<#if type == "followers"> class="current"</#if>>
-                            <a href="/member/${user.userName}/followers">${followersLabel}</a>
-                        </li>
-                        <li<#if type == "points"> class="current"</#if>>
-                            <a href="/member/${user.userName}/points">${pointLabel}</a>
-                        </li>
-                        <#if currentUser?? && currentUser.userName == user.userName>
-                        <li<#if type == "settings"> class="current"</#if>>
-                            <a href="/settings"><b class="ft-red">${settingsLabel}</b></a>
-                        </li>
-                        </#if>
-                    </ul>
                     <div class="fn-clear">
                         <#nested>
                     </div>
                 </div>
                 <div class="side">
+                    <#if currentUser?? && currentUser.userName == user.userName>
+                    <#include "../common/person-info.ftl"><br/>
+                    <#else>
                     <#include "home-side.ftl">
+                    </#if>
                 </div>
             </div>
         </div>
@@ -99,7 +98,7 @@
             Label.invalidUserB3KeyLabel = "${invalidUserB3KeyLabel}";
             Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
             Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
-            Label.invalidUserNicknameLabel= "${invalidUserNicknameLabel}";
+            Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
         </script>
     </body>
 </html>

@@ -27,6 +27,8 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.util.Filler;
@@ -39,7 +41,7 @@ import org.b3log.symphony.util.Filler;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 7, 2015
+ * @version 1.1.0.1, Aug 20, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -65,7 +67,7 @@ public class ChargeProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/charge/point", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showChargePoint(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -75,8 +77,11 @@ public class ChargeProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

@@ -13,11 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.b3log.symphony.api;
 
 import java.io.BufferedReader;
@@ -104,7 +99,9 @@ public class CommentProcessor {
     @RequestProcessing(value = "/api/v1/comments/{id}/reply", method = HTTPRequestMethod.POST)
     public void reply(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String id) throws ServletException, JSONException, IOException, ServiceException {
-        final JSONObject comment = commentQueryService.getCommentById(id);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, id);
         comment(context, request, response, comment.optString(Comment.COMMENT_ON_ARTICLE_ID));
     }
 

@@ -1,17 +1,24 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
-<@home "comments">
+<@home "${type}">
+<#if 0 == user.userCommentStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
     <ul>
         <#list userHomeComments as comment>
         <li class="fn-flex comment-list-item">
-            <a target="_blank" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
-               title="${comment.commentArticleAuthorName}">
-                <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
+            <#if comment.commentArticleAuthorName != "someone">
+            <a rel="nofollow" href="${servePath}/member/${comment.commentArticleAuthorName}" 
+               title="${comment.commentArticleAuthorName}"></#if>
+                <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}')"></div>
+            <#if comment.commentArticleAuthorName != "someone">
             </a>
+            </#if>
             <div class="fn-flex-1">
                 <div>
                     <h2>
+                        <#if 1 == comment.commentArticlePerfect>
+                        <svg height="20" viewBox="3 4 11 12" width="14">${perfectIcon}</svg>
+                        </#if>
                         <#if comment.commentArticleType == 1>
                         <span class="icon-locked" title="${discussionLabel}"></span>
                         <#elseif comment.commentArticleType == 2>
@@ -34,4 +41,7 @@
     </ul>
 </div>
 <@pagination url="/member/${user.userName}/comments"/>
+<#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</#if>
 </@home>

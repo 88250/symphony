@@ -23,7 +23,7 @@
             <input type="text" id="articleViewCount" name="articleViewCount" value="${article.articleViewCount?c}" readonly="readonly" />
 
             <label for="articlePermalink">${permalinkLabel}</label>
-            <input type="text" id="articlePermalink" name="articlePermalink" value="${article.articlePermalink}" />
+            <input type="text" id="articlePermalink" name="articlePermalink" value="${servePath}${article.articlePermalink}" />
 
             <label for="articleCreateTime">${createTimeLabel}</label>
             <input type="text" id="articleCreateTime" name="articleCreateTime" value="${article.articleCreateTime?c}" />
@@ -45,6 +45,9 @@
 
             <label for="articleUA">UA</label>
             <input type="text" id="articleUA" name="articleUA" value="${article.articleUA}" readonly="readonly" />
+
+            <label for"articleStick">${stickLabel}</label>
+            <input type="text" id="articleStick" name="articleStick" value="${article.articleStick?c}" readonly="readonly" />
         </div>
     </div>
     <div class="module">
@@ -67,6 +70,12 @@
 
                 <label for="articleRewardPoint">${rewardPointLabel}</label>
                 <input type="text" id="articleRewardPoint" name="articleRewardPoint" value="${article.articleRewardPoint?c}"/>
+
+                <label>${perfectLabel}</label>
+                <select id="articlePerfect" name="articlePerfect">
+                    <option value="0"<#if 0 == article.articlePerfect> selected</#if>>${noLabel}</option>
+                    <option value="1"<#if 1 == article.articlePerfect> selected</#if>>${yesLabel}</option>
+                </select>
 
                 <label>${commentableLabel}</label>
                 <select id="articleCommentable" name="articleCommentable">
@@ -93,6 +102,36 @@
 
                 <label for="articleBadCnt">${badCntLabel}</label>
                 <input type="text" id="articleBadCnt" name="articleBadCnt" value="${article.articleBadCnt}" />
+
+                <br/><br/>
+                <button type="submit" class="green fn-right" >${submitLabel}</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="module">
+        <div class="module-header">
+            <h2>${stickLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/stick-article" method="POST">
+                <label for="articleId">Id</label>
+                <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly="readonly"/>
+
+                <br/><br/>
+                <button type="submit" class="green fn-right" >${submitLabel}</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="module">
+        <div class="module-header">
+            <h2>${cancelStickLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/cancel-stick-article" method="POST">
+                <label for="articleId">Id</label>
+                <input type="text" id="articleId" name="articleId" value="${article.oId}" readonly="readonly"/>
 
                 <br/><br/>
                 <button type="submit" class="green fn-right" >${submitLabel}</button>

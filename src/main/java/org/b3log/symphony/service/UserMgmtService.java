@@ -68,6 +68,7 @@ import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
+import org.b3log.symphony.util.Crypts;
 import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
@@ -78,7 +79,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.13.8, Jun 13, 2016
+ * @version 1.13.14.11, Aug 5, 2016
  * @since 0.2.0
  */
 @Service
@@ -162,7 +163,8 @@ public class UserMgmtService {
                     continue;
                 }
 
-                final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
+                final String value = Crypts.decryptByAES(cookie.getValue(), Symphonys.get("cookie.secret"));
+                final JSONObject cookieJSONObject = new JSONObject(value);
 
                 final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
                 if (Strings.isEmptyOrNull(userId)) {
@@ -176,7 +178,8 @@ public class UserMgmtService {
 
                 final String ip = Requests.getRemoteAddr(request);
 
-                if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
+                if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)
+                        || UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)) {
                     Sessions.logout(request, response);
 
                     updateOnlineStatus(userId, ip, false);
@@ -274,8 +277,6 @@ public class UserMgmtService {
      *     "userIntro": "",
      *     "userAvatarType": int,
      *     "userAvatarURL": "",
-     *     "userJoinPointRank": int,
-     *     "userJoinUsedPointRank": int,
      *     "userCommentViewMode": int
      * }
      * </pre>
@@ -306,8 +307,6 @@ public class UserMgmtService {
             oldUser.put(UserExt.USER_INTRO, requestJSONObject.optString(UserExt.USER_INTRO));
             oldUser.put(UserExt.USER_AVATAR_TYPE, requestJSONObject.optString(UserExt.USER_AVATAR_TYPE));
             oldUser.put(UserExt.USER_AVATAR_URL, requestJSONObject.optString(UserExt.USER_AVATAR_URL));
-            oldUser.put(UserExt.USER_JOIN_POINT_RANK, requestJSONObject.optInt(UserExt.USER_JOIN_POINT_RANK));
-            oldUser.put(UserExt.USER_JOIN_USED_POINT_RANK, requestJSONObject.optInt(UserExt.USER_JOIN_USED_POINT_RANK));
             oldUser.put(UserExt.USER_COMMENT_VIEW_MODE, requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE));
 
             oldUser.put(UserExt.USER_UPDATE_TIME, System.currentTimeMillis());
@@ -443,6 +442,7 @@ public class UserMgmtService {
 
             boolean toUpdate = false;
             String ret = null;
+            String avatarURL = null;
             user = userRepository.getByEmail(userEmail);
             int userNo = 0;
             if (null != user) {
@@ -457,6 +457,7 @@ public class UserMgmtService {
                 toUpdate = true;
                 ret = user.optString(Keys.OBJECT_ID);
                 userNo = user.optInt(UserExt.USER_NO);
+                avatarURL = user.optString(UserExt.USER_AVATAR_URL);
             }
 
             user = new JSONObject();
@@ -505,11 +506,28 @@ public class UserMgmtService {
             final int status = requestJSONObject.optInt(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
             user.put(UserExt.USER_STATUS, status);
             user.put(UserExt.USER_COMMENT_VIEW_MODE, UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME);
+            user.put(UserExt.USER_ONLINE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_COMMENT_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_FOLLOWING_ARTICLE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_FOLLOWING_TAG_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_FOLLOWING_USER_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_FOLLOWER_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_POINT_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_TIMELINE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_UA_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_NOTIFY_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_LIST_PAGE_SIZE, Symphonys.getInt("indexArticlesCnt"));
+            user.put(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, userNo);
-                user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
-                        + new Date().getTime());
+                if (Symphonys.getBoolean("qiniu.enabled")) {
+                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("qiniu.domain") + "/avatar/" + ret + "?"
+                            + new Date().getTime());
+                } else {
+                    user.put(UserExt.USER_AVATAR_URL, avatarURL + "?" + new Date().getTime());
+                }
 
                 userRepository.update(ret, user);
 
@@ -568,7 +586,7 @@ public class UserMgmtService {
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Generates avatar error", e);
 
-                    user.put(UserExt.USER_AVATAR_URL, AvatarQueryService.DEFAULT_AVATAR_URL);
+                    user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
                 }
 
                 final JSONObject memberCntOption = optionRepository.get(Option.ID_C_STATISTIC_MEMBER_COUNT);
@@ -587,7 +605,7 @@ public class UserMgmtService {
             if (UserExt.USER_STATUS_C_VALID == status) {
                 // Point
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, ret,
-                        Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret);
+                        Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret, System.currentTimeMillis());
             }
 
             return ret;

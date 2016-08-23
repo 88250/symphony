@@ -39,6 +39,7 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.CSRFToken;
 import org.b3log.symphony.processor.advice.LoginCheck;
@@ -48,6 +49,7 @@ import org.b3log.symphony.processor.advice.validate.Activity1A0001CollectValidat
 import org.b3log.symphony.processor.advice.validate.Activity1A0001Validation;
 import org.b3log.symphony.service.ActivityMgmtService;
 import org.b3log.symphony.service.ActivityQueryService;
+import org.b3log.symphony.service.CharacterQueryService;
 import org.b3log.symphony.service.PointtransferQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
@@ -69,7 +71,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.2, Jun 8, 2016
+ * @version 1.7.1.4, Aug 11, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -91,6 +93,12 @@ public class ActivityProcessor {
      */
     @Inject
     private ActivityQueryService activityQueryService;
+
+    /**
+     * Character query service.
+     */
+    @Inject
+    private CharacterQueryService characterQueryService;
 
     /**
      * Pointtransfer query service.
@@ -129,21 +137,33 @@ public class ActivityProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
 
         String activityCharacterGuideLabel = langPropsService.get("activityCharacterGuideLabel");
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
-        final String userId = currentUser.optString(Keys.OBJECT_ID);
-        final String character = activityQueryService.getCharacter(userId);
+        final String character = characterQueryService.getUnwrittenCharacter();
         if (StringUtils.isBlank(character)) {
             dataModel.put("noCharacter", true);
 
             return;
         }
+
+        final int totalCharacterCount = characterQueryService.getTotalCharacterCount();
+        final int writtenCharacterCount = characterQueryService.getWrittenCharacterCount();
+        final String totalProgress = String.format("%.2f", (double) writtenCharacterCount / (double) totalCharacterCount * 100);
+        dataModel.put("totalProgress", totalProgress);
+
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+        final int userWrittenCharacterCount = characterQueryService.getWrittenCharacterCount(userId);
+        final String userProgress = String.format("%.2f", (double) userWrittenCharacterCount / (double) totalCharacterCount * 100);
+        dataModel.put("userProgress", userProgress);
 
         activityCharacterGuideLabel = activityCharacterGuideLabel.replace("{character}", character);
         dataModel.put("activityCharacterGuideLabel", activityCharacterGuideLabel);
@@ -206,8 +226,11 @@ public class ActivityProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
@@ -239,8 +262,11 @@ public class ActivityProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
@@ -396,8 +422,11 @@ public class ActivityProcessor {
         }
 
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

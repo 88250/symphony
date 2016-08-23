@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Jun 13, 2016
+ * @version 1.4.6.8, Aug 17, 2016
  */
 
 /* start reset */
@@ -32,7 +32,7 @@ body {
     margin: 0;
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     font-size: 14px;
-    background-color: #F8F8F8;
+    background-color: #F7F7F7;
     color: #333;
 }
 
@@ -200,7 +200,14 @@ input[type="search"]::-webkit-search-cancel-button {
 
 textarea {
     overflow: auto;
+    resize: vertical;
 }
+
+svg {
+    vertical-align: text-top;
+    fill: currentColor;
+}
+
 @-webkit-keyframes spaceboots {
     0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
     30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
@@ -278,6 +285,10 @@ textarea {
     font-size: 12px;
 }
 
+.content-reset p {
+    margin: 1em 0;
+}
+
 .content-reset blockquote {
     z-index: 1;
     position: relative;
@@ -348,6 +359,11 @@ textarea {
 .content-reset tr:hover {
     background: #efefef; 
 }
+
+code.hljs,
+.hljs code {
+    background-color: #efefef;
+}
 /* end reset */
 
 /* start function */
@@ -389,6 +405,10 @@ textarea {
 
 .fn-none {
     display: none;
+}
+
+.fn-hidden {
+    visibility: hidden;
 }
 
 .fn-ellipsis {
@@ -444,6 +464,11 @@ a.ft-black {
 
 .ft-center {
     text-align: center;
+}
+
+.ft-a-icon {
+    color: #333;
+    text-decoration: none;
 }
 
 .fn-inline {
@@ -595,11 +620,11 @@ a[class*=" icon-"]:hover {
 .icon-sortasc:before {
     content: "\e905";
 }
-.icon-close:before {
-    content: "\e909";
-}
 .icon-locked:before {
     content: "\e61e";
+}
+.icon-close:before {
+    content: "\e909";
 }
 .icon-points:before {
     content: "\e900";
@@ -678,9 +703,6 @@ a[class*=" icon-"]:hover {
 }
 .icon-star:before {
     content: "\e600";
-}
-.icon-heart:before {
-    content: "\e601";
 }
 .icon-register:before {
     content: "\e602";
@@ -762,6 +784,9 @@ a[class*=" icon-"]:hover {
 }
 .icon-compass:before {
     content: "\e61c";
+}
+.icon-heart:before {
+    content: "\e9da";
 }
 .icon-wechat:before {
     content: "\e907";
@@ -858,17 +883,17 @@ a[class*=" icon-"]:hover {
 }
 
 .avatar-big {
-    border: 10px solid #EEEEEE;
+    border: 1px solid #EEEEEE;
     height: 210px;
     width: 210px;
-    border-radius: 5px;
+    border-radius: 6px;
 }
 
 .avatar-mid {
-    border: 5px solid #EEEEEE;
+    border: 1px solid #EEEEEE;
     height: 118px;
     width: 118px;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 /* end avatar */
 
@@ -942,7 +967,7 @@ a[class*=" icon-"]:hover {
 .form label {
     color: #666;
     font-size: 15px;
-    margin: 12px 0 6px;
+    margin: 10px 0 5px;
     float: left;
 }
 
@@ -1065,7 +1090,7 @@ a[class*=" icon-"]:hover {
 }
 
 .main {
-    background-color: #FDFDFD;
+    background-color: #FFF;
     padding-bottom: 10px;
     padding-top: 1px;
 }
@@ -1077,7 +1102,7 @@ a[class*=" icon-"]:hover {
     width: 100%;
     padding: 5px 0;
     z-index: 99;
-    background-color: #f5f5f5;
+    background-color: #f7f7f7;
     border-bottom: 1px solid #e5e5e5;
 }
 
@@ -1260,20 +1285,16 @@ a[class*=" icon-"]:hover {
     margin: 0;
 }
 
-.list.single-line li {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    word-wrap: normal;
-    word-break: normal;
-}
-
 .has-view {
     margin-right: 40px;
 }
 /* end list */
 
 /* start article */
+label.anonymous-check {
+    margin: 2px 15px 0 0;
+}
+
 .cmts {
     position: absolute;
     right: 10px;
@@ -1359,7 +1380,7 @@ ul.CodeMirror-hints {
 
 .module-header {
     border-radius: 3px 3px 0 0;
-    background-color: #f8f8f8;
+    background-color: #F7F7F7;
     border-bottom: 1px solid #e5e5e5;
     padding: 9px 10px 10px;
     text-shadow: 0 1px 0 #FFFFFF;
@@ -1682,7 +1703,7 @@ ul.CodeMirror-hints {
     margin-bottom: 15px;
 }
 
-.article-info > div {
+.article-info > div.article-params {
     position: absolute;
     top: 0;
     left: 40px;
@@ -1738,42 +1759,70 @@ h2.article-title {
 #comments .comment-header > h2 {
     margin-top: 5px;
 }
+.comments > .comment-header {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #CCCCCC;
+    margin: 20px 0 0;
+}
 
-#comments > div.comment-header .icon-chevron-down {
+.comments > div.comment-header .icon-chevron-down {
     margin: 0px 10px 0 0;
     font-size: 24px;
 }
 
-#comments > div.comment-header .icon-sortasc,
-#comments > div.comment-header .icon-time {
+.comments > div.comment-header a {
+    text-decoration: none;
+    color: #333;
+}
+
+.comments > div.comment-header .icon-sortasc,
+.comments > div.comment-header .icon-time {
     font-size: 16px;
     font-weight: bold;
     margin: 4px 10px 0 0;
+    display: inherit;
 }
 
-#comments li.shield {
+.comments li.shield {
     background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
     background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
-    background-color: #f5f5f5;
+    background-color: #f7f7f7;
     background-size: 45px 45px;
 }
 
-#comments li:hover .thx {
-    display: initial;
+.comments li.perfect {
+    background-color: #f9f6f6;
 }
 
-#comments .comment > p {
-    margin-top: 5px;
+.comments li:hover .hover-show {
+    visibility: visible;
 }
 
-#comments .comment-info {
-    line-height: 17px;
+.comments li .hover-show:hover {
+    color: #999; 
+}
+
+.comments .comment > p {
+    margin-top: 10px;
+}
+
+.comments .comment-info .icon-heart {
+    vertical-align: text-bottom;
+}
+
+.comments.nice ul {
+    margin: 10px 0;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+}
+
+.comments.nice > ul > li:last-child {
+    border-bottom-width: 0;
 }
 
 .comment-login {
     border: 1px solid #e5e5e5;
-    margin: 10px 10px 15px 10px;
     padding: 3px;
     background-color: #FAFAFA;
     box-sizing: border-box;
@@ -1792,7 +1841,7 @@ h2.article-title {
     background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
     background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
-    background-color: #f5f5f5;
+    background-color: #f7f7f7;
     background-size: 45px 45px;
 }
 
@@ -1868,7 +1917,12 @@ h2.article-title {
     margin: 5px;
 }
 
+.domains svg {
+    vertical-align: sub;
+}
+
 .domains a {
+    height: 17px;
     float: left;
     padding: 4px 8px;
     color: #999;
@@ -1879,6 +1933,7 @@ h2.article-title {
     border: 1px solid #DDD;
     font-size: 12px;
     line-height: 16px;
+    width: 44px;
 }
 
 .domains a.selected {
@@ -2095,20 +2150,25 @@ h2.article-title {
     display: block;
 }
 
-.tag-desc > li > span {
+.tag-desc > li > a {
     float: left;
-    padding: 4px 8px;
+    color: #999;
+    padding: 2px 5px;
     border: 1px solid #DDDDDD;
     position: relative;
     height: 20px;
     white-space: nowrap;
     word-wrap: normal;
     background-color: #F7F7F7;
-    border-radius: 3px;
-    line-height: 20px;
+    border-radius: 3px 3px 3px 3px;
+    line-height: 21px;
 }
 
-.tag-desc > li:hover > span {
+.tag-desc > li > a:hover {
+    text-decoration: none;
+}
+
+.tag-desc > li:hover > a {
     border-bottom-style: dotted;
     border-radius: 3px 3px 0 0;
     opacity: 0.7;
@@ -2116,12 +2176,12 @@ h2.article-title {
     z-index: 3;
 }
 
-.tag-desc > li > span > a {
+.tag-desc > li > a > span {
     text-decoration: none;
     color: #999;
 }
 
-.tag-desc > li > span > img {
+.tag-desc > li > a > img {
     border-radius: 2px 2px 2px 2px;
     height: 16px;
     width: 16px;
@@ -2162,6 +2222,10 @@ h2.article-title {
 
 .tag-articles .btn.red {
     vertical-align: super;
+}
+
+.tag-articles .article-action .fn-right {
+    margin-top: -8px;
 }
 /* end side tags */
 
@@ -2236,30 +2300,72 @@ code .dec { color: initial; } /* decimal - blue */
     overflow: auto;
 }
 /* end chat room */
+/* start index */
+.index .index-wrap {
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+}
 
-/**
- * Copyright (c) 2012-2016, b3log.org & hacpai.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+.index > .slogan {
+    padding: 10px;
+    color: #767676;
+    border-top: 1px solid #eee;
+    background-color: #fafafa;
+}
 
-/**
- * 后台样式.
- *
- * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.6.9, Apr 6, 2016
- */
+.index > .slogan a:hover svg {
+    color: #4183C4;
+}
+
+.index .domains {
+    background-color: #FFF;
+    padding: 5px;
+    margin: 0;
+}
+
+.index .item {
+    padding: 20px;
+    color: #555;
+    border: 1px solid rgba(0,0,0,0.075);
+    border-bottom-color: rgba(0,0,0,0.125);
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05),0 5px 10px rgba(0,0,0,0.05);
+    transition: border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    margin: 10px 0;
+}
+
+.index .item:hover {
+    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.15);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05),0 8px 15px rgba(0,0,0,0.1)
+}
+
+.index .item-header {
+    height: 20px;
+    margin: -21px -21px 20px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    opacity: 0.8;
+    transition: opacity 0.1s ease-in-out;
+    padding: 5px;
+    display: block;
+    text-align: right;
+    color: #F7F7F7;
+}
+
+.index .item:hover .item-header  {
+    opacity: 1;
+}
+
+.index .tag-desc > li:hover > span {
+    border-bottom-style: solid;
+    border-radius: 3px;
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    z-index: 3;
+}
+/* end index */
 
 /* start home side */
 .user-name {
@@ -2355,6 +2461,99 @@ code .dec { color: initial; } /* decimal - blue */
     width: 100%;
     display: block;
 }
+.post .tags-wrap {
+    position: relative;
+}
+
+.post .tags-input {
+    border: 1px solid #CCCCCC;
+    background-color: #FAFAFA;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
+    padding: 5px 5px 3px 5px;
+    width: 100%;
+    line-height: 17px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    height: 33px;
+}
+
+.post .tags-input span.tag {
+    margin: 2px 5px 0 0px;
+    color: #4183C4;
+}
+
+.post .tags-input .tag > span.close {
+    cursor: pointer;
+    margin-left: 5px;
+    color: #999;
+}
+
+.post .tags-input span.tag.haved {
+    color: #333;
+    background-color: #ccc;
+    transition: background 0.5s ease-in,color 0.3s ease-out;
+}
+
+.post .tags-input input {
+    border: 0;
+    outline: none;
+    box-shadow: 0 0 0;
+    border-radius: 0;
+    padding: 2px;
+}
+
+.post .tags-input input:focus {
+    border: 0;
+    background-color: transparent;
+    box-shadow: 0 0 0;
+}
+
+.post .domains-tags, 
+.post .completed-panel {
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    border: 1px solid #e5e5e5;
+    z-index: 10;
+    padding: 10px;
+    border-radius: 0 0 3px 3px;
+    width: 100%;
+    box-sizing: border-box;
+    top: 32px;
+}
+
+.post .domains-tags .tag {
+    cursor: pointer;
+    color: #4183C4;
+}
+
+.post .domains-tags > span.current {
+    color: #FFF;
+    background-color: #2c5d8d;
+    background-image: linear-gradient(#7ba9d6, #2c5d8d);
+    border-color: #689cd0;
+}
+
+.post .completed-panel {
+    padding: 0;
+    overflow: auto;
+    left: 0;
+}
+
+.post .completed-panel a {
+    display: block;
+    padding: 3px;
+    text-decoration: none;
+    line-height: 18px;
+    height: 18px;
+}
+
+.post .completed-panel a.selected,
+.post .completed-panel a:hover {
+    background-color: #F7F7F7;
+}
 /* end add article */
 
 /* start home */
@@ -2374,58 +2573,27 @@ code .dec { color: initial; } /* decimal - blue */
     padding: 5px 0;
     display: block;
 }
+.home-invisible {
+    margin: 10px 0;
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 10px;
+}
 /* end home */
 
 /* start notifications */
-.note-list {
-    background-image: linear-gradient(to right, #F6F6F6 0%, #FDFDFD 8px);
-    box-shadow: 1px 0 0 #EEEEEE inset;
-    list-style: none;
-    padding: 15px 0;
-}
-
-.note-list li a {
-    cursor: pointer;
-    margin: 5px 0;
-    display: block;
-    padding: 8px 10px;
+.notification-tab a:hover {
     text-decoration: none;
 }
 
-.note-list li a:hover {
-    box-shadow: 2px 0 0 #CCC inset;
-}
-
-.note-list li a > span.counter {
-    background-color: #EEEEEE;
+.notification-tab .counter {
+    background-color: #eee;
     border-radius: 2px 2px 2px 2px;
-    box-shadow: 0 -1px 0 #E3E3E3 inset;
-    color: #999999;
-    float: right;
+    box-shadow: 0 -1px 0 #e3e3e3 inset;
+    color: #999;
     font-size: 11px;
     font-weight: bold;
     padding: 2px 5px;
-}
-
-.note-list li.current a {
-    background: none repeat scroll 0 0 #FDFDFD;    
-    box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.05);
-    color: #333333;
-    font-weight: bold;
-    position: relative;
-    border: 1px solid #EEE;
-    border-left-width: 0;
-}
-
-.note-list li.current a:after {
-    background-image: linear-gradient(#D26911, #BA5D0F);
-    bottom: -1px;
-    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1) inset;
-    content: "";
-    position: absolute;
-    right: -1px;
-    top: -1px;
-    width: 3px;
+    margin-left: 5px;
 }
 
 .notification .read {
@@ -2436,6 +2604,10 @@ code .dec { color: initial; } /* decimal - blue */
 
 .notification li {
     background-color: #F8F8FF;
+}
+
+.notification li:last-child {
+    border-bottom-width: 0;
 }
 /* end notifications */
 
@@ -2544,4 +2716,49 @@ code .dec { color: initial; } /* decimal - blue */
 #avatarUpload {
     overflow: hidden;
 }
-/* end settings */
+.settings-secret label {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+    float: none;
+}
+
+.settings-avatar .btn {
+    margin-top: 0;
+}
+
+.settings-avatar .avatar-big {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.settings-avatar li {
+    margin-left: 20px;
+}
+/* end settings */  
+/* start 403 */
+.error-403 > .slogan {
+    padding-top: 20px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+}
+
+.error-403 .slogan-border {
+    margin: 20px 0 20px;
+    color: #767676;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+}
+
+.error-403 .slogan-register {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.error-403 .slogan-text {
+    margin: 20px 10px;
+}
+/* end 403 */

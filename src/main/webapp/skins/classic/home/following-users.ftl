@@ -1,16 +1,26 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
-<@home "followingUsers">
+<@home "${type}">
+<div class="tabs-sub fn-clear">
+    <a href="${servePath}/member/${user.userName}/following/users"<#if type == "followingUsers"> class="current"</#if>>${followingUsersLabel}</a>
+    <a href="${servePath}/member/${user.userName}/following/tags"<#if type == "followingTags"> class="current"</#if>>${followingTagsLabel}</a>
+    <a href="${servePath}/member/${user.userName}/following/articles"<#if type == "followingArticles"> class="current"</#if>>${followingArticlesLabel}</a>
+    <a href="${servePath}/member/${user.userName}/followers"<#if type == "followers"> class="current"</#if>>${followersLabel}</a>
+</div>
+<#if 0 == user.userFollowingUserStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="follow">
     <ol>
         <#list userHomeFollowingUsers as followingUser>
         <li class="fn-clear">
-            <a rel="nofollow" title="${followingUser.userName} <#if followingUser.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" href="/member/${followingUser.userName}">
-                <div class="avatar fn-left" style="background-image:url('${followingUser.userAvatarURL}')"></div>
+            <a rel="nofollow ft-gray"  
+                   href="${servePath}/member/${followingUser.userName}">
+                <div class="avatar fn-left tooltipped tooltipped-se" 
+                   aria-label="${followingUser.userName} <#if followingUser.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" 
+                   style="background-image:url('${followingUser.userAvatarURL}')"></div>
             </a>
             <div class="fn-left">
                 <h3 class="fn-inline">
-                    <a rel="nofollow" href="/member/${followingUser.userName}" >${followingUser.userName}</a>
+                    <a rel="nofollow" href="${servePath}/member/${followingUser.userName}" >${followingUser.userName}</a>
                 </h3> &nbsp;
                 <#if isLoggedIn && (userName != followingUser.userName)> 
                 <#if followingUser.isFollowing>
@@ -43,4 +53,7 @@
     </ol>
 </div>
 <@pagination url="/member/${user.userName}/following/users"/>
+<#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</#if>
 </@home>

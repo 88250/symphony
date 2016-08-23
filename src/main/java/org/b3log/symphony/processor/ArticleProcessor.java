@@ -16,16 +16,24 @@
 package org.b3log.symphony.processor;
 
 import com.qiniu.util.Auth;
+import java.awt.Graphics;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import jodd.util.Base64;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -47,10 +55,12 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Referral;
@@ -58,7 +68,7 @@ import org.b3log.symphony.model.Revision;
 import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.model.Vote;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.CSRFToken;
 import org.b3log.symphony.processor.advice.LoginCheck;
@@ -69,9 +79,11 @@ import org.b3log.symphony.processor.advice.validate.ArticleUpdateValidation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.CharacterQueryService;
 import org.b3log.symphony.service.ClientMgmtService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.DomainQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.LivenessMgmtService;
 import org.b3log.symphony.service.ReferralMgmtService;
@@ -103,6 +115,8 @@ import org.json.JSONObject;
  * <li>Rewards an article (/article/reward), POST</li>
  * <li>Gets an article preview content (/article/{articleId}/preview), GET</li>
  * <li>Sticks an article (/article/stick), POST</li>
+ * <li>Gets article revisions (/article/{articleId}/revisions), GET</li>
+ * <li>Gets article image (/article/{articleId}/image), GET</li>
  * </ul>
  *
  * <p>
@@ -111,7 +125,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.15.29, May 14, 2016
+ * @version 1.23.18.31, Aug 20, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -207,10 +221,98 @@ public class ArticleProcessor {
     private ReferralMgmtService referralMgmtService;
 
     /**
+     * Character query service.
+     */
+    @Inject
+    private CharacterQueryService characterQueryService;
+
+    /**
+     * Domain query service.
+     */
+    @Inject
+    private DomainQueryService domainQueryService;
+
+    /**
+     * Domain cache.
+     */
+    @Inject
+    private DomainCache domainCache;
+
+    /**
      * Filler.
      */
     @Inject
     private Filler filler;
+
+    /**
+     * Gets article image.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param articleId the specified article id
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/article/{articleId}/image", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {StopwatchEndAdvice.class})
+    public void getArticleImage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+            final String articleId) throws Exception {
+        final JSONObject article = articleQueryService.getArticle(articleId);
+        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+
+        final Set<JSONObject> characters = characterQueryService.getWrittenCharacters();
+        final String articleContent = article.optString(Article.ARTICLE_CONTENT);
+
+        final List<BufferedImage> images = new ArrayList<BufferedImage>();
+        for (int i = 0; i < articleContent.length(); i++) {
+            final String ch = articleContent.substring(i, i + 1);
+            final JSONObject chRecord = org.b3log.symphony.model.Character.getCharacter(ch, characters);
+            if (null == chRecord) {
+                images.add(org.b3log.symphony.model.Character.createImage(ch));
+
+                continue;
+            }
+
+            final String imgData = chRecord.optString(org.b3log.symphony.model.Character.CHARACTER_IMG);
+            final byte[] data = Base64.decode(imgData.getBytes());
+            final BufferedImage img = ImageIO.read(new ByteArrayInputStream(data));
+            final BufferedImage newImage = new BufferedImage(50, 50, img.getType());
+            final Graphics g = newImage.getGraphics();
+            g.setClip(0, 0, 50, 50);
+            g.fillRect(0, 0, 50, 50);
+            g.drawImage(img, 0, 0, 50, 50, null);
+            g.dispose();
+
+            images.add(newImage);
+        }
+
+        final int rowCharacterCount = 30;
+        final int rows = (int) Math.ceil((double) images.size() / (double) rowCharacterCount);
+
+        final BufferedImage combined = new BufferedImage(30 * 50, rows * 50, Transparency.TRANSLUCENT);
+        int row = 0;
+        for (int i = 0; i < images.size(); i++) {
+            final BufferedImage image = images.get(i);
+
+            final Graphics g = combined.getGraphics();
+            g.drawImage(image, (i % rowCharacterCount) * 50, row * 50, null);
+
+            if (0 == (i + 1) % rowCharacterCount) {
+                row++;
+            }
+        }
+
+        ImageIO.write(combined, "PNG", new File("./hp.png"));
+
+        String url = "";
+
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.STATUS_CODE, true);
+        ret.put(Common.URL, (Object) url);
+
+        context.renderJSON(ret);
+    }
 
     /**
      * Gets article revisions.
@@ -259,6 +361,23 @@ public class ArticleProcessor {
     }
 
     /**
+     * Fills the domains with tags.
+     *
+     * @param dataModel the specified data model
+     */
+    private void fillDomainsWithTags(Map<String, Object> dataModel) {
+        final List<JSONObject> domains = domainCache.getDomains(Integer.MAX_VALUE);
+
+        dataModel.put(Domain.DOMAINS, domains);
+
+        for (final JSONObject domain : domains) {
+            final List<JSONObject> tags = domainQueryService.getTags(domain.optString(Keys.OBJECT_ID));
+
+            domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
+        }
+    }
+
+    /**
      * Shows add article.
      *
      * @param context the specified context
@@ -292,6 +411,8 @@ public class ArticleProcessor {
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
 
+        fillDomainsWithTags(dataModel);
+
         String tags = request.getParameter(Tag.TAGS);
         if (StringUtils.isBlank(tags)) {
             tags = "";
@@ -309,11 +430,17 @@ public class ArticleProcessor {
                     continue;
                 }
 
+                if (Tag.containsWhiteListTags(tagTitle)) {
+                    tagBuilder.append(tagTitle).append(",");
+
+                    continue;
+                }
+
                 if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
                     continue;
                 }
 
-                if (Strings.isEmptyOrNull(tagTitle) || tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH || tagTitle.length() < 1) {
+                if (tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH) {
                     continue;
                 }
 
@@ -363,6 +490,11 @@ public class ArticleProcessor {
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD));
         dataModel.put("rewardEditorPlaceholderLabel", rewardEditorPlaceholderLabel);
         dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
+
+        String articleContentErrorLabel = langPropsService.get("articleContentErrorLabel");
+        articleContentErrorLabel = articleContentErrorLabel.replace("{maxArticleContentLength}",
+                String.valueOf(ArticleAddValidation.MAX_ARTICLE_CONTENT_LENGTH));
+        dataModel.put("articleContentErrorLabel", articleContentErrorLabel);
     }
 
     /**
@@ -375,7 +507,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/article/{articleId}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String articleId) throws Exception {
@@ -385,7 +517,9 @@ public class ArticleProcessor {
         renderer.setTemplateName("/article.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final JSONObject article = articleQueryService.getArticleById(articleId);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -401,9 +535,16 @@ public class ArticleProcessor {
 
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
         final JSONObject author = userQueryService.getUser(authorId);
-        article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
-        article.put(Article.ARTICLE_T_AUTHOR_URL, author.optString(User.USER_URL));
-        article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
+
+        if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
+            article.put(Article.ARTICLE_T_AUTHOR_NAME, author.optString(User.USER_NAME));
+            article.put(Article.ARTICLE_T_AUTHOR_URL, author.optString(User.USER_URL));
+            article.put(Article.ARTICLE_T_AUTHOR_INTRO, author.optString(UserExt.USER_INTRO));
+        } else {
+            article.put(Article.ARTICLE_T_AUTHOR_NAME, UserExt.ANONYMOUS_USER_NAME);
+            article.put(Article.ARTICLE_T_AUTHOR_URL, "");
+            article.put(Article.ARTICLE_T_AUTHOR_INTRO, "");
+        }
         dataModel.put(Article.ARTICLE, article);
 
         article.put(Common.IS_MY_ARTICLE, false);
@@ -430,8 +571,8 @@ public class ArticleProcessor {
             final boolean isFollowing = followQueryService.isFollowing(currentUserId, articleId);
             dataModel.put(Common.IS_FOLLOWING, isFollowing);
 
-            final int vote = voteQueryService.isVoted(currentUserId, articleId);
-            dataModel.put(Vote.VOTE, vote);
+            final int articleVote = voteQueryService.isVoted(currentUserId, articleId);
+            article.put(Article.ARTICLE_T_VOTE, articleVote);
 
             if (currentUserId.equals(author.optString(Keys.OBJECT_ID))) {
                 article.put(Common.REWARDED, true);
@@ -460,9 +601,9 @@ public class ArticleProcessor {
             livenessMgmtService.incLiveness(viewer.optString(Keys.OBJECT_ID), Liveness.LIVENESS_PV);
         }
 
-        filler.fillRelevantArticles(dataModel, article);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillRelevantArticles(avatarViewMode, dataModel, article);
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
 
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
@@ -479,9 +620,19 @@ public class ArticleProcessor {
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
 
+        // Fill article thank
+        article.put(Common.THANKED, rewardQueryService.isRewarded(currentUserId, articleId, Reward.TYPE_C_THANK_ARTICLE));
+        article.put(Common.THANKED_COUNT, rewardQueryService.rewardedCount(articleId, Reward.TYPE_C_THANK_ARTICLE));
+
+        String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
+        stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
+        dataModel.put("stickConfirmLabel", stickConfirmLabel);
+        dataModel.put("pointThankArticle", Symphonys.get("pointThankArticle"));
+
         dataModel.put(Common.DISCUSSION_VIEWABLE, article.optBoolean(Common.DISCUSSION_VIEWABLE));
         if (!article.optBoolean(Common.DISCUSSION_VIEWABLE)) {
             article.put(Article.ARTICLE_T_COMMENTS, (Object) Collections.emptyList());
+            article.put(Article.ARTICLE_T_NICE_COMMENTS, (Object) Collections.emptyList());
 
             return;
         }
@@ -495,12 +646,41 @@ public class ArticleProcessor {
         final int pageSize = Symphonys.getInt("articleCommentsPageSize");
         final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
 
-        final List<JSONObject> articleComments = commentQueryService.getArticleComments(articleId, pageNum, pageSize,
-                cmtViewMode);
+        final List<JSONObject> niceComments = commentQueryService.getNiceComments(avatarViewMode, articleId, 3);
+        article.put(Article.ARTICLE_T_NICE_COMMENTS, (Object) niceComments);
+
+        double niceCmtScore = Double.MAX_VALUE;
+        if (!niceComments.isEmpty()) {
+            niceCmtScore = niceComments.get(niceComments.size() - 1).optDouble(Comment.COMMENT_SCORE);
+
+            for (final JSONObject comment : niceComments) {
+                String thankTemplate = langPropsService.get("thankConfirmLabel");
+                thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
+                        .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
+                comment.put(Comment.COMMENT_T_THANK_LABEL, thankTemplate);
+
+                final String commentId = comment.optString(Keys.OBJECT_ID);
+                if (isLoggedIn) {
+                    comment.put(Common.REWARDED,
+                            rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
+                    final int commentVote = voteQueryService.isVoted(currentUserId, commentId);
+                    comment.put(Comment.COMMENT_T_VOTE, commentVote);
+                }
+
+                comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
+            }
+        }
+
+        final List<JSONObject> articleComments = commentQueryService.getArticleComments(
+                avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
+
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
-        // Fill reward(thank)
+        // Fill comment thank
         for (final JSONObject comment : articleComments) {
+            comment.put(Comment.COMMENT_T_NICE,
+                    comment.optDouble(Comment.COMMENT_SCORE) >= niceCmtScore);
+
             String thankTemplate = langPropsService.get("thankConfirmLabel");
             thankTemplate = thankTemplate.replace("{point}", String.valueOf(Symphonys.getInt("pointThankComment")))
                     .replace("{user}", comment.optJSONObject(Comment.COMMENT_T_COMMENTER).optString(User.USER_NAME));
@@ -510,6 +690,8 @@ public class ArticleProcessor {
             if (isLoggedIn) {
                 comment.put(Common.REWARDED,
                         rewardQueryService.isRewarded(currentUserId, commentId, Reward.TYPE_C_COMMENT));
+                final int commentVote = voteQueryService.isVoted(currentUserId, commentId);
+                comment.put(Comment.COMMENT_T_VOTE, commentVote);
             }
 
             comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
@@ -528,10 +710,6 @@ public class ArticleProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         dataModel.put(Common.ARTICLE_COMMENTS_PAGE_SIZE, pageSize);
-
-        String stickConfirmLabel = langPropsService.get("stickConfirmLabel");
-        stickConfirmLabel = stickConfirmLabel.replace("{point}", Symphonys.get("pointStickArticle"));
-        dataModel.put("stickConfirmLabel", stickConfirmLabel);
 
         // Referral statistic
         final String referralUserName = request.getParameter("r");
@@ -567,7 +745,8 @@ public class ArticleProcessor {
      *   "articleCommentable": boolean,
      *   "articleType": int,
      *   "articleRewardContent": "",
-     *   "articleRewardPoint": int
+     *   "articleRewardPoint": int,
+     *   "articleAnonymous": boolean
      * }
      * </pre>
      * </p>
@@ -597,6 +776,9 @@ public class ArticleProcessor {
         final int articleRewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT);
         final String ip = Requests.getRemoteAddr(request);
         final String ua = request.getHeader("User-Agent");
+        final boolean isAnonymous = requestJSONObject.optBoolean(Article.ARTICLE_ANONYMOUS, false);
+        final int articleAnonymous = isAnonymous
+                ? Article.ARTICLE_ANONYMOUS_C_ANONYMOUS : Article.ARTICLE_ANONYMOUS_C_PUBLIC;
 
         final JSONObject article = new JSONObject();
         article.put(Article.ARTICLE_TITLE, articleTitle);
@@ -614,6 +796,7 @@ public class ArticleProcessor {
         if (StringUtils.isNotBlank(ua)) {
             article.put(Article.ARTICLE_UA, ua);
         }
+        article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
 
         try {
             final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
@@ -669,7 +852,9 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject article = articleQueryService.getArticleById(articleId);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject article = articleQueryService.getArticleById(avatarViewMode, articleId);
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -709,10 +894,13 @@ public class ArticleProcessor {
         final long fileMaxSize = Symphonys.getLong("upload.file.maxSize");
         dataModel.put("fileMaxSize", fileMaxSize);
 
+        fillDomainsWithTags(dataModel);
+
         String rewardEditorPlaceholderLabel = langPropsService.get("rewardEditorPlaceholderLabel");
         rewardEditorPlaceholderLabel = rewardEditorPlaceholderLabel.replace("{point}",
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD));
         dataModel.put("rewardEditorPlaceholderLabel", rewardEditorPlaceholderLabel);
+        dataModel.put(Common.BROADCAST_POINT, Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST);
     }
 
     /**
@@ -750,7 +938,9 @@ public class ArticleProcessor {
             return;
         }
 
-        final JSONObject oldArticle = articleQueryService.getArticleById(id);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject oldArticle = articleQueryService.getArticleById(avatarViewMode, id);
         if (null == oldArticle) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -1200,7 +1390,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/markdown", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
@@ -1305,14 +1495,50 @@ public class ArticleProcessor {
         }
 
         final JSONObject article = articleQueryService.getArticle(articleId);
-        if (null == article) {
-            return;
-        }
-
         articleQueryService.processArticleContent(article, request);
 
         context.renderTrueResult().
                 renderJSONValue(Article.ARTICLE_REWARD_CONTENT, article.optString(Article.ARTICLE_REWARD_CONTENT));
+    }
+
+    /**
+     * Article thanks.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/article/thank", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void thank(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final String articleId = request.getParameter(Article.ARTICLE_T_ID);
+        if (Strings.isEmptyOrNull(articleId)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+
+            return;
+        }
+
+        context.renderJSON();
+
+        try {
+            articleMgmtService.thank(articleId, currentUser.optString(Keys.OBJECT_ID));
+        } catch (final ServiceException e) {
+            context.renderMsg(langPropsService.get("transferFailLabel"));
+
+            return;
+        }
+
+        context.renderTrueResult();
     }
 
     /**

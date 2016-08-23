@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,6 +11,7 @@
     </head>
     <body>
         <#include "header.ftl">
+        <@subNav 'community' ''/>
         <div class="main">
             <div class="wrapper">
                 <div class="content chat-room">
@@ -41,32 +43,31 @@
                             </#if>
                         </div>
                         <br/>
-                        <div class="list">
+                        <div class="list" id="comments">
                             <ul>
                                 <#list messages as msg>
                                 <li>
                                     <div class="fn-flex">
                                         <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
-                                        <a rel="nofollow" href="/member/${msg.userName}">
-                                            <div class="avatar" 
-                                                 title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}-64.jpg')"></div>
+                                        <a rel="nofollow" href="${servePath}/member/${msg.userName}">
+                                            <div class="avatar tooltipped tooltipped-se" 
+                                                 aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}')"></div>
                                         </a>
                                         <#else>
-                                        <div class="avatar" 
-                                             title="${msg.userName}" style="background-image:url('${msg.userAvatarURL}-64.jpg')"></div>
+                                        <div class="avatar tooltipped tooltipped-se" 
+                                             aria-label="${msg.userName}" style="background-image:url('${msg.userAvatarURL}')"></div>
                                         </#if>
                                         <div class="fn-flex-1">
                                             <div class="fn-clear">
                                                 <span class="fn-left">
                                                     <#if !msg.userAvatarURL?contains("user-thumbnail.png")>
-                                                    <a rel="nofollow" href="/member/${msg.userName}"
-                                                       title="${msg.userName}">${msg.userName}</a>
+                                                    <a rel="nofollow" href="${servePath}/member/${msg.userName}">${msg.userName}</a>
                                                     <#else>
                                                     ${msg.userName}
                                                     </#if>
                                                 </span>
                                             </div>
-                                            <div class="content-reset">
+                                            <div class="content-reset comment">
                                                 ${msg.content}
                                             </div>
                                         </div>
@@ -86,7 +87,6 @@
         <script>
             Label.uploadLabel = "${uploadLabel}";
         </script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
         <script src="${staticServePath}/js/lib/editor/codemirror.min.js?5120"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
@@ -94,7 +94,7 @@
         <script type="text/javascript" src="${staticServePath}/js/chat-room${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             // Init [ChatRoom] channel
-            ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}/chat-room-channel");
+            ChatRoomChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/chat-room-channel");
             var chatRoomMsgCnt = ${chatRoomMsgCnt};
             Util.uploadFile({
             "type": "img",

@@ -30,9 +30,11 @@ import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Invitecode;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.CaptchaProcessor;
+import org.b3log.symphony.service.InvitecodeQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
 
@@ -41,7 +43,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.7, Apr 23, 2016
+ * @version 1.4.2.8, Jul 4, 2016
  * @since 0.2.0
  */
 @Named
@@ -59,6 +61,12 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
      */
     @Inject
     private OptionQueryService optionQueryService;
+
+    /**
+     * Invitecode query service.
+     */
+    @Inject
+    private InvitecodeQueryService invitecodeQueryService;
 
     /**
      * Max user name length.
@@ -89,6 +97,11 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
      */
     private static final int CAPTCHA_LENGTH = 4;
 
+    /**
+     * Invitecode length.
+     */
+    private static final int INVITECODE_LENGHT = 16;
+
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
@@ -97,28 +110,46 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
         try {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             request.setAttribute(Keys.REQUEST, requestJSONObject);
-
-            // check if admin allow to register
-            final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_REGISTER);
-            if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
-                throw new Exception(langPropsService.get("notAllowRegisterLabel"));
-            }
         } catch (final Exception e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
+        }
+
+        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+        checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
+
+        // check if admin allow to register
+        final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_REGISTER);
+        if ("1".equals(option.optString(Option.OPTION_VALUE))) {
+            checkField(true, "registerFailLabel", "notAllowRegisterLabel");
+        }
+
+        if ("2".equals(option.optString(Option.OPTION_VALUE))) {
+            final String invitecode = requestJSONObject.optString(Invitecode.INVITECODE);
+
+            if (Strings.isEmptyOrNull(invitecode) || INVITECODE_LENGHT != invitecode.length()) {
+                checkField(true, "registerFailLabel", "invalidInvitecodeLabel");
+            }
+
+            final JSONObject ic = invitecodeQueryService.getInvitecode(invitecode);
+            if (null == ic) {
+                checkField(true, "registerFailLabel", "invalidInvitecodeLabel");
+            }
+
+            if (Invitecode.STATUS_C_UNUSED != ic.optInt(Invitecode.STATUS)) {
+                checkField(true, "registerFailLabel", "usedInvitecodeLabel");
+            }
         }
 
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
         final int appRole = requestJSONObject.optInt(UserExt.USER_APP_ROLE);
         //final String password = requestJSONObject.optString(User.USER_PASSWORD);
-        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
         if (UserExt.isReservedUserName(name)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("registerFailLabel")
                     + " - " + langPropsService.get("reservedUserNameLabel")));
         }
 
-        checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
         checkField(invalidUserName(name), "registerFailLabel", "invalidUserNameLabel");
         checkField(!Strings.isEmail(email), "registerFailLabel", "invalidEmailLabel");
         checkField(UserExt.USER_APP_ROLE_C_HACKER != appRole
@@ -144,11 +175,11 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
         if (StringUtils.isBlank(name)) {
             return true;
         }
-        
+
         if (UserExt.isReservedUserName(name)) {
             return true;
         }
-        
+
         final int length = name.length();
         if (length < MIN_USER_NAME_LENGTH || length > MAX_USER_NAME_LENGTH) {
             return true;

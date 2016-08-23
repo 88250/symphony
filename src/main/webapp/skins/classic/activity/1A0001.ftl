@@ -19,8 +19,8 @@
                     <div id="betDiv">
                         <div>
                             ${activity1A0001BetSelectLabel}
-                            <label><input name="smallOrLarge" type="radio" value="1" checked="checked" /> ${activity1A0001BetLargeLabel}</label>
-                            <label><input name="smallOrLarge" type="radio" value="0" /> ${activity1A0001BetSmallLabel}</label>
+                            <label><input name="smallOrLarge" type="radio" value="1" /> ${activity1A0001BetLargeLabel}</label>
+                            <label><input name="smallOrLarge" type="radio" value="0" checked="checked" /> ${activity1A0001BetSmallLabel}</label>
                         </div>
 
                         <div>

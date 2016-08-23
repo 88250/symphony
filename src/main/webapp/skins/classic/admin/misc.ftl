@@ -13,6 +13,9 @@
                 <select id="${item.oId}" name="${item.oId}">
                     <option value="0"<#if "0" == item.optionValue> selected</#if>>${yesLabel}</option>
                     <option value="1"<#if "1" == item.optionValue> selected</#if>>${noLabel}</option>
+                    <#if "miscAllowRegister" == item.oId>
+                    <option value="2"<#if "2" == item.optionValue> selected</#if>>${invitecodeLabel}</option>
+                    </#if>
                 </select>
                 </#list>
 

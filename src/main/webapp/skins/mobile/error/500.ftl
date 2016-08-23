@@ -11,13 +11,11 @@
         <div class="main">
             <div class="wrapper">
                 <div class="fn-hr10"></div>
-                <div class="content">
-                    <h2>500 Internal Server Error!</h2>
-                    <br/>
-                    ${err500Label}
-                </div>
+                <h2>500 Internal Server Error!</h2>
+                <div class="fn-hr10"></div>
+                ${err500Label}
             </div>
         </div>
-        <#include "../footer.ftl">
+        <#include '../footer.ftl'/>
     </body>
 </html>

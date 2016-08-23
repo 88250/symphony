@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${addArticleLabel} - ${symphonyLabel}">
+        <#if !article??><#assign postTitle = addArticleLabel><#else><#assign postTitle = updateArticleLabel></#if>
+        <@head title="${postTitle} - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
@@ -34,10 +35,29 @@
                             ${markdwonGrammarLabel}
                         </div>
                     </div>
-                    <div>
+                    <div class="tags-wrap">
+                        <div class="tags-input"><span class="tags-selected"></span>
                         <input id="articleTags" type="text" tabindex="3" 
-                               value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）"/>
-                        <br/><br/>
+                               value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）" autocomplete="off" />
+                        </div>
+                        <div class="domains-tags">
+                            <#list domains as domain>
+                                <#if domain.domainTags?size gt 0>
+                                    <span data-id="${domain.oId}" class="btn small<#if 0 == domain_index> current</#if>">${domain.domainTitle}</span>&nbsp;
+                                </#if>
+                            </#list>
+                            <div class="fn-hr5"></div>
+                            <#list domains as domain>
+                                <#if domain.domainTags?size gt 0>
+                                <div id="tags${domain.oId}" class="domain-tags<#if 0 != domain_index> fn-none</#if>">
+                                    <#list domain.domainTags as tag>
+                                    <span class="tag">${tag.tagTitle}</span>
+                                    </#list>
+                                </div>
+                                </#if>
+                            </#list>
+                        </div>
+                        <br/>
                     </div>
                     <button id="showReward" class="fn-ellipsis" onclick="$(this).next().show(); $(this).hide()">
                         ${rewardEditorPlaceholderLabel} &dtrif;
@@ -49,7 +69,8 @@
                         </div>
                         <div>
                             <input id="articleRewardPoint" type="number" tabindex="5" min="1"
-                                   value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint}</#if>" placeholder="${rewardPointLabel}" />
+                                   <#if article?? && 0 < article.articleRewardPoint>data-orval="${article.articleRewardPoint}"</#if> 
+                                   value="<#if article?? && 0 < article.articleRewardPoint>${article.articleRewardPoint?c}</#if>" placeholder="${rewardPointLabel}" />
                         </div>
                     </div>
                     <br/>
@@ -76,31 +97,32 @@
                         <input class="fn-none" type="radio" name="articleType" value="${article.articleType}" checked="checked"/> 
                         </#if>
                     </div>
-                    <div class="fn-clear">
-                        <br/>
-                        <div class="fn-left">
-                            <#if !articleType??>
-                            <#assign articleType=article.articleType>
-                            </#if>
-                            <#if 0 == articleType>
-                            <span class="icon-article"></span> ${articleLabel} 
-                            <span class="ft-gray"><span class="ft-green">提问</span>或<span class="ft-green">分享</span>对别人有帮助的经验与见解</span>
-                            <#elseif 1 == articleType>
-                            <span class="icon-locked"></span> ${discussionLabel}
-                            <span class="ft-gray">@好友并在<span class="ft-red">私密</span>空间中进行交流</span>
-                            <#elseif 2 == articleType>
-                            <span class="icon-feed"></span> ${cityBroadcastLabel}
-                            <span class="ft-gray">发起你所在城市的招聘、Meetup 等，仅需<i>${broadcastPoint}</i> 积分</span>
-                            <#elseif 3 == articleType>
-                            <span class="icon-video"></span> ${thoughtLabel}
-                            <span class="ft-gray">写作过程的记录与重放，文字版的<span class="ft-red">沙画</span>表演
-                                <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
-                            </#if>
-                        </div>
-
-                        <button class="red fn-right" tabindex="10" onclick="AddArticle.add(<#if article??> '${article.oId}' <#else> null </#if>,'${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button><br/><br/>
-                    </div>
                     <br/>
+                    <div class="fn-clear">
+                        <#if !articleType??>
+                        <#assign articleType=article.articleType>
+                        </#if>
+                        <#if 0 == articleType>
+                        <span class="icon-article"></span> ${articleLabel} 
+                        <span class="ft-gray"><span class="ft-green">提问</span>或<span class="ft-green">分享</span>对别人有帮助的经验与见解</span>
+                        <#elseif 1 == articleType>
+                        <span class="icon-locked"></span> ${discussionLabel}
+                        <span class="ft-gray">@好友并在<span class="ft-red">私密</span>空间中进行交流</span>
+                        <#elseif 2 == articleType>
+                        <span class="icon-feed"></span> ${cityBroadcastLabel}
+                        <span class="ft-gray">发起你所在城市的招聘、Meetup 等，仅需<i>${broadcastPoint}</i> 积分</span>
+                        <#elseif 3 == articleType>
+                        <span class="icon-video"></span> ${thoughtLabel}
+                        <span class="ft-gray">写作过程的记录与重放，文字版的<span class="ft-red">沙画</span>表演
+                            <a href="https://hacpai.com/article/1441942422856" target="_blank">(?)</a></span>
+                        </#if>
+                        <div class="fn-right">
+                            <label class="article-anonymous">${anonymousLabel}<input
+                                    <#if article??> disabled="disabled"<#if 1 == article.articleAnonymous> checked</#if></#if>
+                                    type="checkbox" id="articleAnonymous"></label>
+                            <button class="red" tabindex="10" onclick="AddArticle.add('${csrfToken}')"><#if article??>${submitLabel}<#else>${postLabel}</#if></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -110,37 +132,40 @@
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
         <script>
-                        Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
-                        Label.articleContentErrorLabel = "${articleContentErrorLabel}";
-                        Label.tagsErrorLabel = "${tagsErrorLabel}";
-                        Label.userName = "${userName}";
-                        Label.recordDeniedLabel = "${recordDeniedLabel}";
-                        Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-                        Label.uploadLabel = "${uploadLabel}";
-                        Label.audioRecordingLabel = '${audioRecordingLabel}';
+                            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
+                            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
+                            Label.tagsErrorLabel = "${tagsErrorLabel}";
+                            Label.userName = "${userName}";
+                            Label.recordDeniedLabel = "${recordDeniedLabel}";
+                            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
+                            Label.uploadLabel = "${uploadLabel}";
+                            Label.audioRecordingLabel = '${audioRecordingLabel}';
+                            Label.uploadingLabel = '${uploadingLabel}';
+                            Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
+                            <#if article??>Label.articleOId = '${article.oId}' ;</#if>
         </script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                        Util.uploadFile({
-                        "id": "fileUpload",
-                                "pasteZone": $("#articleContent").next().next(),
-                                "qiniuUploadToken": "${qiniuUploadToken}",
-                                "editor": AddArticle.editor,
-                                "uploadingLabel": "${uploadingLabel}",
-                                "qiniuDomain": "${qiniuDomain}",
-                                "imgMaxSize": ${imgMaxSize?c},
-                                "fileMaxSize": ${fileMaxSize?c}
-                        });
-                        Util.uploadFile({
-                        "id": "rewardFileUpload",
-                                "pasteZone": $("#articleRewardContent").next().next(),
-                                "qiniuUploadToken": "${qiniuUploadToken}",
-                                "editor": AddArticle.rewardEditor,
-                                "uploadingLabel": "${uploadingLabel}",
-                                "qiniuDomain": "${qiniuDomain}",
-                                "imgMaxSize": ${imgMaxSize?c},
-                                "fileMaxSize": ${fileMaxSize?c}
-                        });
+                            Util.uploadFile({
+                            "id": "fileUpload",
+                                    "pasteZone": $("#articleContent").next().next(),
+                                    "qiniuUploadToken": "${qiniuUploadToken}",
+                                    "editor": AddArticle.editor,
+                                    "uploadingLabel": "${uploadingLabel}",
+                                    "qiniuDomain": "${qiniuDomain}",
+                                    "imgMaxSize": ${imgMaxSize?c},
+                                    "fileMaxSize": ${fileMaxSize?c}
+                            });
+                            Util.uploadFile({
+                            "id": "rewardFileUpload",
+                                    "pasteZone": $("#articleRewardContent").next().next(),
+                                    "qiniuUploadToken": "${qiniuUploadToken}",
+                                    "editor": AddArticle.rewardEditor,
+                                    "uploadingLabel": "${uploadingLabel}",
+                                    "qiniuDomain": "${qiniuDomain}",
+                                    "imgMaxSize": ${imgMaxSize?c},
+                                    "fileMaxSize": ${fileMaxSize?c}
+                            });
         </script>
     </body>
 </html>

@@ -27,7 +27,7 @@
                                         <div class="avatar-small fn-left" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                                         &nbsp;
                                         </#if>
-                                        <h2><a class="ft-red" rel="tag" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
+                                        <h2><a class="ft-red" rel="tag" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
                                         <span class="ft-gray fn-right">
                                             ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
                                             ${cmtLabel} ${tag.tagCommentCount?c} 
@@ -42,7 +42,18 @@
                 </div>
                 <div class="side">
                     <#if ADLabel!="">
-                    ${ADLabel}
+                    <div class="module">
+                        <div class="module-header">
+                            <h2>
+                                ${sponsorLabel} 
+                                <a href="https://hacpai.com/article/1460083956075" class="fn-right ft-13 ft-gray" target="_blank">${wantPutOnLabel}</a>
+                            </h2>
+                        </div>
+                        <div class="module-panel ad fn-clear">
+                            ${ADLabel}
+                        </div>
+                    </div>
+                    </#if>
                     </#if>
                     <div class="module">
                         <div class="module-header">
@@ -78,7 +89,7 @@
                                     <#if tag.tagIconPath!="">
                                     <div class="avatar fn-left" style="background-image: url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                                     </#if>
-                                    <h2><a rel="tag" class="ft-green" href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
+                                    <h2><a rel="tag" class="ft-green" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
                                     <span class="ft-gray fn-right">
                                         ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount?c} 

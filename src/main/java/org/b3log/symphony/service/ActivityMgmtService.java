@@ -57,7 +57,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.7.2, Jun 8, 2016
+ * @version 1.4.9.3, Aug 1, 2016
  * @since 1.3.0
  */
 @Service
@@ -209,7 +209,7 @@ public class ActivityMgmtService {
 
             pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                     Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHARACTER, Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHARACTER,
-                    characterId);
+                    characterId, System.currentTimeMillis());
 
             try {
                 final JSONObject user = userQueryService.getUser(userId);
@@ -217,10 +217,11 @@ public class ActivityMgmtService {
 
                 // Timeline
                 final JSONObject timeline = new JSONObject();
+                timeline.put(Common.USER_ID, userId);
                 timeline.put(Common.TYPE, Common.ACTIVITY);
                 String content = langPropsService.get("timelineActivityCharacterLabel");
                 content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
-                        + "/member/" + userName + "'>" + userName + "</a>");
+                        + "/member/" + userName + "'>" + userName + "</a>").replace("${servePath}", Latkes.getServePath());
                 timeline.put(Common.CONTENT, content);
 
                 timelineMgmtService.addTimeline(timeline);
@@ -254,7 +255,7 @@ public class ActivityMgmtService {
                 % (Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX - Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN + 1)
                 + Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN;
         final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
-                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN, sum, userId);
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN, sum, userId, System.currentTimeMillis());
         if (!succ) {
             return Integer.MIN_VALUE;
         }
@@ -327,17 +328,18 @@ public class ActivityMgmtService {
                 // Additional Point
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                         Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN_STREAK,
-                        Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK, userId);
+                        Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK, userId, System.currentTimeMillis());
             }
 
             final String userName = user.optString(User.USER_NAME);
 
             // Timeline
             final JSONObject timeline = new JSONObject();
+            timeline.put(Common.USER_ID, userId);
             timeline.put(Common.TYPE, Common.ACTIVITY);
             String content = langPropsService.get("timelineActivityCheckinLabel");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
-                    + "/member/" + userName + "'>" + userName + "</a>");
+                    + "/member/" + userName + "'>" + userName + "</a>").replace("${servePath}", Latkes.getServePath());
             timeline.put(Common.CONTENT, content);
 
             timelineMgmtService.addTimeline(timeline);
@@ -373,7 +375,7 @@ public class ActivityMgmtService {
         final String date = DateFormatUtils.format(new Date(), "yyyyMMdd");
 
         final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
-                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001, amount, date + "-" + smallOrLarge);
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001, amount, date + "-" + smallOrLarge, System.currentTimeMillis());
 
         ret.put(Keys.STATUS_CODE, succ);
 
@@ -387,10 +389,11 @@ public class ActivityMgmtService {
 
             // Timeline
             final JSONObject timeline = new JSONObject();
+            timeline.put(Common.USER_ID, userId);
             timeline.put(Common.TYPE, Common.ACTIVITY);
             String content = langPropsService.get("timelineActivity1A0001Label");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
-                    + "/member/" + userName + "'>" + userName + "</a>");
+                    + "/member/" + userName + "'>" + userName + "</a>").replace("${servePath}", Latkes.getServePath());
             timeline.put(Common.CONTENT, content);
 
             timelineMgmtService.addTimeline(timeline);
@@ -475,7 +478,7 @@ public class ActivityMgmtService {
 
             final boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                     Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_1A0001_COLLECT, amount,
-                    DateFormatUtils.format(new Date(), "yyyyMMdd") + "-" + smallOrLargeResult);
+                    DateFormatUtils.format(new Date(), "yyyyMMdd") + "-" + smallOrLargeResult, System.currentTimeMillis());
 
             if (succ) {
                 String msg = langPropsService.get("activity1A0001CollectSucc1Label");
@@ -496,29 +499,30 @@ public class ActivityMgmtService {
      * Collects yesterday's liveness reward.
      *
      * @param userId the specified user id
-     * @return {@code Random int} if checkin succeeded, returns {@code Integer.MIN_VALUE} otherwise
      */
-    public synchronized int yesterdayLivenessReward(final String userId) {
+    public synchronized void yesterdayLivenessReward(final String userId) {
         if (activityQueryService.isCollectedYesterdayLivenessReward(userId)) {
-            return Integer.MIN_VALUE;
+            return;
         }
 
         final JSONObject yesterdayLiveness = livenessQueryService.getYesterdayLiveness(userId);
         if (null == yesterdayLiveness) {
-            return Integer.MIN_VALUE;
+            return;
         }
 
         final int sum = Liveness.calcPoint(yesterdayLiveness);
 
-        boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
-                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD, sum, userId);
-        if (!succ) {
-            return Integer.MIN_VALUE;
+        if (0 == sum) {
+            return;
         }
 
-        // Liveness
-        livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
+        boolean succ = null != pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
+                Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_YESTERDAY_LIVENESS_REWARD, sum, userId, System.currentTimeMillis());
+        if (!succ) {
+            return;
+        }
 
-        return 0;
+        // Today liveness (activity)
+        livenessMgmtService.incLiveness(userId, Liveness.LIVENESS_ACTIVITY);
     }
 }

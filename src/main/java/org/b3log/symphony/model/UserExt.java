@@ -22,12 +22,77 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.18.1.10, Jun 13, 2016
+ * @version 2.24.1.11, Aug 14, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
-    
+
+    /**
+     * Key of user avatar view mode.
+     */
+    public static final String USER_AVATAR_VIEW_MODE = "userAvatarViewMode";
+
+    /**
+     * Key of user list page size.
+     */
+    public static final String USER_LIST_PAGE_SIZE = "userListPageSize";
+
+    /**
+     * Key of user point status.
+     */
+    public static final String USER_POINT_STATUS = "userPointStatus";
+
+    /**
+     * Key of user follower status.
+     */
+    public static final String USER_FOLLOWER_STATUS = "userFollowerStatus";
+
+    /**
+     * Key of user following article status.
+     */
+    public static final String USER_FOLLOWING_ARTICLE_STATUS = "userFollowingArticleStatus";
+
+    /**
+     * Key of user following tag status.
+     */
+    public static final String USER_FOLLOWING_TAG_STATUS = "userFollowingTagStatus";
+
+    /**
+     * Key of user following user status.
+     */
+    public static final String USER_FOLLOWING_USER_STATUS = "userFollowingUserStatus";
+
+    /**
+     * Key of user comment status.
+     */
+    public static final String USER_COMMENT_STATUS = "userCommentStatus";
+
+    /**
+     * Key of user article status.
+     */
+    public static final String USER_ARTICLE_STATUS = "userArticleStatus";
+
+    /**
+     * Key of user online status.
+     */
+    public static final String USER_ONLINE_STATUS = "userOnlineStatus";
+
+    /**
+     * Key of user timeline status.
+     */
+    public static final String USER_TIMELINE_STATUS = "userTimelineStatus";
+
+    /**
+     * Key of user User-Agent status.
+     */
+    public static final String USER_UA_STATUS = "userUAStatus";
+
+    /**
+     * Key of user notify status.
+     */
+    public static final String USER_NOTIFY_STATUS = "userNotifyStatus";
+
     /**
      * Key of user nickname.
      */
@@ -271,6 +336,17 @@ public final class UserExt {
      */
     public static final String NULL_USER_NAME = "_";
 
+    //// Anonymous user.
+    /**
+     * Anonymous user name.
+     */
+    public static final String ANONYMOUS_USER_NAME = "someone";
+
+    /**
+     * Anonymous user id.
+     */
+    public static final String ANONYMOUS_USER_ID = "0";
+
     //// Status constants
     /**
      * User status - valid.
@@ -286,6 +362,11 @@ public final class UserExt {
      * User status - registered but not verified.
      */
     public static final int USER_STATUS_C_NOT_VERIFIED = 2;
+
+    /**
+     * User status - invalid login.
+     */
+    public static final int USER_STATUS_C_INVALID_LOGIN = 3;
 
     //// Join point rank constants
     /**
@@ -307,6 +388,38 @@ public final class UserExt {
      * User join used point rank - not join.
      */
     public static final int USER_JOIN_USED_POINT_RANK_C_NOT_JOIN = 1;
+
+    //// User XXX Status constants
+    /**
+     * User XXX (notify/point/follower/following article/following tag/following user/comment/article) status - public.
+     */
+    public static final int USER_XXX_STATUS_C_PUBLIC = 0;
+
+    /**
+     * User XXX (notify/point/follower/following article/following tag/following user/comment/article) status - private.
+     */
+    public static final int USER_XXX_STATUS_C_PRIVATE = 1;
+
+    /**
+     * User XXX (UA) status - enabled.
+     */
+    public static final int USER_XXX_STATUS_C_ENABLED = 0;
+
+    /**
+     * User XXX (UA) status - disabled.
+     */
+    public static final int USER_XXX_STATUS_C_DISABLED = 1;
+
+    //// Avatar View Mode constants
+    /**
+     * User avatar view mode - original.
+     */
+    public static final int USER_AVATAR_VIEW_MODE_C_ORIGINAL = 0;
+
+    /**
+     * User avatar view mode - static.
+     */
+    public static final int USER_AVATAR_VIEW_MODE_C_STATIC = 1;
 
     //// Comment View Mode constants
     /**

@@ -19,7 +19,8 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.14.20, Jun 13, 2016
+ * @author Zephyr
+ * @version 1.31.19.25, Aug 16, 2016
  */
 
 /**
@@ -27,6 +28,59 @@
  * @static
  */
 var Util = {
+    /**
+     * 粘贴中包含图片和文案时，需要处理为 markdown 语法
+     * @param {type} text
+     * @returns {String}
+     */
+    processClipBoard: function (text, cm) {
+        var text = toMarkdown(text, {converters: [
+                {
+                    filter: 'img',
+                    replacement: function (innerHTML, node) {
+                        if (1 === node.attributes.length) {
+                            return "";
+                        }
+
+                        var requestJSONObject = {
+                            url: node.src
+                        };
+
+                        $.ajax({
+                            url: Label.servePath + "/fetch-upload",
+                            type: "POST",
+                            data: JSON.stringify(requestJSONObject),
+                            cache: false,
+                            success: function (result, textStatus) {
+                                if (result.sc) {
+                                    var value = cm.getValue();
+                                    value = value.replace(result.originalURL, result.url);
+                                    cm.setValue(value);
+                                }
+                            }
+                        });
+
+                        return "![](" + node.src + ")";
+                    }
+                }
+            ], gfm: true});
+
+        // ascii 160 替换为 30
+        text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
+        return $.trim(text);
+    },
+    /**
+     * @description 根据 url search 获取值
+     * @param {type} name
+     * @returns {String}
+     */
+    getParameterByName: function (name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    },
     /**
      * 通过 UA 获取设备 
      * @param {String} ua user agent
@@ -51,7 +105,7 @@ var Util = {
         $('#search').autocomplete({
             hint: false,
             templates: {
-                footer: '<div class="fn-right fn-pointer" onclick="window.open(\'https://www.algolia.com/\')">'
+                footer: '<div class="fn-right fn-pointer" onclick="window.open(\'https://www.algolia.com/referrals/1faf0d17/join\')">'
                         + '<span class="ft-gray">With &hearts; from</span> <img src="' + Label.staticServePath + '/images/services/algolia128x40.png" /> </div>'
             }
         }, [{
@@ -101,7 +155,29 @@ var Util = {
         return editor;
     },
     initCodeMirror: function () {
-        var emojString = "+1,-1,100,1234,8ball,a,ab,abc,abcd,accept,aerial_tramway,airplane,alarm_clock,alien,ambulance,anchor,angel,anger,angry,anguished,ant,apple,aquarius,aries,arrow_backward,arrow_double_down,arrow_double_up,arrow_down,arrow_down_small,arrow_forward,arrow_heading_down,arrow_heading_up,arrow_left,arrow_lower_left,arrow_lower_right,arrow_right,arrow_right_hook,arrow_up,arrow_up_down,arrow_up_small,arrow_upper_left,arrow_upper_right,arrows_clockwise,arrows_counterclockwise,art,articulated_lorry,astonished,atm,b,baby,baby_bottle,baby_chick,baby_symbol,back,baggage_claim,balloon,ballot_box_with_check,bamboo,banana,bangbang,bank,bar_chart,barber,baseball,basketball,bath,bathtub,battery,bear,bee,beer,beers,beetle,beginner,bell,bento,bicyclist,bike,bikini,bird,birthday,black_circle,black_joker,black_medium_small_square,black_medium_square,black_nib,black_small_square,black_square,black_square_button,blossom,blowfish,blue_book,blue_car,blue_heart,blush,boar,boat,bomb,book,bookmark,bookmark_tabs,books,boom,boot,bouquet,bow,bowling,bowtie,boy,bread,bride_with_veil,bridge_at_night,briefcase,broken_heart,bug,bulb,bullettrain_front,bullettrain_side,bus,busstop,bust_in_silhouette,busts_in_silhouette,cactus,cake,calendar,calling,camel,camera,cancer,candy,capital_abcd,capricorn,car,card_index,carousel_horse,cat,cat2,cd,chart,chart_with_downwards_trend,chart_with_upwards_trend,checkered_flag,cherries,cherry_blossom,chestnut,chicken,children_crossing,chocolate_bar,christmas_tree,church,cinema,circus_tent,city_sunrise,city_sunset,cl,clap,clapper,clipboard,clock1,clock10,clock1030,clock11,clock1130,clock12,clock1230,clock130,clock2,clock230,clock3,clock330,clock4,clock430,clock5,clock530,clock6,clock630,clock7,clock730,clock8,clock830,clock9,clock930,closed_book,closed_lock_with_key,closed_umbrella,cloud,clubs,cn,cocktail,coffee,cold_sweat,collision,computer,confetti_ball,confounded,confused,congratulations,construction,construction_worker,convenience_store,cookie,cool,cop,copyright,corn,couple,couple_with_heart,couplekiss,cow,cow2,credit_card,crescent_moon,crocodile,crossed_flags,crown,cry,crying_cat_face,crystal_ball,cupid,curly_loop,currency_exchange,curry,custard,customs,cyclone,dancer,dancers,dango,dart,dash,date,de,deciduous_tree,department_store,diamond_shape_with_a_dot_inside,diamonds,disappointed,disappointed_relieved,dizzy,dizzy_face,do_not_litter,dog,dog2,dollar,dolls,dolphin,donut,door,doughnut,dragon,dragon_face,dress,dromedary_camel,droplet,dvd,e-mail,ear,ear_of_rice,earth_africa,earth_americas,earth_asia,egg,eggplant,eight,eight_pointed_black_star,eight_spoked_asterisk,electric_plug,elephant,email,end,envelope,es,euro,european_castle,european_post_office,evergreen_tree,exclamation,expressionless,eyeglasses,eyes,facepunch,factory,fallen_leaf,family,fast_forward,fax,fearful,feelsgood,feet,ferris_wheel,file_folder,finnadie,fire,fire_engine,fireworks,first_quarter_moon,first_quarter_moon_with_face,fish,fish_cake,fishing_pole_and_fish,fist,five,flags,flashlight,floppy_disk,flower_playing_cards,flushed,foggy,football,fork_and_knife,fountain,four,four_leaf_clover,fr,free,fried_shrimp,fries,frog,frowning,fu,fuelpump,full_moon,full_moon_with_face,game_die,gb,gem,gemini,ghost,gift,gift_heart,girl,globe_with_meridians,goat,goberserk,godmode,golf,grapes,green_apple,green_book,green_heart,grey_exclamation,grey_question,grimacing,grin,grinning,guardsman,guitar,gun,haircut,hamburger,hammer,hamster,hand,handbag,hankey,hash,hatched_chick,hatching_chick,headphones,hear_no_evil,heart,heart_decoration,heart_eyes,heart_eyes_cat,heartbeat,heartpulse,hearts,heavy_check_mark,heavy_division_sign,heavy_dollar_sign,heavy_exclamation_mark,heavy_minus_sign,heavy_multiplication_x,heavy_plus_sign,helicopter,herb,hibiscus,high_brightness,high_heel,hocho,honey_pot,honeybee,horse,horse_racing,hospital,hotel,hotsprings,hourglass,hourglass_flowing_sand,house,house_with_garden,hurtrealbad,hushed,ice_cream,icecream,id,ideograph_advantage,imp,inbox_tray,incoming_envelope,information_desk_person,information_source,innocent,interrobang,iphone,it,izakaya_lantern,jack_o_lantern,japan,japanese_castle,japanese_goblin,japanese_ogre,jeans,joy,joy_cat,jp,key,keycap_ten,kimono,kiss,kissing,kissing_cat,kissing_closed_eyes,kissing_face,kissing_heart,kissing_smiling_eyes,koala,koko,kr,large_blue_circle,large_blue_diamond,large_orange_diamond,last_quarter_moon,last_quarter_moon_with_face,laughing,leaves,ledger,left_luggage,left_right_arrow,leftwards_arrow_with_hook,lemon,leo,leopard,libra,light_rail,link,lips,lipstick,lock,lock_with_ink_pen,lollipop,loop,loudspeaker,love_hotel,love_letter,low_brightness,m,mag,mag_right,mahjong,mailbox,mailbox_closed,mailbox_with_mail,mailbox_with_no_mail,man,man_with_gua_pi_mao,man_with_turban,mans_shoe,maple_leaf,mask,massage,meat_on_bone,mega,melon,memo,mens,metal,metro,microphone,microscope,milky_way,minibus,minidisc,mobile_phone_off,money_with_wings,moneybag,monkey,monkey_face,monorail,mortar_board,mount_fuji,mountain_bicyclist,mountain_cableway,mountain_railway,mouse,mouse2,movie_camera,moyai,muscle,mushroom,musical_keyboard,musical_note,musical_score,mute,nail_care,name_badge,neckbeard,necktie,negative_squared_cross_mark,neutral_face,new,new_moon,new_moon_with_face,newspaper,ng,nine,no_bell,no_bicycles,no_entry,no_entry_sign,no_good,no_mobile_phones,no_mouth,no_pedestrians,no_smoking,non-potable_water,nose,notebook,notebook_with_decorative_cover,notes,nut_and_bolt,o,o2,ocean,octocat,octopus,oden,office,ok,ok_hand,ok_woman,older_man,older_woman,on,oncoming_automobile,oncoming_bus,oncoming_police_car,oncoming_taxi,one,open_file_folder,open_hands,open_mouth,ophiuchus,orange_book,outbox_tray,ox,package,page_facing_up,page_with_curl,pager,palm_tree,panda_face,paperclip,parking,part_alternation_mark,partly_sunny,passport_control,paw_prints,peach,pear,pencil,pencil2,penguin,pensive,performing_arts,persevere,person_frowning,person_with_blond_hair,person_with_pouting_face,phone,pig,pig2,pig_nose,pill,pineapple,pisces,pizza,plus1,point_down,point_left,point_right,point_up,point_up_2,police_car,poodle,poop,post_office,postal_horn,postbox,potable_water,pouch,poultry_leg,pound,pouting_cat,pray,princess,punch,purple_heart,purse,pushpin,put_litter_in_its_place,question,rabbit,rabbit2,racehorse,radio,radio_button,rage,rage1,rage2,rage3,rage4,railway_car,rainbow,raised_hand,raised_hands,raising_hand,ram,ramen,rat,recycle,red_car,red_circle,registered,relaxed,relieved,repeat,repeat_one,restroom,revolving_hearts,rewind,ribbon,rice,rice_ball,rice_cracker,rice_scene,ring,rocket,roller_coaster,rooster,rose,rotating_light,round_pushpin,rowboat,ru,rugby_football,runner,running,running_shirt_with_sash,sa,sagittarius,sailboat,sake,sandal,santa,satellite,satisfied,saxophone,school,school_satchel,scissors,scorpius,scream,scream_cat,scroll,seat,secret,see_no_evil,seedling,seven,shaved_ice,sheep,shell,ship,shipit,shirt,shit,shoe,shower,signal_strength,six,six_pointed_star,ski,skull,sleeping,sleepy,slot_machine,small_blue_diamond,small_orange_diamond,small_red_triangle,small_red_triangle_down,smile,smile_cat,smiley,smiley_cat,smiling_imp,smirk,smirk_cat,smoking,snail,snake,snowboarder,snowflake,snowman,sob,soccer,soon,sos,sound,space_invader,spades,spaghetti,sparkle,sparkler,sparkles,sparkling_heart,speak_no_evil,speaker,speech_balloon,speedboat,squirrel,star,star2,stars,station,statue_of_liberty,steam_locomotive,stew,straight_ruler,strawberry,stuck_out_tongue,stuck_out_tongue_closed_eyes,stuck_out_tongue_winking_eye,sun_with_face,sunflower,sunglasses,sunny,sunrise,sunrise_over_mountains,surfer,sushi,suspect,suspension_railway,sweat,sweat_drops,sweat_smile,sweet_potato,swimmer,symbols,syringe,tada,tanabata_tree,tangerine,taurus,taxi,tea,telephone,telephone_receiver,telescope,tennis,tent,thought_balloon,three,thumbsdown,thumbsup,ticket,tiger,tiger2,tired_face,tm,toilet,tokyo_tower,tomato,tongue,top,tophat,tractor,traffic_light,train,train2,tram,triangular_flag_on_post,triangular_ruler,trident,triumph,trolleybus,trollface,trophy,tropical_drink,tropical_fish,truck,trumpet,tshirt,tulip,turtle,tv,twisted_rightwards_arrows,two,two_hearts,two_men_holding_hands,two_women_holding_hands,u5272,u5408,u55b6,u6307,u6708,u6709,u6e80,u7121,u7533,u7981,u7a7a,uk,umbrella,unamused,underage,unlock,up,us,v,vertical_traffic_light,vhs,vibration_mode,video_camera,video_game,violin,virgo,volcano,vs,walking,waning_crescent_moon,waning_gibbous_moon,warning,watch,water_buffalo,watermelon,wave,wavy_dash,waxing_crescent_moon,waxing_gibbous_moon,wc,weary,wedding,whale,whale2,wheelchair,white_check_mark,white_circle,white_flower,white_large_square,white_medium_small_square,white_medium_square,white_small_square,white_square_button,wind_chime,wine_glass,wink,wolf,woman,womans_clothes,womans_hat,womens,worried,wrench,x,yellow_heart,yen,yum,zap,zero,zzz";
+        var allEmoj = "+1,-1,100,1234,8ball,a,ab,abc,abcd,accept,aerial_tramway,airplane,alarm_clock,alien,ambulance,anchor,angel,anger,angry,anguished,ant,apple,aquarius,aries,arrow_backward,arrow_double_down,arrow_double_up,arrow_down,arrow_down_small,arrow_forward,arrow_heading_down,arrow_heading_up,arrow_left,arrow_lower_left,arrow_lower_right,arrow_right,arrow_right_hook,arrow_up,arrow_up_down,arrow_up_small,arrow_upper_left,arrow_upper_right,arrows_clockwise,arrows_counterclockwise,art,articulated_lorry,astonished,atm,b,baby,baby_bottle,baby_chick,baby_symbol,back,baggage_claim,balloon,ballot_box_with_check,bamboo,banana,bangbang,bank,bar_chart,barber,baseball,basketball,bath,bathtub,battery,bear,bee,beer,beers,beetle,beginner,bell,bento,bicyclist,bike,bikini,bird,birthday,black_circle,black_joker,black_medium_small_square,black_medium_square,black_nib,black_small_square,black_square,black_square_button,blossom,blowfish,blue_book,blue_car,blue_heart,blush,boar,boat,bomb,book,bookmark,bookmark_tabs,books,boom,boot,bouquet,bow,bowling,bowtie,boy,bread,bride_with_veil,bridge_at_night,briefcase,broken_heart,bug,bulb,bullettrain_front,bullettrain_side,bus,busstop,bust_in_silhouette,busts_in_silhouette,cactus,cake,calendar,calling,camel,camera,cancer,candy,capital_abcd,capricorn,car,card_index,carousel_horse,cat,cat2,cd,chart,chart_with_downwards_trend,chart_with_upwards_trend,checkered_flag,cherries,cherry_blossom,chestnut,chicken,children_crossing,chocolate_bar,christmas_tree,church,cinema,circus_tent,city_sunrise,city_sunset,cl,clap,clapper,clipboard,clock1,clock10,clock1030,clock11,clock1130,clock12,clock1230,clock130,clock2,clock230,clock3,clock330,clock4,clock430,clock5,clock530,clock6,clock630,clock7,clock730,clock8,clock830,clock9,clock930,closed_book,closed_lock_with_key,closed_umbrella,cloud,clubs,cn,cocktail,coffee,cold_sweat,collision,computer,confetti_ball,confounded,confused,congratulations,construction,construction_worker,convenience_store,cookie,cool,cop,copyright,corn,couple,couple_with_heart,couplekiss,cow,cow2,credit_card,crescent_moon,crocodile,crossed_flags,crown,cry,crying_cat_face,crystal_ball,cupid,curly_loop,currency_exchange,curry,custard,customs,cyclone,dancer,dancers,dango,dart,dash,date,de,deciduous_tree,department_store,diamond_shape_with_a_dot_inside,diamonds,disappointed,disappointed_relieved,dizzy,dizzy_face,do_not_litter,dog,dog2,dollar,dolls,dolphin,donut,door,doughnut,dragon,dragon_face,dress,dromedary_camel,droplet,dvd,e-mail,ear,ear_of_rice,earth_africa,earth_americas,earth_asia,egg,eggplant,eight,eight_pointed_black_star,eight_spoked_asterisk,electric_plug,elephant,email,end,envelope,es,euro,european_castle,european_post_office,evergreen_tree,exclamation,expressionless,eyeglasses,eyes,facepunch,factory,fallen_leaf,family,fast_forward,fax,fearful,feelsgood,feet,ferris_wheel,file_folder,finnadie,fire,fire_engine,fireworks,first_quarter_moon,first_quarter_moon_with_face,fish,fish_cake,fishing_pole_and_fish,fist,five,flags,flashlight,floppy_disk,flower_playing_cards,flushed,foggy,football,fork_and_knife,fountain,four,four_leaf_clover,fr,free,fried_shrimp,fries,frog,frowning,fu,fuelpump,full_moon,full_moon_with_face,game_die,gb,gem,gemini,ghost,gift,gift_heart,girl,globe_with_meridians,goat,goberserk,godmode,golf,grapes,green_apple,green_book,green_heart,grey_exclamation,grey_question,grimacing,grin,grinning,guardsman,guitar,gun,haircut,hamburger,hammer,hamster,hand,handbag,hankey,hash,hatched_chick,hatching_chick,headphones,hear_no_evil,heart,heart_decoration,heart_eyes,heart_eyes_cat,heartbeat,heartpulse,hearts,heavy_check_mark,heavy_division_sign,heavy_dollar_sign,heavy_exclamation_mark,heavy_minus_sign,heavy_multiplication_x,heavy_plus_sign,helicopter,herb,hibiscus,high_brightness,high_heel,hocho,honey_pot,honeybee,horse,horse_racing,hospital,hotel,hotsprings,hourglass,hourglass_flowing_sand,house,house_with_garden,hurtrealbad,hushed,ice_cream,icecream,id,ideograph_advantage,imp,inbox_tray,incoming_envelope,information_desk_person,information_source,innocent,interrobang,iphone,it,izakaya_lantern,jack_o_lantern,japan,japanese_castle,japanese_goblin,japanese_ogre,jeans,joy,joy_cat,jp,key,keycap_ten,kimono,kiss,kissing,kissing_cat,kissing_closed_eyes,kissing_face,kissing_heart,kissing_smiling_eyes,koala,koko,kr,large_blue_circle,large_blue_diamond,large_orange_diamond,last_quarter_moon,last_quarter_moon_with_face,laughing,leaves,ledger,left_luggage,left_right_arrow,leftwards_arrow_with_hook,lemon,leo,leopard,libra,light_rail,link,lips,lipstick,lock,lock_with_ink_pen,lollipop,loop,loudspeaker,love_hotel,love_letter,low_brightness,m,mag,mag_right,mahjong,mailbox,mailbox_closed,mailbox_with_mail,mailbox_with_no_mail,man,man_with_gua_pi_mao,man_with_turban,mans_shoe,maple_leaf,mask,massage,meat_on_bone,mega,melon,memo,mens,metal,metro,microphone,microscope,milky_way,minibus,minidisc,mobile_phone_off,money_with_wings,moneybag,monkey,monkey_face,monorail,mortar_board,mount_fuji,mountain_bicyclist,mountain_cableway,mountain_railway,mouse,mouse2,movie_camera,moyai,muscle,mushroom,musical_keyboard,musical_note,musical_score,mute,nail_care,name_badge,neckbeard,necktie,negative_squared_cross_mark,neutral_face,new,new_moon,new_moon_with_face,newspaper,ng,nine,no_bell,no_bicycles,no_entry,no_entry_sign,no_good,no_mobile_phones,no_mouth,no_pedestrians,no_smoking,non-potable_water,nose,notebook,notebook_with_decorative_cover,notes,nut_and_bolt,o,o2,ocean,octocat,octopus,oden,office,ok,ok_hand,ok_woman,older_man,older_woman,on,oncoming_automobile,oncoming_bus,oncoming_police_car,oncoming_taxi,one,open_file_folder,open_hands,open_mouth,ophiuchus,orange_book,outbox_tray,ox,package,page_facing_up,page_with_curl,pager,palm_tree,panda_face,paperclip,parking,part_alternation_mark,partly_sunny,passport_control,paw_prints,peach,pear,pencil,pencil2,penguin,pensive,performing_arts,persevere,person_frowning,person_with_blond_hair,person_with_pouting_face,phone,pig,pig2,pig_nose,pill,pineapple,pisces,pizza,plus1,point_down,point_left,point_right,point_up,point_up_2,police_car,poodle,poop,post_office,postal_horn,postbox,potable_water,pouch,poultry_leg,pound,pouting_cat,pray,princess,punch,purple_heart,purse,pushpin,put_litter_in_its_place,question,rabbit,rabbit2,racehorse,radio,radio_button,rage,rage1,rage2,rage3,rage4,railway_car,rainbow,raised_hand,raised_hands,raising_hand,ram,ramen,rat,recycle,red_car,red_circle,registered,relaxed,relieved,repeat,repeat_one,restroom,revolving_hearts,rewind,ribbon,rice,rice_ball,rice_cracker,rice_scene,ring,rocket,roller_coaster,rooster,rose,rotating_light,round_pushpin,rowboat,ru,rugby_football,runner,running,running_shirt_with_sash,sa,sagittarius,sailboat,sake,sandal,santa,satellite,satisfied,saxophone,school,school_satchel,scissors,scorpius,scream,scream_cat,scroll,seat,secret,see_no_evil,seedling,seven,shaved_ice,sheep,shell,ship,shipit,shirt,shit,shoe,shower,signal_strength,six,six_pointed_star,ski,skull,sleeping,sleepy,slot_machine,small_blue_diamond,small_orange_diamond,small_red_triangle,small_red_triangle_down,smile,smile_cat,smiley,smiley_cat,smiling_imp,smirk,smirk_cat,smoking,snail,snake,snowboarder,snowflake,snowman,sob,soccer,soon,sos,sound,space_invader,spades,spaghetti,sparkle,sparkler,sparkles,sparkling_heart,speak_no_evil,speaker,speech_balloon,speedboat,squirrel,star,star2,stars,station,statue_of_liberty,steam_locomotive,stew,straight_ruler,strawberry,stuck_out_tongue,stuck_out_tongue_closed_eyes,stuck_out_tongue_winking_eye,sun_with_face,sunflower,sunglasses,sunny,sunrise,sunrise_over_mountains,surfer,sushi,suspect,suspension_railway,sweat,sweat_drops,sweat_smile,sweet_potato,swimmer,symbols,syringe,tada,tanabata_tree,tangerine,taurus,taxi,tea,telephone,telephone_receiver,telescope,tennis,tent,thought_balloon,three,thumbsdown,thumbsup,ticket,tiger,tiger2,tired_face,tm,toilet,tokyo_tower,tomato,tongue,top,tophat,tractor,traffic_light,train,train2,tram,triangular_flag_on_post,triangular_ruler,trident,triumph,trolleybus,trollface,trophy,tropical_drink,tropical_fish,truck,trumpet,tshirt,tulip,turtle,tv,twisted_rightwards_arrows,two,two_hearts,two_men_holding_hands,two_women_holding_hands,u5272,u5408,u55b6,u6307,u6708,u6709,u6e80,u7121,u7533,u7981,u7a7a,uk,umbrella,unamused,underage,unlock,up,us,v,vertical_traffic_light,vhs,vibration_mode,video_camera,video_game,violin,virgo,volcano,vs,walking,waning_crescent_moon,waning_gibbous_moon,warning,watch,water_buffalo,watermelon,wave,wavy_dash,waxing_crescent_moon,waxing_gibbous_moon,wc,weary,wedding,whale,whale2,wheelchair,white_check_mark,white_circle,white_flower,white_large_square,white_medium_small_square,white_medium_square,white_small_square,white_square_button,wind_chime,wine_glass,wink,wolf,woman,womans_clothes,womans_hat,womens,worried,wrench,x,yellow_heart,yen,yum,zap,zero,zzz";
+        var emojString = '';
+
+        $.ajax({
+            async: false,
+            url: Label.servePath + "/users/emotions",
+            type: "GET",
+            success: function (result) {
+                emojString = result.emotions;
+            }
+        });
+
+        if ("" === emojString) {
+            emojString = allEmoj;
+        } else {
+            var temp = emojString.split(",");
+            for (var ti = 0; ti < temp.length; ti++) {
+                allEmoj = allEmoj.replace(temp[ti] + ',', ',');
+            }
+            emojString = emojString + ',' + allEmoj;
+        }
+        emojString = emojString.replace(/,+/g, ','); // 全局替换重复的逗号
+
         var emojis = emojString.split(/,/);
         var emojiAutocompleteHints = [];
         for (var i = 0; i < emojis.length; i++) {
@@ -133,7 +209,7 @@ var Util = {
 
             $.ajax({
                 async: false,
-                url: "/users/names?name=" + tok.string.substring(1),
+                url: Label.servePath + "/users/names?name=" + tok.string.substring(1),
                 type: "GET",
                 success: function (result) {
                     if (!result.sc || !result.userNames) {
@@ -148,7 +224,7 @@ var Util = {
 
                         autocompleteHints.push({
                             displayText: "<span style='font-size: 1rem;line-height:22px'><img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='" + avatar
-                                    + "-64.jpg?" + updateTime + "'> " + name + "</span>",
+                                    + "'> " + name + "</span>",
                             text: name + " "
                         });
                     }
@@ -231,7 +307,7 @@ var Util = {
             Audio.handleStopRecording();
 
             var cursor = cm.getCursor();
-            cm.replaceRange(uploadingLabel, CodeMirror.Pos(cursor.line, cursor.ch - Label.audioRecordingLabel.length), cursor);
+            cm.replaceRange(Label.uploadingLabel, CodeMirror.Pos(cursor.line, cursor.ch - Label.audioRecordingLabel.length), cursor);
 
             var blob = Audio.wavFileBlob.getDataBlob();
             var key = Math.floor(Math.random() * 100) + "" + new Date().getTime() + ""
@@ -239,107 +315,59 @@ var Util = {
 
             var reader = new FileReader();
             reader.onload = function (event) {
-                var fd = new FormData();
-                fd.append('token', qiniuToken);
-                fd.append('file', blob);
-                fd.append('key', key);
+                if ("" !== qiniuToken) {
+                    var fd = new FormData();
+                    fd.append('token', qiniuToken);
+                    fd.append('file', blob);
+                    fd.append('key', key);
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'https://up.qbox.me/',
-                    data: fd,
-                    processData: false,
-                    contentType: false,
-                    paramName: "file",
-                    success: function (data) {
-                        var cursor = cm.getCursor();
-                        cm.replaceRange('<audio controls="controls" src="' + qiniuDomain + '/' + key + '"></audio>\n\n',
-                                CodeMirror.Pos(cursor.line, cursor.ch - uploadingLabel.length), cursor);
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert("Error: " + errorThrown);
-                        var cursor = cm.getCursor();
-                        cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - uploadingLabel.length), cursor);
-                    }
-                });
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://up.qbox.me/',
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        paramName: "file",
+                        success: function (data) {
+                            var cursor = cm.getCursor();
+                            cm.replaceRange('<audio controls="controls" src="' + qiniuDomain + '/' + key + '"></audio>\n\n',
+                                    CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("Error: " + errorThrown);
+                            var cursor = cm.getCursor();
+                            cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
+                        }
+                    });
+                } else { // 说明没有使用七牛，而是使用本地
+                    var fd = new FormData();
+                    fd.append('file', blob);
+                    fd.append('key', key);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: Label.servePath + '/upload',
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        paramName: "file",
+                        success: function (data) {
+                            var cursor = cm.getCursor();
+                            cm.replaceRange('<audio controls="controls" src="' + data.key + '"></audio>\n\n',
+                                    CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("Error: " + errorThrown);
+                            var cursor = cm.getCursor();
+                            cm.replaceRange('', CodeMirror.Pos(cursor.line, cursor.ch - Label.uploadingLabel.length), cursor);
+                        }
+                    });
+                }
             };
 
             // trigger the read from the reader...
             reader.readAsDataURL(blob);
         };
-    },
-    /**
-     * 初始化个人设置中的头像图片上传.
-     * 
-     * @returns {Boolean}
-     */
-    initUpload: function (params, succCB, succCBQN) {
-        if ("" === params.qiniuUploadToken) { // 说明没有使用七牛，而是使用本地
-            $('#' + params.id).fileupload({
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: params.maxSize,
-                multipart: true,
-                pasteZone: null,
-                dropZone: null,
-                url: "/upload",
-                formData: function (form) {
-                    var data = form.serializeArray();
-                    return data;
-                },
-                submit: function (e, data) {
-                },
-                done: function (e, data) {
-                    var qiniuKey = data.result.key;
-                    if (!qiniuKey) {
-                        alert("Upload error");
-                        return;
-                    }
-
-                    succCB(data);
-                },
-                fail: function (e, data) {
-                    alert("Upload error: " + data.errorThrown);
-                }
-            }).on('fileuploadprocessalways', function (e, data) {
-                var currentFile = data.files[data.index];
-                if (data.files.error && currentFile.error) {
-                    alert(currentFile.error);
-                }
-            });
-        } else {
-            $('#' + params.id).fileupload({
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                maxFileSize: params.maxSize,
-                multipart: true,
-                pasteZone: null,
-                dropZone: null,
-                url: "https://up.qbox.me/",
-                formData: function (form) {
-                    var data = form.serializeArray();
-                    data.push({name: 'token', value: params.qiniuUploadToken});
-                    data.push({name: 'key', value: 'avatar/' + params.userId});
-                    return data;
-                },
-                submit: function (e, data) {
-                },
-                done: function (e, data) {
-                    var qiniuKey = data.result.key;
-                    if (!qiniuKey) {
-                        alert("Upload error");
-                        return;
-                    }
-                    succCBQN(data);
-                },
-                fail: function (e, data) {
-                    alert("Upload error: " + data.errorThrown);
-                }
-            }).on('fileuploadprocessalways', function (e, data) {
-                var currentFile = data.files[data.index];
-                if (data.files.error && currentFile.error) {
-                    alert(currentFile.error);
-                }
-            });
-        }
     },
     /**
      * @description 鼠标移动到文章列表标题上时，显示其开头内容
@@ -374,7 +402,7 @@ var Util = {
                 }
 
                 $.ajax({
-                    url: "/article/" + $ele.data('id') + "/preview",
+                    url: Label.servePath + "/article/" + $ele.data('id') + "/preview",
                     type: "GET",
                     cache: false,
                     success: function (result, textStatus) {
@@ -396,11 +424,22 @@ var Util = {
         });
     },
     /**
+     * @description 标记指定类型的消息通知为已读状态.
+     * @param {String} type 指定类型："commented"/"at"/"followingUser"
+     */
+    makeNotificationRead: function (type) {
+        $.ajax({
+            url: Label.servePath + "/notification/read/" + type,
+            type: "GET",
+            cache: false
+        });
+    },
+    /**
      * @description 设置当前登录用户的未读提醒计数.
      */
     setUnreadNotificationCount: function () {
         $.ajax({
-            url: "/notification/unread/count",
+            url: Label.servePath + "/notification/unread/count",
             type: "GET",
             cache: false,
             success: function (result, textStatus) {
@@ -410,7 +449,7 @@ var Util = {
                     $("#aNotifications").removeClass("no-msg").addClass("msg").text(count);
 
                     if (window.localStorage) {
-                        if (count !== Number(window.localStorage.unreadNotificationCount)) {
+                        if (count !== Number(window.localStorage.unreadNotificationCount) && 0 === result.userNotifyStatus) {
                             // Webkit Desktop Notification
                             var msg = Label.desktopNotificationTemplateLabel;
                             msg = msg.replace("${count}", count);
@@ -447,6 +486,11 @@ var Util = {
      * @param {String} index 为数字时表示关注数，String 时表示来源
      */
     follow: function (it, id, type, index) {
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
+
         if ($(it).hasClass("disabled")) {
             return false;
         }
@@ -456,22 +500,18 @@ var Util = {
         };
         $(it).addClass("disabled");
         $.ajax({
-            url: "/follow/" + type,
+            url: Label.servePath + "/follow/" + type,
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 if (result.sc) {
                     $(it).removeClass("disabled");
-                    if ("article" === type) {
+                    if ("article" === type || ("tag" === type && typeof (index) !== 'undefined')) {
                         $(it).html('<span class="icon-star ft-red"></span>').
                                 attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', " + (index + 1) + ")")
                                 .attr("aria-label", Label.uncollectLabel + ' ' +
-                                (index + 1));
-                    } else if (index && typeof(index) === 'string') {
-                        $(it).html('<span class="icon-star ft-red"></span>').
-                                attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "', 'tag-articles')")
-                                .attr("aria-label", Label.unfollowLabel);
+                                        (index + 1));
                     } else {
                         $(it).removeClass("green").addClass("red")
                                 .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
@@ -501,20 +541,16 @@ var Util = {
         };
         $(it).addClass("disabled");
         $.ajax({
-            url: "/follow/" + type,
+            url: Label.servePath + "/follow/" + type,
             type: "DELETE",
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
                 if (result.sc) {
-                    if ("article" === type) {
+                    if ("article" === type || ("tag" === type && typeof (index) !== 'undefined')) {
                         $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel + ' ' + (index - 1));
-                    } else if (index && typeof(index) === 'string') {
-                        $(it).removeClass('ft-red').html('<span class="icon-star"></span>')
-                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "', 'tag-articles')")
-                                .attr("aria-label", Label.followLabel);
                     } else {
                         $(it).removeClass("red").addClass("green")
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
@@ -528,101 +564,24 @@ var Util = {
         });
     },
     /**
-     * @description 赞同
-     * @param {String} id 赞同的实体数据 id
-     * @param {String} type 赞同的实体类型
-     */
-    voteUp: function (id, type) {
-        if ($("#voteUp").hasClass("disabled")) {
-            return false;
-        }
-
-        var requestJSONObject = {
-            dataId: id
-        };
-
-        $("#voteUp").addClass("disabled");
-
-        $.ajax({
-            url: "/vote/up/" + type,
-            type: "POST",
-            cache: false,
-            data: JSON.stringify(requestJSONObject),
-            success: function (result, textStatus) {
-                $("#voteUp").removeClass("disabled");
-                var upCnt = parseInt($("#voteUp").attr('aria-label').substr(3)),
-                        downCnt = parseInt($("#voteDown").attr('aria-label').substr(3));
-                if (result.sc) {
-                    if (0 == result.type) { // cancel up
-                        $("#voteUp").attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
-                    } else {
-                        $("#voteUp").attr('aria-label', Label.upLabel + ' ' + (upCnt + 1)).children().addClass("ft-red");
-                        if ($("#voteDown").children().hasClass('ft-red')) {
-                            $("#voteDown").attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
-                        }
-                    }
-
-                    return;
-                }
-
-                alert(result.msg);
-            }
-        });
-    },
-    /**
-     * @description 反对
-     * @param {String} id 反对的实体数据 id
-     * @param {String} type 反对的实体类型
-     */
-    voteDown: function (id, type) {
-        if ($("#voteDown").hasClass("disabled")) {
-            return false;
-        }
-
-        var requestJSONObject = {
-            dataId: id
-        };
-
-        $("#voteDown").addClass("disabled");
-
-        $.ajax({
-            url: "/vote/down/" + type,
-            type: "POST",
-            cache: false,
-            data: JSON.stringify(requestJSONObject),
-            success: function (result, textStatus) {
-                $("#voteDown").removeClass("disabled");
-                var upCnt = parseInt($("#voteUp").attr('aria-label').substr(3)),
-                        downCnt = parseInt($("#voteDown").attr('aria-label').substr(3));
-                if (result.sc) {
-                    if (1 == result.type) { // cancel down
-                        $("#voteDown").attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
-                    } else {
-                        $("#voteDown").addClass("ft-red").attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children().addClass("ft-red");
-                        if ($("#voteUp").children().hasClass('ft-red')) {
-                            $("#voteUp").attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
-                        }
-                    }
-
-                    return;
-                }
-
-                alert(result.msg);
-            }
-        });
-    },
-    /**
      * @description 回到顶部
      */
     goTop: function () {
         $('html, body').animate({scrollTop: 0}, 800);
     },
     /**
-     * @description 页面初始化执行的函数 
+     * @description 显示登录界面 
      */
     showLogin: function () {
-        $(".nav .form").toggle();
+        $(".nav .form").show();
         $("#nameOrEmail").focus();
+    },
+    /**
+     * 
+     * @returns {undefined}
+     */
+    needLogin: function () {
+        alert(Label.funNeedLoginLabel);
     },
     /**
      * @description 跳转到注册页面
@@ -640,9 +599,9 @@ var Util = {
      * @description 禁止 IE7 以下浏览器访问
      */
     _kill: function () {
-        if ($.browser.msie && parseInt($.browser.version) < 10) {
+        if ($.ua.browser.name === 'IE' && parseInt($.ua.browser.version) < 10) {
             $.ajax({
-                url: "/kill-browser",
+                url: Label.servePath + "/kill-browser",
                 type: "GET",
                 cache: false,
                 success: function (result, textStatus) {
@@ -750,33 +709,69 @@ var Util = {
         });
 
         if (isLoggedIn) { // 如果登录了
+            Util.setUnreadNotificationCount();
+
             // 定时获取并设置未读提醒计数
             setInterval(function () {
                 Util.setUnreadNotificationCount();
             }, 60000);
         }
 
-
-        console && console.log("%cCopyright \xa9 2012-%s, b3log.org & hacpai.com\n\n%cHacPai%c 平等、自由、奔放",
+        console.log("%cCopyright \xa9 2012-%s, b3log.org & hacpai.com\n\n%cHacPai%c 平等、自由、奔放\n\n%cFeel easy about trust.",
                 'font-size:12px;color:#999999;', (new Date).getFullYear(),
                 'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:64px;color:#404040;-webkit-text-fill-color:#404040;-webkit-text-stroke: 1px #777;',
-                'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999; font-style:italic;'
+                'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999; font-style:italic;',
+                'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:12px;color:#999999;'
                 );
-        console && console.log("欢迎将你的开源项目提交到 B3log：https://github.com/b3log，我们一同构建中国最好的开源组织！\n细节请看：https://hacpai.com/article/1463025124998");
+        if (isLoggedIn) {
+            return false;
+        }
 
+        // 点击空白影藏登录框
+        $('body').click(function (event) {
+            if ($(event.target).closest('.nav .form').length === 0) {
+                $('.nav .form').hide();
+            }
+        });
+    },
+    /**
+     * @description 用户状态 channel.
+     * @static
+     */
+    initUserChannel: function (channelServer) {
+        var userChannel = new ReconnectingWebSocket(channelServer);
+        userChannel.reconnectInterval = 10000;
+
+        userChannel.onopen = function () {
+            setInterval(function () {
+                userChannel.send('-hb-');
+            }, 1000 * 60 * 5);
+        };
+
+        userChannel.onmessage = function (evt) {
+        };
+
+        userChannel.onclose = function () {
+            userChannel.close();
+        };
+
+        userChannel.onerror = function (err) {
+            console.log("ERROR", err);
+        };
     },
     /**
      * @description 设置导航状态
      */
     _initNav: function () {
-        var pathname = location.pathname;
-        $(".nav div > a").each(function () {
-            if (pathname.indexOf($(this).attr("href")) === 0) {
-                // 用户下面有两个页面：用户的评论及文章列表
+        var href = location.href;
+        $(".user-nav a").each(function () {
+            if (href.indexOf($(this).attr("href")) === 0) {
                 $(this).addClass("current");
-            } else if (pathname === "/register") {
+            } else if (location.pathname === "/register") {
                 // 注册没有使用 href，对其进行特殊处理
                 $("#aRegister").addClass("current");
+            } else if (href.indexOf(Label.servePath + '/settings') === 0) {
+                $(".user-nav .nav-avatar").addClass("current");
             }
         });
     },
@@ -800,7 +795,7 @@ var Util = {
                 userPassword: calcMD5($("#loginPassword").val())
             };
             $.ajax({
-                url: "/login",
+                url: Label.servePath + "/login",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -1007,6 +1002,7 @@ var Util = {
                 var data = form.serializeArray();
 
                 if (filename) {
+                    filename = filename.replace(/ /g, "_");
                     data.push({name: 'key', value: "file/" + getUUID() + "/" + filename});
                 } else {
                     data.push({name: 'key', value: getUUID() + "." + ext});
@@ -1066,6 +1062,65 @@ var Util = {
             if (data.files.error && currentFile.error) {
                 alert(currentFile.error);
             }
+        });
+    },
+    /**
+     * @description Mouse click special effects.
+     */
+    mouseClickEffects: function () {
+        var click_cnt = 0;
+        jQuery(document).ready(function ($) {
+            $("html").click(function (e) {
+                var n = 18;
+                //var $i=$("<b></b>").text("+"+n);
+                var $i;
+                click_cnt++;
+                if (click_cnt == 10) {
+                    $i = $("<b></b>").text("OωO");
+                } else if (click_cnt === 20) {
+                    $i = $("<b></b>").text("(๑•́ ∀ •̀๑)");
+                } else if (click_cnt === 30) {
+                    $i = $("<b></b>").text("(๑•́ ₃ •̀๑)");
+                } else if (click_cnt === 40) {
+                    $i = $("<b></b>").text("(๑•̀_•́๑)");
+                } else if (click_cnt === 50) {
+                    $i = $("<b></b>").text("（￣へ￣）");
+                } else if (click_cnt === 60) {
+                    $i = $("<b></b>").text("(╯°口°)╯(┴—┴");
+                } else if (click_cnt === 70) {
+                    $i = $("<b></b>").text("૮( ᵒ̌皿ᵒ̌ )ა");
+                } else if (click_cnt === 80) {
+                    $i = $("<b></b>").text("╮(｡>口<｡)╭");
+                } else if (click_cnt === 90) {
+                    $i = $("<b></b>").text("( ง ᵒ̌皿ᵒ̌)ง⁼³₌₃");
+                } else if (click_cnt >= 100 && click_cnt <= 105) {
+                    $i = $("<b></b>").text("(ꐦ°᷄д°᷅)");
+                } else {
+                    $i = $("<i class='icon-heart'></i>");
+                    n = Math.round(Math.random() * 14 + 6);
+                }
+                var x = e.pageX, y = e.pageY;
+                $i.css({
+                    "z-index": 9999,
+                    "top": y - 20,
+                    "left": x,
+                    "position": "absolute",
+                    "color": "#E94F06",
+                    "font-size": n,
+                    "-moz-user-select": "none",
+                    "-webkit-user-select": "none",
+                    "-ms-user-select": "none"
+                });
+                $("body").append($i);
+                $i.animate(
+                        {"top": y - 180, "opacity": 0},
+                        1500,
+                        function () {
+                            $i.remove();
+                        }
+                );
+                //e.stopPropagation();
+            });
         });
     }
 };
@@ -1417,7 +1472,7 @@ var Audio = {
                     if (!Audio.recorderObj.isRecording()) {
                         return;
                     }
-                    
+
                     // Copy the data from the input buffers;
                     var left = e.inputBuffer.getChannelData(0);
                     var right = e.inputBuffer.getChannelData(1);
@@ -1457,4 +1512,3 @@ var Audio = {
         Audio.wavFileBlob = Audio.recorderObj.buildWavFileBlob();
     }
 };
-

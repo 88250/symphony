@@ -14,8 +14,8 @@
             <div class="fn-clear first">
                 <div class="avatar-small" title="${item.userName}" 
                      style="background-image:url('${item.userAvatarURL}')"></div> 
-                <a href="/member/${item.userName}">${item.userName}</a>
-                <a href="/admin/user/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a> &nbsp;
+                <a href="${servePath}/member/${item.userName}">${item.userName}</a>
+                <a href="${servePath}/admin/user/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a> &nbsp;
                 <#if item.userStatus == 0>
                 <span class="ft-gray">${validLabel}</span>
                 <#elseif item.userStatus == 2>

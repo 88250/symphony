@@ -22,6 +22,12 @@
                 <label>${contentLabel}</label>
                 <textarea name="articleContent" rows="20"></textarea>
 
+                <label>${rewardContentLabel}</label>
+                <textarea name="articleRewardContent" rows="20"></textarea>
+
+                <label>${rewardPointLabel}</label>
+                <input name="articleRewardPoint" type="number" value="0" />
+
                 <br/><br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>
             </form>

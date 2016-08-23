@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.3.5, Apr 21, 2016
+ * @version 1.6.4.5, Jul 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -159,10 +159,8 @@ public class UserQueryService {
                 u.put(User.USER_NAME, user.optString(User.USER_NAME));
                 u.put(UserExt.USER_T_NAME_LOWER_CASE, user.optString(User.USER_NAME).toLowerCase());
 
-                String avatar = user.optString(UserExt.USER_AVATAR_URL);
-                if (StringUtils.isBlank(avatar)) {
-                    avatar = AvatarQueryService.DEFAULT_AVATAR_URL;
-                }
+                final String avatar = avatarQueryService.getAvatarURLByUser(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, 
+                        user, "20");
                 u.put(UserExt.USER_AVATAR_URL, avatar);
 
                 userNames.add(u);
@@ -235,6 +233,10 @@ public class UserQueryService {
         } else {
             while (end < userNames.size() && end < index + 5 && userNames.get(end).optString(UserExt.USER_T_NAME_LOWER_CASE).startsWith(namePrefix.toLowerCase())) {
                 end++;
+
+                if (end >= start + 5) {
+                    break;
+                }
             }
         }
 
@@ -487,7 +489,7 @@ public class UserQueryService {
             final JSONObject user = users.optJSONObject(i);
             user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
 
-            avatarQueryService.fillUserAvatarURL(user);
+            avatarQueryService.fillUserAvatarURL(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, user);
         }
 
         return ret;
@@ -561,13 +563,6 @@ public class UserQueryService {
 
         final JSONArray users = result.optJSONArray(Keys.RESULTS);
         ret.put(User.USERS, users);
-
-        for (int i = 0; i < users.length(); i++) {
-            final JSONObject user = users.optJSONObject(i);
-            user.put(UserExt.USER_T_CREATE_TIME, new Date(user.optLong(Keys.OBJECT_ID)));
-
-            avatarQueryService.fillUserAvatarURL(user);
-        }
 
         return ret;
     }

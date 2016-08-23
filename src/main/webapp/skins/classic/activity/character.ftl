@@ -28,6 +28,12 @@
                             </div>
                         </div>
                         <canvas id="charCanvas" width="500" height="490"></canvas>
+                        <#if !noCharacter??>
+                        <ul>
+                            <li>${userCharacterProgressLabel}${colonLabel}${userProgress}</li>
+                            <li>${totalCharacterProgressLabel}${colonLabel}${totalProgress}</li>
+                        </ul>
+                        </#if>
                     </div>
                 </div>
                 <div class="side">

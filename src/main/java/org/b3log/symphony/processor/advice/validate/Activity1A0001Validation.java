@@ -31,6 +31,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ActivityQueryService;
+import org.b3log.symphony.service.LivenessQueryService;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -38,7 +39,7 @@ import org.json.JSONObject;
  * Validates for activity 1A0001.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 23, 2015
+ * @version 1.0.0.3, Aug 22, 2016
  * @since 1.3.0
  */
 @Named
@@ -57,8 +58,33 @@ public class Activity1A0001Validation extends BeforeRequestProcessAdvice {
     @Inject
     private ActivityQueryService activityQueryService;
 
+    /**
+     * Liveness query service.
+     */
+    @Inject
+    private LivenessQueryService livenessQueryService;
+
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+        final HttpServletRequest request = context.getRequest();
+
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        if (null == currentUser) {
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("reloginLabel")));
+        }
+
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+        final int currentLiveness = livenessQueryService.getCurrentLivenessPoint(userId);
+        final int livenessMax = Symphonys.getInt("activitYesterdayLivenessReward.maxPoint");
+        final float liveness = (float) currentLiveness / livenessMax * 100;
+        final float livenessThreshold = Symphonys.getFloat("activity1A0001LivenessThreshold");
+        if (liveness < livenessThreshold) {
+            String msg = langPropsService.get("activityNeedLivenessLabel");
+            msg = msg.replace("${liveness}", String.valueOf(livenessThreshold) + "%");
+            msg = msg.replace("${current}", String.format("%.2f", liveness) + "%");
+            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, msg));
+        }
+
         if (Symphonys.getBoolean("activity1A0001Closed")) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityClosedLabel")));
         }
@@ -75,8 +101,6 @@ public class Activity1A0001Validation extends BeforeRequestProcessAdvice {
         if (hour > 14 || (hour == 14 && minute > 55)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityEndLabel")));
         }
-
-        final HttpServletRequest request = context.getRequest();
 
         JSONObject requestJSONObject;
         try {
@@ -96,16 +120,11 @@ public class Activity1A0001Validation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityBetFailLabel")));
         }
 
-        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
-        if (null == currentUser) {
-            throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("reloginLabel")));
-        }
-
         if (UserExt.USER_STATUS_C_VALID != currentUser.optInt(UserExt.USER_STATUS)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("userStatusInvalidLabel")));
         }
 
-        if (activityQueryService.is1A0001Today(currentUser.optString(Keys.OBJECT_ID))) {
+        if (activityQueryService.is1A0001Today(userId)) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("activityParticipatedLabel")));
         }
 

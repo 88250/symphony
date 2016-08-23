@@ -38,7 +38,7 @@ import org.pegdown.PegDownProcessor;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.4.8, May 12, 2016
+ * @version 1.7.5.8, Jul 4, 2016
  * @since 0.2.0
  */
 public final class Markdowns {
@@ -89,15 +89,8 @@ public final class Markdowns {
         }
 
         final Elements audios = doc.getElementsByTag("audio");
-        final String qiniuDomain = Symphonys.get("qiniu.domain");
         for (final Element audio : audios) {
             final String src = audio.attr("src");
-
-            if (!StringUtils.startsWith(src, qiniuDomain)) {
-                audio.remove();
-
-                continue;
-            }
 
             audio.text(LANG_PROPS_SERVICE.get("notSupportAudioLabel"));
             audio.attr("preload", "none");

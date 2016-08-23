@@ -19,11 +19,16 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.34.1.11, Apr 16, 2016
+ * @version 1.39.1.11, Aug 18, 2016
  * @since 0.2.0
  */
 public final class Common {
-    
+
+    /**
+     * Mouse effects.
+     */
+    public static final String MOUSE_EFFECTS = "mouseEffects";
+
     /**
      * Key of is mobile device.
      */
@@ -93,6 +98,11 @@ public final class Common {
      * Key of rewarded count.
      */
     public static final String REWARED_COUNT = "rewardedCnt";
+
+    /**
+     * Key of thanked count.
+     */
+    public static final String THANKED_COUNT = "thankedCnt";
 
     /**
      * Key of CSRF token.
@@ -283,6 +293,21 @@ public final class Common {
      * Key of recent articles.
      */
     public static final String RECENT_ARTICLES = "recentArticles";
+
+    /**
+     * Key of timelines.
+     */
+    public static final String TIMELINES = "timelines";
+
+    /**
+     * Key of hot articles.
+     */
+    public static final String HOT_ARTICLES = "hotArticles";
+
+    /**
+     * Key of perfect articles.
+     */
+    public static final String PERFECT_ARTICLES = "perfectArticles";
 
     /**
      * Key of side tags.
@@ -535,6 +560,11 @@ public final class Common {
     public static final String ONLINE_VISITOR_CNT = "onlineVisitorCnt";
 
     /**
+     * Key of online member count.
+     */
+    public static final String ONLINE_MEMBER_CNT = "onlineMemberCnt";
+
+    /**
      * Key of online chat count.
      */
     public static final String ONLINE_CHAT_CNT = "onlineChatCnt";
@@ -593,6 +623,11 @@ public final class Common {
      * Key of rewarded.
      */
     public static final String REWARDED = "rewarded";
+
+    /**
+     * Key of thanked.
+     */
+    public static final String THANKED = "thanked";
 
     /**
      * Key of display type.

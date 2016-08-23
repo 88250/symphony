@@ -7,11 +7,15 @@
         <#if article_has_next><#assign articleIds = articleIds + ","></#if>
         <li<#if article.articleStickRemains gt 0 && articleStickCheck??> class="stick"</#if>>
             <div class="fn-flex">
+                <#if article.articleAnonymous == 0>
                 <a rel="nofollow" class="ft-gray"
-                   href="/member/${article.articleAuthorName}" 
-                   title="${article.articleAuthorName}"><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL}-64.jpg?${article.articleAuthor.userUpdateTime?c}')"></div></a>
+                   href="${servePath}/member/${article.articleAuthorName}"
+                   ></#if><div class="avatar" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
                 <div class="fn-flex-1 has-view">
                     <h2>
+                        <#if 1 == article.articlePerfect>
+                        <svg height="14" viewBox="2 1 11 12" width="12">${perfectIcon}</svg>
+                        </#if>
                         <#if 1 == article.articleType>
                         <span class="icon-locked" title="${discussionLabel}"></span>
                         <#elseif 2 == article.articleType>
@@ -20,46 +24,44 @@
                         <span class="icon-video" title="${thoughtLabel}"></span>
                         </#if>
                         <a data-id="${article.oId}" data-type="${article.articleType}" rel="bookmark"
-                           href="${article.articlePermalink}">${article.articleTitleEmoj}
+                           href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}
                         </a>
                         <#if articleStickCheck??>
+                        <#if article.articleStick < 9223372036854775807>
                         <span class="ft-smaller ft-red stick-remains fn-none">${stickLabel}${remainsLabel} ${article.articleStickRemains?c} ${minuteLabel}</span>
+                        </#if>
                         </#if>
                     </h2>
                     <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
+                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
                     </#list>
                     <div class="ft-smaller">
                     <span class="ft-fade">${article.timeAgo}</span>
-                    <#if "" != article.articleLatestCmterName && !article.syncWithSymphonyClient>
-                    <span class="ft-fade">•&nbsp;${latestCmtFromLabel}</span> <a rel="nofollow" class="ft-gray" href="/member/${article.articleLatestCmterName}">${article.articleLatestCmterName}</a>
+                    <#if "" != article.articleLatestCmterName>
+                    <span class="ft-fade">•&nbsp;${latestCmtFromLabel}</span> 
+                    <#if article.articleLatestCmterName != 'someone'>
+                    <a rel="nofollow" class="ft-gray" href="${servePath}/member/${article.articleLatestCmterName}"><#else><span class="ft-gray"></#if>${article.articleLatestCmterName}<#if article.articleLatestCmterName != 'someone'></a><#else></span></#if>
                     </#if>
                     </div>
                 </div>
             </div>
             <#if article.articleCommentCount != 0>
             <div class="cmts" title="${cmtLabel}">
-                <a class="count ft-gray" href="${article.articlePermalink}">${article.articleCommentCount}</a>
+                <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
             </div>
             </#if>
-            <#--
-            <div class="commenters">
-                <#list article.articleParticipants as comment>
-                <a rel="nofollow" href="${article.articlePermalink}#${comment.commentId}" title="${comment.articleParticipantName}">
-                    <div class="avatar-small" style="background-image:url('${comment.articleParticipantThumbnailURL}-64.jpg?${comment.articleParticipantThumbnailUpdateTime?c}')"></div>
-                </a>
-                </#list>
-            </div>
-            -->
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </li>
         </#list>
     </ul>
 </div>
-<script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
+</#macro>
+<#macro listScript>
+<#if articleIds??>
 <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     // Init [Article List] channel
-    ArticleListChannel.init("${wsScheme}://${serverHost}:${serverPort}/article-list-channel?articleIds=${articleIds}");
+    ArticleListChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-list-channel?articleIds=${articleIds}");
 </script>
+</#if>
 </#macro>

@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.3, Apr 26, 2016
+ * @version 1.1.2.4, Aug 9, 2016
  * @since 1.4.0
  */
 @Service
@@ -224,20 +224,20 @@ public class SearchMgmtService {
 
                 final HTTPResponse response = URL_FETCH_SVC.fetch(request);
                 if (200 != response.getResponseCode()) {
-                    LOGGER.warn(response.toString());
+                    LOGGER.warn(new String(response.getContent(), "UTF-8"));
                 }
 
                 break;
             } catch (final UnknownHostException e) {
-                LOGGER.log(Level.ERROR, "Index failed [UnknownHostException=" + host + "]");
+                LOGGER.log(Level.WARN, "Index failed [UnknownHostException=" + host + "]");
 
                 retries++;
 
                 if (retries > maxRetries) {
-                    LOGGER.log(Level.ERROR, "Index failed [UnknownHostException]");
+                    LOGGER.log(Level.ERROR, "Index failed [UnknownHostException], doc [" + doc + "]");
                 }
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Index failed", e);
+                LOGGER.log(Level.ERROR, "Index failed [doc=" + doc + "]", e);
 
                 break;
             }

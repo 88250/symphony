@@ -42,10 +42,10 @@ import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
- * File upload.
+ * File upload to local.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, May 15, 2016
+ * @version 1.1.2.1, Jul 6, 2016
  * @since 1.4.0
  */
 @WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
@@ -90,8 +90,8 @@ public class FileUploadServlet extends HttpServlet {
 
         final String uri = req.getRequestURI();
         String key = uri.substring("/upload/".length());
-        key = StringUtils.substringBeforeLast(key, "-64.jpg"); // Erase Qiniu template
-        key = StringUtils.substringBeforeLast(key, "-260.jpg"); // Erase Qiniu template
+        key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template
+        key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template
 
         String path = UPLOAD_DIR + key;
         path = URLDecoder.decode(path, "UTF-8");
@@ -144,11 +144,15 @@ public class FileUploadServlet extends HttpServlet {
 
             if (null != exts && 0 < exts.length) {
                 suffix = exts[0];
+            } else {
+                suffix = StringUtils.substringAfter(mimeType, "/");
             }
         }
 
         final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         fileName = name + "-" + uuid + "." + suffix;
+        
+        fileName = StringUtils.replace(fileName, " ", "_");
 
         final OutputStream output = new FileOutputStream(UPLOAD_DIR + fileName);
         IOUtils.copy(multipartRequestInputStream, output);

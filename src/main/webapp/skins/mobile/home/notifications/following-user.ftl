@@ -4,12 +4,16 @@
 <ul class="notification">
     <#list followingUserNotifications as notification>
     <li class="fn-flex<#if notification.hasRead> read</#if>">
-        <a target="_blank" rel="nofollow" href="/member/${notification.authorName}" 
-           title="${notification.authorName}">
-            <div class="avatar" style="background-image:url('${notification.thumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
-        </a>
+        <#if "someone" != notification.authorName>
+        <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.authorName}" 
+           title="${notification.authorName}"></#if>
+            <div class="avatar" style="background-image:url('${notification.thumbnailURL}')"></div>
+        <#if "someone" != notification.authorName></a></#if>
         <div class="fn-flex-1 has-view">
             <h2>
+                <#if 1 == notification.articlePerfect>
+                <svg height="20" viewBox="3 0 11 12" width="14">${perfectIcon}</svg>
+                </#if>
                 <#if notification.articleType == 1>
                 <span class="icon-locked" title="${discussionLabel}"></span>
                 <#elseif notification.articleType == 2>
@@ -19,7 +23,7 @@
             </h2>
             <div class="ft-gray">
                 <#list notification.articleTags?split(",") as articleTag>
-                <a class="tag" rel="tag" href="/tag/${articleTag?url('UTF-8')}">
+                <a class="tag" rel="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">
                     ${articleTag}</a>
                 </#list> <br/>
                 <span class="icon-date"></span>

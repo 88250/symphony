@@ -32,10 +32,15 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Times;
@@ -49,7 +54,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 23, 2016
+ * @version 1.1.0.3, Aug 20, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -72,6 +77,12 @@ public class StatisticProcessor {
      */
     @Inject
     private CommentQueryService commentQueryService;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
 
     /**
      * Filler.
@@ -194,7 +205,7 @@ public class StatisticProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/statistic", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showStatistic(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
@@ -214,9 +225,18 @@ public class StatisticProcessor {
         dataModel.put("historyCommentCnts", historyCommentCnts);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+
+        dataModel.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
+        dataModel.put(Common.ONLINE_MEMBER_CNT, optionQueryService.getOnlineMemberCount());
+
+        final JSONObject statistic = optionQueryService.getStatistic();
+        dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
     }
 }

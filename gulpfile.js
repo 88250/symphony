@@ -18,7 +18,7 @@
  * @file frontend tool.
  * 
  * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 0.1.0.0, Jan 29, 2016 
+ * @version 0.1.2.0, Jul 28, 2016 
  */
 var gulp = require("gulp");
 var concat = require('gulp-concat');
@@ -50,14 +50,16 @@ gulp.task('cc', function () {
         './src/main/webapp/js/lib/editor/placeholder.js',
         './src/main/webapp/js/lib/editor/merge.js',
         './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
-        './src/main/webapp/js/lib/editor/editor.js'];
+        './src/main/webapp/js/lib/editor/editor.js',
+        './src/main/webapp/js/lib/to-markdown.js'];
     gulp.src(jsCodemirror)
             .pipe(uglify())
             .pipe(concat('codemirror.min.js'))
             .pipe(gulp.dest('./src/main/webapp/js/lib/editor/'));
 
-    var jsCommonLib = ['./src/main/webapp/js/lib/jquery/jquery.min.js',
+    var jsCommonLib = ['./src/main/webapp/js/lib/jquery/jquery-3.1.0.min.js',
         './src/main/webapp/js/lib/md5.js',
+        './src/main/webapp/js/lib/reconnecting-websocket.min.js',
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
         './src/main/webapp/js/lib/jquery/jquery.notification-1.0.5.js',
         './src/main/webapp/js/lib/ua-parser.min.js'];
@@ -68,7 +70,6 @@ gulp.task('cc', function () {
     
     var jsArticleLib = ['./src/main/webapp/js/lib/editor/codemirror.min.js',
         './src/main/webapp/js/lib/highlight.js-8.6/highlight.pack.js',
-        './src/main/webapp/js/lib/reconnecting-websocket.min.js',
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js',
         './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
         './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',

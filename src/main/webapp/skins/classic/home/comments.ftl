@@ -1,21 +1,38 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
-<@home "comments">
+<@home "${type}">
+<div class="tabs-sub fn-clear">
+    <a href="${servePath}/member/${user.userName}"<#if type == "home"> class="current"</#if>>${articleLabel}</a>
+    <a href="${servePath}/member/${user.userName}/comments"<#if type == "comments"> class="current"</#if>>${cmtLabel}</a>
+    <#if currentUser?? && currentUser.userName == user.userName>
+    <a<#if type == "articlesAnonymous"> class="current"</#if> href="${servePath}/member/${user.userName}/articles/anonymous">${anonymousArticleLabel}</a>
+    <a<#if type == "commentsAnonymous"> class="current"</#if> href="${servePath}/member/${user.userName}/comments/anonymous">${anonymousCommentLabel}</a>
+    </#if>
+</div>
+<#if 0 == user.userCommentStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="list">
     <ul>
         <#list userHomeComments as comment>
         <li class="fn-flex comment-list-item">
-            <a target="_blank" class="tooltipped tooltipped-s" rel="nofollow" href="/member/${comment.commentArticleAuthorName}" 
-               aria-label="${comment.commentArticleAuthorName}">
-                <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}-64.jpg?${comment.commenter.userUpdateTime?c}')"></div>
+            <#if comment.commentArticleAuthorName != "someone">
+            <a target="_blank" class="tooltipped tooltipped-s" rel="nofollow" href="${servePath}/member/${comment.commentArticleAuthorName}" 
+               aria-label="${comment.commentArticleAuthorName}"></#if>
+                <div class="avatar" style="background-image:url('${comment.commentArticleAuthorThumbnailURL}')"></div>
+            <#if comment.commentArticleAuthorName != "someone">
             </a>
+            </#if>
             <div class="fn-flex-1">
                 <div class="fn-flex">
                     <h2 class="fn-flex-1">
-                        <#if comment.commentArticleType == 1>
-                        <span class="icon-locked" title="${discussionLabel}"></span>
-                        <#elseif comment.commentArticleType == 2>
-                        <span class="icon-feed" title="${cityBroadcastLabel}"></span>
+                        <#if 1 == comment.commentArticlePerfect>
+                        <span class="tooltipped tooltipped-n" aria-label="${perfectLabel}"><svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg></span>
+                        </#if>
+                        <#if 1 == comment.commentArticleType>
+                        <span class="tooltipped tooltipped-n" aria-label="${discussionLabel}"><span class="icon-locked"></span></span>
+                        <#elseif 2 == comment.commentArticleType>
+                        <span class="tooltipped tooltipped-n" aria-label="${cityBroadcastLabel}"><span class="icon-feed"></span></span>
+                        <#elseif 3 == comment.commentArticleType>
+                        <span class="tooltipped tooltipped-n" aria-label="${thoughtLabel}"><span class="icon-video"></span></span>
                         </#if>
                         <a rel="bookmark" href="${comment.commentSharpURL}">${comment.commentArticleTitle}</a>
                     </h2>
@@ -34,4 +51,7 @@
     </ul>
 </div>
 <@pagination url="/member/${user.userName}/comments"/>
+<#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</#if>
 </@home>

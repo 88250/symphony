@@ -11,8 +11,7 @@
         <li>
             <div class="fn-clear">
                 ${item.optionValue}
-
-                <a href="/admin/reserved-word/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>
+                <a href="${servePath}/admin/reserved-word/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-icon" aria-label="${editLabel}"><span class="icon-edit"></span></a>
             </div>
         </li>
         </#list>

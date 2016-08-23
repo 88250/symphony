@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.23.9, Jun 14, 2016
+ * @version 1.21.28.16, Aug 16, 2016
  */
 
 /**
@@ -107,7 +107,7 @@ var Comment = {
                     "Alt-/": "autocompleteUserName",
                     "Ctrl-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
-                    "Alt-E": "endAudioRecord"
+                    "Alt-R": "endAudioRecord"
                 },
                 status: false
             });
@@ -187,14 +187,19 @@ var Comment = {
         });
     },
     /**
-     * @description 感谢.
+     * @description 感谢评论.
      * @param {String} id 评论 id
      * @param {String} csrfToken CSRF 令牌
-     * @param {string} tip 确认提示
-     * @param {string} thxed 已感谢文案
+     * @param {String} tip 确认提示
+     * @param {Integer} 0：公开评论，1：匿名评论
      */
-    thank: function (id, csrfToken, tip, thxed) {
-        if (!confirm(tip)) {
+    thank: function (id, csrfToken, tip, commentAnonymous, it) {
+        if (0 === commentAnonymous && !confirm(tip)) {
+            return false;
+        }
+
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
             return false;
         }
 
@@ -203,7 +208,7 @@ var Comment = {
         };
 
         $.ajax({
-            url: "/comment/thank",
+            url: Label.servePath + "/comment/thank",
             type: "POST",
             headers: {"csrfToken": csrfToken},
             cache: false,
@@ -213,16 +218,17 @@ var Comment = {
             },
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $("#" + id + 'Thx').remove();
-                    var $cnt = $("#" + id + 'RewardedCnt'),
+                    var $cnt = $(it).closest('.comment-info').find('.rewarded-cnt'),
                             cnt = parseInt($cnt.text());
                     if ($cnt.length <= 0) {
-                        $('#' + id + ' .comment-info > .fn-left .ft-smaller:last').
-                                append('&nbsp;<span title=""><span class="icon-heart ft-smaller ft-red"></span><span class="ft-smaller ft-red"> 1</span></span>');
+                        $(it).closest('.comment-info').find('.fn-left .ft-fade:last').
+                                append('&nbsp;<span aria-label="' + Label.thankedLabel + ' 1" class="tooltipped tooltipped-n ft-red">'
+                                        + '<span class="icon-heart"></span>1</span>');
                     } else {
-                        $cnt.text(' ' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
-                        $cnt.prev().addClass('ft-red').removeClass('ft-fade');
+                        $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
+                        $cnt.html('<span class="icon-heart"></span>' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
                     }
+                    $(it).remove();
                 } else {
                     alert(result.msg);
                 }
@@ -249,11 +255,12 @@ var Comment = {
 
         var requestJSONObject = {
             articleId: id,
+            commentAnonymous: $('#commentAnonymous').prop('checked'),
             commentContent: Comment.editor.getValue() // 实际提交时不去除空格，因为直接贴代码时需要空格
         };
 
         $.ajax({
-            url: "/comment",
+            url: Label.servePath + "/comment",
             type: "POST",
             headers: {"csrfToken": csrfToken},
             cache: false,
@@ -284,10 +291,6 @@ var Comment = {
 
                         window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
                     }
-
-                    if (0 === Label.userCommentViewMode) { // 传统模式，刷新页面
-                        window.location.reload();
-                    }
                 } else {
                     $("#addCommentTip").addClass("error").html('<ul><li>' + result.msg + '</li></ul>');
                 }
@@ -306,6 +309,10 @@ var Comment = {
      * @param {String} userName 用户名称
      */
     replay: function (userName) {
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
         Comment.editor.focus();
         $.ua.set(navigator.userAgent);
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
@@ -350,6 +357,120 @@ var Comment = {
 
 var Article = {
     /**
+     * @description 赞同
+     * @param {String} id 赞同的实体数据 id
+     * @param {String} type 赞同的实体类型
+     */
+    voteUp: function (id, type, it) {
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
+
+        var $voteUp = $(it);
+        var $voteDown = $voteUp.next();
+
+        if ($voteUp.hasClass("disabled")) {
+            return false;
+        }
+
+        var requestJSONObject = {
+            dataId: id
+        };
+
+        $voteUp.addClass("disabled");
+
+        $.ajax({
+            url: Label.servePath + "/vote/up/" + type,
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+                $voteUp.removeClass("disabled");
+                var upCnt = parseInt($voteUp.attr('aria-label').substr(3)),
+                        downCnt = parseInt($voteDown.attr('aria-label').substr(3));
+                if (result.sc) {
+                    if (0 === result.type) { // cancel up
+                        $voteUp.attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
+                        if ('comment' === type && upCnt - 1 < 1) {
+                            $voteUp.addClass('fn-hidden').addClass('hover-show');
+                        }
+                    } else {
+                        $voteUp.removeClass('fn-hidden').removeClass('hover-show').attr('aria-label', Label.upLabel + ' ' + (upCnt + 1)).children()
+                                .addClass("ft-red");
+                        if ($voteDown.children().hasClass('ft-red')) {
+                            $voteDown.attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
+                            if ('comment' === type && downCnt - 1 < 1) {
+                                $voteDown.addClass('fn-hidden').addClass('hover-show');
+                            }
+                        }
+                    }
+
+                    return;
+                }
+
+                alert(result.msg);
+            }
+        });
+    },
+    /**
+     * @description 反对
+     * @param {String} id 反对的实体数据 id
+     * @param {String} type 反对的实体类型
+     */
+    voteDown: function (id, type, it) {
+         if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
+        var $voteDown = $(it);
+        var $voteUp = $voteDown.prev();
+
+        if ($voteDown.hasClass("disabled")) {
+            return false;
+        }
+
+        var requestJSONObject = {
+            dataId: id
+        };
+
+        $voteDown.addClass("disabled");
+
+        $.ajax({
+            url: Label.servePath + "/vote/down/" + type,
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+                $voteDown.removeClass("disabled");
+                var upCnt = parseInt($voteUp.attr('aria-label').substr(3)),
+                        downCnt = parseInt($voteDown.attr('aria-label').substr(3));
+                if (result.sc) {
+                    if (1 === result.type) { // cancel down
+                        $voteDown.attr('aria-label', Label.downLabel + ' ' + (downCnt - 1)).children().removeClass("ft-red");
+                        if ('comment' === type && downCnt - 1 < 1) {
+                            $voteDown.addClass('fn-hidden').addClass('hover-show');
+                        }
+                    } else {
+                        $voteDown.removeClass('fn-hidden').removeClass('hover-show')
+                                .attr('aria-label', Label.downLabel + ' ' + (downCnt + 1)).children()
+                                .addClass("ft-red");
+                        if ($voteUp.children().hasClass('ft-red')) {
+                            $voteUp.attr('aria-label', Label.upLabel + ' ' + (upCnt - 1)).children().removeClass("ft-red");
+                            if ('comment' === type && upCnt - 1 < 1) {
+                                $voteUp.addClass('fn-hidden').addClass('hover-show');
+                            }
+                        }
+                    }
+
+                    return false;
+                }
+
+                alert(result.msg);
+            }
+        });
+    },
+    /**
      * @description 初始化文章
      */
     init: function () {
@@ -375,18 +496,24 @@ var Article = {
             "modal": true,
             "hideFooter": true
         });
+
+        this.initToc();
     },
     /**
      * 历史版本对比
      * @returns {undefined}
      */
     revision: function (articleId) {
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
         if ($('.CodeMirror-merge').length > 0) {
             $('#revision').dialog('open');
             return false;
         }
         $.ajax({
-            url: '/article/' + articleId + '/revisions',
+            url: Label.servePath + '/article/' + articleId + '/revisions',
             cache: false,
             success: function (result, textStatus) {
                 if (result.sc) {
@@ -471,10 +598,11 @@ var Article = {
      * @description 分享按钮
      */
     share: function () {
-        var userName = Label.currentUserName ? '?r=' + Label.currentUserName : '';
+        var shareURL = $('#qrCode').data('shareurl');
         $('#qrCode').qrcode({
-            width: 90, height: 90,
-            text: location.protocol + '//' + location.host + Label.articlePermalink + userName
+            width: 90,
+            height: 90,
+            text: shareURL
         });
 
         $('body').click(function () {
@@ -493,7 +621,7 @@ var Article = {
             }
 
             var title = encodeURIComponent(Label.articleTitle + " - " + Label.symphonyLabel),
-                    url = encodeURIComponent(location.protocol + '//' + location.host + Label.articlePermalink + userName),
+                    url = encodeURIComponent(shareURL),
                     pic = $(".content-reset img").attr("src");
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
@@ -511,14 +639,14 @@ var Article = {
 
         if (typeof (ZeroClipboard) !== "undefined") {
             $('#shareClipboard').mouseover(function () {
-                 $(this).attr('aria-label', Label.copyLabel);
+                $(this).attr('aria-label', Label.copyLabel);
             });
-            
+
             ZeroClipboard.config({
                 hoverClass: "tooltipped-hover",
                 swfPath: Label.staticServePath + "/js/lib/zeroclipboard/ZeroClipboard.swf"
             });
-            
+
             var shareClipboard = new ZeroClipboard(document.getElementById("shareClipboard"));
             shareClipboard.on("ready", function (readyEvent) {
                 shareClipboard.on("aftercopy", function (event) {
@@ -531,12 +659,9 @@ var Article = {
      * @description 解析语法高亮
      */
     parseLanguage: function () {
-        $(".content-reset pre").each(function () { // 兼容从 Solo 同步过来的文章
-            $(this).wrapInner('<code></code>');
-            $(this).removeAttr('class');
+        $('pre code').each(function (i, block) {
+            hljs.highlightBlock(block);
         });
-
-        hljs.initHighlightingOnLoad();
     },
     /**
      * @description 打赏
@@ -546,7 +671,7 @@ var Article = {
 
         if (r) {
             $.ajax({
-                url: "/article/reward?articleId=" + articleId,
+                url: Label.servePath + "/article/reward?articleId=" + articleId,
                 type: "POST",
                 cache: false,
                 success: function (result, textStatus) {
@@ -561,6 +686,35 @@ var Article = {
         }
     },
     /**
+     * @description 感谢文章
+     */
+    thankArticle: function (articleId, articleAnonymous) {
+        if (0 === articleAnonymous && !confirm(Label.thankArticleConfirmLabel)) {
+            return false;
+        }
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
+
+        $.ajax({
+            url: Label.servePath + "/article/thank?articleId=" + articleId,
+            type: "POST",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    var thxCnt = parseInt($('#thankArticle').attr('aria-label').substr(3));
+                    $("#thankArticle").removeAttr("onclick").find("span").addClass("ft-red");
+                    $("#thankArticle").attr('aria-label', Label.thankLabel + ' ' + (thxCnt + 1));
+
+                    return false;
+                }
+
+                alert(result.msg);
+            }
+        });
+    },
+    /**
      * @description 置顶
      */
     stick: function (articleId) {
@@ -568,13 +722,13 @@ var Article = {
 
         if (r) {
             $.ajax({
-                url: "/article/stick?articleId=" + articleId,
+                url: Label.servePath + "/article/stick?articleId=" + articleId,
                 type: "POST",
                 cache: false,
                 success: function (result, textStatus) {
                     alert(result.msg);
 
-                    window.location.href = "/";
+                    window.location.href = Label.servePath + "/recent";
                 }
             });
         }
@@ -690,6 +844,134 @@ var Article = {
         });
         $('#thoughtProgress .icon-video').click(function () {
             $("#thoughtProgressPreview").dialog("open");
+        });
+    },
+    /**
+     * @description 初始化目录.
+     */
+    initToc: function () {
+        if ($('#articleToC').length === 0) {
+            return false;
+        }
+
+        // 样式
+        var $articleToc = $('#articleToC'),
+                top = $articleToc.offset().top;
+
+        $articleToc.css('width', $('.side').width() + 'px');
+        $articleToc.next().css({
+            'width': $('.side').width() + 'px',
+            'top': ($articleToc.height() + 41) + 'px'
+        });
+        $articleToc.next().next().css({
+            'width': $('.side').width() + 'px',
+            'top': ($articleToc.height() + $articleToc.next().height() + 62) + 'px'
+        });
+
+        $('.article-toc').css({
+            'overflow': 'auto',
+            'max-height': $(window).height() - 127 + 'px'
+        });
+
+        // 目录点击
+        $articleToc.find('li').click(function () {
+            var $it = $(this);
+            setTimeout(function () {
+                $articleToc.find('li').removeClass('current');
+                $it.addClass('current');
+            }, 50);
+        });
+
+        var toc = [];
+        $('.article-content [id^=toc]').each(function (i) {
+            toc.push({
+                id: this.id,
+                offsetTop: this.offsetTop
+            });
+        });
+
+        $(window).scroll(function (event) {
+            if ($('#articleToC').css('display') === 'none') {
+                return false;
+            }
+
+            // 当前目录样式
+            var scrollTop = $('body').scrollTop();
+
+            for (var i = 0, iMax = toc.length; i < iMax; i++) {
+                if (scrollTop < toc[i].offsetTop - 5) {
+                    $articleToc.find('li').removeClass('current');
+                    var index = i > 0 ? i - 1 : 0;
+                    $articleToc.find('a[href="#' + toc[index].id + '"]').parent().addClass('current');
+                    break;
+                }
+            }
+
+            if (scrollTop >= toc[toc.length - 1].offsetTop - 5) {
+                $articleToc.find('li').removeClass('current');
+                $articleToc.find('li:last').addClass('current');
+            }
+
+            // 位置是否固定
+            if ($('body').scrollTop() > top - 20) {
+                $articleToc.css('position', 'fixed');
+                $articleToc.next().css('position', 'fixed');
+                $articleToc.next().next().css('position', 'fixed');
+            } else {
+                $articleToc.css('position', 'initial');
+                $articleToc.next().css('position', 'initial');
+                $articleToc.next().next().css('position', 'initial');
+            }
+        }).resize(function () {
+            $articleToc.css('width', $('.side').width() + 'px');
+            $articleToc.next().css({
+                'width': $('.side').width() + 'px'
+            });
+            $articleToc.next().next().css({
+                'width': $('.side').width() + 'px'
+            });
+        });
+
+        $(window).scroll();
+    },
+    /**
+     * @description 目录展现隐藏切换.
+     */
+    toggleToc: function () {
+        var $articleToc = $('#articleToC');
+        if ($articleToc.length === 0) {
+            return false;
+        }
+
+        var $menu = $('.article-action .icon-unordered-list');
+        if ($menu.hasClass('ft-red')) {
+            $articleToc.hide();
+            $menu.removeClass('ft-red');
+        } else {
+            $articleToc.show();
+            $menu.addClass('ft-red');
+            $articleToc.css('position', 'initial');
+            $articleToc.find('li').removeClass('current');
+            $articleToc.find('li:first').addClass('current');
+        }
+
+        $articleToc.next().css('position', 'initial');
+        $articleToc.next().next().css('position', 'initial');
+    },
+    /**
+     * @description 标记消息通知为已读状态.
+     */
+    makeNotificationRead: function (articleId, commentIds) {
+        var requestJSONObject = {
+            articleId: articleId,
+            commentIds: commentIds
+        };
+
+        $.ajax({
+            url: Label.servePath + "/notification/read",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject)
         });
     }
 };

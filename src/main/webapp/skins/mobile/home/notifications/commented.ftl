@@ -4,13 +4,17 @@
 <ul class="notification">
     <#list commentedNotifications as notification>
     <li class="fn-flex comment-list-item<#if notification.hasRead> read</#if>">
-        <a target="_blank" rel="nofollow" href="/member/${notification.commentAuthorName}" 
-           title="${notification.commentAuthorName}">
-            <div class="avatar" style="background-image:url('${notification.commentAuthorThumbnailURL}-64.jpg?${notification.thumbnailUpdateTime?c}')"></div>
-        </a>
+        <#if "someone" != notification.commentAuthorName>
+        <a target="_blank" rel="nofollow" href="${servePath}/member/${notification.commentAuthorName}" 
+           title="${notification.commentAuthorName}"></#if>
+            <div class="avatar" style="background-image:url('${notification.commentAuthorThumbnailURL}')"></div>
+        <#if "someone" != notification.commentAuthorName></a></#if>
         <div class="fn-flex-1">
             <div>
                 <h2>
+                    <#if 1 == notification.commentArticlePerfect>
+                    <svg height="20" viewBox="3 4 11 12" width="14">${perfectIcon}</svg>
+                    </#if>
                     <#if notification.commentArticleType == 1>
                     <span class="icon-locked" title="${discussionLabel}"></span>
                     <#elseif notification.commentArticleType == 2>

@@ -12,10 +12,10 @@
         <#list users as item>
         <li>
             <div class="fn-clear first">
-                <div class="avatar-small" title="${item.userName}" 
+                <div class="avatar-small tooltipped tooltipped-se" aria-label="${item.userName}" 
                      style="background-image:url('${item.userAvatarURL}')"></div> &nbsp;
-                <a href="/member/${item.userName}">${item.userName}</a>
-                <a href="/admin/user/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a> &nbsp;
+                <a href="${servePath}/member/${item.userName}">${item.userName}</a>
+                <a href="${servePath}/admin/user/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-icon" aria-label="${editLabel}"><span class="icon-edit"></span></a> &nbsp;
                 <#if item.userStatus == 0>
                 <span class="ft-gray">${validLabel}</span>
                 <#elseif item.userStatus == 2>
@@ -25,9 +25,9 @@
                 </#if>
             </div>
             <div class="fn-clear">
-                <span class="icon-email" title="${emailLabel}"></span>
+                <span class="tooltipped tooltipped-n" aria-label="${emailLabel}"><span class="icon-email"></span></span>
                 ${item.userEmail} &nbsp;
-                <span class="icon-userrole" title="${roleLabel}"></span>
+                <span class="tooltipped tooltipped-n" aria-label="${roleLabel}"><span class="icon-userrole"></span></span>
                 <#if item.userRole == "adminRole">
                 ${administratorLabel}
                 <#elseif item.userRole == "defaultCommenterRole">
@@ -36,11 +36,11 @@
                 ${defaultUserLabel}
                 </#if>
                 <span class="fn-right ft-gray">
-                    <span class="icon-articles" title="${articleCountLabel}"></span>
+                    <span class="tooltipped tooltipped-n" aria-label="${articleCountLabel}"><span class="icon-articles"></span></span>
                     ${item.userArticleCount} &nbsp;
-                    <span class="icon-cmts" title="${commentCountLabel}"></span>
+                    <span class="tooltipped tooltipped-n" aria-label="${commentCountLabel}"><span class="icon-cmts"></span></span>
                     ${item.userCommentCount} &nbsp;
-                    <span class="icon-date" title="${createTimeLabel}"></span>
+                    <span class="tooltipped tooltipped-n" aria-label="${createTimeLabel}"><span class="icon-date"></span></span>
                     ${item.userCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>

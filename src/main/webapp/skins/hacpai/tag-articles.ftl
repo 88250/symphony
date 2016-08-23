@@ -81,14 +81,14 @@
                     <div class="tag-artile-user">
                         <a rel="nofollow" class="fn-left" title="${creatorLabel} ${tag.tagCreatorName}" 
                            href="/member/${tag.tagCreatorName}">
-                            <img class="avatar" src="${tag.tagCreatorThumbnailURL}-64.jpg?${tag.tagCreatorThumbnailUpdateTime?c}">
+                            <img class="avatar" src="${tag.tagCreatorThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80">
                         </a>
                         <div class="fn-right">
                             <#list tag.tagParticipants as commenter>
                             <a rel="nofollow" class="fn-left" 
                                title="${contributorLabel} ${commenter.tagParticipantName}"
                                href="/member/${commenter.tagParticipantName}">
-                                <img class="avatar" src="${commenter.tagParticipantThumbnailURL}-64.jpg?${commenter.tagParticipantThumbnailUpdateTime?c}">
+                                <img class="avatar" src="${commenter.tagParticipantThumbnailURL}?imageView2/1/w/64/h/64/interlace/0/q/80">
                             </a>
                             </#list>
                         </div>

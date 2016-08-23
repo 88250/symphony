@@ -30,8 +30,10 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Vote;
 import org.b3log.symphony.repository.ArticleRepository;
+import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.VoteRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,7 +42,7 @@ import org.json.JSONObject;
  * Vote query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 13, 2015
+ * @version 1.1.0.0, Jul 31, 2016
  * @since 1.3.0
  */
 @Service
@@ -62,6 +64,12 @@ public class VoteQueryService {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Determines whether the specified user dose vote the specified entity.
@@ -108,12 +116,21 @@ public class VoteQueryService {
             if (Vote.DATA_TYPE_C_ARTICLE == dataType) {
                 final JSONObject article = articleRepository.get(dataId);
                 if (null == article) {
-                    LOGGER.log(Level.ERROR, "Not found article [id={0}] to vote up", dataId);
+                    LOGGER.log(Level.ERROR, "Not found article [id={0}]", dataId);
 
                     return false;
                 }
 
                 return article.optString(Article.ARTICLE_AUTHOR_ID).equals(userId);
+            } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
+                final JSONObject comment = commentRepository.get(dataId);
+                if (null == comment) {
+                    LOGGER.log(Level.ERROR, "Not found comment [id={0}]", dataId);
+
+                    return false;
+                }
+
+                return comment.optString(Comment.COMMENT_AUTHOR_ID).equals(userId);
             }
 
             return false;

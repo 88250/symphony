@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all verifycode model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Dec 8, 2015
+ * @version 1.1.0.1, Jul 3, 2016
  * @since 1.3.0
  */
 public final class Verifycode {
@@ -93,7 +93,7 @@ public final class Verifycode {
     public static final int STATUS_C_UNSENT = 0;
 
     /**
-     * Status- Sent.
+     * Status - Sent.
      */
     public static final int STATUS_C_SENT = 1;
 

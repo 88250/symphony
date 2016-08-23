@@ -18,6 +18,8 @@ package org.b3log.symphony.service;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -70,7 +72,7 @@ import org.jsoup.Jsoup;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.4.8, Apr 14, 2016
+ * @version 1.7.5.8, Jul 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -139,6 +141,72 @@ public class TagQueryService {
      */
     @Inject
     private TagCache tagCache;
+
+    /**
+     * Gets tags by the specified title prefix.
+     *
+     * @param titlePrefix the specified title prefix
+     * @param fetchSize the specified fetch size
+     * @return a list of tags, for example      <pre>
+     * [
+     *     {
+     *         "tagTitle": "",
+     *         "tagIconPath": "",
+     *     }, ....
+     * ]
+     * </pre>
+     */
+    public List<JSONObject> getTagsByPrefix(final String titlePrefix, final int fetchSize) {
+        final JSONObject titleToSearch = new JSONObject();
+        titleToSearch.put(Tag.TAG_T_TITLE_LOWER_CASE, titlePrefix.toLowerCase());
+
+        final List<JSONObject> tags = tagCache.getTags();
+
+        int index = Collections.binarySearch(tags, titleToSearch, new Comparator<JSONObject>() {
+            @Override
+            public int compare(final JSONObject t1, final JSONObject t2) {
+                String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+                final String inputTitle = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+
+                if (u1Title.length() < inputTitle.length()) {
+                    return u1Title.compareTo(inputTitle);
+                }
+
+                u1Title = u1Title.substring(0, inputTitle.length());
+
+                return u1Title.compareTo(inputTitle);
+            }
+        });
+
+        final List<JSONObject> ret = new ArrayList<>();
+
+        if (index < 0) {
+            return ret;
+        }
+
+        int start = index;
+        int end = index;
+
+        while (start > -1 && tags.get(start).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
+            start--;
+        }
+
+        start++;
+
+        if (start < index - fetchSize) {
+            end = start + fetchSize;
+        } else {
+            while (end < tags.size() && end < index + fetchSize && tags.get(end).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
+                end++;
+
+                if (end >= start + fetchSize) {
+                    break;
+                }
+            }
+        }
+
+        return tags.subList(start, end);
+    }
 
     /**
      * Generates tags for the specified content.
@@ -390,6 +458,7 @@ public class TagQueryService {
     /**
      * Gets the creator of the specified tag of the given tag id.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param tagId the given tag id
      * @return tag creator, for example,      <pre>
      * {
@@ -401,7 +470,7 @@ public class TagQueryService {
      *
      * @throws ServiceException service exception
      */
-    public JSONObject getCreator(final String tagId) throws ServiceException {
+    public JSONObject getCreator(final int avatarViewMode, final String tagId) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
 
@@ -416,17 +485,25 @@ public class TagQueryService {
                 addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
 
         try {
+            final JSONObject ret = new JSONObject();
+
             final JSONObject result = userTagRepository.get(query);
             final JSONArray results = result.optJSONArray(Keys.RESULTS);
             final JSONObject creatorTagRelation = results.optJSONObject(0);
 
             final String creatorId = creatorTagRelation.optString(User.USER + '_' + Keys.OBJECT_ID);
+            if (UserExt.ANONYMOUS_USER_ID.equals(creatorId)) {
+                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, avatarQueryService.getDefaultAvatarURL("48"));
+                ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, 0L);
+                ret.put(Tag.TAG_T_CREATOR_NAME, UserExt.ANONYMOUS_USER_NAME);
+
+                return ret;
+            }
 
             final JSONObject creator = userRepository.get(creatorId);
 
-            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(creator);
+            final String thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, creator, "48");
 
-            final JSONObject ret = new JSONObject();
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_URL, thumbnailURL);
             ret.put(Tag.TAG_T_CREATOR_THUMBNAIL_UPDATE_TIME, creator.optLong(UserExt.USER_UPDATE_TIME));
             ret.put(Tag.TAG_T_CREATOR_NAME, creator.optString(User.USER_NAME));
@@ -441,6 +518,7 @@ public class TagQueryService {
     /**
      * Gets the participants (article ref) of the specified tag of the given tag id.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param tagId the given tag id
      * @param fetchSize the specified fetch size
      * @return tag participants, for example,      <pre>
@@ -455,7 +533,8 @@ public class TagQueryService {
      *
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getParticipants(final String tagId, final int fetchSize) throws ServiceException {
+    public List<JSONObject> getParticipants(final int avatarViewMode,
+            final String tagId, final int fetchSize) throws ServiceException {
         final List<Filter> filters = new ArrayList<Filter>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
         filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 1));
@@ -483,7 +562,7 @@ public class TagQueryService {
 
                 participant.put(Tag.TAG_T_PARTICIPANT_NAME, user.optString(User.USER_NAME));
 
-                final String thumbnailURL = avatarQueryService.getAvatarURLByUser(user);
+                final String thumbnailURL = avatarQueryService.getAvatarURLByUser(avatarViewMode, user, "48");
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_URL, thumbnailURL);
                 participant.put(Tag.TAG_T_PARTICIPANT_THUMBNAIL_UPDATE_TIME, user.optLong(UserExt.USER_UPDATE_TIME));
 

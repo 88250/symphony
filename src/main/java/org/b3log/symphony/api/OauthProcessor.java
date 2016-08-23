@@ -45,7 +45,8 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://wdx.me">DX</a>
- * @version 1.0.0.0, Aug 4, 2015
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.1, Jun 23, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -99,7 +100,8 @@ public class OauthProcessor {
                 return;
             }
 
-            if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
+            if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)
+                    || UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)) {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
                 ret.put("error", error);
                 ret.put("error_description", errorDescription);

@@ -18,10 +18,14 @@ package org.b3log.symphony.util;
 import org.b3log.symphony.service.AvatarQueryService;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -40,12 +44,12 @@ import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ActivityQueryService;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.LivenessQueryService;
-import org.b3log.symphony.service.NotificationQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.TagQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -56,7 +60,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.11, Jun 2, 2016
+ * @version 1.10.2.19, Aug 19, 2016
  * @since 0.2.0
  */
 @Service
@@ -66,6 +70,16 @@ public class Filler {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
+
+    /**
+     * Icon configuration.
+     */
+    private static final ResourceBundle ICON_CONF = ResourceBundle.getBundle("icon");
+
+    /**
+     * Icons.
+     */
+    private static Map<String, String> ICONS;
 
     /**
      * Language service.
@@ -110,12 +124,6 @@ public class Filler {
     private UserQueryService userQueryService;
 
     /**
-     * Notification query service.
-     */
-    @Inject
-    private NotificationQueryService notificationQueryService;
-
-    /**
      * Avatar query service.
      */
     @Inject
@@ -156,13 +164,16 @@ public class Filler {
     /**
      * Fills relevant articles.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param dataModel the specified data model
      * @param article the specified article
      * @throws Exception exception
      */
-    public void fillRelevantArticles(final Map<String, Object> dataModel, final JSONObject article) throws Exception {
+    public void fillRelevantArticles(final int avatarViewMode,
+            final Map<String, Object> dataModel, final JSONObject article) throws Exception {
         dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                articleQueryService.getRelevantArticles(article, Symphonys.getInt("sideRelevantArticlesCnt")));
+                articleQueryService.getRelevantArticles(
+                        avatarViewMode, article, Symphonys.getInt("sideRelevantArticlesCnt")));
     }
 
     /**
@@ -184,28 +195,36 @@ public class Filler {
     /**
      * Fills random articles.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    public void fillRandomArticles(final Map<String, Object> dataModel) throws Exception {
+    public void fillRandomArticles(final int avatarViewMode, final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills random articles");
         try {
-            dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(Symphonys.getInt("sideRandomArticlesCnt")));
+            final int fetchSize = Symphonys.getInt("sideRandomArticlesCnt");
+            if (fetchSize > 0) {
+                dataModel.put(Common.SIDE_RANDOM_ARTICLES, articleQueryService.getRandomArticles(avatarViewMode, fetchSize));
+            } else {
+                dataModel.put(Common.SIDE_RANDOM_ARTICLES, Collections.emptyList());
+            }
         } finally {
             Stopwatchs.end();
         }
     }
 
     /**
-     * Fills hot articles.
+     * Fills side hot articles.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param dataModel the specified data model
      * @throws Exception exception
      */
-    public void fillHotArticles(final Map<String, Object> dataModel) throws Exception {
+    public void fillSideHotArticles(final int avatarViewMode, final Map<String, Object> dataModel) throws Exception {
         Stopwatchs.start("Fills hot articles");
         try {
-            dataModel.put(Common.SIDE_HOT_ARTICLES, articleQueryService.getHotArticles(Symphonys.getInt("sideHotArticlesCnt")));
+            dataModel.put(Common.SIDE_HOT_ARTICLES,
+                    articleQueryService.getSideHotArticles(avatarViewMode, Symphonys.getInt("sideHotArticlesCnt")));
         } finally {
             Stopwatchs.end();
         }
@@ -231,6 +250,21 @@ public class Filler {
     }
 
     /**
+     * Fills index tags.
+     *
+     * @param dataModel the specified data model
+     * @throws Exception exception
+     */
+    public void fillIndexTags(final Map<String, Object> dataModel) throws Exception {
+        Stopwatchs.start("Fills index tags");
+        try {
+            dataModel.put(Tag.TAGS, tagQueryService.getTags(Symphonys.getInt("sideTagsCnt")));
+        } finally {
+            Stopwatchs.end();
+        }
+    }
+
+    /**
      * Fills header.
      *
      * @param request the specified request
@@ -247,12 +281,12 @@ public class Filler {
         dataModel.put("algoliaAppId", Symphonys.get("algolia.appId"));
         dataModel.put("algoliaSearchKey", Symphonys.get("algolia.searchKey"));
         dataModel.put("algoliaIndex", Symphonys.get("algolia.index"));
-        dataModel.put("logoIcon", Symphonys.get("icon.logo"));
 
         // fillTrendTags(dataModel);
         fillPersonalNav(request, response, dataModel);
 
         fillLangs(dataModel);
+        fillIcons(dataModel);
         fillSideAd(dataModel);
     }
 
@@ -267,6 +301,7 @@ public class Filler {
 
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.SITE_VISIT_STAT_CODE, Symphonys.get("siteVisitStatCode"));
+        dataModel.put(Common.MOUSE_EFFECTS, RandomUtils.nextDouble() > 0.95);
     }
 
     /**
@@ -344,7 +379,7 @@ public class Filler {
             dataModel.put(User.USER_ROLE, userRole);
             dataModel.put(Common.IS_ADMIN_LOGGED_IN, Role.ADMIN_ROLE.equals(userRole));
 
-            avatarQueryService.fillUserAvatarURL(curUser);
+            avatarQueryService.fillUserAvatarURL(curUser.optInt(UserExt.USER_AVATAR_VIEW_MODE), curUser);
 
             final String userId = curUser.optString(Keys.OBJECT_ID);
 
@@ -365,8 +400,8 @@ public class Filler {
 
             dataModel.put(Common.CURRENT_USER, curUser);
 
-            final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
-            dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, unreadNotificationCount);
+            // final int unreadNotificationCount = notificationQueryService.getUnreadNotificationCount(curUser.optString(Keys.OBJECT_ID));
+            dataModel.put(Notification.NOTIFICATION_T_UNREAD_COUNT, 0); // AJAX polling 
 
             dataModel.put(Common.IS_DAILY_CHECKIN, activityQueryService.isCheckedinToday(userId));
             dataModel.put(Common.USE_CAPTCHA_CHECKIN, Symphonys.getBoolean("geetest.enabled"));
@@ -412,13 +447,46 @@ public class Filler {
     }
 
     /**
+     * Fills the all icons.
+     *
+     * @param dataModel the specified data model
+     */
+    private void fillIcons(final Map<String, Object> dataModel) {
+        Stopwatchs.start("Fills icons");
+        try {
+            if (null == ICONS) {
+                ICONS = new HashMap<>();
+
+                final Enumeration<String> keys = ICON_CONF.getKeys();
+                while (keys.hasMoreElements()) {
+                    final String key = keys.nextElement();
+                    String value = ICON_CONF.getString(key);
+
+                    if ("logoIcon".equals(key)) {
+                        value = value.replace("${servePath}", Latkes.getServePath());
+                    }
+
+                    ICONS.put(key, value);
+                }
+            }
+
+            dataModel.putAll(ICONS);
+        } finally {
+            Stopwatchs.end();
+        }
+    }
+
+    /**
      * Fills the side ad labels.
      *
      * @param dataModel the specified data model
      */
     private void fillSideAd(final Map<String, Object> dataModel) {
-        if (Math.random() > 0.8) {
-            dataModel.put("ADLabel", langPropsService.get("ADImgLabel"));
+        final JSONObject adOption = optionQueryService.getOption(Option.ID_C_SIDE_FULL_AD);
+        if (null == adOption) {
+            dataModel.put("ADLabel", "");
+        } else {
+            dataModel.put("ADLabel", adOption.optString(Option.OPTION_VALUE));
         }
     }
 
@@ -456,11 +524,5 @@ public class Filler {
      */
     private void fillSysInfo(final Map<String, Object> dataModel) throws Exception {
         dataModel.put(Common.VERSION, SymphonyServletListener.VERSION);
-        dataModel.put(Common.ONLINE_VISITOR_CNT, optionQueryService.getOnlineVisitorCount());
-
-        if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-            final JSONObject statistic = optionQueryService.getStatistic();
-            dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
-        }
     }
 }

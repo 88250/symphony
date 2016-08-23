@@ -107,7 +107,8 @@ public final class Sessions {
             cookieJSONObject.put(Keys.OBJECT_ID, user.optString(Keys.OBJECT_ID));
             cookieJSONObject.put(Common.TOKEN, user.optString(User.USER_PASSWORD));
 
-            final Cookie cookie = new Cookie("b3log-latke", cookieJSONObject.toString());
+            final String value = Crypts.encryptByAES(cookieJSONObject.toString(), Symphonys.get("cookie.secret"));
+            final Cookie cookie = new Cookie("b3log-latke", value);
 
             cookie.setPath("/");
             cookie.setMaxAge(COOKIE_EXPIRY);
@@ -115,7 +116,8 @@ public final class Sessions {
 
             response.addCookie(cookie);
         } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Can not write cookie", e);
+            LOGGER.log(Level.WARN, "Can not write cookie [oId=" + user.optString(Keys.OBJECT_ID)
+                    + ", token=" + user.optString(User.USER_PASSWORD) + "]");
         }
     }
 

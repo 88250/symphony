@@ -74,7 +74,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.19.15, Apr 20, 2016
+ * @version 2.14.20.18, Aug 17, 2016
  * @since 0.2.0
  */
 @Service
@@ -346,6 +346,7 @@ public class ArticleMgmtService {
      *     "articleRewardPoint": int, // optional, default to 0
      *     "articleIP": "", // optional, default to ""
      *     "articleUA": "", // optional, default to ""
+     *     "articleAnonymous": int // optional, default to 0 (public)
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -362,6 +363,8 @@ public class ArticleMgmtService {
         if (rewardPoint < 0) {
             throw new ServiceException(langPropsService.get("invalidRewardPointLabel"));
         }
+
+        final int articleAnonymous = requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS);
 
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
 
@@ -382,13 +385,23 @@ public class ArticleMgmtService {
                 throw new ServiceException(langPropsService.get("tooFrequentArticleLabel"));
             }
 
-            if (!fromClient) {
+            final int balance = author.optInt(UserExt.USER_POINT);
+            if (Article.ARTICLE_ANONYMOUS_C_ANONYMOUS == articleAnonymous) {
+                final int anonymousPoint = Symphonys.getInt("anonymous.point");
+                if (balance < anonymousPoint) {
+                    String anonymousEnabelPointLabel = langPropsService.get("anonymousEnabelPointLabel");
+                    anonymousEnabelPointLabel
+                            = anonymousEnabelPointLabel.replace("${point}", String.valueOf(anonymousPoint));
+                    throw new ServiceException(anonymousEnabelPointLabel);
+                }
+            }
+
+            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 final int addition = (int) Math.round(Math.sqrt(followerCnt));
 
                 final int sum = Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition + rewardPoint;
-                final int balance = author.optInt(UserExt.USER_POINT);
 
                 if (balance - sum < 0) {
                     throw new ServiceException(langPropsService.get("insufficientBalanceLabel"));
@@ -424,7 +437,6 @@ public class ArticleMgmtService {
 
             articleTitle = Emotions.toAliases(articleTitle);
             article.put(Article.ARTICLE_TITLE, articleTitle);
-
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
@@ -461,16 +473,23 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_TYPE, articleType);
             article.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
             String city = "";
-            article.put(Article.ARTICLE_CITY, city);
             if (UserExt.USER_GEO_STATUS_C_PUBLIC == author.optInt(UserExt.USER_GEO_STATUS)) {
                 city = author.optString(UserExt.USER_CITY);
-                article.put(Article.ARTICLE_CITY, city);
             }
+            article.put(Article.ARTICLE_CITY, city);
+            article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
+            article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
 
             String articleTags = article.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
+            boolean sandboxEnv = false;
+            if (StringUtils.containsIgnoreCase(articleTags, "Sandbox")) {
+                articleTags = "Sandbox";
+                sandboxEnv = true;
+            }
+
             String[] tagTitles = articleTags.split(",");
-            if (tagTitles.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
+            if (!sandboxEnv && tagTitles.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                     && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(articleTags)) {
                 final String content = article.optString(Article.ARTICLE_TITLE)
                         + " " + Jsoup.parse("<p>" + article.optString(Article.ARTICLE_CONTENT) + "</p>").text();
@@ -553,25 +572,25 @@ public class ArticleMgmtService {
             // Grows the tag graph
             tagMgmtService.relateTags(article.optString(Article.ARTICLE_TAGS));
 
-            if (!fromClient) {
+            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final long followerCnt = followQueryService.getFollowerCount(authorId, Follow.FOLLOWING_TYPE_C_USER);
                 final int addition = (int) Math.round(Math.sqrt(followerCnt));
 
                 pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                         Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE,
-                        Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition, articleId);
+                        Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE + addition, articleId, System.currentTimeMillis());
 
                 if (rewardPoint > 0) { // Enabe reward
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD,
-                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId);
+                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId, System.currentTimeMillis());
                 }
 
                 if (Article.ARTICLE_TYPE_C_CITY_BROADCAST == articleType) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_BROADCAST,
-                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST, articleId);
+                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_BROADCAST, articleId, System.currentTimeMillis());
                 }
 
                 // Liveness
@@ -615,7 +634,7 @@ public class ArticleMgmtService {
      *     "articleRewardContent": "", // optional, default to ""
      *     "articleRewardPoint": int, // optional, default to 0
      *     "articleIP": "", // optional, default to ""
-     *     "articleUA": "" // optional, default to ""
+     *     "articleUA": "", // optional default to ""
      * }
      * </pre>, see {@link Article} for more details
      *
@@ -630,6 +649,7 @@ public class ArticleMgmtService {
         String authorId;
         JSONObject author;
         int updatePointSum;
+        int articleAnonymous = 0;
 
         try {
             // check if admin allow to add article
@@ -650,7 +670,9 @@ public class ArticleMgmtService {
             addition += collectCnt * 2;
             updatePointSum = Pointtransfer.TRANSFER_SUM_C_UPDATE_ARTICLE + addition;
 
-            if (!fromClient) {
+            articleAnonymous = oldArticle.optInt(Article.ARTICLE_ANONYMOUS);
+
+            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 // Point
                 final int balance = author.optInt(UserExt.USER_POINT);
                 if (balance - updatePointSum < 0) {
@@ -682,6 +704,7 @@ public class ArticleMgmtService {
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
+            requestJSONObject.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
             processTagsForArticleUpdate(oldArticle, requestJSONObject, author);
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
@@ -703,12 +726,12 @@ public class ArticleMgmtService {
             final int rewardPoint = requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT, 0);
             boolean enableReward = false;
             if (0 < rewardPoint) {
-                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
-                oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
-
                 if (1 > oldArticle.optInt(Article.ARTICLE_REWARD_POINT)) {
                     enableReward = true;
                 }
+
+                oldArticle.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
+                oldArticle.put(Article.ARTICLE_REWARD_POINT, rewardPoint);
             }
 
             final String ip = requestJSONObject.optString(Article.ARTICLE_IP);
@@ -741,17 +764,17 @@ public class ArticleMgmtService {
 
             transaction.commit();
 
-            if (!fromClient) {
+            if (!fromClient && Article.ARTICLE_ANONYMOUS_C_PUBLIC == articleAnonymous) {
                 if (currentTimeMillis - createTime > 1000 * 60 * 5) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_UPDATE_ARTICLE,
-                            updatePointSum, articleId);
+                            updatePointSum, articleId, System.currentTimeMillis());
                 }
 
                 if (enableReward) {
                     pointtransferMgmtService.transfer(authorId, Pointtransfer.ID_C_SYS,
                             Pointtransfer.TRANSFER_TYPE_C_ADD_ARTICLE_REWARD,
-                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId);
+                            Pointtransfer.TRANSFER_SUM_C_ADD_ARTICLE_REWARD, articleId, System.currentTimeMillis());
                 }
             }
 
@@ -873,11 +896,14 @@ public class ArticleMgmtService {
             }
 
             final String rewardId = Ids.genTimeMillisId();
-            final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
-                    Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, rewardId);
 
-            if (!succ) {
-                throw new ServiceException();
+            if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
+                final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
+                        Pointtransfer.TRANSFER_TYPE_C_ARTICLE_REWARD, rewardPoint, rewardId, System.currentTimeMillis());
+
+                if (!succ) {
+                    throw new ServiceException();
+                }
             }
 
             final JSONObject reward = new JSONObject();
@@ -897,6 +923,85 @@ public class ArticleMgmtService {
             livenessMgmtService.incLiveness(senderId, Liveness.LIVENESS_REWARD);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Rewards an article[id=" + articleId + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * A user specified by the given sender id thanks the author of an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @param senderId the given sender id
+     * @throws ServiceException service exception
+     */
+    public void thank(final String articleId, final String senderId) throws ServiceException {
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+
+            if (null == article) {
+                return;
+            }
+
+            if (Article.ARTICLE_STATUS_C_INVALID == article.optInt(Article.ARTICLE_STATUS)) {
+                return;
+            }
+
+            final JSONObject sender = userRepository.get(senderId);
+            if (null == sender) {
+                return;
+            }
+
+            if (UserExt.USER_STATUS_C_VALID != sender.optInt(UserExt.USER_STATUS)) {
+                return;
+            }
+
+            final String receiverId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject receiver = userRepository.get(receiverId);
+            if (null == receiver) {
+                return;
+            }
+
+            if (UserExt.USER_STATUS_C_VALID != receiver.optInt(UserExt.USER_STATUS)) {
+                return;
+            }
+
+            if (receiverId.equals(senderId)) {
+                return;
+            }
+
+            if (rewardQueryService.isRewarded(senderId, articleId, Reward.TYPE_C_THANK_ARTICLE)) {
+                return;
+            }
+
+            final String thankId = Ids.genTimeMillisId();
+
+            if (Article.ARTICLE_ANONYMOUS_C_PUBLIC == article.optInt(Article.ARTICLE_ANONYMOUS)) {
+                final boolean succ = null != pointtransferMgmtService.transfer(senderId, receiverId,
+                        Pointtransfer.TRANSFER_TYPE_C_ARTICLE_THANK,
+                        Pointtransfer.TRANSFER_SUM_C_ARTICLE_THANK, thankId, System.currentTimeMillis());
+
+                if (!succ) {
+                    throw new ServiceException();
+                }
+            }
+
+            final JSONObject reward = new JSONObject();
+            reward.put(Keys.OBJECT_ID, thankId);
+            reward.put(Reward.SENDER_ID, senderId);
+            reward.put(Reward.DATA_ID, articleId);
+            reward.put(Reward.TYPE, Reward.TYPE_C_THANK_ARTICLE);
+
+            rewardMgmtService.addReward(reward);
+
+            final JSONObject notification = new JSONObject();
+            notification.put(Notification.NOTIFICATION_USER_ID, receiverId);
+            notification.put(Notification.NOTIFICATION_DATA_ID, thankId);
+
+            notificationMgmtService.addArticleThankNotification(notification);
+
+            livenessMgmtService.incLiveness(senderId, Liveness.LIVENESS_REWARD);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Thanks an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -946,7 +1051,7 @@ public class ArticleMgmtService {
 
             final boolean succ = null != pointtransferMgmtService.transfer(article.optString(Article.ARTICLE_AUTHOR_ID),
                     Pointtransfer.ID_C_SYS, Pointtransfer.TRANSFER_TYPE_C_STICK_ARTICLE,
-                    Pointtransfer.TRANSFER_SUM_C_STICK_ARTICLE, articleId);
+                    Pointtransfer.TRANSFER_SUM_C_STICK_ARTICLE, articleId, System.currentTimeMillis());
             if (!succ) {
                 throw new ServiceException(langPropsService.get("stickFailedLabel"));
             }
@@ -958,6 +1063,54 @@ public class ArticleMgmtService {
             LOGGER.log(Level.ERROR, "Sticks an article[id=" + articleId + "] failed", e);
 
             throw new ServiceException(langPropsService.get("stickFailedLabel"));
+        }
+    }
+
+    /**
+     * Admin sticks an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public synchronized void adminStick(final String articleId) throws ServiceException {
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
+            }
+
+            article.put(Article.ARTICLE_STICK, Long.MAX_VALUE);
+
+            articleRepository.update(articleId, article);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Admin sticks an article[id=" + articleId + "] failed", e);
+
+            throw new ServiceException(langPropsService.get("stickFailedLabel"));
+        }
+    }
+
+    /**
+     * Admin cancels stick an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public synchronized void adminCancelStick(final String articleId) throws ServiceException {
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
+            }
+
+            article.put(Article.ARTICLE_STICK, 0L);
+
+            articleRepository.update(articleId, article);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Admin cancel sticks an article[id=" + articleId + "] failed", e);
+
+            throw new ServiceException(langPropsService.get("operationFailedLabel"));
         }
     }
 
@@ -981,7 +1134,12 @@ public class ArticleMgmtService {
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.optJSONObject(i);
-                final long expired = article.optLong(Article.ARTICLE_STICK) + stepTime;
+                final long stick = article.optLong(Article.ARTICLE_STICK);
+                if (stick >= Long.MAX_VALUE) {
+                    continue; // Skip admin stick
+                }
+
+                final long expired = stick + stepTime;
 
                 if (expired < now) {
                     article.put(Article.ARTICLE_STICK, 0L);
@@ -1015,10 +1173,15 @@ public class ArticleMgmtService {
         final List<JSONObject> oldTags = tagRepository.getByArticleId(oldArticleId);
         String tagsString = newArticle.getString(Article.ARTICLE_TAGS);
         tagsString = Tag.formatTags(tagsString);
-        String[] tagStrings = tagsString.split(",");
+        boolean sandboxEnv = false;
+        if (StringUtils.containsIgnoreCase(tagsString, "Sandbox")) {
+            tagsString = "Sandbox";
+            sandboxEnv = true;
+        }
 
+        String[] tagStrings = tagsString.split(",");
         final int articleType = newArticle.optInt(Article.ARTICLE_TYPE);
-        if (tagStrings.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
+        if (!sandboxEnv && tagStrings.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                 && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(tagsString)) {
             final String content = newArticle.optString(Article.ARTICLE_TITLE)
                     + " " + Jsoup.parse("<p>" + newArticle.optString(Article.ARTICLE_CONTENT) + "</p>").text();
@@ -1243,7 +1406,12 @@ public class ArticleMgmtService {
             // User-Tag relation
             final JSONObject userTagRelation = new JSONObject();
             userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
-            userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, article.optString(Article.ARTICLE_AUTHOR_ID));
+
+            if (Article.ARTICLE_ANONYMOUS_C_ANONYMOUS == article.optInt(Article.ARTICLE_ANONYMOUS)) {
+                userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, "0");
+            } else {
+                userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, article.optString(Article.ARTICLE_AUTHOR_ID));
+            }
             userTagRelation.put(Common.TYPE, userTagType);
             userTagRepository.add(userTagRelation);
         }
@@ -1297,6 +1465,8 @@ public class ArticleMgmtService {
      *     "articleTitle": "",
      *     "articleTags": "",
      *     "articleContent": "",
+     *     "articleRewardContent": "",
+     *     "articleRewardPoint": int,
      *     "userName": "",
      *     "time": long
      * }
@@ -1332,7 +1502,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_AUTHOR_EMAIL, author.optString(User.USER_EMAIL));
             article.put(Article.ARTICLE_TITLE, Emotions.toAliases(requestJSONObject.optString(Article.ARTICLE_TITLE)));
             article.put(Article.ARTICLE_CONTENT, Emotions.toAliases(requestJSONObject.optString(Article.ARTICLE_CONTENT)));
-            article.put(Article.ARTICLE_REWARD_CONTENT, "");
+            article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));
             article.put(Article.ARTICLE_EDITOR_TYPE, 0);
             article.put(Article.ARTICLE_SYNC_TO_CLIENT, false);
             article.put(Article.ARTICLE_COMMENT_CNT, 0);
@@ -1350,12 +1520,18 @@ public class ArticleMgmtService {
             article.put(Article.REDDIT_SCORE, 0);
             article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_VALID);
             article.put(Article.ARTICLE_TYPE, Article.ARTICLE_TYPE_C_NORMAL);
-            article.put(Article.ARTICLE_REWARD_POINT, 0);
+            article.put(Article.ARTICLE_REWARD_POINT, requestJSONObject.optInt(Article.ARTICLE_REWARD_POINT));
             article.put(Article.ARTICLE_CITY, "");
             String articleTags = requestJSONObject.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
+            boolean sandboxEnv = false;
+            if (StringUtils.containsIgnoreCase(articleTags, "Sandbox")) {
+                articleTags = "Sandbox";
+                sandboxEnv = true;
+            }
+
             String[] tagTitles = articleTags.split(",");
-            if (tagTitles.length < GEN_TAG_MAX_CNT && !Tag.containsReservedTags(articleTags)) {
+            if (!sandboxEnv && tagTitles.length < GEN_TAG_MAX_CNT && !Tag.containsReservedTags(articleTags)) {
                 final String content = article.optString(Article.ARTICLE_TITLE)
                         + " " + Jsoup.parse("<p>" + article.optString(Article.ARTICLE_CONTENT) + "</p>").text();
                 final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
@@ -1386,6 +1562,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_UA, ua);
 
             article.put(Article.ARTICLE_STICK, 0L);
+            article.put(Article.ARTICLE_ANONYMOUS, false);
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);

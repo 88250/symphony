@@ -35,6 +35,14 @@
         <@head title="${settingsLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
         </@head>
+        <#elseif type == "articlesAnonymous">
+        <@head title="${anonymousArticleLabel} - ${user.userName} - ${symphonyLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
+        </@head>
+        <#elseif type == "commentsAnonymous">
+        <@head title="${anonymousCommentLabel} - ${user.userName} - ${symphonyLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
+        </@head>
         </#if>
     </head>
     <body>
@@ -56,6 +64,10 @@
                     ${followersLabel}
                     <#elseif type == "points">
                     ${pointLabel}
+                    <#elseif type == "articlesAnonymous">
+                    ${anonymousLabel}${articleLabel}
+                    <#elseif type == "commentsAnonymous">
+                    ${anonymousLabel}${cmtLabel}
                     <#elseif type == "settings">
                     ${settingsLabel}
                     </#if>
@@ -64,29 +76,35 @@
                 <div class="fn-hr5"></div>
                 <ul class="tab fn-clear fn-none">
                     <li<#if type == "home"> class="fn-none"</#if>>
-                        <a href="/member/${user.userName}">${articleLabel}</a>
+                        <a href="${servePath}/member/${user.userName}">${articleLabel}</a>
                     </li>
                     <li<#if type == "comments"> class="fn-none"</#if>>
-                        <a href="/member/${user.userName}/comments">${cmtLabel}</a>
+                        <a href="${servePath}/member/${user.userName}/comments">${cmtLabel}</a>
                     </li>
                     <li<#if type == "followingUsers"> class="fn-none"</#if>>
-                        <a href="/member/${user.userName}/following/users">${followingUsersLabel}</a>
+                        <a href="${servePath}/member/${user.userName}/following/users">${followingUsersLabel}</a>
                     </li>
                     <li<#if type == "followingTags"> class="fn-none"</#if>>
-                        <a href="/member/${user.userName}/following/tags">${followingTagsLabel}</a>
+                        <a href="${servePath}/member/${user.userName}/following/tags">${followingTagsLabel}</a>
                     </li>
                     <li<#if type == "followingArticles"> class="fn-none"</#if>>
-                        <a href="/member/${user.userName}/following/articles">${followingArticlesLabel}</a>
+                        <a href="${servePath}/member/${user.userName}/following/articles">${followingArticlesLabel}</a>
                     </li>
                     <li<#if type == "followers"> class="fn-none"</#if>>
-                        <a href="/member/${user.userName}/followers">${followersLabel}</a>
+                        <a href="${servePath}/member/${user.userName}/followers">${followersLabel}</a>
                     </li>
                     <li<#if type == "points"> class="fn-none"</#if>>
-                        <a href="/member/${user.userName}/points">${pointLabel}</a>
+                        <a href="${servePath}/member/${user.userName}/points">${pointLabel}</a>
                     </li>
                     <#if currentUser?? && currentUser.userName == user.userName>
+                    <li<#if type == "articlesAnonymous"> class="current"</#if>>
+                        <a href="${servePath}/member/${user.userName}/articles/anonymous">${anonymousArticleLabel}</a>
+                    </li>
+                    <li<#if type == "commentsAnonymous"> class="current"</#if>>
+                        <a href="${servePath}/member/${user.userName}/comments/anonymous">${anonymousCommentLabel}</a>
+                    </li>
                     <li<#if type == "settings"> class="fn-none"</#if>>
-                        <a href="/settings"><b class="ft-red">${settingsLabel}</b></a>
+                        <a href="${servePath}/settings"><b class="ft-red">${settingsLabel}</b></a>
                     </li>
                     </#if>
                 </ul>

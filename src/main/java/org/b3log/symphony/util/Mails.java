@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Mail utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.1, Apr 13, 2016
+ * @version 1.1.3.1, Jul 31, 2016
  * @since 1.3.0
  */
 public final class Mails {
@@ -73,6 +73,7 @@ public final class Mails {
             return;
         }
 
+        HttpResponse response = null;
         try {
             final Map<String, Object> formData = new HashMap<String, Object>();
 
@@ -96,12 +97,20 @@ public final class Mails {
             formData.put("substitution_vars", args.toString());
             formData.put("resp_email_id", "true");
 
-            final HttpResponse response = HttpRequest.post("http://sendcloud.sohu.com/webapi/mail.send_template.json")
+            response = HttpRequest.post("http://sendcloud.sohu.com/webapi/mail.send_template.json")
                     .form(formData).send();
 
             LOGGER.log(Level.DEBUG, response.bodyText());
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Send mail error", e);
+        } finally {
+            if (null != response) {
+                try {
+                    response.close();
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Close response failed", e);
+                }
+            }
         }
     }
 

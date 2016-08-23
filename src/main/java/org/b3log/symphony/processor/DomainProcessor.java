@@ -29,7 +29,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.DomainCache;
 import org.b3log.symphony.model.Article;
@@ -37,11 +36,14 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.DomainQueryService;
 import org.b3log.symphony.service.OptionQueryService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -55,7 +57,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, May 6, 2016
+ * @version 1.1.0.4, Aug 20, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -78,6 +80,12 @@ public class DomainProcessor {
      */
     @Inject
     private OptionQueryService optionQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Filler.
@@ -126,7 +134,7 @@ public class DomainProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/domain/{domainURI}", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showDomainArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String domainURI)
@@ -142,7 +150,12 @@ public class DomainProcessor {
         }
 
         final int pageNum = Integer.valueOf(pageNumStr);
-        final int pageSize = Symphonys.getInt("latestArticlesCnt");
+        int pageSize = Symphonys.getInt("indexArticlesCnt");
+
+        final JSONObject user = userQueryService.getCurrentUser(request);
+        if (null != user) {
+            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+        }
 
         final JSONObject domain = domainQueryService.getByURI(domainURI);
         if (null == domain) {
@@ -158,7 +171,9 @@ public class DomainProcessor {
 
         final String domainId = domain.optString(Keys.OBJECT_ID);
 
-        final JSONObject result = articleQueryService.getDomainArticles(domainId, pageNum, pageSize);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject result = articleQueryService.getDomainArticles(avatarViewMode, domainId, pageNum, pageSize);
         final List<JSONObject> latestArticles = (List<JSONObject>) result.opt(Article.ARTICLES);
         dataModel.put(Common.LATEST_ARTICLES, latestArticles);
 
@@ -177,8 +192,8 @@ public class DomainProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }
@@ -192,7 +207,7 @@ public class DomainProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/domains", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showDomains(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -211,43 +226,5 @@ public class DomainProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
-    }
-
-    /**
-     * Shows hot articles.
-     *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/hot", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = StopwatchStartAdvice.class)
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void showRecentArticles(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("hot.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        final int pageSize = Symphonys.getInt("indexArticlesCnt");
-
-        final List<JSONObject> indexArticles = articleQueryService.getIndexArticles(pageSize);
-        dataModel.put(Common.INDEX_ARTICLES, indexArticles);
-
-        Stopwatchs.start("Fills");
-        try {
-            filler.fillHeaderAndFooter(request, response, dataModel);
-            filler.fillDomainNav(dataModel);
-            if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
-                filler.fillRandomArticles(dataModel);
-            }
-            filler.fillHotArticles(dataModel);
-            filler.fillSideTags(dataModel);
-            filler.fillLatestCmts(dataModel);
-        } finally {
-            Stopwatchs.end();
-        }
     }
 }

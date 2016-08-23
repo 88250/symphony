@@ -4,17 +4,21 @@
     <head>
         <@head title="404 Not Found! - ${symphonyLabel}">
         <meta name="robots" content="none" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/error${miniPostfix}.css?${staticResourceVersion}" />
         </@head>
     </head>
-    <body>
+    <body class="error">
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper">
-                <div class="content">
-                    <h2>404 Not Found!</h2>
-                </div>
+            <div class="wrapper block">
+                <h2>404 Not Found!</h2><br/><br/>
+                <div class="ft-center"></div>
             </div>
         </div>
-        <#include "../footer.ftl">
+        <#include '../footer.ftl'/>
     </body>
+    <script>
+        $('.main .wrapper div.ft-center').html('<img src="${staticServePath}/images/404/' + Math.round(Math.random() * 6) + '.gif">');
+        Util.mouseClickEffects();
+    </script>
 </html>

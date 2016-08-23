@@ -26,6 +26,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
@@ -41,6 +42,7 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
@@ -64,6 +66,7 @@ import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Crypts;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -71,7 +74,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.5.8, May 29, 2016
+ * @version 2.15.6.10, Aug 22, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -79,7 +82,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
     /**
      * Symphony version.
      */
-    public static final String VERSION = "1.3.0";
+    public static final String VERSION = "1.5.0";
 
     /**
      * Logger.
@@ -192,10 +195,25 @@ public final class SymphonyServletListener extends AbstractServletListener {
         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Symphonys.get("skinDirName"));
         httpServletRequest.setAttribute(Common.IS_MOBILE, false);
 
+        httpServletRequest.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
+
         final String userAgentStr = httpServletRequest.getHeader("User-Agent");
 
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
-        final BrowserType browserType = userAgent.getBrowser().getBrowserType();
+        BrowserType browserType = userAgent.getBrowser().getBrowserType();
+
+        if (BrowserType.UNKNOWN == browserType) {
+            if (StringUtils.containsIgnoreCase(userAgentStr, "mobile")
+                    || StringUtils.containsIgnoreCase(userAgentStr, "MQQBrowser")) {
+                browserType = BrowserType.MOBILE_BROWSER;
+            } else if (!StringUtils.containsIgnoreCase(userAgentStr, "Java")
+                    && !StringUtils.containsIgnoreCase(userAgentStr, "MetaURI")
+                    && !StringUtils.containsIgnoreCase(userAgentStr, "Feed")) {
+                LOGGER.log(Level.WARN, "Unknown client [UA=" + userAgentStr + ", remoteAddr="
+                        + Requests.getRemoteAddr(httpServletRequest) + ", URI="
+                        + httpServletRequest.getRequestURI() + "]");
+            }
+        }
 
         if (BrowserType.ROBOT == browserType) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
@@ -324,6 +342,12 @@ public final class SymphonyServletListener extends AbstractServletListener {
             optionRepository.add(option);
 
             option = new JSONObject();
+            option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
+            option.put(Option.OPTION_VALUE, "1"); // Not allow anonymous view
+            option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
+            optionRepository.add(option);
+
+            option = new JSONObject();
             option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_ADD_ARTICLE);
             option.put(Option.OPTION_VALUE, "0");
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
@@ -404,7 +428,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
                             continue;
                         }
 
-                        final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
+                        final String value = Crypts.decryptByAES(cookie.getValue(), Symphonys.get("cookie.secret"));
+                        final JSONObject cookieJSONObject = new JSONObject(value);
 
                         final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
                         if (Strings.isEmptyOrNull(userId)) {
@@ -419,7 +444,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
                         }
                     }
                 } catch (final Exception e) {
-                    LOGGER.warn(e.getMessage());
+                    LOGGER.log(Level.ERROR, "Read cookie failed", e);
                 }
 
                 if (null == user) {
@@ -429,6 +454,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
             request.setAttribute(Keys.TEMAPLTE_DIR_NAME, (Boolean) request.getAttribute(Common.IS_MOBILE)
                     ? "mobile" : user.optString(UserExt.USER_SKIN));
+            request.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
+
             request.setAttribute(User.USER, user);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);

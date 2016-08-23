@@ -1,5 +1,5 @@
 <div class="ft-center">
-    <div id="avatarURLDom" class="avatar-big" title="${user.userName}" style="background-image:url('${user.userAvatarURL}-260.jpg?${user.userUpdateTime?c}')"></div>
+    <div id="avatarURLDom" class="avatar-big" title="${user.userName}" style="background-image:url('${user.userAvatarURL210}')"></div>
     <div>
         <div class="user-name">
             <#if user.userNickname != "">
@@ -8,12 +8,14 @@
             </div>
             </#if>
             <span class="ft-gray">${user.userName}</span>
+            <#if 0 == user.userOnlineStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
             <img title="<#if user.userOnlineFlag>${onlineLabel}<#else>${offlineLabel}</#if>" src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
+            </#if>
             <#if "adminRole" == user.userRole>
             <span class="ft-13 icon-userrole" title="${administratorLabel}"></span>
             </#if>
             <#if isAdminLoggedIn>
-            <a class="ft-13 icon-setting" href="/admin/user/${user.oId}" title="${adminLabel}"></a>
+            <a class="ft-13 icon-setting" href="${servePath}/admin/user/${user.oId}" title="${adminLabel}"></a>
             </#if>
             <#if isLoggedIn && (userName != user.userName)>
             <#if isFollowing>
@@ -43,17 +45,20 @@
         </div>
         <#if "" != user.userTags>
         <div class="user-info">
-            <span class="ft-gray">${selfTagLabel}</span> <#list user.userTags?split(',') as tag> ${tag?html}<#if tag_has_next>,</#if></#list>
+            <span class="ft-gray">${selfTagLabel}</span>
+            <span id='userTagsDom'>
+                <#list user.userTags?split(',') as tag> ${tag?html}<#if tag_has_next>,</#if></#list>
+            </span>
         </div>
         </#if>
         <#if "" != user.userCity && 0 == user.userGeoStatus>
         <div class="user-info">
-            <span class="ft-gray">${geoLable}</span> <#if "中国" == user.userCountry>${user.userCity}<#else>${user.userCountry} ${user.userCity}</#if>
+            <span class="ft-gray">${geoLabel}</span> <#if "中国" == user.userCountry>${user.userCity}<#else>${user.userCountry} ${user.userCity}</#if>
         </div>
         </#if>
         <div class="user-info">
             <span class="ft-gray">${pointLabel}</span>
-            <a href="/member/${user.userName}/points" title="${user.userPoint?c}">
+            <a href="${servePath}/member/${user.userName}/points" title="${user.userPoint?c}">
                 <#if 0 == user.userAppRole>
                 0x${user.userPointHex}
                 <#else>

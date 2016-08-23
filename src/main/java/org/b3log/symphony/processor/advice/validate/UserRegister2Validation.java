@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * UserRegister2Validation for validate {@link org.b3log.symphony.processor.LoginProcessor} register2(Type POST) method.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Mar 10, 2016
+ * @version 1.1.1.0, Jul 3, 2016
  * @since 1.3.0
  */
 @Named
@@ -80,7 +80,7 @@ public class UserRegister2Validation extends BeforeRequestProcessAdvice {
 
             // check if admin allow to register
             final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_REGISTER);
-            if (!"0".equals(option.optString(Option.OPTION_VALUE))) {
+            if ("1".equals(option.optString(Option.OPTION_VALUE))) {
                 throw new Exception(langPropsService.get("notAllowRegisterLabel"));
             }
         } catch (final Exception e) {

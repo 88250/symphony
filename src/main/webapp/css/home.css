@@ -19,8 +19,62 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.6.9, Apr 6, 2016
+ * @version 2.4.10.13, Aug 22, 2016
  */
+
+
+/* start home common */
+.home-list {
+    background-image: linear-gradient(to right, #F6F6F6 0%, #FDFDFD 8px);
+    box-shadow: 1px 0 0 #EEEEEE inset;
+    list-style: none;
+    padding: 15px 0;
+}
+
+.home-list li a {
+    cursor: pointer;
+    margin: 5px 0;
+    display: block;
+    padding: 8px 10px;
+    text-decoration: none;
+}
+
+.home-list li a:hover {
+    box-shadow: 2px 0 0 #CCC inset;
+}
+
+.home-list li a > span.counter {
+    background-color: #EEEEEE;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 0 -1px 0 #E3E3E3 inset;
+    color: #999;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 5px;
+    margin-left: 5px;
+}
+
+.home-list li.current a {
+    background: none repeat scroll 0 0 #FDFDFD;    
+    box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    font-weight: bold;
+    position: relative;
+    border: 1px solid #EEE;
+    border-left-width: 0;
+}
+
+.home-list li.current a:after {
+    background-image: linear-gradient(#D26911, #BA5D0F);
+    bottom: -1px;
+    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1) inset;
+    content: "";
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    width: 3px;
+}
+/* end home common */
 
 /* start home side */
 .user-name {
@@ -116,90 +170,113 @@
     width: 100%;
     display: block;
 }
+
+label.article-anonymous {
+    margin: 7px 15px 0 0;
+}
+
+.post .tags-wrap {
+    position: relative;
+}
+
+.post .tags-input {
+    border: 1px solid #CCCCCC;
+    background-color: #FAFAFA;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
+    padding: 5px 5px 3px 5px;
+    width: 100%;
+    line-height: 17px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    height: 33px;
+}
+
+.post .tags-input span.tag {
+    margin: 2px 5px 0 0px;
+    color: #4183C4;
+}
+
+.post .tags-input .tag > span.close {
+    cursor: pointer;
+    margin-left: 5px;
+    color: #999;
+}
+
+.post .tags-input span.tag.haved {
+    color: #333;
+    background-color: #ccc;
+    transition: background 0.5s ease-in,color 0.3s ease-out;
+}
+
+.post .tags-input input {
+    border: 0;
+    outline: none;
+    box-shadow: 0 0 0 transparent;
+    border-radius: 0;
+    padding: 2px;
+}
+
+.post .tags-input input:focus {
+    border: 0;
+    background-color: transparent;
+    box-shadow: 0 0 0 transparent;
+}
+
+.post .domains-tags, 
+.post .completed-panel {
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    border: 1px solid #e5e5e5;
+    z-index: 10;
+    padding: 10px;
+    border-radius: 0 0 3px 3px;
+    width: 50%;
+    top: 32px;
+    box-sizing: border-box;
+}
+
+.post .domains-tags .tag {
+    cursor: pointer;
+    color: #4183C4;
+}
+
+.post .domains-tags > span.current {
+    color: #FFF;
+    background-color: #2c5d8d;
+    background-image: linear-gradient(#7ba9d6, #2c5d8d);
+    border-color: #689cd0;
+}
+
+.post .completed-panel {
+    padding: 0;
+    overflow: auto;
+    left: 0;
+}
+
+.post .completed-panel a {
+    display: block;
+    padding: 3px;
+    text-decoration: none;
+    line-height: 18px;
+    height: 18px;
+}
+
+.post .completed-panel a.selected,
+.post .completed-panel a:hover {
+    background-color: #F7F7F7;
+}
 /* end add article */
 
 /* start home */
-.tab {
-    border-bottom: 1px solid #DDD;
-}
-
-.tab > li {
-    border: 1px solid transparent;
-    border-bottom: 0;
-    float: left;
-    list-style: none outside none;
-    margin-bottom: -1px;
-}
-
-.tab > li.current {
-    background-color: #FFFFFF;
-    border-color: #DDD;
-    font-weight: bold;
-    line-height: 20px;
-    border-radius: 3px 3px 0 0;
-}
-
-.tab > li > a {
-    color: #666666;
-    line-height: 20px;
-    text-decoration: none;
-    padding: 8px;
-    display: block;
+.home-invisible {
+    margin: 50px 0;
 }
 /* end home */
 
 /* start notifications */
-.note-list {
-    background-image: linear-gradient(to right, #F6F6F6 0%, #FDFDFD 8px);
-    box-shadow: 1px 0 0 #EEEEEE inset;
-    list-style: none;
-    padding: 15px 0;
-}
-
-.note-list li a {
-    cursor: pointer;
-    margin: 5px 0;
-    display: block;
-    padding: 8px 10px;
-    text-decoration: none;
-}
-
-.note-list li a:hover {
-    box-shadow: 2px 0 0 #CCC inset;
-}
-
-.note-list li a > span.counter {
-    background-color: #EEEEEE;
-    border-radius: 2px 2px 2px 2px;
-    box-shadow: 0 -1px 0 #E3E3E3 inset;
-    color: #999999;
-    float: right;
-    font-size: 11px;
-    font-weight: bold;
-    padding: 2px 5px;
-}
-
-.note-list li.current a {
-    background: none repeat scroll 0 0 #FDFDFD;    
-    box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.05);
-    color: #333333;
-    font-weight: bold;
-    position: relative;
-    border: 1px solid #EEE;
-    border-left-width: 0;
-}
-
-.note-list li.current a:after {
-    background-image: linear-gradient(#D26911, #BA5D0F);
-    bottom: -1px;
-    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1) inset;
-    content: "";
-    position: absolute;
-    right: -1px;
-    top: -1px;
-    width: 3px;
-}
-
 .notification .read {
     background-color: #FAFAFA;
     opacity: 0.5;
@@ -268,7 +345,8 @@
     vertical-align: bottom;
 }
 
-.admin .form input[type=text] {
+.admin .form input[type=text],
+.admin .form input[type=number] {
     width: 50%;
     margin-right: 10px;
 }
@@ -337,5 +415,23 @@
     bottom: 20px;
     padding: 5px 12px 5px;
     border-radius: 0 3px 3px 0;
+}
+
+.settings-secret > div {
+    float: left;
+    width: 50%
+}
+
+#homeSidePanel {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    background-color: #FFF;
+}
+
+#emojiGrid img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
 }
 /* end settings */

@@ -20,25 +20,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
-import org.b3log.symphony.repository.CharacterRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -47,7 +40,7 @@ import org.json.JSONObject;
  * Activity query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.1, Apr 14, 2016
+ * @version 1.4.1.3, Jun 16, 2016
  * @since 1.3.0
  */
 @Service
@@ -65,12 +58,6 @@ public class ActivityQueryService {
     private UserRepository userRepository;
 
     /**
-     * Character repository.
-     */
-    @Inject
-    private CharacterRepository characterRepository;
-
-    /**
      * Pointtransfer query service.
      */
     @Inject
@@ -83,55 +70,13 @@ public class ActivityQueryService {
     private AvatarQueryService avatarQueryService;
 
     /**
-     * Language service.
-     */
-    @Inject
-    private LangPropsService langPropsService;
-
-    /**
-     * Gets a character of the specified user id.
-     *
-     * @param userId the specified user id
-     * @return character
-     */
-    public String getCharacter(final String userId) {
-        final int maxRetries = 7;
-        int retries = 0;
-
-        while (retries < maxRetries) {
-            retries++;
-
-            final String characters = langPropsService.get("characters");
-            final int index = RandomUtils.nextInt(characters.length());
-            final String ret = StringUtils.trim(characters.substring(index, index + 1));
-
-            final Query query = new Query();
-            query.setFilter(CompositeFilterOperator.and(
-                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_USER_ID, FilterOperator.EQUAL, userId),
-                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret)
-            ));
-
-            try {
-                if (characterRepository.count(query) > 0) {
-                    continue;
-                }
-
-                return ret;
-            } catch (final RepositoryException e) {
-                LOGGER.log(Level.ERROR, "Gets a character failed", e);
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Gets the top checkin users with the specified fetch size.
      *
+     * @param avatarViewMode the specified avatar view mode
      * @param fetchSize the specified fetch size
      * @return users, returns an empty list if not found
      */
-    public List<JSONObject> getTopCheckinUsers(final int fetchSize) {
+    public List<JSONObject> getTopCheckinUsers(final int avatarViewMode, final int fetchSize) {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
         final Query query = new Query().addSort(UserExt.USER_LONGEST_CHECKIN_STREAK, SortDirection.DESCENDING).
@@ -149,7 +94,7 @@ public class ActivityQueryService {
                     user.put(UserExt.USER_T_POINT_CC, UserExt.toCCString(user.optInt(UserExt.USER_POINT)));
                 }
 
-                avatarQueryService.fillUserAvatarURL(user);
+                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
                 ret.add(user);
             }

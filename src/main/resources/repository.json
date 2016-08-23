@@ -1,11 +1,44 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.19.5.9, Jun 13, 2016",
+    "version": "3.27.7.10, Aug 22, 2016",
     "authors": [
         "Liang Ding"
     ],
     "since": "0.2.0",
     "repositories": [
+        {
+            "name": "invitecode",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "code",
+                    "type": "String",
+                    "length": 16
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "useTime",
+                    "type": "long"
+                },
+                {
+                    "name": "status",
+                    "type": "int"
+                },
+                {
+                    "name": "memo",
+                    "type": "String",
+                    "length": 512
+                }
+            ]
+        },
         {
             "name": "character",
             "keys": [
@@ -501,8 +534,27 @@
                 {
                     "name": "commentUA",
                     "type": "String",
-                    "length": 128,
+                    "length": 255,
                     "description": "User-Agent"
+                },
+                {
+                    "name": "commentAnonymous",
+                    "type": "int",
+                    "description": "0: public, 1: anonymous"
+                },
+                {
+                    "name": "commentGoodCnt",
+                    "description": "Favour count",
+                    "type": "int"
+                },
+                {
+                    "name": "commentBadCnt",
+                    "description": "Oppose count",
+                    "type": "int"
+                },
+                {
+                    "name": "commentScore",
+                    "type": "double"
                 }
             ]
         },
@@ -883,6 +935,70 @@
                     "name": "userCommentViewMode",
                     "type": "int",
                     "description": "0: traditional, 1: real time"
+                },
+                {
+                    "name": "userUAStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userNotifyStatus",
+                    "type": "int",
+                    "description": "0: enabled, 1: disabled"
+                },
+                {
+                    "name": "userPointStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userFollowerStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userFollowingArticleStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userFollowingTagStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userFollowingUserStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userCommentStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userArticleStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userOnlineStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userTimelineStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userListPageSize",
+                    "type": "int"
+                },
+                {
+                    "name": "userAvatarViewMode",
+                    "type": "int",
+                    "description": "0: original, 1: static"
                 }
             ]
         },
@@ -1028,12 +1144,22 @@
                 {
                     "name": "articleUA",
                     "type": "String",
-                    "length": 128,
+                    "length": 255,
                     "description": "User-Agent"
                 },
                 {
                     "name": "articleStick",
                     "type": "long"
+                },
+                {
+                    "name": "articleAnonymous",
+                    "type": "int",
+                    "description": "0: public, 1: anonymous"
+                },
+                {
+                    "name": "articlePerfect",
+                    "type": "int",
+                    "description": "0: not perfect, 1: perfect"
                 }
             ]
         },
@@ -1077,6 +1203,35 @@
                     "name": "clientAdminEmail",
                     "type": "String",
                     "length": 255
+                }
+            ]
+        },
+        {
+            "name": "emotion",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "emotionUserId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "emotionContent",
+                    "type": "String",
+                    "length": 64
+                },
+                {
+                    "name": "emotionSort",
+                    "type": "int"
+                },
+                {
+                    "name": "emotionType",
+                    "type": "int",
+                    "description": "0: emoji"
                 }
             ]
         }

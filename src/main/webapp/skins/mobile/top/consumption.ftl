@@ -7,16 +7,16 @@
         <li>
             <div class="fn-flex">
                 <a rel="nofollow"
-                   href="/member/${user.userName}" 
-                   title="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}-64.jpg?${user.userUpdateTime}')"></div></a>
+                   href="${servePath}/member/${user.userName}" 
+                   title="${user.userName}"><div class="avatar" style="background-image:url('${user.userAvatarURL}')"></div></a>
                 <div class="fn-flex-1">
                     <div class="fn-clear">
                         <h2 class="fn-left">
                             ${user_index + 1}.
-                            <a rel="bookmark" href="/member/${user.userName}">${user.userName}</a>
+                            <a rel="bookmark" href="${servePath}/member/${user.userName}">${user.userName}</a>
                         </h2>
                         <div class="fn-right">
-                            <a href="/member/${user.userName}/points">
+                            <a href="${servePath}/member/${user.userName}/points">
                                 ${user.userUsedPoint?c}
                             </a>
                             ~ ${yuanLabel}${user.money}

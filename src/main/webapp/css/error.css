@@ -1,0 +1,64 @@
+/**
+ * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * 错误样式.
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 0.0.1.1, Aug 22 2016
+ */
+
+/* start error */
+.error .block {
+    display: block;
+}
+/* end error */
+
+/* start 403 */
+.error-403 > .slogan {
+    padding-top: 20px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+}
+
+.error-403 .slogan-border {
+    margin: 20px 0 40px;
+    color: #767676;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+}
+
+.error-403 .slogan-register {
+    padding: 20px 30px;
+    border-right: 1px solid #eee;
+    float: left;
+    margin-right: 30px;
+}
+
+.error-403 .slogan-text {
+    float: left;
+    margin: 20px 0;
+    line-height: 35px;
+}
+
+.error-403 #emptyTimeline,
+.error-403 .list {
+    width: 100%;
+}
+/* end 403 */

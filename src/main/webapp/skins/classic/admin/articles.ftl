@@ -21,20 +21,23 @@
                 <#else>
                 <font class="ft-red">${banLabel}</font>
                 </#if>
-                <a href="/admin/article/${item.oId}" class="fn-right icon-edit" title="${editLabel}"></a>  
+                <#if 0 < item.articleStick>
+                <#if 9223372036854775807 <= item.articleStick><font class="ft-green">${adminLabel}</font></#if><font class="ft-green">${stickLabel}</font>
+                </#if>
+                <a href="${servePath}/admin/article/${item.oId}" class="fn-right tooltipped tooltipped-w ft-a-icon" aria-label="${editLabel}"><span class="icon-edit"></span></a>
             </div>
             <div class="fn-clear">
-                <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL}-64.jpg?${item.articleAuthor.userUpdateTime?c}')"></div>${item.articleAuthorName} &nbsp;
-                <span class="icon-tags" title="${tagLabel}"></span>
+                <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL20}')"></div>${item.articleAuthorName} &nbsp;
+                <span class="tooltipped tooltipped-w" aria-label="${tagLabel}"><span class="icon-tags"></span></span>
                 <span class="tags">
                     ${item.articleTags}
                 </span> 
                 <span class="fn-right ft-gray">
-                    <span class="icon-view" title="${viewCountLabel}"></span>
+                    <span class="tooltipped tooltipped-n" aria-label="${viewCountLabel}"><span class="icon-view"></span></span>
                     ${item.articleViewCount} &nbsp;
-                    <span class="icon-cmts" title="${commentCountLabel}"></span>
+                    <span class="tooltipped tooltipped-n" aria-label="${commentCountLabel}"><span class="icon-cmts"></span></span>
                     ${item.articleCommentCount} &nbsp;
-                    <span class="icon-date" title="${createTimeLabel}"></span>
+                    <span class="tooltipped tooltipped-n" aria-label="${createTimeLabel}"><span class="icon-date"></span></span>
                     ${item.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span>
             </div>

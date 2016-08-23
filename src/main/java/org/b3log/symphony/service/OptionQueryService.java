@@ -16,7 +16,9 @@
 package org.b3log.symphony.service;
 
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
+import javax.websocket.Session;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -36,6 +38,7 @@ import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
 import org.b3log.symphony.processor.channel.ChatRoomChannel;
 import org.b3log.symphony.processor.channel.TimelineChannel;
+import org.b3log.symphony.processor.channel.UserChannel;
 import org.b3log.symphony.repository.OptionRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,7 +51,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.5, Apr 12, 2016
+ * @version 1.4.0.9, Aug 16, 2016
  * @since 0.2.0
  */
 @Service
@@ -72,13 +75,27 @@ public class OptionQueryService {
     private LangPropsService langPropsService;
 
     /**
+     * Gets the online member count.
+     *
+     * @return online member count
+     */
+    public int getOnlineMemberCount() {
+        int ret = 0;
+        for (final Set<Session> value : UserChannel.SESSIONS.values()) {
+            ret += value.size();
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets the online visitor count.
      *
      * @return online visitor count
      */
     public int getOnlineVisitorCount() {
         final int ret = ArticleChannel.SESSIONS.size() + ArticleListChannel.SESSIONS.size() + TimelineChannel.SESSIONS.size()
-                + ChatRoomChannel.SESSIONS.size();
+                + ChatRoomChannel.SESSIONS.size() + UserChannel.SESSIONS.size();
 
         try {
             final JSONObject maxOnlineMemberCntRecord = optionRepository.get(Option.ID_C_STATISTIC_MAX_ONLINE_VISITOR_COUNT);
@@ -119,7 +136,8 @@ public class OptionQueryService {
         final JSONObject ret = new JSONObject();
 
         final Query query = new Query().
-                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_STATISTIC));
+                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, Option.CATEGORY_C_STATISTIC))
+                .setPageCount(1);
         try {
             final JSONObject result = optionRepository.get(query);
             final JSONArray options = result.optJSONArray(Keys.RESULTS);
@@ -205,6 +223,23 @@ public class OptionQueryService {
     }
 
     /**
+     * Gets allow register option value.
+     *
+     * @return allow register option value, return {@code null} if not found
+     */
+    public String getAllowRegister() {
+        try {
+            final JSONObject result = optionRepository.get(Option.ID_C_MISC_ALLOW_REGISTER);
+
+            return result.optString(Option.OPTION_VALUE);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets option [allow register] value failed", e);
+
+            return null;
+        }
+    }
+
+    /**
      * Gets the miscellaneous.
      *
      * @return misc
@@ -235,9 +270,8 @@ public class OptionQueryService {
      *
      * @param optionId the specified id
      * @return option, return {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getOption(final String optionId) throws ServiceException {
+    public JSONObject getOption(final String optionId) {
         try {
             final JSONObject ret = optionRepository.get(optionId);
 
@@ -248,7 +282,8 @@ public class OptionQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets an option [optionId=" + optionId + "] failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 }

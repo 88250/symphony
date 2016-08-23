@@ -22,7 +22,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -36,11 +35,13 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.ArticleQueryService;
-import org.b3log.symphony.service.DomainQueryService;
 import org.b3log.symphony.service.SearchQueryService;
+import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 12, 2016
+ * @version 1.1.0.1, Aug 20, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -78,10 +79,10 @@ public class SearchProcessor {
     private ArticleQueryService articleQueryService;
 
     /**
-     * Domain query service.
+     * User query service.
      */
     @Inject
-    private DomainQueryService domainQueryService;
+    private UserQueryService userQueryService;
 
     /**
      * Filler.
@@ -98,7 +99,7 @@ public class SearchProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/search", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void search(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -124,7 +125,11 @@ public class SearchProcessor {
             pageNum = Integer.valueOf(p);
         }
 
-        final int pageSize = Symphonys.getInt("latestArticlesCnt");
+        int pageSize = Symphonys.getInt("indexArticlesCnt");
+        final JSONObject user = userQueryService.getCurrentUser(request);
+        if (null != user) {
+            pageSize = user.optInt(UserExt.USER_LIST_PAGE_SIZE);
+        }
         final List<JSONObject> articles = new ArrayList<JSONObject>();
         int total = 0;
 
@@ -165,9 +170,11 @@ public class SearchProcessor {
             total = result.optInt("nbHits");
         }
 
-        articleQueryService.organizeArticles(articles);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        articleQueryService.organizeArticles(avatarViewMode, articles);
         final Integer participantsCnt = Symphonys.getInt("latestArticleParticipantsCnt");
-        articleQueryService.genParticipants(articles, participantsCnt);
+        articleQueryService.genParticipants(avatarViewMode, articles, participantsCnt);
 
         dataModel.put(Article.ARTICLES, articles);
 
@@ -184,8 +191,8 @@ public class SearchProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
-        filler.fillRandomArticles(dataModel);
-        filler.fillHotArticles(dataModel);
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
     }

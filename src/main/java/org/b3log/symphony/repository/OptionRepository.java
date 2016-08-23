@@ -15,24 +15,61 @@
  */
 package org.b3log.symphony.repository;
 
+import javax.inject.Inject;
+import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.symphony.cache.OptionCache;
 import org.b3log.symphony.model.Option;
+import org.json.JSONObject;
 
 /**
  * Option repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Oct 16, 2012
+ * @version 1.1.1.0, Aug 11, 2016
  * @since 0.2.0
  */
 @Repository
 public class OptionRepository extends AbstractRepository {
 
     /**
+     * Option cache.
+     */
+    @Inject
+    private OptionCache optionCache;
+
+    /**
      * Public constructor.
      */
     public OptionRepository() {
         super(Option.OPTION);
+    }
+
+    @Override
+    public JSONObject get(final String id) throws RepositoryException {
+        JSONObject ret = optionCache.getOption(id);
+        if (null != ret) {
+            return ret;
+        }
+
+        ret = super.get(id);
+
+        if (null == ret) {
+            return null;
+        }
+
+        optionCache.putOption(ret);
+
+        return ret;
+    }
+
+    @Override
+    public void update(final String id, final JSONObject option) throws RepositoryException {
+        super.update(id, option);
+
+        option.put(Keys.OBJECT_ID, id);
+        optionCache.putOption(option);
     }
 }

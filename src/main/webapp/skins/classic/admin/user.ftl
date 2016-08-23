@@ -109,7 +109,8 @@
                 <select id="userStatus" name="userStatus">
                     <option value="0"<#if 0 == user.userStatus> selected</#if>>${validLabel}</option>
                     <option value="1"<#if 1 == user.userStatus> selected</#if>>${banLabel}</option>
-                    <option value="1"<#if 2 == user.userStatus> selected</#if>>${notVerifiedLabel}</option>
+                    <option value="2"<#if 2 == user.userStatus> selected</#if>>${notVerifiedLabel}</option>
+                    <option value="3"<#if 3 == user.userStatus> selected</#if>>${invalidLoginLabel}</option>
                 </select>
 
                 <label>${syncWithSymphonyClientLabel}</label>
@@ -213,6 +214,21 @@
 
                 <label>${memoLabel}</label>
                 <input type="text" name="memo" value="" />
+
+                <br/><br/>
+                <button type="submit" class="green fn-right">${submitLabel}</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="module">
+        <div class="module-header">
+            <h2>${compensateInitPointLabel}</h2>
+        </div>
+        <div class="module-panel form fn-clear">
+            <form action="/admin/user/${user.oId}/init-point" method="POST">
+                <label>${userNameLabel}</label>
+                <input type="text" name="userName" value="${user.userName}" readonly="readonly" />
 
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>

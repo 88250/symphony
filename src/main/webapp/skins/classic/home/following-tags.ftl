@@ -1,20 +1,30 @@
 <#include "macro-home.ftl">
 <#include "../macro-pagination.ftl">
-<@home "followingTags">
+<@home "${type}">
+<div class="tabs-sub fn-clear">
+    <a href="${servePath}/member/${user.userName}/following/users"<#if type == "followingUsers"> class="current"</#if>>${followingUsersLabel}</a>
+    <a href="${servePath}/member/${user.userName}/following/tags"<#if type == "followingTags"> class="current"</#if>>${followingTagsLabel}</a>
+    <a href="${servePath}/member/${user.userName}/following/articles"<#if type == "followingArticles"> class="current"</#if>>${followingArticlesLabel}</a>
+    <a href="${servePath}/member/${user.userName}/followers"<#if type == "followers"> class="current"</#if>>${followersLabel}</a>
+</div>
+<#if 0 == user.userFollowingTagStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="follow">
     <ol>
         <#list userHomeFollowingTags as followingTag>
         <li class="fn-clear">
             <#if "" != followingTag.tagIconPath>
-            <a href="/tag/${followingTag.tagTitle?url('utf-8')}">
-                <div title="${followingTag.tagTitle}" class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
+            <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}">
+                <div class="avatar fn-left ft-gray tooltipped tooltipped-se"  
+                   aria-label="${followingTag.tagTitle}" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
             </a>
             <#else>
-            <a class="icon-tags fn-left" href="/tag/${followingTag.tagTitle?url('utf-8')}"></a>
+            <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}"
+               class="tooltipped tooltipped-se fn-left ft-a-icon" aria-label="${followingTag.tagTitle}"><div class="icon-tags"  
+                   ></div></a>
             </#if>
             <div class="fn-left">
                 <h3 class="fn-inline">
-                    <a href="/tag/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
+                    <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
                 </h3>
                 &nbsp;
                 <#if isLoggedIn> 
@@ -38,4 +48,7 @@
     </ol>
 </div>
 <@pagination url="/member/${user.userName}/following/tags"/>
+<#else>
+<p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
+</#if>
 </@home>

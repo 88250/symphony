@@ -17,8 +17,15 @@ package org.b3log.symphony.service;
 
 import java.util.LinkedList;
 import java.util.List;
+import javax.inject.Inject;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.channel.TimelineChannel;
+import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -26,11 +33,16 @@ import org.json.JSONObject;
  * Timeline management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 21, 2015
+ * @version 1.1.0.0, Jul 22, 2016
  * @since 1.3.0
  */
 @Service
 public class TimelineMgmtService {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(TimelineMgmtService.class.getName());
 
     /**
      * Timelines.
@@ -38,16 +50,34 @@ public class TimelineMgmtService {
     private LinkedList<JSONObject> timelines = new LinkedList<JSONObject>();
 
     /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+
+    /**
      * Adds the specified timeline.
      *
      * @param timeline the specified timeline, for example,      <pre>
      * {
+     *     "userId": "",
      *     "type": "article",
      *     "content": timelineArticleLabel
      * }
      * </pre>
      */
     public void addTimeline(final JSONObject timeline) {
+        String userId = timeline.optString(Common.USER_ID);
+        try {
+            final JSONObject user = userRepository.get(userId);
+
+            if (UserExt.USER_XXX_STATUS_C_PUBLIC != user.optInt(UserExt.USER_TIMELINE_STATUS)) {
+                return;
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets user [userId=" + userId + "] failed", e);
+        }
+
         TimelineChannel.notifyTimeline(timeline);
 
         timelines.addFirst(timeline);

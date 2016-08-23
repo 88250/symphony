@@ -42,6 +42,8 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Invitecode;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.model.Verifycode;
@@ -50,6 +52,9 @@ import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.processor.advice.validate.UserForgetPwdValidation;
 import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
+import org.b3log.symphony.service.InvitecodeMgmtService;
+import org.b3log.symphony.service.InvitecodeQueryService;
+import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -74,7 +79,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.3.9, Apr 22, 2016
+ * @version 1.8.4.11, Aug 2, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -132,6 +137,24 @@ public class LoginProcessor {
      */
     @Inject
     private TimelineMgmtService timelineMgmtService;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
+     * Invitecode query service.
+     */
+    @Inject
+    private InvitecodeQueryService invitecodeQueryService;
+
+    /**
+     * Invitecode management service.
+     */
+    @Inject
+    private InvitecodeMgmtService invitecodeMgmtService;
 
     /**
      * Shows forget password page.
@@ -320,6 +343,9 @@ public class LoginProcessor {
             }
         }
 
+        final String allowRegister = optionQueryService.getAllowRegister();
+        dataModel.put(Option.ID_C_MISC_ALLOW_REGISTER, allowRegister);
+
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 
@@ -341,6 +367,7 @@ public class LoginProcessor {
         final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
         final String name = requestJSONObject.optString(User.USER_NAME);
         final String email = requestJSONObject.optString(User.USER_EMAIL);
+        final String invitecode = requestJSONObject.optString(Invitecode.INVITECODE);
         final String referral = requestJSONObject.optString(Common.REFERRAL);
 
         final JSONObject user = new JSONObject();
@@ -364,6 +391,16 @@ public class LoginProcessor {
             verifycode.put(Verifycode.TYPE, Verifycode.TYPE_C_EMAIL);
             verifycode.put(Verifycode.USER_ID, newUserId);
             verifycodeMgmtService.addVerifycode(verifycode);
+
+            final String allowRegister = optionQueryService.getAllowRegister();
+            if ("2".equals(allowRegister)) {
+                final JSONObject ic = invitecodeQueryService.getInvitecode(invitecode);
+                ic.put(Invitecode.USER_ID, newUserId);
+                ic.put(Invitecode.USE_TIME, System.currentTimeMillis());
+                final String icId = ic.optString(Keys.OBJECT_ID);
+
+                invitecodeMgmtService.updateInvitecode(icId, ic);
+            }
 
             context.renderTrueResult().renderMsg(langPropsService.get("verifycodeSentLabel"));
         } catch (final ServiceException e) {
@@ -427,11 +464,21 @@ public class LoginProcessor {
                     // Point
                     pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITED_REGISTER,
-                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, referralId);
+                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, referralId, System.currentTimeMillis());
                     pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, referralId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER,
-                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, userId);
+                            Pointtransfer.TRANSFER_SUM_C_INVITE_REGISTER, userId, System.currentTimeMillis());
                 }
+            }
+
+            final JSONObject ic = invitecodeQueryService.getInvitecodeByUserId(userId);
+            if (null != ic && Invitecode.STATUS_C_UNUSED == ic.optInt(Invitecode.STATUS)) {
+                ic.put(Invitecode.STATUS, Invitecode.STATUS_C_USED);
+                ic.put(Invitecode.USER_ID, userId);
+                ic.put(Invitecode.USE_TIME, System.currentTimeMillis());
+                final String icId = ic.optString(Keys.OBJECT_ID);
+
+                invitecodeMgmtService.updateInvitecode(icId, ic);
             }
 
             context.renderTrueResult();
@@ -440,6 +487,7 @@ public class LoginProcessor {
 
             // Timeline
             final JSONObject timeline = new JSONObject();
+            timeline.put(Common.USER_ID, user.optString(Keys.OBJECT_ID));
             timeline.put(Common.TYPE, Common.NEW_USER);
             String content = langPropsService.get("timelineNewUserLabel");
             content = content.replace("{user}", "<a target='_blank' rel='nofollow' href='" + Latkes.getServePath()
@@ -487,6 +535,20 @@ public class LoginProcessor {
             if (UserExt.USER_STATUS_C_INVALID == user.optInt(UserExt.USER_STATUS)) {
                 userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
                 context.renderMsg(langPropsService.get("userBlockLabel"));
+
+                return;
+            }
+
+            if (UserExt.USER_STATUS_C_NOT_VERIFIED == user.optInt(UserExt.USER_STATUS)) {
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
+                context.renderMsg(langPropsService.get("notVerifiedLabel"));
+
+                return;
+            }
+
+            if (UserExt.USER_STATUS_C_INVALID_LOGIN == user.optInt(UserExt.USER_STATUS)) {
+                userMgmtService.updateOnlineStatus(user.optString(Keys.OBJECT_ID), "", false);
+                context.renderMsg(langPropsService.get("invalidLoginLabel"));
 
                 return;
             }

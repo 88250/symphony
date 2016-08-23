@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.8.8, Mar 16, 2016
+ * @version 2.15.10.8, Aug 1, 2016
  */
 
 /**
@@ -31,10 +31,9 @@ var AddArticle = {
     rewardEditor: undefined,
     /**
      * @description 发布文章
-     * @id [string] 文章 id ，如不为空则表示更新文章否则为添加文章
      * @csrfToken [string] CSRF 令牌
      */
-    add: function (id, csrfToken) {
+    add: function (csrfToken) {
         if (Validate.goValidate({target: $('#addArticleTip'),
             data: [{
                     "type": "string",
@@ -48,23 +47,36 @@ var AddArticle = {
                     "min": 4,
                     "msg": Label.articleContentErrorLabel
                 }]})) {
+            // 打赏区启用后积分不能为空
+            if ($('#articleRewardPoint').data('orval')
+                    && !/^\+?[1-9][0-9]*$/.test($('#articleRewardPoint').val())) {
+                $("#addArticleTip").addClass('error').html('<ul><li>'
+                        + Label.articleRewardPointErrorLabel + '</li></ul>');
+                return false;
+            }
+
+            var articleTags = '';
+            $('.tags-input .tag .text').each(function () {
+                articleTags += $(this).text() + ',';
+            });
             var requestJSONObject = {
                 articleTitle: $("#articleTitle").val().replace(/(^\s*)|(\s*$)/g, ""),
                 articleContent: this.editor.getValue(),
-                articleTags: $("#articleTags").val().replace(/(^\s*)|(\s*$)/g, ""),
+                articleTags: articleTags,
                 articleCommentable: true,
                 articleType: $("input[type='radio'][name='articleType']:checked").val(),
                 articleRewardContent: this.rewardEditor.getValue(),
-                articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")
+                articleRewardPoint: $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, ""),
+                articleAnonymous: $('#articleAnonymous').prop('checked')
             },
-            url = "/article", type = "POST";
+            url = Label.servePath + "/article", type = "POST";
 
             if (3 === parseInt(requestJSONObject.articleType)) { // 如果是“思绪”
                 requestJSONObject.articleContent = window.localStorage.thoughtContent;
             }
 
-            if (id) {
-                url = url + "/" + id;
+            if (Label.articleOId) {
+                url = url + "/" + Label.articleOId;
                 type = "PUT";
             }
 
@@ -127,7 +139,7 @@ var AddArticle = {
                     "Alt-/": "autocompleteUserName",
                     "Ctrl-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
-                    "Alt-E": "endAudioRecord",
+                    "Alt-R": "endAudioRecord",
                     "F11": function (cm) {
                         cm.setOption("fullScreen", !cm.getOption("fullScreen"));
                     },
@@ -175,18 +187,18 @@ var AddArticle = {
             AddArticle.editor.setCursor(CodeMirror.Pos(0, 0));
             AddArticle.editor.focus();
 
-            var username = getParameterByName("at");
+            var username = Util.getParameterByName("at");
             $("#articleTitle").val("Hi, " + username);
 
             var tagTitles = "小黑屋";
-            var tags = getParameterByName("tags");
+            var tags = Util.getParameterByName("tags");
             if ("" !== tags) {
                 tagTitles += "," + tags;
             }
             $("#articleTags").val(tagTitles);
         }
 
-        var title = getParameterByName("title");
+        var title = Util.getParameterByName("title");
         if (title && title.length > 0) {
             $("#articleTitle").val(title);
         }
@@ -270,32 +282,27 @@ var AddArticle = {
             });
         }
 
-        $("#articleTitle, #articleTags, #articleRewardPoint").keypress(function (event) {
+        $("#articleTitle, #articleRewardPoint").keypress(function (event) {
             if (13 === event.keyCode) {
                 AddArticle.add();
             }
         });
 
         // 初始化打赏区编辑器
-        var readOnly = false;
         if (0 < $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")) {
-            readOnly = 'nocursor';
+            $('#showReward').click();
         }
 
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             AddArticle.rewardEditor = Util.initTextarea('articleRewardContent');
-            $('#articleRewardContent').prop('readOnly', readOnly);
-            if (readOnly === false) {
-                $('#articleRewardContent').before('<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
-                        + Label.uploadLabel + '<input type="file"/></label></form>')
-                        .css('margin-top', 0);
-            }
+            $('#articleRewardContent').before('<form id="rewardFileUpload" method="POST" enctype="multipart/form-data"><label class="btn">'
+                    + Label.uploadLabel + '<input type="file"/></label></form>')
+                    .css('margin-top', 0);
         } else {
             var addArticleRewardEditor = new Editor({
                 element: document.getElementById('articleRewardContent'),
                 dragDrop: false,
                 lineWrapping: true,
-                readOnly: readOnly,
                 toolbar: [
                     {name: 'bold'},
                     {name: 'italic'},
@@ -350,6 +357,173 @@ var AddArticle = {
         }
 
         $("#articleRewardContent").next().next().height(100);
+        this._initTag();
+    },
+    /**
+     * @description 初始化标签编辑器
+     * @returns {undefined}
+     */
+    _initTag: function () {
+        $.ua.set(navigator.userAgent);
+
+        // 添加 tag 到输入框
+        var addTag = function (text) {
+            if (text.replace(/\s/g, '') === '') {
+                return false;
+            }
+            var hasTag = false;
+
+            text = text.replace(/\s/g, 's');
+
+            $("#articleTags").val('').data('val', '');
+
+            // 重复添加处理
+            $('.tags-input .text').each(function () {
+                var $it = $(this);
+                if (text === $it.text()) {
+                    $it.parent().addClass('haved');
+                    setTimeout(function () {
+                        $it.parent().removeClass('haved');
+                    }, 900);
+                    hasTag = true;
+                }
+            });
+
+            if (hasTag) {
+                return false;
+            }
+
+            // 长度处理
+            if ($('.tags-input .tag').length >= 4) {
+                $('#articleTags').prop('disabled', true).val('').data('val', '');
+                return false;
+            }
+
+            $('.post .tags-selected').append('<span class="tag"><span class="text">'
+                    + text + '</span><span class="close">x</span></span>');
+            if ($.ua.device.type !== 'mobile') {
+                $('.post .domains-tags, #articleTagsSelectedPanel').css('left', $('.post .tags-selected').width() + 'px');
+            }
+            $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
+
+            if ($('.tags-input .tag').length >= 4) {
+                $('#articleTags').prop('disabled', true).val('').data('val', '');
+            }
+        };
+
+        // domains 切换
+        $('.domains-tags .btn').click(function () {
+            $('.domains-tags .btn.current').removeClass('current');
+            $(this).addClass('current');
+            $('.domains-tags .domain-tags').hide();
+            $('#tags' + $(this).data('id')).show();
+        });
+
+        // tag 初始化渲染
+        var initTags = $('#articleTags').val().split(',');
+        for (var j = 0, jMax = initTags.length; j < jMax; j++) {
+            addTag(initTags[j]);
+        }
+
+        // 领域 tag 选择
+        $('.domain-tags .tag').click(function () {
+            addTag($(this).text());
+        });
+
+        // 移除 tag
+        $('.tags-input').on('click', '.tag > span.close', function () {
+            $(this).parent().remove();
+            if ($.ua.device.type !== 'mobile') {
+                $('.post .domains-tags, #articleTagsSelectedPanel').css('left', $('.post .tags-selected').width() + 'px');
+            }
+            $('#articleTags').width($('.tags-input').width() - $('.post .tags-selected').width() - 10);
+            $('#articleTags').prop('disabled', false);
+        });
+
+        // 展现领域 tag 选择面板
+        $('#articleTags').click(function () {
+            $('.post .domains-tags').show();
+            $('#articleTagsSelectedPanel').hide();
+        }).blur(function () {
+            $(this).val('').data('val', '');
+        });
+
+        // 关闭领域 tag 选择面板
+        $('body').click(function (event) {
+            if ($(event.target).closest('.tags-input').length === 1 || $(event.target).closest('.domains-tags').length === 1) {
+            } else {
+                $('.post .domains-tags').hide();
+            }
+        });
+
+        // 自动补全 tag
+        $("#articleTags").completed({
+            height: 170,
+            onlySelect: true,
+            data: [],
+            afterSelected: function ($it) {
+                addTag($it.text());
+            },
+            afterKeyup: function (event) {
+                $('.post .domains-tags').hide();
+                // 遇到分词符号自动添加标签
+                if (event.key === ',' || event.key === '，' ||
+                        event.key === '、' || event.key === '；' || event.key === ';') {
+                    var text = $("#articleTags").val();
+                    addTag(text.substr(0, text.length - 1));
+                    return false;
+                }
+
+                // 回车，自动添加标签
+                if (event.keyCode === 13) {
+                    addTag($("#articleTags").val());
+                    return false;
+                }
+
+                // 上线左右
+                if (event.keyCode === 37 || event.keyCode === 39 ||
+                        event.keyCode === 38 || event.keyCode === 40) {
+                    return false;
+                }
+
+                // ECS 隐藏面板
+                if (event.keyCode === 27) {
+                    $('#articleTagsSelectedPanel').hide();
+                    return false;
+                }
+
+                // 删除 tag
+                if (event.keyCode === 8 && ($("#articleTags").data('val') && $("#articleTags").data('val').length === 0 || !$("#articleTags").data('val'))) {
+                    $('.tags-input .tag .close:last').click();
+                    return false;
+                }
+
+
+                if ($("#articleTags").data('val') === $("#articleTags").val()) {
+                    return false;
+                }
+                $("#articleTags").data('val', $("#articleTags").val());
+
+
+                if ($("#articleTags").val().replace(/\s/g, '') === '') {
+                    return false;
+                }
+
+                $.ajax({
+                    url: Label.servePath + '/tags/query?title=' + $("#articleTags").val(),
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#addArticleTip").addClass('error').html('<ul><li>' + errorThrown + '</li></ul>');
+                    },
+                    success: function (result, textStatus) {
+                        if (result.sc) {
+                            $("#articleTags").completed('updateData', result.tags);
+                        } else {
+                            console.log(result);
+                        }
+                    }
+                });
+            }
+        });
     },
     /**
      * @description 显示简要语法
@@ -360,11 +534,3 @@ var AddArticle = {
 };
 
 AddArticle.init();
-
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}

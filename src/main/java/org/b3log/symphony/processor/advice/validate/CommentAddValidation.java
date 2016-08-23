@@ -30,6 +30,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
@@ -95,7 +96,7 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
             }
 
-            final JSONObject article = articleQueryService.getArticleById(articleId);
+            final JSONObject article = articleQueryService.getArticleById(UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, articleId);
             if (null == article) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
             }

@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,24 +10,12 @@
     <body>
         <#include "header.ftl">
         <div class="main">
+            <@subNav 'timeline' ''/>
             <div class="content fn-clear">
-                <div class="domains fn-clear">
-                    <#list domains as navDomain>
-                    <a href="/domain/${navDomain.domainURI}">${navDomain.domainTitle}</a>
-                    </#list>
-                    <a href="/">${latestLabel}</a>
-                    <a href="/hot">${hotLabel}</a>
-                    <#if isLoggedIn && "" != currentUser.userCity>
-                    <a href="/city/my">${currentUser.userCity}</a>
-                    </#if>
-                    <a href="/timeline" class="selected">${timelineLabel}</a>
-                    <a href="/community">${communityGroupLabel}</a>
-                </div>
-
                 <#if timelines?size <= 0>
-                <div id="emptyTimeline">${emptyTimelineLabel}</div>
+                <div id="emptyTimeline" class="wrapper">${emptyTimelineLabel}</div>
                 </#if>
-                <div class="list single-line">
+                <div class="list">
                     <ul id="ul">
                         <#list timelines as timeline>
                         <li>${timeline.content}</li>
@@ -40,12 +29,10 @@
             </div>
         </div>
         <#include "footer.ftl">
-
-        <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
             // Init [Timeline] channel
-            TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}/timeline-channel", ${timelineCnt});
+            TimelineChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/timeline-channel", ${timelineCnt});
         </script>
     </body>
 </html>
