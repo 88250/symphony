@@ -46,7 +46,7 @@
             ${user.userNo?c}
             <span class="ft-gray">${numVIPLabel}</span>, <#if 0 == user.userAppRole>${hackerLabel}<#else>${painterLabel}</#if>
         <span class="ft-gray">${pointLabel}</span>
-        <a href="${servePath}/member/${user.userName}/points" class="tooltipped tooltipped-s" aria-label="${user.userPoint?c}">
+        <a href="${servePath}/member/${user.userName}/points" class="tooltipped tooltipped-n" aria-label="${user.userPoint?c}">
                 <#if 0 == user.userAppRole>
                 0x${user.userPointHex}
                 <#else>
