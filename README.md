@@ -112,9 +112,9 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 
 如果你也搭建好了，欢迎通过 Pull Request 将你的站点加到这个列表中 :-p
 
-## 商用授权
+## 使用授权
 
-请看[这里](https://github.com/b3log/symphony/wiki/%E5%95%86%E7%94%A8%E6%8E%88%E6%9D%83)。
+请看[这里](https://github.com/b3log/symphony/wiki/%E4%BD%BF%E7%94%A8%E6%8E%88%E6%9D%83)。
 
 ## 思绪
 
