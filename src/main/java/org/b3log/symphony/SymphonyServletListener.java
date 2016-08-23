@@ -202,7 +202,9 @@ public final class SymphonyServletListener extends AbstractServletListener {
         BrowserType browserType = userAgent.getBrowser().getBrowserType();
 
         if (BrowserType.UNKNOWN == browserType) {
-            LOGGER.log(Level.WARN, "Unknown UA [" + userAgentStr + "]");
+            if (!StringUtils.startsWithIgnoreCase(userAgentStr, "Java/")) {
+                LOGGER.log(Level.WARN, "Unknown UA [" + userAgentStr + "]");
+            }
         }
 
         if (BrowserType.ROBOT == browserType) {
