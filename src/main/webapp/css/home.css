@@ -423,6 +423,7 @@ label.article-anonymous {
 }
 
 #homeSidePanel {
+    width: 100%;
     position: absolute;
     top: 0;
     background-color: #FFF;

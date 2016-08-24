@@ -28,17 +28,19 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
+import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Aug 21, 2016
+ * @version 1.0.1.1, Aug 23, 2016
  * @since 1.6.0
  */
 @Named
@@ -76,8 +78,7 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
             return;
         }
 
-        if (request.getRequestURI().contains("/article/1467552642279")) {
-            // Hard coding, skip https://hacpai.com/article/1467552642279
+        if (Strings.contains(request.getRequestURI(), Symphonys.get("anonymousViewSkips").split(","))) {
             return;
         }
 
