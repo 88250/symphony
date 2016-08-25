@@ -296,6 +296,48 @@ var Settings = {
         });
     },
     /**
+     * @description 查询邀请码状态
+     * @param {String} csrfToken CSRF token
+     * @returns {undefined}
+     */
+    queryInvitecode: function (csrfToken) {
+        var requestJSONObject = {
+            invitecode: $('#invitecode').val()
+        };
+
+        $.ajax({
+            url: Label.servePath + "/invitecode/state",
+            type: "POST",
+            headers: {"csrfToken": csrfToken},
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            beforeSend: function () {
+                $("#invitecodeStateTip").removeClass("succ").removeClass("error").html("");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            },
+            success: function (result, textStatus) {
+                switch (result.sc) {
+                    case -1:
+                    case 0:
+                    case 2:
+                        $("#invitecodeStateTip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
+
+                        break;
+                    case 1:
+                        $("#invitecodeStateTip").addClass("succ").removeClass("error").html('<ul><li>' + result.msg + '</li></ul>');
+
+                        break;
+                    default:
+                        $("#invitecodeStateTip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
+                }
+S
+                $("#invitecodeStateTip").show();
+            }
+        });
+    },
+    /**
      * @description 更新 settings 页面数据.
      * @argument {String} csrfToken CSRF token
      */
