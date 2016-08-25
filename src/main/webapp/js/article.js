@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.28.16, Aug 16, 2016
+ * @version 1.21.28.16, Aug 25, 2016
  */
 
 /**
@@ -194,12 +194,13 @@ var Comment = {
      * @param {Integer} 0：公开评论，1：匿名评论
      */
     thank: function (id, csrfToken, tip, commentAnonymous, it) {
-        if (0 === commentAnonymous && !confirm(tip)) {
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
             return false;
         }
 
-        if (!Label.isLoggedIn) {
-            Util.needLogin();
+        // 匿名回帖不需要进行 confirm
+        if (0 === commentAnonymous && !confirm(tip)) {
             return false;
         }
 
@@ -228,7 +229,32 @@ var Comment = {
                         $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
                         $cnt.html('<span class="icon-heart"></span>' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
                     }
-                    $(it).remove();
+
+
+                    var $heart = $("<i class='icon-heart ft-red'></i>"),
+                            y = $(it).offset().top,
+                            x = $(it).offset().left;
+                    $heart.css({
+                        "z-index": 9999,
+                        "top": y,
+                        "left": x,
+                        "position": "absolute",
+                        "font-size": 16,
+                        "-moz-user-select": "none",
+                        "-webkit-user-select": "none",
+                        "-ms-user-select": "none"
+                    });
+                    $("body").append($heart);
+
+                    $heart.animate({"left": x - 150, "opacity": 0},
+                            1500,
+                            function () {
+                                $heart.remove();
+                                $(it).remove();
+                            }
+                    );
+
+
                 } else {
                     alert(result.msg);
                 }
@@ -419,7 +445,7 @@ var Article = {
      * @param {String} type 反对的实体类型
      */
     voteDown: function (id, type, it) {
-         if (!Label.isLoggedIn) {
+        if (!Label.isLoggedIn) {
             Util.needLogin();
             return false;
         }
@@ -689,11 +715,18 @@ var Article = {
      * @description 感谢文章
      */
     thankArticle: function (articleId, articleAnonymous) {
+        if (!Label.isLoggedIn) {
+            Util.needLogin();
+            return false;
+        }
+
+        // 匿名贴不需要 confirm
         if (0 === articleAnonymous && !confirm(Label.thankArticleConfirmLabel)) {
             return false;
         }
-        if (!Label.isLoggedIn) {
-            Util.needLogin();
+        
+        if (Label.currentUserName === Label.articleAuthorName) {
+            alert(Label.thankSelfLabel);
             return false;
         }
 
@@ -706,6 +739,28 @@ var Article = {
                     var thxCnt = parseInt($('#thankArticle').attr('aria-label').substr(3));
                     $("#thankArticle").removeAttr("onclick").find("span").addClass("ft-red");
                     $("#thankArticle").attr('aria-label', Label.thankLabel + ' ' + (thxCnt + 1));
+
+                    var $heart = $("<i class='icon-heart ft-red'></i>"),
+                            y = $('#thankArticle').offset().top,
+                            x = $('#thankArticle').offset().left;
+                    $heart.css({
+                        "z-index": 9999,
+                        "top": y - 20,
+                        "left": x,
+                        "position": "absolute",
+                        "font-size": 16,
+                        "-moz-user-select": "none",
+                        "-webkit-user-select": "none",
+                        "-ms-user-select": "none"
+                    });
+                    $("body").append($heart);
+
+                    $heart.animate({"top": y - 180, "opacity": 0},
+                            1500,
+                            function () {
+                                $heart.remove();
+                            }
+                    );
 
                     return false;
                 }

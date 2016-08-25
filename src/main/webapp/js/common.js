@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.31.19.25, Aug 16, 2016
+ * @version 1.31.19.26, Aug 25, 2016
  */
 
 /**
@@ -1072,7 +1072,6 @@ var Util = {
         jQuery(document).ready(function ($) {
             $("html").click(function (e) {
                 var n = 18;
-                //var $i=$("<b></b>").text("+"+n);
                 var $i;
                 click_cnt++;
                 if (click_cnt == 10) {
@@ -1119,7 +1118,6 @@ var Util = {
                             $i.remove();
                         }
                 );
-                //e.stopPropagation();
             });
         });
     }
