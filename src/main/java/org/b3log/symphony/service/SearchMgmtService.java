@@ -40,7 +40,7 @@ import org.jsoup.Jsoup;
  * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.4, Aug 26, 2016
+ * @version 1.3.2.4, Aug 26, 2016
  * @since 1.4.0
  */
 @Service
@@ -224,12 +224,20 @@ public class SearchMgmtService {
                 String content = doc.optString(Article.ARTICLE_CONTENT);
                 content = Markdowns.toHTML(content);
                 content = Jsoup.parse(content).text();
+
                 doc.put(Article.ARTICLE_CONTENT, content);
                 final byte[] data = doc.toString().getBytes("UTF-8");
-                if (data.length >= 10240) {
+
+                if (content.length() < 32) {
+                    LOGGER.log(Level.WARN, "This article is too small [length=" + data.length + "], so skip it [title="
+                            + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
+                    return;
+                }
+
+                if (data.length > 10240) {
                     LOGGER.log(Level.WARN, "This article is too big [length=" + data.length + "], so skip it [title="
                             + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
-                    continue;
+                    return;
                 }
 
                 request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/" + id));
@@ -255,12 +263,12 @@ public class SearchMgmtService {
 
                 break;
             }
-        }
 
-        try {
-            Thread.sleep(100);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Sleep error", e);
+            try {
+                Thread.sleep(100);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Sleep error", e);
+            }
         }
     }
 
