@@ -120,11 +120,11 @@
                         <div class="share fn-right">
                             <div id="qrCode" class="fn-none"
                                  data-shareurl="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"></div>
-                            <span class="tooltipped tooltipped-s" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span>
-                            <span class="tooltipped tooltipped-s" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
-                            <span class="tooltipped tooltipped-s" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
-                            <span class="tooltipped tooltipped-s" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>
-                            <span class="tooltipped tooltipped-sw ft-red" data-type="copy"
+                            <span class="tooltipped tooltipped-w" aria-label="share to wechat" data-type="wechat"><span class="icon-wechat"></span></span>
+                            <span class="tooltipped tooltipped-nw" aria-label="share to weibo" data-type="weibo"><span class="icon-weibo"></span></span>
+                            <span class="tooltipped tooltipped-nw" aria-label="share to twitter" data-type="twitter"><span class="icon-twitter"></span></span>
+                            <span class="tooltipped tooltipped-nw" aria-label="share to google" data-type="google"><span class="icon-google"></span></span>
+                            <span class="tooltipped tooltipped-nw ft-red" data-type="copy"
                                   aria-label="${copyLabel}"
                                   id="shareClipboard"
                                   data-clipboard-text="${servePath}${article.articlePermalink}<#if isLoggedIn>?r=${currentUser.userName}</#if>"><span 
@@ -249,8 +249,8 @@
                             <div class="fn-clear comment-header">
                                 <span class="fn-left ft-smaller">${article.articleCommentCount} ${cmtLabel}</span>
                                 <span<#if article.articleComments?size == 0> class="fn-none"</#if>>
-                                    <a class="tooltipped tooltipped-sw fn-right" href="#bottomComment" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
-                                    <a class="tooltipped tooltipped-sw fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
+                                    <a class="tooltipped tooltipped-nw fn-right" href="#bottomComment" aria-label="${jumpToBottomCommentLabel}"><span class="icon-chevron-down"></span></a>
+                                    <a class="tooltipped tooltipped-nw fn-right" href="javascript:Comment.exchangeCmtSort(${userCommentViewMode})"
                                        aria-label="<#if 0 == userCommentViewMode>${changeToLabel}${realTimeLabel}${cmtViewModeLabel}<#else>${changeToLabel}${traditionLabel}${cmtViewModeLabel}</#if>"><span class="icon-<#if 0 == userCommentViewMode>sortasc<#else>time</#if>"></span></a>
                                 </span>
                             </div>
