@@ -234,7 +234,7 @@ public class SearchMgmtService {
                     return;
                 }
 
-                if (data.length > 10240) {
+                if (data.length > 102400) {
                     LOGGER.log(Level.WARN, "This article is too big [length=" + data.length + "], so skip it [title="
                             + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
                     return;
