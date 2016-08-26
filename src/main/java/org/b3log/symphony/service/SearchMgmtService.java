@@ -28,8 +28,10 @@ import org.b3log.latke.urlfetch.HTTPResponse;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.symphony.model.Article;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Search management service.
@@ -38,7 +40,7 @@ import org.json.JSONObject;
  * <a href="https://www.algolia.com">Algolia</a> as the underlying engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.4, Aug 9, 2016
+ * @version 1.2.2.4, Aug 26, 2016
  * @since 1.4.0
  */
 @Service
@@ -218,9 +220,21 @@ public class SearchMgmtService {
                 request.setRequestMethod(HTTPRequestMethod.PUT);
 
                 final String id = doc.optString(Keys.OBJECT_ID);
+
+                String content = doc.optString(Article.ARTICLE_CONTENT);
+                content = Markdowns.toHTML(content);
+                content = Jsoup.parse(content).text();
+                doc.put(Article.ARTICLE_CONTENT, content);
+                final byte[] data = doc.toString().getBytes("UTF-8");
+                if (data.length >= 10240) {
+                    LOGGER.log(Level.WARN, "This article is too big [length=" + data.length + "], so skip it [title="
+                            + doc.optString(Article.ARTICLE_TITLE) + ", id=" + id + "]");
+                    continue;
+                }
+
                 request.setURL(new URL("https://" + host + "/1/indexes/" + index + "/" + id));
 
-                request.setPayload(doc.toString().getBytes("UTF-8"));
+                request.setPayload(data);
 
                 final HTTPResponse response = URL_FETCH_SVC.fetch(request);
                 if (200 != response.getResponseCode()) {
