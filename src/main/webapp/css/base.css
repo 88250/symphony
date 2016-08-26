@@ -245,7 +245,8 @@ svg {
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     word-wrap: break-word;
     overflow: hidden;
-    line-height: 145%;
+    line-height: 1.5;
+    font-size: 16px;
 }
 
 .content-reset ul,
@@ -359,10 +360,27 @@ svg {
     background: #efefef; 
 }
 
-code.hljs,
-.hljs code {
-    font-family: mononoki;
-    background-color: #efefef;
+.content-reset code {
+    padding: 0;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(0,0,0,0.04);
+    border-radius: 3px;
+    vertical-align: baseline;
+    
+}
+
+.content-reset code::before, 
+.content-reset code::after {
+    letter-spacing: -0.2em;
+    content: "\00a0";
+}
+
+.content-reset pre > code {
+    padding: 0.5em;
+    border-radius: 0;
 }
 /* end reset */
 
