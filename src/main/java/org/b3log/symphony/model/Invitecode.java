@@ -19,10 +19,10 @@ package org.b3log.symphony.model;
  * This class defines all invitecode model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 2, 2016
+ * @version 1.0.0.1, Aug 26, 2016
  * @since 1.4.0
  */
-public class Invitecode {
+public final class Invitecode {
 
     /**
      * Invitecode.
@@ -40,10 +40,15 @@ public class Invitecode {
     public static final String CODE = "code";
 
     /**
+     * Key of generator id.
+     */
+    public static final String GENERATOR_ID = "generatorId";
+
+    /**
      * Key of user id.
      */
     public static final String USER_ID = "userId";
-    
+
     /**
      * Key of use time.
      */
@@ -64,6 +69,7 @@ public class Invitecode {
      * Status - Used.
      */
     public static final int STATUS_C_USED = 0;
+
     /**
      * Status - Unused.
      */

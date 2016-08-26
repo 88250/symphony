@@ -79,7 +79,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.4.11, Aug 2, 2016
+ * @version 1.8.4.12, Aug 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -479,6 +479,13 @@ public class LoginProcessor {
                 final String icId = ic.optString(Keys.OBJECT_ID);
 
                 invitecodeMgmtService.updateInvitecode(icId, ic);
+
+                final String icGeneratorId = ic.optString(Invitecode.GENERATOR_ID);
+                if (StringUtils.isNotBlank(icGeneratorId) && !Pointtransfer.ID_C_SYS.equals(icGeneratorId)) {
+                    pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, icGeneratorId,
+                            Pointtransfer.TRANSFER_TYPE_C_INVITECODE_USED,
+                            Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED, userId, System.currentTimeMillis());
+                }
             }
 
             context.renderTrueResult();
