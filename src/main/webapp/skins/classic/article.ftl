@@ -481,6 +481,8 @@
             Label.thankLabel = "${thankLabel}";
             Label.isAdminLoggedIn = ${isAdminLoggedIn?c};
             Label.adminLabel = '${adminLabel}';
+            Label.thankSelfLabel = '${thankSelfLabel}';
+            Label.articleAuthorName = '${article.articleAuthorName}';
             qiniuToken = "${qiniuUploadToken}";
             qiniuDomain = "${qiniuDomain}";
             <#if isLoggedIn>

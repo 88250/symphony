@@ -49,6 +49,7 @@ import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Emotion;
 import org.b3log.symphony.model.Follow;
+import org.b3log.symphony.model.Invitecode;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
@@ -72,6 +73,7 @@ import org.b3log.symphony.service.EmotionQueryService;
 import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.InvitecodeMgmtService;
+import org.b3log.symphony.service.InvitecodeQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.PointtransferMgmtService;
@@ -114,12 +116,13 @@ import org.json.JSONObject;
  * <li>Lists usernames (/users/names), GET</li>
  * <li>Lists emotions (/users/emotions), GET</li>
  * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
+ * <li>Queries invitecode state (/invitecode/state), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.21.12.21, Aug 20, 2016
+ * @version 1.22.12.21, Aug 25, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -220,8 +223,71 @@ public class UserProcessor {
     @Inject
     private OptionQueryService optionQueryService;
 
+    /**
+     * Invitecode management service.
+     */
     @Inject
     private InvitecodeMgmtService invitecodeMgmtService;
+
+    /**
+     * Invitecode query service.
+     */
+    @Inject
+    private InvitecodeQueryService invitecodeQueryService;
+
+    /**
+     * Queries invitecode state.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/invitecode/state", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {LoginCheck.class, CSRFCheck.class})
+    public void queryInvitecode(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final JSONObject ret = Results.falseResult();
+        context.renderJSON(ret);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        String invitecode = requestJSONObject.optString(Invitecode.INVITECODE);
+        if (StringUtils.isBlank(invitecode)) {
+            ret.put(Keys.STATUS_CODE, -1);
+            ret.put(Keys.MSG, invitecode + " " + langPropsService.get("notFoundInvitecodeLabel"));
+
+            return;
+        }
+
+        invitecode = invitecode.trim();
+
+        final JSONObject result = invitecodeQueryService.getInvitecode(invitecode);
+
+        if (null == result) {
+            ret.put(Keys.STATUS_CODE, -1);
+            ret.put(Keys.MSG, langPropsService.get("notFoundInvitecodeLabel"));
+        } else {
+            final int status = result.optInt(Invitecode.STATUS);
+            ret.put(Keys.STATUS_CODE, status);
+
+            switch (status) {
+                case Invitecode.STATUS_C_USED:
+                    ret.put(Keys.MSG, langPropsService.get("invitecodeUsedLabel"));
+
+                    break;
+                case Invitecode.STATUS_C_UNUSED:
+                    ret.put(Keys.MSG, langPropsService.get("invitecodeOkLabel"));
+
+                    break;
+                case Invitecode.STATUS_C_STOPUSE:
+                    ret.put(Keys.MSG, langPropsService.get("invitecodeStopLabel"));
+
+                    break;
+                default:
+                    ret.put(Keys.MSG, langPropsService.get("notFoundInvitecodeLabel"));
+            }
+        }
+    }
 
     /**
      * Point buy invitecode.

@@ -23,5 +23,15 @@
         <button class="red fn-right" onclick="Settings.pointBuyInvitecode('${csrfToken}')">${confirmExchangeLabel}</button>
     </div>
 </div>
+<div class="module">
+    <div class="module-header">
+        <h2>${queryInvitecodeStateLabel}</h2> 
+    </div>
+    <div class="module-panel form fn-clear">
+        <input id="invitecode" type="text" placeholder="${inputInvitecodeLabel}"/><br/><br/>
+        <div class="tip" id="invitecodeStateTip"></div><br/>
+        <button class="green fn-right" onclick="Settings.queryInvitecode('${csrfToken}')">${submitLabel}</button>
+    </div>
+</div>
 </#if>
 </@home>
