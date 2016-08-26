@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.31.19.26, Aug 25, 2016
+ * @version 1.31.20.26, Aug 26, 2016
  */
 
 /**
@@ -593,7 +593,7 @@ var Util = {
             return;
         }
 
-        window.location.href = "/register?goto=" + encodeURIComponent(location.href);
+        window.location.href = Label.servePath + "/register?goto=" + encodeURIComponent(location.href);
     },
     /**
      * @description 禁止 IE7 以下浏览器访问
