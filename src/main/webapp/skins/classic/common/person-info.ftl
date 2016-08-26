@@ -13,15 +13,15 @@
     </div>
     <div class="module-panel tooltipped tooltipped-s" aria-label="${todayActivityLabel} ${liveness}%">
         <ul class="status fn-flex">
-            <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/tags'">
+            <li class="fn-pointer" onclick="window.location.href = '${servePath}/member/${currentUser.userName}/following/tags'">
                 <strong>${currentUser.followingTagCnt?c}</strong>
                 <span class="ft-gray">${followingTagsLabel}</span>
             </li>
-            <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/users'">
+            <li class="fn-pointer" onclick="window.location.href = '${servePath}/member/${currentUser.userName}/following/users'">
                 <strong>${currentUser.followingUserCnt?c}</strong>
                 <span class="ft-gray">${followingUsersLabel}</span>
             </li>
-            <li class="fn-pointer" onclick="window.location.href = '/member/${currentUser.userName}/following/articles'">
+            <li class="fn-pointer" onclick="window.location.href = '${servePath}/member/${currentUser.userName}/following/articles'">
                 <strong>${currentUser.followingArticleCnt?c}</strong>
                 <span class="ft-gray">${followingArticlesLabel}</span>
             </li>
