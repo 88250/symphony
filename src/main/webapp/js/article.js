@@ -219,18 +219,6 @@ var Comment = {
             },
             success: function (result, textStatus) {
                 if (result.sc) {
-                    var $cnt = $(it).closest('.comment-info').find('.rewarded-cnt'),
-                            cnt = parseInt($cnt.text());
-                    if ($cnt.length <= 0) {
-                        $(it).closest('.comment-info').find('.fn-left .ft-fade:last').
-                                append('&nbsp;<span aria-label="' + Label.thankedLabel + ' 1" class="tooltipped tooltipped-n ft-red">'
-                                        + '<span class="icon-heart"></span>1</span>');
-                    } else {
-                        $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
-                        $cnt.html('<span class="icon-heart"></span>' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
-                    }
-
-
                     var $heart = $("<i class='icon-heart ft-red'></i>"),
                             y = $(it).offset().top,
                             x = $(it).offset().left;
@@ -246,14 +234,23 @@ var Comment = {
                     });
                     $("body").append($heart);
 
-                    $heart.animate({"left": x - 150, "opacity": 0},
+                    $heart.animate({"left": x - 150, "top": y - 60, "opacity": 0},
                             1500,
                             function () {
+                                var $cnt = $(it).closest('.comment-content').find('.rewarded-cnt'),
+                                        cnt = parseInt($cnt.text());
+                                if ($cnt.length <= 0) {
+                                    $(it).closest('.comment-content').find('.comment-info .fn-left .ft-fade:last').
+                                            append('<span aria-label="' + Label.thankedLabel + ' 1" class="tooltipped tooltipped-n ft-red">'
+                                                    + '<span class="icon-heart"></span>1</span>');
+                                } else {
+                                    $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
+                                    $cnt.html('<span class="icon-heart"></span>' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
+                                }
                                 $heart.remove();
                                 $(it).remove();
                             }
                     );
-
 
                 } else {
                     alert(result.msg);
@@ -724,7 +721,7 @@ var Article = {
         if (0 === articleAnonymous && !confirm(Label.thankArticleConfirmLabel)) {
             return false;
         }
-        
+
         if (Label.currentUserName === Label.articleAuthorName) {
             alert(Label.thankSelfLabel);
             return false;

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.15.31, Aug 22, 2016
+ * @version 1.20.15.32, Aug 27, 2016
  */
 
 /* start reset */
@@ -208,6 +208,10 @@ svg {
     fill: currentColor;
 }
 
+blockquote {
+    margin: 0;
+}
+
 @-webkit-keyframes spaceboots {
     0%{-webkit-transform:translate(0px,0);-moz-transform:translate(0px,0);-o-transform:translate(0px,0);-ms-transform:translate(0px,0);transform:translate(0px,0)}
     30%{-webkit-transform:translate(0px,1px);-moz-transform:translate(0px,1px);-o-transform:translate(0px,1px);-ms-transform:translate(0px,1px);transform:translate(0px,1px)}
@@ -246,7 +250,6 @@ svg {
     word-wrap: break-word;
     overflow: hidden;
     line-height: 1.5;
-    font-size: 16px;
 }
 
 .content-reset ul,
@@ -300,33 +303,10 @@ svg {
 }
 
 .content-reset blockquote {
-    z-index: 1;
-    position: relative;
-    margin: 0;
-    padding: 15px 15px 15px 15px;
-    background-color: #ddd;
-    border-radius: 5px;
+    padding: 0 1em;
     color: #777;
-}
-
-.content-reset blockquote:before {
-    content: "“";
-    font-size: 2rem;
-    line-height: 1;
-    position: absolute;
-    left: 1px;
-    top: 0;
-    z-index: -1;
-}
-
-.content-reset blockquote:after {
-    content: "”";
-    font-size: 2rem;
-    line-height: 0;
-    position: absolute;
-    right: 1px;
-    bottom: 0;
-    z-index: -1;
+    border-left: 0.25em solid #ddd;
+    margin-bottom: 16px;
 }
 
 .content-reset blockquote p {
@@ -378,7 +358,7 @@ svg {
     font-size: 85%;
     background-color: rgba(0,0,0,0.04);
     border-radius: 3px;
-    vertical-align: baseline;
+    vertical-align: text-bottom;
 
 }
 
@@ -467,8 +447,15 @@ svg {
     color: #999;
 }
 
-.ft-fade {
+.ft-fade,
+.ft-fade a,
+a[class^="icon-"].ft-fade {
     color: #ccc;
+}
+
+.ft-fade a:hover,
+a[class^="icon-"].ft-fade:hover {
+    color: #999;
 }
 
 .ft-red {
@@ -481,6 +468,16 @@ svg {
 
 .ft-green {
     color: #569e3d;
+}
+
+.ft-a-icon {
+    color: #ccc;
+    text-decoration: none;
+} 
+
+.ft-a-icon:hover {
+    color: #999;
+    text-decoration: none;
 }
 
 .ft-center {
@@ -690,7 +687,6 @@ button,
     padding: 6px 12px;
     background-color: #fcfcfc;
     background: linear-gradient(#fcfcfc, #eee);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#fcfcfc', endColorstr='#eee');
     border: 1px solid #D5D5D5;
     border-bottom-color: #E1E1E1;
     box-sizing: border-box;
@@ -704,7 +700,6 @@ button:hover,
     border-color: #ccc;
     background-color: #0ca6dd;
     background: linear-gradient(#eee, #ddd);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#eee', endColorstr='#ddd');
 }
 
 button:active,
@@ -721,14 +716,12 @@ button.green,
     background-color: #60b044;
     background-image: linear-gradient(#8add6d, #60b044);
     border-color: #5ca941;
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#8ADD6D', endColorstr='#60B044');
 }
 
 button.green:hover,
 .btn.green:hover{
     background-color: #69d344;
     background: linear-gradient(#79d858, #569e3d);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#79d858', endColorstr='#569e3d');
 }
 
 button.green:active {
@@ -750,7 +743,6 @@ button.red:hover,
     background-color: #b33630;
     background-image: linear-gradient(#dc5f59, #b33630);
     border-color: #cd504a;
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#dc5f59', endColorstr='#b33630');
 }
 
 button.red:active,
@@ -797,15 +789,14 @@ a[class*=" icon-"]:hover {
     color: #4183c4;
 }
 
-.ft-a-icon {
-    color: #333;
-    text-decoration: none;
-} 
-
-.ft-a-icon:hover {
-    text-decoration: none;
+.icon-up:before {
+  content: "\e90a";
+  font-weight: bold;
 }
-
+.icon-down:before {
+  content: "\e90b";
+  font-weight: bold;
+}
 .icon-upload:before {
     content: "\f0ee";
 }
@@ -825,169 +816,169 @@ a[class*=" icon-"]:hover {
     content: "\e909";
 }
 .icon-points:before {
-    content: "\e900";
+  content: "\e900";
 }
 .icon-goods:before {
-    content: "\e904";
+  content: "\e904";
 }
 .icon-bold:before {
-    content: "\e000";
+  content: "\e000";
 }
 .icon-italic:before {
-    content: "\e001";
+  content: "\e001";
 }
 .icon-quote:before {
-    content: "\e003";
+  content: "\e003";
 }
 .icon-unordered-list:before {
-    content: "\e004";
+  content: "\e004";
 }
 .icon-ordered-list:before {
-    content: "\e005";
+  content: "\e005";
 }
 .icon-link:before {
-    content: "\e006";
+  content: "\e006";
 }
 .icon-image:before {
-    content: "\e007";
+  content: "\e007";
 }
 .icon-play:before {
-    content: "\e008";
+  content: "\e008";
 }
 .icon-music:before {
-    content: "\e009";
+  content: "\e009";
 }
 .icon-contract:before {
-    content: "\e00a";
+  content: "\e00a";
 }
 .icon-fullscreen:before {
-    content: "\e00b";
+  content: "\e00b";
 }
 .icon-question:before {
-    content: "\e00c";
+  content: "\e00c";
 }
 .icon-info:before {
-    content: "\e00d";
+  content: "\e00d";
 }
 .icon-undo:before {
-    content: "\e00e";
+  content: "\e00e";
 }
 .icon-redo:before {
-    content: "\e00f";
+  content: "\e00f";
 }
 .icon-code:before {
-    content: "\e011";
+  content: "\e011";
 }
 .icon-preview:before {
-    content: "\e002";
+  content: "\e002";
 }
 .icon-navigation:before {
-    content: "\e903";
+  content: "\e903";
 }
 .icon-thumbs-down:before {
-    content: "\e901";
+  content: "\e901";
 }
 .icon-thumbs-up:before {
-    content: "\e902";
+  content: "\e902";
 }
 .icon-video:before {
-    content: "\f057";
+  content: "\f057";
 }
 .icon-feed:before {
-    content: "\e61f";
+  content: "\e61f";
 }
 .icon-article:before {
-    content: "\e61d";
+  content: "\e61d";
 }
 .icon-star:before {
-    content: "\e600";
+  content: "\e600";
 }
 .icon-register:before {
-    content: "\e602";
+  content: "\e602";
 }
 .icon-logout:before {
-    content: "\e603";
+  content: "\e603";
 }
 .icon-setting:before {
-    content: "\e604";
+  content: "\e604";
 }
 .icon-google:before {
-    content: "\e605";
+  content: "\e605";
 }
 .icon-search:before {
-    content: "\e606";
+  content: "\e606";
 }
 .icon-weibo:before {
-    content: "\e607";
+  content: "\e607";
 }
 .icon-date:before {
-    content: "\e608";
+  content: "\e608";
 }
 .icon-view:before {
-    content: "\e609";
+  content: "\e609";
 }
 .icon-cmts:before {
-    content: "\e60a";
+  content: "\e60a";
 }
 .icon-refresh:before {
-    content: "\e60b";
+  content: "\e60b";
 }
-.icon-up:before {
-    content: "\e60c";
+.icon-go-up:before {
+  content: "\e60c";
 }
 .icon-twitter:before {
-    content: "\e60d";
+  content: "\e60d";
 }
 .icon-edit:before {
-    content: "\e60e";
+  content: "\e60e";
 }
 .icon-tencent:before {
-    content: "\e60f";
+  content: "\e60f";
 }
 .icon-tag:before {
-    content: "\e610";
+  content: "\e610";
 }
 .icon-tags:before {
-    content: "\e611";
+  content: "\e611";
 }
 .icon-addfile:before {
-    content: "\e612";
+  content: "\e612";
 }
 .icon-login:before {
-    content: "\e613";
+  content: "\e613";
 }
 .icon-articles:before {
-    content: "\e614";
+  content: "\e614";
 }
 .icon-userrole:before {
-    content: "\e615";
+  content: "\e615";
 }
 .icon-email:before {
-    content: "\e616";
+  content: "\e616";
 }
 .icon-flag:before {
-    content: "\e617";
+  content: "\e617";
 }
 .icon-chevron-down:before {
-    content: "\e618";
+  content: "\e618";
 }
 .icon-chevron-up:before {
-    content: "\e619";
+  content: "\e619";
 }
 .icon-reply:before {
-    content: "\e61a";
+  content: "\e61a";
 }
 .icon-clock:before {
-    content: "\e61b";
+  content: "\e61b";
 }
 .icon-compass:before {
-    content: "\e61c";
+  content: "\e61c";
 }
 .icon-heart:before {
-    content: "\e9da";
+  content: "\e9da";
 }
 .icon-wechat:before {
-    content: "\e907";
+  content: "\e907";
 }
 
 .icon-search {
@@ -999,7 +990,7 @@ a[class*=" icon-"]:hover {
     cursor: pointer;
 }
 
-.icon-up {
+.icon-go-up {
     background-color: #E7ECEE;
     border: 1px solid #D2D9DD;
     border-right-width: 0;
@@ -1018,7 +1009,7 @@ a[class*=" icon-"]:hover {
     right: 0;
 }
 
-.icon-up:hover {
+.icon-go-up:hover {
     background-color: #d8e0e3 !important;
 }
 /* end icon */
@@ -1252,7 +1243,6 @@ a[class*=" icon-"]:hover {
     background: -ms-linear-gradient(#FFFFFF, #EFEFEF);
     background: -o-linear-gradient(#FFFFFF, #EFEFEF);
     background: -webkit-linear-gradient(#FFFFFF, #EFEFEF);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#FFFFFF', endColorstr='#EFEFEF');
     border: 1px solid #eaeaea;
     border-bottom: 0;
     display: inline-block;
@@ -1285,7 +1275,6 @@ a[class*=" icon-"]:hover {
     background: -ms-linear-gradient(#fafbfd, #dce6ef);
     background: -o-linear-gradient(#fafbfd, #dce6ef);
     background: -webkit-linear-gradient(#fafbfd, #dce6ef);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#fafbfd', endColorstr='#dce6ef');
 }
 
 .pagination span.current {
@@ -1294,7 +1283,6 @@ a[class*=" icon-"]:hover {
     background: -ms-linear-gradient(#FCFCFC, #EBEBEB);
     background: -o-linear-gradient(#FCFCFC, #EBEBEB);
     background: -webkit-linear-gradient(#FCFCFC, #EBEBEB);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#FCFCFC', endColorstr='#EBEBEB');
     border-bottom-color: #D26911;
     color: #000000;
 }
@@ -1308,7 +1296,6 @@ a[class*=" icon-"]:hover {
 .dialog-background {
     background-color: #000000;
     display: none;
-    filter: alpha(opacity=50);
     height: 100%;
     left: 0;
     opacity: .5;
@@ -1581,10 +1568,6 @@ a[class*=" icon-"]:hover {
     border-bottom-width: 0;
 }
 
-.list .comment > p {
-    margin: 0;
-}
-
 .list.single-line li {
     overflow: hidden;
     white-space: nowrap;
@@ -1829,7 +1812,6 @@ ul.CodeMirror-hints {
     border-bottom-style: dotted;
     border-radius: 3px 3px 0 0;
     opacity: 0.7;
-    filter: alpha(opacity=70);
     z-index: 3;
 }
 
@@ -1857,7 +1839,6 @@ ul.CodeMirror-hints {
     top: 25px;
     z-index: 2;
     opacity: 0.9;
-    filter: alpha(opacity=90);
     width: 200px;
     min-width: 150px;
 }
@@ -1929,7 +1910,6 @@ ul.CodeMirror-hints {
     background-color: #b33630;
     background-image: linear-gradient(#dc5f59, #b33630);
     border-color: #cd504a;
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#dc5f59', endColorstr='#b33630');
     letter-spacing: 1px;
 }
 

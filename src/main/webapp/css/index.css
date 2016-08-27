@@ -128,11 +128,15 @@ label.cmt-anonymous {
     background-color: #f9f6f6;
 }
 
+.comments.list > ul > li.perfect:hover {
+    background-color: #f9f6f6;
+}
+
 .comments li:hover .hover-show {
     visibility: visible;
 }
 
-.comments li .hover-show:hover {
+.comments li .fn-pointer:hover {
     color: #999; 
 }
 
@@ -270,7 +274,7 @@ label.cmt-anonymous {
 .article-toc li a:hover {
     border-left: 1px solid #4183c4;
     background-color: #F7F7F7;
-    padding-left: 1px;
+    padding-left: 21px;
     color: #4183C4;
     text-decoration: none;
 }
