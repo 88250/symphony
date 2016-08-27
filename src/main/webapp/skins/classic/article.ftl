@@ -179,7 +179,7 @@
                                                 <span class="icon-heart"></span>${comment.rewardedCnt}
                                             </span>
                                             </#if>
-                                            <a class="icon-down ft-fade fn-right" href=""></a>
+                                            <a class="icon-down ft-fade fn-right" href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}"></a>
                                         </div>
                                         <div class="content-reset comment">
                                             ${comment.commentContent}
@@ -261,10 +261,7 @@
                                                     <#if !comment.fromClient>
                                                     <#if comment.commentAnonymous == 0>
                                                     <a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if><#else>${comment.commentAuthorName} 
-                                                       via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if>
-                                                    <span class="ft-fade">&nbsp;•&nbsp;${comment.timeAgo} 
-                                                        
-                                                    </span>
+                                                       via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a></#if><span class="ft-fade">&nbsp;•&nbsp;${comment.timeAgo}</span>
                                                     <#if comment.rewardedCnt gt 0>
                                                     <#assign hasRewarded = isLoggedIn && comment.commentAuthorId != currentUser.oId && comment.rewarded>
                                                     <span aria-label="<#if hasRewarded>${thankedLabel}<#else>${thankLabel} ${comment.rewardedCnt}</#if>" 
@@ -286,7 +283,7 @@
                                                 ${comment.commentContent}
                                             </div>
                                             <div class="ft-fade fn-clear">
-                                                <span class="fn-pointer">
+                                                <span class="fn-pointer fn-none">
                                                     1 ${replayLabel} <span class="icon-chevron-down"></span>
                                                 </span>
                                                  <span class="fn-right">
