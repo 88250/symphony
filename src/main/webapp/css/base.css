@@ -245,13 +245,15 @@ svg {
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     word-wrap: break-word;
     overflow: hidden;
-    line-height: 145%;
+    line-height: 1.5;
+    font-size: 16px;
 }
 
 .content-reset ul,
 .content-reset ol {
-    margin: 1em 0;
-    padding-left: 40px;
+    padding-left: 2em;
+    margin-top: 0;
+    margin-bottom: 16px;
 }
 
 .content-reset h1, 
@@ -260,32 +262,41 @@ svg {
 .content-reset h4, 
 .content-reset h5, 
 .content-reset h6 {
-    margin: 0.6em 0;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    line-height: 1.25;
 }
 
 .content-reset h1 {
-    font-size: 22px;
+    padding-bottom: 0.3em;
+    font-size: 2em;
 }
 
 .content-reset h2 {
-    font-size: 19px;
+    padding-bottom: 0.3em;
+    font-size: 1.5em;
 }
 
 .content-reset h3 {
-    font-size: 16px;
+    font-size: 1.25em;
 }
 
 .content-reset h4 {
-    font-size: 14px;
+    font-size: 1em
 }
 
-.content-reset h5,
+.content-reset h5 {
+    font-size: 0.875em;
+}
+
 .content-reset h6 {
-    font-size: 12px;
+    font-size: 0.85em;
 }
 
 .content-reset p {
-    margin: 1em 0;
+    margin-top: 0;
+    margin-bottom: 16px;
 }
 
 .content-reset blockquote {
@@ -359,10 +370,27 @@ svg {
     background: #efefef; 
 }
 
-code.hljs,
-.hljs code {
-    font-family: mononoki;
-    background-color: #efefef;
+.content-reset code {
+    padding: 0;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(0,0,0,0.04);
+    border-radius: 3px;
+    vertical-align: baseline;
+
+}
+
+.content-reset code::before, 
+.content-reset code::after {
+    letter-spacing: -0.2em;
+    content: "\00a0";
+}
+
+.content-reset pre > code {
+    padding: 0.5em;
+    border-radius: 0;
 }
 /* end reset */
 
@@ -779,187 +807,187 @@ a[class*=" icon-"]:hover {
 }
 
 .icon-upload:before {
-  content: "\f0ee";
+    content: "\f0ee";
 }
 .icon-copy:before {
-  content: "\e908";
+    content: "\e908";
 }
 .icon-time:before {
-  content: "\e906";
+    content: "\e906";
 }
 .icon-sortasc:before {
-  content: "\e905";
+    content: "\e905";
 }
 .icon-locked:before {
-  content: "\e61e";
+    content: "\e61e";
 }
 .icon-close:before {
-  content: "\e909";
+    content: "\e909";
 }
 .icon-points:before {
-  content: "\e900";
+    content: "\e900";
 }
 .icon-goods:before {
-  content: "\e904";
+    content: "\e904";
 }
 .icon-bold:before {
-  content: "\e000";
+    content: "\e000";
 }
 .icon-italic:before {
-  content: "\e001";
+    content: "\e001";
 }
 .icon-quote:before {
-  content: "\e003";
+    content: "\e003";
 }
 .icon-unordered-list:before {
-  content: "\e004";
+    content: "\e004";
 }
 .icon-ordered-list:before {
-  content: "\e005";
+    content: "\e005";
 }
 .icon-link:before {
-  content: "\e006";
+    content: "\e006";
 }
 .icon-image:before {
-  content: "\e007";
+    content: "\e007";
 }
 .icon-play:before {
-  content: "\e008";
+    content: "\e008";
 }
 .icon-music:before {
-  content: "\e009";
+    content: "\e009";
 }
 .icon-contract:before {
-  content: "\e00a";
+    content: "\e00a";
 }
 .icon-fullscreen:before {
-  content: "\e00b";
+    content: "\e00b";
 }
 .icon-question:before {
-  content: "\e00c";
+    content: "\e00c";
 }
 .icon-info:before {
-  content: "\e00d";
+    content: "\e00d";
 }
 .icon-undo:before {
-  content: "\e00e";
+    content: "\e00e";
 }
 .icon-redo:before {
-  content: "\e00f";
+    content: "\e00f";
 }
 .icon-code:before {
-  content: "\e011";
+    content: "\e011";
 }
 .icon-preview:before {
-  content: "\e002";
+    content: "\e002";
 }
 .icon-navigation:before {
-  content: "\e903";
+    content: "\e903";
 }
 .icon-thumbs-down:before {
-  content: "\e901";
+    content: "\e901";
 }
 .icon-thumbs-up:before {
-  content: "\e902";
+    content: "\e902";
 }
 .icon-video:before {
-  content: "\f057";
+    content: "\f057";
 }
 .icon-feed:before {
-  content: "\e61f";
+    content: "\e61f";
 }
 .icon-article:before {
-  content: "\e61d";
+    content: "\e61d";
 }
 .icon-star:before {
-  content: "\e600";
+    content: "\e600";
 }
 .icon-register:before {
-  content: "\e602";
+    content: "\e602";
 }
 .icon-logout:before {
-  content: "\e603";
+    content: "\e603";
 }
 .icon-setting:before {
-  content: "\e604";
+    content: "\e604";
 }
 .icon-google:before {
-  content: "\e605";
+    content: "\e605";
 }
 .icon-search:before {
-  content: "\e606";
+    content: "\e606";
 }
 .icon-weibo:before {
-  content: "\e607";
+    content: "\e607";
 }
 .icon-date:before {
-  content: "\e608";
+    content: "\e608";
 }
 .icon-view:before {
-  content: "\e609";
+    content: "\e609";
 }
 .icon-cmts:before {
-  content: "\e60a";
+    content: "\e60a";
 }
 .icon-refresh:before {
-  content: "\e60b";
+    content: "\e60b";
 }
 .icon-up:before {
-  content: "\e60c";
+    content: "\e60c";
 }
 .icon-twitter:before {
-  content: "\e60d";
+    content: "\e60d";
 }
 .icon-edit:before {
-  content: "\e60e";
+    content: "\e60e";
 }
 .icon-tencent:before {
-  content: "\e60f";
+    content: "\e60f";
 }
 .icon-tag:before {
-  content: "\e610";
+    content: "\e610";
 }
 .icon-tags:before {
-  content: "\e611";
+    content: "\e611";
 }
 .icon-addfile:before {
-  content: "\e612";
+    content: "\e612";
 }
 .icon-login:before {
-  content: "\e613";
+    content: "\e613";
 }
 .icon-articles:before {
-  content: "\e614";
+    content: "\e614";
 }
 .icon-userrole:before {
-  content: "\e615";
+    content: "\e615";
 }
 .icon-email:before {
-  content: "\e616";
+    content: "\e616";
 }
 .icon-flag:before {
-  content: "\e617";
+    content: "\e617";
 }
 .icon-chevron-down:before {
-  content: "\e618";
+    content: "\e618";
 }
 .icon-chevron-up:before {
-  content: "\e619";
+    content: "\e619";
 }
 .icon-reply:before {
-  content: "\e61a";
+    content: "\e61a";
 }
 .icon-clock:before {
-  content: "\e61b";
+    content: "\e61b";
 }
 .icon-compass:before {
-  content: "\e61c";
+    content: "\e61c";
 }
 .icon-heart:before {
-  content: "\e9da";
+    content: "\e9da";
 }
 .icon-wechat:before {
-  content: "\e907";
+    content: "\e907";
 }
 
 .icon-search {

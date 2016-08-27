@@ -486,7 +486,7 @@ public class AdminProcessor {
             memo = "";
         }
 
-        invitecodeMgmtService.generateInvitecodes(quantity, memo);
+        invitecodeMgmtService.adminGenInvitecodes(quantity, memo);
 
         response.sendRedirect(Latkes.getServePath() + "/admin/invitecodes");
     }

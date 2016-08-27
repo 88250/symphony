@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.9.11, Aug 17, 2016
+ * @version 1.9.10.11, Aug 26, 2016
  */
 
 /**
@@ -62,6 +62,7 @@ var ArticleChannel = {
                     // 新增第一条评论时到底部的锚点
                     var bottomCmt = '';
                     if ($('#comments > ul li').length === 0) {
+                        $('.comment-header > .fn-none').show();
                         bottomCmt = '<div id="bottomComment"></div>';
                     }
 
