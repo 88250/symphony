@@ -692,19 +692,19 @@ var Util = {
         });
         $(window).scroll(function () {
             if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
-                $(".icon-up").css({
+                $(".icon-go-up").css({
                     "background-color": "#F8F8F8",
                     "border-radius": "5px 0 0 0",
                     "border-color": "#E0E0E0"
                 }).show();
             } else if ($(window).scrollTop() > 20) {
-                $(".icon-up").css({
+                $(".icon-go-up").css({
                     "background-color": "#E7ECEE",
                     "border-radius": "5px 0 0 5px",
                     "border-color": "#D2D9DD"
                 }).show();
             } else {
-                $(".icon-up").hide();
+                $(".icon-go-up").hide();
             }
         });
 

@@ -28,7 +28,7 @@
     </div>
 </div>
 
-<div class="icon-up" onclick="Util.goTop()"></div>
+<div class="icon-go-up" onclick="Util.goTop()"></div>
 <script type="text/javascript" src="${staticServePath}/js/lib/compress/libs.min.js"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
