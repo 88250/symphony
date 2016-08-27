@@ -64,7 +64,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.8.6.19, Aug 17, 2016
+ * @version 2.9.6.19, Aug 27, 2016
  * @since 0.2.0
  */
 @Service
@@ -118,10 +118,70 @@ public class CommentQueryService {
     private ShortLinkQueryService shortLinkQueryService;
 
     /**
-     * Gets nice comments of an article specified by the given article.
+     * Gets replies of a comment specified by the given comment id.
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param articleId the given article
+     * @param commentViewMode the specified comment view mode
+     * @param commentId the given comment id
+     * @return a list of replies, return an empty list if not found
+     */
+    public List<JSONObject> getReplies(final int avatarViewMode, final int commentViewMode, final String commentId) {
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1)
+                .setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Comment.COMMENT_ORIGINAL_COMMENT_ID, FilterOperator.EQUAL, commentId),
+                        new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
+                ));
+        try {
+            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(
+                    commentRepository.get(query).optJSONArray(Keys.RESULTS));
+
+            organizeComments(avatarViewMode, ret);
+
+            final int pageSize = Symphonys.getInt("articleCommentsPageSize");
+
+            for (final JSONObject reply : ret) {
+                final String replyId = reply.optString(Keys.OBJECT_ID);
+                final String articleId = reply.optString(Comment.COMMENT_ON_ARTICLE_ID);
+
+                final Query numQuery = new Query()
+                        .setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1);
+
+                switch (commentViewMode) {
+                    case UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL:
+                        numQuery.setFilter(CompositeFilterOperator.and(
+                                new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
+                                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, replyId)
+                        )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
+
+                        break;
+                    case UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME:
+                        numQuery.setFilter(CompositeFilterOperator.and(
+                                new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
+                                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, replyId)
+                        )).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+                        break;
+                }
+
+                final long num = commentRepository.count(query);
+                final int page = (int) ((num / pageSize) + 1);
+                reply.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, page);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Get replies failed", e);
+
+            return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Gets nice comments of an article specified by the given article id.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     * @param articleId the given article id
      * @param fetchSize the specified fetch size
      * @return a list of nice comments, return an empty list if not found
      */
@@ -141,7 +201,7 @@ public class CommentQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Count day comment failed", e);
+            LOGGER.log(Level.ERROR, "Get nice comments failed", e);
 
             return Collections.emptyList();
         }
