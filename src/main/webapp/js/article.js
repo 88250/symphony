@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.22.28.16, Aug 28, 2016
+ * @version 1.22.29.16, Aug 29, 2016
  */
 
 /**
@@ -60,9 +60,10 @@ var Comment = {
             window.open($(this).attr('src'));
         });
 
-        $("#comments > ul > li").hover(function () {
+        $("#comments > ul").on('mouseover', '>li', function () {
             $("#comments > ul > li").each(function () {
-                if ($(this).find(".comment-action .icon-chevron-up").length === 1) {
+                if ($(this).find(".comment-action .icon-chevron-up").length === 1 ||
+                        $(this).find(".comment-action .icon-chevron-down").length === 1) {
                     // 回复展开的时候需要一直显示，否则回复引用定位有问题
                 } else {
                     $(this).removeClass('selected');
@@ -350,7 +351,7 @@ var Comment = {
 
                     template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
 
-                    template += '<a class="tooltipped tooltipped-nw ft-fade fn-right" aria-label="' + Label.referenceLabel + '" href="'
+                    template += '<a class="tooltipped tooltipped-nw ft-a-icon fn-right" aria-label="' + Label.referenceLabel + '" href="'
                             + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
                             + '&m=' + Label.userCommentViewMode + '#' + data.oId
                             + '"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
@@ -411,8 +412,9 @@ var Comment = {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
 
                 if (result.sc) {
-                    Comment.editor.setValue('');
+                    // TODO: update reply count
                     // reset comment editor
+                    Comment.editor.setValue('');
                     $('.editor-preview').html('');
                     if ($('.icon-preview').hasClass('active')) {
                         $('.icon-preview').click();

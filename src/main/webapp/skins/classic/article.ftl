@@ -183,7 +183,7 @@
                                                     </#if>
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${comment.commentUA}"></span></#if>
                                                 </span>
-                                                <a class="ft-fade fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
+                                                <a class="ft-a-icon fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
                                                    href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}"><span class="icon-down"></span></a>
                                             </div>
                                             <div class="content-reset comment">
@@ -247,7 +247,7 @@
                                 <#assign notificationCmtIds = notificationCmtIds + comment.oId>
                                 <#if comment_has_next><#assign notificationCmtIds = notificationCmtIds + ","></#if>
                                 <li id="${comment.oId}" 
-                                    class="<#if comment.commentStatus == 1>shield</#if><#if comment.commentNice> perfect</#if>">
+                                    class="<#if comment.commentStatus == 1>shield</#if><#if comment.commentNice> perfect</#if><#if comment.commentReplyCnt != 0> selected</#if>">
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
@@ -280,19 +280,22 @@
                                                     </span>
                                                     </#if>
                                                     </span>
-                                                    
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade hover-show fn-hidden" data-ua="${comment.commentUA}"></span></#if>
                                                 </span>
-                                                <span class="fn-right hover-show fn-hidden">
+                                                <span class="fn-right">
                                                     <#if comment.commentOriginalCommentId != ''>
                                                     <a class="ft-a-icon tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
-                                                       href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.commentOriginalCommentId}"><span class="icon-reply-to"></span></a>
+                                                       href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.commentOriginalCommentId}"><span class="icon-reply-to"></span>
+                                                        <div class="avatar-small" style="background-image:url('http://localhost:8084/upload/21a4462309f7905249d318480ef3d7ca7acbd5fc-0dc7628d310b40099b45c22a5458db37.jpg')"></div>
+                                                    </a> 
                                                     </#if>
                                                     <#if isAdminLoggedIn>
-                                                    <a class="tooltipped tooltipped-n ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" 
+                                                    <a class="tooltipped tooltipped-n ft-a-icon hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}" 
                                                        aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                     </#if>
-                                                    <i class="ft-fade"><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
+                                                    <#if comment.commentOriginalCommentId == ''>
+                                                    <i class="ft-fade hover-show fn-hidden"><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
+                                                    </#if>
                                                 </span>
                                             </div>
                                             <div class="content-reset comment">

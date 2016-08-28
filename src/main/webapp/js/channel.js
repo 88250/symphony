@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.10.11, Aug 26, 2016
+ * @version 1.9.10.12, Aug 29, 2016
  */
 
 /**
@@ -61,7 +61,7 @@ var ArticleChannel = {
 
                     // 新增第一条评论时到底部的锚点
                     var bottomCmt = '';
-                    if ($('#comments > ul li').length === 0) {
+                    if ($('#comments > ul > li').length === 0) {
                         $('.comment-header > .fn-none').show();
                         bottomCmt = '<div id="bottomComment"></div>';
                     }
@@ -102,7 +102,7 @@ var ArticleChannel = {
                             template += '</a>';
                         }
                     } else {
-                        template += data.commentAuthorName + ' via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
+                        template += data.commentAuthorName + ' <span class="ft-fade"> • </span> <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
                     }
                     template += ' <span class="ft-fade"> • ' + data.timeAgo;
 
@@ -110,18 +110,22 @@ var ArticleChannel = {
                         template += ' ' + UAName;
                     }
 
-                    template += '</span></span><span class="fn-right hover-show fn-hidden">';
+                    template += '</span></span><span class="fn-right">';
                     if (data.commentOriginalCommentId !== '') {
                         template += '<a class="ft-a-icon tooltipped tooltipped-nw" aria-label="'
                                 + Label.goCommentLabel + '" href="' + Label.servePath + '/article/' + Label.articleOId
                                 + '?p=' + data.pagenumber + '&m=' + Label.userCommentViewMode + '#'
-                                + data.commentOriginalCommentId + '"><span class="icon-reply-to"></span></a> ';
+                                + data.commentOriginalCommentId + '"><span class="icon-reply-to"></span>  <div class="avatar-small" style="background-image:url(\''
+                                + data.avatar + '\')"></div></a> ';
                     }
                     if (Label.isAdminLoggedIn) {
-                        template += '<a class="tooltipped tooltipped-n ft-a-icon" href="/admin/comment/' + data.commentId
+                        template += '<a class="hover-show fn-hidden tooltipped tooltipped-n ft-a-icon" href="/admin/comment/' + data.commentId
                                 + '" aria-label="' + Label.adminLabel + '"><span class="icon-setting"></span></a> ';
                     }
-                    template += '<i class="ft-fade">' + cmtCount + '</i></span></div><div class="content-reset comment">'
+                    if (data.commentOriginalCommentId === '') {
+                        template += '<i class="ft-fade hover-show fn-hidden">' + cmtCount + '</i>';
+                    }
+                    template += '</span></div><div class="content-reset comment">'
                             + data.commentContent + '</div><div class="fn-none comment-action"><div class="ft-fade fn-clear">'
                             + '<span class="fn-right">';
 
