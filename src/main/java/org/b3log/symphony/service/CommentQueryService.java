@@ -186,7 +186,7 @@ public class CommentQueryService {
      * @param fetchSize the specified fetch size
      * @return a list of nice comments, return an empty list if not found
      */
-    public List<JSONObject> getNiceComments(final int avatarViewMode, final int commentViewMode, 
+    public List<JSONObject> getNiceComments(final int avatarViewMode, final int commentViewMode,
             final String articleId, final int fetchSize) {
         final Query query = new Query().addSort(Comment.COMMENT_SCORE, SortDirection.DESCENDING).
                 setPageSize(fetchSize).setCurrentPageNum(1).setPageCount(1)
@@ -200,7 +200,7 @@ public class CommentQueryService {
                     commentRepository.get(query).optJSONArray(Keys.RESULTS));
 
             organizeComments(avatarViewMode, ret);
-            
+
             final int pageSize = Symphonys.getInt("articleCommentsPageSize");
 
             for (final JSONObject comment : ret) {
@@ -544,7 +544,7 @@ public class CommentQueryService {
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             organizeComments(avatarViewMode, ret);
-            
+
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets article [" + articleId + "] comments failed", e);

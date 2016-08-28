@@ -38,6 +38,8 @@ import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Reward;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.LoginCheck;
@@ -48,6 +50,7 @@ import org.b3log.symphony.service.ClientMgmtService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
 import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.RewardQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
@@ -121,6 +124,12 @@ public class CommentProcessor {
     private LangPropsService langPropsService;
 
     /**
+     * Reward query service.
+     */
+    @Inject
+    private RewardQueryService rewardQueryService;
+
+    /**
      * Gets a comment's replies.
      *
      * @param context the specified context
@@ -142,6 +151,20 @@ public class CommentProcessor {
         }
 
         final List<JSONObject> replies = commentQueryService.getReplies(avatarViewMode, commentViewMode, commentId);
+
+        // Fill reply thank
+        for (final JSONObject reply : replies) {
+            final String replyId = reply.optString(Keys.OBJECT_ID);
+
+            if (null != currentUser) {
+                reply.put(Common.REWARDED,
+                        rewardQueryService.isRewarded(currentUser.optString(Keys.OBJECT_ID),
+                                replyId, Reward.TYPE_C_COMMENT));
+
+                reply.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(replyId, Reward.TYPE_C_COMMENT));
+            }
+        }
+
         context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, (Object) replies);
     }
 
