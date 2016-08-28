@@ -313,7 +313,7 @@ public class UserProcessor {
         final String fromId = currentUser.optString(Keys.OBJECT_ID);
         final String userName = currentUser.optString(User.USER_NAME);
 
-        final String invitecode = invitecodeMgmtService.userGenerateInvitecode(fromId, userName);
+        final String invitecode = invitecodeMgmtService.userGenInvitecode(fromId, userName);
 
         final String transferId = pointtransferMgmtService.transfer(fromId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_BUY_INVITECODE, Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE,

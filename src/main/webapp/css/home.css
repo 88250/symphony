@@ -286,6 +286,10 @@ label.article-anonymous {
 .notification li {
     background-color: #F8F8FF;
 }
+
+.notification .content-reset > p {
+    margin-bottom: 0;
+}
 /* end notifications */
 
 /* start follow */

@@ -86,7 +86,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.14.26, Aug 13, 2016
+ * @version 2.20.14.27, Aug 26, 2016
  * @since 0.2.0
  */
 @Service
@@ -241,7 +241,7 @@ public class ArticleQueryService {
                     .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
 
             if (null != types && types.length > 0) {
-                final List<Filter> typeFilters = new ArrayList<Filter>();
+                final List<Filter> typeFilters = new ArrayList<>();
                 for (int i = 0; i < types.length; i++) {
                     final int type = types[i];
 
@@ -249,7 +249,7 @@ public class ArticleQueryService {
                 }
 
                 final CompositeFilter typeFilter = new CompositeFilter(CompositeFilterOperator.OR, typeFilters);
-                final List<Filter> filters = new ArrayList<Filter>();
+                final List<Filter> filters = new ArrayList<>();
                 filters.add(typeFilter);
                 filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
 
@@ -296,7 +296,7 @@ public class ArticleQueryService {
                 return ret;
             }
 
-            final List<String> tagIds = new ArrayList<String>();
+            final List<String> tagIds = new ArrayList<>();
             for (int i = 0; i < domainTags.length(); i++) {
                 tagIds.add(domainTags.optJSONObject(i).optString(Tag.TAG + "_" + Keys.OBJECT_ID));
             }
@@ -319,7 +319,7 @@ public class ArticleQueryService {
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
 
-            final Set<String> articleIds = new HashSet<String>();
+            final Set<String> articleIds = new HashSet<>();
             for (int i = 0; i < tagArticles.length(); i++) {
                 articleIds.add(tagArticles.optJSONObject(i).optString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
             }
@@ -376,9 +376,9 @@ public class ArticleQueryService {
 
         final List<Integer> tagIdx = CollectionUtils.getRandomIntegers(0, tagTitlesLength, subCnt);
         final int subFetchSize = fetchSize / subCnt;
-        final Set<String> fetchedArticleIds = new HashSet<String>();
+        final Set<String> fetchedArticleIds = new HashSet<>();
 
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<>();
         try {
             for (int i = 0; i < tagIdx.size(); i++) {
                 final String tagTitle = tagTitles[tagIdx.get(i)].trim();
@@ -389,7 +389,7 @@ public class ArticleQueryService {
 
                 final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
 
-                final Set<String> articleIds = new HashSet<String>();
+                final Set<String> articleIds = new HashSet<>();
                 for (int j = 0; j < tagArticleRelations.length(); j++) {
                     final String articleId = tagArticleRelations.optJSONObject(j).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID);
 
@@ -464,9 +464,8 @@ public class ArticleQueryService {
     public List<JSONObject> getInterests(final int currentPageNum, final int pageSize, final String... tagTitles)
             throws ServiceException {
         try {
-            final List<JSONObject> tagList = new ArrayList<JSONObject>();
-            for (int i = 0; i < tagTitles.length; i++) {
-                final String tagTitle = tagTitles[i];
+            final List<JSONObject> tagList = new ArrayList<>();
+            for (final String tagTitle : tagTitles) {
                 final JSONObject tag = tagRepository.getByTitle(tagTitle);
                 if (null == tag) {
                     continue;
@@ -475,13 +474,13 @@ public class ArticleQueryService {
                 tagList.add(tag);
             }
 
-            final Map<String, Class<?>> articleFields = new HashMap<String, Class<?>>();
+            final Map<String, Class<?>> articleFields = new HashMap<>();
             articleFields.put(Article.ARTICLE_TITLE, String.class);
             articleFields.put(Article.ARTICLE_PERMALINK, String.class);
             articleFields.put(Article.ARTICLE_CREATE_TIME, Long.class);
             articleFields.put(Article.ARTICLE_AUTHOR_ID, String.class);
 
-            final List<JSONObject> ret = new ArrayList<JSONObject>();
+            final List<JSONObject> ret = new ArrayList<>();
 
             if (!tagList.isEmpty()) {
                 final List<JSONObject> tagArticles
@@ -503,7 +502,7 @@ public class ArticleQueryService {
                 ret.addAll(tagArticles);
             }
 
-            final List<Filter> filters = new ArrayList<Filter>();
+            final List<Filter> filters = new ArrayList<>();
             filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
             filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
 
@@ -567,14 +566,14 @@ public class ArticleQueryService {
             JSONObject result = tagArticleRepository.get(query);
             final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
 
-            final Set<String> articleIds = new HashSet<String>();
+            final Set<String> articleIds = new HashSet<>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
             }
 
             final JSONObject sa = userQueryService.getSA();
 
-            final List<Filter> subFilters = new ArrayList<Filter>();
+            final List<Filter> subFilters = new ArrayList<>();
             subFilters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
             subFilters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, sa.optString(User.USER_EMAIL)));
             query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, subFilters))
@@ -607,7 +606,7 @@ public class ArticleQueryService {
     public List<JSONObject> getArticlesByTags(final int currentPageNum, final int pageSize,
             final Map<String, Class<?>> articleFields, final JSONObject... tags) throws ServiceException {
         try {
-            final List<Filter> filters = new ArrayList<Filter>();
+            final List<Filter> filters = new ArrayList<>();
             for (final JSONObject tag : tags) {
                 filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)));
             }
@@ -626,7 +625,7 @@ public class ArticleQueryService {
             JSONObject result = tagArticleRepository.get(query);
             final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
 
-            final Set<String> articleIds = new HashSet<String>();
+            final Set<String> articleIds = new HashSet<>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
             }
@@ -702,7 +701,7 @@ public class ArticleQueryService {
             JSONObject result = tagArticleRepository.get(query);
             final JSONArray tagArticleRelations = result.optJSONArray(Keys.RESULTS);
 
-            final Set<String> articleIds = new HashSet<String>();
+            final Set<String> articleIds = new HashSet<>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
             }
@@ -733,7 +732,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public JSONObject getArticleByClientArticleId(final String authorId, final String clientArticleId) throws ServiceException {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Article.ARTICLE_CLIENT_ARTICLE_ID, FilterOperator.EQUAL, clientArticleId));
         filters.add(new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, authorId));
 
@@ -968,7 +967,7 @@ public class ArticleQueryService {
             final Query query = new Query().addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
                     addSort(Keys.OBJECT_ID, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(fetchSize);
 
-            final List<Filter> filters = new ArrayList<Filter>();
+            final List<Filter> filters = new ArrayList<>();
             filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, id));
             filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
 
@@ -1011,7 +1010,7 @@ public class ArticleQueryService {
      * @return filter the article showing to user
      */
     private CompositeFilter makeArticleShowingFilter() {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         return new CompositeFilter(CompositeFilterOperator.AND, filters);
@@ -1023,7 +1022,7 @@ public class ArticleQueryService {
      * @return filter the article showing to user
      */
     private CompositeFilter makeRecentArticleShowingFilter() {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID));
         filters.add(new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.NOT_EQUAL, Article.ARTICLE_TYPE_C_DISCUSSION));
         filters.add(new PropertyFilter(Article.ARTICLE_TAGS, FilterOperator.NOT_LIKE, "B3log%"));
@@ -1465,7 +1464,7 @@ public class ArticleQueryService {
             final JSONObject result = articleRepository.get(query);
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             organizeArticles(avatarViewMode, ret);
-            final List<JSONObject> stories = new ArrayList<JSONObject>();
+            final List<JSONObject> stories = new ArrayList<>();
 
             for (final JSONObject article : ret) {
                 final JSONObject story = new JSONObject();
@@ -1518,7 +1517,7 @@ public class ArticleQueryService {
      */
     private List<JSONObject> getAllComments(final int avatarViewMode, final String articleId)
             throws ServiceException, JSONException, RepositoryException {
-        final List<JSONObject> commments = new ArrayList<JSONObject>();
+        final List<JSONObject> commments = new ArrayList<>();
         final List<JSONObject> articleComments = commentQueryService.getArticleComments(
                 avatarViewMode, articleId, 1, Integer.MAX_VALUE, UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL);
         for (final JSONObject ac : articleComments) {
@@ -1745,12 +1744,12 @@ public class ArticleQueryService {
                 .addProjection(Keys.OBJECT_ID, String.class)
                 .addProjection(Comment.COMMENT_AUTHOR_ID, String.class)
                 .setPageCount(1).setCurrentPageNum(1).setPageSize(fetchSize);
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<>();
 
         try {
             final JSONObject result = commentRepository.get(query);
 
-            final List<JSONObject> comments = new ArrayList<JSONObject>();
+            final List<JSONObject> comments = new ArrayList<>();
             final JSONArray records = result.optJSONArray(Keys.RESULTS);
             for (int i = 0; i < records.length(); i++) {
                 final JSONObject comment = records.optJSONObject(i);

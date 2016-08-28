@@ -294,6 +294,16 @@ public final class Pointtransfer {
     public static final int TRANSFER_SUM_C_BUY_INVITECODE = Symphonys.getInt("pointInvitecode");
 
     /**
+     * Transfer type - Invitecode Used.
+     */
+    public static final int TRANSFER_TYPE_C_INVITECODE_USED = 25;
+
+    /**
+     * Transfer sum - Invitecode Used.
+     */
+    public static final int TRANSFER_SUM_C_INVITECODE_USED = Symphonys.getInt("pointInvitecodeUsed");
+
+    /**
      * Private constructor.
      */
     private Pointtransfer() {

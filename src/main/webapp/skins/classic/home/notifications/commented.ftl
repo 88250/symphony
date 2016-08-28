@@ -40,7 +40,7 @@
     </#list>
 </ul>
 <#else>
-${noMessageLabel}
+${chickenEggLabel}
 </#if>
 
 <@pagination url="/notifications/commented"/></@notifications>

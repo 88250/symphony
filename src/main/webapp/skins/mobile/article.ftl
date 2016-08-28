@@ -181,7 +181,7 @@
 
                                                 <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0) || !isLoggedIn>
                                                 <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-n" 
-                                                      onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
+                                                      onclick="Comment.reply('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
                                                 </#if>
 
                                                 <#if isAdminLoggedIn>
@@ -212,7 +212,7 @@
 
                     <div class="fn-clear comment-submit">
                         <label class="anonymous-check">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
+                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
                     </div>
                 </div>
                 </#if>
@@ -289,7 +289,7 @@
 
                                                 <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0) || !isLoggedIn>
                                                 <span aria-label="@${comment.commentAuthorName}" class="fn-pointer tooltipped tooltipped-n" 
-                                                      onclick="Comment.replay('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
+                                                      onclick="Comment.reply('@${comment.commentAuthorName} ')"><span class="icon-reply"></span></span>
                                                 </#if>
 
                                                 <#if isAdminLoggedIn>
@@ -319,7 +319,7 @@
 
                     <div class="fn-clear comment-submit">
                         <label class="anonymous-check">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
+                        <button class="red fn-right" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
                     </div>
                     <div class="fn-hr10"></div>
                     <div class="fn-hr10"></div>
