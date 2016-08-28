@@ -74,7 +74,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.20.18, Aug 17, 2016
+ * @version 2.14.21.18, Aug 28, 2016
  * @since 0.2.0
  */
 @Service
@@ -1562,7 +1562,8 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_UA, ua);
 
             article.put(Article.ARTICLE_STICK, 0L);
-            article.put(Article.ARTICLE_ANONYMOUS, false);
+            article.put(Article.ARTICLE_ANONYMOUS, Article.ARTICLE_ANONYMOUS_C_PUBLIC);
+            article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);

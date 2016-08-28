@@ -16,6 +16,7 @@
 package org.b3log.symphony.processor;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -37,6 +38,9 @@ import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Client;
 import org.b3log.symphony.model.Comment;
+import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Reward;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.CSRFCheck;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.validate.ClientCommentAddValidation;
@@ -45,6 +49,8 @@ import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.ClientMgmtService;
 import org.b3log.symphony.service.ClientQueryService;
 import org.b3log.symphony.service.CommentMgmtService;
+import org.b3log.symphony.service.CommentQueryService;
+import org.b3log.symphony.service.RewardQueryService;
 import org.b3log.symphony.service.UserQueryService;
 import org.json.JSONObject;
 
@@ -55,6 +61,7 @@ import org.json.JSONObject;
  * <li>Adds a comment (/comment) <em>locally</em>, POST</li>
  * <li>Adds a comment (/solo/comment) <em>remotely</em>, POST</li>
  * <li>Thanks a comment (/comment/thank), POST</li>
+ * <li>Gets a comment's replies (/comment/replies), GET </li>
  * </ul>
  *
  * <p>
@@ -63,7 +70,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.11, Jul 23, 2016
+ * @version 1.4.1.11, Aug 27, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -85,6 +92,12 @@ public class CommentProcessor {
      */
     @Inject
     private CommentMgmtService commentMgmtService;
+
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * Client management service.
@@ -111,6 +124,51 @@ public class CommentProcessor {
     private LangPropsService langPropsService;
 
     /**
+     * Reward query service.
+     */
+    @Inject
+    private RewardQueryService rewardQueryService;
+
+    /**
+     * Gets a comment's replies.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/comment/replies", method = HTTPRequestMethod.POST)
+    public void getReplies(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
+
+        int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
+        int commentViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL;
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null != currentUser) {
+            avatarViewMode = currentUser.optInt(UserExt.USER_AVATAR_VIEW_MODE);
+        }
+
+        final List<JSONObject> replies = commentQueryService.getReplies(avatarViewMode, commentViewMode, commentId);
+
+        // Fill reply thank
+        for (final JSONObject reply : replies) {
+            final String replyId = reply.optString(Keys.OBJECT_ID);
+
+            if (null != currentUser) {
+                reply.put(Common.REWARDED,
+                        rewardQueryService.isRewarded(currentUser.optString(Keys.OBJECT_ID),
+                                replyId, Reward.TYPE_C_COMMENT));
+            }
+
+            reply.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(replyId, Reward.TYPE_C_COMMENT));
+        }
+
+        context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, (Object) replies);
+    }
+
+    /**
      * Adds a comment locally.
      *
      * <p>
@@ -119,7 +177,8 @@ public class CommentProcessor {
      * {
      *     "articleId": "",
      *     "commentContent": "",
-     *     "commentAnonymous": boolean
+     *     "commentAnonymous": boolean,
+     *     "commentOriginalCommentId": "" // optional
      * }
      * </pre>
      * </p>
@@ -140,6 +199,7 @@ public class CommentProcessor {
 
         final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
         final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
+        final String commentOriginalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
         final String ip = Requests.getRemoteAddr(request);
         final String ua = request.getHeader("User-Agent");
 
@@ -156,6 +216,7 @@ public class CommentProcessor {
         if (StringUtils.isNotBlank(ua)) {
             comment.put(Comment.COMMENT_UA, ua);
         }
+        comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, commentOriginalCommentId);
 
         try {
             final JSONObject currentUser = userQueryService.getCurrentUser(request);

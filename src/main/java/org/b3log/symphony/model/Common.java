@@ -19,13 +19,13 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.39.1.11, Aug 18, 2016
+ * @version 1.40.1.11, Aug 28, 2016
  * @since 0.2.0
  */
 public final class Common {
 
     /**
-     * Mouse effects.
+     * Key of mouse effects.
      */
     public static final String MOUSE_EFFECTS = "mouseEffects";
 
@@ -420,9 +420,19 @@ public final class Common {
     public static final String COMMENTED_NOTIFICATIONS = "commentedNotifications";
 
     /**
+     * Key of 'reply' notifications.
+     */
+    public static final String REPLY_NOTIFICATIONS = "replyNotifications";
+
+    /**
      * Key of unread 'commented' notifications count.
      */
     public static final String UNREAD_COMMENTED_NOTIFICATION_CNT = "unreadCommentedNotificationCnt";
+
+    /**
+     * Key of unread 'reply' notifications count.
+     */
+    public static final String UNREAD_REPLY_NOTIFICATION_CNT = "unreadReplyNotificationCnt";
 
     /**
      * Key of 'at' notifications.

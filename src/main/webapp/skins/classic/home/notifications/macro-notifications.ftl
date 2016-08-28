@@ -23,6 +23,14 @@
                                 </#if>
                             </a> 
                         </li>
+                        <li<#if type == "reply"> class="current"</#if>>
+                            <a href="${servePath}/notifications/reply">
+                                <span>${notificationReplyLabel}</span>
+                                <#if unreadReplyNotificationCnt &gt; 0>
+                                <span class="counter">${unreadReplyNotificationCnt}</span>
+                                </#if>
+                            </a> 
+                        </li>
                         <li<#if type == "at"> class="current"</#if>>
                             <a href="${servePath}/notifications/at">
                                 <span>${notificationAtLabel}</span>
@@ -70,6 +78,17 @@
                                 <#if unreadCommentedNotificationCnt &gt; 0>
                                 <span class="counter">${unreadCommentedNotificationCnt}</span>
                                 <span onclick="Util.makeNotificationRead('commented')" aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-sw">
+                                    <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
+                                </span>
+                                </#if>
+                            </a> 
+                        </li>
+                        <li<#if type == "reply"> class="current"</#if>>
+                            <a href="${servePath}/notifications/reply">
+                                <span>${notificationReplyLabel}</span>
+                                <#if unreadReplyNotificationCnt &gt; 0>
+                                <span class="counter">${unreadReplyNotificationCnt}</span>
+                                <span onclick="Util.makeNotificationRead('reply')" aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-sw">
                                     <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                 </span>
                                 </#if>
