@@ -160,9 +160,9 @@ public class CommentProcessor {
                 reply.put(Common.REWARDED,
                         rewardQueryService.isRewarded(currentUser.optString(Keys.OBJECT_ID),
                                 replyId, Reward.TYPE_C_COMMENT));
-
-                reply.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(replyId, Reward.TYPE_C_COMMENT));
             }
+
+            reply.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(replyId, Reward.TYPE_C_COMMENT));
         }
 
         context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, (Object) replies);
