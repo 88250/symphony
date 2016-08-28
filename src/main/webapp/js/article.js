@@ -420,7 +420,9 @@ var Comment = {
                     if ($('#comments > ul li').length === 0) {
                         $('#comments > div > span').show();
                     }
-
+                    // clear reply comment
+                    $('#replyUseName').text('').removeData();
+                    // clear local storage
                     if (window.localStorage) {
                         var emptyContent = {
                             commentContent: ""

@@ -491,6 +491,7 @@
             Label.articleAuthorName = '${article.articleAuthorName}';
             Label.replay = '${replayLabel}';
             Label.referenceLabel = '${referenceLabel}';
+            Label.goCommentLabel = '${goCommentLabel}';
             qiniuToken = "${qiniuUploadToken}";
             qiniuDomain = "${qiniuDomain}";
             <#if isLoggedIn>
