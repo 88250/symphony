@@ -142,7 +142,7 @@ public class CommentProcessor {
         }
 
         final List<JSONObject> replies = commentQueryService.getReplies(avatarViewMode, commentViewMode, commentId);
-        context.renderTrueResult().renderJSONValue(Comment.COMMENT_T_REPLIES, (Object) replies);
+        context.renderJSON(true).renderJSONValue(Comment.COMMENT_T_REPLIES, (Object) replies);
     }
 
     /**
