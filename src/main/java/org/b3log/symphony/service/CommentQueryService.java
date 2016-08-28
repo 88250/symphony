@@ -141,6 +141,11 @@ public class CommentQueryService {
             final int pageSize = Symphonys.getInt("articleCommentsPageSize");
 
             for (final JSONObject reply : ret) {
+                final JSONObject replyAuthor = reply.optJSONObject(Comment.COMMENT_T_COMMENTER);
+                if (UserExt.USER_XXX_STATUS_C_PRIVATE == replyAuthor.optInt(UserExt.USER_UA_STATUS)) {
+                    reply.put(Comment.COMMENT_UA, "");
+                }
+
                 final String replyId = reply.optString(Keys.OBJECT_ID);
                 final String articleId = reply.optString(Comment.COMMENT_ON_ARTICLE_ID);
 
