@@ -374,7 +374,14 @@ public class CommentMgmtService {
                 final String authorName = requestJSONObject.optString(Comment.COMMENT_T_AUTHOR_NAME);
                 content += " <i class='ft-small'>by " + authorName + "</i>";
             }
-            comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
+            
+            final String originalCmtId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+            comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCmtId);
+            
+            final JSONObject originalCmt = commentRepository.get(originalCmtId);
+            final int originalCmtReplyCnt = originalCmt.optInt(Comment.COMMENT_REPLY_CNT);
+            originalCmt.put(Comment.COMMENT_REPLY_CNT, originalCmtReplyCnt + 1);
+            commentRepository.update(originalCmtId, originalCmt);
 
             content = Emotions.toAliases(content);
 
@@ -418,6 +425,7 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_GOOD_CNT, 0);
             comment.put(Comment.COMMENT_BAD_CNT, 0);
             comment.put(Comment.COMMENT_SCORE, 0D);
+            comment.put(Comment.COMMENT_REPLY_CNT, 0);
 
             // Adds the comment
             final String commentId = commentRepository.add(comment);

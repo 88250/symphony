@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.8, Aug 27, 2016
+ * @version 1.9.0.8, Aug 28, 2016
  * @since 0.2.0
  */
 public final class Comment {
@@ -108,6 +108,11 @@ public final class Comment {
      * Key of comment score.
      */
     public static final String COMMENT_SCORE = "commentScore";
+
+    /**
+     * Key of comment reply count.
+     */
+    public static final String COMMENT_REPLY_CNT = "commentReplyCnt";
 
     //// Transient ////
     /**
