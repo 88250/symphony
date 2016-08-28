@@ -59,12 +59,18 @@ var Comment = {
         $("#comments").on('dblclick', 'img', function () {
             window.open($(this).attr('src'));
         });
-        
+
         $("#comments > ul > li").hover(function () {
-            $("#comments > ul > li").removeClass('selected');
+            $("#comments > ul > li").each(function () {
+                if ($(this).find(".comment-action .icon-chevron-up").length === 1) {
+                    // 回复展开的时候需要一直显示，否则回复引用定位有问题
+                } else {
+                    $(this).removeClass('selected');
+                }
+            });
             $(this).addClass('selected');
         });
-        
+
         $(window.location.hash).addClass('selected');
 
         this._setCmtVia();
@@ -270,51 +276,95 @@ var Comment = {
      * @param {type} id 回帖 id
      * @returns {Boolean}
      */
-    showReply: function (id) {
-        var requestJSONObject = {
-            commentId: id
-        };
-        
+    showReply: function (id, it) {
+        var $commentReplies = $(it).closest('li').find('.comment-replies');
+
+        if ($(it).find('.icon-chevron-down').length === 0) {
+            // 收起回复
+            $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+            $commentReplies.hide();
+            return false;
+        }
+
+        if ($commentReplies.html().length > 0) {
+            $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+            $commentReplies.show();
+            return false;
+        }
+
+        if ($(it).css("opacity") === '0.3') {
+            return false;
+        }
+
         $.ajax({
             url: Label.servePath + "/comment/replies",
             type: "POST",
-            data: JSON.stringify(requestJSONObject),
+            data: JSON.stringify({
+                commentId: id
+            }),
             beforeSend: function () {
-                $(".form button.red").attr("disabled", "disabled").css("opacity", "0.3");
-                Comment.editor.setOption("readOnly", "nocursor");
+                $(it).css("opacity", "0.3");
             },
             success: function (result, textStatus) {
-                $(".form button.red").removeAttr("disabled").css("opacity", "1");
-
-                if (result.sc) {
-                    Comment.editor.setValue('');
-                    // reset comment editor
-                    $('.editor-preview').html('');
-                    if ($('.icon-preview').hasClass('active')) {
-                        $('.icon-preview').click();
-                    }
-                    // first comment, pls add icon
-                    if ($('#comments > ul li').length === 0) {
-                        $('#comments > div > span').show();
-                    }
-
-                    if (window.localStorage) {
-                        var emptyContent = {
-                            commentContent: ""
-                        };
-
-                        window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
-                    }
-                } else {
-                    $("#addCommentTip").addClass("error").html('<ul><li>' + result.msg + '</li></ul>');
+                if (!result.sc) {
+                    alert(result.msg);
+                    return false;
                 }
+
+                var replies = result.commentReplies,
+                        template = '';
+                for (var i = 0; i < replies.length; i++) {
+                    var data = replies[i];
+
+                    template += '<li><div class="fn-flex">';
+
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
+                    }
+                    template += '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.commentAuthorName + '" style="background-image:url('
+                            + data.commentAuthorThumbnailURL + ')"></div>';
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '</a>';
+                    }
+
+                    template += '<div class="fn-flex-1">'
+                            + '<div class="comment-info ft-smaller">';
+
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
+                    }
+                    template += data.commentAuthorName;
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '</a>';
+                    }
+
+                    template += '<span class="ft-fade"> • ' + data.timeAgo;
+                    if (data.rewardedCnt > 0) {
+                        template += '<span aria-label="'
+                                + (data.rewarded ? Label.thankedLabel : Label.thankLabel + ' ' + data.rewardedCnt)
+                                + '" class="tooltipped tooltipped-n '
+                                + (data.rewarded ? 'ft-red' : 'ft-fade') + '">'
+                                + ' <span class="icon-heart"></span>' + data.rewardedCnt + '</span> ';
+                    }
+
+                    template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
+
+                    template += '<a class="tooltipped tooltipped-nw ft-fade fn-right" aria-label="' + Label.referenceLabel + '" href="'
+                            + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
+                            + '&m=' + Label.userCommentViewMode + '#' + data.oId
+                            + '"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
+                            + data.commentContent + '</div></div></div></li>';
+                }
+                $commentReplies.html('<ul>' + template + '</ul>');
+                Article.parseLanguage();
+
+                $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up');
             },
             error: function (result) {
-                $("#addCommentTip").addClass("error").html('<ul><li>' + result.statusText + '</li></ul>');
+                alert(result.statusText);
             },
             complete: function () {
-                $(".form button.red").removeAttr("disabled").css("opacity", "1");
-                Comment.editor.setOption("readOnly", false);
+                $(it).css("opacity", "1");
             }
         });
     },
@@ -341,7 +391,7 @@ var Comment = {
             commentAnonymous: $('#commentAnonymous').prop('checked'),
             commentContent: Comment.editor.getValue() // 实际提交时不去除空格，因为直接贴代码时需要空格
         };
-        
+
         if ($('#replyUseName').data('commentOriginalCommentId')) {
             requestJSONObject.commentOriginalCommentId = $('#replyUseName').data('commentOriginalCommentId');
         }
@@ -400,7 +450,7 @@ var Comment = {
             Util.needLogin();
             return false;
         }
-        
+
         $('#replyUseName').text(Label.replay + ' ' + userName)
                 .css('visibility', 'visible').data('commentOriginalCommentId', id);
         Comment.editor.focus();

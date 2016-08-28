@@ -143,6 +143,19 @@ label.cmt-anonymous {
     display: block;
 }
 
+.comment-replies.list > ul {
+    margin-top: 10px;
+}
+
+.comment-replies.list > ul > li {
+    border-bottom-width: 0;
+    border-top: 1px solid #eee;
+}
+
+.comment-replies.list > ul > li {
+    background-color: transparent;
+}
+
 .comments li .fn-pointer:hover {
     color: #999; 
 }
