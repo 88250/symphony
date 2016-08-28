@@ -15,6 +15,8 @@
                 <div onclick="$(this).next().next().toggle()">
                     <#if type == "commented">
                     ${notificationCommentedLabel}
+                    <#elseif type == "reply">
+                    ${notificationReplyLabel}
                     <#elseif type == "at">
                     ${notificationAtLabel}
                     <#elseif type == "followingUser">
@@ -34,6 +36,17 @@
                             <#if unreadCommentedNotificationCnt &gt; 0>
                             <span class="counter">${unreadCommentedNotificationCnt}</span>
                             <span class="ft-gray fn-right" onclick="Util.makeNotificationRead('commented')" class="fn-right">
+                                ${makeAsReadLabel}
+                            </span>
+                            </#if>
+                        </a>
+                    </li>
+                    <li<#if type == "reply"> class="fn-none"</#if>>
+                        <a href="${servePath}/notifications/reply">
+                            <span>${notificationReplyLabel}</span>
+                            <#if unreadReplyNotificationCnt &gt; 0>
+                            <span class="counter">${unreadReplyNotificationCnt}</span>
+                            <span class="ft-gray fn-right" onclick="Util.makeNotificationRead('reply')" class="fn-right">
                                 ${makeAsReadLabel}
                             </span>
                             </#if>

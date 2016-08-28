@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.3, Jul 19, 2016
+ * @version 1.6.0.3, Aug 28, 2016
  * @since 0.2.5
  */
 @Service
@@ -483,6 +483,32 @@ public class NotificationMgmtService {
             addNotification(requestJSONObject);
         } catch (final RepositoryException e) {
             final String msg = "Adds notification [type=commented] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
+
+    /**
+     * Adds a 'reply' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * {
+     *     "userId"; "",
+     *     "dataId": ""
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addReplyNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_REPLY);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=reply] failed";
             LOGGER.log(Level.ERROR, msg, e);
 
             throw new ServiceException(msg);

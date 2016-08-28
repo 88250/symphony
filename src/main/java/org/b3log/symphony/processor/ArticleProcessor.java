@@ -672,9 +672,9 @@ public class ArticleProcessor {
             }
         }
 
+        // Load comments
         final List<JSONObject> articleComments = commentQueryService.getArticleComments(
                 avatarViewMode, articleId, pageNum, pageSize, cmtViewMode);
-
         article.put(Article.ARTICLE_T_COMMENTS, (Object) articleComments);
 
         // Fill comment thank

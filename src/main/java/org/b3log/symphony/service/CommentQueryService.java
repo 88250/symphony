@@ -544,7 +544,7 @@ public class CommentQueryService {
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             organizeComments(avatarViewMode, ret);
-
+            
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets article [" + articleId + "] comments failed", e);
