@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.22.29.16, Aug 29, 2016
+ * @version 1.22.29.17, Aug 29, 2016
  */
 
 /**
@@ -391,7 +391,8 @@ var Comment = {
         var requestJSONObject = {
             articleId: id,
             commentAnonymous: $('#commentAnonymous').prop('checked'),
-            commentContent: Comment.editor.getValue() // 实际提交时不去除空格，因为直接贴代码时需要空格
+            commentContent: Comment.editor.getValue(), // 实际提交时不去除空格，因为直接贴代码时需要空格
+            userCommentViewMode: Label.userCommentViewMode
         };
 
         if ($('#replyUseName').data('commentOriginalCommentId')) {

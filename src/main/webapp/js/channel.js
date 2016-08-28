@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.10.12, Aug 29, 2016
+ * @version 1.9.10.13, Aug 29, 2016
  */
 
 /**
@@ -114,9 +114,9 @@ var ArticleChannel = {
                     if (data.commentOriginalCommentId !== '') {
                         template += '<a class="ft-a-icon tooltipped tooltipped-nw" aria-label="'
                                 + Label.goCommentLabel + '" href="' + Label.servePath + '/article/' + Label.articleOId
-                                + '?p=' + data.pagenumber + '&m=' + Label.userCommentViewMode + '#'
+                                + '?p=' + data.paginationCurrentPageNum + '&m=' + Label.userCommentViewMode + '#'
                                 + data.commentOriginalCommentId + '"><span class="icon-reply-to"></span>  <div class="avatar-small" style="background-image:url(\''
-                                + data.avatar + '\')"></div></a> ';
+                                + data.commentOriginalAuthorThumbnailURL + '\')"></div></a> ';
                     }
                     if (Label.isAdminLoggedIn) {
                         template += '<a class="hover-show fn-hidden tooltipped tooltipped-n ft-a-icon" href="/admin/comment/' + data.commentId

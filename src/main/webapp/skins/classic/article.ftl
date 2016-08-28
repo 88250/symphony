@@ -286,7 +286,7 @@
                                                     <#if comment.commentOriginalCommentId != ''>
                                                     <a class="ft-a-icon tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
                                                        href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.commentOriginalCommentId}"><span class="icon-reply-to"></span>
-                                                        <div class="avatar-small" style="background-image:url('http://localhost:8084/upload/21a4462309f7905249d318480ef3d7ca7acbd5fc-0dc7628d310b40099b45c22a5458db37.jpg')"></div>
+                                                        <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
                                                     </a> 
                                                     </#if>
                                                     <#if isAdminLoggedIn>

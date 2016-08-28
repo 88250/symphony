@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.11, Aug 27, 2016
+ * @version 1.4.1.12, Aug 29, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -177,7 +177,8 @@ public class CommentProcessor {
      *     "articleId": "",
      *     "commentContent": "",
      *     "commentAnonymous": boolean,
-     *     "commentOriginalCommentId": "" // optional
+     *     "commentOriginalCommentId": "", // optional
+     *     "userCommentViewMode": int
      * }
      * </pre>
      * </p>
@@ -199,6 +200,7 @@ public class CommentProcessor {
         final String articleId = requestJSONObject.optString(Article.ARTICLE_T_ID);
         final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
         final String commentOriginalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+        final int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         final String ip = Requests.getRemoteAddr(request);
         final String ua = request.getHeader("User-Agent");
 
@@ -207,6 +209,7 @@ public class CommentProcessor {
         final JSONObject comment = new JSONObject();
         comment.put(Comment.COMMENT_CONTENT, commentContent);
         comment.put(Comment.COMMENT_ON_ARTICLE_ID, articleId);
+        comment.put(UserExt.USER_COMMENT_VIEW_MODE, commentViewMode);
         comment.put(Comment.COMMENT_IP, "");
         if (StringUtils.isNotBlank(ip)) {
             comment.put(Comment.COMMENT_IP, ip);

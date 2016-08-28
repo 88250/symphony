@@ -65,7 +65,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.6.20, Aug 28, 2016
+ * @version 2.9.6.21, Aug 29, 2016
  * @since 0.2.0
  */
 @Service
@@ -145,12 +145,12 @@ public class CommentQueryService {
             for (final JSONObject comment : comments) {
                 final JSONObject reply = new JSONObject();
                 ret.add(reply);
-                
+
                 final JSONObject commentAuthor = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
                 if (UserExt.USER_XXX_STATUS_C_PRIVATE == commentAuthor.optInt(UserExt.USER_UA_STATUS)) {
                     reply.put(Comment.COMMENT_UA, "");
                 }
-                
+
                 reply.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
                 reply.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
                 reply.put(Common.TIME_AGO, comment.optString(Common.TIME_AGO));
@@ -564,7 +564,10 @@ public class CommentQueryService {
             organizeComments(avatarViewMode, ret);
 
             for (final JSONObject comment : ret) {
-                final String commentId = comment.optString(Keys.OBJECT_ID);
+                final String originalCmtId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+                if (StringUtils.isBlank(originalCmtId)) {
+                    continue;
+                }
 
                 final Query numQuery = new Query()
                         .setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1);
@@ -573,14 +576,14 @@ public class CommentQueryService {
                     case UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL:
                         numQuery.setFilter(CompositeFilterOperator.and(
                                 new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
-                                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, commentId)
+                                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, originalCmtId)
                         )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
 
                         break;
                     case UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME:
                         numQuery.setFilter(CompositeFilterOperator.and(
                                 new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
-                                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, commentId)
+                                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, originalCmtId)
                         )).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
                         break;
@@ -589,6 +592,12 @@ public class CommentQueryService {
                 final long num = commentRepository.count(numQuery);
                 final int page = (int) ((num / pageSize) + 1);
                 comment.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, page);
+
+                final JSONObject originalCmt = commentRepository.get(originalCmtId);
+                final String originalCmtAuthorId = originalCmt.optString(Comment.COMMENT_AUTHOR_ID);
+                final JSONObject originalCmtAuthor = userRepository.get(originalCmtAuthorId);
+                comment.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(
+                        UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, originalCmtAuthor, "20"));
             }
 
             return ret;
