@@ -294,7 +294,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final Set<String> atUserNames = userQueryService.getUserNames(commentContent);
 
             // 2. 'Commented' Notification
-            if (commenterIsArticleAuthor && atUserNames.isEmpty()) {
+            if (commenterIsArticleAuthor && atUserNames.isEmpty() && StringUtils.isBlank(originalCommentId)) {
                 return;
             }
 
@@ -309,16 +309,17 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
 
             // 3. 'Reply' Notification
-            final String originalCmtId = originalComment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
-            if (StringUtils.isNotBlank(originalCmtId)) {
-                final JSONObject originalCmt = commentRepository.get(originalCmtId);
+            if (StringUtils.isNotBlank(originalCommentId)) {
+                final JSONObject originalCmt = commentRepository.get(originalCommentId);
                 final String originalCmtAuthorId = originalCmt.optString(Comment.COMMENT_AUTHOR_ID);
 
-                final JSONObject requestJSONObject = new JSONObject();
-                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, originalCmtAuthorId);
-                requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
+                if (!articleAuthorId.equals(originalCmtAuthorId)) {
+                    final JSONObject requestJSONObject = new JSONObject();
+                    requestJSONObject.put(Notification.NOTIFICATION_USER_ID, originalCmtAuthorId);
+                    requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
 
-                notificationMgmtService.addReplyNotification(requestJSONObject);
+                    notificationMgmtService.addReplyNotification(requestJSONObject);
+                }
             }
 
             final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
