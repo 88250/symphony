@@ -128,10 +128,10 @@ public class CommentProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/comment/replies", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/comment/replies", method = HTTPRequestMethod.POST)
     public void getReplies(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final JSONObject requestJSONObject = (JSONObject) request.getAttribute(Keys.REQUEST);
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
 
         int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
