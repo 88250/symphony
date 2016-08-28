@@ -207,6 +207,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
                     || StringUtils.containsIgnoreCase(userAgentStr, "MQQBrowser")
                     || StringUtils.containsIgnoreCase(userAgentStr, "iphone")) {
                 browserType = BrowserType.MOBILE_BROWSER;
+            } else if (StringUtils.containsIgnoreCase(userAgentStr, "Iframely")) {
+                browserType = BrowserType.ROBOT;
             } else if (!StringUtils.containsIgnoreCase(userAgentStr, "Java")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "MetaURI")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "Feed")) {
