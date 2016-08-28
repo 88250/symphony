@@ -25,7 +25,7 @@ package org.b3log.symphony.model;
 public final class Common {
 
     /**
-     * Mouse effects.
+     * Key of mouse effects.
      */
     public static final String MOUSE_EFFECTS = "mouseEffects";
 
@@ -432,7 +432,7 @@ public final class Common {
     /**
      * Key of unread 'reply' notifications count.
      */
-    public static final String UNREAD_REPLY_NOTIFICATION_CNT = "unreadReplyNotificationCnt";   
+    public static final String UNREAD_REPLY_NOTIFICATION_CNT = "unreadReplyNotificationCnt";
 
     /**
      * Key of 'at' notifications.
