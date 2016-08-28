@@ -300,7 +300,8 @@ var Comment = {
             url: Label.servePath + "/comment/replies",
             type: "POST",
             data: JSON.stringify({
-                commentId: id
+                commentId: id,
+                userCommentViewMode: Label.userCommentViewMode
             }),
             beforeSend: function () {
                 $(it).css("opacity", "0.3");

@@ -142,9 +142,8 @@ public class CommentProcessor {
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
         final String commentId = requestJSONObject.optString(Comment.COMMENT_T_ID);
-
+        int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
         int avatarViewMode = UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL;
-        int commentViewMode = UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL;
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         if (null != currentUser) {
             avatarViewMode = currentUser.optInt(UserExt.USER_AVATAR_VIEW_MODE);
