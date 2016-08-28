@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -112,10 +113,12 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notAllowCmtLabel")));
             }
 
-            final String commentOriginalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
-            final JSONObject originalCmt = commentQueryService.getComment(commentOriginalCommentId);
-            if (null == originalCmt) {
-                throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
+            final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+            if (StringUtils.isNotBlank(originalCommentId)) {
+                final JSONObject originalCmt = commentQueryService.getComment(originalCommentId);
+                if (null == originalCmt) {
+                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
+                }
             }
         } catch (final ServiceException e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Unknown Error"));

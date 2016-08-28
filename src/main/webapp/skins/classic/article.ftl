@@ -215,7 +215,7 @@
                             </span>
                             <div class="fn-right">
                                 <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
+                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
                             </div>
                         </div>
 
@@ -286,7 +286,7 @@
                                                 <span class="fn-right hover-show fn-hidden">
                                                     <#if comment.commentOriginalCommentId != ''>
                                                     <a class="ft-a-icon tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
-                                                       href="${servePath}/article/${article.oId}?p=$pagunumber&m=${userCommentViewMode}#${comment.commentOriginalCommentId}"><span class="icon-reply-to"></span></a>
+                                                       href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.commentOriginalCommentId}"><span class="icon-reply-to"></span></a>
                                                     </#if>
                                                     <#if isAdminLoggedIn>
                                                     <a class="tooltipped tooltipped-n ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" 
@@ -302,7 +302,7 @@
                                                 <div class="ft-fade fn-clear">
                                                     <#if comment.commentReplyCnt != 0>
                                                     <span class="fn-pointer ft-smaller" onclick="Comment.showReply('${comment.oId}', this)">
-                                                        ${comment.commentReplyCnt} ${replayLabel} <span class="icon-chevron-down"></span>
+                                                        ${comment.commentReplyCnt} ${replyLabel} <span class="icon-chevron-down"></span>
                                                     </span>
                                                     </#if>
                                                      <span class="fn-right">
@@ -321,7 +321,7 @@
                                                             <span class="icon-thumbs-down<#if isLoggedIn && 1 == comment.commentVote> ft-red</#if>"></span></span>
 
                                                         <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0) || !isLoggedIn>
-                                                        <span aria-label="${replayLabel}" class="fn-pointer tooltipped tooltipped-n" 
+                                                        <span aria-label="${replyLabel}" class="fn-pointer tooltipped tooltipped-n" 
                                                               onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')"><span class="icon-reply"></span></span>
                                                         </#if>
                                                     </span>
@@ -354,7 +354,7 @@
                             </span>
                             <div class="fn-right">
                                 <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replayLabel}</button>
+                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
                             </div>
                         </div>
 
@@ -489,7 +489,7 @@
             Label.adminLabel = '${adminLabel}';
             Label.thankSelfLabel = '${thankSelfLabel}';
             Label.articleAuthorName = '${article.articleAuthorName}';
-            Label.replay = '${replayLabel}';
+            Label.reply = '${replyLabel}';
             Label.referenceLabel = '${referenceLabel}';
             Label.goCommentLabel = '${goCommentLabel}';
             qiniuToken = "${qiniuUploadToken}";

@@ -59,7 +59,7 @@ import org.jsoup.safety.Whitelist;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.7.17, Aug 28, 2016
+ * @version 1.6.7.18, Aug 28, 2016
  * @since 0.2.0
  */
 @Named
@@ -138,6 +138,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
 
             final String articleId = originalArticle.optString(Keys.OBJECT_ID);
             final String commentId = originalComment.optString(Keys.OBJECT_ID);
+            final String originalCommentId = originalComment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             final String commenterId = originalComment.optString(Comment.COMMENT_AUTHOR_ID);
 
             final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
@@ -148,6 +149,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final JSONObject chData = new JSONObject();
             chData.put(Article.ARTICLE_T_ID, articleId);
             chData.put(Comment.COMMENT_T_ID, commentId);
+            chData.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);
 
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalComment.optInt(Comment.COMMENT_ANONYMOUS)) {
                 chData.put(Comment.COMMENT_T_AUTHOR_NAME, commenterName);

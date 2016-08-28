@@ -112,10 +112,9 @@ var ArticleChannel = {
 
                     template += '</span></span><span class="fn-right hover-show fn-hidden">';
                     if (data.commentOriginalCommentId !== '') {
-                        // TODO: @88250 need commentOriginalCommentId & pagenumber
-                        template += '<a class="ft-a-icon tooltipped tooltipped-nw" aria-label="' 
-                                + Label.goCommentLabel + '" href="' + Label.servePath + '/article/' + Label.articleOId 
-                                + '?p=' + data.pagenumber + '&m=' + Label.userCommentViewMode + '#' 
+                        template += '<a class="ft-a-icon tooltipped tooltipped-nw" aria-label="'
+                                + Label.goCommentLabel + '" href="' + Label.servePath + '/article/' + Label.articleOId
+                                + '?p=' + data.pagenumber + '&m=' + Label.userCommentViewMode + '#'
                                 + data.commentOriginalCommentId + '"><span class="icon-reply-to"></span></a> ';
                     }
                     if (Label.isAdminLoggedIn) {
@@ -142,7 +141,7 @@ var ArticleChannel = {
                             + '<span class="icon-thumbs-down"></span></span> ';
 
                     if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') || !Label.isLoggedIn) {
-                        template += ' <span aria-label="' + Label.replayLabel + '" class="fn-pointer tooltipped tooltipped-n" onclick="Comment.replay(\''
+                        template += ' <span aria-label="' + Label.replyLabel + '" class="fn-pointer tooltipped tooltipped-n" onclick="Comment.reply(\''
                                 + data.commentId + ' \')"><span class="icon-reply"></span></span> ';
                     }
                     template += '</span></div></div></li>';

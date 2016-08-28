@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -133,21 +134,33 @@ public class CommentQueryService {
                         new PropertyFilter(Comment.COMMENT_STATUS, FilterOperator.EQUAL, Comment.COMMENT_STATUS_C_VALID)
                 ));
         try {
-            final List<JSONObject> ret = CollectionUtils.jsonArrayToList(
+            final List<JSONObject> comments = CollectionUtils.jsonArrayToList(
                     commentRepository.get(query).optJSONArray(Keys.RESULTS));
 
-            organizeComments(avatarViewMode, ret);
+            organizeComments(avatarViewMode, comments);
 
             final int pageSize = Symphonys.getInt("articleCommentsPageSize");
 
-            for (final JSONObject reply : ret) {
-                final JSONObject replyAuthor = reply.optJSONObject(Comment.COMMENT_T_COMMENTER);
-                if (UserExt.USER_XXX_STATUS_C_PRIVATE == replyAuthor.optInt(UserExt.USER_UA_STATUS)) {
+            final List<JSONObject> ret = new ArrayList<>();
+            for (final JSONObject comment : comments) {
+                final JSONObject reply = new JSONObject();
+                ret.add(reply);
+                
+                final JSONObject commentAuthor = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
+                if (UserExt.USER_XXX_STATUS_C_PRIVATE == commentAuthor.optInt(UserExt.USER_UA_STATUS)) {
                     reply.put(Comment.COMMENT_UA, "");
                 }
+                
+                reply.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
+                reply.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                reply.put(Common.TIME_AGO, comment.optString(Common.TIME_AGO));
+                reply.put(Common.REWARED_COUNT, comment.optString(Common.REWARED_COUNT));
+                reply.put(Common.REWARDED, comment.optBoolean(Common.REWARDED));
+                reply.put(Keys.OBJECT_ID, comment.optString(Keys.OBJECT_ID));
+                reply.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
 
                 final String replyId = reply.optString(Keys.OBJECT_ID);
-                final String articleId = reply.optString(Comment.COMMENT_ON_ARTICLE_ID);
+                final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
 
                 final Query numQuery = new Query()
                         .setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1);
@@ -549,6 +562,34 @@ public class CommentQueryService {
             final List<JSONObject> ret = CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS));
 
             organizeComments(avatarViewMode, ret);
+
+            for (final JSONObject comment : ret) {
+                final String commentId = comment.optString(Keys.OBJECT_ID);
+
+                final Query numQuery = new Query()
+                        .setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1);
+
+                switch (sortMode) {
+                    case UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL:
+                        numQuery.setFilter(CompositeFilterOperator.and(
+                                new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
+                                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, commentId)
+                        )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
+
+                        break;
+                    case UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME:
+                        numQuery.setFilter(CompositeFilterOperator.and(
+                                new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
+                                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, commentId)
+                        )).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+                        break;
+                }
+
+                final long num = commentRepository.count(numQuery);
+                final int page = (int) ((num / pageSize) + 1);
+                comment.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, page);
+            }
 
             return ret;
         } catch (final RepositoryException e) {
