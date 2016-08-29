@@ -71,7 +71,7 @@ var Comment = {
             });
             $(this).addClass('selected');
         }).on('mouseout', '>li', function () {
-             $("#comments > ul > li").each(function () {
+            $("#comments > ul > li").each(function () {
                 if ($(this).find(".comment-action .icon-chevron-up").length === 1 ||
                         $(this).find(".comment-action .icon-chevron-down").length === 1) {
                     // 回复展开的时候需要一直显示，否则回复引用定位有问题
@@ -81,7 +81,13 @@ var Comment = {
             });
         });
 
-        $(window.location.hash).addClass('selected');
+        window.onhashchange = function () {
+            $(window.location.hash).css('background-color', 'red');
+
+            $(window.location.hash).animate({
+                backgroundColor: "#fff"
+            }, 1000);
+        };
 
         this._setCmtVia();
         $.ua.set(navigator.userAgent);
@@ -295,7 +301,7 @@ var Comment = {
             $commentReplies.html('');
             return false;
         }
-        
+
         if ($(it).css("opacity") === '0.3') {
             return false;
         }
