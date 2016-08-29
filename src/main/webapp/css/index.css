@@ -129,10 +129,6 @@ label.cmt-anonymous {
     background-color: #f9f6f6;
 }
 
-.comments > ul > li.selected {
-    background-color: #F7F7F7;
-}
-
 .comments > ul > li:hover .hover-show,
 .comments > ul > li.selected .hover-show {
     visibility: visible;

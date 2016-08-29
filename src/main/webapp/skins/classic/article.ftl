@@ -293,9 +293,6 @@
                                                     <a class="tooltipped tooltipped-n ft-a-icon hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}" 
                                                        aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                     </#if>
-                                                    <#if comment.commentOriginalCommentId == ''>
-                                                    <i class="ft-fade hover-show fn-hidden"><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
-                                                    </#if>
                                                 </span>
                                             </div>
                                             <div class="content-reset comment">
@@ -492,7 +489,7 @@
             Label.adminLabel = '${adminLabel}';
             Label.thankSelfLabel = '${thankSelfLabel}';
             Label.articleAuthorName = '${article.articleAuthorName}';
-            Label.reply = '${replyLabel}';
+            Label.replyLabel = '${replyLabel}';
             Label.referenceLabel = '${referenceLabel}';
             Label.goCommentLabel = '${goCommentLabel}';
             qiniuToken = "${qiniuUploadToken}";

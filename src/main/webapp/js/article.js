@@ -70,6 +70,15 @@ var Comment = {
                 }
             });
             $(this).addClass('selected');
+        }).on('mouseout', '>li', function () {
+             $("#comments > ul > li").each(function () {
+                if ($(this).find(".comment-action .icon-chevron-up").length === 1 ||
+                        $(this).find(".comment-action .icon-chevron-down").length === 1) {
+                    // 回复展开的时候需要一直显示，否则回复引用定位有问题
+                } else {
+                    $(this).removeClass('selected');
+                }
+            });
         });
 
         $(window.location.hash).addClass('selected');
@@ -283,16 +292,10 @@ var Comment = {
         if ($(it).find('.icon-chevron-down').length === 0) {
             // 收起回复
             $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down');
-            $commentReplies.hide();
+            $commentReplies.html('');
             return false;
         }
-
-        if ($commentReplies.html().length > 0) {
-            $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up');
-            $commentReplies.show();
-            return false;
-        }
-
+        
         if ($(it).css("opacity") === '0.3') {
             return false;
         }
@@ -457,7 +460,7 @@ var Comment = {
             return false;
         }
 
-        $('#replyUseName').text(Label.reply + ' ' + userName)
+        $('#replyUseName').text(Label.replyLabel + ' ' + userName)
                 .css('visibility', 'visible').data('commentOriginalCommentId', id);
         Comment.editor.focus();
     }

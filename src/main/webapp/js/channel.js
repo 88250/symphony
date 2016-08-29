@@ -122,9 +122,6 @@ var ArticleChannel = {
                         template += '<a class="hover-show fn-hidden tooltipped tooltipped-n ft-a-icon" href="/admin/comment/' + data.commentId
                                 + '" aria-label="' + Label.adminLabel + '"><span class="icon-setting"></span></a> ';
                     }
-                    if (data.commentOriginalCommentId === '') {
-                        template += '<i class="ft-fade hover-show fn-hidden">' + cmtCount + '</i>';
-                    }
                     template += '</span></div><div class="content-reset comment">'
                             + data.commentContent + '</div><div class="fn-none comment-action"><div class="ft-fade fn-clear">'
                             + '<span class="fn-right">';
@@ -160,6 +157,24 @@ var ArticleChannel = {
                     Article.parseLanguage();
 
                     $("#" + data.commentId).fadeIn(2000);
+
+                    // 更新回复的帖子
+                    var $originalComment = $('#' + data.commentOriginalCommentId),
+                            $replyBtn = $originalComment.find('.comment-action > .ft-fade > .fn-pointer');
+                    $originalComment.addClass('selected');
+                    if ($replyBtn.length === 1) {
+                        $replyBtn.html(' ' + (parseInt($.trim($replyBtn.text())) + 1)
+                                + ' ' + Label.replyLabel + ' <span class="'
+                                + $replyBtn.find('span').attr('class') + '"></span>');
+                        
+                        if ($replyBtn.find('span').attr('class') === "icon-chevron-up") {
+                            $replyBtn.find('span').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                            $replyBtn.click();
+                        }
+                    } else {
+                        $originalComment.find('.comment-action > .ft-fade').prepend('<span class="fn-pointer ft-smaller" onclick="Comment.showReply(\''
+                                + data.commentOriginalCommentId + '\', this)" style="opacity: 1;"> 1 ' + Label.replyLabel + ' <span class="icon-chevron-down"></span>');
+                    }
                     break;
                 case "articleHeat":
                     var $heatBar = $("#heatBar"),
