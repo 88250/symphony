@@ -39,6 +39,34 @@ var Comment = {
         window.location.href = window.location.pathname + "?m=" + mode;
     },
     /**
+     * 背景渐变
+     * @param {jQuery} $obj 背景渐变对象
+     * @returns {undefined}
+     */
+    _bgFade: function ($obj) {
+        $obj.css({
+            'background-color': '#9bbee0'
+        });
+        setTimeout(function () {
+            $obj.css({
+                'background-color': '#FFF',
+                'transition': 'all 3s cubic-bezier(0.56, -0.36, 0.58, 1)'
+            });
+        }, 100);
+        setTimeout(function () {
+            $obj.removeAttr('style');
+        }, 3100);
+    },
+    /**
+     * 跳转到指定的评论处
+     * @param {string} url 跳转的 url 
+     */
+    goComment: function (url) {
+        $('#comments > ul > li').removeAttr('style');
+        Comment._bgFade($(url.substr(url.length - 14, 14)));
+        window.location = url;
+    },
+    /**
      * 设置评论来源
      * @returns {Boolean}
      */
@@ -55,7 +83,7 @@ var Comment = {
      * 评论初始化
      * @returns {Boolean}
      */
-    init: function (isLoggedIn) {
+    init: function () {
         $("#comments").on('dblclick', 'img', function () {
             window.open($(this).attr('src'));
         });
@@ -81,18 +109,16 @@ var Comment = {
             });
         });
 
-        window.onhashchange = function () {
-            $(window.location.hash).css('background-color', 'red');
-
-            $(window.location.hash).animate({
-                backgroundColor: "#fff"
-            }, 1000);
-        };
+        if ($(window.location.hash).length === 1) {
+            Comment._bgFade($(window.location.hash));
+        } else {
+            Comment._bgFade($('.article-content'));
+        }
 
         this._setCmtVia();
         $.ua.set(navigator.userAgent);
 
-        if (!isLoggedIn) {
+        if (!Label.isLoggedIn) {
             return false;
         }
 
@@ -360,10 +386,10 @@ var Comment = {
 
                     template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
 
-                    template += '<a class="tooltipped tooltipped-nw ft-a-icon fn-right" aria-label="' + Label.referenceLabel + '" href="'
+                    template += '<a class="tooltipped tooltipped-nw ft-a-icon fn-right" aria-label="' + Label.referenceLabel + '" href="javascript:Comment.goComment(\''
                             + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
                             + '&m=' + Label.userCommentViewMode + '#' + data.oId
-                            + '"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
+                            + '\')"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
                             + data.commentContent + '</div></div></div></li>';
                 }
                 $commentReplies.html('<ul>' + template + '</ul>');

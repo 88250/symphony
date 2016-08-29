@@ -184,7 +184,7 @@
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${comment.commentUA}"></span></#if>
                                                 </span>
                                                 <a class="ft-a-icon fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
-                                                   href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}"><span class="icon-down"></span></a>
+                                                   href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}')"><span class="icon-down"></span></a>
                                             </div>
                                             <div class="content-reset comment">
                                                 ${comment.commentContent}
@@ -285,7 +285,7 @@
                                                 <span class="fn-right">
                                                     <#if comment.commentOriginalCommentId != ''>
                                                     <a class="ft-a-icon tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
-                                                       href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.commentOriginalCommentId}"><span class="icon-reply-to"></span>
+                                                       href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.commentOriginalCommentId}')"><span class="icon-reply-to"></span>
                                                         <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
                                                     </a> 
                                                     </#if>
@@ -495,7 +495,12 @@
             qiniuToken = "${qiniuUploadToken}";
             qiniuDomain = "${qiniuDomain}";
             <#if isLoggedIn>
-                    Label.currentUserName = '${currentUser.userName}';
+                Label.currentUserName = '${currentUser.userName}';
+                Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
+
+                setTimeout(function() {
+                    Util.setUnreadNotificationCount();
+                }, 1000);
             </#if>
             // Init [Article] channel
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
@@ -512,19 +517,13 @@
                         "imgMaxSize": ${imgMaxSize?c},
                         "fileMaxSize": ${fileMaxSize?c}
                 });
-            });
-           
-            <#if 3 == article.articleType>
+                
+                Comment.init();
+                
+                <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');
-            </#if>
-            Comment.init(${isLoggedIn?c});
-            <#if isLoggedIn>
-            Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
-            
-            setTimeout(function() {
-                Util.setUnreadNotificationCount();
-            }, 1000);
-            </#if>
+                </#if>
+            });
         </script>
         <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">

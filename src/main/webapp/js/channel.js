@@ -113,9 +113,9 @@ var ArticleChannel = {
                     template += '</span></span><span class="fn-right">';
                     if (data.commentOriginalCommentId !== '') {
                         template += '<a class="ft-a-icon tooltipped tooltipped-nw" aria-label="'
-                                + Label.goCommentLabel + '" href="' + Label.servePath + '/article/' + Label.articleOId
+                                + Label.goCommentLabel + '" href="javascript:Comment.goComment(\'' + Label.servePath + '/article/' + Label.articleOId
                                 + '?p=' + data.paginationCurrentPageNum + '&m=' + Label.userCommentViewMode + '#'
-                                + data.commentOriginalCommentId + '"><span class="icon-reply-to"></span>  <div class="avatar-small" style="background-image:url(\''
+                                + data.commentOriginalCommentId + '\')"><span class="icon-reply-to"></span>  <div class="avatar-small" style="background-image:url(\''
                                 + data.commentOriginalAuthorThumbnailURL + '\')"></div></a> ';
                     }
                     if (Label.isAdminLoggedIn) {

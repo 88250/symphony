@@ -245,27 +245,6 @@ blockquote {
     80%{-webkit-transform:translate(0px,0px);-moz-transform:translate(0px,0px);-o-transform:translate(0px,0px);-ms-transform:translate(0px,0px);transform:translate(0px,0px)}
 }
 
-@-webkit-keyframes colorchange {
-    0%   {background: #f9f6f6;}
-    25%  {background: #d2bbbb;}
-    50%  {background: #b28c8c;}
-    75%  {background: #e1d3d3;}
-    100% {background: #FFF;}
-}
-
-@keyframes colorchange {
-    0%   {background: #f9f6f6;}
-    25%  {background: #d2bbbb;}
-    50%  {background: #b28c8c;}
-    75%  {background: #e1d3d3;}
-    100% {background: #FFF;}
-}
-
-.colorchange {
-    animation: colorchange 3s;
-    -webkit-animation: colorchange 3s; 
-}
-
 .content-reset {
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     word-wrap: break-word;

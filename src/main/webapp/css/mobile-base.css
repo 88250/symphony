@@ -1858,6 +1858,16 @@ label.cmt-anonymous {
     border-bottom-width: 0;
 }
 
+#comments > .comment-header {
+    border-bottom: 1px solid #CCCCCC;
+    margin: 10px 0 0;
+    padding: 10px 5px 5px 10px
+}
+
+#comments .comment-header > h2 {
+    margin-top: 5px;
+}
+
 .comment-login {
     border: 1px solid #D9D9D9;
     border-top-color: #C0C0C0;
