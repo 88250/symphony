@@ -965,6 +965,9 @@ a[class*=" icon-"]:hover {
 .icon-chevron-up:before {
   content: "\e619";
 }
+.icon-reply-to:before {
+  content: "\e620";
+}
 .icon-reply:before {
   content: "\e61a";
 }

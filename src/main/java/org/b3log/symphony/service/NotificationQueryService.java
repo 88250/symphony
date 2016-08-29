@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.2.5, Aug 13, 2016
+ * @version 1.7.2.5, Aug 28, 2016
  * @since 0.2.5
  */
 @Service
@@ -160,9 +160,10 @@ public class NotificationQueryService {
      * @see Notification#DATA_TYPE_C_COMMENT
      * @see Notification#DATA_TYPE_C_COMMENTED
      * @see Notification#DATA_TYPE_C_BROADCAST
+     * @see Notification#DATA_TYPE_C_REPLY
      */
     public int getUnreadNotificationCountByType(final String userId, final int notificationDataType) {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
 
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
@@ -195,11 +196,11 @@ public class NotificationQueryService {
      * @see Notification#DATA_TYPE_C_POINT_TRANSFER
      */
     public int getUnreadPointNotificationCount(final String userId) {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
 
-        final List<Filter> subFilters = new ArrayList<Filter>();
+        final List<Filter> subFilters = new ArrayList<>();
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
@@ -252,14 +253,14 @@ public class NotificationQueryService {
     public JSONObject getPointNotifications(final String userId, final int currentPageNum, final int pageSize)
             throws ServiceException {
         final JSONObject ret = new JSONObject();
-        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+        final List<JSONObject> rslts = new ArrayList<>();
 
         ret.put(Keys.RESULTS, (Object) rslts);
 
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
 
-        final List<Filter> subFilters = new ArrayList<Filter>();
+        final List<Filter> subFilters = new ArrayList<>();
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_ARTICLE_REWARD));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
@@ -447,11 +448,11 @@ public class NotificationQueryService {
     public JSONObject getCommentedNotifications(final int avatarViewMode,
             final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
-        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+        final List<JSONObject> rslts = new ArrayList<>();
 
         ret.put(Keys.RESULTS, (Object) rslts);
 
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_COMMENTED));
 
@@ -510,6 +511,97 @@ public class NotificationQueryService {
     }
 
     /**
+     * Gets 'reply' type notifications with the specified user id, current page number and page size.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     * @param userId the specified user id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return result json object, for example,      <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         "oId": "", // notification record id
+     *         "commentAuthorName": "",
+     *         "commentContent": "",
+     *         "commentAuthorThumbnailURL": "",
+     *         "commentArticleTitle": "",
+     *         "commentArticleType": int,
+     *         "commentSharpURL": "",
+     *         "commentCreateTime": java.util.Date,
+     *         "hasRead": boolean
+     *     }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    public JSONObject getReplyNotifications(final int avatarViewMode,
+            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> rslts = new ArrayList<>();
+
+        ret.put(Keys.RESULTS, (Object) rslts);
+
+        final List<Filter> filters = new ArrayList<>();
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_REPLY));
+
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+        try {
+            final JSONObject queryResult = notificationRepository.get(query);
+            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT,
+                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
+
+            for (int i = 0; i < results.length(); i++) {
+                final JSONObject notification = results.optJSONObject(i);
+                final String commentId = notification.optString(Notification.NOTIFICATION_DATA_ID);
+
+                final JSONObject comment = commentQueryService.getCommentById(avatarViewMode, commentId);
+
+                final Query q = new Query().setPageCount(1).
+                        addProjection(Article.ARTICLE_TITLE, String.class).
+                        addProjection(Article.ARTICLE_TYPE, Integer.class).
+                        setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.EQUAL,
+                                comment.optString(Comment.COMMENT_ON_ARTICLE_ID)));
+                final JSONArray rlts = articleRepository.get(q).optJSONArray(Keys.RESULTS);
+                final JSONObject article = rlts.optJSONObject(0);
+                final String articleTitle = article.optString(Article.ARTICLE_TITLE);
+                final int articleType = article.optInt(Article.ARTICLE_TYPE);
+                final int articlePerfect = article.optInt(Article.ARTICLE_PERFECT);
+
+                final JSONObject commentedNotification = new JSONObject();
+                commentedNotification.put(Keys.OBJECT_ID, notification.optString(Keys.OBJECT_ID));
+                commentedNotification.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
+                commentedNotification.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
+                commentedNotification.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL,
+                        comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+                commentedNotification.put(Common.THUMBNAIL_UPDATE_TIME, comment.optJSONObject(Comment.COMMENT_T_COMMENTER).
+                        optLong(UserExt.USER_UPDATE_TIME));
+                commentedNotification.put(Comment.COMMENT_T_ARTICLE_TITLE, Emotions.convert(articleTitle));
+                commentedNotification.put(Comment.COMMENT_T_ARTICLE_TYPE, articleType);
+                commentedNotification.put(Comment.COMMENT_SHARP_URL, comment.optString(Comment.COMMENT_SHARP_URL));
+                commentedNotification.put(Comment.COMMENT_CREATE_TIME, comment.opt(Comment.COMMENT_CREATE_TIME));
+                commentedNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
+                commentedNotification.put(Comment.COMMENT_T_ARTICLE_PERFECT, articlePerfect);
+
+                rslts.add(commentedNotification);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets [reply] notifications", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets 'at' type notifications with the specified user id, current page number and page size.
      *
      * @param avatarViewMode the specified avatar view mode
@@ -541,11 +633,11 @@ public class NotificationQueryService {
     public JSONObject getAtNotifications(final int avatarViewMode,
             final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
-        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+        final List<JSONObject> rslts = new ArrayList<>();
 
         ret.put(Keys.RESULTS, (Object) rslts);
 
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_AT));
 
@@ -662,11 +754,11 @@ public class NotificationQueryService {
     public JSONObject getFollowingUserNotifications(final int avatarViewMode,
             final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
-        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+        final List<JSONObject> rslts = new ArrayList<>();
 
         ret.put(Keys.RESULTS, (Object) rslts);
 
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_FOLLOWING_USER));
 
@@ -776,11 +868,11 @@ public class NotificationQueryService {
     public JSONObject getBroadcastNotifications(final int avatarViewMode,
             final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
-        final List<JSONObject> rslts = new ArrayList<JSONObject>();
+        final List<JSONObject> rslts = new ArrayList<>();
 
         ret.put(Keys.RESULTS, (Object) rslts);
 
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, Notification.DATA_TYPE_C_BROADCAST));
 

@@ -153,7 +153,7 @@
                                                     <a class="icon icon-setting" href="/admin/comment/${comment.oId}" title="${adminLabel}"></a>
                                                     </#if>
                                                     <#if isLoggedIn> 
-                                                    <span class="icon icon-cmt" onclick="Comment.replay('@${comment.commentAuthorName} ')"></span>
+                                                    <span class="icon icon-cmt" onclick="Comment.reply('@${comment.commentAuthorName} ')"></span>
                                                     </#if>
                                                     #<i>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</i>
                                                 </span>    

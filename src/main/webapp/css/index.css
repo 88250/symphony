@@ -124,16 +124,32 @@ label.cmt-anonymous {
     background-size: 45px 45px;
 }
 
-.comments li.perfect {
-    background-color: #f9f6f6;
-}
-
+.comments.list > ul > li.perfect,
 .comments.list > ul > li.perfect:hover {
     background-color: #f9f6f6;
 }
 
-.comments li:hover .hover-show {
+.comments > ul > li:hover .hover-show,
+.comments > ul > li.selected .hover-show {
     visibility: visible;
+}
+
+.comments > ul > li:hover .comment-action,
+.comments > ul > li.selected .comment-action {
+    display: block;
+}
+
+.comment-replies.list > ul {
+    margin-top: 10px;
+}
+
+.comment-replies.list > ul > li {
+    border-bottom-width: 0;
+    border-top: 1px solid #eee;
+}
+
+.comment-replies.list > ul > li {
+    background-color: transparent;
 }
 
 .comments li .fn-pointer:hover {
@@ -142,6 +158,7 @@ label.cmt-anonymous {
 
 .comments .comment > p {
     margin-top: 10px;
+    margin-bottom: 0;
 }
 
 .comments .comment-info .icon-heart {
@@ -149,7 +166,7 @@ label.cmt-anonymous {
 }
 
 .comments.nice ul {
-    margin: 10px 0;
+    margin-top: 10px;
     border: 1px solid #e5e5e5;
     border-radius: 3px;
 }
@@ -182,6 +199,10 @@ label.cmt-anonymous {
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-color: #f7f7f7;
     background-size: 45px 45px;
+}
+
+#articleRewardContent > p {
+    margin: 0;
 }
 
 #articleRewardContent.reward {
@@ -246,8 +267,11 @@ label.cmt-anonymous {
     min-height: 88px;
 }
 
-.editor-toolbar {
-    margin-top: 20px;
+#replyUseName {
+    visibility: hidden;
+    line-height: 18px;
+    height: 18px;
+    margin: 5px 0;
 }
 
 #articleToC {

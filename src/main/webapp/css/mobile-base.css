@@ -799,6 +799,9 @@ a[class*=" icon-"]:hover {
 .icon-chevron-up:before {
   content: "\e619";
 }
+.icon-reply-to:before {
+  content: "\e620";
+}
 .icon-reply:before {
   content: "\e61a";
 }
@@ -1764,15 +1767,14 @@ h2.article-title {
     margin-top: 10px;
 }
 
-#comments > .comment-header {
-    border-bottom: 1px solid #CCCCCC;
-    margin: 10px 0 0;
-    padding: 10px 5px 5px 10px
+label.cmt-anonymous {
+    margin: 7px 15px 0 0;
 }
 
-#comments .comment-header > h2 {
-    margin-top: 5px;
+#shareClipboard.tooltipped-hover {
+    color: #4183C4;
 }
+
 .comments > .comment-header {
     padding-bottom: 5px;
     border-bottom: 1px solid #CCCCCC;
@@ -1805,15 +1807,32 @@ h2.article-title {
     background-size: 45px 45px;
 }
 
-.comments li.perfect {
-    background-color: #f9f6f6;
-}
+.comments.list > ul > li.perfect,
 .comments.list > ul > li.perfect:hover {
     background-color: #f9f6f6;
 }
 
-.comments li:hover .hover-show {
+.comments > ul > li:hover .hover-show,
+.comments > ul > li.selected .hover-show {
     visibility: visible;
+}
+
+.comments > ul > li:hover .comment-action,
+.comments > ul > li.selected .comment-action {
+    display: block;
+}
+
+.comment-replies.list > ul {
+    margin-top: 10px;
+}
+
+.comment-replies.list > ul > li {
+    border-bottom-width: 0;
+    border-top: 1px solid #eee;
+}
+
+.comment-replies.list > ul > li {
+    background-color: transparent;
 }
 
 .comments li .fn-pointer:hover {
@@ -1822,6 +1841,7 @@ h2.article-title {
 
 .comments .comment > p {
     margin-top: 10px;
+    margin-bottom: 0;
 }
 
 .comments .comment-info .icon-heart {
@@ -1829,7 +1849,7 @@ h2.article-title {
 }
 
 .comments.nice ul {
-    margin: 10px 0;
+    margin-top: 10px;
     border: 1px solid #e5e5e5;
     border-radius: 3px;
 }
@@ -1839,11 +1859,13 @@ h2.article-title {
 }
 
 .comment-login {
-    border: 1px solid #e5e5e5;
+    border: 1px solid #D9D9D9;
+    border-top-color: #C0C0C0;
+    border-left-color: #C0C0C0;
+    margin: 10px 0;
     padding: 3px;
     background-color: #FAFAFA;
     box-sizing: border-box;
-    border-radius: 3px;
 }
 
 .comment-login > a {
@@ -1860,6 +1882,10 @@ h2.article-title {
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
     background-color: #f7f7f7;
     background-size: 45px 45px;
+}
+
+#articleRewardContent > p {
+    margin: 0;
 }
 
 #articleRewardContent.reward {
@@ -1882,6 +1908,8 @@ h2.article-title {
 }
 
 .share {
+    margin-top: 20px;
+    margin-bottom: 5px;
     position: relative;
 }
 
@@ -1905,8 +1933,6 @@ h2.article-title {
 }
 
 .share [class^="icon-"]:hover {
-    transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
     color: #4183c4;
 }
 
@@ -1924,8 +1950,82 @@ h2.article-title {
     min-height: 88px;
 }
 
-.editor-toolbar {
-    margin-top: 20px;
+#replyUseName {
+    visibility: hidden;
+    line-height: 18px;
+    height: 18px;
+    margin: 5px 0;
+}
+
+#articleToC {
+    top: 21px;
+    z-index: 10;
+}
+
+.article-toc li {
+    list-style-type: none;
+}
+
+.article-toc li a {
+    padding: 5px 10px 5px 20px;
+    border-left: 2px solid transparent;
+    display: block;
+    line-height: 20px;
+    color: #767676;
+}
+
+.article-toc li a:last-child {
+    border-bottom-width: 0;
+}
+
+.article-toc li a:hover {
+    border-left: 1px solid #4183c4;
+    background-color: #F7F7F7;
+    padding-left: 21px;
+    color: #4183C4;
+    text-decoration: none;
+}
+
+.article-toc li.current a {
+    border-left: 2px solid #4183c4;
+    background-color: #f0f0f0;
+    color: #4183c4;
+}
+
+.article-toc li.toc-h2 a,
+.article-toc li.toc-h2.current a:hover {
+    padding-left: 34px;
+}
+
+.article-toc li.toc-h3 a,
+.article-toc li.toc-h3.current a:hover {
+    padding-left: 48px;
+}
+
+.article-toc li.toc-h4 a,
+.article-toc li.toc-h4.current a:hover {
+    padding-left: 62px;
+}
+
+.article-toc li.toc-h5 a,
+.article-toc li.toc-h5.current a:hover {
+    padding-left: 86px;
+}
+
+.article-toc li.toc-h2 a:hover {
+    padding-left: 35px;
+}
+
+.article-toc li.toc-h3 a:hover {
+    padding-left: 49px;
+}
+
+.article-toc li.toc-h4 a:hover {
+    padding-left: 63px;
+}
+
+.article-toc li.toc-h5 a:hover {
+    padding-left: 87px;
 }
 /* end article */
 

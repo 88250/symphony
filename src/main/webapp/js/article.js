@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.28.16, Aug 25, 2016
+ * @version 1.22.29.17, Aug 29, 2016
  */
 
 /**
@@ -59,6 +59,29 @@ var Comment = {
         $("#comments").on('dblclick', 'img', function () {
             window.open($(this).attr('src'));
         });
+
+        $("#comments > ul").on('mouseover', '>li', function () {
+            $("#comments > ul > li").each(function () {
+                if ($(this).find(".comment-action .icon-chevron-up").length === 1 ||
+                        $(this).find(".comment-action .icon-chevron-down").length === 1) {
+                    // 回复展开的时候需要一直显示，否则回复引用定位有问题
+                } else {
+                    $(this).removeClass('selected');
+                }
+            });
+            $(this).addClass('selected');
+        }).on('mouseout', '>li', function () {
+             $("#comments > ul > li").each(function () {
+                if ($(this).find(".comment-action .icon-chevron-up").length === 1 ||
+                        $(this).find(".comment-action .icon-chevron-down").length === 1) {
+                    // 回复展开的时候需要一直显示，否则回复引用定位有问题
+                } else {
+                    $(this).removeClass('selected');
+                }
+            });
+        });
+
+        $(window.location.hash).addClass('selected');
 
         this._setCmtVia();
         $.ua.set(navigator.userAgent);
@@ -237,11 +260,11 @@ var Comment = {
                     $heart.animate({"left": x - 150, "top": y - 60, "opacity": 0},
                             1500,
                             function () {
-                                var $cnt = $(it).closest('.comment-content').find('.rewarded-cnt'),
+                                var $cnt = $(it).closest('li').find('.rewarded-cnt'),
                                         cnt = parseInt($cnt.text());
                                 if ($cnt.length <= 0) {
-                                    $(it).closest('.comment-content').find('.comment-info .fn-left .ft-fade:last').
-                                            append('<span aria-label="' + Label.thankedLabel + ' 1" class="tooltipped tooltipped-n ft-red">'
+                                    $(it).closest('li').find('.comment-reward').
+                                            html('<span aria-label="' + Label.thankedLabel + ' 1" class="fn-hidden hover-show tooltipped tooltipped-n ft-red">'
                                                     + '<span class="icon-heart"></span>1</span>');
                                 } else {
                                     $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
@@ -255,6 +278,98 @@ var Comment = {
                 } else {
                     alert(result.msg);
                 }
+            }
+        });
+    },
+    /**
+     * @description 展现回帖回复列表
+     * @param {type} id 回帖 id
+     * @returns {Boolean}
+     */
+    showReply: function (id, it) {
+        var $commentReplies = $(it).closest('li').find('.comment-replies');
+
+        if ($(it).find('.icon-chevron-down').length === 0) {
+            // 收起回复
+            $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+            $commentReplies.html('');
+            return false;
+        }
+        
+        if ($(it).css("opacity") === '0.3') {
+            return false;
+        }
+
+        $.ajax({
+            url: Label.servePath + "/comment/replies",
+            type: "POST",
+            data: JSON.stringify({
+                commentId: id,
+                userCommentViewMode: Label.userCommentViewMode
+            }),
+            beforeSend: function () {
+                $(it).css("opacity", "0.3");
+            },
+            success: function (result, textStatus) {
+                if (!result.sc) {
+                    alert(result.msg);
+                    return false;
+                }
+
+                var replies = result.commentReplies,
+                        template = '';
+                for (var i = 0; i < replies.length; i++) {
+                    var data = replies[i];
+
+                    template += '<li><div class="fn-flex">';
+
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
+                    }
+                    template += '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.commentAuthorName + '" style="background-image:url('
+                            + data.commentAuthorThumbnailURL + ')"></div>';
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '</a>';
+                    }
+
+                    template += '<div class="fn-flex-1">'
+                            + '<div class="comment-info ft-smaller">';
+
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
+                    }
+                    template += data.commentAuthorName;
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '</a>';
+                    }
+
+                    template += '<span class="ft-fade"> • ' + data.timeAgo;
+                    if (data.rewardedCnt > 0) {
+                        template += '<span aria-label="'
+                                + (data.rewarded ? Label.thankedLabel : Label.thankLabel + ' ' + data.rewardedCnt)
+                                + '" class="tooltipped tooltipped-n '
+                                + (data.rewarded ? 'ft-red' : 'ft-fade') + '">'
+                                + ' <span class="icon-heart"></span>' + data.rewardedCnt + '</span> ';
+                    }
+
+                    template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
+
+                    template += '<a class="tooltipped tooltipped-nw ft-a-icon fn-right" aria-label="' + Label.referenceLabel + '" href="'
+                            + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
+                            + '&m=' + Label.userCommentViewMode + '#' + data.oId
+                            + '"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
+                            + data.commentContent + '</div></div></div></li>';
+                }
+                $commentReplies.html('<ul>' + template + '</ul>');
+                Article.parseLanguage();
+
+                $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+            },
+            error: function (result) {
+                alert(result.statusText);
+            },
+            complete: function () {
+                $(it).css("opacity", "1");
             }
         });
     },
@@ -279,8 +394,13 @@ var Comment = {
         var requestJSONObject = {
             articleId: id,
             commentAnonymous: $('#commentAnonymous').prop('checked'),
-            commentContent: Comment.editor.getValue() // 实际提交时不去除空格，因为直接贴代码时需要空格
+            commentContent: Comment.editor.getValue(), // 实际提交时不去除空格，因为直接贴代码时需要空格
+            userCommentViewMode: Label.userCommentViewMode
         };
+
+        if ($('#replyUseName').data('commentOriginalCommentId')) {
+            requestJSONObject.commentOriginalCommentId = $('#replyUseName').data('commentOriginalCommentId');
+        }
 
         $.ajax({
             url: Label.servePath + "/comment",
@@ -296,8 +416,9 @@ var Comment = {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
 
                 if (result.sc) {
-                    Comment.editor.setValue('');
+                    // TODO: update reply count
                     // reset comment editor
+                    Comment.editor.setValue('');
                     $('.editor-preview').html('');
                     if ($('.icon-preview').hasClass('active')) {
                         $('.icon-preview').click();
@@ -306,7 +427,9 @@ var Comment = {
                     if ($('#comments > ul li').length === 0) {
                         $('#comments > div > span').show();
                     }
-
+                    // clear reply comment
+                    $('#replyUseName').text('').removeData();
+                    // clear local storage
                     if (window.localStorage) {
                         var emptyContent = {
                             commentContent: ""
@@ -331,50 +454,15 @@ var Comment = {
      * @description 点击回复评论时，把当楼层的用户名带到评论框中
      * @param {String} userName 用户名称
      */
-    replay: function (userName) {
+    reply: function (userName, id) {
         if (!Label.isLoggedIn) {
             Util.needLogin();
             return false;
         }
-        Comment.editor.focus();
-        $.ua.set(navigator.userAgent);
-        if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
-            var $it = $('#commentContent'),
-                    it = $it[0],
-                    index = 0;
-            if (document.selection) { // IE
-                try {
-                    var cuRange = document.selection.createRange();
-                    var tbRange = it.createTextRange();
-                    tbRange.collapse(true);
-                    tbRange.select();
-                    var headRange = document.selection.createRange();
-                    headRange.setEndPoint("EndToEnd", cuRange);
-                    index = headRange.text.length;
-                    cuRange.select();
-                } catch (e) {
-                    delete e;
-                }
-            } else {
-                index = it.selectionStart;
-            }
 
-            $it.val($it.val().substr(0, index) + userName + ' ' + $it.val().substr(index));
-            var insertIndex = ($it.val().substr(0, index) + userName).length;
-            if (it.setSelectionRange) {
-                it.focus();
-                it.setSelectionRange(insertIndex, insertIndex);
-            } else if (it.createTextRange) {
-                var range = it.createTextRange();
-                range.collapse(true);
-                range.moveEnd('character', insertIndex);
-                range.moveStart('character', insertIndex);
-                range.select();
-            }
-            return false;
-        }
-        var cursor = Comment.editor.getCursor();
-        Comment.editor.doc.replaceRange(userName, cursor, cursor);
+        $('#replyUseName').text(Label.replyLabel + ' ' + userName)
+                .css('visibility', 'visible').data('commentOriginalCommentId', id);
+        Comment.editor.focus();
     }
 };
 
