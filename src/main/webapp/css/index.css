@@ -134,11 +134,6 @@ label.cmt-anonymous {
     visibility: visible;
 }
 
-.comments > ul > li:hover .comment-action,
-.comments > ul > li.selected .comment-action {
-    display: block;
-}
-
 .comment-replies.list > ul {
     margin-top: 10px;
 }

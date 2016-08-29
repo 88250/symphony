@@ -298,14 +298,14 @@
                                             <div class="content-reset comment">
                                                 ${comment.commentContent}
                                             </div>
-                                            <div class="fn-none comment-action">
+                                            <div class="comment-action">
                                                 <div class="ft-fade fn-clear">
                                                     <#if comment.commentReplyCnt != 0>
                                                     <span class="fn-pointer ft-smaller" onclick="Comment.showReply('${comment.oId}', this)">
                                                         ${comment.commentReplyCnt} ${replyLabel} <span class="icon-chevron-down"></span>
                                                     </span>
                                                     </#if>
-                                                     <span class="fn-right">
+                                                     <span class="fn-right fn-hidden hover-show">
                                                         <#if (isLoggedIn && comment.commentAuthorId != currentUser.oId && !comment.rewarded) || !isLoggedIn>
                                                         <span class="fn-pointer tooltipped tooltipped-n"
                                                               aria-label="${thankLabel}"
