@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -276,7 +277,11 @@ public class UserProcessor {
 
                     break;
                 case Invitecode.STATUS_C_UNUSED:
-                    ret.put(Keys.MSG, langPropsService.get("invitecodeOkLabel"));
+                    String msg = langPropsService.get("invitecodeOkLabel");
+                    msg = msg.replace("${time}", DateFormatUtils.format(result.optLong(Keys.OBJECT_ID)
+                            + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
+
+                    ret.put(Keys.MSG, msg);
 
                     break;
                 case Invitecode.STATUS_C_STOPUSE:
@@ -394,7 +399,7 @@ public class UserProcessor {
         String buyInvitecodeLabel = langPropsService.get("buyInvitecodeLabel");
         buyInvitecodeLabel = buyInvitecodeLabel.replace("${point}",
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE));
-        buyInvitecodeLabel = buyInvitecodeLabel.replace("${point2}", 
+        buyInvitecodeLabel = buyInvitecodeLabel.replace("${point2}",
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED));
         dataModel.put("buyInvitecodeLabel", buyInvitecodeLabel);
 
