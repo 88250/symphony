@@ -145,10 +145,10 @@
                     </#if>
                     
                     <#if article.articleNiceComments?size != 0>
-                    <br/>
-                    <div class="list comments nice">
-                        <span class="ft-smaller"> ${niceCommentsLabel}</span>
-                        <ul>                
+                    <div class="module nice">
+                        <div class="module-header">${niceCommentsLabel}</div>
+                        <div class="module-panel list comments">
+                            <ul>                
                             <#list article.articleNiceComments as comment>
                             <li>
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
@@ -194,6 +194,7 @@
                                 </li>
                             </#list>  
                         </ul>
+                        </div>
                     </div>
                     </#if>
                     

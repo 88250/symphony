@@ -169,13 +169,11 @@ label.cmt-anonymous {
     vertical-align: text-bottom;
 }
 
-.comments.nice ul {
+.nice {
     margin-top: 10px;
-    border: 1px solid #e5e5e5;
-    border-radius: 3px;
 }
 
-.comments.nice > ul > li:last-child {
+.nice .comments > ul > li:last-child {
     border-bottom-width: 0;
 }
 
