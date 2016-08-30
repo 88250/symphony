@@ -28,7 +28,7 @@
                                           style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != article.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
-                                <a class="fn-right count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
+                                <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
                             </li>
                             </#list>
                         </ul>
@@ -47,7 +47,7 @@
                                           style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != article.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
-                                <a class="fn-right count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
+                                <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
                            </li>
                             </#list>
                         </ul>
