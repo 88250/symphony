@@ -63,6 +63,7 @@ import org.b3log.symphony.service.VerifycodeMgmtService;
 import org.b3log.symphony.service.VerifycodeQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
@@ -596,5 +597,30 @@ public class LoginProcessor {
         }
 
         context.getResponse().sendRedirect(destinationURL);
+    }
+
+    /**
+     * Expires invitecodes.
+     *
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @param context the specified HTTP request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/cron/invitecode-expire", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void expireInvitecodes(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final String key = Symphonys.get("keyOfSymphony");
+        if (!key.equals(request.getParameter("key"))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        invitecodeMgmtService.expireInvitecodes();
+
+        context.renderJSON().renderTrueResult();
     }
 }
