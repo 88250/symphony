@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.10.13, Aug 29, 2016
+ * @version 1.10.10.13, Aug 30, 2016
  */
 
 /**
@@ -90,7 +90,7 @@ var ArticleChannel = {
                     }
 
                     template += '<div class="fn-flex-1">'
-                            + '<div class="fn-clear comment-info ft-smaller">'
+                            + '<div class="comment-get-comment list"></div><div class="fn-clear comment-info ft-smaller">'
                             + '<span class="fn-left">';
 
                     if (!data.fromClient) {
@@ -112,11 +112,9 @@ var ArticleChannel = {
 
                     template += '</span></span><span class="fn-right">';
                     if (data.commentOriginalCommentId !== '') {
-                        template += '<a class="ft-a-icon tooltipped tooltipped-nw" aria-label="'
-                                + Label.goCommentLabel + '" href="' + Label.servePath + '/article/' + Label.articleOId
-                                + '?p=' + data.paginationCurrentPageNum + '&m=' + Label.userCommentViewMode + '#'
-                                + data.commentOriginalCommentId + '"><span class="icon-reply-to"></span>  <div class="avatar-small" style="background-image:url(\''
-                                + data.commentOriginalAuthorThumbnailURL + '\')"></div></a> ';
+                        template += '<span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="'
+                                + Label.goCommentLabel + '" onclick="Comment.showReply(\'' + data.commentOriginalCommentId + '\', this, \'comment-get-comment\')"><span class="icon-reply-to"></span>  <div class="avatar-small" style="background-image:url(\''
+                                + data.commentOriginalAuthorThumbnailURL + '\')"></div></span> ';
                     }
                     if (Label.isAdminLoggedIn) {
                         template += '<a class="hover-show fn-hidden tooltipped tooltipped-n ft-a-icon" href="/admin/comment/' + data.commentId
@@ -173,7 +171,8 @@ var ArticleChannel = {
                         }
                     } else {
                         $originalComment.find('.comment-action > .ft-fade').prepend('<span class="fn-pointer ft-smaller" onclick="Comment.showReply(\''
-                                + data.commentOriginalCommentId + '\', this)" style="opacity: 1;"> 1 ' + Label.replyLabel + ' <span class="icon-chevron-down"></span>');
+                                + data.commentOriginalCommentId + '\', this, \'comment-replies\')" style="opacity: 1;"> 1 '
+                                + Label.replyLabel + ' <span class="icon-chevron-down"></span>');
                     }
                     break;
                 case "articleHeat":

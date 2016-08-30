@@ -176,7 +176,7 @@
                                                 <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${comment.commentUA}"></span></#if>
                                             </span>
                                             <a class="ft-a-icon fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
-                                               href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}"><span class="icon-down"></span></a>
+                                               href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}')"><span class="icon-down"></span></a>
                                         </div>
                                         <div class="content-reset comment">
                                             ${comment.commentContent}
@@ -242,6 +242,7 @@
                                              aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         </#if>
                                         <div class="fn-flex-1">
+                                            <div class="comment-get-comment list"></div>
                                             <div class="fn-clear comment-info ft-smaller">
                                                 <span class="fn-left">
                                                     <#if !comment.fromClient>
@@ -265,10 +266,10 @@
                                                 </span>
                                                 <span class="fn-right">
                                                     <#if comment.commentOriginalCommentId != ''>
-                                                    <a class="ft-a-icon tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
-                                                       href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.commentOriginalCommentId}"><span class="icon-reply-to"></span>
-                                                        <div class="avatar-small" style="background-image:url('http://localhost:8084/upload/21a4462309f7905249d318480ef3d7ca7acbd5fc-0dc7628d310b40099b45c22a5458db37.jpg')"></div>
-                                                    </a> 
+                                                    <span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
+                                                       onclick="Comment.showReply('${comment.oId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
+                                                        <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
+                                                    </span> 
                                                     </#if>
                                                     <#if isAdminLoggedIn>
                                                     <a class="tooltipped tooltipped-n ft-a-icon hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}" 
@@ -279,14 +280,14 @@
                                             <div class="content-reset comment">
                                                 ${comment.commentContent}
                                             </div>
-                                            <div class="fn-none comment-action">
+                                            <div class="comment-action">
                                                 <div class="ft-fade fn-clear">
                                                     <#if comment.commentReplyCnt != 0>
-                                                    <span class="fn-pointer ft-smaller" onclick="Comment.showReply('${comment.oId}', this)">
+                                                    <span class="fn-pointer ft-smaller" onclick="Comment.showReply('${comment.oId}', this, 'comment-replies')">
                                                         ${comment.commentReplyCnt} ${replyLabel} <span class="icon-chevron-down"></span>
                                                     </span>
                                                     </#if>
-                                                     <span class="fn-right">
+                                                     <span class="fn-right fn-hidden hover-show">
                                                         <#if (isLoggedIn && comment.commentAuthorId != currentUser.oId && !comment.rewarded) || !isLoggedIn>
                                                         <span class="fn-pointer tooltipped tooltipped-n"
                                                               aria-label="${thankLabel}"
@@ -413,7 +414,7 @@
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/channel${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                            Label.commentErrorLabel = "${commentErrorLabel}";
+            Label.commentErrorLabel = "${commentErrorLabel}";
             Label.symphonyLabel = "${symphonyLabel}";
             Label.rewardConfirmLabel = "${rewardConfirmLabel?replace('{point}', article.articleRewardPoint)}";
             Label.thankArticleConfirmLabel = "${thankArticleConfirmLabel?replace('{point}', pointThankArticle)}";
@@ -439,57 +440,56 @@
             Label.adminLabel = '${adminLabel}';
             Label.thankSelfLabel = '${thankSelfLabel}';
             Label.articleAuthorName = '${article.articleAuthorName}';
-            Label.reply = '${replyLabel}';
+            Label.replyLabel = '${replyLabel}';
             Label.referenceLabel = '${referenceLabel}';
             Label.goCommentLabel = '${goCommentLabel}';
             qiniuToken = "${qiniuUploadToken}";
             qiniuDomain = "${qiniuDomain}";
-                            <#if isLoggedIn>
-                                    Label.currentUserName = '${currentUser.userName}';
-                            </#if>            
-                                    // Init [Article] channel
-                                    ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
-                            $(document).ready(function () {
-                            // jQuery File Upload
-                            Util.uploadFile({
-                            "type": "img",
-                                    "id": "fileUpload",
-                                    "pasteZone": $(".CodeMirror"),
-                                    "qiniuUploadToken": "${qiniuUploadToken}",
-                                    "editor": Comment.editor,
-                                    "uploadingLabel": "${uploadingLabel}",
-                                    "qiniuDomain": "${qiniuDomain}",
-                                    "imgMaxSize": ${imgMaxSize?c},
-                                    "fileMaxSize": ${fileMaxSize?c}
-                            });
-                            });
-                            <#if 3 == article.articleType>
-                                    Article.playThought('${article.articleContent}');
-                            </#if>
-                                    Comment.init(${isLoggedIn?c});
-                            <#if isLoggedIn>
-                                    Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
-                            setTimeout(function() {
-                            Util.setUnreadNotificationCount();
-                            }, 1000);
-                            </#if>            
+            <#if isLoggedIn>
+                Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
+                setTimeout(function() {
+                    Util.setUnreadNotificationCount();
+                }, 1000);
+                Label.currentUserName = '${currentUser.userName}';
+            </#if>            
+            // Init [Article] channel
+            ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
+            
+            $(document).ready(function () {
+                // jQuery File Upload
+                Util.uploadFile({
+                    "type": "img",
+                    "id": "fileUpload",
+                    "pasteZone": $(".CodeMirror"),
+                    "qiniuUploadToken": "${qiniuUploadToken}",
+                    "editor": Comment.editor,
+                    "uploadingLabel": "${uploadingLabel}",
+                    "qiniuDomain": "${qiniuDomain}",
+                    "imgMaxSize": ${imgMaxSize?c},
+                    "fileMaxSize": ${fileMaxSize?c}
+                });
+                Comment.init();
+            });
+            <#if 3 == article.articleType>
+                Article.playThought('${article.articleContent}');
+            </#if>           
         </script>
         <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
-            tex2jax: {
-            inlineMath: [['$','$'], ["\\(","\\)"] ],
-            displayMath: [['$$','$$']],
-            processEscapes: true,
-            processEnvironments: true,
-            skipTags: ['pre','code'],
-            }
+                tex2jax: {
+                inlineMath: [['$','$'], ["\\(","\\)"] ],
+                displayMath: [['$$','$$']],
+                processEscapes: true,
+                processEnvironments: true,
+                skipTags: ['pre','code'],
+                }
             });
             MathJax.Hub.Queue(function() {
-            var all = MathJax.Hub.getAllJax(), i;
-            for(i = 0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += 'has-jax';
-            }
+                var all = MathJax.Hub.getAllJax(), i;
+                for(i = 0; i < all.length; i += 1) {
+                    all[i].SourceElement().parentNode.className += 'has-jax';
+                }
             });
         </script>
     </body>

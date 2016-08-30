@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.6.8, Aug 17, 2016
+ * @version 1.4.6.9, Aug 30, 2016
  */
 
 /* start reset */
@@ -1858,6 +1858,16 @@ label.cmt-anonymous {
     border-bottom-width: 0;
 }
 
+#comments > .comment-header {
+    border-bottom: 1px solid #CCCCCC;
+    margin: 10px 0 0;
+    padding: 10px 5px 5px 10px
+}
+
+#comments .comment-header > h2 {
+    margin-top: 5px;
+}
+
 .comment-login {
     border: 1px solid #D9D9D9;
     border-top-color: #C0C0C0;
@@ -2032,6 +2042,8 @@ label.cmt-anonymous {
 /* start domains */
 .domains {
     margin: 5px;
+    width: 288px;
+    margin: 0 auto;
 }
 
 .domains svg {
@@ -2045,7 +2057,7 @@ label.cmt-anonymous {
     color: #999;
     text-decoration: none;
     border-radius: 2px;
-    margin: 5px;
+    margin: 10px 5px 0 5px;
     background-color: #f7f7f7;
     border: 1px solid #DDD;
     font-size: 12px;
@@ -2432,12 +2444,6 @@ code .dec { color: initial; } /* decimal - blue */
     color: #4183C4;
 }
 
-.index .domains {
-    background-color: #FFF;
-    padding: 5px;
-    margin: 0;
-}
-
 .index .item {
     padding: 20px;
     color: #555;
@@ -2756,15 +2762,6 @@ code .dec { color: initial; } /* decimal - blue */
 
 .admin .tags {
     display: inline-block; 
-    text-overflow: ellipsis; 
-    white-space: nowrap; 
-    overflow: hidden;
-    vertical-align: bottom;
-}
-
-.admin .domains {
-    display: inline-block; 
-    width: 50%; 
     text-overflow: ellipsis; 
     white-space: nowrap; 
     overflow: hidden;

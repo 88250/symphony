@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.22.29.17, Aug 29, 2016
+ * @version 1.23.29.18, Aug 30, 2016
  */
 
 /**
@@ -39,6 +39,34 @@ var Comment = {
         window.location.href = window.location.pathname + "?m=" + mode;
     },
     /**
+     * 背景渐变
+     * @param {jQuery} $obj 背景渐变对象
+     * @returns {undefined}
+     */
+    _bgFade: function ($obj) {
+        $obj.css({
+            'background-color': '#9bbee0'
+        });
+        setTimeout(function () {
+            $obj.css({
+                'background-color': '#FFF',
+                'transition': 'all 3s cubic-bezier(0.56, -0.36, 0.58, 1)'
+            });
+        }, 100);
+        setTimeout(function () {
+            $obj.removeAttr('style');
+        }, 3100);
+    },
+    /**
+     * 跳转到指定的评论处
+     * @param {string} url 跳转的 url 
+     */
+    goComment: function (url) {
+        $('#comments > ul > li').removeAttr('style');
+        Comment._bgFade($(url.substr(url.length - 14, 14)));
+        window.location = url;
+    },
+    /**
      * 设置评论来源
      * @returns {Boolean}
      */
@@ -55,7 +83,7 @@ var Comment = {
      * 评论初始化
      * @returns {Boolean}
      */
-    init: function (isLoggedIn) {
+    init: function () {
         $("#comments").on('dblclick', 'img', function () {
             window.open($(this).attr('src'));
         });
@@ -71,7 +99,7 @@ var Comment = {
             });
             $(this).addClass('selected');
         }).on('mouseout', '>li', function () {
-             $("#comments > ul > li").each(function () {
+            $("#comments > ul > li").each(function () {
                 if ($(this).find(".comment-action .icon-chevron-up").length === 1 ||
                         $(this).find(".comment-action .icon-chevron-down").length === 1) {
                     // 回复展开的时候需要一直显示，否则回复引用定位有问题
@@ -81,12 +109,16 @@ var Comment = {
             });
         });
 
-        $(window.location.hash).addClass('selected');
+        if ($(window.location.hash).length === 1) {
+            Comment._bgFade($(window.location.hash));
+        } else {
+            Comment._bgFade($('.article-content'));
+        }
 
         this._setCmtVia();
         $.ua.set(navigator.userAgent);
 
-        if (!isLoggedIn) {
+        if (!Label.isLoggedIn) {
             return false;
         }
 
@@ -286,22 +318,31 @@ var Comment = {
      * @param {type} id 回帖 id
      * @returns {Boolean}
      */
-    showReply: function (id, it) {
-        var $commentReplies = $(it).closest('li').find('.comment-replies');
-
-        if ($(it).find('.icon-chevron-down').length === 0) {
-            // 收起回复
-            $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down');
-            $commentReplies.html('');
-            return false;
+    showReply: function (id, it, className) {
+        var $commentReplies = $(it).closest('li').find('.' + className);
+            
+        // 回复展现需要每次都异步获取。回复的回帖只需加载一次，后期不再加载
+        if ('comment-get-comment' === className) {
+            if ($commentReplies.find('li').length !== 0) {
+                $commentReplies.toggle();
+                return false;
+            }
+        } else {
+            if ($(it).find('.icon-chevron-down').length === 0) {
+                // 收起回复
+                $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                $commentReplies.html('');
+                return false;
+            }
         }
-        
+
         if ($(it).css("opacity") === '0.3') {
             return false;
         }
-
+        
+        // TODO: 目前回帖的回复是支持的，但是当回复的回帖的时候需要修改一下。
         $.ajax({
-            url: Label.servePath + "/comment/replies",
+            url: Label.servePath + "/comment/original",
             type: "POST",
             data: JSON.stringify({
                 commentId: id,
@@ -354,15 +395,16 @@ var Comment = {
 
                     template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
 
-                    template += '<a class="tooltipped tooltipped-nw ft-a-icon fn-right" aria-label="' + Label.referenceLabel + '" href="'
+                    template += '<a class="tooltipped tooltipped-nw ft-a-icon fn-right" aria-label="' + Label.referenceLabel + '" href="javascript:Comment.goComment(\''
                             + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
                             + '&m=' + Label.userCommentViewMode + '#' + data.oId
-                            + '"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
+                            + '\')"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
                             + data.commentContent + '</div></div></div></li>';
                 }
                 $commentReplies.html('<ul>' + template + '</ul>');
                 Article.parseLanguage();
 
+                // 如果是回帖的回复需要处理下样式
                 $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up');
             },
             error: function (result) {
