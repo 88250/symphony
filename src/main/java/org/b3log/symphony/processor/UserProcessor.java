@@ -123,7 +123,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.22.12.22, Aug 30, 2016
+ * @version 1.22.12.23, Aug 30, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -328,7 +328,10 @@ public class UserProcessor {
         if (!succ) {
             ret.put(Keys.MSG, langPropsService.get("exchangeFailedLabel"));
         } else {
-            ret.put(Keys.MSG, invitecode + " " + langPropsService.get("invitecodeTipLabel"));
+            String msg = langPropsService.get("invitecodeTipLabel");
+            msg = msg.replace("${time}", DateFormatUtils.format(System.currentTimeMillis()
+                    + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
+            ret.put(Keys.MSG, invitecode + " " + msg);
         }
     }
 
