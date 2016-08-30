@@ -122,7 +122,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.22.12.21, Aug 25, 2016
+ * @version 1.22.12.22, Aug 30, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -394,6 +394,8 @@ public class UserProcessor {
         String buyInvitecodeLabel = langPropsService.get("buyInvitecodeLabel");
         buyInvitecodeLabel = buyInvitecodeLabel.replace("${point}",
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE));
+        buyInvitecodeLabel = buyInvitecodeLabel.replace("${point2}", 
+                String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED));
         dataModel.put("buyInvitecodeLabel", buyInvitecodeLabel);
 
         if (requestURI.contains("function")) {

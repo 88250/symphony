@@ -13,9 +13,6 @@
 <div class="module">
     <div class="module-header">
         <h2>${buyInvitecodeLabel}</h2>
-        <span class="fn-right">
-            <a class="ft-green" href="${servePath}/charge/point">${rechargePointLabel}</a>
-        </span>
     </div>
     <div class="module-panel form fn-clear">
          <br/>
