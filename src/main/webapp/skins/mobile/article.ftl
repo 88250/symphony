@@ -242,6 +242,7 @@
                                              aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         </#if>
                                         <div class="fn-flex-1">
+                                            <div class="comment-get-comment list"></div>
                                             <div class="fn-clear comment-info ft-smaller">
                                                 <span class="fn-left">
                                                     <#if !comment.fromClient>
@@ -265,10 +266,10 @@
                                                 </span>
                                                 <span class="fn-right">
                                                     <#if comment.commentOriginalCommentId != ''>
-                                                    <a class="ft-a-icon tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
-                                                       href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.commentOriginalCommentId}')"><span class="icon-reply-to"></span>
+                                                    <span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
+                                                       onclick="Comment.showReply('${comment.oId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
                                                         <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
-                                                    </a> 
+                                                    </span> 
                                                     </#if>
                                                     <#if isAdminLoggedIn>
                                                     <a class="tooltipped tooltipped-n ft-a-icon hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}" 
@@ -282,7 +283,7 @@
                                             <div class="comment-action">
                                                 <div class="ft-fade fn-clear">
                                                     <#if comment.commentReplyCnt != 0>
-                                                    <span class="fn-pointer ft-smaller" onclick="Comment.showReply('${comment.oId}', this)">
+                                                    <span class="fn-pointer ft-smaller" onclick="Comment.showReply('${comment.oId}', this, 'comment-replies')">
                                                         ${comment.commentReplyCnt} ${replyLabel} <span class="icon-chevron-down"></span>
                                                     </span>
                                                     </#if>

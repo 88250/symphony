@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.22.29.17, Aug 29, 2016
+ * @version 1.23.29.17, Aug 30, 2016
  */
 
 /**
@@ -318,20 +318,29 @@ var Comment = {
      * @param {type} id 回帖 id
      * @returns {Boolean}
      */
-    showReply: function (id, it) {
-        var $commentReplies = $(it).closest('li').find('.comment-replies');
-
-        if ($(it).find('.icon-chevron-down').length === 0) {
-            // 收起回复
-            $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down');
-            $commentReplies.html('');
-            return false;
+    showReply: function (id, it, className) {
+        var $commentReplies = $(it).closest('li').find('.' + className);
+            
+        // 回复展现需要每次都异步获取。回复的回帖只需加载一次，后期不再加载
+        if ('comment-get-comment' === className) {
+            if ($commentReplies.find('li').length !== 0) {
+                $commentReplies.toggle();
+                return false;
+            }
+        } else {
+            if ($(it).find('.icon-chevron-down').length === 0) {
+                // 收起回复
+                $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                $commentReplies.html('');
+                return false;
+            }
         }
 
         if ($(it).css("opacity") === '0.3') {
             return false;
         }
-
+        
+        // TODO: 目前回帖的回复是支持的，但是当回复的回帖的时候需要修改一下。
         $.ajax({
             url: Label.servePath + "/comment/replies",
             type: "POST",
@@ -395,6 +404,7 @@ var Comment = {
                 $commentReplies.html('<ul>' + template + '</ul>');
                 Article.parseLanguage();
 
+                // 如果是回帖的回复需要处理下样式
                 $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up');
             },
             error: function (result) {
