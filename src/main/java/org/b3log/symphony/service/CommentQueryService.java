@@ -65,7 +65,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.9.6.21, Aug 29, 2016
+ * @version 2.10.6.21, Aug 30, 2016
  * @since 0.2.0
  */
 @Service
@@ -117,6 +117,72 @@ public class CommentQueryService {
      */
     @Inject
     private ShortLinkQueryService shortLinkQueryService;
+
+    /**
+     * Gets original comment of a comment specified by the given comment id.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     * @param commentViewMode the specified comment view mode
+     * @param commentId the given comment id
+     * @return original comment, return {@code null} if not found
+     */
+    public JSONObject getOriginalComment(final int avatarViewMode, final int commentViewMode, final String commentId) {
+        try {
+            final JSONObject comment = commentRepository.get(commentId);
+
+            organizeComment(avatarViewMode, comment);
+
+            final int pageSize = Symphonys.getInt("articleCommentsPageSize");
+
+            final JSONObject ret = new JSONObject();
+
+            final JSONObject commentAuthor = comment.optJSONObject(Comment.COMMENT_T_COMMENTER);
+            if (UserExt.USER_XXX_STATUS_C_PRIVATE == commentAuthor.optInt(UserExt.USER_UA_STATUS)) {
+                ret.put(Comment.COMMENT_UA, "");
+            }
+
+            ret.put(Comment.COMMENT_T_AUTHOR_NAME, comment.optString(Comment.COMMENT_T_AUTHOR_NAME));
+            ret.put(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL, comment.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
+            ret.put(Common.TIME_AGO, comment.optString(Common.TIME_AGO));
+            ret.put(Common.REWARED_COUNT, comment.optString(Common.REWARED_COUNT));
+            ret.put(Common.REWARDED, comment.optBoolean(Common.REWARDED));
+            ret.put(Keys.OBJECT_ID, comment.optString(Keys.OBJECT_ID));
+            ret.put(Comment.COMMENT_CONTENT, comment.optString(Comment.COMMENT_CONTENT));
+
+            final String originalCmtId = ret.optString(Keys.OBJECT_ID);
+            final String articleId = comment.optString(Comment.COMMENT_ON_ARTICLE_ID);
+
+            final Query numQuery = new Query()
+                    .setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1);
+
+            switch (commentViewMode) {
+                case UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL:
+                    numQuery.setFilter(CompositeFilterOperator.and(
+                            new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
+                            new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, originalCmtId)
+                    )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
+
+                    break;
+                case UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME:
+                    numQuery.setFilter(CompositeFilterOperator.and(
+                            new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
+                            new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, originalCmtId)
+                    )).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+                    break;
+            }
+
+            final long num = commentRepository.count(numQuery);
+            final int page = (int) ((num / pageSize) + 1);
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, page);
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Get replies failed", e);
+
+            return null;
+        }
+    }
 
     /**
      * Gets replies of a comment specified by the given comment id.

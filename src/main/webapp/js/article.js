@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.29.17, Aug 30, 2016
+ * @version 1.23.29.18, Aug 30, 2016
  */
 
 /**
@@ -342,7 +342,7 @@ var Comment = {
         
         // TODO: 目前回帖的回复是支持的，但是当回复的回帖的时候需要修改一下。
         $.ajax({
-            url: Label.servePath + "/comment/replies",
+            url: Label.servePath + "/comment/original",
             type: "POST",
             data: JSON.stringify({
                 commentId: id,
