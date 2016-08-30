@@ -710,4 +710,20 @@ code .dec { color: initial; } /* decimal - blue */
 .index .tag-desc > li {
     margin: 0 20px 15px 0;
 }
+
+.index a.count {
+    color: #FFF;
+    background-color: #b0b0b0;
+    padding: 0px 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -8px;
+} 
+
+.index a.count:visited {
+    background-color: #ddd;
+}
 /* end index */

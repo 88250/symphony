@@ -2484,6 +2484,21 @@ code .dec { color: initial; } /* decimal - blue */
     opacity: 0.7;
     z-index: 3;
 }
+.index a.count {
+    color: #FFF;
+    background-color: #b0b0b0;
+    padding: 0px 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -8px;
+} 
+
+.index a.count:visited {
+    background-color: #ddd;
+}
 /* end index */
 
 /* start home side */
