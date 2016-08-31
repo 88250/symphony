@@ -937,17 +937,6 @@ a[class*=" icon-"]:hover {
     font-size: 20px;
 }
 /* end status */
-
-/* start editor */
-.grammar dd {
-    font-size: 12px;
-    color: #999;
-}
-
-.grammar dl {
-    margin: 8px 10px;
-}
-/* end editor */
 /* end common */
 
 /* start form */
@@ -1951,12 +1940,6 @@ label.cmt-anonymous {
     color: #4183c4;
 }
 
-.grammar dl {
-    float: left;
-    height: 70px;
-    width: 206px;
-}
-
 .cm-s-default.CodeMirror {
     height: auto !important;
 }
@@ -2584,17 +2567,6 @@ code .dec { color: initial; } /* decimal - blue */
     position: relative;
 }
 
-.grammar {
-    position: absolute;
-    right: 1px;
-    top: 33px;
-    background-color: #FFF;
-    z-index: 3;
-    height: 328px;
-    border-left: 1px solid rgba(0, 0, 0, 0.075);
-    line-height: 17px;
-}
-
 #showReward {
     color: #999;
     width: 100%;
@@ -2638,9 +2610,10 @@ code .dec { color: initial; } /* decimal - blue */
 .post .tags-input input {
     border: 0;
     outline: none;
-    box-shadow: 0 0 0;
     border-radius: 0;
     padding: 2px;
+    box-shadow: 0 0 0;
+    background-color: transparent;
 }
 
 .post .tags-input input:focus {
