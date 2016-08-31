@@ -16,6 +16,9 @@ import java.util.regex.Pattern;
  * English and Chinese characters also have relationship problem. Almost 70 percent of them will get married to the one
  * they don't love, the rest only can left the heritage to their cat. Indeed, love and writing need some space in good
  * time.
+ * </p>
+ * 
+ * <p><a href="https://hacpai.com/article/1472639605458">為什麼你們就是不能加個空格呢？</a></p>
  *
  * @author Vinta Chen
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
