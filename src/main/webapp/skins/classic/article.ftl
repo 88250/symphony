@@ -393,7 +393,7 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <div id="revision"><div id="revisions"></div></div>
-        <div class="reply-btn fn-pointer"><span class="icon-reply"></span></div>
+        <div class="reply-btn fn-pointer tooltipped tooltipped-n" aria-label="${cmtLabel}"><span class="icon-reply"></span></div>
         <div class="editor-panel">
             <div class="wrapper">
             <#if isLoggedIn>
@@ -401,15 +401,14 @@
             <div class="form fn-clear comment-wrap">
                 <div class="fn-clear">
                     <div id="replyUseName" class="fn-left"></div> 
-                    <span class="tooltipped tooltipped-w fn-right fn-pointer editor-hide" aria-label="${wannotCmtLabel}"><span class="icon-chevron-down"></span></span>
+                    <span class="tooltipped tooltipped-w fn-right fn-pointer editor-hide" aria-label="${hideLabel}"><span class="icon-chevron-down"></span></span>
                 </div>
                 <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
-                <div class="tip" id="addCommentTip"></div>
-
                 <div class="fn-clear comment-submit">
+                    <div class="tip fn-left" id="addCommentTip"></div>
                     <div class="fn-right">
                         <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                        <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
+                        <button class="red mid" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
                     </div>
                 </div>
             </div>
@@ -495,7 +494,7 @@
                     displayMath: [['$$','$$']],
                     processEscapes: true,
                     processEnvironments: true,
-                    skipTags: ['pre','code'],
+                skipTags: ['pre','code'],
                 }
             });
             MathJax.Hub.Queue(function() {

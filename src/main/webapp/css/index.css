@@ -80,12 +80,8 @@ h2.article-title {
     margin-top: 0;
 } 
 
-.comment-submit {
-    margin-top: 20px;
-}
-
 label.cmt-anonymous {
-    margin: 7px 15px 0 0;
+    margin: 5px 20px 0 0;
 }
 
 #shareClipboard.tooltipped-hover {
@@ -271,9 +267,12 @@ label.cmt-anonymous {
 
 #replyUseName {
     visibility: hidden;
-    line-height: 18px;
-    height: 18px;
-    margin: 5px 0;
+    line-height: 20px;
+    height: 20px;
+}
+
+#addCommentTip {
+    margin-top: -5px;
 }
 
 #articleToC {
@@ -363,9 +362,9 @@ label.cmt-anonymous {
 }
 
 .editor-panel {
-    background-color: #fafafa;
+    background-color: rgba(250, 250, 250, 0.88);
     border-top: 1px solid #eee;
-    padding: 20px 0;
+    padding: 5px 0 10px 0;
     position: fixed;
     width: 100%;
     z-index: 10;
@@ -380,8 +379,9 @@ label.cmt-anonymous {
 .editor-panel .editor-hide {
     width: 20px;
     text-align: center;
-    height: 18px;
+    height: 20px;
     color: #ccc;
+    margin-top: 5px;
 }
 
 .editor-panel .editor-hide:hover {
