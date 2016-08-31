@@ -43,6 +43,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Invitecode;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
@@ -54,6 +55,7 @@ import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.InvitecodeMgmtService;
 import org.b3log.symphony.service.InvitecodeQueryService;
+import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.TimelineMgmtService;
@@ -80,7 +82,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.4.12, Aug 26, 2016
+ * @version 1.9.4.12, Aug 31, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -156,6 +158,12 @@ public class LoginProcessor {
      */
     @Inject
     private InvitecodeMgmtService invitecodeMgmtService;
+
+    /**
+     * Invitecode management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * Shows forget password page.
@@ -486,6 +494,12 @@ public class LoginProcessor {
                     pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, icGeneratorId,
                             Pointtransfer.TRANSFER_TYPE_C_INVITECODE_USED,
                             Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED, userId, System.currentTimeMillis());
+
+                    final JSONObject notification = new JSONObject();
+                    notification.put(Notification.NOTIFICATION_USER_ID, icGeneratorId);
+                    notification.put(Notification.NOTIFICATION_DATA_ID, userId);
+
+                    notificationMgmtService.addPointChargeNotification(notification);
                 }
             }
 
