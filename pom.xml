@@ -330,6 +330,7 @@
                     </includes>
                     <excludes>
                         <exclude>**/src/main/java/**/package-info.java</exclude>
+                        <exclude>**/src/main/java/**/Pangu.java</exclude>
                         <exclude>**/src/*/webapp/js/lib/*.js</exclude>
                     </excludes>
 

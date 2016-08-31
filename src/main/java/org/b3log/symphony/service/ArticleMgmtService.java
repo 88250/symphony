@@ -64,6 +64,7 @@ import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Pangu;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -436,6 +437,8 @@ public class ArticleMgmtService {
             final boolean isBroadcast = requestJSONObject.optBoolean(Article.ARTICLE_T_IS_BROADCAST);
 
             articleTitle = Emotions.toAliases(articleTitle);
+            articleTitle = Pangu.spacingText(articleTitle);
+            
             article.put(Article.ARTICLE_TITLE, articleTitle);
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
 
@@ -711,6 +714,8 @@ public class ArticleMgmtService {
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
             articleTitle = Emotions.toAliases(articleTitle);
+            articleTitle = Pangu.spacingText(articleTitle);
+            
             oldArticle.put(Article.ARTICLE_TITLE, articleTitle);
 
             oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
