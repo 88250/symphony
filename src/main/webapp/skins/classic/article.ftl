@@ -198,40 +198,6 @@
                     </div>
                     </#if>
                     
-                    <#if 1 == userCommentViewMode>
-                    <#if isLoggedIn>
-                    <#if discussionViewable && article.articleCommentable>
-                    <div class="form fn-clear comment-wrap">
-                        <div id="replyUseName"> </div>
-                        <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
-                        <div class="tip" id="addCommentTip"></div>
-
-                        <div class="fn-clear comment-submit">
-                            <span class="responsive-hide">    
-                                Markdown
-                                <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                                <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                                |
-                                <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
-                            </span>
-                            <div class="fn-right">
-                                <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="grammar fn-none fn-clear">
-                        ${markdwonGrammarLabel}
-                    </div>
-                    </#if>
-                    <#else>
-                    <br/>
-                    <div class="comment-login">
-                        <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
-                    </div>
-                    </#if>
-                    </#if>
                     <div class="fn-clear">
                         <div class="list comments" id="comments">
                             <div class="fn-clear comment-header">
@@ -338,39 +304,6 @@
                         </div>
                         <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
                     </div>
-                    <#if 0 == userCommentViewMode>
-                    <#if isLoggedIn>
-                    <#if discussionViewable && article.articleCommentable>
-                    <div class="form fn-clear comment-wrap">
-                        <div id="replyUseName"> </div>
-                        <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
-                        <div class="tip" id="addCommentTip"></div>
-
-                        <div class="fn-clear comment-submit">
-                            <span class="responsive-hide">    
-                                Markdown
-                                <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                                <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                                |
-                                <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
-                            </span>
-                            <div class="fn-right">
-                                <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="grammar fn-none fn-clear">
-                        ${markdwonGrammarLabel}
-                    </div>
-                    </#if>
-                    <#else>
-                    <div class="comment-login">
-                        <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
-                    </div>
-                    </#if>
-                    </#if>
                 </div>
                 <div class="side">
                     <#include 'common/person-info.ftl'/>
@@ -460,6 +393,45 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <div id="revision"><div id="revisions"></div></div>
+        <div class="reply-btn fn-pointer"><span class="icon-reply"></span></div>
+        <div class="editor-panel">
+            <div class="wrapper">
+            <#if isLoggedIn>
+            <#if discussionViewable && article.articleCommentable>
+            <div class="form fn-clear comment-wrap">
+                <div class="fn-clear">
+                    <div id="replyUseName" class="fn-left"></div> 
+                    <span class="tooltipped tooltipped-w fn-right fn-pointer editor-hide" aria-label="${wannotCmtLabel}"><span class="icon-chevron-down"></span></span>
+                </div>
+                <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
+                <div class="tip" id="addCommentTip"></div>
+
+                <div class="fn-clear comment-submit">
+                    <span class="responsive-hide">    
+                        Markdown
+                        <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
+                        <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
+                        |
+                        <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
+                    </span>
+                    <div class="fn-right">
+                        <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                        <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="grammar fn-none fn-clear">
+                ${markdwonGrammarLabel}
+            </div>
+            </#if>
+            <#else>
+            <div class="comment-login">
+                <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
+            </div>
+            </#if>
+            </div>
+        </div>
         <#include "footer.ftl">
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>

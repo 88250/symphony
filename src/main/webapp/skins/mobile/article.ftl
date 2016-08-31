@@ -267,7 +267,7 @@
                                                 <span class="fn-right">
                                                     <#if comment.commentOriginalCommentId != ''>
                                                     <span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
-                                                       onclick="Comment.showReply('${comment.oId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
+                                                       onclick="Comment.showReply('${comment.commentOriginalCommentId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
                                                         <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
                                                     </span> 
                                                     </#if>

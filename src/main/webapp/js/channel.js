@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.10.13, Aug 30, 2016
+ * @version 1.10.11.13, Aug 31, 2016
  */
 
 /**
@@ -72,7 +72,7 @@ var ArticleChannel = {
                         UAName = ' <span class="cmt-via">via ' + UAName + '</span>';
                     }
 
-                    var template = '<li id="' + data.commentId + '" class="fn-none">'
+                    var template = '<li id="' + data.commentId + '">'
                             + bottomCmt + '<div class="fn-flex">';
 
                     if (!data.fromClient) {
@@ -121,7 +121,7 @@ var ArticleChannel = {
                                 + '" aria-label="' + Label.adminLabel + '"><span class="icon-setting"></span></a> ';
                     }
                     template += '</span></div><div class="content-reset comment">'
-                            + data.commentContent + '</div><div class="fn-none comment-action"><div class="ft-fade fn-clear">'
+                            + data.commentContent + '</div><div class="comment-action"><div class="ft-fade fn-clear">'
                             + '<span class="fn-right">';
 
                     if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName) || !Label.isLoggedIn) {
@@ -153,8 +153,14 @@ var ArticleChannel = {
 
                     // 代码高亮
                     Article.parseLanguage();
-
-                    $("#" + data.commentId).fadeIn(2000);
+                    Comment._bgFade($("#" + data.commentId));
+                    
+                    if (Label.userCommentViewMode === 1) {
+                        // 实时模式
+                        window.location.hash = '#comments';
+                    } else {
+                        window.location.hash = '#bottomComment';
+                    }
 
                     // 更新回复的帖子
                     var $originalComment = $('#' + data.commentOriginalCommentId),

@@ -40,6 +40,7 @@
                         <input id="articleTags" type="text" tabindex="3" 
                                value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）" autocomplete="off" />
                         </div>
+                        <#if domains?size != 0>
                         <div class="domains-tags">
                             <#list domains as domain>
                                 <#if domain.domainTags?size gt 0>
@@ -57,6 +58,7 @@
                                 </#if>
                             </#list>
                         </div>
+                        </#if>
                         <br/>
                     </div>
                     <button id="showReward" class="fn-ellipsis" onclick="$(this).next().show(); $(this).hide()">

@@ -1822,6 +1822,11 @@ label.cmt-anonymous {
     display: block;
 }
 
+.comment-get-comment.list > ul > li {
+    margin-bottom: 10px;
+    padding-top: 0;
+}
+
 .comment-replies.list > ul {
     margin-top: 10px;
 }

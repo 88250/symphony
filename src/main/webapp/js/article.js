@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.29.18, Aug 30, 2016
+ * @version 1.24.29.18, Aug 31, 2016
  */
 
 /**
@@ -80,6 +80,28 @@ var Comment = {
         });
     },
     /**
+     * 评论面板事件绑定
+     * @returns {undefined}
+     */
+    _initEditorPanel: function () {
+        // 回复按钮设置
+        $('.reply-btn').css('left', $('.side').offset().left - 43).click(function () {
+            $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
+            $('.editor-panel').slideDown(function () {
+                $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
+            });
+            Comment.editor.focus();
+            $('#replyUseName').text('').removeData();
+        });
+
+        // 评论框控制
+        $('.editor-panel .editor-hide').click(function () {
+            $('.editor-panel').slideUp();
+            $('.footer').removeAttr('style');
+            $('.reply-btn').css('bottom', $('.footer').outerHeight());
+        });
+    },
+    /**
      * 评论初始化
      * @returns {Boolean}
      */
@@ -110,12 +132,17 @@ var Comment = {
         });
 
         if ($(window.location.hash).length === 1) {
-            Comment._bgFade($(window.location.hash));
+            if (!isNaN(parseInt(window.location.hash.substr(1)))) {
+                Comment._bgFade($(window.location.hash));
+            }
         } else {
             Comment._bgFade($('.article-content'));
         }
 
         this._setCmtVia();
+
+        this._initEditorPanel();
+
         $.ua.set(navigator.userAgent);
 
         if (!Label.isLoggedIn) {
@@ -508,8 +535,16 @@ var Comment = {
             Util.needLogin();
             return false;
         }
+        $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
+        $('.editor-panel').slideDown(function () {
+            $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
+        });
 
-        $('#replyUseName').text(Label.replyLabel + ' ' + userName)
+        var $avatar = $('#' + id).find('>.fn-flex>a').clone();
+        $avatar.addClass('ft-a-icon').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
+        $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
+
+        $('#replyUseName').html($avatar[0].outerHTML)
                 .css('visibility', 'visible').data('commentOriginalCommentId', id);
         Comment.editor.focus();
     }
