@@ -82,7 +82,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.4.12, Aug 31, 2016
+ * @version 1.9.5.12, Aug 31, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -499,7 +499,7 @@ public class LoginProcessor {
                     notification.put(Notification.NOTIFICATION_USER_ID, icGeneratorId);
                     notification.put(Notification.NOTIFICATION_DATA_ID, userId);
 
-                    notificationMgmtService.addPointChargeNotification(notification);
+                    notificationMgmtService.addInvitecodeUsedNotification(notification);
                 }
             }
 
