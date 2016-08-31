@@ -734,14 +734,17 @@ code .dec { color: initial; } /* decimal - blue */
     z-index: 3;
 }
 
-.index .module-list .title,
+.index .module-list .title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-right: 13px;
+}
+
 .index .module-list.timeline li {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-}
-
-.index .module-list.timeline li {
     padding: 10px;
     line-height: 20px;
 }
