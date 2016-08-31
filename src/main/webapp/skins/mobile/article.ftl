@@ -456,6 +456,8 @@
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             
             $(document).ready(function () {
+                Comment.init();
+                
                 // jQuery File Upload
                 Util.uploadFile({
                     "type": "img",
@@ -468,7 +470,6 @@
                     "imgMaxSize": ${imgMaxSize?c},
                     "fileMaxSize": ${fileMaxSize?c}
                 });
-                Comment.init();
             });
             <#if 3 == article.articleType>
                 Article.playThought('${article.articleContent}');
