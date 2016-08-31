@@ -119,41 +119,39 @@
         <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
-        <script>
-                            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
-                            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
-                            Label.tagsErrorLabel = "${tagsErrorLabel}";
-                            Label.userName = "${userName}";
-                            Label.recordDeniedLabel = "${recordDeniedLabel}";
-                            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-                            Label.uploadLabel = "${uploadLabel}";
-                            Label.audioRecordingLabel = '${audioRecordingLabel}';
-                            Label.uploadingLabel = '${uploadingLabel}';
-                            Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
-                            <#if article??>Label.articleOId = '${article.oId}' ;</#if>
-        </script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                            Util.uploadFile({
-                            "id": "fileUpload",
-                                    "pasteZone": $("#articleContent").next().next(),
-                                    "qiniuUploadToken": "${qiniuUploadToken}",
-                                    "editor": AddArticle.editor,
-                                    "uploadingLabel": "${uploadingLabel}",
-                                    "qiniuDomain": "${qiniuDomain}",
-                                    "imgMaxSize": ${imgMaxSize?c},
-                                    "fileMaxSize": ${fileMaxSize?c}
-                            });
-                            Util.uploadFile({
-                            "id": "rewardFileUpload",
-                                    "pasteZone": $("#articleRewardContent").next().next(),
-                                    "qiniuUploadToken": "${qiniuUploadToken}",
-                                    "editor": AddArticle.rewardEditor,
-                                    "uploadingLabel": "${uploadingLabel}",
-                                    "qiniuDomain": "${qiniuDomain}",
-                                    "imgMaxSize": ${imgMaxSize?c},
-                                    "fileMaxSize": ${fileMaxSize?c}
-                            });
+            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
+            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
+            Label.tagsErrorLabel = "${tagsErrorLabel}";
+            Label.userName = "${userName}";
+            Label.recordDeniedLabel = "${recordDeniedLabel}";
+            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
+            Label.uploadLabel = "${uploadLabel}";
+            Label.audioRecordingLabel = '${audioRecordingLabel}';
+            Label.uploadingLabel = '${uploadingLabel}';
+            Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
+            <#if article??>Label.articleOId = '${article.oId}' ;</#if>
+            Util.uploadFile({
+                "id": "fileUpload",
+                "pasteZone": $("#articleContent").next().next(),
+                "qiniuUploadToken": "${qiniuUploadToken}",
+                "editor": AddArticle.editor,
+                "uploadingLabel": "${uploadingLabel}",
+                "qiniuDomain": "${qiniuDomain}",
+                "imgMaxSize": ${imgMaxSize?c},
+                "fileMaxSize": ${fileMaxSize?c}
+            });
+            Util.uploadFile({
+                "id": "rewardFileUpload",
+                "pasteZone": $("#articleRewardContent").next().next(),
+                "qiniuUploadToken": "${qiniuUploadToken}",
+                "editor": AddArticle.rewardEditor,
+                "uploadingLabel": "${uploadingLabel}",
+                "qiniuDomain": "${qiniuDomain}",
+                "imgMaxSize": ${imgMaxSize?c},
+                "fileMaxSize": ${fileMaxSize?c}
+            });
         </script>
     </body>
 </html>
