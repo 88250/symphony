@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.12.13.27, Aug 22, 2016
+ * @version 2.13.14.27, Aug 31, 2016
  */
 
 /* start article */
@@ -80,12 +80,8 @@ h2.article-title {
     margin-top: 0;
 } 
 
-.comment-submit {
-    margin-top: 20px;
-}
-
 label.cmt-anonymous {
-    margin: 7px 15px 0 0;
+    margin: 5px 20px 0 0;
 }
 
 #shareClipboard.tooltipped-hover {
@@ -129,18 +125,13 @@ label.cmt-anonymous {
     background-color: #f9f6f6;
 }
 
-.comments > ul > li.selected {
-    background-color: #F7F7F7;
-}
-
-.comments > ul > li:hover .hover-show,
-.comments > ul > li.selected .hover-show {
+.comments > ul > li:hover .hover-show {
     visibility: visible;
 }
 
-.comments > ul > li:hover .comment-action,
-.comments > ul > li.selected .comment-action {
-    display: block;
+.comment-get-comment.list > ul > li {
+    margin-bottom: 10px;
+    padding-top: 0;
 }
 
 .comment-replies.list > ul {
@@ -165,17 +156,19 @@ label.cmt-anonymous {
     margin-bottom: 0;
 }
 
+.comments .comment > p > img:last-child {
+    margin-bottom: 10px;
+}
+
 .comments .comment-info .icon-heart {
     vertical-align: text-bottom;
 }
 
-.comments.nice ul {
+.nice {
     margin-top: 10px;
-    border: 1px solid #e5e5e5;
-    border-radius: 3px;
 }
 
-.comments.nice > ul > li:last-child {
+.nice .comments > ul > li:last-child {
     border-bottom-width: 0;
 }
 
@@ -273,9 +266,12 @@ label.cmt-anonymous {
 
 #replyUseName {
     visibility: hidden;
-    line-height: 18px;
-    height: 18px;
-    margin: 5px 0;
+    line-height: 20px;
+    height: 20px;
+}
+
+#addCommentTip {
+    margin-top: -5px;
 }
 
 #articleToC {
@@ -347,6 +343,48 @@ label.cmt-anonymous {
 
 .article-toc li.toc-h5 a:hover {
     padding-left: 87px;
+}
+
+.reply-btn {
+    border: 1px solid #cd504a;
+    background-color: #b33630;
+    background-image: linear-gradient(#dc5f59, #b33630);
+    position: fixed;
+    bottom: 69px;
+    left: 100%;
+    padding: 10px;
+    width: 14px;
+    text-align: center;
+    height: 14px;
+    color: #fff;
+    z-index: 10;
+}
+
+.editor-panel {
+    background-color: rgba(250, 250, 250, 0.88);
+    border-top: 1px solid #eee;
+    padding: 5px 0 10px 0;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+    bottom: 0;
+    display: none;
+}
+
+.editor-panel .form {
+    width: 100%
+}
+
+.editor-panel .editor-hide {
+    width: 20px;
+    text-align: center;
+    height: 20px;
+    color: #ccc;
+    margin-top: 5px;
+}
+
+.editor-panel .editor-hide:hover {
+    color: #999;
 }
 /* end article */
 
@@ -695,19 +733,38 @@ code .dec { color: initial; } /* decimal - blue */
     z-index: 3;
 }
 
-.index .module-list .title,
+.index .module-list .title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-right: 13px;
+}
+
 .index .module-list.timeline li {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-}
-
-.index .module-list.timeline li {
     padding: 10px;
     line-height: 20px;
 }
 
 .index .tag-desc > li {
     margin: 0 20px 15px 0;
+}
+
+.index a.count {
+    color: #FFF;
+    background-color: #b0b0b0;
+    padding: 0px 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -8px;
+} 
+
+.index a.count:visited {
+    background-color: #ddd;
 }
 /* end index */

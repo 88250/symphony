@@ -202,14 +202,14 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         BrowserType browserType = userAgent.getBrowser().getBrowserType();
 
-        if (BrowserType.UNKNOWN == browserType) {
-            if (StringUtils.containsIgnoreCase(userAgentStr, "mobile")
-                    || StringUtils.containsIgnoreCase(userAgentStr, "MQQBrowser")
-                    || StringUtils.containsIgnoreCase(userAgentStr, "iphone")) {
-                browserType = BrowserType.MOBILE_BROWSER;
-            } else if (StringUtils.containsIgnoreCase(userAgentStr, "Iframely")) {
-                browserType = BrowserType.ROBOT;
-            } else if (!StringUtils.containsIgnoreCase(userAgentStr, "Java")
+        if (StringUtils.containsIgnoreCase(userAgentStr, "mobile")
+                || StringUtils.containsIgnoreCase(userAgentStr, "MQQBrowser")
+                || StringUtils.containsIgnoreCase(userAgentStr, "iphone")) {
+            browserType = BrowserType.MOBILE_BROWSER;
+        } else if (StringUtils.containsIgnoreCase(userAgentStr, "Iframely")) {
+            browserType = BrowserType.ROBOT;
+        } else if (BrowserType.UNKNOWN == browserType) {
+            if (!StringUtils.containsIgnoreCase(userAgentStr, "Java")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "MetaURI")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "Feed")) {
                 LOGGER.log(Level.WARN, "Unknown client [UA=" + userAgentStr + ", remoteAddr="

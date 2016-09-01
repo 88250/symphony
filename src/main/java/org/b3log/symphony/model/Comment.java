@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.8, Aug 28, 2016
+ * @version 1.9.0.9, Aug 29, 2016
  * @since 0.2.0
  */
 public final class Comment {
@@ -206,9 +206,9 @@ public final class Comment {
     public static final String COMMENT_T_REPLIES = "commentReplies";
 
     /**
-     * Key of comment original.
+     * Key of comment original author thumbnail URL.
      */
-    public static final String COMMENT_T_ORIGINAL = "commentOriginal";
+    public static final String COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL = "commentOriginalAuthorThumbnailURL";
 
     //// Status constants
     /**

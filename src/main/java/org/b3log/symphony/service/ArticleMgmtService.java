@@ -64,6 +64,7 @@ import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.UserTagRepository;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Pangu;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,7 +75,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.21.18, Aug 28, 2016
+ * @version 2.14.21.19, Aug 29, 2016
  * @since 0.2.0
  */
 @Service
@@ -206,9 +207,9 @@ public class ArticleMgmtService {
     private SearchMgmtService searchMgmtService;
 
     /**
-     * Generate tag max count.
+     * Tag max count.
      */
-    private static final int GEN_TAG_MAX_CNT = 4;
+    private static final int TAG_MAX_CNT = 4;
 
     /**
      * Removes an article specified with the given article id.
@@ -436,6 +437,8 @@ public class ArticleMgmtService {
             final boolean isBroadcast = requestJSONObject.optBoolean(Article.ARTICLE_T_IS_BROADCAST);
 
             articleTitle = Emotions.toAliases(articleTitle);
+            articleTitle = Pangu.spacingText(articleTitle);
+            
             article.put(Article.ARTICLE_TITLE, articleTitle);
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
 
@@ -489,15 +492,17 @@ public class ArticleMgmtService {
             }
 
             String[] tagTitles = articleTags.split(",");
-            if (!sandboxEnv && tagTitles.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
+            if (!sandboxEnv && tagTitles.length < TAG_MAX_CNT && tagTitles.length < 3
+                    && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                     && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(articleTags)) {
                 final String content = article.optString(Article.ARTICLE_TITLE)
                         + " " + Jsoup.parse("<p>" + article.optString(Article.ARTICLE_CONTENT) + "</p>").text();
-                final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
+
+                final List<String> genTags = tagQueryService.generateTags(content, 1);
                 if (!genTags.isEmpty()) {
                     articleTags = articleTags + "," + StringUtils.join(genTags, ",");
                     articleTags = Tag.formatTags(articleTags);
-                    articleTags = Tag.useHead(articleTags, GEN_TAG_MAX_CNT);
+                    articleTags = Tag.useHead(articleTags, TAG_MAX_CNT);
                 }
             }
 
@@ -709,6 +714,8 @@ public class ArticleMgmtService {
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
             articleTitle = Emotions.toAliases(articleTitle);
+            articleTitle = Pangu.spacingText(articleTitle);
+            
             oldArticle.put(Article.ARTICLE_TITLE, articleTitle);
 
             oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
@@ -1181,15 +1188,16 @@ public class ArticleMgmtService {
 
         String[] tagStrings = tagsString.split(",");
         final int articleType = newArticle.optInt(Article.ARTICLE_TYPE);
-        if (!sandboxEnv && tagStrings.length < GEN_TAG_MAX_CNT && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
+        if (!sandboxEnv && tagStrings.length < TAG_MAX_CNT && tagStrings.length < 3
+                && Article.ARTICLE_TYPE_C_DISCUSSION != articleType
                 && Article.ARTICLE_TYPE_C_THOUGHT != articleType && !Tag.containsReservedTags(tagsString)) {
             final String content = newArticle.optString(Article.ARTICLE_TITLE)
                     + " " + Jsoup.parse("<p>" + newArticle.optString(Article.ARTICLE_CONTENT) + "</p>").text();
-            final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
+            final List<String> genTags = tagQueryService.generateTags(content, 1);
             if (!genTags.isEmpty()) {
                 tagsString = tagsString + "," + StringUtils.join(genTags, ",");
                 tagsString = Tag.formatTags(tagsString);
-                tagsString = Tag.useHead(tagsString, GEN_TAG_MAX_CNT);
+                tagsString = Tag.useHead(tagsString, TAG_MAX_CNT);
             }
         }
 
@@ -1531,14 +1539,15 @@ public class ArticleMgmtService {
             }
 
             String[] tagTitles = articleTags.split(",");
-            if (!sandboxEnv && tagTitles.length < GEN_TAG_MAX_CNT && !Tag.containsReservedTags(articleTags)) {
+            if (!sandboxEnv && tagTitles.length < TAG_MAX_CNT && tagTitles.length < 3
+                    && !Tag.containsReservedTags(articleTags)) {
                 final String content = article.optString(Article.ARTICLE_TITLE)
                         + " " + Jsoup.parse("<p>" + article.optString(Article.ARTICLE_CONTENT) + "</p>").text();
-                final List<String> genTags = tagQueryService.generateTags(content, GEN_TAG_MAX_CNT);
+                final List<String> genTags = tagQueryService.generateTags(content, TAG_MAX_CNT);
                 if (!genTags.isEmpty()) {
                     articleTags = articleTags + "," + StringUtils.join(genTags, ",");
                     articleTags = Tag.formatTags(articleTags);
-                    articleTags = Tag.useHead(articleTags, GEN_TAG_MAX_CNT);
+                    articleTags = Tag.useHead(articleTags, TAG_MAX_CNT);
                 }
             }
 

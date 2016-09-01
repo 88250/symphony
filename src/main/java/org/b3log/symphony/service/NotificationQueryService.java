@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.2.5, Aug 28, 2016
+ * @version 1.8.2.5, Aug 31, 2016
  * @since 0.2.5
  */
 @Service
@@ -194,6 +194,7 @@ public class NotificationQueryService {
      * @see Notification#DATA_TYPE_C_ABUSE_POINT_DEDUCT
      * @see Notification#DATA_TYPE_C_POINT_COMMENT_THANK
      * @see Notification#DATA_TYPE_C_POINT_TRANSFER
+     * @see Notification#DATA_TYPE_C_INVITECODE_USED
      */
     public int getUnreadPointNotificationCount(final String userId) {
         final List<Filter> filters = new ArrayList<>();
@@ -215,6 +216,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_TRANSFER));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_INVITECODE_USED));
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
@@ -275,6 +278,8 @@ public class NotificationQueryService {
                 Notification.DATA_TYPE_C_POINT_COMMENT_THANK));
         subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
                 Notification.DATA_TYPE_C_POINT_TRANSFER));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_INVITECODE_USED));
 
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
 
@@ -401,6 +406,16 @@ public class NotificationQueryService {
                                 + user101.optString(User.USER_NAME) + "</a>";
                         desTemplate = desTemplate.replace("{user}", userLink101);
                         desTemplate = desTemplate.replace("{amount}", String.valueOf(sum101));
+
+                        break;
+                    case Notification.DATA_TYPE_C_INVITECODE_USED:
+                        desTemplate = langPropsService.get("notificationInvitecodeUsedLabel");
+
+                        final JSONObject invitedUser = userRepository.get(dataId);
+                        final String invitedUserLink = "<a href=\"/member/" + invitedUser.optString(User.USER_NAME) + "\">"
+                                + invitedUser.optString(User.USER_NAME) + "</a>";
+
+                        desTemplate = desTemplate.replace("{user}", invitedUserLink);
 
                         break;
                     default:

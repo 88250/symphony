@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -122,7 +123,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.22.12.21, Aug 25, 2016
+ * @version 1.22.12.23, Aug 30, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -276,7 +277,11 @@ public class UserProcessor {
 
                     break;
                 case Invitecode.STATUS_C_UNUSED:
-                    ret.put(Keys.MSG, langPropsService.get("invitecodeOkLabel"));
+                    String msg = langPropsService.get("invitecodeOkLabel");
+                    msg = msg.replace("${time}", DateFormatUtils.format(result.optLong(Keys.OBJECT_ID)
+                            + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
+
+                    ret.put(Keys.MSG, msg);
 
                     break;
                 case Invitecode.STATUS_C_STOPUSE:
@@ -323,7 +328,10 @@ public class UserProcessor {
         if (!succ) {
             ret.put(Keys.MSG, langPropsService.get("exchangeFailedLabel"));
         } else {
-            ret.put(Keys.MSG, invitecode + " " + langPropsService.get("invitecodeTipLabel"));
+            String msg = langPropsService.get("invitecodeTipLabel");
+            msg = msg.replace("${time}", DateFormatUtils.format(System.currentTimeMillis()
+                    + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
+            ret.put(Keys.MSG, invitecode + " " + msg);
         }
     }
 
@@ -394,6 +402,8 @@ public class UserProcessor {
         String buyInvitecodeLabel = langPropsService.get("buyInvitecodeLabel");
         buyInvitecodeLabel = buyInvitecodeLabel.replace("${point}",
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_BUY_INVITECODE));
+        buyInvitecodeLabel = buyInvitecodeLabel.replace("${point2}",
+                String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED));
         dataModel.put("buyInvitecodeLabel", buyInvitecodeLabel);
 
         if (requestURI.contains("function")) {

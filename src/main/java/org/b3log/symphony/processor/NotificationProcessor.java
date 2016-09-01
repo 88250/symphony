@@ -62,7 +62,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.3, Aug 28, 2016
+ * @version 1.6.1.4, Aug 31, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -300,7 +300,6 @@ public class NotificationProcessor {
         final int windowSize = Symphonys.getInt("pointNotificationsWindowSize");
 
         final JSONObject result = notificationQueryService.getPointNotifications(userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> pointNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
         dataModel.put(Common.POINT_NOTIFICATIONS, pointNotifications);
 
@@ -397,7 +396,6 @@ public class NotificationProcessor {
 
         final JSONObject result = notificationQueryService.getCommentedNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> commentedNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
         dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
 
@@ -460,7 +458,6 @@ public class NotificationProcessor {
 
         final JSONObject result = notificationQueryService.getReplyNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> replyNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
         dataModel.put(Common.REPLY_NOTIFICATIONS, replyNotifications);
 
@@ -586,7 +583,6 @@ public class NotificationProcessor {
 
         final JSONObject result = notificationQueryService.getFollowingUserNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> followingUserNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.FOLLOWING_USER_NOTIFICATIONS, followingUserNotifications);
@@ -650,7 +646,6 @@ public class NotificationProcessor {
 
         final JSONObject result = notificationQueryService.getBroadcastNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> broadcastNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.BROADCAST_NOTIFICATIONS, broadcastNotifications);

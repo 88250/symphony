@@ -524,12 +524,6 @@ var AddArticle = {
                 });
             }
         });
-    },
-    /**
-     * @description 显示简要语法
-     */
-    grammar: function () {
-        $(".grammar").slideToggle();
     }
 };
 
