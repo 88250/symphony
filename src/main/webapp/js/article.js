@@ -524,15 +524,23 @@ var Comment = {
             }
         });
 
-        var $avatar = $('#' + id).find('>.fn-flex>a').clone();
+        // 帖子作者 clone 到编辑器左上角
+        var replyUserHTML = '',
+                $avatar = $('#' + id).find('>.fn-flex>a').clone();
         if ($avatar.length === 0) {
             $avatar = $('#' + id).find('>.fn-flex>.avatar').clone();
+            $avatar.removeClass('avatar').addClass('avatar-small');
+            replyUserHTML = '<a rel="nofollow" href="#' + id 
+                    + '" class="ft-a-icon" onclick="Comment._bgFade($(\'#' + id 
+                    + '\'))"><span class="icon-reply-to"></span> ' 
+                    + $avatar[0].outerHTML + ' ' + userName + '</a>';
         } else {
             $avatar.addClass('ft-a-icon').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
             $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
+            replyUserHTML = $avatar[0].outerHTML;
         }
 
-        $('#replyUseName').html($avatar[0].outerHTML)
+        $('#replyUseName').html(replyUserHTML)
                 .css('visibility', 'visible').data('commentOriginalCommentId', id);
 
         Comment.editor.focus();
