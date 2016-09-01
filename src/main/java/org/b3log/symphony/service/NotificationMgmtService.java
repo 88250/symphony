@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.3, Aug 28, 2016
+ * @version 1.7.0.3, Aug 31, 2016
  * @since 0.2.5
  */
 @Service
@@ -56,6 +56,32 @@ public class NotificationMgmtService {
      */
     @Inject
     private NotificationRepository notificationRepository;
+
+    /**
+     * Adds a 'invitecode used' type notification with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
+     * {
+     *     "userId"; "",
+     *     "dataId": "" // invited user id
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void addInvitecodeUsedNotification(final JSONObject requestJSONObject) throws ServiceException {
+        try {
+            requestJSONObject.put(Notification.NOTIFICATION_DATA_TYPE, Notification.DATA_TYPE_C_INVITECODE_USED);
+
+            addNotification(requestJSONObject);
+        } catch (final RepositoryException e) {
+            final String msg = "Adds notification [type=invitecode_used] failed";
+            LOGGER.log(Level.ERROR, msg, e);
+
+            throw new ServiceException(msg);
+        }
+    }
 
     /**
      * Makes the specified user's notifications of the specified type as read.

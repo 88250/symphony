@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.6.9, Aug 30, 2016
+ * @version 1.4.6.10, Aug 31, 2016
  */
 
 /* start reset */
@@ -937,17 +937,6 @@ a[class*=" icon-"]:hover {
     font-size: 20px;
 }
 /* end status */
-
-/* start editor */
-.grammar dd {
-    font-size: 12px;
-    color: #999;
-}
-
-.grammar dl {
-    margin: 8px 10px;
-}
-/* end editor */
 /* end common */
 
 /* start form */
@@ -1822,6 +1811,11 @@ label.cmt-anonymous {
     display: block;
 }
 
+.comment-get-comment.list > ul > li {
+    margin-bottom: 10px;
+    padding-top: 0;
+}
+
 .comment-replies.list > ul {
     margin-top: 10px;
 }
@@ -1944,12 +1938,6 @@ label.cmt-anonymous {
 
 .share [class^="icon-"]:hover {
     color: #4183c4;
-}
-
-.grammar dl {
-    float: left;
-    height: 70px;
-    width: 206px;
 }
 
 .cm-s-default.CodeMirror {
@@ -2484,6 +2472,25 @@ code .dec { color: initial; } /* decimal - blue */
     opacity: 0.7;
     z-index: 3;
 }
+.index a.count {
+    color: #FFF;
+    background-color: #b0b0b0;
+    padding: 0px 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -8px;
+} 
+
+.index a.count:visited {
+    background-color: #ddd;
+}
+
+.index .module-list .title {
+    margin-right: 13px;
+}
 /* end index */
 
 /* start home side */
@@ -2564,17 +2571,6 @@ code .dec { color: initial; } /* decimal - blue */
     position: relative;
 }
 
-.grammar {
-    position: absolute;
-    right: 1px;
-    top: 33px;
-    background-color: #FFF;
-    z-index: 3;
-    height: 328px;
-    border-left: 1px solid rgba(0, 0, 0, 0.075);
-    line-height: 17px;
-}
-
 #showReward {
     color: #999;
     width: 100%;
@@ -2618,9 +2614,10 @@ code .dec { color: initial; } /* decimal - blue */
 .post .tags-input input {
     border: 0;
     outline: none;
-    box-shadow: 0 0 0;
     border-radius: 0;
     padding: 2px;
+    box-shadow: 0 0 0;
+    background-color: transparent;
 }
 
 .post .tags-input input:focus {

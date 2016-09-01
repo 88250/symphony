@@ -15,31 +15,18 @@
         <div class="main">
             <div class="wrapper post">
                 <div class="form fn-flex-1 fn-clear">
-                    <div>
-                        <input type="text" id="articleTitle" tabindex="1"
-                               value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
-                    </div>
-                    <div class="fn-clear">
-                        <label class="article-content-label">
-                            Markdown
-                            <a href="javascript:AddArticle.grammar()">${baseGrammarLabel}</a>
-                            <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                            |
-                            <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
-                        </label>
-                    </div>
-                    <div class="fn-clear article-content">
+                    <input type="text" id="articleTitle" tabindex="1"
+                           value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
+                    <div class="article-content">
                         <textarea id="articleContent" tabindex="2"
                                   placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if><#if at??>@${at}</#if></textarea>
-                        <div class="fn-left grammar fn-none">
-                            ${markdwonGrammarLabel}
-                        </div>
                     </div>
                     <div class="tags-wrap">
                         <div class="tags-input"><span class="tags-selected"></span>
                         <input id="articleTags" type="text" tabindex="3" 
                                value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）" autocomplete="off" />
                         </div>
+                        <#if domains?size != 0>
                         <div class="domains-tags">
                             <#list domains as domain>
                                 <#if domain.domainTags?size gt 0>
@@ -57,6 +44,7 @@
                                 </#if>
                             </#list>
                         </div>
+                        </#if>
                         <br/>
                     </div>
                     <button id="showReward" class="fn-ellipsis" onclick="$(this).next().show(); $(this).hide()">
@@ -131,41 +119,39 @@
         <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/sound-recorder/SoundRecorder.js"></script>
-        <script>
-                            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
-                            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
-                            Label.tagsErrorLabel = "${tagsErrorLabel}";
-                            Label.userName = "${userName}";
-                            Label.recordDeniedLabel = "${recordDeniedLabel}";
-                            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
-                            Label.uploadLabel = "${uploadLabel}";
-                            Label.audioRecordingLabel = '${audioRecordingLabel}';
-                            Label.uploadingLabel = '${uploadingLabel}';
-                            Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
-                            <#if article??>Label.articleOId = '${article.oId}' ;</#if>
-        </script>
         <script src="${staticServePath}/js/add-article${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                            Util.uploadFile({
-                            "id": "fileUpload",
-                                    "pasteZone": $("#articleContent").next().next(),
-                                    "qiniuUploadToken": "${qiniuUploadToken}",
-                                    "editor": AddArticle.editor,
-                                    "uploadingLabel": "${uploadingLabel}",
-                                    "qiniuDomain": "${qiniuDomain}",
-                                    "imgMaxSize": ${imgMaxSize?c},
-                                    "fileMaxSize": ${fileMaxSize?c}
-                            });
-                            Util.uploadFile({
-                            "id": "rewardFileUpload",
-                                    "pasteZone": $("#articleRewardContent").next().next(),
-                                    "qiniuUploadToken": "${qiniuUploadToken}",
-                                    "editor": AddArticle.rewardEditor,
-                                    "uploadingLabel": "${uploadingLabel}",
-                                    "qiniuDomain": "${qiniuDomain}",
-                                    "imgMaxSize": ${imgMaxSize?c},
-                                    "fileMaxSize": ${fileMaxSize?c}
-                            });
+            Label.articleTitleErrorLabel = "${articleTitleErrorLabel}";
+            Label.articleContentErrorLabel = "${articleContentErrorLabel}";
+            Label.tagsErrorLabel = "${tagsErrorLabel}";
+            Label.userName = "${userName}";
+            Label.recordDeniedLabel = "${recordDeniedLabel}";
+            Label.recordDeviceNotFoundLabel = "${recordDeviceNotFoundLabel}";
+            Label.uploadLabel = "${uploadLabel}";
+            Label.audioRecordingLabel = '${audioRecordingLabel}';
+            Label.uploadingLabel = '${uploadingLabel}';
+            Label.articleRewardPointErrorLabel = '${articleRewardPointErrorLabel}';
+            <#if article??>Label.articleOId = '${article.oId}' ;</#if>
+            Util.uploadFile({
+                "id": "fileUpload",
+                "pasteZone": $("#articleContent").next().next(),
+                "qiniuUploadToken": "${qiniuUploadToken}",
+                "editor": AddArticle.editor,
+                "uploadingLabel": "${uploadingLabel}",
+                "qiniuDomain": "${qiniuDomain}",
+                "imgMaxSize": ${imgMaxSize?c},
+                "fileMaxSize": ${fileMaxSize?c}
+            });
+            Util.uploadFile({
+                "id": "rewardFileUpload",
+                "pasteZone": $("#articleRewardContent").next().next(),
+                "qiniuUploadToken": "${qiniuUploadToken}",
+                "editor": AddArticle.rewardEditor,
+                "uploadingLabel": "${uploadingLabel}",
+                "qiniuDomain": "${qiniuDomain}",
+                "imgMaxSize": ${imgMaxSize?c},
+                "fileMaxSize": ${fileMaxSize?c}
+            });
         </script>
     </body>
 </html>

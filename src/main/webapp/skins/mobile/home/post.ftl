@@ -14,31 +14,18 @@
             <div class="wrapper post">
                 <div class="fn-hr10"></div>
                 <div class="form fn-flex-1 fn-clear">
-                    <div>
-                        <input type="text" id="articleTitle" tabindex="1"
-                               value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
-                    </div>
-                    <div class="fn-clear">
-                        <label class="article-content-label">
-                            Markdown
-                            <a href="javascript:AddArticle.grammar()">${baseGrammarLabel}</a>
-                            <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                            |
-                            <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
-                        </label>
-                    </div>
-                    <div class="fn-clear article-content">
+                    <input type="text" id="articleTitle" tabindex="1"
+                           value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
+                    <div class="article-content">
                         <textarea id="articleContent" tabindex="2"
                                   placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if><#if at??>@${at}</#if></textarea>
-                        <div class="fn-left grammar fn-none">
-                            ${markdwonGrammarLabel}
-                        </div>
                     </div>
                     <div class="tags-wrap">
                         <div class="tags-input"><span class="tags-selected"></span>
                         <input id="articleTags" type="text" tabindex="3" 
                                value="<#if article??>${article.articleTags}<#else>${tags}</#if>" placeholder="${tagLabel}（${tagSeparatorTipLabel}）" autocomplete="off" />
                         </div>
+                        <#if domains?size != 0>
                         <div class="domains-tags">
                             <#list domains as domain>
                                 <#if domain.domainTags?size gt 0>
@@ -56,6 +43,7 @@
                                 </#if>
                             </#list>
                         </div>
+                        </#if>
                         <br/>
                     </div>
                     <button id="showReward" class="fn-ellipsis" onclick="$(this).next().show(); $(this).hide()">

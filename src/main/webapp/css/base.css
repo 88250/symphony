@@ -762,6 +762,13 @@ button.small,
     height: 20px;
     text-shadow: initial;
 }
+
+button.mid,
+.btn.mid {
+    padding: 3px 8px;
+    font-size: 13px;
+    line-height: 20px;
+}
 /* end button */
 
 /* start icon */
@@ -1092,7 +1099,7 @@ a[class*=" icon-"]:hover {
 }
 
 .tip ul {
-    margin: 10px 40px;
+    margin: 5px 30px;
     text-align: left;
 }
 
@@ -1917,7 +1924,6 @@ ul.CodeMirror-hints {
 }
 
 .person-info .info button.red:hover {
-
     letter-spacing: 2px;
 }
 

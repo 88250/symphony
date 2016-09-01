@@ -25,6 +25,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.service.SearchMgmtService;
+import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -32,7 +33,7 @@ import org.json.JSONObject;
  * Sends an article to local search engine.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, May 15, 2016
+ * @version 1.1.2.0, Sep 1, 2016
  * @since 1.4.0
  */
 @Named
@@ -63,11 +64,11 @@ public class ArticleSearchAdder extends AbstractEventListener<JSONObject> {
         }
 
         if (Symphonys.getBoolean("algolia.enabled")) {
-            searchMgmtService.updateAlgoliaDocument(article);
+            searchMgmtService.updateAlgoliaDocument(JSONs.clone(article));
         }
 
         if (Symphonys.getBoolean("es.enabled")) {
-            searchMgmtService.updateESDocument(article, Article.ARTICLE);
+            searchMgmtService.updateESDocument(JSONs.clone(article), Article.ARTICLE);
         }
     }
 

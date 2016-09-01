@@ -152,17 +152,7 @@
 .article-content {
     width: 100%;
     position: relative;
-}
-
-.grammar {
-    position: absolute;
-    right: 1px;
-    top: 33px;
-    background-color: #FFF;
-    z-index: 3;
-    height: 328px;
-    border-left: 1px solid rgba(0, 0, 0, 0.075);
-    line-height: 17px;
+    margin-top: 20px;
 }
 
 #showReward {

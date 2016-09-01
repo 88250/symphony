@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.29.18, Aug 30, 2016
+ * @version 1.24.29.18, Aug 31, 2016
  */
 
 /**
@@ -80,6 +80,28 @@ var Comment = {
         });
     },
     /**
+     * 评论面板事件绑定
+     * @returns {undefined}
+     */
+    _initEditorPanel: function () {
+        // 回复按钮设置
+        $('.reply-btn').css('left', $('.side').offset().left - 43).click(function () {
+            $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
+            $('.editor-panel').slideDown(function () {
+                $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
+            });
+            Comment.editor.focus();
+            $('#replyUseName').text('').removeData();
+        });
+
+        // 评论框控制
+        $('.editor-panel .editor-hide').click(function () {
+            $('.editor-panel').slideUp();
+            $('.footer').removeAttr('style');
+            $('.reply-btn').css('bottom', $('.footer').outerHeight());
+        });
+    },
+    /**
      * 评论初始化
      * @returns {Boolean}
      */
@@ -110,12 +132,17 @@ var Comment = {
         });
 
         if ($(window.location.hash).length === 1) {
-            Comment._bgFade($(window.location.hash));
+            if (!isNaN(parseInt(window.location.hash.substr(1)))) {
+                Comment._bgFade($(window.location.hash));
+            }
         } else {
             Comment._bgFade($('.article-content'));
         }
 
         this._setCmtVia();
+
+        this._initEditorPanel();
+
         $.ua.set(navigator.userAgent);
 
         if (!Label.isLoggedIn) {
@@ -320,7 +347,7 @@ var Comment = {
      */
     showReply: function (id, it, className) {
         var $commentReplies = $(it).closest('li').find('.' + className);
-            
+
         // 回复展现需要每次都异步获取。回复的回帖只需加载一次，后期不再加载
         if ('comment-get-comment' === className) {
             if ($commentReplies.find('li').length !== 0) {
@@ -339,10 +366,14 @@ var Comment = {
         if ($(it).css("opacity") === '0.3') {
             return false;
         }
-        
-        // TODO: 目前回帖的回复是支持的，但是当回复的回帖的时候需要修改一下。
+
+        var url = "/comment/replies";
+        if ('comment-get-comment' === className) {
+            url = "/comment/original";
+        }
+
         $.ajax({
-            url: Label.servePath + "/comment/original",
+            url: Label.servePath + url,
             type: "POST",
             data: JSON.stringify({
                 commentId: id,
@@ -357,10 +388,13 @@ var Comment = {
                     return false;
                 }
 
-                var replies = result.commentReplies,
+                var comments = result.commentReplies,
                         template = '';
-                for (var i = 0; i < replies.length; i++) {
-                    var data = replies[i];
+                if (!(comments instanceof Array)) {
+                    comments = [comments];
+                }
+                for (var i = 0; i < comments.length; i++) {
+                    var data = comments[i];
 
                     template += '<li><div class="fn-flex">';
 
@@ -501,8 +535,16 @@ var Comment = {
             Util.needLogin();
             return false;
         }
+        $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
+        $('.editor-panel').slideDown(function () {
+            $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
+        });
 
-        $('#replyUseName').text(Label.replyLabel + ' ' + userName)
+        var $avatar = $('#' + id).find('>.fn-flex>a').clone();
+        $avatar.addClass('ft-a-icon').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
+        $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
+
+        $('#replyUseName').html($avatar[0].outerHTML)
                 .css('visibility', 'visible').data('commentOriginalCommentId', id);
         Comment.editor.focus();
     }
