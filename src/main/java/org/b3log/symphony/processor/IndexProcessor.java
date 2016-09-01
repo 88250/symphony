@@ -123,8 +123,10 @@ public class IndexProcessor {
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        final List<JSONObject> hotArticles = articleQueryService.getIndexHotArticles(avatarViewMode);
-        dataModel.put(Common.HOT_ARTICLES, hotArticles);
+//        final List<JSONObject> hotArticles = articleQueryService.getIndexHotArticles(avatarViewMode);
+//        dataModel.put(Common.HOT_ARTICLES, hotArticles);
+        final List<JSONObject> recentArticles = articleQueryService.getIndexRecentArticles(avatarViewMode);
+        dataModel.put(Common.RECENT_ARTICLES, recentArticles);
 
         final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles(avatarViewMode);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
