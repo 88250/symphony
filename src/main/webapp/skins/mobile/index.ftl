@@ -13,10 +13,10 @@
         <div class="main">
             <div class="wrapper">
                 <div class="item mid">
-                    <a href="${servePath}/hot" class="item-header" style="background-image: url(${hotBgIcon});">${hotLabel}</a>
+                    <a href="${servePath}/recent" class="item-header" style="background-image: url(${hotBgIcon});">${latestLabel}</a>
                     <div class="module-panel">
                         <ul class="module-list">
-                            <#list hotArticles as article>
+                            <#list recentArticles as article>
                             <li<#if !article_has_next> class="last"</#if>>
                                 <#if "someone" != article.articleAuthorName>
                                 <a rel="nofollow" href="${servePath}/member/${article.articleAuthorName}"></#if>
@@ -25,6 +25,7 @@
                                           style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != article.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                                <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
                             </li>
                             </#list>
                         </ul>
@@ -43,6 +44,7 @@
                                           style="background-image:url('${article.articleAuthorThumbnailURL20}')"></span>
                                     <#if "someone" != article.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
+                                <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
                             </li>
                             </#list>
                         </ul>

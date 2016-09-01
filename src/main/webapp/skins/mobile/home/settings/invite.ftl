@@ -13,9 +13,6 @@
 <div class="module">
     <div class="module-header">
         <h2>${buyInvitecodeLabel}</h2>
-        <span class="fn-right">
-            <a class="ft-green" href="${servePath}/charge/point">${rechargePointLabel}</a>
-        </span>
     </div>
     <div class="module-panel form fn-clear">
          <br/>
@@ -28,6 +25,7 @@
         <h2>${queryInvitecodeStateLabel}</h2> 
     </div>
     <div class="module-panel form fn-clear">
+        <br/>
         <input id="invitecode" type="text" placeholder="${inputInvitecodeLabel}"/><br/><br/>
         <div class="tip" id="invitecodeStateTip"></div><br/>
         <button class="green fn-right" onclick="Settings.queryInvitecode('${csrfToken}')">${submitLabel}</button>

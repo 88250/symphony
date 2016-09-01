@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.7.17, Aug 17, 2016
+ * @version 2.11.7.18, Aug 29, 2016
  * @since 0.2.0
  */
 @Service
@@ -279,7 +279,8 @@ public class CommentMgmtService {
      *     },
      *     "commentIP": "", // optional, default to ""
      *     "commentUA": "", // optional, default to ""
-     *     "commentAnonymous": int // optional, default to 0 (public)
+     *     "commentAnonymous": int, // optional, default to 0 (public)
+     *     "userCommentViewMode": int
      * }
      * </pre>, see {@link Comment} for more details
      *
@@ -295,6 +296,7 @@ public class CommentMgmtService {
         final String ip = requestJSONObject.optString(Comment.COMMENT_IP);
         String ua = requestJSONObject.optString(Comment.COMMENT_UA);
         final int commentAnonymous = requestJSONObject.optInt(Comment.COMMENT_ANONYMOUS);
+        final int commentViewMode = requestJSONObject.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
         if (currentTimeMillis - commenter.optLong(UserExt.USER_LATEST_CMT_TIME) < Symphonys.getLong("minStepCmtTime")
                 && !Role.ADMIN_ROLE.equals(commenter.optString(User.USER_ROLE))
@@ -457,6 +459,7 @@ public class CommentMgmtService {
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
+            eventData.put(UserExt.USER_COMMENT_VIEW_MODE, commentViewMode);
 
             try {
                 eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));

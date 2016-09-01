@@ -17,7 +17,7 @@ package org.b3log.symphony.util;
 
 import java.io.FileReader;
 import java.net.URL;
-import junit.framework.Assert;
+import org.testng.Assert;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Latkes;
 import org.testng.annotations.Test;
@@ -26,15 +26,15 @@ import org.testng.annotations.Test;
  * Markdown utilities test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Jul 17, 2015
+ * @version 2.1.0.0, Aug 31, 2016
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
-    
+
     static {
         Latkes.initRuntimeEnv();
     }
-    
+
     /**
      * Tests {@link Markdowns#clean(java.lang.String, java.lang.String)} for data XSS.
      */
@@ -48,6 +48,25 @@ public class MarkdownsTestCase {
         Assert.assertFalse(securedHTML.contains("href"));
     }
 
+    @Test
+    public void space() {
+        final String md = "Sym是一个用Java写的实时论坛，欢迎来[体验Sym](https://hacpai.com)！";
+        final String html = Markdowns.toHTML(md);
+
+        Assert.assertEquals(html, "<p>Sym 是一个用 Java 写的实时论坛，欢迎来<a href=\"https://hacpai.com\">体验 Sym</a>！</p>");
+    }
+
+    /**
+     * FIXME: https://github.com/sirthias/pegdown/issues/229
+     */
+    @Test
+    public void toHTML1() {
+        final String md = "Sym**是一个用Java写的实时论坛**";
+        final String html = Markdowns.toHTML(md);
+
+        System.out.println(html);
+    }
+
     /**
      * Tests {@link Markdowns#toHTML(java.lang.String)}.
      */
@@ -56,14 +75,15 @@ public class MarkdownsTestCase {
         String md = "[b3log](http://b3log.org)";
         String html = Markdowns.toHTML(md);
         Assert.assertTrue(html.contains("href"));
-        
+
         md = "[b3log](b3log.org)";
         html = Markdowns.toHTML(md);
         Assert.assertTrue(html.contains("href"));
     }
-    
+
     /**
      * Tests {@link Markdowns#toHTML(java.lang.String)}.
+     *
      * @throws java.lang.Exception exception
      */
     @Test
@@ -71,7 +91,7 @@ public class MarkdownsTestCase {
         final URL mdResource = MarkdownsTestCase.class.getResource("/markdown_syntax.text");
         final String md = IOUtils.toString(new FileReader(mdResource.getPath()));
         final String html = Markdowns.toHTML(md);
-        
-        // System.out.println(html);
+
+        //System.out.println(html);
     }
 }

@@ -145,10 +145,10 @@
                     </#if>
                     
                     <#if article.articleNiceComments?size != 0>
-                    <br/>
-                    <div class="list comments nice">
-                        <span class="ft-smaller"> ${niceCommentsLabel}</span>
-                        <ul>                
+                    <div class="module nice">
+                        <div class="module-header">${niceCommentsLabel}</div>
+                        <div class="module-panel list comments">
+                            <ul>                
                             <#list article.articleNiceComments as comment>
                             <li>
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
@@ -183,8 +183,8 @@
                                                     </#if>
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade" data-ua="${comment.commentUA}"></span></#if>
                                                 </span>
-                                                <a class="ft-fade fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
-                                                   href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}"><span class="icon-down"></span></a>
+                                                <a class="ft-a-icon fn-right tooltipped tooltipped-nw" aria-label="${goCommentLabel}"
+                                                   href="javascript:Comment.goComment('${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.oId}')"><span class="icon-down"></span></a>
                                             </div>
                                             <div class="content-reset comment">
                                                 ${comment.commentContent}
@@ -194,43 +194,10 @@
                                 </li>
                             </#list>  
                         </ul>
+                        </div>
                     </div>
                     </#if>
                     
-                    <#if 1 == userCommentViewMode>
-                    <#if isLoggedIn>
-                    <#if discussionViewable && article.articleCommentable>
-                    <div class="form fn-clear comment-wrap">
-                        <div id="replyUseName"> </div>
-                        <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
-                        <div class="tip" id="addCommentTip"></div>
-
-                        <div class="fn-clear comment-submit">
-                            <span class="responsive-hide">    
-                                Markdown
-                                <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                                <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                                |
-                                <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
-                            </span>
-                            <div class="fn-right">
-                                <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="grammar fn-none fn-clear">
-                        ${markdwonGrammarLabel}
-                    </div>
-                    </#if>
-                    <#else>
-                    <br/>
-                    <div class="comment-login">
-                        <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
-                    </div>
-                    </#if>
-                    </#if>
                     <div class="fn-clear">
                         <div class="list comments" id="comments">
                             <div class="fn-clear comment-header">
@@ -247,7 +214,7 @@
                                 <#assign notificationCmtIds = notificationCmtIds + comment.oId>
                                 <#if comment_has_next><#assign notificationCmtIds = notificationCmtIds + ","></#if>
                                 <li id="${comment.oId}" 
-                                    class="<#if comment.commentStatus == 1>shield</#if><#if comment.commentNice> perfect</#if>">
+                                    class="<#if comment.commentStatus == 1>shield</#if><#if comment.commentNice> perfect</#if><#if comment.commentReplyCnt != 0> selected</#if>">
                                     <#if !comment?has_next><div id="bottomComment"></div></#if>
                                     <div class="fn-flex">
                                         <#if !comment.fromClient>
@@ -261,6 +228,7 @@
                                              aria-label="${comment.commentAuthorName}" style="background-image:url('${comment.commentAuthorThumbnailURL}')"></div>
                                         </#if>
                                         <div class="fn-flex-1">
+                                            <div class="comment-get-comment list"></div>
                                             <div class="fn-clear comment-info ft-smaller">
                                                 <span class="fn-left">
                                                     <#if !comment.fromClient>
@@ -280,33 +248,33 @@
                                                     </span>
                                                     </#if>
                                                     </span>
-                                                    
                                                     <#if 0 == comment.commenter.userUAStatus><span class="cmt-via ft-fade hover-show fn-hidden" data-ua="${comment.commentUA}"></span></#if>
                                                 </span>
-                                                <span class="fn-right hover-show fn-hidden">
+                                                <span class="fn-right">
                                                     <#if comment.commentOriginalCommentId != ''>
-                                                    <a class="ft-a-icon tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
-                                                       href="${servePath}/article/${article.oId}?p=${comment.paginationCurrentPageNum}&m=${userCommentViewMode}#${comment.commentOriginalCommentId}"><span class="icon-reply-to"></span></a>
+                                                    <span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="${goCommentLabel}" 
+                                                       onclick="Comment.showReply('${comment.commentOriginalCommentId}', this, 'comment-get-comment')"><span class="icon-reply-to"></span>
+                                                        <div class="avatar-small" style="background-image:url('${comment.commentOriginalAuthorThumbnailURL}')"></div>
+                                                    </span> 
                                                     </#if>
                                                     <#if isAdminLoggedIn>
-                                                    <a class="tooltipped tooltipped-n ft-a-icon" href="${servePath}/admin/comment/${comment.oId}" 
+                                                    <a class="tooltipped tooltipped-n ft-a-icon hover-show fn-hidden" href="${servePath}/admin/comment/${comment.oId}" 
                                                        aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                                                     </#if>
-                                                    <i class="ft-fade"><#if 0 == userCommentViewMode>${(paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index + 1}<#else>${article.articleCommentCount - ((paginationCurrentPageNum - 1) * articleCommentsPageSize + comment_index)}</#if></i>
                                                 </span>
                                             </div>
                                             <div class="content-reset comment">
                                                 ${comment.commentContent}
                                             </div>
-                                            <div class="fn-none comment-action">
+                                            <div class="comment-action">
                                                 <div class="ft-fade fn-clear">
                                                     <#if comment.commentReplyCnt != 0>
-                                                    <span class="fn-pointer ft-smaller" onclick="Comment.showReply('${comment.oId}', this)">
+                                                    <span class="fn-pointer ft-smaller" onclick="Comment.showReply('${comment.oId}', this, 'comment-replies')">
                                                         ${comment.commentReplyCnt} ${replyLabel} <span class="icon-chevron-down"></span>
                                                     </span>
                                                     </#if>
-                                                     <span class="fn-right">
-                                                        <#if (isLoggedIn && comment.commentAuthorId != currentUser.oId && !comment.rewarded) || !isLoggedIn>
+                                                     <span class="fn-right fn-hidden hover-show">
+                                                        <#if (isLoggedIn && !comment.rewarded) || !isLoggedIn>
                                                         <span class="fn-pointer tooltipped tooltipped-n"
                                                               aria-label="${thankLabel}"
                                                               onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', ${comment.commentAnonymous}, this)"><span class="icon-heart"></span></span>
@@ -320,7 +288,7 @@
                                                               onclick="Article.voteDown('${comment.oId}', 'comment', this)">
                                                             <span class="icon-thumbs-down<#if isLoggedIn && 1 == comment.commentVote> ft-red</#if>"></span></span>
 
-                                                        <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0) || !isLoggedIn>
+                                                        <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName) || !isLoggedIn>
                                                         <span aria-label="${replyLabel}" class="fn-pointer tooltipped tooltipped-n" 
                                                               onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')"><span class="icon-reply"></span></span>
                                                         </#if>
@@ -336,39 +304,6 @@
                         </div>
                         <@pagination url=article.articlePermalink query="m=${userCommentViewMode}" />
                     </div>
-                    <#if 0 == userCommentViewMode>
-                    <#if isLoggedIn>
-                    <#if discussionViewable && article.articleCommentable>
-                    <div class="form fn-clear comment-wrap">
-                        <div id="replyUseName"> </div>
-                        <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
-                        <div class="tip" id="addCommentTip"></div>
-
-                        <div class="fn-clear comment-submit">
-                            <span class="responsive-hide">    
-                                Markdown
-                                <a href="javascript:void(0)" onclick="$('.grammar').slideToggle()">${baseGrammarLabel}</a>
-                                <a target="_blank" href="http://daringfireball.net/projects/markdown/syntax">${allGrammarLabel}</a>
-                                |
-                                <a target="_blank" href="${servePath}/emoji/index.html">Emoji</a>
-                            </span>
-                            <div class="fn-right">
-                                <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
-                                <button class="red" onclick="Comment.add('${article.oId}', '${csrfToken}')">${replyLabel}</button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="grammar fn-none fn-clear">
-                        ${markdwonGrammarLabel}
-                    </div>
-                    </#if>
-                    <#else>
-                    <div class="comment-login">
-                        <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
-                    </div>
-                    </#if>
-                    </#if>
                 </div>
                 <div class="side">
                     <#include 'common/person-info.ftl'/>
@@ -458,6 +393,33 @@
             <i class="heat" style="width:${article.articleHeat*3}px"></i>
         </div>
         <div id="revision"><div id="revisions"></div></div>
+        <div class="reply-btn fn-pointer tooltipped tooltipped-n" aria-label="${cmtLabel}"><span class="icon-reply"></span></div>
+        <div class="editor-panel">
+            <div class="wrapper">
+            <#if isLoggedIn>
+            <#if discussionViewable && article.articleCommentable>
+            <div class="form fn-clear comment-wrap">
+                <div class="fn-clear">
+                    <div id="replyUseName" class="fn-left"></div> 
+                    <span class="tooltipped tooltipped-w fn-right fn-pointer editor-hide" aria-label="${hideLabel}"><span class="icon-chevron-down"></span></span>
+                </div>
+                <textarea id="commentContent" placeholder="${commentEditorPlaceholderLabel}"></textarea>
+                <div class="fn-clear comment-submit">
+                    <div class="tip fn-left" id="addCommentTip"></div>
+                    <div class="fn-right">
+                        <label class="cmt-anonymous">${anonymousLabel}<input type="checkbox" id="commentAnonymous"></label>
+                        <button class="red mid" onclick="Comment.add('${article.oId}', '${csrfToken}')">${submitLabel}</button>
+                    </div>
+                </div>
+            </div>
+            </#if>
+            <#else>
+            <div class="comment-login">
+                <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
+            </div>
+            </#if>
+            </div>
+        </div>
         <#include "footer.ftl">
         <script src="${staticServePath}/js/lib/compress/article-libs.min.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/article${miniPostfix}.js?${staticResourceVersion}"></script>
@@ -489,42 +451,40 @@
             Label.adminLabel = '${adminLabel}';
             Label.thankSelfLabel = '${thankSelfLabel}';
             Label.articleAuthorName = '${article.articleAuthorName}';
-            Label.reply = '${replyLabel}';
+            Label.replyLabel = '${replyLabel}';
             Label.referenceLabel = '${referenceLabel}';
             Label.goCommentLabel = '${goCommentLabel}';
             qiniuToken = "${qiniuUploadToken}";
             qiniuDomain = "${qiniuDomain}";
             <#if isLoggedIn>
-                    Label.currentUserName = '${currentUser.userName}';
+                Label.currentUserName = '${currentUser.userName}';
+                Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
+
+                setTimeout(function() {
+                    Util.setUnreadNotificationCount();
+                }, 1000);
             </#if>
             // Init [Article] channel
             ArticleChannel.init("${wsScheme}://${serverHost}:${serverPort}${contextPath}/article-channel?articleId=${article.oId}&articleType=${article.articleType}");
             $(document).ready(function () {
+                Comment.init();
+                
                  // jQuery File Upload
                 Util.uploadFile({
-                "type": "img",
-                        "id": "fileUpload",
-                        "pasteZone": $(".CodeMirror"),
-                        "qiniuUploadToken": "${qiniuUploadToken}",
-                        "editor": Comment.editor,
-                        "uploadingLabel": "${uploadingLabel}",
-                        "qiniuDomain": "${qiniuDomain}",
-                        "imgMaxSize": ${imgMaxSize?c},
-                        "fileMaxSize": ${fileMaxSize?c}
+                    "type": "img",
+                    "id": "fileUpload",
+                    "pasteZone": $(".CodeMirror"),
+                    "qiniuUploadToken": "${qiniuUploadToken}",
+                    "editor": Comment.editor,
+                    "uploadingLabel": "${uploadingLabel}",
+                    "qiniuDomain": "${qiniuDomain}",
+                    "imgMaxSize": ${imgMaxSize?c},
+                    "fileMaxSize": ${fileMaxSize?c}
                 });
-            });
-           
-            <#if 3 == article.articleType>
+                <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');
-            </#if>
-            Comment.init(${isLoggedIn?c});
-            <#if isLoggedIn>
-            Article.makeNotificationRead('${article.oId}', '${notificationCmtIds}');
-            
-            setTimeout(function() {
-                Util.setUnreadNotificationCount();
-            }, 1000);
-            </#if>
+                </#if>
+            });
         </script>
         <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">
@@ -534,7 +494,7 @@
                     displayMath: [['$$','$$']],
                     processEscapes: true,
                     processEnvironments: true,
-                    skipTags: ['pre','code'],
+                skipTags: ['pre','code'],
                 }
             });
             MathJax.Hub.Queue(function() {

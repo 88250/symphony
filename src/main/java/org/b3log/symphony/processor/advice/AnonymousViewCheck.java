@@ -29,6 +29,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserMgmtService;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Aug 23, 2016
+ * @version 1.1.1.1, Aug 29, 2016
  * @since 1.6.0
  */
 @Named
@@ -75,6 +76,10 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
         final HttpServletRequest request = context.getRequest();
 
         if ((Boolean) request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT)) {
+            return;
+        }
+
+        if ((Boolean) request.getAttribute(Common.IS_MOBILE)) { // XXX: allow anonymous view for mobie users
             return;
         }
 
