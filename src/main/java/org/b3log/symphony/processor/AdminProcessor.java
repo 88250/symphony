@@ -129,7 +129,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.3.9, Aug 23, 2016
+ * @version 2.20.3.10, Sep 1, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1512,7 +1512,7 @@ public class AdminProcessor {
             requestJSONObject.put(Keys.OBJECT_ID, articleId);
         }
 
-        final Map<String, Class<?>> articleFields = new HashMap<String, Class<?>>();
+        final Map<String, Class<?>> articleFields = new HashMap<>();
         articleFields.put(Keys.OBJECT_ID, String.class);
         articleFields.put(Article.ARTICLE_TITLE, String.class);
         articleFields.put(Article.ARTICLE_PERMALINK, String.class);
@@ -1651,7 +1651,7 @@ public class AdminProcessor {
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
         requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
 
-        final Map<String, Class<?>> commentFields = new HashMap<String, Class<?>>();
+        final Map<String, Class<?>> commentFields = new HashMap<>();
         commentFields.put(Keys.OBJECT_ID, String.class);
         commentFields.put(Comment.COMMENT_CREATE_TIME, String.class);
         commentFields.put(Comment.COMMENT_AUTHOR_ID, String.class);
@@ -1785,7 +1785,7 @@ public class AdminProcessor {
         renderer.setTemplateName("admin/misc.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        List<JSONObject> misc = new ArrayList<JSONObject>();
+        List<JSONObject> misc = new ArrayList<>();
 
         final Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
@@ -1848,7 +1848,7 @@ public class AdminProcessor {
             requestJSONObject.put(Tag.TAG_TITLE, tagTitle);
         }
 
-        final Map<String, Class<?>> tagFields = new HashMap<String, Class<?>>();
+        final Map<String, Class<?>> tagFields = new HashMap<>();
         tagFields.put(Keys.OBJECT_ID, String.class);
         tagFields.put(Tag.TAG_TITLE, String.class);
         tagFields.put(Tag.TAG_DESCRIPTION, String.class);
@@ -1983,7 +1983,7 @@ public class AdminProcessor {
             requestJSONObject.put(Domain.DOMAIN_TITLE, domainTitle);
         }
 
-        final Map<String, Class<?>> domainFields = new HashMap<String, Class<?>>();
+        final Map<String, Class<?>> domainFields = new HashMap<>();
         domainFields.put(Keys.OBJECT_ID, String.class);
         domainFields.put(Domain.DOMAIN_TITLE, String.class);
         domainFields.put(Domain.DOMAIN_DESCRIPTION, String.class);
