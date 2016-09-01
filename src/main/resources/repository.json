@@ -913,6 +913,11 @@
                     "length": 32
                 },
                 {
+                    "name": "mobileUserSkin",
+                    "type": "String",
+                    "length": 32
+                },
+                {
                     "name": "userCountry",
                     "type": "String",
                     "length": 32
