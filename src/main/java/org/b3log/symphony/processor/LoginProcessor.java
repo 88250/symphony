@@ -43,6 +43,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Invitecode;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
@@ -54,6 +55,7 @@ import org.b3log.symphony.processor.advice.validate.UserRegister2Validation;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.service.InvitecodeMgmtService;
 import org.b3log.symphony.service.InvitecodeQueryService;
+import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.TimelineMgmtService;
@@ -63,6 +65,7 @@ import org.b3log.symphony.service.VerifycodeMgmtService;
 import org.b3log.symphony.service.VerifycodeQueryService;
 import org.b3log.symphony.util.Filler;
 import org.b3log.symphony.util.Sessions;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
@@ -79,7 +82,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.4.11, Aug 2, 2016
+ * @version 1.9.5.12, Aug 31, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -155,6 +158,12 @@ public class LoginProcessor {
      */
     @Inject
     private InvitecodeMgmtService invitecodeMgmtService;
+
+    /**
+     * Invitecode management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * Shows forget password page.
@@ -479,6 +488,19 @@ public class LoginProcessor {
                 final String icId = ic.optString(Keys.OBJECT_ID);
 
                 invitecodeMgmtService.updateInvitecode(icId, ic);
+
+                final String icGeneratorId = ic.optString(Invitecode.GENERATOR_ID);
+                if (StringUtils.isNotBlank(icGeneratorId) && !Pointtransfer.ID_C_SYS.equals(icGeneratorId)) {
+                    pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, icGeneratorId,
+                            Pointtransfer.TRANSFER_TYPE_C_INVITECODE_USED,
+                            Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED, userId, System.currentTimeMillis());
+
+                    final JSONObject notification = new JSONObject();
+                    notification.put(Notification.NOTIFICATION_USER_ID, icGeneratorId);
+                    notification.put(Notification.NOTIFICATION_DATA_ID, userId);
+
+                    notificationMgmtService.addInvitecodeUsedNotification(notification);
+                }
             }
 
             context.renderTrueResult();
@@ -589,5 +611,30 @@ public class LoginProcessor {
         }
 
         context.getResponse().sendRedirect(destinationURL);
+    }
+
+    /**
+     * Expires invitecodes.
+     *
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @param context the specified HTTP request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/cron/invitecode-expire", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = StopwatchStartAdvice.class)
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void expireInvitecodes(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final String key = Symphonys.get("keyOfSymphony");
+        if (!key.equals(request.getParameter("key"))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        invitecodeMgmtService.expireInvitecodes();
+
+        context.renderJSON().renderTrueResult();
     }
 }

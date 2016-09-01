@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.28.16, Aug 25, 2016
+ * @version 1.24.29.18, Aug 31, 2016
  */
 
 /**
@@ -39,6 +39,34 @@ var Comment = {
         window.location.href = window.location.pathname + "?m=" + mode;
     },
     /**
+     * 背景渐变
+     * @param {jQuery} $obj 背景渐变对象
+     * @returns {undefined}
+     */
+    _bgFade: function ($obj) {
+        $obj.css({
+            'background-color': '#9bbee0'
+        });
+        setTimeout(function () {
+            $obj.css({
+                'background-color': '#FFF',
+                'transition': 'all 3s cubic-bezier(0.56, -0.36, 0.58, 1)'
+            });
+        }, 100);
+        setTimeout(function () {
+            $obj.removeAttr('style');
+        }, 3100);
+    },
+    /**
+     * 跳转到指定的评论处
+     * @param {string} url 跳转的 url 
+     */
+    goComment: function (url) {
+        $('#comments > ul > li').removeAttr('style');
+        Comment._bgFade($(url.substr(url.length - 14, 14)));
+        window.location = url;
+    },
+    /**
      * 设置评论来源
      * @returns {Boolean}
      */
@@ -52,18 +80,51 @@ var Comment = {
         });
     },
     /**
+     * 评论面板事件绑定
+     * @returns {undefined}
+     */
+    _initEditorPanel: function () {
+        // 回复按钮设置
+        $('.reply-btn').css('left', $('.side').offset().left - 43).click(function () {
+            $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
+            $('.editor-panel').slideDown(function () {
+                $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
+            });
+            Comment.editor.focus();
+            $('#replyUseName').text('').removeData();
+        });
+
+        // 评论框控制
+        $('.editor-panel .editor-hide').click(function () {
+            $('.editor-panel').slideUp();
+            $('.footer').removeAttr('style');
+            $('.reply-btn').css('bottom', $('.footer').outerHeight());
+        });
+    },
+    /**
      * 评论初始化
      * @returns {Boolean}
      */
-    init: function (isLoggedIn) {
+    init: function () {
         $("#comments").on('dblclick', 'img', function () {
             window.open($(this).attr('src'));
         });
 
+        if ($(window.location.hash).length === 1) {
+            if (!isNaN(parseInt(window.location.hash.substr(1)))) {
+                Comment._bgFade($(window.location.hash));
+            }
+        } else {
+            Comment._bgFade($('.article-content'));
+        }
+
         this._setCmtVia();
+
+        this._initEditorPanel();
+
         $.ua.set(navigator.userAgent);
 
-        if (!isLoggedIn) {
+        if (!Label.isLoggedIn) {
             return false;
         }
 
@@ -219,18 +280,6 @@ var Comment = {
             },
             success: function (result, textStatus) {
                 if (result.sc) {
-                    var $cnt = $(it).closest('.comment-info').find('.rewarded-cnt'),
-                            cnt = parseInt($cnt.text());
-                    if ($cnt.length <= 0) {
-                        $(it).closest('.comment-info').find('.fn-left .ft-fade:last').
-                                append('&nbsp;<span aria-label="' + Label.thankedLabel + ' 1" class="tooltipped tooltipped-n ft-red">'
-                                        + '<span class="icon-heart"></span>1</span>');
-                    } else {
-                        $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
-                        $cnt.html('<span class="icon-heart"></span>' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
-                    }
-
-
                     var $heart = $("<i class='icon-heart ft-red'></i>"),
                             y = $(it).offset().top,
                             x = $(it).offset().left;
@@ -246,18 +295,136 @@ var Comment = {
                     });
                     $("body").append($heart);
 
-                    $heart.animate({"left": x - 150, "opacity": 0},
+                    $heart.animate({"left": x - 150, "top": y - 60, "opacity": 0},
                             1500,
                             function () {
+                                var $cnt = $(it).closest('li').find('.rewarded-cnt'),
+                                        cnt = parseInt($cnt.text());
+                                if ($cnt.length <= 0) {
+                                    $(it).closest('li').find('.comment-reward').
+                                            html('<span aria-label="' + Label.thankedLabel + ' 1" class="fn-hidden hover-show tooltipped tooltipped-n ft-red">'
+                                                    + '<span class="icon-heart"></span>1</span>');
+                                } else {
+                                    $cnt.attr('aria-label', Label.thankedLabel + ' ' + (cnt + 1));
+                                    $cnt.html('<span class="icon-heart"></span>' + (cnt + 1)).addClass('ft-red').removeClass('ft-fade');
+                                }
                                 $heart.remove();
                                 $(it).remove();
                             }
                     );
 
-
                 } else {
                     alert(result.msg);
                 }
+            }
+        });
+    },
+    /**
+     * @description 展现回帖回复列表
+     * @param {type} id 回帖 id
+     * @returns {Boolean}
+     */
+    showReply: function (id, it, className) {
+        var $commentReplies = $(it).closest('li').find('.' + className);
+
+        // 回复展现需要每次都异步获取。回复的回帖只需加载一次，后期不再加载
+        if ('comment-get-comment' === className) {
+            if ($commentReplies.find('li').length !== 0) {
+                $commentReplies.toggle();
+                return false;
+            }
+        } else {
+            if ($(it).find('.icon-chevron-down').length === 0) {
+                // 收起回复
+                $(it).find('.icon-chevron-up').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                $commentReplies.html('');
+                return false;
+            }
+        }
+
+        if ($(it).css("opacity") === '0.3') {
+            return false;
+        }
+
+        var url = "/comment/replies";
+        if ('comment-get-comment' === className) {
+            url = "/comment/original";
+        }
+
+        $.ajax({
+            url: Label.servePath + url,
+            type: "POST",
+            data: JSON.stringify({
+                commentId: id,
+                userCommentViewMode: Label.userCommentViewMode
+            }),
+            beforeSend: function () {
+                $(it).css("opacity", "0.3");
+            },
+            success: function (result, textStatus) {
+                if (!result.sc) {
+                    alert(result.msg);
+                    return false;
+                }
+
+                var comments = result.commentReplies,
+                        template = '';
+                if (!(comments instanceof Array)) {
+                    comments = [comments];
+                }
+                for (var i = 0; i < comments.length; i++) {
+                    var data = comments[i];
+
+                    template += '<li><div class="fn-flex">';
+
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
+                    }
+                    template += '<div class="avatar tooltipped tooltipped-se" aria-label="' + data.commentAuthorName + '" style="background-image:url('
+                            + data.commentAuthorThumbnailURL + ')"></div>';
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '</a>';
+                    }
+
+                    template += '<div class="fn-flex-1">'
+                            + '<div class="comment-info ft-smaller">';
+
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
+                    }
+                    template += data.commentAuthorName;
+                    if (data.commentAuthorName !== 'someone') {
+                        template += '</a>';
+                    }
+
+                    template += '<span class="ft-fade"> • ' + data.timeAgo;
+                    if (data.rewardedCnt > 0) {
+                        template += '<span aria-label="'
+                                + (data.rewarded ? Label.thankedLabel : Label.thankLabel + ' ' + data.rewardedCnt)
+                                + '" class="tooltipped tooltipped-n '
+                                + (data.rewarded ? 'ft-red' : 'ft-fade') + '">'
+                                + ' <span class="icon-heart"></span>' + data.rewardedCnt + '</span> ';
+                    }
+
+                    template += ' ' + Util.getDeviceByUa(data.commentUA) + '</span>';
+
+                    template += '<a class="tooltipped tooltipped-nw ft-a-icon fn-right" aria-label="' + Label.referenceLabel + '" href="javascript:Comment.goComment(\''
+                            + Label.servePath + '/article/' + Label.articleOId + '?p=' + data.paginationCurrentPageNum
+                            + '&m=' + Label.userCommentViewMode + '#' + data.oId
+                            + '\')"><span class="icon-quote"></span></a></div><div class="content-reset comment">'
+                            + data.commentContent + '</div></div></div></li>';
+                }
+                $commentReplies.html('<ul>' + template + '</ul>');
+                Article.parseLanguage();
+
+                // 如果是回帖的回复需要处理下样式
+                $(it).find('.icon-chevron-down').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+            },
+            error: function (result) {
+                alert(result.statusText);
+            },
+            complete: function () {
+                $(it).css("opacity", "1");
             }
         });
     },
@@ -282,8 +449,13 @@ var Comment = {
         var requestJSONObject = {
             articleId: id,
             commentAnonymous: $('#commentAnonymous').prop('checked'),
-            commentContent: Comment.editor.getValue() // 实际提交时不去除空格，因为直接贴代码时需要空格
+            commentContent: Comment.editor.getValue(), // 实际提交时不去除空格，因为直接贴代码时需要空格
+            userCommentViewMode: Label.userCommentViewMode
         };
+
+        if ($('#replyUseName').data('commentOriginalCommentId')) {
+            requestJSONObject.commentOriginalCommentId = $('#replyUseName').data('commentOriginalCommentId');
+        }
 
         $.ajax({
             url: Label.servePath + "/comment",
@@ -299,17 +471,20 @@ var Comment = {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
 
                 if (result.sc) {
-                    Comment.editor.setValue('');
                     // reset comment editor
+                    Comment.editor.setValue('');
                     $('.editor-preview').html('');
                     if ($('.icon-preview').hasClass('active')) {
                         $('.icon-preview').click();
                     }
-                    // first comment, pls add icon
-                    if ($('#comments > ul li').length === 0) {
-                        $('#comments > div > span').show();
-                    }
 
+                    // hide comment panel
+                    $('.editor-hide').click();
+
+                    // clear reply comment
+                    $('#replyUseName').text('').removeData();
+
+                    // clear local storage
                     if (window.localStorage) {
                         var emptyContent = {
                             commentContent: ""
@@ -334,50 +509,41 @@ var Comment = {
      * @description 点击回复评论时，把当楼层的用户名带到评论框中
      * @param {String} userName 用户名称
      */
-    replay: function (userName) {
+    reply: function (userName, id) {
         if (!Label.isLoggedIn) {
             Util.needLogin();
             return false;
         }
-        Comment.editor.focus();
-        $.ua.set(navigator.userAgent);
-        if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
-            var $it = $('#commentContent'),
-                    it = $it[0],
-                    index = 0;
-            if (document.selection) { // IE
-                try {
-                    var cuRange = document.selection.createRange();
-                    var tbRange = it.createTextRange();
-                    tbRange.collapse(true);
-                    tbRange.select();
-                    var headRange = document.selection.createRange();
-                    headRange.setEndPoint("EndToEnd", cuRange);
-                    index = headRange.text.length;
-                    cuRange.select();
-                } catch (e) {
-                    delete e;
-                }
-            } else {
-                index = it.selectionStart;
-            }
+        $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
+        $('.editor-panel').slideDown(function () {
+            $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
 
-            $it.val($it.val().substr(0, index) + userName + ' ' + $it.val().substr(index));
-            var insertIndex = ($it.val().substr(0, index) + userName).length;
-            if (it.setSelectionRange) {
-                it.focus();
-                it.setSelectionRange(insertIndex, insertIndex);
-            } else if (it.createTextRange) {
-                var range = it.createTextRange();
-                range.collapse(true);
-                range.moveEnd('character', insertIndex);
-                range.moveStart('character', insertIndex);
-                range.select();
+            // 回帖在底部，当评论框弹出时会被遮住的解决方案
+            if ($(window).height() - ($('#' + id).offset().top - $(window).scrollTop()) < $('.editor-panel').outerHeight() + $('#' + id).outerHeight()) {
+                $(window).scrollTop($('#' + id).offset().top - ($(window).height() - $('.editor-panel').outerHeight() - $('#' + id).outerHeight()));
             }
-            return false;
+        });
+
+        // 帖子作者 clone 到编辑器左上角
+        var replyUserHTML = '',
+                $avatar = $('#' + id).find('>.fn-flex>a').clone();
+        if ($avatar.length === 0) {
+            $avatar = $('#' + id).find('>.fn-flex>.avatar').clone();
+            $avatar.removeClass('avatar').addClass('avatar-small');
+            replyUserHTML = '<a rel="nofollow" href="#' + id 
+                    + '" class="ft-a-icon" onclick="Comment._bgFade($(\'#' + id 
+                    + '\'))"><span class="icon-reply-to"></span> ' 
+                    + $avatar[0].outerHTML + ' ' + userName + '</a>';
+        } else {
+            $avatar.addClass('ft-a-icon').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
+            $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
+            replyUserHTML = $avatar[0].outerHTML;
         }
-        var cursor = Comment.editor.getCursor();
-        Comment.editor.doc.replaceRange(userName, cursor, cursor);
+
+        $('#replyUseName').html(replyUserHTML)
+                .css('visibility', 'visible').data('commentOriginalCommentId', id);
+
+        Comment.editor.focus();
     }
 };
 
@@ -724,7 +890,7 @@ var Article = {
         if (0 === articleAnonymous && !confirm(Label.thankArticleConfirmLabel)) {
             return false;
         }
-        
+
         if (Label.currentUserName === Label.articleAuthorName) {
             alert(Label.thankSelfLabel);
             return false;

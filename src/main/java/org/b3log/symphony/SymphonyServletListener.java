@@ -74,7 +74,7 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.6.10, Aug 22, 2016
+ * @version 2.16.6.10, Aug 28, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -202,11 +202,14 @@ public final class SymphonyServletListener extends AbstractServletListener {
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         BrowserType browserType = userAgent.getBrowser().getBrowserType();
 
-        if (BrowserType.UNKNOWN == browserType) {
-            if (StringUtils.containsIgnoreCase(userAgentStr, "mobile")
-                    || StringUtils.containsIgnoreCase(userAgentStr, "MQQBrowser")) {
-                browserType = BrowserType.MOBILE_BROWSER;
-            } else if (!StringUtils.containsIgnoreCase(userAgentStr, "Java")
+        if (StringUtils.containsIgnoreCase(userAgentStr, "mobile")
+                || StringUtils.containsIgnoreCase(userAgentStr, "MQQBrowser")
+                || StringUtils.containsIgnoreCase(userAgentStr, "iphone")) {
+            browserType = BrowserType.MOBILE_BROWSER;
+        } else if (StringUtils.containsIgnoreCase(userAgentStr, "Iframely")) {
+            browserType = BrowserType.ROBOT;
+        } else if (BrowserType.UNKNOWN == browserType) {
+            if (!StringUtils.containsIgnoreCase(userAgentStr, "Java")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "MetaURI")
                     && !StringUtils.containsIgnoreCase(userAgentStr, "Feed")) {
                 LOGGER.log(Level.WARN, "Unknown client [UA=" + userAgentStr + ", remoteAddr="

@@ -37,7 +37,7 @@
                                     <input type="text" id="invitecode" placeholder="${invitecodePlaceholderLabel}"/>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr <#if "2" == miscAllowRegister>class="fn-none"</#if>>
                                 <td>
                                     <label for="securityCode">${captchaLabel}</label>
                                 </td>

@@ -43,7 +43,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.8, Jul 4, 2016
+ * @version 1.4.2.9, Aug 26, 2016
  * @since 0.2.0
  */
 @Named
@@ -114,15 +114,13 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
 
-        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-        checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
-
         // check if admin allow to register
         final JSONObject option = optionQueryService.getOption(Option.ID_C_MISC_ALLOW_REGISTER);
         if ("1".equals(option.optString(Option.OPTION_VALUE))) {
             checkField(true, "registerFailLabel", "notAllowRegisterLabel");
         }
 
+        // invitecode register
         if ("2".equals(option.optString(Option.OPTION_VALUE))) {
             final String invitecode = requestJSONObject.optString(Invitecode.INVITECODE);
 
@@ -138,6 +136,12 @@ public class UserRegisterValidation extends BeforeRequestProcessAdvice {
             if (Invitecode.STATUS_C_UNUSED != ic.optInt(Invitecode.STATUS)) {
                 checkField(true, "registerFailLabel", "usedInvitecodeLabel");
             }
+        }
+
+        // open register
+        if ("0".equals(option.optString(Option.OPTION_VALUE))) {
+            final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+            checkField(invalidCaptcha(captcha, request), "registerFailLabel", "captchaErrorLabel");
         }
 
         final String name = requestJSONObject.optString(User.USER_NAME);

@@ -28,7 +28,13 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.symphony.model.Article;
@@ -40,8 +46,11 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.validate.UserRegisterValidation;
 import org.b3log.symphony.processor.channel.ArticleChannel;
 import org.b3log.symphony.processor.channel.ArticleListChannel;
+import org.b3log.symphony.repository.CommentRepository;
+import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
+import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.ShortLinkQueryService;
@@ -58,7 +67,7 @@ import org.jsoup.safety.Whitelist;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.7.17, Aug 18, 2016
+ * @version 1.6.8.19, Sep 1, 2016
  * @since 0.2.0
  */
 @Named
@@ -69,6 +78,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentNotifier.class.getName());
+
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Notification management service.
@@ -118,6 +133,18 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     @Inject
     private PointtransferMgmtService pointtransferMgmtService;
 
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
@@ -128,9 +155,11 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
             final boolean fromClient = data.optBoolean(Common.FROM_CLIENT);
+            final int commentViewMode = data.optInt(UserExt.USER_COMMENT_VIEW_MODE);
 
             final String articleId = originalArticle.optString(Keys.OBJECT_ID);
             final String commentId = originalComment.optString(Keys.OBJECT_ID);
+            final String originalCmtId = originalComment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             final String commenterId = originalComment.optString(Comment.COMMENT_AUTHOR_ID);
 
             final String commentContent = originalComment.optString(Comment.COMMENT_CONTENT);
@@ -141,6 +170,47 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final JSONObject chData = new JSONObject();
             chData.put(Article.ARTICLE_T_ID, articleId);
             chData.put(Comment.COMMENT_T_ID, commentId);
+            chData.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCmtId);
+
+            String originalCmtAuthorId = null;
+            if (StringUtils.isNotBlank(originalCmtId)) {
+                final Query numQuery = new Query()
+                        .setPageSize(Integer.MAX_VALUE).setCurrentPageNum(1).setPageCount(1);
+
+                switch (commentViewMode) {
+                    case UserExt.USER_COMMENT_VIEW_MODE_C_TRADITIONAL:
+                        numQuery.setFilter(CompositeFilterOperator.and(
+                                new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
+                                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, originalCmtId)
+                        )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
+
+                        break;
+                    case UserExt.USER_COMMENT_VIEW_MODE_C_REALTIME:
+                        numQuery.setFilter(CompositeFilterOperator.and(
+                                new PropertyFilter(Comment.COMMENT_ON_ARTICLE_ID, FilterOperator.EQUAL, articleId),
+                                new PropertyFilter(Keys.OBJECT_ID, FilterOperator.GREATER_THAN_OR_EQUAL, originalCmtId)
+                        )).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+                        break;
+                }
+
+                final long num = commentRepository.count(numQuery);
+                final int page = (int) ((num / Symphonys.getInt("articleCommentsPageSize")) + 1);
+                chData.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, page);
+
+                final JSONObject originalCmt = commentRepository.get(originalCmtId);
+                originalCmtAuthorId = originalCmt.optString(Comment.COMMENT_AUTHOR_ID);
+                final JSONObject originalCmtAuthor = userRepository.get(originalCmtAuthorId);
+
+                if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalCmt.optInt(Comment.COMMENT_ANONYMOUS)) {
+                    chData.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
+                            avatarQueryService.getAvatarURLByUser(
+                                    UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, originalCmtAuthor, "20"));
+                } else {
+                    chData.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
+                            avatarQueryService.getDefaultAvatarURL("20"));
+                }
+            }
 
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalComment.optInt(Comment.COMMENT_ANONYMOUS)) {
                 chData.put(Comment.COMMENT_T_AUTHOR_NAME, commenterName);
@@ -285,7 +355,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             final Set<String> atUserNames = userQueryService.getUserNames(commentContent);
 
             // 2. 'Commented' Notification
-            if (commenterIsArticleAuthor && atUserNames.isEmpty()) {
+            if (commenterIsArticleAuthor && atUserNames.isEmpty() && StringUtils.isBlank(originalCmtId)) {
                 return;
             }
 
@@ -299,10 +369,21 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 notificationMgmtService.addCommentedNotification(requestJSONObject);
             }
 
+            // 3. 'Reply' Notification
+            if (StringUtils.isNotBlank(originalCmtId)) {
+                if (!articleAuthorId.equals(originalCmtAuthorId)) {
+                    final JSONObject requestJSONObject = new JSONObject();
+                    requestJSONObject.put(Notification.NOTIFICATION_USER_ID, originalCmtAuthorId);
+                    requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
+
+                    notificationMgmtService.addReplyNotification(requestJSONObject);
+                }
+            }
+
             final String articleContent = originalArticle.optString(Article.ARTICLE_CONTENT);
             final Set<String> articleContentAtUserNames = userQueryService.getUserNames(articleContent);
 
-            // 3. 'At' Notification
+            // 4. 'At' Notification
             for (final String userName : atUserNames) {
                 if (isDiscussion && !articleContentAtUserNames.contains(userName)) {
                     continue;
@@ -317,7 +398,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 }
 
                 if (user.optString(Keys.OBJECT_ID).equals(articleAuthorId)) {
-                    continue; // Has added in step 2
+                    continue; // Has notified in step 2
                 }
 
                 final JSONObject requestJSONObject = new JSONObject();

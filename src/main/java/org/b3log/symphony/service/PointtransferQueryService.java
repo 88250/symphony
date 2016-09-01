@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Pointtransfer query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.17.2.1, Aug 14, 2016
+ * @version 1.18.2.1, Aug 26, 2016
  * @since 1.3.0
  */
 @Service
@@ -118,13 +118,13 @@ public class PointtransferQueryService {
      * @return pointtransfers, returns an empty list if not found
      */
     public List<JSONObject> getLatestPointtransfers(final String userId, final int type, final int fetchSize) {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<>();
 
-        final List<Filter> userFilters = new ArrayList<Filter>();
+        final List<Filter> userFilters = new ArrayList<>();
         userFilters.add(new PropertyFilter(Pointtransfer.FROM_ID, FilterOperator.EQUAL, userId));
         userFilters.add(new PropertyFilter(Pointtransfer.TO_ID, FilterOperator.EQUAL, userId));
 
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new CompositeFilter(CompositeFilterOperator.OR, userFilters));
         filters.add(new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, type));
 
@@ -150,7 +150,7 @@ public class PointtransferQueryService {
      * @return users, returns an empty list if not found
      */
     public List<JSONObject> getTopBalanceUsers(final int avatarViewMode, final int fetchSize) {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<>();
 
         final Query query = new Query().addSort(UserExt.USER_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
                 .setPageSize(fetchSize).
@@ -190,7 +190,7 @@ public class PointtransferQueryService {
      * @return users, returns an empty list if not found
      */
     public List<JSONObject> getTopConsumptionUsers(final int avatarViewMode, final int fetchSize) {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<>();
 
         final Query query = new Query().addSort(UserExt.USER_USED_POINT, SortDirection.DESCENDING).setCurrentPageNum(1)
                 .setPageSize(fetchSize).
@@ -242,7 +242,7 @@ public class PointtransferQueryService {
     public JSONObject getUserPoints(final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setCurrentPageNum(currentPageNum).setPageSize(pageSize);
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Pointtransfer.FROM_ID, FilterOperator.EQUAL, userId));
         filters.add(new PropertyFilter(Pointtransfer.TO_ID, FilterOperator.EQUAL, userId));
         query.setFilter(new CompositeFilter(CompositeFilterOperator.OR, filters));
@@ -451,6 +451,13 @@ public class PointtransferQueryService {
                         final String referralUserLink = "<a href=\"/member/" + referralUser.optString(User.USER_NAME) + "\">"
                                 + referralUser.optString(User.USER_NAME) + "</a>";
                         desTemplate = desTemplate.replace("{user}", referralUserLink);
+
+                        break;
+                    case Pointtransfer.TRANSFER_TYPE_C_INVITECODE_USED:
+                        final JSONObject newUser1 = userRepository.get(dataId);
+                        final String newUserLink1 = "<a href=\"/member/" + newUser1.optString(User.USER_NAME) + "\">"
+                                + newUser1.optString(User.USER_NAME) + "</a>";
+                        desTemplate = desTemplate.replace("{user}", newUserLink1);
 
                         break;
                     case Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_CHECKIN:

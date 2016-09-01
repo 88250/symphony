@@ -55,13 +55,14 @@ import org.json.JSONObject;
  *
  * <ul>
  * <li>Displays comments of my articles (/notifications/commented), GET</li>
+ * <li>Displays replies of my comments (/notifications/reply), GET</li>
  * <li>Displays at me (/notifications/at), GET</li>
  * <li>Displays following user's articles (/notifications/following-user), GET</li>
  * <li>Makes article/comment read (/notification/read), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.3, Jul 19, 2016
+ * @version 1.6.1.4, Aug 31, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -124,6 +125,10 @@ public class NotificationProcessor {
         switch (type) {
             case "commented":
                 notificationType = Notification.DATA_TYPE_C_COMMENTED;
+
+                break;
+            case "reply":
+                notificationType = Notification.DATA_TYPE_C_REPLY;
 
                 break;
             case "at":
@@ -215,6 +220,14 @@ public class NotificationProcessor {
             return;
         }
 
+        final int unreadReplyNotificationCnt
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_REPLY);
+        if (unreadReplyNotificationCnt > 0) {
+            response.sendRedirect(Latkes.getServePath() + "/notifications/reply");
+
+            return;
+        }
+
         final int unreadAtNotificationCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
         if (unreadAtNotificationCnt > 0) {
@@ -287,7 +300,6 @@ public class NotificationProcessor {
         final int windowSize = Symphonys.getInt("pointNotificationsWindowSize");
 
         final JSONObject result = notificationQueryService.getPointNotifications(userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> pointNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
         dataModel.put(Common.POINT_NOTIFICATIONS, pointNotifications);
 
@@ -321,6 +333,10 @@ public class NotificationProcessor {
         final int unreadCommentedNotificationCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_COMMENTED);
         dataModel.put(Common.UNREAD_COMMENTED_NOTIFICATION_CNT, unreadCommentedNotificationCnt);
+
+        final int unreadReplyNotificationCnt
+                = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_REPLY);
+        dataModel.put(Common.UNREAD_REPLY_NOTIFICATION_CNT, unreadReplyNotificationCnt);
 
         final int unreadAtNotificationCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_AT);
@@ -380,9 +396,70 @@ public class NotificationProcessor {
 
         final JSONObject result = notificationQueryService.getCommentedNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> commentedNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
         dataModel.put(Common.COMMENTED_NOTIFICATIONS, commentedNotifications);
+
+        fillNotificationCount(userId, dataModel);
+
+        final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil((double) recordCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Shows [reply] notifications.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/notifications/reply", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showReplyNotifications(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/notifications/reply.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("replyNotificationsCnt");
+        final int windowSize = Symphonys.getInt("replyNotificationsWindowSize");
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject result = notificationQueryService.getReplyNotifications(
+                avatarViewMode, userId, pageNum, pageSize);
+        final List<JSONObject> replyNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
+        dataModel.put(Common.REPLY_NOTIFICATIONS, replyNotifications);
 
         fillNotificationCount(userId, dataModel);
 
@@ -506,7 +583,6 @@ public class NotificationProcessor {
 
         final JSONObject result = notificationQueryService.getFollowingUserNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> followingUserNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.FOLLOWING_USER_NOTIFICATIONS, followingUserNotifications);
@@ -570,7 +646,6 @@ public class NotificationProcessor {
 
         final JSONObject result = notificationQueryService.getBroadcastNotifications(
                 avatarViewMode, userId, pageNum, pageSize);
-        @SuppressWarnings("unchecked")
         final List<JSONObject> broadcastNotifications = (List<JSONObject>) result.get(Keys.RESULTS);
 
         dataModel.put(Common.BROADCAST_NOTIFICATIONS, broadcastNotifications);

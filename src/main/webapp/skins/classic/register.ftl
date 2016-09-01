@@ -38,7 +38,7 @@
                                     <input type="text" id="invitecode" placeholder="${invitecodePlaceholderLabel}"/>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr <#if "2" == miscAllowRegister>class="fn-none"</#if>>
                                 <td>
                                     <label for="securityCode">${captchaLabel}</label>
                                 </td>
@@ -50,7 +50,7 @@
                             <tr>
                                 <td colspan="2" align="right"><br/>
                                     <div id="registerTip" class="tip"></div><br/>
-                                    <button class="green" onclick="Register.register()">${registerLabel}</button>
+                                    <button id="registerBtn" class="green" onclick="Register.register()">${registerLabel}</button>
                                     <input id="referral" type="hidden" value="${referral}">
                                 </td>
                             </tr>

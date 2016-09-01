@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.9.9.11, Aug 17, 2016
+ * @version 1.10.11.13, Aug 31, 2016
  */
 
 /**
@@ -61,8 +61,11 @@ var ArticleChannel = {
 
                     // 新增第一条评论时到底部的锚点
                     var bottomCmt = '';
-                    if ($('#comments > ul li').length === 0) {
+                    if ($('#comments > ul > li').length === 0) {
+                        $('.comment-header > .fn-none').show();
                         bottomCmt = '<div id="bottomComment"></div>';
+                        // 显示预览模式 & 回到底部
+                        $('#comments > div > span:last').show();
                     }
 
                     // ua
@@ -71,7 +74,7 @@ var ArticleChannel = {
                         UAName = ' <span class="cmt-via">via ' + UAName + '</span>';
                     }
 
-                    var template = '<li id="' + data.commentId + '" class="fn-none">'
+                    var template = '<li id="' + data.commentId + '">'
                             + bottomCmt + '<div class="fn-flex">';
 
                     if (!data.fromClient) {
@@ -88,8 +91,8 @@ var ArticleChannel = {
                                 + data.commentAuthorThumbnailURL + ')"></div>';
                     }
 
-                    template += '<div class="fn-flex-1 comment-content">'
-                            + '<div class="fn-clear comment-info ft-smaller">'
+                    template += '<div class="fn-flex-1">'
+                            + '<div class="comment-get-comment list"></div><div class="fn-clear comment-info ft-smaller">'
                             + '<span class="fn-left">';
 
                     if (!data.fromClient) {
@@ -101,44 +104,49 @@ var ArticleChannel = {
                             template += '</a>';
                         }
                     } else {
-                        template += data.commentAuthorName + ' via <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
+                        template += data.commentAuthorName + ' <span class="ft-fade"> • </span> <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
                     }
-                    template += '<span class="ft-fade"> • ' + data.timeAgo;
+                    template += ' <span class="ft-fade"> • ' + data.timeAgo;
 
                     if (data.userUAStatus === 0) {
-                        template += UAName;
+                        template += ' ' + UAName;
                     }
 
-                    template += '</span></span><span class="fn-right ft-gray">';
+                    template += '</span></span><span class="fn-right">';
+                    if (data.commentOriginalCommentId !== '') {
+                        template += '<span class="fn-pointer ft-fade tooltipped tooltipped-nw" aria-label="'
+                                + Label.goCommentLabel + '" onclick="Comment.showReply(\'' + data.commentOriginalCommentId + '\', this, \'comment-get-comment\')"><span class="icon-reply-to"></span>  <div class="avatar-small" style="background-image:url(\''
+                                + data.commentOriginalAuthorThumbnailURL + '\')"></div></span> ';
+                    }
+                    if (Label.isAdminLoggedIn) {
+                        template += '<a class="hover-show fn-hidden tooltipped tooltipped-n ft-a-icon" href="/admin/comment/' + data.commentId
+                                + '" aria-label="' + Label.adminLabel + '"><span class="icon-setting"></span></a> ';
+                    }
+                    template += '</span></div><div class="content-reset comment">'
+                            + data.commentContent + '</div><div class="comment-action"><div class="ft-fade fn-clear">'
+                            + '<span class="fn-right">';
 
                     if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName) || !Label.isLoggedIn) {
-                        template += '<span class="fn-hidden hover-show fn-pointer ft-fade tooltipped tooltipped-n" '
+                        template += '<span class="fn-pointer tooltipped tooltipped-n" '
                                 + ' aria-label="' + Label.thankLabel + '" onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
                                 + '\', \'' + data.commentThankLabel + '\','
                                 + (data.commentAuthorName === 'someone' ? 1 : 0) + ', this)"><span class="icon-heart"></span></span> ';
                     }
-
-                    template += '<span class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade" '
+                    template += '<span class="tooltipped tooltipped-n fn-pointer" '
                             + 'aria-label="' + Label.upLabel + ' 0"'
                             + 'onclick="Article.voteUp(\'' + data.commentId + '\', \'comment\', this)">'
                             + '<span class="icon-thumbs-up"></span></span> '
-                            + '<span class="tooltipped tooltipped-n fn-pointer fn-hidden hover-show ft-fade"'
+                            + '<span class="tooltipped tooltipped-n fn-pointer"'
                             + 'aria-label="' + Label.downLabel + ' 0" '
                             + 'onclick="Article.voteDown(\'' + data.commentId + '\', \'comment\', this)">'
                             + '<span class="icon-thumbs-down"></span></span> ';
 
-                    if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') || !Label.isLoggedIn) {
-                        template += ' <span aria-label="@' + data.commentAuthorName + '" class="fn-pointer tooltipped tooltipped-n" onclick="Comment.replay(\'@'
-                                + data.commentAuthorName + ' \')"><span class="icon-reply"></span></span> ';
+                    if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName) || !Label.isLoggedIn) {
+                        template += ' <span aria-label="' + Label.replyLabel + '" class="fn-pointer tooltipped tooltipped-n" onclick="Comment.reply(\''
+                                + data.commentAuthorName + '\', \''
+                                + data.commentId + '\')"><span class="icon-reply"></span></span> ';
                     }
-
-                    if (Label.isAdminLoggedIn) {
-                        template += '<a class="tooltipped tooltipped-n ft-a-icon" href="/admin/comment/' + data.commentId
-                                + '" aria-label="' + Label.adminLabel + '"><span class="icon-setting"></span></a> ';
-                    }
-
-                    template += '<i class="ft-fade">' + cmtCount + '</i></span></div><div class="content-reset comment">'
-                            + data.commentContent + '</div></div></div></li>';
+                    template += '</span></div></div></li>';
 
                     if (0 === Label.userCommentViewMode) { // tranditional view mode
                         $("#comments > ul").append(template);
@@ -148,8 +156,32 @@ var ArticleChannel = {
 
                     // 代码高亮
                     Article.parseLanguage();
+                    Comment._bgFade($("#" + data.commentId));
 
-                    $("#" + data.commentId).fadeIn(2000);
+                    if (Label.userCommentViewMode === 1) {
+                        // 实时模式
+                        window.location.hash = '#comments';
+                    } else {
+                        window.location.hash = '#bottomComment';
+                    }
+
+                    // 更新回复的帖子
+                    var $originalComment = $('#' + data.commentOriginalCommentId),
+                            $replyBtn = $originalComment.find('.comment-action > .ft-fade > .fn-pointer');
+                    if ($replyBtn.length === 1) {
+                        $replyBtn.html(' ' + (parseInt($.trim($replyBtn.text())) + 1)
+                                + ' ' + Label.replyLabel + ' <span class="'
+                                + $replyBtn.find('span').attr('class') + '"></span>');
+
+                        if ($replyBtn.find('span').attr('class') === "icon-chevron-up") {
+                            $replyBtn.find('span').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                            $replyBtn.click();
+                        }
+                    } else {
+                        $originalComment.find('.comment-action > .ft-fade').prepend('<span class="fn-pointer ft-smaller" onclick="Comment.showReply(\''
+                                + data.commentOriginalCommentId + '\', this, \'comment-replies\')" style="opacity: 1;"> 1 '
+                                + Label.replyLabel + ' <span class="icon-chevron-down"></span>');
+                    }
                     break;
                 case "articleHeat":
                     var $heatBar = $("#heatBar"),

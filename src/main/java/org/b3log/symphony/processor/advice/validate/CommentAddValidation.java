@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -32,6 +33,7 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.service.ArticleQueryService;
+import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.json.JSONObject;
 
@@ -39,7 +41,7 @@ import org.json.JSONObject;
  * Validates for comment adding locally.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Apr 5, 2016
+ * @version 1.3.0.1, Aug 28, 2016
  * @since 0.2.0
  */
 @Named
@@ -51,6 +53,12 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Comment query service.
+     */
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * Article query service.
@@ -103,6 +111,14 @@ public class CommentAddValidation extends BeforeRequestProcessAdvice {
 
             if (!article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
                 throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("notAllowCmtLabel")));
+            }
+
+            final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+            if (StringUtils.isNotBlank(originalCommentId)) {
+                final JSONObject originalCmt = commentQueryService.getComment(originalCommentId);
+                if (null == originalCmt) {
+                    throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, langPropsService.get("commentArticleErrorLabel")));
+                }
             }
         } catch (final ServiceException e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, "Unknown Error"));
