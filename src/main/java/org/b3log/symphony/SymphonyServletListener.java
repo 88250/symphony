@@ -74,7 +74,8 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.16.6.11, Sep 1, 2016
+ * @author Bill Ho
+ * @version 2.16.6.12, Sep 2, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {

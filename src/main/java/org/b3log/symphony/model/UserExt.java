@@ -22,7 +22,8 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.1.11, Aug 14, 2016
+ * @author Bill Ho
+ * @version 2.25.1.11, Sep 2, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -137,11 +138,11 @@ public final class UserExt {
      * Key of user skin.
      */
     public static final String USER_SKIN = "userSkin";
-    
+
     /**
      * Key of mobile user skin.
      */
-    public static final String USER_MOBILE_SKIN ="userMobileSkin";
+    public static final String USER_MOBILE_SKIN = "userMobileSkin";
 
     /**
      * Key of user checkin time.
