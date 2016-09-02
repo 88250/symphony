@@ -1,8 +1,8 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.27.7.12, Aug 28, 2016",
+    "version": "3.28.7.12, Sep 2, 2016",
     "authors": [
-        "Liang Ding"
+        "Liang Ding", "Zephyr", "Bill Ho"
     ],
     "since": "0.2.0",
     "repositories": [
@@ -909,6 +909,11 @@
                 },
                 {
                     "name": "userSkin",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "userMobileSkin",
                     "type": "String",
                     "length": 32
                 },

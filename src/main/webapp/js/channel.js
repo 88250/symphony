@@ -64,6 +64,8 @@ var ArticleChannel = {
                     if ($('#comments > ul > li').length === 0) {
                         $('.comment-header > .fn-none').show();
                         bottomCmt = '<div id="bottomComment"></div>';
+                        // 显示预览模式 & 回到底部
+                        $('#comments > div > span:last').show();
                     }
 
                     // ua
@@ -139,9 +141,10 @@ var ArticleChannel = {
                             + 'onclick="Article.voteDown(\'' + data.commentId + '\', \'comment\', this)">'
                             + '<span class="icon-thumbs-down"></span></span> ';
 
-                    if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName && data.commentAuthorName !== 'someone') || !Label.isLoggedIn) {
+                    if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName) || !Label.isLoggedIn) {
                         template += ' <span aria-label="' + Label.replyLabel + '" class="fn-pointer tooltipped tooltipped-n" onclick="Comment.reply(\''
-                                + data.commentId + ' \')"><span class="icon-reply"></span></span> ';
+                                + data.commentAuthorName + '\', \''
+                                + data.commentId + '\')"><span class="icon-reply"></span></span> ';
                     }
                     template += '</span></div></div></li>';
 
@@ -154,7 +157,7 @@ var ArticleChannel = {
                     // 代码高亮
                     Article.parseLanguage();
                     Comment._bgFade($("#" + data.commentId));
-                    
+
                     if (Label.userCommentViewMode === 1) {
                         // 实时模式
                         window.location.hash = '#comments';
@@ -165,12 +168,11 @@ var ArticleChannel = {
                     // 更新回复的帖子
                     var $originalComment = $('#' + data.commentOriginalCommentId),
                             $replyBtn = $originalComment.find('.comment-action > .ft-fade > .fn-pointer');
-                    $originalComment.addClass('selected');
                     if ($replyBtn.length === 1) {
                         $replyBtn.html(' ' + (parseInt($.trim($replyBtn.text())) + 1)
                                 + ' ' + Label.replyLabel + ' <span class="'
                                 + $replyBtn.find('span').attr('class') + '"></span>');
-                        
+
                         if ($replyBtn.find('span').attr('class') === "icon-chevron-up") {
                             $replyBtn.find('span').removeClass('icon-chevron-up').addClass('icon-chevron-down');
                             $replyBtn.click();

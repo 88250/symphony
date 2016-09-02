@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.8.1.16, Aug 31, 2016
+ * @version 1.8.2.16, Sep 1, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -111,7 +111,7 @@ public class IndexProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"", "/"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -123,8 +123,10 @@ public class IndexProcessor {
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        final List<JSONObject> hotArticles = articleQueryService.getIndexHotArticles(avatarViewMode);
-        dataModel.put(Common.HOT_ARTICLES, hotArticles);
+//        final List<JSONObject> hotArticles = articleQueryService.getIndexHotArticles(avatarViewMode);
+//        dataModel.put(Common.HOT_ARTICLES, hotArticles);
+        final List<JSONObject> recentArticles = articleQueryService.getIndexRecentArticles(avatarViewMode);
+        dataModel.put(Common.RECENT_ARTICLES, recentArticles);
 
         final List<JSONObject> perfectArticles = articleQueryService.getIndexPerfectArticles(avatarViewMode);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
