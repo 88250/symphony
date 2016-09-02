@@ -456,7 +456,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
             }
 
             request.setAttribute(Keys.TEMAPLTE_DIR_NAME, (Boolean) request.getAttribute(Common.IS_MOBILE)
-                    ? "mobile" : user.optString(UserExt.USER_SKIN));
+                    ? user.optString(UserExt.USER_MOBILE_SKIN) : user.optString(UserExt.USER_SKIN));
             request.setAttribute(UserExt.USER_AVATAR_VIEW_MODE, user.optInt(UserExt.USER_AVATAR_VIEW_MODE));
 
             request.setAttribute(User.USER, user);
