@@ -533,6 +533,15 @@ public class ArticleProcessor {
 
         filler.fillHeaderAndFooter(request, response, dataModel);
 
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
+
+        if (Article.ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)
+                && !isLoggedIn) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
         final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
         final JSONObject author = userQueryService.getUser(authorId);
 
@@ -555,8 +564,6 @@ public class ArticleProcessor {
         }
 
         articleQueryService.processArticleContent(article, request);
-
-        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
 
         String cmtViewModeStr = request.getParameter("m");
 
