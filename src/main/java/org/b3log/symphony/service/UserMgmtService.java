@@ -79,7 +79,8 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.15.11, Sep 1, 2016
+ * @author Bill Ho
+ * @version 1.13.15.12, Sep 2, 2016
  * @since 0.2.0
  */
 @Service
