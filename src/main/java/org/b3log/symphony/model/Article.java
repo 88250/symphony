@@ -344,14 +344,19 @@ public final class Article {
 
     // Anonymous view constants
     /**
-     * Article anonymous view - allow.
+     * Article anonymous view - use global.
      */
-    public static final int ARTICLE_ANONYMOUS_VIEW_C_ALLOW = 0;
+    public static final int ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL = 0;
 
     /**
      * Article anonymous view - not allow.
      */
     public static final int ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW = 1;
+
+    /**
+     * Article anonymous view - allow.
+     */
+    public static final int ARTICLE_ANONYMOUS_VIEW_C_ALLOW = 2;
 
     // Status constants
     /**

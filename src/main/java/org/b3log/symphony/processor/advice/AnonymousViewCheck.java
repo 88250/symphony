@@ -31,7 +31,6 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
-import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Option;
@@ -39,14 +38,13 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
-import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
  * Anonymous view check.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Aug 29, 2016
+ * @version 1.1.1.3, Sep 3, 2016
  * @since 1.6.0
  */
 @Named
@@ -94,10 +92,6 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
             return;
         }
 
-        if (Strings.contains(request.getRequestURI(), Symphonys.get("anonymousViewSkips").split(","))) {
-            return;
-        }
-
         final JSONObject exception404 = new JSONObject();
         exception404.put(Keys.MSG, HttpServletResponse.SC_NOT_FOUND + ", " + request.getRequestURI());
         exception404.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
@@ -107,8 +101,8 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
         exception403.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
 
         final String requestURI = request.getRequestURI();
-        if (requestURI.startsWith(Latkes.getContextPath() + "/article")) {
-            final String articleId = StringUtils.substringAfter(requestURI, Latkes.getContextPath() + "/article");
+        if (requestURI.startsWith(Latkes.getContextPath() + "/article/")) {
+            final String articleId = StringUtils.substringAfter(requestURI, Latkes.getContextPath() + "/article/");
 
             try {
                 final JSONObject article = articleRepository.get(articleId);
@@ -120,6 +114,8 @@ public class AnonymousViewCheck extends BeforeRequestProcessAdvice {
                         && null == userQueryService.getCurrentUser(request)
                         && !userMgmtService.tryLogInWithCookie(request, context.getResponse())) {
                     throw new RequestProcessAdviceException(exception403);
+                } else if (Article.ARTICLE_ANONYMOUS_VIEW_C_ALLOW == article.optInt(Article.ARTICLE_ANONYMOUS_VIEW)) {
+                    return;
                 }
             } catch (final RepositoryException | ServiceException e) {
                 LOGGER.log(Level.ERROR, "Get article [id=" + articleId + "] failed", e);
