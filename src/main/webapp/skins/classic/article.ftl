@@ -274,7 +274,7 @@
                                                     </span>
                                                     </#if>
                                                      <span class="fn-right fn-hidden hover-show">
-                                                        <#if (isLoggedIn && comment.commentAuthorId != currentUser.oId && !comment.rewarded) || !isLoggedIn>
+                                                        <#if (isLoggedIn && !comment.rewarded) || !isLoggedIn>
                                                         <span class="fn-pointer tooltipped tooltipped-n"
                                                               aria-label="${thankLabel}"
                                                               onclick="Comment.thank('${comment.oId}', '${csrfToken}', '${comment.commentThankLabel}', ${comment.commentAnonymous}, this)"><span class="icon-heart"></span></span>
@@ -288,7 +288,7 @@
                                                               onclick="Article.voteDown('${comment.oId}', 'comment', this)">
                                                             <span class="icon-thumbs-down<#if isLoggedIn && 1 == comment.commentVote> ft-red</#if>"></span></span>
 
-                                                        <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName && comment.commentAnonymous == 0) || !isLoggedIn>
+                                                        <#if (isLoggedIn && comment.commentAuthorName != currentUser.userName) || !isLoggedIn>
                                                         <span aria-label="${replyLabel}" class="fn-pointer tooltipped tooltipped-n" 
                                                               onclick="Comment.reply('${comment.commentAuthorName}', '${comment.oId}')"><span class="icon-reply"></span></span>
                                                         </#if>

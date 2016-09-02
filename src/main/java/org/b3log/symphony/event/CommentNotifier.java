@@ -50,6 +50,7 @@ import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
+import org.b3log.symphony.service.CommentQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.PointtransferMgmtService;
 import org.b3log.symphony.service.ShortLinkQueryService;
@@ -66,7 +67,7 @@ import org.jsoup.safety.Whitelist;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.7.19, Aug 29, 2016
+ * @version 1.6.8.19, Sep 1, 2016
  * @since 0.2.0
  */
 @Named
@@ -77,6 +78,12 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentNotifier.class.getName());
+
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Notification management service.
@@ -127,10 +134,10 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
     private PointtransferMgmtService pointtransferMgmtService;
 
     /**
-     * Comment repository.
+     * Comment query service.
      */
     @Inject
-    private CommentRepository commentRepository;
+    private CommentQueryService commentQueryService;
 
     /**
      * User repository.
@@ -194,8 +201,15 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                 final JSONObject originalCmt = commentRepository.get(originalCmtId);
                 originalCmtAuthorId = originalCmt.optString(Comment.COMMENT_AUTHOR_ID);
                 final JSONObject originalCmtAuthor = userRepository.get(originalCmtAuthorId);
-                chData.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(
-                        UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, originalCmtAuthor, "20"));
+
+                if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalCmt.optInt(Comment.COMMENT_ANONYMOUS)) {
+                    chData.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
+                            avatarQueryService.getAvatarURLByUser(
+                                    UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, originalCmtAuthor, "20"));
+                } else {
+                    chData.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
+                            avatarQueryService.getDefaultAvatarURL("20"));
+                }
             }
 
             if (Comment.COMMENT_ANONYMOUS_C_PUBLIC == originalComment.optInt(Comment.COMMENT_ANONYMOUS)) {

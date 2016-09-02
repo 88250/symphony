@@ -86,7 +86,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.14.27, Aug 26, 2016
+ * @version 2.20.14.28, Sep 1, 2016
  * @since 0.2.0
  */
 @Service
@@ -1998,7 +1998,7 @@ public class ArticleQueryService {
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                 addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING).
-                addSort(Article.ARTICLE_UPDATE_TIME, SortDirection.DESCENDING);
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         for (final Map.Entry<String, Class<?>> articleField : articleFields.entrySet()) {
             query.addProjection(articleField.getKey(), articleField.getValue());
         }
