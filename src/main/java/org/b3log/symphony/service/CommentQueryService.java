@@ -65,7 +65,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.10.6.21, Aug 30, 2016
+ * @version 2.10.7.21, Sep 1, 2016
  * @since 0.2.0
  */
 @Service
@@ -660,10 +660,9 @@ public class CommentQueryService {
                 comment.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, page);
 
                 final JSONObject originalCmt = commentRepository.get(originalCmtId);
-                final String originalCmtAuthorId = originalCmt.optString(Comment.COMMENT_AUTHOR_ID);
-                final JSONObject originalCmtAuthor = userRepository.get(originalCmtAuthorId);
-                comment.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL, avatarQueryService.getAvatarURLByUser(
-                        UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL, originalCmtAuthor, "20"));
+                organizeComment(avatarViewMode, originalCmt);
+                comment.put(Comment.COMMENT_T_ORIGINAL_AUTHOR_THUMBNAIL_URL,
+                        originalCmt.optString(Comment.COMMENT_T_AUTHOR_THUMBNAIL_URL));
             }
 
             return ret;

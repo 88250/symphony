@@ -110,27 +110,6 @@ var Comment = {
             window.open($(this).attr('src'));
         });
 
-        $("#comments > ul").on('mouseover', '>li', function () {
-            $("#comments > ul > li").each(function () {
-                if ($(this).find(".comment-action .icon-chevron-up").length === 1 ||
-                        $(this).find(".comment-action .icon-chevron-down").length === 1) {
-                    // 回复展开的时候需要一直显示，否则回复引用定位有问题
-                } else {
-                    $(this).removeClass('selected');
-                }
-            });
-            $(this).addClass('selected');
-        }).on('mouseout', '>li', function () {
-            $("#comments > ul > li").each(function () {
-                if ($(this).find(".comment-action .icon-chevron-up").length === 1 ||
-                        $(this).find(".comment-action .icon-chevron-down").length === 1) {
-                    // 回复展开的时候需要一直显示，否则回复引用定位有问题
-                } else {
-                    $(this).removeClass('selected');
-                }
-            });
-        });
-
         if ($(window.location.hash).length === 1) {
             if (!isNaN(parseInt(window.location.hash.substr(1)))) {
                 Comment._bgFade($(window.location.hash));
@@ -492,19 +471,19 @@ var Comment = {
                 $(".form button.red").removeAttr("disabled").css("opacity", "1");
 
                 if (result.sc) {
-                    // TODO: update reply count
                     // reset comment editor
                     Comment.editor.setValue('');
                     $('.editor-preview').html('');
                     if ($('.icon-preview').hasClass('active')) {
                         $('.icon-preview').click();
                     }
-                    // first comment, pls add icon
-                    if ($('#comments > ul li').length === 0) {
-                        $('#comments > div > span').show();
-                    }
+
+                    // hide comment panel
+                    $('.editor-hide').click();
+
                     // clear reply comment
                     $('#replyUseName').text('').removeData();
+
                     // clear local storage
                     if (window.localStorage) {
                         var emptyContent = {
@@ -538,14 +517,32 @@ var Comment = {
         $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
         $('.editor-panel').slideDown(function () {
             $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
+
+            // 回帖在底部，当评论框弹出时会被遮住的解决方案
+            if ($(window).height() - ($('#' + id).offset().top - $(window).scrollTop()) < $('.editor-panel').outerHeight() + $('#' + id).outerHeight()) {
+                $(window).scrollTop($('#' + id).offset().top - ($(window).height() - $('.editor-panel').outerHeight() - $('#' + id).outerHeight()));
+            }
         });
 
-        var $avatar = $('#' + id).find('>.fn-flex>a').clone();
-        $avatar.addClass('ft-a-icon').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
-        $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
+        // 帖子作者 clone 到编辑器左上角
+        var replyUserHTML = '',
+                $avatar = $('#' + id).find('>.fn-flex>a').clone();
+        if ($avatar.length === 0) {
+            $avatar = $('#' + id).find('>.fn-flex>.avatar').clone();
+            $avatar.removeClass('avatar').addClass('avatar-small');
+            replyUserHTML = '<a rel="nofollow" href="#' + id 
+                    + '" class="ft-a-icon" onclick="Comment._bgFade($(\'#' + id 
+                    + '\'))"><span class="icon-reply-to"></span> ' 
+                    + $avatar[0].outerHTML + ' ' + userName + '</a>';
+        } else {
+            $avatar.addClass('ft-a-icon').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
+            $avatar.find('div').removeClass('avatar').addClass('avatar-small').after(' ' + userName).before('<span class="icon-reply-to"></span> ');
+            replyUserHTML = $avatar[0].outerHTML;
+        }
 
-        $('#replyUseName').html($avatar[0].outerHTML)
+        $('#replyUseName').html(replyUserHTML)
                 .css('visibility', 'visible').data('commentOriginalCommentId', id);
+
         Comment.editor.focus();
     }
 };

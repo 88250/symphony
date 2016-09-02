@@ -79,7 +79,8 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.14.11, Aug 5, 2016
+ * @author Bill Ho
+ * @version 1.13.15.12, Sep 2, 2016
  * @since 0.2.0
  */
 @Service
@@ -470,7 +471,6 @@ public class UserMgmtService {
             user.put(UserExt.USER_ARTICLE_COUNT, 0);
             user.put(UserExt.USER_COMMENT_COUNT, 0);
             user.put(UserExt.USER_TAG_COUNT, 0);
-            user.put(UserExt.USER_STATUS, 0);
             user.put(UserExt.USER_B3_KEY, "");
             user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, "");
             user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, "");
@@ -497,6 +497,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_JOIN_USED_POINT_RANK, UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN);
             user.put(UserExt.USER_TAGS, "");
             user.put(UserExt.USER_SKIN, Symphonys.get("skinDirName")); // TODO: set default skin by app role
+            user.put(UserExt.USER_MOBILE_SKIN, Symphonys.get("mobileSkinDirName"));
             user.put(UserExt.USER_COUNTRY, "");
             user.put(UserExt.USER_PROVINCE, "");
             user.put(UserExt.USER_CITY, "");
@@ -530,30 +531,6 @@ public class UserMgmtService {
                 }
 
                 userRepository.update(ret, user);
-
-                // Occupy the username, defeat others
-                try {
-                    final Query query = new Query();
-                    final List<Filter> filters = new ArrayList<Filter>();
-                    filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, userName));
-                    filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.NOT_EQUAL, userEmail));
-                    filters.add(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL,
-                            UserExt.USER_STATUS_C_NOT_VERIFIED));
-                    query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
-
-                    final JSONArray others = userRepository.get(query).optJSONArray(Keys.RESULTS);
-                    for (int i = 0; i < others.length(); i++) {
-                        final JSONObject u = others.optJSONObject(i);
-                        final String id = u.optString(Keys.OBJECT_ID);
-                        u.put(User.USER_NAME, UserExt.NULL_USER_NAME);
-
-                        userRepository.update(id, u);
-
-                        LOGGER.log(Level.INFO, "Defeated a user [email=" + u.optString(User.USER_EMAIL) + "]");
-                    }
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Defeat others error", e);
-                }
             } else {
                 ret = Ids.genTimeMillisId();
                 user.put(Keys.OBJECT_ID, ret);
@@ -606,6 +583,30 @@ public class UserMgmtService {
                 // Point
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, ret,
                         Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret, System.currentTimeMillis());
+
+                // Occupy the username, defeat others
+                try {
+                    final Query query = new Query();
+                    final List<Filter> filters = new ArrayList<>();
+                    filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, userName));
+                    filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.NOT_EQUAL, userEmail));
+                    filters.add(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL,
+                            UserExt.USER_STATUS_C_NOT_VERIFIED));
+                    query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+                    final JSONArray others = userRepository.get(query).optJSONArray(Keys.RESULTS);
+                    for (int i = 0; i < others.length(); i++) {
+                        final JSONObject u = others.optJSONObject(i);
+                        final String id = u.optString(Keys.OBJECT_ID);
+                        u.put(User.USER_NAME, UserExt.NULL_USER_NAME);
+
+                        userRepository.update(id, u);
+
+                        LOGGER.log(Level.INFO, "Defeated a user [email=" + u.optString(User.USER_EMAIL) + "]");
+                    }
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Defeat others error", e);
+                }
             }
 
             return ret;
