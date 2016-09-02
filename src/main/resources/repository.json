@@ -913,7 +913,7 @@
                     "length": 32
                 },
                 {
-                    "name": "mobileUserSkin",
+                    "name": "userMobileSkin",
                     "type": "String",
                     "length": 32
                 },
