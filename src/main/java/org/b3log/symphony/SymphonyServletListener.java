@@ -74,7 +74,8 @@ import org.json.JSONObject;
  * Symphony servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.16.6.10, Aug 28, 2016
+ * @author Bill Ho
+ * @version 2.16.6.12, Sep 2, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -346,7 +347,7 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
             option = new JSONObject();
             option.put(Keys.OBJECT_ID, Option.ID_C_MISC_ALLOW_ANONYMOUS_VIEW);
-            option.put(Option.OPTION_VALUE, "1"); // Not allow anonymous view
+            option.put(Option.OPTION_VALUE, "0");
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_MISC);
             optionRepository.add(option);
 
