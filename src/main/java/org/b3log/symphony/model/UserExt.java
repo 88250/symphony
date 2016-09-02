@@ -141,7 +141,7 @@ public final class UserExt {
     /**
      * Key of mobile user skin.
      */
-    public static final String USER_MOBILE_SKIN ="mobileUserSkin";
+    public static final String USER_MOBILE_SKIN ="userMobileSkin";
 
     /**
      * Key of user checkin time.
