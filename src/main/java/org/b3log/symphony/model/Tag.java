@@ -19,12 +19,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONObject;
 
 /**
  * This class defines tag model relevant keys.
@@ -241,7 +245,7 @@ public final class Tag {
 
     static {
         NORMALIZE_MAPPINGS.put("JavaScript", new HashSet<>(Arrays.asList("JS")));
-        NORMALIZE_MAPPINGS.put("Elasticsearch", new HashSet<>(Arrays.asList("ES", "ES搜索引擎")));
+        NORMALIZE_MAPPINGS.put("Elasticsearch", new HashSet<>(Arrays.asList("ES")));
     }
 
     /**
@@ -392,10 +396,19 @@ public final class Tag {
      * @return normalized title
      */
     private static String normalize(final String title) {
+        final TagCache cache = LatkeBeanManagerImpl.getInstance().getReference(TagCache.class);
+        final List<JSONObject> iconTags = cache.getIconTags(Integer.MAX_VALUE);
+        for (final JSONObject iconTag : iconTags) {
+            final String iconTagTitle = iconTag.optString(Tag.TAG_TITLE);
+            if (StringUtils.containsIgnoreCase(title, iconTagTitle)) {
+                return iconTagTitle;
+            }
+        }
+
         for (final Map.Entry<String, Set<String>> entry : NORMALIZE_MAPPINGS.entrySet()) {
             final Set<String> oddTitles = entry.getValue();
             for (final String oddTitle : oddTitles) {
-                if (StringUtils.equalsIgnoreCase(title, oddTitle)) {
+                if (StringUtils.containsIgnoreCase(title, oddTitle)) {
                     return entry.getKey();
                 }
             }
