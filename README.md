@@ -7,7 +7,6 @@
 * 非常详细的 [Sym 功能点脑图](http://naotu.baidu.com/file/cd31354ac9abc047569c73c560a5a913?token=b9750ae13f39ef9a)
 * 如果你在搭建或者二次开发时碰到问题，欢迎加 Q 群 17370164 进行讨论
 
-
 ### 作者
 
 Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/symphony/graphs/contributors)看到。
@@ -39,36 +38,6 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 * CSS3 动画
 
 通过使用这些技术，Sym 可以让用户在分享、交流时更加便捷、舒服 
-
-## 功能图解
-
-**首页**
-
-![首页](https://cloud.githubusercontent.com/assets/873584/17779283/b703a752-6599-11e6-8bfb-453de8f87732.png)
-
-**帖子**
-
-![帖子](https://cloud.githubusercontent.com/assets/873584/17779286/b71a930e-6599-11e6-9822-094aa234abec.png)
-
-**个人设置**
-
-![个人设置](https://cloud.githubusercontent.com/assets/873584/17779285/b70c71e8-6599-11e6-8847-90d72372f4d9.png)
-
-**发布编辑**
-
-* Markdown 编辑器，支持 GFM 语法
-* LaTeX 数学公式
-* 复制粘贴时自动转换为 Markdown 
-* Chrome 下可以直接粘贴图片，其他浏览器支持拖拽
-* 除了使用文字，也可以在帖子内进行录音
-* 支持 Emoji
-* 使用本地存储保障数据在未提交时不丢
-
-![发布编辑](https://cloud.githubusercontent.com/assets/873584/17779284/b7096372-6599-11e6-9932-4f15793448e5.png)
-
-### 移动端
-
-移动端使用单独的模版进行渲染，解决通过一套模版自适应不能达成的效果和体验。
 
 ## 安装
 
@@ -147,3 +116,34 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 * If you want to use this software for commercial purpose, please mail to support@liuyun.io for a commercial license request
 * Copyright &copy; b3log.org, all rights reserved
 
+----
+
+## 功能图解
+
+**首页**
+
+![首页](https://cloud.githubusercontent.com/assets/873584/17779283/b703a752-6599-11e6-8bfb-453de8f87732.png)
+
+**帖子**
+
+![帖子](https://cloud.githubusercontent.com/assets/873584/17779286/b71a930e-6599-11e6-9822-094aa234abec.png)
+
+**个人设置**
+
+![个人设置](https://cloud.githubusercontent.com/assets/873584/17779285/b70c71e8-6599-11e6-8847-90d72372f4d9.png)
+
+**发布编辑**
+
+* Markdown 编辑器，支持 GFM 语法
+* LaTeX 数学公式
+* 复制粘贴时自动转换为 Markdown 
+* Chrome 下可以直接粘贴图片，其他浏览器支持拖拽
+* 除了使用文字，也可以在帖子内进行录音
+* 支持 Emoji
+* 使用本地存储保障数据在未提交时不丢
+
+![发布编辑](https://cloud.githubusercontent.com/assets/873584/17779284/b7096372-6599-11e6-9932-4f15793448e5.png)
+
+### 移动端
+
+移动端使用单独的模版进行渲染，解决通过一套模版自适应不能达成的效果和体验。
