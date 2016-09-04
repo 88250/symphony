@@ -242,7 +242,7 @@
                 <version>${jetty.version}</version>
                 <configuration>
                     <httpConnector>
-                        <port>8084</port>
+                        <port>8080</port>
                     </httpConnector>
                     <stopKey>stop</stopKey>
                     <stopPort>4501</stopPort>
