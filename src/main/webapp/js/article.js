@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.29.19, Sep 2, 2016
+ * @version 1.24.30.19, Sep 5, 2016
  */
 
 /**
@@ -86,6 +86,10 @@ var Comment = {
     _initEditorPanel: function () {
         // 回复按钮设置
         $('.reply-btn').css('left', $('.side').offset().left - 43).click(function () {
+            if (!Label.isLoggedIn) {
+                Util.needLogin();
+                return false;
+            }
             $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
             $('.editor-panel').slideDown(function () {
                 $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
@@ -532,9 +536,9 @@ var Comment = {
         if ($avatar.length === 0) {
             $avatar = $('#' + id).find('>.fn-flex>.avatar').clone();
             $avatar.removeClass('avatar').addClass('avatar-small');
-            replyUserHTML = '<a rel="nofollow" href="#' + id 
-                    + '" class="ft-a-icon" onclick="Comment._bgFade($(\'#' + id 
-                    + '\'))"><span class="icon-reply-to"></span> ' 
+            replyUserHTML = '<a rel="nofollow" href="#' + id
+                    + '" class="ft-a-icon" onclick="Comment._bgFade($(\'#' + id
+                    + '\'))"><span class="icon-reply-to"></span> '
                     + $avatar[0].outerHTML + ' ' + userName + '</a>';
         } else {
             $avatar.addClass('ft-a-icon').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
