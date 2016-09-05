@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.4.4, Sep 3, 2016
+ * @version 1.13.5.4, Sep 5, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -400,7 +400,11 @@ public final class Tag {
         final List<JSONObject> iconTags = cache.getIconTags(Integer.MAX_VALUE);
         for (final JSONObject iconTag : iconTags) {
             final String iconTagTitle = iconTag.optString(Tag.TAG_TITLE);
-            if (StringUtils.containsIgnoreCase(title, iconTagTitle)) {
+            if (iconTagTitle.length() < 3) {
+                if (StringUtils.startsWithIgnoreCase(title, iconTagTitle)) {
+                    return iconTagTitle;
+                }
+            } else if (StringUtils.containsIgnoreCase(title, iconTagTitle)) {
                 return iconTagTitle;
             }
         }
