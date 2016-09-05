@@ -556,12 +556,11 @@ public class ArticleProcessor {
 
         articleQueryService.processArticleContent(article, request);
 
-        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
-
         String cmtViewModeStr = request.getParameter("m");
 
         JSONObject currentUser;
         String currentUserId = null;
+        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
             currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
             currentUserId = currentUser.optString(Keys.OBJECT_ID);

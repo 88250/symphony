@@ -41,6 +41,7 @@
                         </div>
                         </#if>
                     <#else>
+                    <br/>
                     <div id="tip" class="tip"></div><br/>
                     <div class="fn-clear">
                         <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001('${csrfToken}')">${activityBetLabel}</button>

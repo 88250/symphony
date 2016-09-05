@@ -75,7 +75,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.21.19, Aug 29, 2016
+ * @version 2.14.22.19, Sep 4, 2016
  * @since 0.2.0
  */
 @Service
@@ -438,7 +438,7 @@ public class ArticleMgmtService {
 
             articleTitle = Emotions.toAliases(articleTitle);
             articleTitle = Pangu.spacingText(articleTitle);
-            
+
             article.put(Article.ARTICLE_TITLE, articleTitle);
             article.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
 
@@ -482,6 +482,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_CITY, city);
             article.put(Article.ARTICLE_ANONYMOUS, articleAnonymous);
             article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
+            article.put(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL);
 
             String articleTags = article.optString(Article.ARTICLE_TAGS);
             articleTags = Tag.formatTags(articleTags);
@@ -715,7 +716,7 @@ public class ArticleMgmtService {
 
             articleTitle = Emotions.toAliases(articleTitle);
             articleTitle = Pangu.spacingText(articleTitle);
-            
+
             oldArticle.put(Article.ARTICLE_TITLE, articleTitle);
 
             oldArticle.put(Article.ARTICLE_TAGS, requestJSONObject.optString(Article.ARTICLE_TAGS));
@@ -1573,6 +1574,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_STICK, 0L);
             article.put(Article.ARTICLE_ANONYMOUS, Article.ARTICLE_ANONYMOUS_C_PUBLIC);
             article.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_NOT_PERFECT);
+            article.put(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL);
 
             final JSONObject articleCntOption = optionRepository.get(Option.ID_C_STATISTIC_ARTICLE_COUNT);
             final int articleCnt = articleCntOption.optInt(Option.OPTION_VALUE);

@@ -72,7 +72,7 @@ import org.jsoup.Jsoup;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.5.8, Jul 27, 2016
+ * @version 1.7.5.9, Sep 3, 2016
  * @since 0.2.0
  */
 @Service
@@ -187,25 +187,27 @@ public class TagQueryService {
         int start = index;
         int end = index;
 
-        while (start > -1 && tags.get(start).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
+        while (start > -1
+                && tags.get(start).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
             start--;
         }
 
         start++;
 
-        if (start < index - fetchSize) {
-            end = start + fetchSize;
-        } else {
-            while (end < tags.size() && end < index + fetchSize && tags.get(end).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
-                end++;
-
-                if (end >= start + fetchSize) {
-                    break;
-                }
-            }
+        while (end < tags.size()
+                && tags.get(end).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
+            end++;
         }
 
-        return tags.subList(start, end);
+        final List<JSONObject> subList = tags.subList(start, end);
+        Collections.sort(subList, new Comparator<JSONObject>() {
+            @Override
+            public int compare(final JSONObject t1, final JSONObject t2) {
+                return t2.optInt(Tag.TAG_REFERENCE_CNT) - t1.optInt(Tag.TAG_REFERENCE_CNT);
+            }
+        });
+
+        return subList.subList(0, subList.size() > fetchSize ? fetchSize : subList.size());
     }
 
     /**

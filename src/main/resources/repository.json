@@ -1174,6 +1174,11 @@
                     "name": "articlePerfect",
                     "type": "int",
                     "description": "0: not perfect, 1: perfect"
+                },
+                {
+                    "name": "articleAnonymousView",
+                    "type": "int",
+                    "description": "0: allow anonymous view, 1: not allow"
                 }
             ]
         },

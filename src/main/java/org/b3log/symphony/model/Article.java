@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.0.11, Aug 17, 2016
+ * @version 1.19.0.11, Sep 2, 2016
  * @since 0.2.0
  */
 public final class Article {
@@ -194,6 +194,11 @@ public final class Article {
      */
     public static final String ARTICLE_PERFECT = "articlePerfect";
 
+    /**
+     * Key of article anonymous view.
+     */
+    public static final String ARTICLE_ANONYMOUS_VIEW = "articleAnonymousView";
+
     //// Transient ////
     /**
      * Key of article vote.
@@ -264,7 +269,7 @@ public final class Article {
      * Key of article comments.
      */
     public static final String ARTICLE_T_COMMENTS = "articleComments";
-    
+
     /**
      * Key of article nice comments.
      */
@@ -336,6 +341,22 @@ public final class Article {
      * Article perfect - perfect.
      */
     public static final int ARTICLE_PERFECT_C_PERFECT = 1;
+
+    // Anonymous view constants
+    /**
+     * Article anonymous view - use global.
+     */
+    public static final int ARTICLE_ANONYMOUS_VIEW_C_USE_GLOBAL = 0;
+
+    /**
+     * Article anonymous view - not allow.
+     */
+    public static final int ARTICLE_ANONYMOUS_VIEW_C_NOT_ALLOW = 1;
+
+    /**
+     * Article anonymous view - allow.
+     */
+    public static final int ARTICLE_ANONYMOUS_VIEW_C_ALLOW = 2;
 
     // Status constants
     /**
