@@ -26,10 +26,15 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.symphony.model.Domain;
+import org.b3log.symphony.model.Option;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
+import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Filler;
+import org.json.JSONObject;
 
 /**
  * Link forge processor.
@@ -44,6 +49,12 @@ import org.b3log.symphony.util.Filler;
  */
 @RequestProcessor
 public class LinkForgeProcessor {
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
 
     /**
      * Filler.
@@ -67,8 +78,15 @@ public class LinkForgeProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
 
-        renderer.setTemplateName("link-forge.ftl");
+        renderer.setTemplateName("domains.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final JSONObject statistic = optionQueryService.getStatistic();
+        final int tagCnt = statistic.optInt(Option.ID_C_STATISTIC_TAG_COUNT);
+        dataModel.put(Tag.TAG_T_COUNT, tagCnt);
+
+        final int domainCnt = statistic.optInt(Option.ID_C_STATISTIC_DOMAIN_COUNT);
+        dataModel.put(Domain.DOMAIN_T_COUNT, domainCnt);
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
