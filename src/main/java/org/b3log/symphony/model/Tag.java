@@ -16,6 +16,8 @@
 package org.b3log.symphony.model;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -34,7 +36,7 @@ import org.json.JSONObject;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.4.4, Sep 3, 2016
+ * @version 1.13.5.4, Sep 5, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -398,8 +400,22 @@ public final class Tag {
     private static String normalize(final String title) {
         final TagCache cache = LatkeBeanManagerImpl.getInstance().getReference(TagCache.class);
         final List<JSONObject> iconTags = cache.getIconTags(Integer.MAX_VALUE);
+        Collections.sort(iconTags, new Comparator<JSONObject>() {
+            @Override
+            public int compare(final JSONObject t1, final JSONObject t2) {
+                final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+                final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+
+                return u1Title.length() - u2Title.length();
+            }
+        });
+
         for (final JSONObject iconTag : iconTags) {
             final String iconTagTitle = iconTag.optString(Tag.TAG_TITLE);
+            if (iconTagTitle.length() < 2) {
+                break;
+            }
+
             if (StringUtils.containsIgnoreCase(title, iconTagTitle)) {
                 return iconTagTitle;
             }

@@ -413,10 +413,6 @@
                 </div>
             </div>
             </#if>
-            <#else>
-            <div class="comment-login">
-                <a rel="nofollow" href="javascript:window.scrollTo(0,0);Util.showLogin();">${loginDiscussLabel}</a>
-            </div>
             </#if>
             </div>
         </div>
