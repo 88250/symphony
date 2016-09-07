@@ -6,6 +6,7 @@
         <meta name="description" content="${symphonyLabel} ${trendTagsLabel},${symphonyLabel} ${coldTagsLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link rel="canonical" href="${servePath}/tags">
     </head>
     <body>
         <#include "header.ftl">

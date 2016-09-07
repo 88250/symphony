@@ -6,6 +6,7 @@
         <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link rel="canonical" href="${servePath}/domains">
     </head>
     <body>
         <#include "header.ftl">
