@@ -5,14 +5,17 @@
     <head>
         <#if type == "balance">
         <@head title="${wealthLabel}${rankingLabel} - ${symphonyLabel}">
+        <link rel="canonical" href="${servePath}/top/balance">
         </@head>
         </#if>
         <#if type == "consumption">
         <@head title="${consumptionLabel}${rankingLabel} - ${symphonyLabel}">
+        <link rel="canonical" href="${servePath}/top/consumption">
         </@head>
         </#if>
         <#if type == "checkin">
         <@head title="${checkinTopLabel}${rankingLabel} - ${symphonyLabel}">
+        <link rel="canonical" href="${servePath}/top/checkin">
         </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />

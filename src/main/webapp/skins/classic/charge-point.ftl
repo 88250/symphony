@@ -5,6 +5,7 @@
         <@head title="${chargePointLabel} - ${symphonyLabel}">
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link rel="canonical" href="${servePath}/charge/point">
     </head>
     <body>
         <#include "header.ftl">

@@ -6,6 +6,7 @@
         <meta name="description" content="${registerLabel} ${symphonyLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link rel="canonical" href="${servePath}/register">
     </head>
     <body>
         <#include "header.ftl">

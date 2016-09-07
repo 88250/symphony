@@ -14,6 +14,7 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/aplayer/APlayer.min.css">
+        <link rel="canonical" href="${servePath}${article.articlePermalink}?p=${paginationCurrentPageNum}&m=${userCommentViewMode}">
     </head>
     <body>
         <#include "header.ftl">
@@ -480,24 +481,6 @@
                 <#if 3 == article.articleType>
                     Article.playThought('${article.articleContent}');
                 </#if>
-            });
-        </script>
-        <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">
-            MathJax.Hub.Config({
-                tex2jax: {
-                    inlineMath: [['$','$'], ["\\(","\\)"] ],
-                    displayMath: [['$$','$$']],
-                    processEscapes: true,
-                    processEnvironments: true,
-                skipTags: ['pre','code'],
-                }
-            });
-            MathJax.Hub.Queue(function() {
-                var all = MathJax.Hub.getAllJax(), i;
-                for(i = 0; i < all.length; i += 1) {
-                    all[i].SourceElement().parentNode.className += 'has-jax';
-                }
             });
         </script>
     </body>

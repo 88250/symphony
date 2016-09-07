@@ -1,11 +1,100 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.28.7.12, Sep 2, 2016",
+    "version": "3.29.7.12, Sep 7, 2016",
     "authors": [
         "Liang Ding", "Zephyr", "Bill Ho"
     ],
     "since": "0.2.0",
     "repositories": [
+        {
+            "name": "link",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "linkAddr",
+                    "type": "String",
+                    "length": 255
+                },
+                {
+                    "name": "linkTitle",
+                    "type": "String",
+                    "length": 255
+                },
+                {
+                    "name": "linkType",
+                    "type": "int",
+                    "description": "0: forge"
+                },
+                {
+                    "name": "linkSubmitCnt",
+                    "type": "int"
+                },
+                {
+                    "name": "linkClickCnt",
+                    "type": "int"
+                },
+                {
+                    "name": "linkGoodCnt",
+                    "type": "int"
+                },
+                {
+                    "name": "linkBadCnt",
+                    "type": "int"
+                },
+                {
+                    "name": "linkBaiduRefCnt",
+                    "type": "int"
+                },
+                {
+                    "name": "linkScore",
+                    "type": "double"
+                }
+            ]
+        },
+        {
+            "name": "user_link",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "linkId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "length": 19
+                }
+            ]
+        },
+        {
+            "name": "tag_link",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "linkId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "tagId",
+                    "type": "String",
+                    "length": 19
+                }
+            ]
+        },
         {
             "name": "invitecode",
             "keys": [
