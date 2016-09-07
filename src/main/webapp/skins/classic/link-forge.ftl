@@ -9,18 +9,33 @@
     </head>
     <body>
         <#include "header.ftl">
-        <div class="main">
+        <div class="main link-forge">
             <div class="wrapper">
                 <div class="content fn-clear">
                     <#list domains as domain>
                     <div class="module">
                         <div class="module-header">
-                            <h2>${domain.domainTitle}</h2>
-                            <a class="ft-gray fn-right" rel="nofollow" href="${servePath}/domain/${domain.domainURI}">${domain.domainTags?size} Tags</a>
+                            <h2>
+                                <span class="avatar-small"  style="background-image:url('http://7xjz0r.com1.z0.glb.clouddn.com/user-thumbnail.png')"></span>
+                                ${domain.domainTitle}
+                            </h2>
+                            <a class="ft-gray fn-right" rel="nofollow" href="javascropt:void(0)" onclick="linkForgeToggle(this)">${domain.domainTags?size} Links</a>
                         </div>
                         <div class="module-panel">
                             <ul class="tags fn-clear">
                                 <#list domain.domainTags as tag>
+                                <li>
+                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                </li>
+                                <li>
+                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                </li>
+                                <li>
+                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                </li>
+                                <li>
+                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                </li>
                                 <li>
                                     <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
                                 </li>
@@ -33,8 +48,8 @@
                 <div class="side">
                     <#include "common/person-info.ftl">
                     <div class='domains-count'>
-                        Domains: <b>${domainCnt}</b><br/>
-                        Tags: <b>${tagCnt}</b>
+                        Tags: <b>${domainCnt}</b><br/>
+                        Links: <b>${tagCnt}</b>
                     </div>
                     <#if ADLabel!="">
                     <div class="module">
@@ -53,5 +68,21 @@
             </div>
         </div>
         <#include "footer.ftl">
+        <script>
+            var linkForgeToggle = function (it) {
+                var $panel = $(it).closest('.module').find('.module-panel');
+                if ($panel.css('overflow') !== 'hidden') {
+                    $panel.css({
+                        'max-height': '100px',
+                        'overflow': 'hidden'
+                    });
+                    return false;
+                }
+                $panel.css({
+                    'max-height': 'inherit',
+                    'overflow': 'inherit'
+                });
+            };
+        </script>
     </body>
 </html>
