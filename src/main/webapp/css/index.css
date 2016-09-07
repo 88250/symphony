@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.13.15.27, Sep 5, 2016
+ * @version 2.14.15.27, Sep 7, 2016
  */
 
 /* start article */
@@ -645,7 +645,7 @@ code .dec { color: initial; } /* decimal - blue */
     width: 100%;
 }
 
-.index > .slogan a:hover svg {
+.index  .slogan a:hover svg {
     color: #4183C4;
 }
 
@@ -732,6 +732,10 @@ code .dec { color: initial; } /* decimal - blue */
     line-height: 20px;
 }
 
+.index .tag-desc.fn-clear {
+    margin: 15px 0 0 0;
+}
+
 .index .tag-desc > li {
     margin: 0 20px 15px 0;
 }
@@ -752,3 +756,18 @@ code .dec { color: initial; } /* decimal - blue */
     background-color: #ddd;
 }
 /* end index */
+
+/* start link forge */
+.link-forge .module-header {
+    line-height: 20px;
+}
+
+.link-forge .content .module-panel {
+    max-height: 100px;
+    overflow: hidden;
+}
+
+.link-forge .content .module-header .avatar-small {
+    vertical-align: text-bottom;
+}
+/* end link forge */
