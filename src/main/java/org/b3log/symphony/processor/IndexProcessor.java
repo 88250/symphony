@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.8.2.16, Sep 1, 2016
+ * @version 1.8.2.17, Sep 7, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -308,29 +308,14 @@ public class IndexProcessor {
     /**
      * Shows about.
      *
-     * @param context the specified context
-     * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/about", method = HTTPRequestMethod.GET)
     @Before(adviceClass = StopwatchStartAdvice.class)
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void showAbout(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("about.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        filler.fillHeaderAndFooter(request, response, dataModel);
-
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
-        filler.fillRandomArticles(avatarViewMode, dataModel);
-        filler.fillSideHotArticles(avatarViewMode, dataModel);
-        filler.fillSideTags(dataModel);
-        filler.fillLatestCmts(dataModel);
+    public void showAbout(final HttpServletResponse response) throws Exception {
+        response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
     }
 
     /**
