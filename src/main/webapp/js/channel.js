@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.11.13, Aug 31, 2016
+ * @version 1.10.11.14, Sep 7, 2016
  */
 
 /**
@@ -157,13 +157,6 @@ var ArticleChannel = {
                     // 代码高亮
                     Article.parseLanguage();
                     Comment._bgFade($("#" + data.commentId));
-
-                    if (Label.userCommentViewMode === 1) {
-                        // 实时模式
-                        window.location.hash = '#comments';
-                    } else {
-                        window.location.hash = '#bottomComment';
-                    }
 
                     // 更新回复的帖子
                     var $originalComment = $('#' + data.commentOriginalCommentId),
