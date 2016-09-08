@@ -37,7 +37,7 @@ public final class Link {
     /**
      * Key of link address.
      */
-    public static final String LINK_CONTENT = "linkAddr";
+    public static final String LINK_ADDR = "linkAddr";
 
     /**
      * Key of link title.
@@ -84,6 +84,21 @@ public final class Link {
      * Key of link id.
      */
     public static final String LINK_T_ID = "linkId";
+
+    /**
+     * Key of link keywords.
+     */
+    public static final String LINK_T_KEYWORDS = "linkKeywords";
+
+    /**
+     * Key of link HTML.
+     */
+    public static final String LINK_T_HTML = "linkHTML";
+
+    /**
+     * Key of link text.
+     */
+    public static final String LINK_T_TEXT = "linkText";
 
     //// Type constants
     /**

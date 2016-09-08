@@ -78,7 +78,7 @@ public class LinkForgeProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
 
-        renderer.setTemplateName("domains.ftl");
+        renderer.setTemplateName("link-forge.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final JSONObject statistic = optionQueryService.getStatistic();
