@@ -128,4 +128,10 @@ public final class Liveness {
 
         return ret;
     }
+
+    /**
+     * Private constructor.
+     */
+    private Liveness() {
+    }
 }

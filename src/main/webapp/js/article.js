@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.30.19, Sep 5, 2016
+ * @version 1.24.31.19, Sep 7, 2016
  */
 
 /**
@@ -252,6 +252,45 @@ var Comment = {
                 }
             }
         });
+
+        this._initMathJax();
+    },
+    /**
+     * 按需加在 MathJax
+     * @returns {undefined}
+     */
+    _initMathJax: function () {
+        var hasMathJax = false;
+        $('.content-reset').each(function () {
+            if ($(this).text().indexOf('$/') > -1 || $(this).text().indexOf('$$') > -1) {
+                hasMathJax = true;
+                return false;
+            }
+        });
+
+        if (hasMathJax) {
+            $.ajax({
+                method: "GET",
+                url: "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&_=1473258780393",
+                dataType: "script"
+            }).done(function () {
+                MathJax.Hub.Config({
+                    tex2jax: {
+                        inlineMath: [['$', '$'], ["\\(", "\\)"]],
+                        displayMath: [['$$', '$$']],
+                        processEscapes: true,
+                        processEnvironments: true,
+                        skipTags: ['pre', 'code']
+                    }
+                });
+                MathJax.Hub.Queue(function () {
+                    var all = MathJax.Hub.getAllJax(), i;
+                    for (i = 0; i < all.length; i += 1) {
+                        all[i].SourceElement().parentNode.className += 'has-jax';
+                    }
+                });
+            });
+        }
     },
     /**
      * @description 感谢评论.
@@ -498,6 +537,14 @@ var Comment = {
 
                         window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
                     }
+                    
+                    // 定为到回贴位置
+                    if (Label.userCommentViewMode === 1) {
+                        // 实时模式
+                        window.location.hash = '#comments';
+                    } else {
+                        window.location.hash = '#bottomComment';
+                    }
                 } else {
                     $("#addCommentTip").addClass("error").html('<ul><li>' + result.msg + '</li></ul>');
                 }
@@ -694,6 +741,8 @@ var Article = {
             "modal": true,
             "hideFooter": true
         });
+
+        $('.side').height($('.side').height());
 
         this.initToc();
     },
@@ -1184,6 +1233,9 @@ var Article = {
 
         $articleToc.next().css('position', 'initial');
         $articleToc.next().next().css('position', 'initial');
+
+        $('.side').height('auto');
+        $('.side').height($('.side').height());
     },
     /**
      * @description 标记消息通知为已读状态.
