@@ -125,7 +125,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.18.32, Aug 28, 2016
+ * @version 1.23.19.32, Sep 8, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -628,14 +628,6 @@ public class ArticleProcessor {
         dataModel.put("stickConfirmLabel", stickConfirmLabel);
         dataModel.put("pointThankArticle", Symphonys.get("pointThankArticle"));
 
-        dataModel.put(Common.DISCUSSION_VIEWABLE, article.optBoolean(Common.DISCUSSION_VIEWABLE));
-        if (!article.optBoolean(Common.DISCUSSION_VIEWABLE)) {
-            article.put(Article.ARTICLE_T_COMMENTS, (Object) Collections.emptyList());
-            article.put(Article.ARTICLE_T_NICE_COMMENTS, (Object) Collections.emptyList());
-
-            return;
-        }
-
         String pageNumStr = request.getParameter("p");
         if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
             pageNumStr = "1";
@@ -644,6 +636,28 @@ public class ArticleProcessor {
         final int pageNum = Integer.valueOf(pageNumStr);
         final int pageSize = Symphonys.getInt("articleCommentsPageSize");
         final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
+        
+        final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);
+        final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        dataModel.put(Common.ARTICLE_COMMENTS_PAGE_SIZE, pageSize);
+
+        dataModel.put(Common.DISCUSSION_VIEWABLE, article.optBoolean(Common.DISCUSSION_VIEWABLE));
+        if (!article.optBoolean(Common.DISCUSSION_VIEWABLE)) {
+            article.put(Article.ARTICLE_T_COMMENTS, (Object) Collections.emptyList());
+            article.put(Article.ARTICLE_T_NICE_COMMENTS, (Object) Collections.emptyList());
+
+            return;
+        }
 
         final List<JSONObject> niceComments
                 = commentQueryService.getNiceComments(avatarViewMode, cmtViewMode, articleId, 3);
@@ -696,20 +710,6 @@ public class ArticleProcessor {
 
             comment.put(Common.REWARED_COUNT, rewardQueryService.rewardedCount(commentId, Reward.TYPE_C_COMMENT));
         }
-
-        final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);
-        final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
-
-        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
-        if (!pageNums.isEmpty()) {
-            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
-            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
-        }
-
-        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
-        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-        dataModel.put(Common.ARTICLE_COMMENTS_PAGE_SIZE, pageSize);
 
         // Referral statistic
         final String referralUserName = request.getParameter("r");

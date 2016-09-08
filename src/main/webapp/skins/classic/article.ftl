@@ -6,7 +6,7 @@
         <@head title="${article.articleTitle} - ${symphonyLabel}">
         <meta name="keywords" content="${article.articleTags}" />
         <meta name="description" content="${article.articlePreviewContent}"/>
-        <#if 1 == article.articleStatus || 1 == article.articleAuthor.userStatus>
+        <#if 1 == article.articleStatus || 1 == article.articleAuthor.userStatus || 1 == article.articleType>
         <meta name="robots" content="NOINDEX,NOFOLLOW" />
         </#if>
         </@head>
