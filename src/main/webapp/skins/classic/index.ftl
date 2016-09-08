@@ -7,7 +7,7 @@
         <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
-        <link rel="canonical" href="${servePath}" />
+        <link rel="canonical" href="${servePath}">
     </head>
     <body class="index">
         <#include "header.ftl">     
