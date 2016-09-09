@@ -335,7 +335,7 @@ public class UserMgmtService {
      *     "userB3ClientAddArticleURL": "",
      *     "userB3ClientUpdateArticleURL": "",
      *     "userB3ClientAddCommentURL": "",
-     *     "syncWithSymphonyClient": boolean
+     *     "syncWithSymphonyClient": boolean // optional, default to false
      * }
      * </pre>
      *

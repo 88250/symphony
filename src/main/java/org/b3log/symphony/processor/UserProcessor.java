@@ -123,7 +123,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.22.12.23, Aug 30, 2016
+ * @version 1.22.13.23, Sep 9, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -1646,16 +1646,12 @@ public class UserProcessor {
             return;
         }
 
-        user.put(User.USER_NAME, name);
-        user.put(User.USER_EMAIL, email);
-        user.put(User.USER_PASSWORD, password);
         user.put(UserExt.USER_B3_KEY, clientB3Key);
         user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
         user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
         user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
 
         try {
-            userMgmtService.updatePassword(user);
             userMgmtService.updateSyncB3(user);
 
             LOGGER.log(Level.INFO, "Updated a user[name={0}] via Solo[{1}] sync", name, clientHost);
