@@ -16,6 +16,8 @@
 package org.b3log.symphony.processor;
 
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +30,7 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.thread.ThreadServiceFactory;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Domain;
@@ -54,6 +57,11 @@ import org.json.JSONObject;
  */
 @RequestProcessor
 public class LinkForgeProcessor {
+
+    /**
+     * Forge thread.
+     */
+    private static final ExecutorService FORGE_EXECUTOR_SERVICE = Executors.newFixedThreadPool(1);
 
     /**
      * Link forget management service.
@@ -96,7 +104,13 @@ public class LinkForgeProcessor {
         }
 
         final String url = requestJSONObject.optString(Common.URL);
-        linkForgeMgmtService.parse(url);
+
+        FORGE_EXECUTOR_SERVICE.submit(new Runnable() {
+            @Override
+            public void run() {
+                linkForgeMgmtService.parse(url);
+            }
+        });
     }
 
     /**
