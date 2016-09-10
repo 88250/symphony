@@ -22,6 +22,22 @@
  * @version 2.14.15.28, Sep 10, 2016
  */
 
+/* start list */
+.domains-module {
+    margin: 20px 0 0;
+}
+
+.module-list.domain .slogan {
+    text-align: center;
+    margin-top: -8px;
+    width: 60px;
+}
+
+.module-list.domain .title {
+    margin-left: 80px;
+}
+/* end list */
+
 /* start article */
 .article-action .fn-right > a,
 .article-action .fn-right > span {
@@ -32,6 +48,11 @@
     float: left;
     margin-left: 5px;
     text-decoration: none;
+}
+
+.article-action .fn-right > a:hover,
+.article-action .fn-right > span:hover {
+    color: #4183C4;
 }
 
 #heatBar {
@@ -637,12 +658,12 @@ code .dec { color: initial; } /* decimal - blue */
 
 .index .footer > .wrapper:last-child {
     border-top: 1px solid #e0e0e0;
-    padding-top: 40px;
+    padding-top: 20px;
 }
 
 .index .footer .slogan {
     padding: 10px;
-    margin: 30px 0 40px;
+    margin: 10px 0 20px;
     color: #767676;
     background-color: #fff;
     border: 1px solid #eee;

@@ -1023,26 +1023,24 @@ a[class*=" icon-"]:hover {
 
 /* start tabs */
 .tabs {
-    background-color: #fafafa;
-    border-bottom: 1px solid #eee;
-    padding-top: 10px;
+    background-color: #fff;
+    padding: 10px 0;
+    margin-bottom: -20px;
 }
 
 .tabs a {
-    float: left;
-    padding: 5px 15px 6px;
+    flex: 1;
+    padding: 5px 15px 5px;
     color: #666;
     white-space: nowrap;
-    border: solid transparent;
-    border-width: 3px 1px 1px;
-    border-radius: 3px 3px 0 0;
+    border-bottom: 2px solid transparent;
     text-decoration: none;
 }
 
 .tabs a.selected {
     margin-bottom: -1px;
     background-color: #FFF;
-    border-color: #d26911 #e5e5e5 transparent;
+    border-color: #d26911;
     color: #111;
 }
 
@@ -1253,7 +1251,7 @@ a[class*=" icon-"]:hover {
     border: 1px solid #eaeaea;
     border-bottom: 0;
     display: inline-block;
-    margin: 20px 0 10px;
+    margin: 20px 0 0px;
     border-radius: 3px;
     font-size: 12px;
     float: right;
@@ -1358,7 +1356,7 @@ a[class*=" icon-"]:hover {
 
 .main {
     background-color: #FFF;
-    padding: 20px 0 40px;
+    padding: 20px 0;
 }
 
 .side {
@@ -1666,6 +1664,10 @@ ul.CodeMirror-hints {
 /* end article */
 
 /* start side module */
+.side .module:last-child {
+    margin-bottom: 0;
+}
+
 .module {
     border: 1px solid #e5e5e5;
     margin-bottom: 20px;
@@ -1743,20 +1745,6 @@ ul.CodeMirror-hints {
 
 .module-list.open-source .slogan {
     margin-top: -10px;
-}
-
-.module-list.domain .slogan {
-    text-align: center;
-    margin-top: -8px;
-    width: 60px;
-}
-
-.module-list.domain .title {
-    margin-left: 80px;
-}
-
-.module-list.domain .tag {
-    margin-right: 10px;
 }
 
 .module-panel.ad {

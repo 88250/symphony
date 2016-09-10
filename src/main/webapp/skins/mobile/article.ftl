@@ -21,31 +21,31 @@
                 <div class="article-action fn-clear">
                     <span class="fn-right">
                         <span id="thankArticle" aria-label="${thankLabel} ${article.thankedCnt}"
-                              class="tooltipped tooltipped-n ft-a-icon"
+                              class="tooltipped tooltipped-n"
                               <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
-                        <span class="tooltipped tooltipped-n ft-a-icon" aria-label="${upLabel} ${article.articleGoodCnt}"
+                        <span class="tooltipped tooltipped-n" aria-label="${upLabel} ${article.articleGoodCnt}"
                               onclick="Article.voteUp('${article.oId}', 'article', this)">
                             <span class="icon-thumbs-up<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>"></span></span>
-                        <span  class="tooltipped tooltipped-n ft-a-icon" aria-label="${downLabel} ${article.articleBadCnt}"
+                        <span  class="tooltipped tooltipped-n" aria-label="${downLabel} ${article.articleBadCnt}"
                               onclick="Article.voteDown('${article.oId}', 'article', this)">
-                        <span class="icon-thumbs-down<#if isLoggedIn && 1 == article.articleVote> ft-red</#if> ft-a-icon"></span></span>
+                        <span class="icon-thumbs-down<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>"></span></span>
                         <#if isLoggedIn && isFollowing>
-                        <span class="tooltipped tooltipped-n ft-a-icon" aria-label="${uncollectLabel} ${article.articleCollectCnt}" 
+                        <span class="tooltipped tooltipped-n" aria-label="${uncollectLabel} ${article.articleCollectCnt}" 
                               onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
                         <#else>
-                        <span class="tooltipped tooltipped-n ft-a-icon" aria-label="${collectLabel} ${article.articleCollectCnt}"
+                        <span class="tooltipped tooltipped-n" aria-label="${collectLabel} ${article.articleCollectCnt}"
                               onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
                         </#if>
                         <#if article.isMyArticle && 3 != article.articleType>
                         <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" 
-                           class="tooltipped tooltipped-n ft-a-icon"><span class="icon-edit"></span></a>
+                           class="tooltipped tooltipped-n"><span class="icon-edit"></span></a>
                         </#if>
                         <#if article.isMyArticle>
-                        <a class="tooltipped tooltipped-n ft-a-icon" aria-label="${stickLabel}" 
+                        <a class="tooltipped tooltipped-n" aria-label="${stickLabel}" 
                            href="javascript:Article.stick('${article.oId}')"><span class="icon-chevron-up"></span></a>
                         </#if>
                         <#if isAdminLoggedIn>
-                        <a class="tooltipped tooltipped-n ft-a-icon" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                        <a class="tooltipped tooltipped-n" href="${servePath}/admin/article/${article.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
                         </#if>
                     </span>
                 </div>

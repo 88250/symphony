@@ -1703,6 +1703,11 @@ ul.CodeMirror-hints {
     margin-top: 10px;
 }
 
+.article-action .fn-right > a:hover,
+.article-action .fn-right > span:hover {
+    color: #4183C4;
+}
+
 .article-info {
     position: relative;
     margin-bottom: 10px;
