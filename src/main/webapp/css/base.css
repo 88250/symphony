@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.15.34, Sep 6, 2016
+ * @version 1.20.15.35, Sep 10, 2016
  */
 
 /* start reset */
@@ -437,10 +437,6 @@ blockquote {
 
 .ft-smaller {
     font-size: 12px;
-}
-
-.ft-black {
-    color: #333;
 }
 
 .ft-gray,
@@ -1029,7 +1025,7 @@ a[class*=" icon-"]:hover {
 .tabs {
     background-color: #fafafa;
     border-bottom: 1px solid #eee;
-    padding-top: 30px;
+    padding-top: 10px;
 }
 
 .tabs a {
@@ -1559,6 +1555,14 @@ a[class*=" icon-"]:hover {
     line-height: 21px;
 }
 
+.list h2 > a {
+    color: #595959;
+}
+
+.list h2 > a:hover {
+    color: #333;
+}
+
 .list > ul {
     list-style: none;
 }
@@ -1569,10 +1573,6 @@ a[class*=" icon-"]:hover {
     white-space: normal;
     word-wrap: break-word;
     position: relative;
-}
-
-.list > ul > li:hover {
-    background-color: #F7F7F7;
 }
 
 .list li.last {

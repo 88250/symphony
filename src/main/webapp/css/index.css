@@ -19,21 +19,19 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.15.27, Sep 7, 2016
+ * @version 2.14.15.28, Sep 10, 2016
  */
 
 /* start article */
 .article-action .fn-right > a,
 .article-action .fn-right > span {
-    border: 1px solid #e0e0e0;
     padding: 4px 8px;
     border-radius: 2px;
     display: inline-block;
     line-height: 12px;
     float: left;
-    margin-left: 10px;
+    margin-left: 5px;
     text-decoration: none;
-    color: #333;
 }
 
 #heatBar {
@@ -47,13 +45,21 @@ h2.article-title {
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
-    margin: 10px 0;
+    margin: 20px 0;
+}
+
+h2.article-title > a {
+    color: #595959;
+}
+
+h2.article-title > a:hover {
+    color: #333;
 }
 
 .article-info .fn-flex-1 {
     font-size: 12px;
     line-height: 22px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 #thoughtProgress {
@@ -91,7 +97,7 @@ label.cmt-anonymous {
 .comments > .comment-header {
     padding-bottom: 5px;
     border-bottom: 1px solid #CCCCCC;
-    margin: 20px 0 0;
+    margin: 40px 0 0;
 }
 
 .comments > div.comment-header .icon-chevron-down {
@@ -165,7 +171,8 @@ label.cmt-anonymous {
 }
 
 .nice {
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 0px;
 }
 
 .nice .comments > ul > li:last-child {
@@ -207,7 +214,6 @@ label.cmt-anonymous {
 
 .share {
     margin-top: 20px;
-    margin-bottom: 5px;
     position: relative;
 }
 

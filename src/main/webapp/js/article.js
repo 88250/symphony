@@ -202,6 +202,8 @@ var Comment = {
             }
         }
 
+        this._initMathJax();
+        
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             return false;
         }
@@ -229,7 +231,7 @@ var Comment = {
             if (evt.ctrlKey && 10 === evt.charCode) {
                 Comment.add(Label.articleOId, Label.csrfToken);
 
-                return;
+                return false;
             }
         });
 
@@ -252,8 +254,6 @@ var Comment = {
                 }
             }
         });
-
-        this._initMathJax();
     },
     /**
      * 按需加在 MathJax
