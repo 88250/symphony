@@ -48,6 +48,7 @@
     float: left;
     margin-left: 5px;
     text-decoration: none;
+    color: #333;
 }
 
 .article-action .fn-right > a:hover,

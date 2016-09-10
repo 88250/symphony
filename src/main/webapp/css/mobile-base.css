@@ -1701,6 +1701,7 @@ ul.CodeMirror-hints {
     float: left;
     text-decoration: none;
     margin-top: 10px;
+    color: #333;
 }
 
 .article-action .fn-right > a:hover,
