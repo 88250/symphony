@@ -400,7 +400,11 @@ label.cmt-anonymous {
 }
 /* end article */
 
-/* start domains */
+/* start domains & link forge */
+.content .module:last-child {
+    margin-bottom: 0;
+}
+
 .domains-count {
     padding: 10px 18px;
     font-size: 18px;
@@ -414,7 +418,46 @@ label.cmt-anonymous {
     box-sizing: border-box;
     margin-bottom: 20px;
 }
-/* start domains */
+
+.link-forge .module-header {
+    line-height: 20px;
+}
+
+.link-forge .content .module-panel {
+    max-height: 122px;
+    overflow: hidden;
+}
+
+.link-forge .content .module-header .avatar-small {
+    vertical-align: text-bottom;
+}
+
+.link-forge-upload {
+    padding-top: 20px;
+    background-color: #fff;
+}
+
+.link-forge-upload .wrapper {
+    display: block;
+}
+
+.link-forge-upload .error,
+.link-forge-upload .succ {
+    margin-top: 10px;
+}
+
+.link-forge-upload input[type=text] {
+    background-color: #FFF;
+    width: 100%;
+    height: 35px;
+}
+
+.link-forge-upload button {
+    position: absolute;
+    right: 0;
+    border-radius: 0 3px 3px 0;
+}
+/* start domains & link foger */
 
 /* start article list */
 .article-list ul > li.stick {
@@ -784,18 +827,3 @@ code .dec { color: initial; } /* decimal - blue */
     background-color: #ddd;
 }
 /* end index */
-
-/* start link forge */
-.link-forge .module-header {
-    line-height: 20px;
-}
-
-.link-forge .content .module-panel {
-    max-height: 100px;
-    overflow: hidden;
-}
-
-.link-forge .content .module-header .avatar-small {
-    vertical-align: text-bottom;
-}
-/* end link forge */

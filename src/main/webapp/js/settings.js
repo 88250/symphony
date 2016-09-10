@@ -469,9 +469,7 @@ S
                     "msg": Label.tagsErrorLabel
                 }, {
                     "target": $("#userURL"),
-                    "type": "string",
-                    "min": 0,
-                    "max": 255,
+                    "type": "url",
                     "msg": Label.invalidUserURLLabel
                 }, {
                     "target": $("#userIntro"),
