@@ -33,7 +33,6 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Domain;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
-import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.LinkForgeMgmtService;
@@ -83,7 +82,7 @@ public class LinkForgeProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/forge/link", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void forgeLink(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
@@ -109,7 +108,7 @@ public class LinkForgeProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/link-forge", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showLinkForge(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {

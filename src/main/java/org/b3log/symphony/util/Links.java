@@ -22,7 +22,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -78,15 +80,22 @@ public final class Links {
         final Document doc = Jsoup.parse(html);
         final Elements urlElements = doc.select("a");
 
+        final Set<String> urls = new HashSet<>();
         final List<Spider> spiders = new ArrayList<>();
+
         for (final Element urlEle : urlElements) {
             try {
-                final String url = urlEle.attr("href");
+                String url = urlEle.attr("href");
                 if (StringUtils.isBlank(url) || !StringUtils.contains(url, "://")) {
                     continue;
                 }
 
-                spiders.add(new Spider(url));
+                final String path = new URL(url).getPath();
+                if ("/".equals(path)) {
+                    url = StringUtils.substringBeforeLast(url, "/");
+                }
+
+                urls.add(url);
             } catch (final Exception e) {
                 LOGGER.warn("Can't parse [" + urlEle.attr("href") + "]");
             }
@@ -95,6 +104,10 @@ public final class Links {
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
+            for (final String url : urls) {
+                spiders.add(new Spider(url));
+            }
+
             final List<Future<JSONObject>> results = EXECUTOR_SERVICE.invokeAll(spiders);
             for (final Future<JSONObject> result : results) {
                 final JSONObject link = result.get();
@@ -128,47 +141,13 @@ public final class Links {
 
         @Override
         public JSONObject call() throws Exception {
+            final int TIMEOUT = 2000;
+
             try {
                 final JSONObject ret = new JSONObject();
 
-                URL baiduURL = new URL("https://www.baidu.com/s?pn=0&wd="
-                        + URLEncoder.encode(url, "UTF-8"));
-                HttpURLConnection conn = (HttpURLConnection) baiduURL.openConnection();
-                conn.setConnectTimeout(2000);
-                conn.setReadTimeout(2000);
-
-                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                        + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
-
-                InputStream inputStream = conn.getInputStream();
-                String baiduRes = IOUtils.toString(inputStream, "UTF-8");
-                IOUtils.closeQuietly(inputStream);
-                conn.disconnect();
-
-                int baiduRefCnt = StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
-                if (1 > baiduRefCnt) {
-                    return null;
-                }
-
-                baiduURL = new URL("https://www.baidu.com/s?pn=10&wd="
-                        + URLEncoder.encode(url, "UTF-8"));
-                conn = (HttpURLConnection) baiduURL.openConnection();
-                conn.setConnectTimeout(2000);
-                conn.setReadTimeout(2000);
-
-                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                        + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
-
-                inputStream = conn.getInputStream();
-                baiduRes = IOUtils.toString(inputStream, "UTF-8");
-                IOUtils.closeQuietly(inputStream);
-                conn.disconnect();
-
-                baiduRefCnt += StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
-
-                ret.put(Link.LINK_BAIDU_REF_CNT, baiduRefCnt);
-
-                final Connection.Response res = Jsoup.connect(url).timeout(2000).execute();
+                // Get meta info of the URL
+                final Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).execute();
                 final String html = new String(res.bodyAsBytes(), res.charset());
 
                 String title = StringUtils.substringBetween(html, "<title>", "</title>");
@@ -187,6 +166,42 @@ public final class Links {
                 final Document doc = Jsoup.parse(html);
                 doc.select("pre").remove();
                 ret.put(Link.LINK_T_TEXT, doc.text());
+
+                // Evaluate the URL
+                URL baiduURL = new URL("https://www.baidu.com/s?pn=0&wd=" + URLEncoder.encode(url, "UTF-8"));
+                HttpURLConnection conn = (HttpURLConnection) baiduURL.openConnection();
+                conn.setConnectTimeout(TIMEOUT);
+                conn.setReadTimeout(TIMEOUT);
+                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                        + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
+
+                InputStream inputStream = conn.getInputStream();
+                String baiduRes = IOUtils.toString(inputStream, "UTF-8");
+                IOUtils.closeQuietly(inputStream);
+                conn.disconnect();
+
+                int baiduRefCnt = StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
+                if (1 > baiduRefCnt) {
+                    return null;
+                }
+
+                baiduURL = new URL("https://www.baidu.com/s?pn=10&wd=" + URLEncoder.encode(url, "UTF-8"));
+                conn = (HttpURLConnection) baiduURL.openConnection();
+                conn.setConnectTimeout(TIMEOUT);
+                conn.setReadTimeout(TIMEOUT);
+                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                        + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
+
+                inputStream = conn.getInputStream();
+                baiduRes = IOUtils.toString(inputStream, "UTF-8");
+                IOUtils.closeQuietly(inputStream);
+                conn.disconnect();
+
+                baiduRefCnt += StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
+
+                ret.put(Link.LINK_BAIDU_REF_CNT, baiduRefCnt);
+
+                LOGGER.debug(ret.optString(Link.LINK_ADDR));
 
                 return ret;
             } catch (final Exception e) {
