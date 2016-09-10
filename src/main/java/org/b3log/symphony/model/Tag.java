@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.13.5.4, Sep 5, 2016
+ * @version 1.14.5.4, Sep 10, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -80,6 +80,11 @@ public final class Tag {
      * Key of tag follower count.
      */
     public static final String TAG_FOLLOWER_CNT = "tagFollowerCount";
+
+    /**
+     * Key of link count.
+     */
+    public static final String TAG_LINK_CNT = "tagLinkCount";
 
     /**
      * Key of tag status.
@@ -191,6 +196,11 @@ public final class Tag {
      * Key of tag title lower case.
      */
     public static final String TAG_T_TITLE_LOWER_CASE = "tagTitleLowerCase";
+
+    /**
+     * Key of tag links.
+     */
+    public static final String TAG_T_LINKS = "tagLinks";
 
     //// Tag type constants
     /**

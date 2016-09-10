@@ -68,11 +68,12 @@ public final class Links {
      * @param html the specified HTML
      * @return a list of links, each of them like this:      <pre>
      * {
-     *     "url": "https://hacpai.com/article/1440573175609",
-     *     "title": "黑客派简介",
-     *     "html": "page HTML",
-     *     "text": "page text",
-     *     "baiduRefCnt": int
+     *     "linkAddr": "https://hacpai.com/article/1440573175609",
+     *     "linkTitle": "黑客派简介",
+     *     "linkKeywords": "",
+     *     "linkHTML": "page HTML",
+     *     "linkText": "page text",
+     *     "linkBaiduRefCnt": int
      * }
      * </pre>
      */

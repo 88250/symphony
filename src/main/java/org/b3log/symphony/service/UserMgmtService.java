@@ -80,7 +80,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.13.16.12, Sep 7, 2016
+ * @version 1.13.16.13, Sep 10, 2016
  * @since 0.2.0
  */
 @Service
@@ -832,6 +832,7 @@ public class UserMgmtService {
                 tag.put(Tag.TAG_REFERENCE_CNT, 0);
                 tag.put(Tag.TAG_COMMENT_CNT, 0);
                 tag.put(Tag.TAG_FOLLOWER_CNT, 0);
+                tag.put(Tag.TAG_LINK_CNT, 0);
                 tag.put(Tag.TAG_DESCRIPTION, "");
                 tag.put(Tag.TAG_ICON_PATH, "");
                 tag.put(Tag.TAG_STATUS, 0);
