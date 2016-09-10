@@ -15,9 +15,17 @@
  */
 package org.b3log.symphony.repository;
 
+import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.symphony.model.Link;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Link repository.
@@ -28,6 +36,37 @@ import org.b3log.symphony.model.Link;
  */
 @Repository
 public class LinkRepository extends AbstractRepository {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(LinkRepository.class.getName());
+
+    /**
+     * Gets a link with the specified address.
+     *
+     * @param addr the specified address
+     * @return a link, returns {@code null} if not found
+     */
+    public JSONObject getLink(final String addr) {
+        final Query query = new Query();
+        query.setFilter(new PropertyFilter(Link.LINK_ADDR, FilterOperator.EQUAL, addr)).
+                setPageCount(1).setPageSize(1).setCurrentPageNum(1);
+
+        try {
+            final JSONObject result = get(query);
+            final JSONArray links = result.optJSONArray(Keys.RESULTS);
+            if (0 == links.length()) {
+                return null;
+            }
+
+            return links.optJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets link by address [" + addr + "]", e);
+
+            return null;
+        }
+    }
 
     /**
      * Public constructor.
