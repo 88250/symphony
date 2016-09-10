@@ -61,14 +61,16 @@ public class LinkForgeMgmtService {
     private TagCache tagCache;
 
     /**
-     * Parses the specified URL.
+     * Forges the specified URL.
      *
      * @param url the specified URL
      */
-    public void parse(final String url) {
+    public void forge(final String url) {
         String html;
         try {
-            final Document doc = Jsoup.parse(new URL(url), 5000);
+            final Document doc = Jsoup.connect(url).timeout(5000).
+                    userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                            + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36").get();
 
             doc.select("body").append("<a href=\"" + url + "\">" + url + "</a>"); // Append the specified URL itfself
 
@@ -147,6 +149,8 @@ public class LinkForgeMgmtService {
             }
 
             transaction.commit();
+
+            LOGGER.info("Forged link [" + url + "]");
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

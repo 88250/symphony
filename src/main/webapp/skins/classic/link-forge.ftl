@@ -19,20 +19,20 @@
         <div class="main link-forge">
             <div class="wrapper">
                 <div class="content fn-clear">
-                    <#list domains as domain>
+                    <#list tags as tag>
                     <div class="module">
                         <div class="module-header">
                             <h2>
-                                <span class="avatar-small"  style="background-image:url('http://7xjz0r.com1.z0.glb.clouddn.com/user-thumbnail.png')"></span>
-                                ${domain.domainTitle}
+                                <span class="avatar-small"  style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')"></span>
+                                ${tag.tagTitle}
                             </h2>
-                            <a class="ft-gray fn-right" rel="nofollow" href="javascropt:void(0)" onclick="linkForgeToggle(this)">${domain.domainTags?size} Links</a>
+                            <a class="ft-gray fn-right" rel="nofollow" href="javascropt:void(0)" onclick="linkForgeToggle(this)">${tag.tagLinksCnt} Links</a>
                         </div>
                         <div class="module-panel">
                             <ul class="module-list">
-                                <#list domain.domainTags as tag>
+                                <#list tag.tagLinks as link>
                                 <li>
-                                    <a class="title fn-ellipsis" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                    <a class="title fn-ellipsis" target="_blank" rel="nofollow" href="${link.linkAddr}">${link.linkTitle}</a>
                                 </li>
                                 </#list>
                             </ul>
@@ -43,8 +43,8 @@
                 <div class="side">
                     <#include "common/person-info.ftl">
                     <div class='domains-count'>
-                        Tags: <b>${domainCnt}</b><br/>
-                        Links: <b>${tagCnt}</b>
+                        Tags: <b>{domainCnt}</b><br/>
+                        Links: <b>{tagCnt}</b>
                     </div>
                     <#if ADLabel!="">
                     <div class="module">

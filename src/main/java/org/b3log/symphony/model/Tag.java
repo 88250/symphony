@@ -201,6 +201,11 @@ public final class Tag {
      * Key of tag links.
      */
     public static final String TAG_T_LINKS = "tagLinks";
+    
+    /**
+     * Key of tag links count.
+     */
+    public static final String TAG_T_LINKS_CNT = "tagLinksCnt";
 
     //// Tag type constants
     /**

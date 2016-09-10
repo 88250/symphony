@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.processor;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,6 +39,7 @@ import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.LinkForgeMgmtService;
+import org.b3log.symphony.service.LinkForgeQueryService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.util.Filler;
 import org.json.JSONObject;
@@ -67,6 +69,12 @@ public class LinkForgeProcessor {
      */
     @Inject
     private LinkForgeMgmtService linkForgeMgmtService;
+
+    /**
+     * Link forge query service.
+     */
+    @Inject
+    private LinkForgeQueryService linkForgeQueryService;
 
     /**
      * Option query service.
@@ -107,7 +115,7 @@ public class LinkForgeProcessor {
         FORGE_EXECUTOR_SERVICE.submit(new Runnable() {
             @Override
             public void run() {
-                linkForgeMgmtService.parse(url);
+                linkForgeMgmtService.forge(url);
             }
         });
     }
@@ -131,12 +139,8 @@ public class LinkForgeProcessor {
         renderer.setTemplateName("link-forge.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final JSONObject statistic = optionQueryService.getStatistic();
-        final int tagCnt = statistic.optInt(Option.ID_C_STATISTIC_TAG_COUNT);
-        dataModel.put(Tag.TAG_T_COUNT, tagCnt);
-
-        final int domainCnt = statistic.optInt(Option.ID_C_STATISTIC_DOMAIN_COUNT);
-        dataModel.put(Domain.DOMAIN_T_COUNT, domainCnt);
+        final List<JSONObject> tags = linkForgeQueryService.getForgedLinks();
+        dataModel.put(Tag.TAGS, (Object) tags);
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
