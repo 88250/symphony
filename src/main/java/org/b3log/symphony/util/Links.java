@@ -17,6 +17,7 @@ package org.b3log.symphony.util;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -149,7 +150,11 @@ public final class Links {
 
                 // Get meta info of the URL
                 final Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).execute();
-                final String html = new String(res.bodyAsBytes(), res.charset());
+                String charset = res.charset();
+                if (StringUtils.isBlank(charset)) {
+                    charset = "UTF-8";
+                }
+                final String html = new String(res.bodyAsBytes(), charset);
 
                 String title = StringUtils.substringBetween(html, "<title>", "</title>");
                 title = StringUtils.trim(title);
@@ -183,29 +188,34 @@ public final class Links {
 
                 int baiduRefCnt = StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
                 if (1 > baiduRefCnt) {
-                    return null;
+                    ret.put(Link.LINK_BAIDU_REF_CNT, baiduRefCnt);
+                    LOGGER.debug(ret.optString(Link.LINK_ADDR));
+
+                    return ret;
+                } else {
+                    baiduURL = new URL("https://www.baidu.com/s?pn=10&wd=" + URLEncoder.encode(url, "UTF-8"));
+                    conn = (HttpURLConnection) baiduURL.openConnection();
+                    conn.setConnectTimeout(TIMEOUT);
+                    conn.setReadTimeout(TIMEOUT);
+                    conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                            + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
+
+                    inputStream = conn.getInputStream();
+                    baiduRes = IOUtils.toString(inputStream, "UTF-8");
+                    IOUtils.closeQuietly(inputStream);
+                    conn.disconnect();
+
+                    baiduRefCnt += StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
+
+                    ret.put(Link.LINK_BAIDU_REF_CNT, baiduRefCnt);
+                    LOGGER.debug(ret.optString(Link.LINK_ADDR));
+
+                    return ret;
                 }
-
-                baiduURL = new URL("https://www.baidu.com/s?pn=10&wd=" + URLEncoder.encode(url, "UTF-8"));
-                conn = (HttpURLConnection) baiduURL.openConnection();
-                conn.setConnectTimeout(TIMEOUT);
-                conn.setReadTimeout(TIMEOUT);
-                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                        + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
-
-                inputStream = conn.getInputStream();
-                baiduRes = IOUtils.toString(inputStream, "UTF-8");
-                IOUtils.closeQuietly(inputStream);
-                conn.disconnect();
-
-                baiduRefCnt += StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
-
-                ret.put(Link.LINK_BAIDU_REF_CNT, baiduRefCnt);
-
-                LOGGER.debug(ret.optString(Link.LINK_ADDR));
-
-                return ret;
+            } catch (final SocketTimeoutException e) {
+                return null;
             } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Parses URL [" + url + "] failed", e);
                 return null;
             }
         }

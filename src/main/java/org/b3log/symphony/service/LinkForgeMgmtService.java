@@ -91,6 +91,7 @@ public class LinkForgeMgmtService {
         }
 
         final List<JSONObject> links = Links.getLinks(html);
+        final List<JSONObject> cachedTags = tagCache.getTags();
 
         final Transaction transaction = linkRepository.beginTransaction();
         try {
@@ -131,18 +132,18 @@ public class LinkForgeMgmtService {
                 String[] titles = title.split(" ");
                 titles = Strings.trimAll(titles);
 
-                final List<JSONObject> cachedTags = tagCache.getTags();
                 for (final JSONObject cachedTag : cachedTags) {
                     final String tagId = cachedTag.optString(Keys.OBJECT_ID);
+
+                    final String tagTitle = cachedTag.optString(Tag.TAG_TITLE);
+                    if (!Strings.containsIgnoreCase(tagTitle, titles)) {
+                        continue;
+                    }
+
                     final JSONObject tag = tagRepository.get(tagId);
 
                     // clean
                     tagUserLinkRepository.removeByTagIdUserIdAndLinkId(tagId, userId, linkId);
-
-                    final String tagTitle = tag.optString(Tag.TAG_TITLE);
-                    if (!Strings.containsIgnoreCase(tagTitle, titles)) {
-                        continue;
-                    }
 
                     // re-add
                     final JSONObject tagLinkRel = new JSONObject();
