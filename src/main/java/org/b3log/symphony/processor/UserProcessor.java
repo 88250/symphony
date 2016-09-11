@@ -1286,7 +1286,8 @@ public class UserProcessor {
                 ? UserExt.USER_JOIN_POINT_RANK_C_JOIN : UserExt.USER_JOIN_POINT_RANK_C_NOT_JOIN);
         user.put(UserExt.USER_JOIN_USED_POINT_RANK, userJoinUsedPointRank
                 ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
-        user.put(UserExt.USER_FORGE_LINK_STATUS, userForgeLinkStatus);
+        user.put(UserExt.USER_FORGE_LINK_STATUS, userForgeLinkStatus
+                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);

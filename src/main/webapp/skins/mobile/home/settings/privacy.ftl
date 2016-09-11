@@ -63,6 +63,30 @@
         <div class="fn-clear settings-secret">
             <div>
                 <label>
+                    ${displayUALabel}
+                    <input id="userUAStatus" <#if 0 == currentUser.userUAStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${userTimelineStatusLabel}
+                    <input id="userTimelineStatus" <#if 0 == currentUser.userTimelineStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${userForgeLinkStatusLabel}
+                    <input id="userForgeLinkStatus" <#if 0 == currentUser.userForgeLinkStatus> checked="checked"</#if> type="checkbox" /> 
+                </label>
+            </div>
+        </div>
+
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
                     ${joinBalanceRankLabel}
                     <input id="joinPointRank" <#if 0 == currentUser.userJoinPointRank> checked="checked"</#if> type="checkbox" /> 
                 </label>
@@ -75,20 +99,6 @@
             </div>
         </div>
 
-        <div class="fn-clear settings-secret">
-            <div>
-                <label>
-                    ${displayUALabel}
-                    <input id="userUAStatus" <#if 0 == currentUser.userUAStatus> checked="checked"</#if> type="checkbox" /> 
-                </label>
-            </div>
-            <div>
-                <label>
-                    ${userTimelineStatusLabel}
-                    <input id="userTimelineStatus" <#if 0 == currentUser.userTimelineStatus> checked="checked"</#if> type="checkbox" /> 
-                </label>
-            </div>
-        </div>
         <div id="privacyTip" class="tip"></div>
         <div class="fn-hr5"></div>
         <button class="green fn-right" onclick="Settings.update('privacy', '${csrfToken}')">${saveLabel}</button>
