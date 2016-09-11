@@ -43,16 +43,15 @@ import org.json.JSONObject;
 public class TagUserLinkRepository extends AbstractRepository {
 
     /**
-     * Counts link with the specified tag id and link id (distinct(linkId)).
+     * Counts link (distinct(linkId)) with the specified tag id.
      *
      * @param tagId the specified tag id
-     * @param linkId the specified link id
      * @return count
      * @throws RepositoryException repository exception
      */
-    public int countTagLink(final String tagId, final String linkId) throws RepositoryException {
+    public int countTagLink(final String tagId) throws RepositoryException {
         final List<JSONObject> result = select("SELECT count(DISTINCT(linkId)) AS `ret` FROM `" + getName()
-                + "` WHERE `tagId` = ? AND `linkId` = ?", tagId, linkId);
+                + "` WHERE `tagId` = ?", tagId);
 
         return result.get(0).optInt("ret");
     }

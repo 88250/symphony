@@ -15,10 +15,8 @@
  */
 package org.b3log.symphony.service;
 
-import java.net.URL;
 import java.util.List;
 import javax.inject.Inject;
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -177,7 +175,7 @@ public class LinkForgeMgmtService {
                     tagUserLinkRepository.updateTagLinkScore(tagId, linkId, linkScore);
 
                     // re-calc tag link count
-                    final int tagLinkCnt = tagUserLinkRepository.countTagLink(tagId, linkId);
+                    final int tagLinkCnt = tagUserLinkRepository.countTagLink(tagId);
                     tag.put(Tag.TAG_LINK_CNT, tagLinkCnt);
                     tagRepository.update(tagId, tag);
                 }
