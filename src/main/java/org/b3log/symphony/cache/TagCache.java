@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -75,12 +74,12 @@ public class TagCache {
     /**
      * Icon tags.
      */
-    private static final List<JSONObject> ICON_TAGS = new CopyOnWriteArrayList<>();
+    private static final List<JSONObject> ICON_TAGS = new ArrayList<>();
 
     /**
      * All tags.
      */
-    private static final List<JSONObject> TAGS = new CopyOnWriteArrayList<>();
+    private static final List<JSONObject> TAGS = new ArrayList<>();
 
     /**
      * Gets icon tags with the specified fetch size.
@@ -95,7 +94,7 @@ public class TagCache {
 
         final int end = fetchSize >= ICON_TAGS.size() ? ICON_TAGS.size() - 1 : fetchSize;
 
-        return ICON_TAGS.subList(0, end);
+        return new ArrayList<>(ICON_TAGS.subList(0, end));
     }
 
     /**
@@ -108,7 +107,7 @@ public class TagCache {
             return Collections.emptyList();
         }
 
-        return TAGS;
+        return new ArrayList<>(TAGS);
     }
 
     /**
