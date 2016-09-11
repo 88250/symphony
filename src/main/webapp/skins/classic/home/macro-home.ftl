@@ -10,6 +10,7 @@
         <#elseif type == "comments">
         <@head title="${cmtLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${cmtLabel}"/>
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
         </@head>
         <#elseif type == "followingUsers">
         <@head title="${followingUsersLabel} - ${user.userName} - ${symphonyLabel}">
@@ -42,6 +43,7 @@
         <#elseif type == "commentsAnonymous">
         <@head title="${anonymousCommentLabel} - ${user.userName} - ${symphonyLabel}">
         <meta name="description" content="${user.userName}${deLabel}${anonymousCommentLabel}"/>
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
         </@head>
         <#elseif type == "linkForge">
         <@head title="${linkForgeLabel} - ${user.userName} - ${symphonyLabel}">
@@ -56,16 +58,16 @@
             <div class="fn-clear wrapper home-nav">
                 <a <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
                     class="selected"</#if>
-                    href="${servePath}/member/${user.userName}"><svg height="18" version="1.1" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
+                    href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
                 <a <#if type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="selected"</#if>
-                    href="${servePath}/member/${user.userName}/following/users"><svg height="18" version="1.1" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
+                    href="${servePath}/member/${user.userName}/following/users"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
                 <a <#if type == "points"> class="selected"</#if> href="${servePath}/member/${user.userName}/points">
-                    <svg height="18" version="Ø1.1" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
+                    <svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
                 <a <#if type == "linkForge"> class="selected"</#if> href="${servePath}/member/${user.userName}/forge/link">
-                    <svg height="18" version="Ø1.1" viewBox="0 1 16 16" width="16">${linkIcon}</svg>  ${linkForgeLabel}</a>
+                    <svg height="18" viewBox="0 1 16 16" width="16">${linkIcon}</svg>  ${linkForgeLabel}</a>
                 <#if currentUser?? && currentUser.userName == user.userName>
                 <a <#if type == "settings"> class="selected"</#if>
-                    href="${servePath}/settings"><svg height="18" version="1.1" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
+                    href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
                 </#if>
             </div>
         </div>
@@ -105,6 +107,7 @@
             Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
             Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
             Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
+             Settings.initHijs();
         </script>
     </body>
 </html>
