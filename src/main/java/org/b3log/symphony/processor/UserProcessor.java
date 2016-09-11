@@ -118,12 +118,13 @@ import org.json.JSONObject;
  * <li>Lists emotions (/users/emotions), GET</li>
  * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
  * <li>Queries invitecode state (/invitecode/state), GET</li>
+ * <li>Shows link forge (/member/{userName}/forge/link), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.22.13.23, Sep 9, 2016
+ * @version 1.23.13.23, Sep 11, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -235,6 +236,29 @@ public class UserProcessor {
      */
     @Inject
     private InvitecodeQueryService invitecodeQueryService;
+
+    /**
+     * Shows user link forge.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @param userName the specified user name
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/member/{userName}/forge/link", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showLinkForge(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response, final String userName) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/link-forge.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeaderAndFooter(request, response, dataModel);
+
+        dataModel.put(Common.TYPE, "linkForge");
+    }
 
     /**
      * Queries invitecode state.
