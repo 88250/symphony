@@ -37,7 +37,7 @@ var Util = {
             var $panel = $(this).closest('.module').find('.module-panel');
             if ($panel.css('overflow') !== 'hidden') {
                 $panel.css({
-                    'max-height': '122px',
+                    'max-height': '409px',
                     'overflow': 'hidden'
                 });
                 return false;
