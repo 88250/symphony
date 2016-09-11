@@ -129,12 +129,23 @@ public class LinkForgeQueryService {
      * </pre>
      */
     public List<JSONObject> getForgedLinks() {
-        final int LINK_MAX_COUNT = 50;
+        final int TAG_MAX_COUNT = 50;
+        final int LINK_MAX_COUNT = 20;
 
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
-            final List<JSONObject> cachedTags = tagCache.getTags();
+            List<JSONObject> cachedTags = tagCache.getTags();
+
+            Collections.sort(cachedTags, new Comparator<JSONObject>() {
+                @Override
+                public int compare(final JSONObject o1, final JSONObject o2) {
+                    return o2.optInt(Tag.TAG_LINK_CNT) - o1.optInt(Tag.TAG_LINK_CNT);
+                }
+            });
+
+            cachedTags = cachedTags.size() > TAG_MAX_COUNT ? cachedTags.subList(0, TAG_MAX_COUNT) : cachedTags;
+
             for (final JSONObject cachedTag : cachedTags) {
                 if (cachedTag.optInt(Tag.TAG_LINK_CNT) < 1) {
                     continue; // XXX: optimize, reduce queries
