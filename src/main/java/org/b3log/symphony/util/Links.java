@@ -80,15 +80,16 @@ public final class Links {
      * </pre>
      */
     public static List<JSONObject> getLinks(final String baseURL, final String html) {
-        final Document doc = Jsoup.parse(html);
+        final Document doc = Jsoup.parse(html, baseURL);
         final Elements urlElements = doc.select("a");
 
         final Set<String> urls = new HashSet<>();
         final List<Spider> spiders = new ArrayList<>();
 
+        String url = null;
         for (final Element urlEle : urlElements) {
             try {
-                String url = urlEle.attr("href");
+                url = urlEle.absUrl("href");
                 if (StringUtils.isBlank(url) || !StringUtils.contains(url, "://")) {
                     url = StringUtils.substringBeforeLast(baseURL, "/") + url;
                 }
@@ -105,15 +106,15 @@ public final class Links {
 
                 urls.add(url);
             } catch (final Exception e) {
-                LOGGER.warn("Can't parse [" + urlEle.attr("href") + "]");
+                LOGGER.warn("Can't parse [" + url + "]");
             }
         }
 
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
-            for (final String url : urls) {
-                spiders.add(new Spider(url));
+            for (final String u : urls) {
+                spiders.add(new Spider(u));
             }
 
             final List<Future<JSONObject>> results = EXECUTOR_SERVICE.invokeAll(spiders);

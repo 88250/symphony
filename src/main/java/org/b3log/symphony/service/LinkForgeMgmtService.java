@@ -1,7 +1,9 @@
 package org.b3log.symphony.service;
 
+import java.net.URL;
 import java.util.List;
 import javax.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -76,6 +78,7 @@ public class LinkForgeMgmtService {
      */
     public void forge(final String url, final String userId) {
         String html;
+        String baseURL;
         try {
             final Document doc = Jsoup.connect(url).timeout(5000).
                     userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -84,13 +87,15 @@ public class LinkForgeMgmtService {
             doc.select("body").append("<a href=\"" + url + "\">" + url + "</a>"); // Append the specified URL itfself
 
             html = doc.html();
+
+            baseURL = doc.baseUri();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Parses link [" + url + "] failed", e);
 
             return;
         }
 
-        final List<JSONObject> links = Links.getLinks(url, html);
+        final List<JSONObject> links = Links.getLinks(baseURL, html);
         final List<JSONObject> cachedTags = tagCache.getTags();
 
         final Transaction transaction = linkRepository.beginTransaction();
