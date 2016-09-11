@@ -10,9 +10,11 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Link;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.LinkRepository;
+import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.TagUserLinkRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.util.Links;
@@ -47,6 +49,12 @@ public class LinkForgeMgmtService {
      */
     @Inject
     private TagRepository tagRepository;
+
+    /**
+     * Option repository.
+     */
+    @Inject
+    private OptionRepository optionRepository;
 
     /**
      * Tag-User-Link repository.
@@ -103,6 +111,11 @@ public class LinkForgeMgmtService {
                     link.put(Link.LINK_TYPE, Link.LINK_TYPE_C_FORGE);
 
                     linkRepository.add(link);
+
+                    final JSONObject linkCntOption = optionRepository.get(Option.ID_C_STATISTIC_LINK_COUNT);
+                    final int linkCnt = linkCntOption.optInt(Option.OPTION_VALUE);
+                    linkCntOption.put(Option.OPTION_VALUE, linkCnt + 1);
+                    optionRepository.update(Option.ID_C_STATISTIC_LINK_COUNT, linkCntOption);
                 } else {
                     link.put(Link.LINK_BAIDU_REF_CNT, lnk.optInt(Link.LINK_BAIDU_REF_CNT));
                     link.put(Link.LINK_TITLE, lnk.optString(Link.LINK_TITLE));

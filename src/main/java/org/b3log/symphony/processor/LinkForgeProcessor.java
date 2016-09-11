@@ -34,6 +34,8 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Link;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
@@ -141,6 +143,13 @@ public class LinkForgeProcessor {
 
         final List<JSONObject> tags = linkForgeQueryService.getForgedLinks();
         dataModel.put(Tag.TAGS, (Object) tags);
+
+        final JSONObject statistic = optionQueryService.getStatistic();
+        final int tagCnt = statistic.optInt(Option.ID_C_STATISTIC_TAG_COUNT);
+        dataModel.put(Tag.TAG_T_COUNT, tagCnt);
+
+        final int linkCnt = statistic.optInt(Option.ID_C_STATISTIC_LINK_COUNT);
+        dataModel.put(Link.LINK_T_COUNT, linkCnt);
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);

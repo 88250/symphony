@@ -51,8 +51,11 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Emotion;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Invitecode;
+import org.b3log.symphony.model.Link;
 import org.b3log.symphony.model.Notification;
+import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.CSRFCheck;
@@ -75,6 +78,7 @@ import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.InvitecodeMgmtService;
 import org.b3log.symphony.service.InvitecodeQueryService;
+import org.b3log.symphony.service.LinkForgeQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.PointtransferMgmtService;
@@ -239,6 +243,12 @@ public class UserProcessor {
     private InvitecodeQueryService invitecodeQueryService;
 
     /**
+     * Link forge query service.
+     */
+    @Inject
+    private LinkForgeQueryService linkForgeQueryService;
+
+    /**
      * Shows user link forge.
      *
      * @param context the specified context
@@ -261,6 +271,9 @@ public class UserProcessor {
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
         fillHomeUser(dataModel, user);
+
+        final List<JSONObject> tags = linkForgeQueryService.getUserForgedLinks(user.optString(Keys.OBJECT_ID));
+        dataModel.put(Tag.TAGS, (Object) tags);
 
         dataModel.put(Common.TYPE, "linkForge");
     }

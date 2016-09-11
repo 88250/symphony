@@ -47,8 +47,8 @@
                 <div class="side">
                     <#include "common/person-info.ftl">
                     <div class='domains-count'>
-                        Tags: <b>{domainCnt}</b><br/>
-                        Links: <b>{tagCnt}</b>
+                        Tags: <b>${tagCnt}</b><br/>
+                        Links: <b>${linkCnt}</b>
                     </div>
                     <#if ADLabel!="">
                     <div class="module">
