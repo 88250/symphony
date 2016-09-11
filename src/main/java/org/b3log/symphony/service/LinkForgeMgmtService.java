@@ -34,6 +34,7 @@ import org.b3log.symphony.repository.TagUserLinkRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.util.Links;
 import org.b3log.symphony.util.Pangu;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -93,9 +94,7 @@ public class LinkForgeMgmtService {
         String html;
         String baseURL;
         try {
-            final Document doc = Jsoup.connect(url).timeout(5000).
-                    userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                            + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36").get();
+            final Document doc = Jsoup.connect(url).timeout(5000).userAgent(Symphonys.USER_AGENT_BOT).get();
 
             doc.select("body").append("<a href=\"" + url + "\">" + url + "</a>"); // Append the specified URL itfself
 

@@ -161,7 +161,7 @@ public final class Links {
                 if (HttpServletResponse.SC_OK != res.statusCode()) {
                     return null;
                 }
-                
+
                 String charset = res.charset();
                 if (StringUtils.isBlank(charset)) {
                     charset = "UTF-8";
@@ -190,8 +190,7 @@ public final class Links {
                 HttpURLConnection conn = (HttpURLConnection) baiduURL.openConnection();
                 conn.setConnectTimeout(TIMEOUT);
                 conn.setReadTimeout(TIMEOUT);
-                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                        + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
+                conn.addRequestProperty("User-Agent", Symphonys.USER_AGENT_BOT);
 
                 InputStream inputStream = conn.getInputStream();
                 String baiduRes = IOUtils.toString(inputStream, "UTF-8");
@@ -209,8 +208,7 @@ public final class Links {
                     conn = (HttpURLConnection) baiduURL.openConnection();
                     conn.setConnectTimeout(TIMEOUT);
                     conn.setReadTimeout(TIMEOUT);
-                    conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                            + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
+                    conn.addRequestProperty("User-Agent", Symphonys.USER_AGENT_BOT);
 
                     inputStream = conn.getInputStream();
                     baiduRes = IOUtils.toString(inputStream, "UTF-8");
