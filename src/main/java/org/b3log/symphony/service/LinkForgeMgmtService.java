@@ -128,6 +128,7 @@ public class LinkForgeMgmtService {
                     link.put(Link.LINK_TITLE, lnk.optString(Link.LINK_TITLE));
                     link.put(Link.LINK_TYPE, Link.LINK_TYPE_C_FORGE);
 
+                    LOGGER.info(link.optString(Link.LINK_ADDR) + "____" + link.optString(Link.LINK_TITLE));
                     linkRepository.add(link);
 
                     final JSONObject linkCntOption = optionRepository.get(Option.ID_C_STATISTIC_LINK_COUNT);
