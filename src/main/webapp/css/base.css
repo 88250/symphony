@@ -1035,7 +1035,7 @@ a[class*=" icon-"]:hover {
 .tabs a {
     flex: 1;
     padding: 5px 15px 5px;
-    color: #666;
+    color: #595959;
     white-space: nowrap;
     border-bottom: 2px solid transparent;
     text-decoration: none;

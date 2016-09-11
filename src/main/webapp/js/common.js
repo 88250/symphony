@@ -49,6 +49,10 @@ var Util = {
         });
 
         var postLink = function () {
+            if (!Label.isLoggedIn) {
+                Util.needLogin();
+                return false;
+            }
             if (Validate.goValidate({target: $('#uploadLinkTip'),
                 data: [{
                         "target": $('.link-forge-upload input'),
