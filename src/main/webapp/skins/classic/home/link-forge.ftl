@@ -10,7 +10,6 @@
         <input type="text" placeholder="${linkForgeTipLabel}" /><button class="green">${submitLabel}</button>
         <div id="uploadLinkTip" class="tip"></div>
     </div>
-</div>
 <#list tags as tag>
 <div class="module">
     <div class="module-header">
@@ -35,6 +34,7 @@
     </div>
 </div>
 </#list>
+</div>
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>
