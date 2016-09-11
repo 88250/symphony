@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,15 +11,14 @@
     </head>
     <body>
         <#include "header.ftl">
-        <div class="link-forge-upload">
-            <div class="wrapper form">
-                <input type="text"/><button class="green" onclick="postLink()">${submitLabel}</button>
-                <div id="uploadLinkTip" class="tip"></div>
-            </div>
-        </div>
+        <@subNav '' ''/>
         <div class="main link-forge">
             <div class="wrapper">
                 <div class="content fn-clear">
+                    <div class="link-forge-upload form">
+                        <input type="text"/><button class="green" onclick="postLink()">${submitLabel}</button>
+                        <div id="uploadLinkTip" class="tip"></div>
+                    </div>
                     <#list tags as tag>
                     <div class="module">
                         <div class="module-header">
@@ -99,7 +99,7 @@
                         success: function (result, textStatus) {
                             if (result.sc) {
                                 $('#uploadLinkTip').html('<ul><li>${submitSuccLabel}</li></ul>').addClass('succ');
-                                 $('.link-forge-upload input').val('');
+                                $('.link-forge-upload input').val('');
                                 setTimeout(function () {
                                     $('#uploadLinkTip').html('').removeClass('succ');
                                 }, 3000);
@@ -112,7 +112,7 @@
             };
 
             $(document).ready(function () {
-                $('.link-forge-upload input').focus().keyup(function (event) {
+                $('.link-forge-upload input').focus().keypress(function (event) {
                     if (event.which === 13) {
                         postLink();
                         return false;

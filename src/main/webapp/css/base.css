@@ -1041,6 +1041,7 @@ a[class*=" icon-"]:hover {
     white-space: nowrap;
     border-bottom: 2px solid transparent;
     text-decoration: none;
+    text-align: center;
 }
 
 .tabs a.selected {
@@ -1052,6 +1053,10 @@ a[class*=" icon-"]:hover {
 
 .tabs a:hover {
     color: #333;
+}
+
+.tabs a svg {
+    color: #bbb;
 }
 
 .tabs a.selected svg {

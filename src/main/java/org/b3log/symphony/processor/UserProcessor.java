@@ -124,6 +124,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.23.13.23, Sep 11, 2016
  * @since 0.2.0
  */
@@ -256,7 +257,11 @@ public class UserProcessor {
         renderer.setTemplateName("/home/link-forge.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
-
+        
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
+        fillHomeUser(dataModel, user);
+        
         dataModel.put(Common.TYPE, "linkForge");
     }
 

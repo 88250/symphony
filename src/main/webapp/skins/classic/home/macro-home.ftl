@@ -37,11 +37,15 @@
         </@head>
         <#elseif type == "articlesAnonymous">
         <@head title="${anonymousArticleLabel} - ${user.userName} - ${symphonyLabel}">
-        <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
+        <meta name="description" content="${user.userName}${deLabel}${anonymousArticleLabel}"/>
         </@head>
         <#elseif type == "commentsAnonymous">
         <@head title="${anonymousCommentLabel} - ${user.userName} - ${symphonyLabel}">
-        <meta name="description" content="${user.userName}${deLabel}${settingsLabel}"/>
+        <meta name="description" content="${user.userName}${deLabel}${anonymousCommentLabel}"/>
+        </@head>
+        <#elseif type == "linkForge">
+        <@head title="${linkForgeLabel} - ${user.userName} - ${symphonyLabel}">
+        <meta name="description" content="${user.userName}${deLabel}${linkForgeLabel}"/>
         </@head>
         </#if>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
@@ -56,7 +60,9 @@
                 <a <#if type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="selected"</#if>
                     href="${servePath}/member/${user.userName}/following/users"><svg height="18" version="1.1" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
                 <a <#if type == "points"> class="selected"</#if> href="${servePath}/member/${user.userName}/points">
-                    <svg height="18" version="1.1" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
+                    <svg height="18" version="Ø1.1" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
+                <a <#if type == "linkForge"> class="selected"</#if> href="${servePath}/member/${user.userName}/forge/link">
+                    <svg height="18" version="Ø1.1" viewBox="0 1 16 16" width="16">${linkIcon}</svg>  ${linkForgeLabel}</a>
                 <#if currentUser?? && currentUser.userName == user.userName>
                 <a <#if type == "settings"> class="selected"</#if>
                     href="${servePath}/settings"><svg height="18" version="1.1" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
