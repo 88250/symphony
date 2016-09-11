@@ -118,7 +118,7 @@ public class TagUserLinkRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public List<String> getByTagId(final String tagId, final int fetchSize) throws RepositoryException {
-        final List<JSONObject> results = select("SELECT DISTINCT(linkId) FROM `" + getName()
+        final List<JSONObject> results = select("SELECT DISTINCT(`linkId`), `linkScore` FROM `" + getName()
                 + "` WHERE `tagId` = ? ORDER BY `linkScore` DESC LIMIT ?", tagId, fetchSize);
 
         final List<String> ret = new ArrayList<>();
