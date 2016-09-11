@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.6.10, Aug 31, 2016
+ * @version 1.4.6.13, Sep 10, 2016
  */
 
 /* start reset */
@@ -250,6 +250,7 @@ blockquote {
     word-wrap: break-word;
     overflow: hidden;
     line-height: 1.5;
+    text-align: justify;
 }
 
 .content-reset ul,
@@ -442,11 +443,6 @@ blockquote {
 
 .ft-smaller {
     font-size: 12px;
-}
-
-.ft-black,
-a.ft-black {
-    color: #333;
 }
 
 .ft-gray,
@@ -1268,6 +1264,14 @@ a[class*=" icon-"]:hover {
     font-weight: normal;
 }
 
+.list h2 > a {
+    color: #595959;
+}
+
+.list h2 > a:hover {
+    color: #333;
+}
+
 .list > ul {
     list-style: none;
 }
@@ -1278,10 +1282,6 @@ a[class*=" icon-"]:hover {
     white-space: normal;
     word-wrap: break-word;
     position: relative;
-}
-
-.list > ul > li:hover {
-    background-color: #F7F7F7;
 }
 
 .list li.last {
@@ -1462,6 +1462,7 @@ ul.CodeMirror-hints {
     display: inline-block;
     margin-bottom: .25em;
     background-size: contain;
+    vertical-align: text-top;
 }
 /* end emoji */
 
@@ -1693,20 +1694,24 @@ ul.CodeMirror-hints {
 /* start article */
 .article-action .fn-right > a,
 .article-action .fn-right > span {
-    border: 1px solid #e0e0e0;
     padding: 4px 8px;
     border-radius: 2px;
     display: inline-block;
     line-height: 16px;
     float: left;
-    margin-left: 5px;
     text-decoration: none;
     margin-top: 10px;
+    color: #333;
+}
+
+.article-action .fn-right > a:hover,
+.article-action .fn-right > span:hover {
+    color: #4183C4;
 }
 
 .article-info {
     position: relative;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .article-info > div.article-params {
@@ -1730,6 +1735,14 @@ h2.article-title {
     font-size: 16px;
     font-weight: normal;
     margin: 10px 0;
+}
+
+h2.article-title > a {
+    color: #595959;
+}
+
+h2.article-title > a:hover {
+    color: #333;
 }
 
 #thoughtProgress {
@@ -1842,7 +1855,7 @@ label.cmt-anonymous {
 }
 
 .comments.nice ul {
-    margin-top: 10px;
+    margin-top: 5px;
     border: 1px solid #e5e5e5;
     border-radius: 3px;
 }
@@ -1910,9 +1923,12 @@ label.cmt-anonymous {
     width: 100%;
 }
 
+.article-tags {
+    margin: 5px 0 -5px;
+}
+
 .share {
-    margin-top: 20px;
-    margin-bottom: 5px;
+    margin-top: 10px;
     position: relative;
 }
 
@@ -2028,9 +2044,8 @@ label.cmt-anonymous {
 
 /* start domains */
 .domains {
-    margin: 5px;
     width: 288px;
-    margin: 0 auto;
+    margin: 0 auto -10px;
 }
 
 .domains svg {
@@ -2549,7 +2564,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 #articleRewardContent {
-    margin: 10px 0;
+    margin-top: 10px;
     padding: 5px;
 }
 

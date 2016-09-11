@@ -21,7 +21,7 @@
 
     <!-- Properties -->
     <properties>
-        <latke.version>2.2.11</latke.version>
+        <latke.version>2.3.1</latke.version>
         
         <servlet.version>3.1.0</servlet.version>
         <jetty.version>9.2.7.v20150116</jetty.version>
@@ -242,7 +242,7 @@
                 <version>${jetty.version}</version>
                 <configuration>
                     <httpConnector>
-                        <port>8084</port>
+                        <port>8080</port>
                     </httpConnector>
                     <stopKey>stop</stopKey>
                     <stopPort>4501</stopPort>

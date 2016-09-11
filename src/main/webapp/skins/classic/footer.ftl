@@ -2,13 +2,14 @@
     <div class="wrapper">
         <div class="fn-flex-1">
             <div class="footer-nav fn-clear">
-                <a rel="help" href="https://hacpai.com/article/1440573175609">${aboutLabel}</a>
+                <a rel="help" href="${servePath}/about">${aboutLabel}</a>
                 <a href="https://hacpai.com/article/1457158841475">API</a>
                 <a href="${servePath}/tag/系统公告">${symAnnouncementLabel}</a>
                 <a href="${servePath}/tag/Q%26A">${qnaLabel}</a>
                 <a href="${servePath}/domains">${domainLabel}</a>
                 <a href="${servePath}/tags">${tagLabel}</a>
                 <a href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
+                <a href="${servePath}/forge/link">${linkForgeLabel}</a>
                 <a href="${servePath}/statistic" class="last">${dataStatLabel}</a>
 
                 <div class="fn-right">

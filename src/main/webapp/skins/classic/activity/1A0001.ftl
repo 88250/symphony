@@ -5,6 +5,7 @@
         <@head title="${activity1A0001Label} - ${activityLabel} - ${symphonyLabel}">
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link rel="canonical" href="${servePath}/activity/1A0001">
     </head>
     <body>
         <#include "../header.ftl">
@@ -41,6 +42,7 @@
                         </div>
                         </#if>
                     <#else>
+                    <br/>
                     <div id="tip" class="tip"></div><br/>
                     <div class="fn-clear">
                         <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001('${csrfToken}')">${activityBetLabel}</button>

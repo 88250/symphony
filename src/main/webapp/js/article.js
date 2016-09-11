@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.29.18, Aug 31, 2016
+ * @version 1.24.31.20, Sep 10, 2016
  */
 
 /**
@@ -86,6 +86,10 @@ var Comment = {
     _initEditorPanel: function () {
         // 回复按钮设置
         $('.reply-btn').css('left', $('.side').offset().left - 43).click(function () {
+            if (!Label.isLoggedIn) {
+                Util.needLogin();
+                return false;
+            }
             $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
             $('.editor-panel').slideDown(function () {
                 $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
@@ -198,6 +202,8 @@ var Comment = {
             }
         }
 
+        this._initMathJax();
+
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             return false;
         }
@@ -217,13 +223,15 @@ var Comment = {
                 cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
                 return CodeMirror.Pass;
             }
+            // 回复按钮随着编辑器高度变化
+            $('.reply-btn').css('bottom', $('.editor-panel').outerHeight() + 'px');
         });
 
         Comment.editor.on('keypress', function (cm, evt) {
             if (evt.ctrlKey && 10 === evt.charCode) {
                 Comment.add(Label.articleOId, Label.csrfToken);
 
-                return;
+                return false;
             }
         });
 
@@ -246,6 +254,43 @@ var Comment = {
                 }
             }
         });
+    },
+    /**
+     * 按需加在 MathJax
+     * @returns {undefined}
+     */
+    _initMathJax: function () {
+        var hasMathJax = false;
+        $('.content-reset').each(function () {
+            if ($(this).text().indexOf('$/') > -1 || $(this).text().indexOf('$$') > -1) {
+                hasMathJax = true;
+                return false;
+            }
+        });
+
+        if (hasMathJax) {
+            $.ajax({
+                method: "GET",
+                url: "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&_=1473258780393",
+                dataType: "script"
+            }).done(function () {
+                MathJax.Hub.Config({
+                    tex2jax: {
+                        inlineMath: [['$', '$'], ["\\(", "\\)"]],
+                        displayMath: [['$$', '$$']],
+                        processEscapes: true,
+                        processEnvironments: true,
+                        skipTags: ['pre', 'code']
+                    }
+                });
+                MathJax.Hub.Queue(function () {
+                    var all = MathJax.Hub.getAllJax(), i;
+                    for (i = 0; i < all.length; i += 1) {
+                        all[i].SourceElement().parentNode.className += 'has-jax';
+                    }
+                });
+            });
+        }
     },
     /**
      * @description 感谢评论.
@@ -492,6 +537,14 @@ var Comment = {
 
                         window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
                     }
+
+                    // 定为到回贴位置
+                    if (Label.userCommentViewMode === 1) {
+                        // 实时模式
+                        window.location.hash = '#comments';
+                    } else {
+                        window.location.hash = '#bottomComment';
+                    }
                 } else {
                     $("#addCommentTip").addClass("error").html('<ul><li>' + result.msg + '</li></ul>');
                 }
@@ -530,9 +583,9 @@ var Comment = {
         if ($avatar.length === 0) {
             $avatar = $('#' + id).find('>.fn-flex>.avatar').clone();
             $avatar.removeClass('avatar').addClass('avatar-small');
-            replyUserHTML = '<a rel="nofollow" href="#' + id 
-                    + '" class="ft-a-icon" onclick="Comment._bgFade($(\'#' + id 
-                    + '\'))"><span class="icon-reply-to"></span> ' 
+            replyUserHTML = '<a rel="nofollow" href="#' + id
+                    + '" class="ft-a-icon" onclick="Comment._bgFade($(\'#' + id
+                    + '\'))"><span class="icon-reply-to"></span> '
                     + $avatar[0].outerHTML + ' ' + userName + '</a>';
         } else {
             $avatar.addClass('ft-a-icon').attr('href', '#' + id).attr('onclick', 'Comment._bgFade($("#' + id + '"))');
@@ -1074,7 +1127,8 @@ var Article = {
         if ($('#articleToC').length === 0) {
             return false;
         }
-
+        $('.side').height($('.side').height());
+        
         // 样式
         var $articleToc = $('#articleToC'),
                 top = $articleToc.offset().top;
@@ -1168,12 +1222,14 @@ var Article = {
         if ($menu.hasClass('ft-red')) {
             $articleToc.hide();
             $menu.removeClass('ft-red');
+            $('.side').height('auto');
         } else {
             $articleToc.show();
             $menu.addClass('ft-red');
             $articleToc.css('position', 'initial');
             $articleToc.find('li').removeClass('current');
             $articleToc.find('li:first').addClass('current');
+            $('.side').height($('.side').height());
         }
 
         $articleToc.next().css('position', 'initial');

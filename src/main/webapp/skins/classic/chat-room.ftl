@@ -8,6 +8,7 @@
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
+        <link rel="canonical" href="${servePath}/community">
     </head>
     <body>
         <#include "header.ftl">

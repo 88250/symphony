@@ -80,7 +80,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.13.15.12, Sep 2, 2016
+ * @version 1.13.16.13, Sep 10, 2016
  * @since 0.2.0
  */
 @Service
@@ -335,7 +335,7 @@ public class UserMgmtService {
      *     "userB3ClientAddArticleURL": "",
      *     "userB3ClientUpdateArticleURL": "",
      *     "userB3ClientAddCommentURL": "",
-     *     "syncWithSymphonyClient": boolean
+     *     "syncWithSymphonyClient": boolean // optional, default to false
      * }
      * </pre>
      *
@@ -585,11 +585,11 @@ public class UserMgmtService {
                         Pointtransfer.TRANSFER_TYPE_C_INIT, Pointtransfer.TRANSFER_SUM_C_INIT, ret, System.currentTimeMillis());
 
                 // Occupy the username, defeat others
+                final Transaction trans = userRepository.beginTransaction();
                 try {
                     final Query query = new Query();
                     final List<Filter> filters = new ArrayList<>();
                     filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, userName));
-                    filters.add(new PropertyFilter(User.USER_EMAIL, FilterOperator.NOT_EQUAL, userEmail));
                     filters.add(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL,
                             UserExt.USER_STATUS_C_NOT_VERIFIED));
                     query.setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
@@ -604,7 +604,13 @@ public class UserMgmtService {
 
                         LOGGER.log(Level.INFO, "Defeated a user [email=" + u.optString(User.USER_EMAIL) + "]");
                     }
+
+                    trans.commit();
                 } catch (final Exception e) {
+                    if (trans.isActive()) {
+                        trans.rollback();
+                    }
+
                     LOGGER.log(Level.ERROR, "Defeat others error", e);
                 }
             }
@@ -759,7 +765,7 @@ public class UserMgmtService {
         final Date now = new Date();
         final long yesterdayTime = DateUtils.addDays(now, -1).getTime();
 
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_NOT_VERIFIED));
         filters.add(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.LESS_THAN_OR_EQUAL, yesterdayTime));
         filters.add(new PropertyFilter(User.USER_NAME, FilterOperator.NOT_EQUAL, UserExt.NULL_USER_NAME));
@@ -826,6 +832,7 @@ public class UserMgmtService {
                 tag.put(Tag.TAG_REFERENCE_CNT, 0);
                 tag.put(Tag.TAG_COMMENT_CNT, 0);
                 tag.put(Tag.TAG_FOLLOWER_CNT, 0);
+                tag.put(Tag.TAG_LINK_CNT, 0);
                 tag.put(Tag.TAG_DESCRIPTION, "");
                 tag.put(Tag.TAG_ICON_PATH, "");
                 tag.put(Tag.TAG_STATUS, 0);

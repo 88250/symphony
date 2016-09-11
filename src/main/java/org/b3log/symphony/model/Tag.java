@@ -15,18 +15,28 @@
  */
 package org.b3log.symphony.model;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.util.Strings;
+import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.util.Symphonys;
+import org.json.JSONObject;
 
 /**
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.12.4.4, Aug 1, 2016
+ * @version 1.14.5.4, Sep 10, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -70,6 +80,11 @@ public final class Tag {
      * Key of tag follower count.
      */
     public static final String TAG_FOLLOWER_CNT = "tagFollowerCount";
+
+    /**
+     * Key of link count.
+     */
+    public static final String TAG_LINK_CNT = "tagLinkCount";
 
     /**
      * Key of tag status.
@@ -182,6 +197,16 @@ public final class Tag {
      */
     public static final String TAG_T_TITLE_LOWER_CASE = "tagTitleLowerCase";
 
+    /**
+     * Key of tag links.
+     */
+    public static final String TAG_T_LINKS = "tagLinks";
+    
+    /**
+     * Key of tag links count.
+     */
+    public static final String TAG_T_LINKS_CNT = "tagLinksCnt";
+
     //// Tag type constants
     /**
      * Tag type - creator.
@@ -231,6 +256,16 @@ public final class Tag {
     public static final Pattern TAG_TITLE_PATTERN = Pattern.compile(TAG_TITLE_PATTERN_STR);
 
     /**
+     * Normalized tag title mappings.
+     */
+    private static final Map<String, Set<String>> NORMALIZE_MAPPINGS = new HashMap<>();
+
+    static {
+        NORMALIZE_MAPPINGS.put("JavaScript", new HashSet<>(Arrays.asList("JS")));
+        NORMALIZE_MAPPINGS.put("Elasticsearch", new HashSet<>(Arrays.asList("ES")));
+    }
+
+    /**
      * Uses the head tags.
      *
      * @param tagStr the specified tags
@@ -271,7 +306,7 @@ public final class Tag {
         tagTitles = Strings.trimAll(tagTitles);
 
         // deduplication
-        final Set<String> titles = new LinkedHashSet<String>();
+        final Set<String> titles = new LinkedHashSet<>();
         for (final String tagTitle : tagTitles) {
             if (!exists(titles, tagTitle)) {
                 titles.add(tagTitle);
@@ -283,7 +318,7 @@ public final class Tag {
         int count = 0;
         final StringBuilder tagsBuilder = new StringBuilder();
         for (final String tagTitle : tagTitles) {
-            final String title = tagTitle.trim();
+            String title = tagTitle.trim();
             if (StringUtils.isBlank(title)) {
                 continue;
             }
@@ -307,6 +342,7 @@ public final class Tag {
                 continue;
             }
 
+            title = normalize(title);
             tagsBuilder.append(title).append(",");
             count++;
 
@@ -368,6 +404,48 @@ public final class Tag {
         }
 
         return false;
+    }
+
+    /**
+     * Normalizes the specified title. For example, Normalizes "JS" to "JavaScript.
+     *
+     * @param title the specified title
+     * @return normalized title
+     */
+    private static String normalize(final String title) {
+        final TagCache cache = LatkeBeanManagerImpl.getInstance().getReference(TagCache.class);
+        final List<JSONObject> iconTags = cache.getIconTags(Integer.MAX_VALUE);
+        Collections.sort(iconTags, new Comparator<JSONObject>() {
+            @Override
+            public int compare(final JSONObject t1, final JSONObject t2) {
+                final String u1Title = t1.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+                final String u2Title = t2.optString(Tag.TAG_T_TITLE_LOWER_CASE);
+
+                return u1Title.length() - u2Title.length();
+            }
+        });
+
+        for (final JSONObject iconTag : iconTags) {
+            final String iconTagTitle = iconTag.optString(Tag.TAG_TITLE);
+            if (iconTagTitle.length() < 2) {
+                break;
+            }
+
+            if (StringUtils.containsIgnoreCase(title, iconTagTitle)) {
+                return iconTagTitle;
+            }
+        }
+
+        for (final Map.Entry<String, Set<String>> entry : NORMALIZE_MAPPINGS.entrySet()) {
+            final Set<String> oddTitles = entry.getValue();
+            for (final String oddTitle : oddTitles) {
+                if (StringUtils.containsIgnoreCase(title, oddTitle)) {
+                    return entry.getKey();
+                }
+            }
+        }
+
+        return title;
     }
 
     /**
