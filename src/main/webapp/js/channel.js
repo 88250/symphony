@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.11.14, Sep 7, 2016
+ * @version 1.10.11.15, Sep 10, 2016
  */
 
 /**
@@ -71,7 +71,7 @@ var ArticleChannel = {
                     // ua
                     var UAName = Util.getDeviceByUa(data.commentUA);
                     if (UAName !== '') {
-                        UAName = ' <span class="cmt-via">via ' + UAName + '</span>';
+                        UAName = ' <span class="cmt-via fn-hidden hover-show">via ' + UAName + '</span>';
                     }
 
                     var template = '<li id="' + data.commentId + '">'
@@ -97,14 +97,14 @@ var ArticleChannel = {
 
                     if (!data.fromClient) {
                         if (data.commentAuthorName !== 'someone') {
-                            template += '<a rel="nofollow" href="/member/' + data.commentAuthorName + '">';
+                            template += '<a rel="nofollow" class="ft-gray" href="/member/' + data.commentAuthorName + '">';
                         }
-                        template += data.commentAuthorName;
+                        template += '<span class="ft-gray">' + data.commentAuthorName + '</span>';
                         if (data.commentAuthorName !== 'someone') {
                             template += '</a>';
                         }
                     } else {
-                        template += data.commentAuthorName + ' <span class="ft-fade"> • </span> <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
+                        template += '<span class="ft-gray">' + data.commentAuthorName + '</span> <span class="ft-fade"> • </span> <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>';
                     }
                     template += ' <span class="ft-fade"> • ' + data.timeAgo;
 
@@ -124,15 +124,12 @@ var ArticleChannel = {
                     }
                     template += '</span></div><div class="content-reset comment">'
                             + data.commentContent + '</div><div class="comment-action"><div class="ft-fade fn-clear">'
-                            + '<span class="fn-right">';
-
-                    if ((Label.isLoggedIn && data.commentAuthorName !== Label.currentUserName) || !Label.isLoggedIn) {
-                        template += '<span class="fn-pointer tooltipped tooltipped-n" '
-                                + ' aria-label="' + Label.thankLabel + '" onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
-                                + '\', \'' + data.commentThankLabel + '\','
-                                + (data.commentAuthorName === 'someone' ? 1 : 0) + ', this)"><span class="icon-heart"></span></span> ';
-                    }
-                    template += '<span class="tooltipped tooltipped-n fn-pointer" '
+                            + '<span class="fn-right fn-hidden hover-show">'
+                            + '<span class="fn-pointer tooltipped tooltipped-n" '
+                            + ' aria-label="' + Label.thankLabel + '" onclick="Comment.thank(\'' + data.commentId + '\', \'' + Label.csrfToken
+                            + '\', \'' + data.commentThankLabel + '\','
+                            + (data.commentAuthorName === 'someone' ? 1 : 0) + ', this)"><span class="icon-heart"></span></span> '
+                            + '<span class="tooltipped tooltipped-n fn-pointer" '
                             + 'aria-label="' + Label.upLabel + ' 0"'
                             + 'onclick="Article.voteUp(\'' + data.commentId + '\', \'comment\', this)">'
                             + '<span class="icon-thumbs-up"></span></span> '

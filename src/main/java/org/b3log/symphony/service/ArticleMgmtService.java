@@ -75,7 +75,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.22.19, Sep 4, 2016
+ * @version 2.14.22.21, Sep 10, 2016
  * @since 0.2.0
  */
 @Service
@@ -608,7 +608,7 @@ public class ArticleMgmtService {
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, article);
             try {
-                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
             }
@@ -791,7 +791,7 @@ public class ArticleMgmtService {
             eventData.put(Common.FROM_CLIENT, fromClient);
             eventData.put(Article.ARTICLE, oldArticle);
             try {
-                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
             }
@@ -1041,7 +1041,7 @@ public class ArticleMgmtService {
                     setFilter(new PropertyFilter(Article.ARTICLE_STICK, FilterOperator.GREATER_THAN, 0L));
             final JSONArray articles = articleRepository.get(query).optJSONArray(Keys.RESULTS);
             if (articles.length() > 1) {
-                final Set<String> ids = new HashSet<String>();
+                final Set<String> ids = new HashSet<>();
                 for (int i = 0; i < articles.length(); i++) {
                     ids.add(articles.optJSONObject(i).optString(Keys.OBJECT_ID));
                 }
@@ -1210,7 +1210,7 @@ public class ArticleMgmtService {
         newArticle.put(Article.ARTICLE_TAGS, tagsString);
         tagStrings = tagsString.split(",");
 
-        final List<JSONObject> newTags = new ArrayList<JSONObject>();
+        final List<JSONObject> newTags = new ArrayList<>();
 
         for (int i = 0; i < tagStrings.length; i++) {
             final String tagTitle = tagStrings[i].trim();
@@ -1223,8 +1223,8 @@ public class ArticleMgmtService {
             newTags.add(newTag);
         }
 
-        final List<JSONObject> tagsDropped = new ArrayList<JSONObject>();
-        final List<JSONObject> tagsNeedToAdd = new ArrayList<JSONObject>();
+        final List<JSONObject> tagsDropped = new ArrayList<>();
+        final List<JSONObject> tagsNeedToAdd = new ArrayList<>();
 
         for (final JSONObject newTag : newTags) {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
@@ -1343,13 +1343,12 @@ public class ArticleMgmtService {
             throws RepositoryException {
         String articleTags = article.optString(Article.ARTICLE_TAGS);
 
-        for (int i = 0; i < tagTitles.length; i++) {
-            final String tagTitle = tagTitles[i].trim();
+        for (final String t : tagTitles) {
+            final String tagTitle = t.trim();
             JSONObject tag = tagRepository.getByTitle(tagTitle);
             String tagId;
             int userTagType;
             final int articleCmtCnt = article.optInt(Article.ARTICLE_COMMENT_CNT);
-
             if (null == tag) {
                 LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
                         new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
@@ -1358,6 +1357,7 @@ public class ArticleMgmtService {
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
                 tag.put(Tag.TAG_COMMENT_CNT, articleCmtCnt);
                 tag.put(Tag.TAG_FOLLOWER_CNT, 0);
+                tag.put(Tag.TAG_LINK_CNT, 0);
                 tag.put(Tag.TAG_DESCRIPTION, "");
                 tag.put(Tag.TAG_ICON_PATH, "");
                 tag.put(Tag.TAG_STATUS, 0);
@@ -1405,17 +1405,14 @@ public class ArticleMgmtService {
 
                 userTagType = Tag.TAG_TYPE_C_ARTICLE;
             }
-
             // Tag-Article relation
             final JSONObject tagArticleRelation = new JSONObject();
             tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID, tagId);
             tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
             tagArticleRepository.add(tagArticleRelation);
-
             // User-Tag relation
             final JSONObject userTagRelation = new JSONObject();
             userTagRelation.put(Tag.TAG + '_' + Keys.OBJECT_ID, tagId);
-
             if (Article.ARTICLE_ANONYMOUS_C_ANONYMOUS == article.optInt(Article.ARTICLE_ANONYMOUS)) {
                 userTagRelation.put(User.USER + '_' + Keys.OBJECT_ID, "0");
             } else {
@@ -1610,7 +1607,7 @@ public class ArticleMgmtService {
             eventData.put(Common.FROM_CLIENT, false);
             eventData.put(Article.ARTICLE, article);
             try {
-                eventManager.fireEventAsynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
             }

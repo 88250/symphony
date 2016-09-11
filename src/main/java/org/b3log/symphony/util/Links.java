@@ -15,17 +15,22 @@
  */
 package org.b3log.symphony.util;
 
-import java.io.FileReader;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
@@ -42,7 +47,7 @@ import org.jsoup.select.Elements;
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 7, 2016
+ * @version 1.0.0.1, Sep 9, 2016
  * @since 1.6.0
  */
 public final class Links {
@@ -63,11 +68,12 @@ public final class Links {
      * @param html the specified HTML
      * @return a list of links, each of them like this:      <pre>
      * {
-     *     "url": "https://hacpai.com/article/1440573175609",
-     *     "title": "黑客派简介",
-     *     "html": "page HTML",
-     *     "text": "page text",
-     *     "baiduRefCnt": int
+     *     "linkAddr": "https://hacpai.com/article/1440573175609",
+     *     "linkTitle": "黑客派简介",
+     *     "linkKeywords": "",
+     *     "linkHTML": "page HTML",
+     *     "linkText": "page text",
+     *     "linkBaiduRefCnt": int
      * }
      * </pre>
      */
@@ -75,15 +81,22 @@ public final class Links {
         final Document doc = Jsoup.parse(html);
         final Elements urlElements = doc.select("a");
 
+        final Set<String> urls = new HashSet<>();
         final List<Spider> spiders = new ArrayList<>();
+
         for (final Element urlEle : urlElements) {
             try {
-                final String url = urlEle.attr("href");
-                if ("/".equals(url)) {
+                String url = urlEle.attr("href");
+                if (StringUtils.isBlank(url) || !StringUtils.contains(url, "://")) {
                     continue;
                 }
 
-                spiders.add(new Spider(url));
+                final String path = new URL(url).getPath();
+                if ("/".equals(path)) {
+                    url = StringUtils.substringBeforeLast(url, "/");
+                }
+
+                urls.add(url);
             } catch (final Exception e) {
                 LOGGER.warn("Can't parse [" + urlEle.attr("href") + "]");
             }
@@ -92,6 +105,10 @@ public final class Links {
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
+            for (final String url : urls) {
+                spiders.add(new Spider(url));
+            }
+
             final List<Future<JSONObject>> results = EXECUTOR_SERVICE.invokeAll(spiders);
             for (final Future<JSONObject> result : results) {
                 final JSONObject link = result.get();
@@ -104,6 +121,13 @@ public final class Links {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Parses URLs failed", e);
         }
+
+        Collections.sort(ret, new Comparator<JSONObject>() {
+            @Override
+            public int compare(final JSONObject link1, final JSONObject link2) {
+                return link1.optInt(Link.LINK_BAIDU_REF_CNT) - link2.optInt(Link.LINK_BAIDU_REF_CNT);
+            }
+        });
 
         return ret;
     }
@@ -118,16 +142,24 @@ public final class Links {
 
         @Override
         public JSONObject call() throws Exception {
+            final int TIMEOUT = 2000;
+
             try {
-                final Connection.Response res = Jsoup.connect(url).timeout(2000).execute();
+                final JSONObject ret = new JSONObject();
+
+                // Get meta info of the URL
+                final Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).execute();
                 final String html = new String(res.bodyAsBytes(), res.charset());
 
                 String title = StringUtils.substringBetween(html, "<title>", "</title>");
                 title = StringUtils.trim(title);
 
+                if (!containsChinese(title)) {
+                    return null;
+                }
+
                 final String keywords = StringUtils.substringBetween(html, "eywords\" content=\"", "\"");
 
-                final JSONObject ret = new JSONObject();
                 ret.put(Link.LINK_ADDR, url);
                 ret.put(Link.LINK_TITLE, title);
                 ret.put(Link.LINK_T_KEYWORDS, keywords);
@@ -136,23 +168,41 @@ public final class Links {
                 doc.select("pre").remove();
                 ret.put(Link.LINK_T_TEXT, doc.text());
 
-                final URL baiduURL = new URL("http://www.baidu.com/s?wd="
-                        + URLEncoder.encode(url, "UTF-8"));
-                final HttpURLConnection conn = (HttpURLConnection) baiduURL.openConnection();
-                conn.setConnectTimeout(2000);
-                conn.setReadTimeout(2000);
+                // Evaluate the URL
+                URL baiduURL = new URL("https://www.baidu.com/s?pn=0&wd=" + URLEncoder.encode(url, "UTF-8"));
+                HttpURLConnection conn = (HttpURLConnection) baiduURL.openConnection();
+                conn.setConnectTimeout(TIMEOUT);
+                conn.setReadTimeout(TIMEOUT);
+                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                        + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
 
-                final InputStream inputStream = conn.getInputStream();
-                final String baiduRes = IOUtils.toString(inputStream, "UTF-8");
+                InputStream inputStream = conn.getInputStream();
+                String baiduRes = IOUtils.toString(inputStream, "UTF-8");
                 IOUtils.closeQuietly(inputStream);
                 conn.disconnect();
 
-                String baiduRefCnt = StringUtils.substringBetween(baiduRes, "百度为您找到相关结果约", "个");
-                baiduRefCnt = StringUtils.replace(baiduRefCnt, ",", "");
-                if (StringUtils.isBlank(baiduRefCnt)) {
-                    baiduRefCnt = "0";
+                int baiduRefCnt = StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
+                if (1 > baiduRefCnt) {
+                    return null;
                 }
-                ret.put(Link.LINK_BAIDU_REF_CNT, Integer.valueOf(baiduRefCnt));
+
+                baiduURL = new URL("https://www.baidu.com/s?pn=10&wd=" + URLEncoder.encode(url, "UTF-8"));
+                conn = (HttpURLConnection) baiduURL.openConnection();
+                conn.setConnectTimeout(TIMEOUT);
+                conn.setReadTimeout(TIMEOUT);
+                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                        + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
+
+                inputStream = conn.getInputStream();
+                baiduRes = IOUtils.toString(inputStream, "UTF-8");
+                IOUtils.closeQuietly(inputStream);
+                conn.disconnect();
+
+                baiduRefCnt += StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
+
+                ret.put(Link.LINK_BAIDU_REF_CNT, baiduRefCnt);
+
+                LOGGER.debug(ret.optString(Link.LINK_ADDR));
 
                 return ret;
             } catch (final Exception e) {
@@ -161,8 +211,17 @@ public final class Links {
         }
     }
 
+    private static boolean containsChinese(final String str) {
+        final Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+        final Matcher m = p.matcher(str);
+
+        return m.find();
+    }
+
     public static void main(final String[] args) throws Exception {
-        final String html = IOUtils.toString(new FileReader("D:\\1.html"));
+        final Document doc = Jsoup.parse(new URL("https://github.com/helloqingfeng/Awsome-Front-End-learning-resource/tree/master/04-Front-end-tutorial-master"), 5000);
+        final String html = doc.html();
+
         final List<JSONObject> links = getLinks(html);
         for (final JSONObject link : links) {
             LOGGER.info(link.optInt(Link.LINK_BAIDU_REF_CNT) + "  "

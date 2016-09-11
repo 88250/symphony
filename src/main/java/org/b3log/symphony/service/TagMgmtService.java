@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.0, Aug 4, 2016
+ * @version 1.2.1.1, Sep 10, 2016
  * @since 1.1.0
  */
 @Service
@@ -130,6 +130,7 @@ public class TagMgmtService {
             tag.put(Tag.TAG_REFERENCE_CNT, 0);
             tag.put(Tag.TAG_COMMENT_CNT, 0);
             tag.put(Tag.TAG_FOLLOWER_CNT, 0);
+            tag.put(Tag.TAG_LINK_CNT, 0);
             tag.put(Tag.TAG_DESCRIPTION, "");
             tag.put(Tag.TAG_ICON_PATH, "");
             tag.put(Tag.TAG_STATUS, 0);

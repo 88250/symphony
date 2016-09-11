@@ -19,9 +19,8 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.10.13, Aug 22, 2016
+ * @version 2.4.10.14, Sep 10, 2016
  */
-
 
 /* start home common */
 .home-list {
@@ -263,6 +262,10 @@ label.article-anonymous {
 /* start home */
 .home-invisible {
     margin: 50px 0;
+}
+
+.tabs .home-nav a {
+    flex: initial;
 }
 /* end home */
 

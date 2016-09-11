@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.31.20.26, Aug 26, 2016
+ * @version 1.31.20.27, Sep 10, 2016
  */
 
 /**
@@ -1141,6 +1141,8 @@ var Validate = {
         }
 
         if (tipHTML === '<ul>') {
+            obj.target.html('');
+            obj.target.removeClass('error');
             return true;
         } else {
             obj.target.html(tipHTML + '</ul>');
