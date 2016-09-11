@@ -16,7 +16,7 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <div class="link-forge-upload form">
-                        <input type="text"/><button class="green">${submitLabel}</button>
+                        <input type="text" placeholder="${linkForgeTipLabel}" /><button class="green">${submitLabel}</button>
                         <div id="uploadLinkTip" class="tip"></div>
                     </div>
                     <#list tags as tag>

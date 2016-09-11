@@ -7,7 +7,7 @@
 <#if 0 == user.userForgeLinkStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="link-forge">
     <div class="link-forge-upload form">
-        <input type="text"/><button class="green">${submitLabel}</button>
+        <input type="text" placeholder="${linkForgeTipLabel}" /><button class="green">${submitLabel}</button>
         <div id="uploadLinkTip" class="tip"></div>
     </div>
 </div>
