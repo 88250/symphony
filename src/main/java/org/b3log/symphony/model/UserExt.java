@@ -23,7 +23,7 @@ import org.b3log.symphony.util.Symphonys;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.25.1.11, Sep 2, 2016
+ * @version 2.25.1.12, Sep 11, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
@@ -319,6 +319,11 @@ public final class UserExt {
      * Key of user name lower case.
      */
     public static final String USER_T_NAME_LOWER_CASE = "userNameLowerCase";
+
+    /**
+     * Key of user id.
+     */
+    public static final String USER_T_ID = "userId";
 
     //// Default Commenter constants
     /**

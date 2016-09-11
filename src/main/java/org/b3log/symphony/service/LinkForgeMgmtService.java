@@ -1,6 +1,5 @@
 package org.b3log.symphony.service;
 
-import java.net.URL;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
@@ -12,8 +11,9 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Link;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.LinkRepository;
-import org.b3log.symphony.repository.TagLinkRepository;
+import org.b3log.symphony.repository.TagUserLinkRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.util.Links;
 import org.b3log.symphony.util.Pangu;
@@ -25,7 +25,7 @@ import org.jsoup.nodes.Document;
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 10, 2016
+ * @version 1.0.0.3, Sep 11, 2016
  * @since 1.6.0
  */
 @Service
@@ -49,10 +49,10 @@ public class LinkForgeMgmtService {
     private TagRepository tagRepository;
 
     /**
-     * Tag-Link repository.
+     * Tag-User-Link repository.
      */
     @Inject
-    private TagLinkRepository tagLinkRepository;
+    private TagUserLinkRepository tagUserLinkRepository;
 
     /**
      * Tag cache.
@@ -64,8 +64,9 @@ public class LinkForgeMgmtService {
      * Forges the specified URL.
      *
      * @param url the specified URL
+     * @param userId the specified user id
      */
-    public void forge(final String url) {
+    public void forge(final String url, final String userId) {
         String html;
         try {
             final Document doc = Jsoup.connect(url).timeout(5000).
@@ -117,19 +118,13 @@ public class LinkForgeMgmtService {
                 String[] titles = title.split(" ");
                 titles = Strings.trimAll(titles);
 
-                final List<JSONObject> cachedTags = tagCache.getIconTags(Integer.MAX_VALUE);
+                final List<JSONObject> cachedTags = tagCache.getTags();
                 for (final JSONObject cachedTag : cachedTags) {
                     final String tagId = cachedTag.optString(Keys.OBJECT_ID);
                     final JSONObject tag = tagRepository.get(tagId);
 
                     // clean
-                    final int removedRelCnt = tagLinkRepository.removeByLinkIdAndTagId(linkId, tagId);
-                    int tagLinkCnt = tag.optInt(Tag.TAG_LINK_CNT) - removedRelCnt;
-                    if (tagLinkCnt < 0) {
-                        tagLinkCnt = 0;
-                    }
-                    tag.put(Tag.TAG_LINK_CNT, tagLinkCnt);
-                    tagRepository.update(tagId, tag);
+                    tagUserLinkRepository.removeByTagIdUserIdAndLinkId(tagId, userId, linkId);
 
                     final String tagTitle = tag.optString(Tag.TAG_TITLE);
                     if (!Strings.containsIgnoreCase(tagTitle, titles)) {
@@ -139,11 +134,17 @@ public class LinkForgeMgmtService {
                     // re-add
                     final JSONObject tagLinkRel = new JSONObject();
                     tagLinkRel.put(Tag.TAG_T_ID, tagId);
+                    tagLinkRel.put(UserExt.USER_T_ID, userId);
                     tagLinkRel.put(Link.LINK_T_ID, linkId);
                     tagLinkRel.put(Link.LINK_SCORE, linkScore);
-                    tagLinkRepository.add(tagLinkRel);
+                    tagUserLinkRepository.add(tagLinkRel);
 
-                    tag.put(Tag.TAG_LINK_CNT, tag.optInt(Tag.TAG_LINK_CNT) + 1);
+                    // refresh link score
+                    tagUserLinkRepository.updateTagLinkScore(tagId, linkId, linkScore);
+
+                    // re-calc tag link count
+                    final int tagLinkCnt = tagUserLinkRepository.countTagLink(tagId, linkId);
+                    tag.put(Tag.TAG_LINK_CNT, tagLinkCnt);
                     tagRepository.update(tagId, tag);
                 }
             }

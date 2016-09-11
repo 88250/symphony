@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -33,9 +34,8 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.symphony.model.Common;
-import org.b3log.symphony.model.Domain;
-import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Tag;
+import org.b3log.symphony.processor.advice.LoginCheck;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchEndAdvice;
 import org.b3log.symphony.processor.advice.stopwatch.StopwatchStartAdvice;
 import org.b3log.symphony.service.LinkForgeMgmtService;
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 10, 2016
+ * @version 1.0.0.2, Sep 11, 2016
  * @since 1.6.0
  */
 @RequestProcessor
@@ -92,30 +92,30 @@ public class LinkForgeProcessor {
      * Submits a link into forge.
      *
      * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/forge/link", method = HTTPRequestMethod.POST)
-    @Before(adviceClass = {StopwatchStartAdvice.class})
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void forgeLink(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void forgeLink(final HTTPRequestContext context) throws Exception {
         context.renderJSON(true);
 
         JSONObject requestJSONObject;
         try {
-            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            requestJSONObject = Requests.parseRequestJSONObject(context.getRequest(), context.getResponse());
         } catch (final Exception e) {
             throw new RequestProcessAdviceException(new JSONObject().put(Keys.MSG, e.getMessage()));
         }
+
+        final JSONObject user = (JSONObject) context.getRequest().getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
 
         final String url = requestJSONObject.optString(Common.URL);
 
         FORGE_EXECUTOR_SERVICE.submit(new Runnable() {
             @Override
             public void run() {
-                linkForgeMgmtService.forge(url);
+                linkForgeMgmtService.forge(url, userId);
             }
         });
     }
