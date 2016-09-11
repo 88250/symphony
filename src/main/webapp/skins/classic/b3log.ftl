@@ -5,6 +5,7 @@
         <@head title="B3log 构思 - ${symphonyLabel}">
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link rel="canonical" href="${servePath}/b3log">
     </head>
     <body>
         <#include "header.ftl">

@@ -72,7 +72,7 @@ import org.jsoup.Jsoup;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.5.8, Jul 27, 2016
+ * @version 1.7.5.10, Sep 7, 2016
  * @since 0.2.0
  */
 @Service
@@ -187,25 +187,27 @@ public class TagQueryService {
         int start = index;
         int end = index;
 
-        while (start > -1 && tags.get(start).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
+        while (start > -1
+                && tags.get(start).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
             start--;
         }
 
         start++;
 
-        if (start < index - fetchSize) {
-            end = start + fetchSize;
-        } else {
-            while (end < tags.size() && end < index + fetchSize && tags.get(end).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
-                end++;
-
-                if (end >= start + fetchSize) {
-                    break;
-                }
-            }
+        while (end < tags.size()
+                && tags.get(end).optString(Tag.TAG_T_TITLE_LOWER_CASE).startsWith(titlePrefix.toLowerCase())) {
+            end++;
         }
 
-        return tags.subList(start, end);
+        final List<JSONObject> subList = tags.subList(start, end);
+        Collections.sort(subList, new Comparator<JSONObject>() {
+            @Override
+            public int compare(final JSONObject t1, final JSONObject t2) {
+                return t2.optInt(Tag.TAG_REFERENCE_CNT) - t1.optInt(Tag.TAG_REFERENCE_CNT);
+            }
+        });
+
+        return subList.subList(0, subList.size() > fetchSize ? fetchSize : subList.size());
     }
 
     /**
@@ -216,7 +218,7 @@ public class TagQueryService {
      * @return tags
      */
     public List<String> generateTags(final String content, final int tagFetchSize) {
-        final List<String> ret = new ArrayList<String>();
+        final List<String> ret = new ArrayList<>();
 
         final String token = Symphonys.get("boson.token");
         if (StringUtils.isBlank(token)) {
@@ -271,7 +273,7 @@ public class TagQueryService {
      * @return invalid tags, returns an empty list if not found
      */
     public List<String> getInvalidTags() {
-        final List<String> ret = new ArrayList<String>();
+        final List<String> ret = new ArrayList<>();
 
         final Query query = new Query().setFilter(
                 new PropertyFilter(Tag.TAG_STATUS, FilterOperator.NOT_EQUAL, Tag.TAG_STATUS_C_VALID));
@@ -332,7 +334,7 @@ public class TagQueryService {
                 ret.put(Tag.TAG_SEO_KEYWORDS, tagTitle);
             }
 
-            final List<JSONObject> domains = new ArrayList<JSONObject>();
+            final List<JSONObject> domains = new ArrayList<>();
             ret.put(Tag.TAG_T_DOMAINS, (Object) domains);
 
             final Query query = new Query().setFilter(
@@ -471,10 +473,10 @@ public class TagQueryService {
      * @throws ServiceException service exception
      */
     public JSONObject getCreator(final int avatarViewMode, final String tagId) throws ServiceException {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
 
-        final List<Filter> orFilters = new ArrayList<Filter>();
+        final List<Filter> orFilters = new ArrayList<>();
         orFilters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_CREATOR));
         orFilters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_USER_SELF));
 
@@ -535,20 +537,20 @@ public class TagQueryService {
      */
     public List<JSONObject> getParticipants(final int avatarViewMode,
             final String tagId, final int fetchSize) throws ServiceException {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
         filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, 1));
 
         Query query = new Query().setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1).
                 setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
 
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<>();
 
         try {
             JSONObject result = userTagRepository.get(query);
             final JSONArray userTagRelations = result.optJSONArray(Keys.RESULTS);
 
-            final Set<String> userIds = new HashSet<String>();
+            final Set<String> userIds = new HashSet<>();
             for (int i = 0; i < userTagRelations.length(); i++) {
                 userIds.add(userTagRelations.optJSONObject(i).optString(User.USER + '_' + Keys.OBJECT_ID));
             }
@@ -593,9 +595,9 @@ public class TagQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getRelatedTags(final String tagId, final int fetchSize) throws ServiceException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<>();
 
-        final Set<String> tagIds = new HashSet<String>();
+        final Set<String> tagIds = new HashSet<>();
 
         try {
             JSONObject result = tagTagRepository.getByTag1Id(tagId, 1, fetchSize);

@@ -44,9 +44,8 @@ var Activity = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
-                $("#betDiv").remove();
                 if (result.sc) {
-                    $("#betBtn").remove();
+                    $("#betDiv, #betBtn").remove();
                     $("#tip").addClass("succ").removeClass('error').html('<ul><li>' + result.msg + '</li></ul>');
                 } else {
                     $("#tip").addClass("error").removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');

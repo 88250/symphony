@@ -6,6 +6,7 @@
         <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link rel="canonical" href="${servePath}/domains">
     </head>
     <body>
         <#include "header.ftl">
@@ -22,7 +23,7 @@
                             <ul class="tags fn-clear">
                                 <#list domain.domainTags as tag>
                                 <li>
-                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                    <a class="ft-gray ft-smaller" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a> &nbsp;
                                 </li>
                                 </#list>
                             </ul>
@@ -36,6 +37,19 @@
                         Domains: <b>${domainCnt}</b><br/>
                         Tags: <b>${tagCnt}</b>
                     </div>
+                    <#if ADLabel!="">
+                    <div class="module">
+                        <div class="module-header">
+                            <h2>
+                                ${sponsorLabel} 
+                                <a href="https://hacpai.com/article/1460083956075" class="fn-right ft-13 ft-gray" target="_blank">${wantPutOnLabel}</a>
+                            </h2>
+                        </div>
+                        <div class="module-panel ad fn-clear">
+                            ${ADLabel}
+                        </div>
+                    </div>
+                    </#if>
                 </div>
             </div>
         </div>

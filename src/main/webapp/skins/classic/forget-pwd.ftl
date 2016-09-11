@@ -6,6 +6,7 @@
         <meta name="description" content="${forgetPwdLabel} ${symphonyLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link rel="canonical" href="${servePath}/forget-pwd">
     </head>
     <body>
         <#include "header.ftl">

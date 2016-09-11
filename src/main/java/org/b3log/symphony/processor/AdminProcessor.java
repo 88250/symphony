@@ -129,7 +129,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.3.11, Sep 1, 2016
+ * @version 2.20.4.12, Sep 2, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1566,7 +1566,8 @@ public class AdminProcessor {
                     || name.equals(Article.ARTICLE_TYPE)
                     || name.equals(Article.ARTICLE_GOOD_CNT)
                     || name.equals(Article.ARTICLE_BAD_CNT)
-                    || name.equals(Article.ARTICLE_PERFECT)) {
+                    || name.equals(Article.ARTICLE_PERFECT)
+                    || name.equals(Article.ARTICLE_ANONYMOUS_VIEW)) {
                 article.put(name, Integer.valueOf(value));
             } else {
                 article.put(name, value);
@@ -1693,7 +1694,13 @@ public class AdminProcessor {
             final String name = parameterNames.nextElement();
             final String value = request.getParameter(name);
 
-            comment.put(name, value);
+            if (name.equals(Comment.COMMENT_STATUS)
+                    || name.equals(Comment.COMMENT_GOOD_CNT)
+                    || name.equals(Comment.COMMENT_BAD_CNT)) {
+                comment.put(name, Integer.valueOf(value));
+            } else {
+                comment.put(name, value);
+            }
         }
 
         commentMgmtService.updateComment(commentId, comment);
