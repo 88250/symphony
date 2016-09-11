@@ -90,7 +90,7 @@ public class LinkForgeMgmtService {
             return;
         }
 
-        final List<JSONObject> links = Links.getLinks(html);
+        final List<JSONObject> links = Links.getLinks(url, html);
         final List<JSONObject> cachedTags = tagCache.getTags();
 
         final Transaction transaction = linkRepository.beginTransaction();

@@ -75,7 +75,7 @@ var Util = {
                             $('.link-forge-upload input').val('');
                             setTimeout(function () {
                                 $('#uploadLinkTip').html('').removeClass('succ');
-                            }, 3000);
+                            }, 5000);
                         } else {
                             alert(result.msg);
                         }
@@ -83,7 +83,7 @@ var Util = {
                 });
             }
         };
-        
+
         $('.link-forge-upload button').click(function () {
             postLink();
         });

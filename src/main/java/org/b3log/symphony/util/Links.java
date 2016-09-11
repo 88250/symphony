@@ -66,6 +66,7 @@ public final class Links {
     /**
      * Gets links from the specified HTML.
      *
+     * @param baseURL the specified base URL
      * @param html the specified HTML
      * @return a list of links, each of them like this:      <pre>
      * {
@@ -78,7 +79,7 @@ public final class Links {
      * }
      * </pre>
      */
-    public static List<JSONObject> getLinks(final String html) {
+    public static List<JSONObject> getLinks(final String baseURL, final String html) {
         final Document doc = Jsoup.parse(html);
         final Elements urlElements = doc.select("a");
 
@@ -89,12 +90,17 @@ public final class Links {
             try {
                 String url = urlEle.attr("href");
                 if (StringUtils.isBlank(url) || !StringUtils.contains(url, "://")) {
-                    continue;
+                    url = StringUtils.substringBeforeLast(baseURL, "/") + url;
                 }
 
-                final String path = new URL(url).getPath();
+                final URL formedURL = new URL(url);
+                final String path = formedURL.getPath();
                 if ("/".equals(path)) {
                     url = StringUtils.substringBeforeLast(url, "/");
+                }
+
+                if (StringUtils.contains(url, "#")) {
+                    url = StringUtils.substringBefore(url, "#");
                 }
 
                 urls.add(url);
@@ -222,6 +228,10 @@ public final class Links {
     }
 
     private static boolean containsChinese(final String str) {
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
+
         final Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
         final Matcher m = p.matcher(str);
 
@@ -229,10 +239,11 @@ public final class Links {
     }
 
     public static void main(final String[] args) throws Exception {
-        final Document doc = Jsoup.parse(new URL("https://github.com/helloqingfeng/Awsome-Front-End-learning-resource/tree/master/04-Front-end-tutorial-master"), 5000);
+        final String url = "https://github.com/helloqingfeng/Awsome-Front-End-learning-resource/tree/master/04-Front-end-tutorial-master";
+        final Document doc = Jsoup.parse(new URL(url), 5000);
         final String html = doc.html();
 
-        final List<JSONObject> links = getLinks(html);
+        final List<JSONObject> links = getLinks(url, html);
         for (final JSONObject link : links) {
             LOGGER.info(link.optInt(Link.LINK_BAIDU_REF_CNT) + "  "
                     + link.optString(Link.LINK_ADDR) + "  "
