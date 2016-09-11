@@ -40,6 +40,11 @@ public final class UserExt {
     public static final String USER_LIST_PAGE_SIZE = "userListPageSize";
 
     /**
+     * Key of forge link status.
+     */
+    public static final String USER_FORGE_LINK_STATUS = "userForgeLinkStatus";
+
+    /**
      * Key of user point status.
      */
     public static final String USER_POINT_STATUS = "userPointStatus";

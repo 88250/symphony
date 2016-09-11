@@ -257,11 +257,11 @@ public class UserProcessor {
         renderer.setTemplateName("/home/link-forge.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         filler.fillHeaderAndFooter(request, response, dataModel);
-        
+
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
         fillHomeUser(dataModel, user);
-        
+
         dataModel.put(Common.TYPE, "linkForge");
     }
 
@@ -1256,6 +1256,7 @@ public class UserProcessor {
         final boolean onlineStatus = requestJSONObject.optBoolean(UserExt.USER_ONLINE_STATUS);
         final boolean timelineStatus = requestJSONObject.optBoolean(UserExt.USER_TIMELINE_STATUS);
         final boolean uaStatus = requestJSONObject.optBoolean(UserExt.USER_UA_STATUS);
+        final boolean userForgeLinkStatus = requestJSONObject.optBoolean(UserExt.USER_FORGE_LINK_STATUS);
         final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
         final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
 
@@ -1281,12 +1282,11 @@ public class UserProcessor {
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_UA_STATUS, uaStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_JOIN_POINT_RANK,
-                userJoinPointRank
-                        ? UserExt.USER_JOIN_POINT_RANK_C_JOIN : UserExt.USER_JOIN_POINT_RANK_C_NOT_JOIN);
-        user.put(UserExt.USER_JOIN_USED_POINT_RANK,
-                userJoinUsedPointRank
-                        ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
+        user.put(UserExt.USER_JOIN_POINT_RANK, userJoinPointRank
+                ? UserExt.USER_JOIN_POINT_RANK_C_JOIN : UserExt.USER_JOIN_POINT_RANK_C_NOT_JOIN);
+        user.put(UserExt.USER_JOIN_USED_POINT_RANK, userJoinUsedPointRank
+                ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
+        user.put(UserExt.USER_FORGE_LINK_STATUS, userForgeLinkStatus);
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);

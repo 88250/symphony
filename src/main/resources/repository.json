@@ -1088,6 +1088,11 @@
                     "description": "0: public, 1: private"
                 },
                 {
+                    "name": "userForgeLinkStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
                     "name": "userListPageSize",
                     "type": "int"
                 },

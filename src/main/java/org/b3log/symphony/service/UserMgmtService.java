@@ -517,6 +517,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_POINT_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
             user.put(UserExt.USER_TIMELINE_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
             user.put(UserExt.USER_UA_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
+            user.put(UserExt.USER_FORGE_LINK_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
             user.put(UserExt.USER_NOTIFY_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
             user.put(UserExt.USER_LIST_PAGE_SIZE, Symphonys.getInt("indexArticlesCnt"));
             user.put(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
