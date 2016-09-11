@@ -67,7 +67,7 @@ var Util = {
                     },
                     success: function (result, textStatus) {
                         if (result.sc) {
-                            $('#uploadLinkTip').html('<ul><li>' + Label.invalidUserURLLabel + '</li></ul>').addClass('succ');
+                            $('#uploadLinkTip').html('<ul><li>' + Label.forgeUploadSuccLabel + '</li></ul>').addClass('succ');
                             $('.link-forge-upload input').val('');
                             setTimeout(function () {
                                 $('#uploadLinkTip').html('').removeClass('succ');

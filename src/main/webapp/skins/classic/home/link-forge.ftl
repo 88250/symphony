@@ -4,8 +4,7 @@
 <div class="tabs-sub fn-clear">
     <a href="${servePath}/member/${user.userName}"<#if type == "linkForge"> class="current"</#if>>${linkForgeLabel}</a>
 </div>
-<#-- TODO -->
-<#if 0 == user.userFollowerStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
+<#if 0 == user.userForgeLinkStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <div class="link-forge">
     <div class="link-forge-upload form">
         <input type="text"/><button class="green">${submitLabel}</button>
