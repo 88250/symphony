@@ -16,17 +16,21 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <div class="link-forge-upload form">
-                        <input type="text"/><button class="green" onclick="postLink()">${submitLabel}</button>
+                        <input type="text"/><button class="green">${submitLabel}</button>
                         <div id="uploadLinkTip" class="tip"></div>
                     </div>
                     <#list tags as tag>
                     <div class="module">
                         <div class="module-header">
                             <h2>
-                                <span class="avatar-small"  style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')"></span>
-                                ${tag.tagTitle}
+                                <a href="${servePath}/tag/${tag.tagTitle?url('UTF-8')}">
+                                    <#if tag.tagIconPath != ''>
+                                    <span class="avatar-small"  style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')"></span>
+                                    </#if>
+                                    ${tag.tagTitle}
+                                </a>
                             </h2>
-                            <a class="ft-gray fn-right" rel="nofollow" href="javascropt:void(0)" onclick="linkForgeToggle(this)">${tag.tagLinksCnt} Links</a>
+                            <a class="ft-gray fn-right" rel="nofollow" href="javascropt:void(0)">${tag.tagLinksCnt} Links</a>
                         </div>
                         <div class="module-panel">
                             <ul class="module-list">
@@ -64,68 +68,9 @@
         </div>
         <#include "footer.ftl">
         <script>
-            var linkForgeToggle = function (it) {
-                var $panel = $(it).closest('.module').find('.module-panel');
-                if ($panel.css('overflow') !== 'hidden') {
-                    $panel.css({
-                        'max-height': '122px',
-                        'overflow': 'hidden'
-                    });
-                    return false;
-                }
-                $panel.css({
-                    'max-height': 'inherit',
-                    'overflow': 'inherit'
-                });
-            };
-
-            var postLink = function () {
-                if (Validate.goValidate({target: $('#uploadLinkTip'),
-                    data: [{
-                            "target": $('.link-forge-upload input'),
-                            "type": "url",
-                            "msg": '${invalidUserURLLabel}'
-                        }]})) {
-                    $.ajax({
-                        url: Label.servePath + "/forge/link",
-                        type: "POST",
-                        cache: false,
-                        data: JSON.stringify({
-                            url: $('.link-forge-upload input').val()
-                        }),
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert(errorThrown);
-                        },
-                        success: function (result, textStatus) {
-                            if (result.sc) {
-                                $('#uploadLinkTip').html('<ul><li>${submitSuccLabel}</li></ul>').addClass('succ');
-                                $('.link-forge-upload input').val('');
-                                setTimeout(function () {
-                                    $('#uploadLinkTip').html('').removeClass('succ');
-                                }, 3000);
-                            } else {
-                                alert(result.msg);
-                            }
-                        }
-                    });
-                }
-            };
-
-            $(document).ready(function () {
-                $('.link-forge-upload input').focus().keypress(function (event) {
-                    if (event.which === 13) {
-                        postLink();
-                        return false;
-                    }
-
-                    Validate.goValidate({target: $('#uploadLinkTip'),
-                        data: [{
-                                "target": $('.link-forge-upload input'),
-                                "type": "url",
-                                "msg": '${invalidUserURLLabel}'
-                            }]})
-                });
-            });
+            Label.invalidUserURLLabel = "${invalidUserURLLabel}";
+            Label.forgeUploadSuccLabel = "${forgeUploadSuccLabel}";
+            Util.linkForge();
         </script>
     </body>
 </html>

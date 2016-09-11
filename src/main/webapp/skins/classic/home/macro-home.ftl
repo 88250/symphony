@@ -107,7 +107,13 @@
             Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
             Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
             Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
+            Label.forgeUploadSuccLabel = "${forgeUploadSuccLabel}";
+            <#if type == 'commentsAnonymous' || 'comments' == type>
             Settings.initHljs();
+            </#if>
+            <#if type == 'linkForge'>
+                Util.linkForge();
+            </#if>
         </script>
     </body>
 </html>
