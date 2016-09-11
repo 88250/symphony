@@ -32,7 +32,7 @@ var Settings = {
      * 有代码片段时，需要进行高亮
      * @returns {Boolean}
      */
-    initHijs: function () {
+    initHljs: function () {
         if ($('pre code').length === 0) {
             return false;
         }

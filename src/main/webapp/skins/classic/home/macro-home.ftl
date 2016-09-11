@@ -64,7 +64,7 @@
                 <a <#if type == "points"> class="selected"</#if> href="${servePath}/member/${user.userName}/points">
                     <svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
                 <a <#if type == "linkForge"> class="selected"</#if> href="${servePath}/member/${user.userName}/forge/link">
-                    <svg height="18" viewBox="0 1 16 16" width="16">${linkIcon}</svg>  ${linkForgeLabel}</a>
+                    <svg height="18" viewBox="0 1 16 16" width="16">${linkIcon}</svg>  ${forgeLabel}</a>
                 <#if currentUser?? && currentUser.userName == user.userName>
                 <a <#if type == "settings"> class="selected"</#if>
                     href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
@@ -107,7 +107,7 @@
             Label.invalidUserB3ClientURLLabel = "${invalidUserB3ClientURLLabel}";
             Label.confirmPwdErrorLabel = "${confirmPwdErrorLabel}";
             Label.invalidUserNicknameLabel = "${invalidUserNicknameLabel}";
-             Settings.initHijs();
+            Settings.initHljs();
         </script>
     </body>
 </html>
