@@ -32,6 +32,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
@@ -156,7 +157,11 @@ public final class Links {
                 final JSONObject ret = new JSONObject();
 
                 // Get meta info of the URL
-                final Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).execute();
+                final Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).followRedirects(false).execute();
+                if (HttpServletResponse.SC_OK != res.statusCode()) {
+                    return null;
+                }
+                
                 String charset = res.charset();
                 if (StringUtils.isBlank(charset)) {
                     charset = "UTF-8";
