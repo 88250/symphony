@@ -129,9 +129,8 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.4.12, Sep 2, 2016
  * @author Bill Ho
- * @version 2.21.4.12, Sep 12, 2016
+ * @version 2.21.4.13, Sep 12, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -2163,8 +2162,8 @@ public class AdminProcessor {
     @RequestProcessing(value = "/admin/domain/{domainId}/add-tag", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, AdminCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
-    public void addDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String domainId)
+    public void addDomainTag(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response, final String domainId)
             throws Exception {
         String tagTitle = request.getParameter(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
@@ -2186,13 +2185,13 @@ public class AdminProcessor {
                         throw new Exception(langPropsService.get("tagsErrorLabel"));
                     }
                 }
-            } catch (final Exception e) {              
+            } catch (final Exception e) {
                 final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
                 context.setRenderer(renderer);
                 renderer.setTemplateName("admin/error.ftl");
                 final Map<String, Object> dataModel = renderer.getDataModel();
 
-                dataModel.put(Keys.MSG, langPropsService.get("invalidTagLabel"));
+                dataModel.put(Keys.MSG, e.getMessage());
 
                 filler.fillHeaderAndFooter(request, response, dataModel);
 
@@ -2215,8 +2214,7 @@ public class AdminProcessor {
 
                 return;
             }
-        	
-		}
+        }
 
         if (domainQueryService.containTag(tagTitle, domainId)) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();

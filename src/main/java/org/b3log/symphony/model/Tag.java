@@ -36,7 +36,8 @@ import org.json.JSONObject;
  * This class defines tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.14.5.4, Sep 10, 2016
+ * @author Bill Ho
+ * @version 1.14.5.4, Sep 12, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -201,7 +202,7 @@ public final class Tag {
      * Key of tag links.
      */
     public static final String TAG_T_LINKS = "tagLinks";
-    
+
     /**
      * Key of tag links count.
      */
@@ -238,7 +239,8 @@ public final class Tag {
     /**
      * Max tag title length.
      */
-    public static final int MAX_TAG_TITLE_LENGTH = null==Symphonys.getInt("MaxTagTitleLength")?9:Symphonys.getInt("MaxTagTitleLength");//9;
+    public static final int MAX_TAG_TITLE_LENGTH = (null == Symphonys.getInt("tag.maxTagTitleLength"))
+            ? 9 : Symphonys.getInt("tag.maxTagTitleLength");
 
     /**
      * Max tag count.
