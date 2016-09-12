@@ -1067,6 +1067,10 @@ a[class*=" icon-"]:hover {
     color: inherit;
 }
 
+.tabs-sub {
+    margin-left: 1px;
+}
+
 .tabs-sub a {
     float: left;
     padding: 5px 10px;
@@ -1382,7 +1386,7 @@ a[class*=" icon-"]:hover {
 }
 
 .content {
-    margin-right: 50px;
+    margin-right: 20px;
     flex: 1;
     min-width: 1px;
 }
