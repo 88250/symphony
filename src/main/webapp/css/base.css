@@ -357,8 +357,9 @@ blockquote {
     padding-bottom: 0.2em;
     margin: 0;
     font-size: 85%;
-    background-color: rgba(0,0,0,0.04);
+    background-color: rgba(252, 41, 41, 0.12);
     border-radius: 3px;
+    color: #911;
 }
 
 .content-reset code::before, 
@@ -376,6 +377,11 @@ blockquote {
 .content-reset pre > code {
     padding: 0.5em;
     border-radius: 0;
+    color: #333;
+    background-color: rgba(0,0,0,0.04);
+    background-image: url(../images/code-bg.png);
+    background-size: 20px 20px;
+    border-radius: 5px;
 }
 /* end reset */
 
@@ -1987,7 +1993,7 @@ ul.CodeMirror-hints {
     line-height: 20px;
 }
 
-.link-forge .content .module-panel {
+.link-forge .module-panel {
     max-height: 409px;
     overflow: hidden;
 }

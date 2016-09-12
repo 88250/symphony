@@ -22,7 +22,7 @@
                 {
                     "name": "linkTitle",
                     "type": "String",
-                    "length": 255
+                    "length": 512
                 },
                 {
                     "name": "linkType",

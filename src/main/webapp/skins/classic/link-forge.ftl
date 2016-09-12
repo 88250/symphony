@@ -12,9 +12,9 @@
     <body>
         <#include "header.ftl">
         <@subNav '' ''/>
-        <div class="main link-forge">
+        <div class="main">
             <div class="wrapper">
-                <div class="content fn-clear">
+                <div class="content fn-clear link-forge">
                     <div class="link-forge-upload form">
                         <input type="text" placeholder="${linkForgeTipLabel}" /><button class="green">${submitLabel}</button>
                         <div id="uploadLinkTip" class="tip"></div>
