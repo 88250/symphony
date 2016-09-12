@@ -1067,11 +1067,6 @@ a[class*=" icon-"]:hover {
     color: inherit;
 }
 
-.tabs-sub {
-    margin-left: 1px;
-    margin-bottom: -1px;
-}
-
 .tabs-sub a {
     float: left;
     padding: 5px 10px;
@@ -1081,6 +1076,7 @@ a[class*=" icon-"]:hover {
     text-decoration: none;
     font-size: 13px;
     margin-left: -1px;
+    margin-bottom: 10px;
     box-sizing: border-box;
 }
 
@@ -1096,10 +1092,12 @@ a[class*=" icon-"]:hover {
 
 .tabs-sub a:first-child {
     border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
 }
 
 .tabs-sub a:last-child {
     border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 /* end tab */
 
@@ -1384,7 +1382,7 @@ a[class*=" icon-"]:hover {
 }
 
 .content {
-    margin-right: 20px;
+    margin-right: 50px;
     flex: 1;
     min-width: 1px;
 }
