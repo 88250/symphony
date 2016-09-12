@@ -139,7 +139,6 @@
                     <a href="${servePath}/domains">${domainLabel}</a>
                     <a href="${servePath}/tags">${tagLabel}</a>
                     <a href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
-                    <a href="${servePath}/forge/link">${linkForgeLabel}</a>
                     <a href="${servePath}/statistic" class="last">${dataStatLabel}</a>
 
                     <div class="fn-right">

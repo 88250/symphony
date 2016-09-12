@@ -54,8 +54,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.3, Sep 11, 2016
+ * @version 1.1.0.3, Aug 20, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -239,6 +238,5 @@ public class StatisticProcessor {
 
         final JSONObject statistic = optionQueryService.getStatistic();
         dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
-        filler.fillDomainNav(dataModel);
     }
 }

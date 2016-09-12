@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.0.2, Sep 11, 2016
+ * @version 2.5.0.2, Aug 20, 2016
  * @since 0.2.0
  */
 public final class Option {
@@ -66,11 +66,6 @@ public final class Option {
     public static final String ID_C_STATISTIC_TAG_COUNT = "statisticTagCount";
 
     /**
-     * Key of link count.
-     */
-    public static final String ID_C_STATISTIC_LINK_COUNT = "statisticLinkCount";
-
-    /**
      * Key of comment count.
      */
     public static final String ID_C_STATISTIC_CMT_COUNT = "statisticCmtCount";
@@ -89,7 +84,7 @@ public final class Option {
      * Key of allow anonymous view.
      */
     public static final String ID_C_MISC_ALLOW_ANONYMOUS_VIEW = "miscAllowAnonymousView";
-
+    
     /**
      * Key of allow add article.
      */

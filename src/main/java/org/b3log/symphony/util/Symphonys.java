@@ -23,7 +23,7 @@ import org.b3log.latke.RuntimeMode;
  * Symphony utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.4, Sep 11, 2016
+ * @version 1.3.0.4, May 24, 2016
  * @since 0.1.0
  */
 public final class Symphonys {
@@ -32,11 +32,6 @@ public final class Symphonys {
      * Configurations.
      */
     private static final ResourceBundle CFG = ResourceBundle.getBundle("symphony");
-
-    /**
-     * HacPai bot User-Agent.
-     */
-    public static final String USER_AGENT_BOT = "Mozilla/5.0 (compatible; HacPaibot/1.0; +https://hacpai.com/)";
 
     /**
      * Reserved tags.

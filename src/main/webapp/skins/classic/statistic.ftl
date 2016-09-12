@@ -1,5 +1,4 @@
 <#include "macro-head.ftl">
-<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,7 +9,6 @@
     </head>
     <body>
         <#include "header.ftl">
-        <@subNav '' ''/>
         <div class="main">
             <div class="wrapper">
                 <div class="content content-reset">

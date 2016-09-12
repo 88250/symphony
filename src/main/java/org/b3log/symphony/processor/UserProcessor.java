@@ -51,11 +51,8 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Emotion;
 import org.b3log.symphony.model.Follow;
 import org.b3log.symphony.model.Invitecode;
-import org.b3log.symphony.model.Link;
 import org.b3log.symphony.model.Notification;
-import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
-import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.processor.advice.AnonymousViewCheck;
 import org.b3log.symphony.processor.advice.CSRFCheck;
@@ -78,7 +75,6 @@ import org.b3log.symphony.service.FollowQueryService;
 import org.b3log.symphony.service.AvatarQueryService;
 import org.b3log.symphony.service.InvitecodeMgmtService;
 import org.b3log.symphony.service.InvitecodeQueryService;
-import org.b3log.symphony.service.LinkForgeQueryService;
 import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.OptionQueryService;
 import org.b3log.symphony.service.PointtransferMgmtService;
@@ -122,14 +118,12 @@ import org.json.JSONObject;
  * <li>Lists emotions (/users/emotions), GET</li>
  * <li>Exports posts(article/comment) to a file (/export/posts), POST</li>
  * <li>Queries invitecode state (/invitecode/state), GET</li>
- * <li>Shows link forge (/member/{userName}/forge/link), GET</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.23.13.23, Sep 11, 2016
+ * @version 1.22.12.23, Aug 30, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -241,57 +235,6 @@ public class UserProcessor {
      */
     @Inject
     private InvitecodeQueryService invitecodeQueryService;
-
-    /**
-     * Link forge query service.
-     */
-    @Inject
-    private LinkForgeQueryService linkForgeQueryService;
-
-    /**
-     * Shows user link forge.
-     *
-     * @param context the specified context
-     * @param request the specified request
-     * @param response the specified response
-     * @param userName the specified user name
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/member/{userName}/forge/link", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = {StopwatchStartAdvice.class, UserBlockCheck.class})
-    @After(adviceClass = StopwatchEndAdvice.class)
-    public void showLinkForge(final HTTPRequestContext context, final HttpServletRequest request,
-            final HttpServletResponse response, final String userName) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("/home/link-forge.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-        filler.fillHeaderAndFooter(request, response, dataModel);
-
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        user.put(UserExt.USER_T_CREATE_TIME, new Date(user.getLong(Keys.OBJECT_ID)));
-        fillHomeUser(dataModel, user);
-
-        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-        avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
-
-        final String followingId = user.optString(Keys.OBJECT_ID);
-        dataModel.put(Follow.FOLLOWING_ID, followingId);
-        
-        final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
-        if (isLoggedIn) {
-            final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);
-            final String followerId = currentUser.optString(Keys.OBJECT_ID);
-
-            final boolean isFollowing = followQueryService.isFollowing(followerId, followingId);
-            dataModel.put(Common.IS_FOLLOWING, isFollowing);
-        }
-
-        final List<JSONObject> tags = linkForgeQueryService.getUserForgedLinks(user.optString(Keys.OBJECT_ID));
-        dataModel.put(Tag.TAGS, (Object) tags);
-
-        dataModel.put(Common.TYPE, "linkForge");
-    }
 
     /**
      * Queries invitecode state.
@@ -1284,7 +1227,6 @@ public class UserProcessor {
         final boolean onlineStatus = requestJSONObject.optBoolean(UserExt.USER_ONLINE_STATUS);
         final boolean timelineStatus = requestJSONObject.optBoolean(UserExt.USER_TIMELINE_STATUS);
         final boolean uaStatus = requestJSONObject.optBoolean(UserExt.USER_UA_STATUS);
-        final boolean userForgeLinkStatus = requestJSONObject.optBoolean(UserExt.USER_FORGE_LINK_STATUS);
         final boolean userJoinPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_POINT_RANK);
         final boolean userJoinUsedPointRank = requestJSONObject.optBoolean(UserExt.USER_JOIN_USED_POINT_RANK);
 
@@ -1310,12 +1252,12 @@ public class UserProcessor {
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
         user.put(UserExt.USER_UA_STATUS, uaStatus
                 ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
-        user.put(UserExt.USER_JOIN_POINT_RANK, userJoinPointRank
-                ? UserExt.USER_JOIN_POINT_RANK_C_JOIN : UserExt.USER_JOIN_POINT_RANK_C_NOT_JOIN);
-        user.put(UserExt.USER_JOIN_USED_POINT_RANK, userJoinUsedPointRank
-                ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
-        user.put(UserExt.USER_FORGE_LINK_STATUS, userForgeLinkStatus
-                ? UserExt.USER_XXX_STATUS_C_PUBLIC : UserExt.USER_XXX_STATUS_C_PRIVATE);
+        user.put(UserExt.USER_JOIN_POINT_RANK,
+                userJoinPointRank
+                        ? UserExt.USER_JOIN_POINT_RANK_C_JOIN : UserExt.USER_JOIN_POINT_RANK_C_NOT_JOIN);
+        user.put(UserExt.USER_JOIN_USED_POINT_RANK,
+                userJoinUsedPointRank
+                        ? UserExt.USER_JOIN_USED_POINT_RANK_C_JOIN : UserExt.USER_JOIN_USED_POINT_RANK_C_NOT_JOIN);
 
         try {
             userMgmtService.updateUser(user.optString(Keys.OBJECT_ID), user);
@@ -1704,12 +1646,16 @@ public class UserProcessor {
             return;
         }
 
+        user.put(User.USER_NAME, name);
+        user.put(User.USER_EMAIL, email);
+        user.put(User.USER_PASSWORD, password);
         user.put(UserExt.USER_B3_KEY, clientB3Key);
         user.put(UserExt.USER_B3_CLIENT_ADD_ARTICLE_URL, addArticleURL);
         user.put(UserExt.USER_B3_CLIENT_UPDATE_ARTICLE_URL, updateArticleURL);
         user.put(UserExt.USER_B3_CLIENT_ADD_COMMENT_URL, addCommentURL);
 
         try {
+            userMgmtService.updatePassword(user);
             userMgmtService.updateSyncB3(user);
 
             LOGGER.log(Level.INFO, "Updated a user[name={0}] via Solo[{1}] sync", name, clientHost);

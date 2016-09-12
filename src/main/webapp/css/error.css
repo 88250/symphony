@@ -29,13 +29,13 @@
 
 /* start 403 */
 .error-403 > .slogan {
-    padding-top: 10px;
+    padding-top: 20px;
     background-color: #fafafa;
     border-bottom: 1px solid #eee;
 }
 
 .error-403 .slogan-border {
-    margin: 10px 0;
+    margin: 20px 0 40px;
     color: #767676;
     background-color: #fff;
     border: 1px solid #eee;
@@ -45,20 +45,16 @@
 }
 
 .error-403 .slogan-register {
-    padding: 10px 20px;
+    padding: 20px 30px;
     border-right: 1px solid #eee;
     float: left;
-    margin-right: 20px;
+    margin-right: 30px;
 }
 
 .error-403 .slogan-text {
     float: left;
-    margin: 10px 0;
+    margin: 20px 0;
     line-height: 35px;
-}
-
-.error-403 .slogan-text a:hover svg {
-    color: #4183C4;
 }
 
 .error-403 #emptyTimeline,

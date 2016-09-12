@@ -61,7 +61,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
-        LOGGER.log(Level.TRACE, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, ArticleSender.class.getName()});
 
         if (Latkes.getServePath().contains("localhost") || Networks.isIPv4(Latkes.getServerHost())

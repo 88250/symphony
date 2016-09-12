@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.15.8.13, Sep 11, 2016
+ * @version 1.15.7.12, Aug 21, 2016
  */
 
 /**
@@ -28,24 +28,6 @@
  * @static
  */
 var Settings = {
-    /**
-     * 有代码片段时，需要进行高亮
-     * @returns {Boolean}
-     */
-    initHljs: function () {
-        if ($('pre code').length === 0) {
-            return false;
-        }
-        $.ajax({
-            method: "GET",
-            url: Label.servePath + "/js/lib/highlight.js-8.6/highlight.pack.js",
-            dataType: "script"
-        }).done(function () {
-            $('pre code').each(function (i, block) {
-                hljs.highlightBlock(block);
-            });
-        });
-    },
     /**
      * 个人设置预览
      */
@@ -350,7 +332,7 @@ var Settings = {
                     default:
                         $("#invitecodeStateTip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
                 }
-                S
+S
                 $("#invitecodeStateTip").show();
             }
         });
@@ -385,8 +367,7 @@ var Settings = {
                     userJoinPointRank: $("#joinPointRank").prop("checked"),
                     userJoinUsedPointRank: $("#joinUsedPointRank").prop("checked"),
                     userUAStatus: $("#userUAStatus").prop("checked"),
-                    userTimelineStatus: $("#userTimelineStatus").prop("checked"),
-                    userForgeLinkStatus: $("#userForgeLinkStatus").prop("checked")
+                    userTimelineStatus: $("#userTimelineStatus").prop("checked")
                 };
                 break;
             case "function":
@@ -488,7 +469,9 @@ var Settings = {
                     "msg": Label.tagsErrorLabel
                 }, {
                     "target": $("#userURL"),
-                    "type": "url",
+                    "type": "string",
+                    "min": 0,
+                    "max": 255,
                     "msg": Label.invalidUserURLLabel
                 }, {
                     "target": $("#userIntro"),
