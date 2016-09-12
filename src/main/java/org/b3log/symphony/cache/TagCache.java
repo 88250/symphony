@@ -94,7 +94,7 @@ public class TagCache {
 
         final int end = fetchSize >= ICON_TAGS.size() ? ICON_TAGS.size() - 1 : fetchSize;
 
-        return ICON_TAGS.subList(0, end);
+        return new ArrayList<>(ICON_TAGS.subList(0, end));
     }
 
     /**
@@ -107,7 +107,7 @@ public class TagCache {
             return Collections.emptyList();
         }
 
-        return TAGS;
+        return new ArrayList<>(TAGS);
     }
 
     /**

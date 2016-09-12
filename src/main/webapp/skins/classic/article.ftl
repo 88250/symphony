@@ -25,28 +25,29 @@
                         <span class="fn-right">
                             <#if "" != article.articleToC>
                             <span onclick="Article.toggleToc()" aria-label="${ToCLabel}"
-                                  class="fn-pointer tooltipped tooltipped-n"><span class="icon-unordered-list ft-red"></span></span>
+                                  class="tooltipped tooltipped-n"><span class="icon-unordered-list ft-red"></span></span>
                             </#if>
                             <span id="thankArticle" aria-label="${thankLabel} ${article.thankedCnt}"
-                                  class="fn-pointer tooltipped tooltipped-n"
+                                  class="tooltipped tooltipped-n"
                                   <#if !article.thanked>onclick="Article.thankArticle('${article.oId}', ${article.articleAnonymous})"</#if>><span class="icon-heart<#if article.thanked> ft-red</#if>"></span></span>
-                            <span class="tooltipped tooltipped-n fn-pointer" aria-label="${upLabel} ${article.articleGoodCnt}"
+                            <span class="tooltipped tooltipped-n" aria-label="${upLabel} ${article.articleGoodCnt}"
                                   onclick="Article.voteUp('${article.oId}', 'article', this)">
                                 <span class="icon-thumbs-up<#if isLoggedIn && 0 == article.articleVote> ft-red</#if>"></span></span>
-                            <span  class="tooltipped tooltipped-n fn-pointer" aria-label="${downLabel} ${article.articleBadCnt}"
+                            <span  class="tooltipped tooltipped-n" aria-label="${downLabel} ${article.articleBadCnt}"
                                   onclick="Article.voteDown('${article.oId}', 'article', this)">
                             <span class="icon-thumbs-down<#if isLoggedIn && 1 == article.articleVote> ft-red</#if>"></span></span>
                             <#if isLoggedIn && isFollowing>
-                            <span class="tooltipped tooltipped-n fn-pointer" aria-label="${uncollectLabel} ${article.articleCollectCnt}" 
+                            <span class="tooltipped tooltipped-n" aria-label="${uncollectLabel} ${article.articleCollectCnt}" 
                                   onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star ft-red"></span></span>
                             <#else>
-                            <span class="tooltipped tooltipped-n fn-pointer" aria-label="${collectLabel} ${article.articleCollectCnt}"
+                            <span class="tooltipped tooltipped-n" aria-label="${collectLabel} ${article.articleCollectCnt}"
                                   onclick="Util.follow(this, '${article.oId}', 'article', ${article.articleCollectCnt})"><span class="icon-star"></span></span>
                             </#if>
                             <span onclick="Article.revision('${article.oId}')" aria-label="${historyLabel}"
-                                  class="fn-pointer tooltipped tooltipped-n"><span class="icon-refresh"></span></span>
+                                  class="tooltipped tooltipped-n"><span class="icon-refresh"></span></span>
                             <#if article.isMyArticle && 3 != article.articleType>
-                            <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" class="tooltipped tooltipped-n"><span class="icon-edit"></span></a>
+                            <a href="${servePath}/update?id=${article.oId}" aria-label="${editLabel}" 
+                               class="tooltipped tooltipped-n"><span class="icon-edit"></span></a>
                             </#if>
                             <#if article.isMyArticle>
                             <a class="tooltipped tooltipped-n" aria-label="${stickLabel}" 
@@ -79,7 +80,7 @@
                            class="avatar tooltipped tooltipped-se" aria-label="${article.articleAuthorName}" style="background-image:url('${article.articleAuthorThumbnailURL48}')"></div><#if article.articleAnonymous == 0></a></#if>
                         <div class="fn-flex-1">
                             <#if article.articleAnonymous == 0>
-                            <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-black"></#if><strong>${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
+                            <a rel="author" href="${servePath}/member/${article.articleAuthorName}" class="ft-gray"></#if><strong class="ft-gray">${article.articleAuthorName}</strong><#if article.articleAnonymous == 0></a></#if>
                             <span class="ft-gray">
                                 <#if article.clientArticlePermalink?? && 0 < article.clientArticlePermalink?length>
                                 • <a href="${article.clientArticlePermalink}" target="_blank" rel="nofollow"><span class="ft-green">${sourceLabel}</span></a>
@@ -168,8 +169,8 @@
                                             <div class="fn-clear comment-info ft-smaller">
                                                 <span class="fn-left">
                                                     <#if !comment.fromClient>
-                                                    <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if>
-                                                    <#else>${comment.commentAuthorName}
+                                                    <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${comment.commentAuthorName}</span><#if comment.commentAnonymous == 0></a></#if>
+                                                    <#else><span class="ft-gray">${comment.commentAuthorName}</span>
                                                     <span class="ft-fade"> • </span>
                                                     <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>
                                                     </#if>
@@ -233,8 +234,8 @@
                                             <div class="fn-clear comment-info ft-smaller">
                                                 <span class="fn-left">
                                                     <#if !comment.fromClient>
-                                                    <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}"></#if>${comment.commentAuthorName}<#if comment.commentAnonymous == 0></a></#if>
-                                                    <#else>${comment.commentAuthorName}
+                                                    <#if comment.commentAnonymous == 0><a rel="nofollow" href="${servePath}/member/${comment.commentAuthorName}" class="ft-gray"></#if><span class="ft-gray">${comment.commentAuthorName}</span><#if comment.commentAnonymous == 0></a></#if>
+                                                    <#else><span class="ft-gray">${comment.commentAuthorName}</span>
                                                     <span class="ft-fade"> • </span>
                                                     <a rel="nofollow" href="https://hacpai.com/article/1457158841475">API</a>
                                                     </#if>

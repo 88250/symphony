@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.31.19, Sep 7, 2016
+ * @version 1.24.31.20, Sep 10, 2016
  */
 
 /**
@@ -202,6 +202,8 @@ var Comment = {
             }
         }
 
+        this._initMathJax();
+
         if ($.ua.device.type === 'mobile' && ($.ua.device.vendor === 'Apple' || $.ua.device.vendor === 'Nokia')) {
             return false;
         }
@@ -229,7 +231,7 @@ var Comment = {
             if (evt.ctrlKey && 10 === evt.charCode) {
                 Comment.add(Label.articleOId, Label.csrfToken);
 
-                return;
+                return false;
             }
         });
 
@@ -252,8 +254,6 @@ var Comment = {
                 }
             }
         });
-
-        this._initMathJax();
     },
     /**
      * 按需加在 MathJax
@@ -537,7 +537,7 @@ var Comment = {
 
                         window.localStorage[Label.articleOId] = JSON.stringify(emptyContent);
                     }
-                    
+
                     // 定为到回贴位置
                     if (Label.userCommentViewMode === 1) {
                         // 实时模式
@@ -741,8 +741,6 @@ var Article = {
             "modal": true,
             "hideFooter": true
         });
-
-        $('.side').height($('.side').height());
 
         this.initToc();
     },
@@ -1129,7 +1127,8 @@ var Article = {
         if ($('#articleToC').length === 0) {
             return false;
         }
-
+        $('.side').height($('.side').height());
+        
         // 样式
         var $articleToc = $('#articleToC'),
                 top = $articleToc.offset().top;
@@ -1223,19 +1222,18 @@ var Article = {
         if ($menu.hasClass('ft-red')) {
             $articleToc.hide();
             $menu.removeClass('ft-red');
+            $('.side').height('auto');
         } else {
             $articleToc.show();
             $menu.addClass('ft-red');
             $articleToc.css('position', 'initial');
             $articleToc.find('li').removeClass('current');
             $articleToc.find('li:first').addClass('current');
+            $('.side').height($('.side').height());
         }
 
         $articleToc.next().css('position', 'initial');
         $articleToc.next().next().css('position', 'initial');
-
-        $('.side').height('auto');
-        $('.side').height($('.side').height());
     },
     /**
      * @description 标记消息通知为已读状态.

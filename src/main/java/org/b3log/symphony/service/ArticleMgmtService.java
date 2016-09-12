@@ -75,7 +75,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.22.20, Sep 9, 2016
+ * @version 2.14.23.21, Sep 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -1357,6 +1357,7 @@ public class ArticleMgmtService {
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
                 tag.put(Tag.TAG_COMMENT_CNT, articleCmtCnt);
                 tag.put(Tag.TAG_FOLLOWER_CNT, 0);
+                tag.put(Tag.TAG_LINK_CNT, 0);
                 tag.put(Tag.TAG_DESCRIPTION, "");
                 tag.put(Tag.TAG_ICON_PATH, "");
                 tag.put(Tag.TAG_STATUS, 0);
@@ -1391,6 +1392,7 @@ public class ArticleMgmtService {
                 tagTmp.put(Tag.TAG_STATUS, tag.optInt(Tag.TAG_STATUS));
                 tagTmp.put(Tag.TAG_REFERENCE_CNT, tag.optInt(Tag.TAG_REFERENCE_CNT) + 1);
                 tagTmp.put(Tag.TAG_FOLLOWER_CNT, tag.optInt(Tag.TAG_FOLLOWER_CNT));
+                tagTmp.put(Tag.TAG_LINK_CNT, tag.optInt(Tag.TAG_LINK_CNT));
                 tagTmp.put(Tag.TAG_DESCRIPTION, tag.optString(Tag.TAG_DESCRIPTION));
                 tagTmp.put(Tag.TAG_ICON_PATH, tag.optString(Tag.TAG_ICON_PATH));
                 tagTmp.put(Tag.TAG_GOOD_CNT, tag.optInt(Tag.TAG_GOOD_CNT));

@@ -184,21 +184,5 @@ var Activity = {
         var canvas = document.getElementById(id),
                 ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    },
-
-    /**
-    * eating Snake
-    * 直接抄代码……
-    */
-    initSnake: function(){
-        init();
-    },
-    startSnake: function(){
-        start();
-        document.onkeydown = function(event){
-            var event = event || window.event;
-            input(event.keyCode);
-        }
     }
 };
-

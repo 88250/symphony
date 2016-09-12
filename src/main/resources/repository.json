@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.29.7.12, Sep 7, 2016",
+    "version": "3.30.7.13, Sep 11, 2016",
     "authors": [
         "Liang Ding", "Zephyr", "Bill Ho"
     ],
@@ -17,12 +17,12 @@
                 {
                     "name": "linkAddr",
                     "type": "String",
-                    "length": 255
+                    "length": 512
                 },
                 {
                     "name": "linkTitle",
                     "type": "String",
-                    "length": 255
+                    "length": 512
                 },
                 {
                     "name": "linkType",
@@ -56,27 +56,7 @@
             ]
         },
         {
-            "name": "user_link",
-            "keys": [
-                {
-                    "name": "oId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "linkId",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "userId",
-                    "type": "String",
-                    "length": 19
-                }
-            ]
-        },
-        {
-            "name": "tag_link",
+            "name": "tag_user_link",
             "keys": [
                 {
                     "name": "oId",
@@ -92,6 +72,15 @@
                     "name": "tagId",
                     "type": "String",
                     "length": 19
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "linkScore",
+                    "type": "double"
                 }
             ]
         },
@@ -677,6 +666,10 @@
                     "type": "int"
                 },
                 {
+                    "name": "tagLinkCount",
+                    "type": "int"
+                },
+                {
                     "name": "tagTitle",
                     "type": "String",
                     "length": 50
@@ -1091,6 +1084,11 @@
                 },
                 {
                     "name": "userTimelineStatus",
+                    "type": "int",
+                    "description": "0: public, 1: private"
+                },
+                {
+                    "name": "userForgeLinkStatus",
                     "type": "int",
                     "description": "0: public, 1: private"
                 },

@@ -1,8 +1,9 @@
 <#include "macro-head.ftl">
+<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${symphonyLabel}">
+        <@head title="${linkForgeLabel} - ${symphonyLabel}">
         <meta name="description" content="${symDescriptionLabel}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
@@ -10,35 +11,32 @@
     </head>
     <body>
         <#include "header.ftl">
-        <div class="main link-forge">
+        <@subNav '' ''/>
+        <div class="main">
             <div class="wrapper">
-                <div class="content fn-clear">
-                    <#list domains as domain>
+                <div class="content fn-clear link-forge">
+                    <div class="link-forge-upload form">
+                        <input type="text" placeholder="${linkForgeTipLabel}" /><button class="green">${submitLabel}</button>
+                        <div id="uploadLinkTip" class="tip"></div>
+                    </div>
+                    <#list tags as tag>
                     <div class="module">
                         <div class="module-header">
                             <h2>
-                                <span class="avatar-small"  style="background-image:url('http://7xjz0r.com1.z0.glb.clouddn.com/user-thumbnail.png')"></span>
-                                ${domain.domainTitle}
+                                <a href="${servePath}/tag/${tag.tagTitle?url('UTF-8')}">
+                                    <#if tag.tagIconPath != ''>
+                                    <span class="avatar-small"  style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')"></span>
+                                    </#if>
+                                    ${tag.tagTitle}
+                                </a>
                             </h2>
-                            <a class="ft-gray fn-right" rel="nofollow" href="javascropt:void(0)" onclick="linkForgeToggle(this)">${domain.domainTags?size} Links</a>
+                            <a class="ft-gray fn-right" rel="nofollow" href="javascropt:void(0)">${tag.tagLinksCnt} Links</a>
                         </div>
                         <div class="module-panel">
-                            <ul class="tags fn-clear">
-                                <#list domain.domainTags as tag>
+                            <ul class="module-list">
+                                <#list tag.tagLinks as link>
                                 <li>
-                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                                </li>
-                                <li>
-                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                                </li>
-                                <li>
-                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                                </li>
-                                <li>
-                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                                </li>
-                                <li>
-                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                    <a class="title fn-ellipsis" target="_blank" rel="nofollow" href="${link.linkAddr}">${link.linkTitle}</a>
                                 </li>
                                 </#list>
                             </ul>
@@ -49,8 +47,8 @@
                 <div class="side">
                     <#include "common/person-info.ftl">
                     <div class='domains-count'>
-                        Tags: <b>${domainCnt}</b><br/>
-                        Links: <b>${tagCnt}</b>
+                        Tags: <b>${tagCnt}</b><br/>
+                        Links: <b>${linkCnt}</b>
                     </div>
                     <#if ADLabel!="">
                     <div class="module">
@@ -70,20 +68,9 @@
         </div>
         <#include "footer.ftl">
         <script>
-            var linkForgeToggle = function (it) {
-                var $panel = $(it).closest('.module').find('.module-panel');
-                if ($panel.css('overflow') !== 'hidden') {
-                    $panel.css({
-                        'max-height': '100px',
-                        'overflow': 'hidden'
-                    });
-                    return false;
-                }
-                $panel.css({
-                    'max-height': 'inherit',
-                    'overflow': 'inherit'
-                });
-            };
+            Label.invalidUserURLLabel = "${invalidUserURLLabel}";
+            Label.forgeUploadSuccLabel = "${forgeUploadSuccLabel}";
+            Util.linkForge();
         </script>
     </body>
 </html>

@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,6 +11,7 @@
     </head>
     <body>
         <#include "header.ftl">
+        <@subNav '' ''/>
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
@@ -23,7 +25,7 @@
                             <ul class="tags fn-clear">
                                 <#list domain.domainTags as tag>
                                 <li>
-                                    <a class="tag" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                    <a class="ft-gray ft-smaller" rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a> &nbsp;
                                 </li>
                                 </#list>
                             </ul>

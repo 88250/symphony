@@ -19,21 +19,59 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.15.27, Sep 7, 2016
+ * @version 2.14.15.28, Sep 10, 2016
  */
+
+/* start list */
+.content .module:last-child {
+    margin-bottom: 0;
+}
+
+.domains-count {
+    padding: 10px 18px;
+    font-size: 18px;
+    line-height: 26px;
+    color: #1b3650;
+    text-align: center;
+    background-image: linear-gradient(#f5fbff, #e4f0ff);
+    border: 1px solid #cee0e7;
+    border-radius: 3px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.domains-module {
+    margin: 20px 0 0;
+}
+
+.module-list.domain .slogan {
+    text-align: center;
+    margin-top: -8px;
+    width: 60px;
+}
+
+.module-list.domain .title {
+    margin-left: 80px;
+}
+/* end list */
 
 /* start article */
 .article-action .fn-right > a,
 .article-action .fn-right > span {
-    border: 1px solid #e0e0e0;
     padding: 4px 8px;
     border-radius: 2px;
     display: inline-block;
     line-height: 12px;
     float: left;
-    margin-left: 10px;
+    margin-left: 5px;
     text-decoration: none;
     color: #333;
+}
+
+.article-action .fn-right > a:hover,
+.article-action .fn-right > span:hover {
+    color: #4183C4;
 }
 
 #heatBar {
@@ -47,13 +85,21 @@ h2.article-title {
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
-    margin: 10px 0;
+    margin: 20px 0;
+}
+
+h2.article-title > a {
+    color: #595959;
+}
+
+h2.article-title > a:hover {
+    color: #333;
 }
 
 .article-info .fn-flex-1 {
     font-size: 12px;
     line-height: 22px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 #thoughtProgress {
@@ -91,7 +137,7 @@ label.cmt-anonymous {
 .comments > .comment-header {
     padding-bottom: 5px;
     border-bottom: 1px solid #CCCCCC;
-    margin: 20px 0 0;
+    margin: 40px 0 0;
 }
 
 .comments > div.comment-header .icon-chevron-down {
@@ -165,7 +211,8 @@ label.cmt-anonymous {
 }
 
 .nice {
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 0px;
 }
 
 .nice .comments > ul > li:last-child {
@@ -207,7 +254,6 @@ label.cmt-anonymous {
 
 .share {
     margin-top: 20px;
-    margin-bottom: 5px;
     position: relative;
 }
 
@@ -371,22 +417,6 @@ label.cmt-anonymous {
     color: #999;
 }
 /* end article */
-
-/* start domains */
-.domains-count {
-    padding: 10px 18px;
-    font-size: 18px;
-    line-height: 26px;
-    color: #1b3650;
-    text-align: center;
-    background-image: linear-gradient(#f5fbff, #e4f0ff);
-    border: 1px solid #cee0e7;
-    border-radius: 3px;
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-/* start domains */
 
 /* start article list */
 .article-list ul > li.stick {
@@ -631,12 +661,12 @@ code .dec { color: initial; } /* decimal - blue */
 
 .index .footer > .wrapper:last-child {
     border-top: 1px solid #e0e0e0;
-    padding-top: 40px;
+    padding-top: 20px;
 }
 
 .index .footer .slogan {
     padding: 10px;
-    margin: 30px 0 40px;
+    margin: 10px 0 20px;
     color: #767676;
     background-color: #fff;
     border: 1px solid #eee;
@@ -756,18 +786,3 @@ code .dec { color: initial; } /* decimal - blue */
     background-color: #ddd;
 }
 /* end index */
-
-/* start link forge */
-.link-forge .module-header {
-    line-height: 20px;
-}
-
-.link-forge .content .module-panel {
-    max-height: 100px;
-    overflow: hidden;
-}
-
-.link-forge .content .module-header .avatar-small {
-    vertical-align: text-bottom;
-}
-/* end link forge */
