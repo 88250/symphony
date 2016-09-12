@@ -10,6 +10,7 @@
         <meta name="description" content="${domain.domainSeoDesc}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        ${domain.domainCSS}
     </head>
     <body>
         <#include "header.ftl">
