@@ -130,6 +130,8 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 2.20.4.12, Sep 2, 2016
+ * @author Bill Ho
+ * @version 2.21.4.12, Sep 12, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -2164,21 +2166,57 @@ public class AdminProcessor {
     public void addDomain(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
             final String domainId)
             throws Exception {
-        final String tagTitle = request.getParameter(Tag.TAG_TITLE);
+        String tagTitle = request.getParameter(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
-
+        String tagId = "";
         if (null == tag) {
-            final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
-            context.setRenderer(renderer);
-            renderer.setTemplateName("admin/error.ftl");
-            final Map<String, Object> dataModel = renderer.getDataModel();
+            try {
+                if (Strings.isEmptyOrNull(tagTitle)) {
+                    throw new Exception(langPropsService.get("tagsErrorLabel"));
+                }
 
-            dataModel.put(Keys.MSG, langPropsService.get("invalidTagLabel"));
+                tagTitle = Tag.formatTags(tagTitle);
 
-            filler.fillHeaderAndFooter(request, response, dataModel);
+                if (!Tag.containsWhiteListTags(tagTitle)) {
+                    if (!Tag.TAG_TITLE_PATTERN.matcher(tagTitle).matches()) {
+                        throw new Exception(langPropsService.get("tagsErrorLabel"));
+                    }
 
-            return;
-        }
+                    if (tagTitle.length() > Tag.MAX_TAG_TITLE_LENGTH) {
+                        throw new Exception(langPropsService.get("tagsErrorLabel"));
+                    }
+                }
+            } catch (final Exception e) {              
+                final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+                context.setRenderer(renderer);
+                renderer.setTemplateName("admin/error.ftl");
+                final Map<String, Object> dataModel = renderer.getDataModel();
+
+                dataModel.put(Keys.MSG, langPropsService.get("invalidTagLabel"));
+
+                filler.fillHeaderAndFooter(request, response, dataModel);
+
+                return;
+            }
+
+            final JSONObject admin = (JSONObject) request.getAttribute(User.USER);
+            final String userId = admin.optString(Keys.OBJECT_ID);
+
+            try {
+                tagId = tagMgmtService.addTag(userId, tagTitle);
+            } catch (final Exception e) {
+                final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+                context.setRenderer(renderer);
+                renderer.setTemplateName("admin/error.ftl");
+                final Map<String, Object> dataModel = renderer.getDataModel();
+
+                dataModel.put(Keys.MSG, e.getMessage());
+                filler.fillHeaderAndFooter(request, response, dataModel);
+
+                return;
+            }
+        	
+		}
 
         if (domainQueryService.containTag(tagTitle, domainId)) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
@@ -2198,7 +2236,7 @@ public class AdminProcessor {
 
         final JSONObject domainTag = new JSONObject();
         domainTag.put(Domain.DOMAIN + "_" + Keys.OBJECT_ID, domainId);
-        domainTag.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
+        domainTag.put(Tag.TAG + "_" + Keys.OBJECT_ID, tagId);
 
         domainMgmtService.addDomainTag(domainTag);
 
