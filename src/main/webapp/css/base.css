@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.15.35, Sep 10, 2016
+ * @version 1.20.16.35, Sep 11, 2016
  */
 
 /* start reset */
@@ -357,10 +357,9 @@ blockquote {
     padding-bottom: 0.2em;
     margin: 0;
     font-size: 85%;
-    background-color: rgba(0,0,0,0.04);
+    background-color: rgba(252, 41, 41, 0.12);
     border-radius: 3px;
-    vertical-align: text-bottom;
-
+    color: #911;
 }
 
 .content-reset code::before, 
@@ -369,9 +368,20 @@ blockquote {
     content: "\00a0";
 }
 
+.content-reset pre > code::before, 
+.content-reset pre > code::after {
+    letter-spacing: 0;
+    content: "";
+}
+
 .content-reset pre > code {
     padding: 0.5em;
     border-radius: 0;
+    color: #333;
+    background-color: rgba(0,0,0,0.04);
+    background-image: url(../images/code-bg.png);
+    background-size: 20px 20px;
+    border-radius: 5px;
 }
 /* end reset */
 
@@ -1031,10 +1041,11 @@ a[class*=" icon-"]:hover {
 .tabs a {
     flex: 1;
     padding: 5px 15px 5px;
-    color: #666;
+    color: #595959;
     white-space: nowrap;
     border-bottom: 2px solid transparent;
     text-decoration: none;
+    text-align: center;
 }
 
 .tabs a.selected {
@@ -1046,6 +1057,10 @@ a[class*=" icon-"]:hover {
 
 .tabs a:hover {
     color: #333;
+}
+
+.tabs a svg {
+    color: #bbb;
 }
 
 .tabs a.selected svg {
@@ -1972,6 +1987,40 @@ ul.CodeMirror-hints {
     vertical-align: sub;
 }
 /* end person info */
+
+/* start link forge */
+.link-forge .module-header {
+    line-height: 20px;
+}
+
+.link-forge .module-panel {
+    max-height: 409px;
+    overflow: hidden;
+}
+
+.link-forge .content .module-header .avatar-small {
+    vertical-align: text-bottom;
+}
+
+.link-forge-upload {
+    margin-bottom: 20px;
+}
+
+.link-forge-upload .error,
+.link-forge-upload .succ {
+    margin-top: 10px;
+}
+
+.link-forge-upload input[type=text] {
+    height: 35px;
+}
+
+.link-forge-upload button {
+    position: absolute;
+    right: 0;
+    border-radius: 0 3px 3px 0;
+}
+/* end link forge */
 
 /* start top */
 .top .has-view {
