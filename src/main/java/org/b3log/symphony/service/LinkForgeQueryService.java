@@ -28,13 +28,14 @@ import org.b3log.symphony.cache.TagCache;
 import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.repository.LinkRepository;
 import org.b3log.symphony.repository.TagUserLinkRepository;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
 /**
  * Link query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 11, 2016
+ * @version 1.0.0.2, Sep 12, 2016
  * @since 1.6.0
  */
 @Service
@@ -44,6 +45,21 @@ public class LinkForgeQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(LinkForgeQueryService.class.getName());
+
+    /**
+     * Max tag count.
+     */
+    private static final int TAG_MAX_COUNT = Symphonys.getInt("forge.link.maxTagCnt");
+
+    /**
+     * Max link count.
+     */
+    private static final int LINK_MAX_COUNT = Symphonys.getInt("forge.link.maxCnt");
+
+    /**
+     * Tag reference count threshold.
+     */
+    private static final int TAG_REF_COUNT = Symphonys.getInt("forge.link.tagRefCnt");
 
     /**
      * Tag-User-Link repository.
@@ -80,14 +96,22 @@ public class LinkForgeQueryService {
      * </pre>
      */
     public List<JSONObject> getUserForgedLinks(final String userId) {
-        final int LINK_MAX_COUNT = 50;
-
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
-            final List<JSONObject> cachedTags = tagCache.getTags();
+            List<JSONObject> cachedTags = tagCache.getTags();
             for (final JSONObject cachedTag : cachedTags) {
-                if (cachedTag.optInt(Tag.TAG_LINK_CNT) < 1) {
+                Collections.sort(cachedTags, new Comparator<JSONObject>() {
+                    @Override
+                    public int compare(final JSONObject o1, final JSONObject o2) {
+                        return o2.optInt(Tag.TAG_LINK_CNT) - o1.optInt(Tag.TAG_LINK_CNT);
+                    }
+                });
+
+                cachedTags = cachedTags.size() > TAG_MAX_COUNT ? cachedTags.subList(0, TAG_MAX_COUNT) : cachedTags;
+
+                if (cachedTag.optInt(Tag.TAG_LINK_CNT) < 1
+                        || cachedTag.optInt(Tag.TAG_REFERENCE_CNT) < TAG_REF_COUNT) {
                     continue; // XXX: optimize, reduce queries
                 }
 
@@ -144,9 +168,6 @@ public class LinkForgeQueryService {
      * </pre>
      */
     public List<JSONObject> getForgedLinks() {
-        final int TAG_MAX_COUNT = 50;
-        final int LINK_MAX_COUNT = 20;
-
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
@@ -162,7 +183,8 @@ public class LinkForgeQueryService {
             cachedTags = cachedTags.size() > TAG_MAX_COUNT ? cachedTags.subList(0, TAG_MAX_COUNT) : cachedTags;
 
             for (final JSONObject cachedTag : cachedTags) {
-                if (cachedTag.optInt(Tag.TAG_LINK_CNT) < 1) {
+                if (cachedTag.optInt(Tag.TAG_LINK_CNT) < 1
+                        || cachedTag.optInt(Tag.TAG_REFERENCE_CNT) < TAG_REF_COUNT) {
                     continue; // XXX: optimize, reduce queries
                 }
 

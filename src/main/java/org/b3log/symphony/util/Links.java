@@ -49,7 +49,7 @@ import org.jsoup.select.Elements;
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 9, 2016
+ * @version 1.0.0.2, Sep 12, 2016
  * @since 1.6.0
  */
 public final class Links {
@@ -97,7 +97,7 @@ public final class Links {
 
                 final URL formedURL = new URL(url);
                 final String path = formedURL.getPath();
-                if ("/".equals(path)) {
+                if (StringUtils.endsWith(path, "/")) {
                     url = StringUtils.substringBeforeLast(url, "/");
                 }
 
