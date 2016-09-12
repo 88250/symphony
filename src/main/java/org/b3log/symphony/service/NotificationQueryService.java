@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.2.5, Aug 31, 2016
+ * @version 1.8.3.5, Sep 12, 2016
  * @since 0.2.5
  */
 @Service
@@ -310,6 +310,11 @@ public class NotificationQueryService {
                         final JSONObject user12 = userRepository.get(senderId12);
                         final String articleId12 = reward12.optString(Reward.DATA_ID);
                         final JSONObject article12 = articleRepository.get(articleId12);
+                        if (null == article12) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
 
                         final String userLink12 = "<a href=\"/member/" + user12.optString(User.USER_NAME) + "\">"
                                 + user12.optString(User.USER_NAME) + "</a>";
@@ -329,6 +334,11 @@ public class NotificationQueryService {
                         final JSONObject user7 = userRepository.get(senderId7);
                         final String articleId7 = reward7.optString(Reward.DATA_ID);
                         final JSONObject article7 = articleRepository.get(articleId7);
+                        if (null == article7) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
 
                         final String userLink7 = "<a href=\"/member/" + user7.optString(User.USER_NAME) + "\">"
                                 + user7.optString(User.USER_NAME) + "</a>";
@@ -383,6 +393,11 @@ public class NotificationQueryService {
                         final JSONObject comment8 = commentRepository.get(reward8.optString(Reward.DATA_ID));
                         final String articleId8 = comment8.optString(Comment.COMMENT_ON_ARTICLE_ID);
                         final JSONObject article8 = articleRepository.get(articleId8);
+                        if (null == article8) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
 
                         final String userLink8 = "<a href=\"/member/" + user8.optString(User.USER_NAME) + "\">"
                                 + user8.optString(User.USER_NAME) + "</a>";
