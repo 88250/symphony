@@ -238,7 +238,7 @@ public final class Tag {
     /**
      * Max tag title length.
      */
-    public static final int MAX_TAG_TITLE_LENGTH = 9;
+    public static final int MAX_TAG_TITLE_LENGTH = null==Symphonys.getInt("MaxTagTitleLength")?9:Symphonys.getInt("MaxTagTitleLength");//9;
 
     /**
      * Max tag count.
