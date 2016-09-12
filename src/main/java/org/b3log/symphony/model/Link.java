@@ -100,6 +100,11 @@ public final class Link {
      */
     public static final String LINK_T_TEXT = "linkText";
 
+    /**
+     * Key of link count.
+     */
+    public static final String LINK_T_COUNT = "linkCnt";
+
     //// Type constants
     /**
      * Link type - forge.

@@ -17,6 +17,7 @@ package org.b3log.symphony.util;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
@@ -65,6 +67,7 @@ public final class Links {
     /**
      * Gets links from the specified HTML.
      *
+     * @param baseURL the specified base URL
      * @param html the specified HTML
      * @return a list of links, each of them like this:      <pre>
      * {
@@ -77,36 +80,42 @@ public final class Links {
      * }
      * </pre>
      */
-    public static List<JSONObject> getLinks(final String html) {
-        final Document doc = Jsoup.parse(html);
+    public static List<JSONObject> getLinks(final String baseURL, final String html) {
+        final Document doc = Jsoup.parse(html, baseURL);
         final Elements urlElements = doc.select("a");
 
         final Set<String> urls = new HashSet<>();
         final List<Spider> spiders = new ArrayList<>();
 
+        String url = null;
         for (final Element urlEle : urlElements) {
             try {
-                String url = urlEle.attr("href");
+                url = urlEle.absUrl("href");
                 if (StringUtils.isBlank(url) || !StringUtils.contains(url, "://")) {
-                    continue;
+                    url = StringUtils.substringBeforeLast(baseURL, "/") + url;
                 }
 
-                final String path = new URL(url).getPath();
+                final URL formedURL = new URL(url);
+                final String path = formedURL.getPath();
                 if ("/".equals(path)) {
                     url = StringUtils.substringBeforeLast(url, "/");
                 }
 
+                if (StringUtils.contains(url, "#")) {
+                    url = StringUtils.substringBefore(url, "#");
+                }
+
                 urls.add(url);
             } catch (final Exception e) {
-                LOGGER.warn("Can't parse [" + urlEle.attr("href") + "]");
+                LOGGER.warn("Can't parse [" + url + "]");
             }
         }
 
         final List<JSONObject> ret = new ArrayList<>();
 
         try {
-            for (final String url : urls) {
-                spiders.add(new Spider(url));
+            for (final String u : urls) {
+                spiders.add(new Spider(u));
             }
 
             final List<Future<JSONObject>> results = EXECUTOR_SERVICE.invokeAll(spiders);
@@ -148,8 +157,16 @@ public final class Links {
                 final JSONObject ret = new JSONObject();
 
                 // Get meta info of the URL
-                final Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).execute();
-                final String html = new String(res.bodyAsBytes(), res.charset());
+                final Connection.Response res = Jsoup.connect(url).timeout(TIMEOUT).followRedirects(false).execute();
+                if (HttpServletResponse.SC_OK != res.statusCode()) {
+                    return null;
+                }
+
+                String charset = res.charset();
+                if (StringUtils.isBlank(charset)) {
+                    charset = "UTF-8";
+                }
+                final String html = new String(res.bodyAsBytes(), charset);
 
                 String title = StringUtils.substringBetween(html, "<title>", "</title>");
                 title = StringUtils.trim(title);
@@ -173,8 +190,7 @@ public final class Links {
                 HttpURLConnection conn = (HttpURLConnection) baiduURL.openConnection();
                 conn.setConnectTimeout(TIMEOUT);
                 conn.setReadTimeout(TIMEOUT);
-                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                        + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
+                conn.addRequestProperty("User-Agent", Symphonys.USER_AGENT_BOT);
 
                 InputStream inputStream = conn.getInputStream();
                 String baiduRes = IOUtils.toString(inputStream, "UTF-8");
@@ -183,35 +199,43 @@ public final class Links {
 
                 int baiduRefCnt = StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
                 if (1 > baiduRefCnt) {
-                    return null;
+                    ret.put(Link.LINK_BAIDU_REF_CNT, baiduRefCnt);
+                    LOGGER.debug(ret.optString(Link.LINK_ADDR));
+
+                    return ret;
+                } else {
+                    baiduURL = new URL("https://www.baidu.com/s?pn=10&wd=" + URLEncoder.encode(url, "UTF-8"));
+                    conn = (HttpURLConnection) baiduURL.openConnection();
+                    conn.setConnectTimeout(TIMEOUT);
+                    conn.setReadTimeout(TIMEOUT);
+                    conn.addRequestProperty("User-Agent", Symphonys.USER_AGENT_BOT);
+
+                    inputStream = conn.getInputStream();
+                    baiduRes = IOUtils.toString(inputStream, "UTF-8");
+                    IOUtils.closeQuietly(inputStream);
+                    conn.disconnect();
+
+                    baiduRefCnt += StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
+
+                    ret.put(Link.LINK_BAIDU_REF_CNT, baiduRefCnt);
+                    LOGGER.debug(ret.optString(Link.LINK_ADDR));
+
+                    return ret;
                 }
-
-                baiduURL = new URL("https://www.baidu.com/s?pn=10&wd=" + URLEncoder.encode(url, "UTF-8"));
-                conn = (HttpURLConnection) baiduURL.openConnection();
-                conn.setConnectTimeout(TIMEOUT);
-                conn.setReadTimeout(TIMEOUT);
-                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                        + "(KHTML, like Gecko) Chrome/53.0.2785.101 Safari/537.36");
-
-                inputStream = conn.getInputStream();
-                baiduRes = IOUtils.toString(inputStream, "UTF-8");
-                IOUtils.closeQuietly(inputStream);
-                conn.disconnect();
-
-                baiduRefCnt += StringUtils.countMatches(baiduRes, "<em>" + url + "</em>");
-
-                ret.put(Link.LINK_BAIDU_REF_CNT, baiduRefCnt);
-
-                LOGGER.debug(ret.optString(Link.LINK_ADDR));
-
-                return ret;
+            } catch (final SocketTimeoutException e) {
+                return null;
             } catch (final Exception e) {
+                LOGGER.log(Level.WARN, "Parses URL [" + url + "] failed", e);
                 return null;
             }
         }
     }
 
     private static boolean containsChinese(final String str) {
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
+
         final Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
         final Matcher m = p.matcher(str);
 
@@ -219,10 +243,11 @@ public final class Links {
     }
 
     public static void main(final String[] args) throws Exception {
-        final Document doc = Jsoup.parse(new URL("https://github.com/helloqingfeng/Awsome-Front-End-learning-resource/tree/master/04-Front-end-tutorial-master"), 5000);
+        final String url = "https://github.com/helloqingfeng/Awsome-Front-End-learning-resource/tree/master/04-Front-end-tutorial-master";
+        final Document doc = Jsoup.parse(new URL(url), 5000);
         final String html = doc.html();
 
-        final List<JSONObject> links = getLinks(html);
+        final List<JSONObject> links = getLinks(url, html);
         for (final JSONObject link : links) {
             LOGGER.info(link.optInt(Link.LINK_BAIDU_REF_CNT) + "  "
                     + link.optString(Link.LINK_ADDR) + "  "
