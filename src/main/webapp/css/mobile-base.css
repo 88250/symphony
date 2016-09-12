@@ -2044,7 +2044,7 @@ label.cmt-anonymous {
 /* start domains */
 .domains {
     width: 288px;
-    margin: 0 auto -10px;
+    margin: 0 auto;
 }
 
 .domains svg {
