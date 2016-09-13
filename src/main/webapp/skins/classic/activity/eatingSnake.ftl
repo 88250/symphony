@@ -5,7 +5,7 @@
         <@head title="${eatingSnakeLabel} - ${activityLabel} - ${symphonyLabel}">
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
-        <link rel="canonical" href="${servePath}/activity/character">
+        <link rel="canonical" href="${servePath}/activity/eatingSnake">
     </head>
     <body>
         <#include "../header.ftl">
@@ -16,7 +16,7 @@
                             
                     <div class="content-reset">
                     <div class="fn-right">
-                                <button class="green" onclick="Activity.startSnake('snakeCanvas')">${gameStartLabel}</button>
+                                <button class="green" onclick="Activity.startSnake()">${gameStartLabel}</button>
                             </div>
                        <div id="page">
         <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
@@ -36,7 +36,7 @@
         <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/eatingSnake${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                                    Activity.initSnake('snakeCanvas');
+                                    Activity.initSnake();
         </script>
     </body>
 </html>

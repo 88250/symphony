@@ -37,6 +37,9 @@ var interval = null;
 var currTime = 200;
 var stepTime = 5;
 var baseLen=6;
+var startTime=null;
+var endTime=null;
+var countTime=null;
 
 function init() {
     dir = {
@@ -57,14 +60,18 @@ function init() {
     setupSnake();
     drawSnake(1);
     newFood();
+    clearInterval(interval);
 }
 
 function start() {
     init();
+    countTime=0;
     interval = setInterval(gameRun, currTime);
+    startTime=new Date().getTime();
 }
 
 function gameRun() {
+    countTime+=currTime;
     updateSnake();
     drawMap();
     oMark.innerHtml=snake.length-baseLen;
@@ -82,6 +89,34 @@ function setupMap() {
                 map[x][y] = 3
             else
                 map[x][y] = 0
+        }
+    }
+}
+
+function initMap() {
+    map = new Array();
+    setupMap();
+    snakeCanvas.clearRect(0, 0, (size - 1) * 2 * R, (size - 1) * 2 * R);
+    for (var x = 1; x <= size; x++) {
+        for (var y = 1; y <= size; y++) {
+            switch(map[x][y]){
+                case 0:
+                    snakeCanvas.strokeStyle = "gray";
+                    snakeCanvas.strokeRect((x - 1) * 2 * R, (y - 1) * 2 * R, 2 * R, 2 * R); 
+                    break;
+                case 1:
+                    snakeCanvas.fillStyle = "black";
+                    snakeCanvas.fillRect((x - 1) * 2 * R, (y - 1) * 2 * R, 2 * R, 2 * R);
+                    break;
+                case 2:
+                    snakeCanvas.fillStyle = "red";
+                    snakeCanvas.fillRect((x - 1) * 2 * R, (y - 1) * 2 * R, 2 * R, 2 * R);
+                    break;
+                case 3:
+                    snakeCanvas.fillStyle = "gray";
+                    snakeCanvas.fillRect((x - 1) * 2 * R, (y - 1) * 2 * R, 2 * R, 2 * R);
+                    break;
+            }
         }
     }
 }
@@ -137,13 +172,16 @@ function drawSnake(toggle) {
 
 function newFood() {
     do {
-        food.x = Math.floor(Math.random() * 14 + 1);
-        food.y = Math.floor(Math.random() * 14 + 1);
+        food.x = Math.floor(Math.random() * (size-1) + 1);
+        food.y = Math.floor(Math.random() * (size-1) + 1);
     } while (check(food.x, food.y) == true)
     map[food.x][food.y] = 2;
 }
 
 function gameover() {
+    endTime=new Date().getTime();
+    console.log(endTime-startTime);
+    console.log(countTime);
     clearInterval(interval);
     //可以考虑不同分数不同提示
     alert("Game Over! 您的分数是：" + (snake.length - baseLen) + "！哇哦好厉害哟！");

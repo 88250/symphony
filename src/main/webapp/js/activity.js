@@ -191,7 +191,7 @@ var Activity = {
     * 直接抄代码……
     */
     initSnake: function(){
-        init();
+        initMap();
     },
     startSnake: function(){
         start();

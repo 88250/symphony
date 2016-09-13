@@ -505,41 +505,20 @@ public class ActivityProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/eatingSnake.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         filler.fillHeaderAndFooter(request, response, dataModel);
-
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
-
         filler.fillRandomArticles(avatarViewMode, dataModel);
         filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
 
-        String activityCharacterGuideLabel = langPropsService.get("activityCharacterGuideLabel");
-
-        final String character = characterQueryService.getUnwrittenCharacter();
-        if (StringUtils.isBlank(character)) {
-            dataModel.put("noCharacter", true);
-
-            return;
-        }
-
-        final int totalCharacterCount = characterQueryService.getTotalCharacterCount();
-        final int writtenCharacterCount = characterQueryService.getWrittenCharacterCount();
-        final String totalProgress = String.format("%.2f", (double) writtenCharacterCount / (double) totalCharacterCount * 100);
-        dataModel.put("totalProgress", totalProgress);
-
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final String userId = user.optString(Keys.OBJECT_ID);
-        final int userWrittenCharacterCount = characterQueryService.getWrittenCharacterCount(userId);
-        final String userProgress = String.format("%.2f", (double) userWrittenCharacterCount / (double) totalCharacterCount * 100);
-        dataModel.put("userProgress", userProgress);
-
-        activityCharacterGuideLabel = activityCharacterGuideLabel.replace("{character}", character);
-        dataModel.put("activityCharacterGuideLabel", activityCharacterGuideLabel);
+        final JSONObject ret = activityMgmtService.collect1A0001(userId);
+        context.renderJSON(ret);
     }
     /**
-     * show eatingSnake.ftl
+     * 贪吃蛇游戏结束，获取积分
      * @author Zephyr
      * @param context the specified context
      * @param request the specified request
