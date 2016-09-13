@@ -131,12 +131,27 @@ public class CharacterQueryService {
     }
 
     /**
-     * Gets an unwritten character of the specified user id.
+     * Gets an unwritten character.
      *
      * @param userId the specified user id
      * @return character
      */
     public String getUnwrittenCharacter(final String userId) {
+        final String ret = getUnwrittenCharacterRandom(userId);
+        if (StringUtils.isNotBlank(ret)) {
+            return ret;
+        }
+
+        return getUnwrittenCharacterOneByOne(userId);
+    }
+
+    /**
+     * Gets an unwritten character (strategy: One By One).
+     *
+     * @param userId the specified user id
+     * @return character
+     */
+    private String getUnwrittenCharacterOneByOne(final String userId) {
         final String characters = langPropsService.get("characters");
 
         int index = 0;
@@ -165,6 +180,44 @@ public class CharacterQueryService {
                 LOGGER.log(Level.ERROR, "Gets an unwritten character for user [id=" + userId + "] failed", e);
             }
         }
+    }
+
+    /**
+     * Gets an unwritten character (strategy: Random).
+     *
+     * @param userId the specified user id
+     * @return character
+     */
+    private String getUnwrittenCharacterRandom(final String userId) {
+        final String characters = langPropsService.get("characters");
+
+        final int maxRetries = 7;
+        int retries = 0;
+
+        while (retries < maxRetries) {
+            retries++;
+
+            final int index = RandomUtils.nextInt(characters.length());
+            final String ret = StringUtils.trim(characters.substring(index, index + 1));
+
+            final Query query = new Query();
+            query.setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_USER_ID, FilterOperator.EQUAL, userId),
+                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret)
+            ));
+
+            try {
+                if (characterRepository.count(query) > 0) {
+                    continue;
+                }
+
+                return ret;
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Gets an unwritten character failed", e);
+            }
+        }
+
+        return null;
     }
 
     /**
