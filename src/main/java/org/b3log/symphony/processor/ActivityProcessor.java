@@ -487,4 +487,59 @@ public class ActivityProcessor {
 
         context.renderJSON(ret);
     }
+
+    /**
+     * show eatingSnake.ftl
+     * @author Zephyr
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/activity/eatingSnake", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
+    public void eatingSnake(final HTTPRequestContext context,
+                              final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/activity/eatingSnake.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeaderAndFooter(request, response, dataModel);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
+
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+//        final JSONObject ret = activityMgmtService.collect1A0001(userId);
+//        context.renderJSON(ret);
+    }
+    /**
+     * 贪吃蛇游戏结束，获取积分
+     * @author Zephyr
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/activity/eatingSnake/gameOver", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
+    public void snakeGameOver(final HTTPRequestContext context,
+                              final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        JSONObject requestJSONObject;
+        try {
+            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            final String snakeScore = requestJSONObject.optString("score");
+            System.out.println("Zephyr:>"+snakeScore);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Submits character failed", e);
+            context.renderJSON(false).renderMsg("ERRORdd");
+            return;
+        }
+
+    }
 }

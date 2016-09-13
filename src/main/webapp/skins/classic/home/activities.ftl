@@ -17,6 +17,7 @@
                         <li><a href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
                         <li><a href="${servePath}/activity/1A0001">${activity1A0001Label}</a></li>
                         <li><a href="${servePath}/activity/character">${characterLabel}</a></li>
+                        <li><a href="${servePath}/activity/eatingSnake">${eatingSnakeLabel}</a></li>
                     </ul>
                 </div>
                 <div class="side">
