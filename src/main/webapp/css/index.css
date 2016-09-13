@@ -398,8 +398,7 @@ label.cmt-anonymous {
     position: fixed;
     width: 100%;
     z-index: 10;
-    bottom: 0;
-    display: none;
+    bottom: -500px;
 }
 
 .editor-panel .form {

@@ -91,9 +91,14 @@ var Comment = {
                 return false;
             }
             $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
-            $('.editor-panel').slideDown();
             Comment.editor.focus();
             $('#replyUseName').text('').removeData();
+
+            // 如果 hide 初始化， focus 无效
+            if ($('.editor-panel').css('bottom') !== '0px') {
+                $('.editor-panel').hide().css('bottom', 0)
+            }
+            $('.editor-panel').slideDown();
         });
 
         // 评论框控制
@@ -563,6 +568,12 @@ var Comment = {
             return false;
         }
         $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
+
+        // 如果 hide 初始化， focus 无效
+        if ($('.editor-panel').css('bottom') !== '0px') {
+            $('.editor-panel').hide().css('bottom', 0)
+        }
+
         $('.editor-panel').slideDown(function () {
             // 回帖在底部，当评论框弹出时会被遮住的解决方案
             if ($(window).height() - ($('#' + id).offset().top - $(window).scrollTop()) < $('.editor-panel').outerHeight() + $('#' + id).outerHeight()) {
