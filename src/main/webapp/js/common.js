@@ -45,7 +45,7 @@ var Util = {
                 icon: Label.staticServePath + '/images/faviconH.png'
             });
             notification.onclick = notification.onclose = notification.onerror = function () {
-                window.location = Label.servePath + '/notifications/commented';
+                window.location = Label.servePath + '/notifications';
             };
         };
 
