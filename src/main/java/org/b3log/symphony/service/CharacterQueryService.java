@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Character query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jul 11, 2016
+ * @version 1.0.1.2, Sep 13, 2016
  * @since 1.4.0
  */
 @Service
@@ -154,8 +154,6 @@ public class CharacterQueryService {
                     new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_USER_ID, FilterOperator.EQUAL, userId),
                     new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret)
             ));
-
-            query.setFilter(new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret));
 
             try {
                 if (characterRepository.count(query) > 0) {
