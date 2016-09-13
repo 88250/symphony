@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.16.35, Sep 13, 2016
+ * @version 1.21.16.36, Sep 13, 2016
  */
 
 /* start reset */
@@ -364,7 +364,7 @@ blockquote {
 
 .content-reset code::before, 
 .content-reset code::after {
-    letter-spacing: -0.2em;
+    letter-spacing: -0.2rem;
     content: "\00a0";
 }
 
@@ -1007,7 +1007,7 @@ a[class*=" icon-"]:hover {
     cursor: pointer;
 }
 
-.icon-go-up {
+.go-up {
     background-color: #E7ECEE;
     border: 1px solid #D2D9DD;
     border-right-width: 0;
@@ -1026,7 +1026,7 @@ a[class*=" icon-"]:hover {
     right: 0;
 }
 
-.icon-go-up:hover {
+.go-up:hover {
     background-color: #d8e0e3 !important;
 }
 /* end icon */

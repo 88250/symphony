@@ -135,11 +135,11 @@
                     <a rel="help" href="${servePath}/about">${aboutLabel}</a>
                     <a href="https://hacpai.com/article/1457158841475">API</a>
                     <a href="${servePath}/tag/系统公告">${symAnnouncementLabel}</a>
-                    <a href="${servePath}/tag/Q%26A">${qnaLabel}</a>
+                    <a href="${servePath}/perfect">${perfectLabel}</a>
                     <a href="${servePath}/domains">${domainLabel}</a>
                     <a href="${servePath}/tags">${tagLabel}</a>
+                    <a href="${servePath}/community">${communityGroupLabel}</a>
                     <a href="https://hacpai.com/article/1460083956075">${adDeliveryLabel}</a>
-                    <a href="${servePath}/forge/link">${linkForgeLabel}</a>
                     <a href="${servePath}/statistic" class="last">${dataStatLabel}</a>
 
                     <div class="fn-right">
@@ -158,7 +158,9 @@
             </div>
         </div>
     </div>
-    <div class="icon-go-up" onclick="Util.goTop()"></div>
+    <div class="go-up tooltipped tooltipped-w" aria-label="${goTopLabel}" onclick="Util.goTop()">
+        <span class="icon-go-up"></span>
+    </div>
     <script type="text/javascript" src="${staticServePath}/js/lib/compress/libs.min.js"></script>
     <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
     <script>

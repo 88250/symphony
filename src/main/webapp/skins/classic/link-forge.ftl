@@ -11,7 +11,7 @@
     </head>
     <body>
         <#include "header.ftl">
-        <@subNav '' ''/>
+        <@subNav '/forge/link' ''/>
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear link-forge">
