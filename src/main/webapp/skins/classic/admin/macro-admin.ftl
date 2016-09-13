@@ -16,7 +16,9 @@
         <@head title="${articleAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
         <#if type == "comments">
-        <@head title="${commentAdminLabel} - ${symphonyLabel}"></@head>
+        <@head title="${commentAdminLabel} - ${symphonyLabel}">
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
+        </@head>
         </#if>
         <#if type == "addDomain">
         <@head title="${addDomainLabel} - ${symphonyLabel}"></@head>
@@ -87,6 +89,12 @@
             </div>
         </div>
         <#include "../footer.ftl">
+        <#if type == "comments">
+        <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script>
+            Settings.initHljs();
+        </script>
+        </#if>
     </body>
 </html>
 </#macro>

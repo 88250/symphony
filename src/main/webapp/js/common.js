@@ -764,21 +764,25 @@ var Util = {
         }).blur(function () {
             $(".nav .tags").css('visibility', 'visible');
         });
+
+        var borderTopRadius = '5px 0 0 5px';
+        // 文章页面有回贴按钮，样式需要微调
+        if ($('.reply-btn').length === 1) {
+            borderTopRadius = '0 0 0 5px';
+        }
         $(window).scroll(function () {
-            if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
-                $(".icon-go-up").css({
-                    "background-color": "#F8F8F8",
-                    "border-radius": "5px 0 0 0",
-                    "border-color": "#E0E0E0"
+            if ($(window).scrollTop() > 20) {
+                $(".go-up").css({
+                    "border-radius": borderTopRadius
                 }).show();
-            } else if ($(window).scrollTop() > 20) {
-                $(".icon-go-up").css({
-                    "background-color": "#E7ECEE",
-                    "border-radius": "5px 0 0 5px",
-                    "border-color": "#D2D9DD"
-                }).show();
+                $('.reply-btn').css({
+                   'border-radius': '5px 0 0 0' 
+                });
             } else {
-                $(".icon-go-up").hide();
+                $(".go-up").hide();
+                $('.reply-btn').css({
+                   'border-radius': '5px 0 0 5px' 
+                });
             }
         });
 

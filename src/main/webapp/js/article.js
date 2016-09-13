@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.31.20, Sep 10, 2016
+ * @version 1.24.31.21, Sep 13, 2016
  */
 
 /**
@@ -85,24 +85,26 @@ var Comment = {
      */
     _initEditorPanel: function () {
         // 回复按钮设置
-        $('.reply-btn').css('left', $('.side').offset().left - 43).click(function () {
+        $('.reply-btn').click(function () {
             if (!Label.isLoggedIn) {
                 Util.needLogin();
                 return false;
             }
             $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
-            $('.editor-panel').slideDown(function () {
-                $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
-            });
             Comment.editor.focus();
             $('#replyUseName').text('').removeData();
+
+            // 如果 hide 初始化， focus 无效
+            if ($('.editor-panel').css('bottom') !== '0px') {
+                $('.editor-panel').hide().css('bottom', 0);
+            }
+            $('.editor-panel').slideDown();
         });
 
         // 评论框控制
         $('.editor-panel .editor-hide').click(function () {
             $('.editor-panel').slideUp();
             $('.footer').removeAttr('style');
-            $('.reply-btn').css('bottom', $('.footer').outerHeight());
         });
     },
     /**
@@ -223,8 +225,6 @@ var Comment = {
                 cm.showHint({hint: CodeMirror.hint.userName, completeSingle: false});
                 return CodeMirror.Pass;
             }
-            // 回复按钮随着编辑器高度变化
-            $('.reply-btn').css('bottom', $('.editor-panel').outerHeight() + 'px');
         });
 
         Comment.editor.on('keypress', function (cm, evt) {
@@ -568,13 +568,20 @@ var Comment = {
             return false;
         }
         $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
-        $('.editor-panel').slideDown(function () {
-            $('.reply-btn').css('bottom', $('.editor-panel').outerHeight());
 
+        // 如果 hide 初始化， focus 无效
+        if ($('.editor-panel').css('bottom') !== '0px') {
+            $('.editor-panel').hide().css('bottom', 0)
+        }
+
+        $('.editor-panel').slideDown(function () {
             // 回帖在底部，当评论框弹出时会被遮住的解决方案
             if ($(window).height() - ($('#' + id).offset().top - $(window).scrollTop()) < $('.editor-panel').outerHeight() + $('#' + id).outerHeight()) {
                 $(window).scrollTop($('#' + id).offset().top - ($(window).height() - $('.editor-panel').outerHeight() - $('#' + id).outerHeight()));
             }
+
+            // focus
+            Comment.editor.focus();
         });
 
         // 帖子作者 clone 到编辑器左上角
@@ -595,8 +602,6 @@ var Comment = {
 
         $('#replyUseName').html(replyUserHTML)
                 .css('visibility', 'visible').data('commentOriginalCommentId', id);
-
-        Comment.editor.focus();
     }
 };
 
@@ -1128,7 +1133,7 @@ var Article = {
             return false;
         }
         $('.side').height($('.side').height());
-        
+
         // 样式
         var $articleToc = $('#articleToC'),
                 top = $articleToc.offset().top;

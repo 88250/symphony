@@ -8,6 +8,7 @@
         <meta name="robots" content="none" />
         </@head>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
     </head>
     <body>
         <#include "../../header.ftl">
@@ -137,6 +138,10 @@
             </div>
         </div>
         <#include "../../footer.ftl">
+        <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script>
+            Settings.initHljs();
+        </script>
     </body>
 </html>
 </#macro>

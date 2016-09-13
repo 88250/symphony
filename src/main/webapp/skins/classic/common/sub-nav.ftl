@@ -16,8 +16,8 @@
         </#if>
         <a href="${servePath}/timeline"<#if 'timeline' == type> class="selected"</#if>>
             <svg height="14" viewBox="0 0 16 14" width="16">${timelineIcon}</svg>&nbsp;${timelineLabel}</a>
-        <a href="${servePath}/community"<#if 'community' == type> class="selected"</#if>>
-            <svg height="16" viewBox="0 0 14 16" width="16">${noticeIcon}</svg>&nbsp;${communityGroupLabel}</a>
+        <a href="${servePath}/forge/link"<#if '/forge/link' == type> class="selected"</#if>>
+           <svg height="14" viewBox="0 1 16 14" width="16">${baguaIcon}</svg> ${forgeLabel}</a>
     </div>
 </div>
 </#macro>

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.15.28, Sep 10, 2016
+ * @version 2.14.15.29, Sep 13, 2016
  */
 
 /* start list */
@@ -380,14 +380,15 @@ label.cmt-anonymous {
     background-color: #b33630;
     background-image: linear-gradient(#dc5f59, #b33630);
     position: fixed;
-    bottom: 69px;
-    left: 100%;
+    bottom: 105px;
+    right: 0;
     padding: 10px;
-    width: 14px;
+    width: 15px;
     text-align: center;
-    height: 14px;
+    height: 15px;
     color: #fff;
-    z-index: 10;
+    z-index: 12;
+    border-radius: 3px 0 0 0;
 }
 
 .editor-panel {
@@ -397,8 +398,7 @@ label.cmt-anonymous {
     position: fixed;
     width: 100%;
     z-index: 10;
-    bottom: 0;
-    display: none;
+    bottom: -500px;
 }
 
 .editor-panel .form {
