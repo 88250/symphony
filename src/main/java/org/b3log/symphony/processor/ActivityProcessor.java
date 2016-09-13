@@ -71,7 +71,8 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.1.4, Aug 11, 2016
+ * @author Zephyr
+ * @version 1.8.1.4, Sep 13, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -489,22 +490,24 @@ public class ActivityProcessor {
     }
 
     /**
-     * show eatingSnake.ftl
-     * @author Zephyr
+     * Shows eating snake.
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/activity/eatingSnake", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/activity/eating-snake", method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
-    public void eatingSnake(final HTTPRequestContext context,
-                              final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public void showEatingSnake(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
-        renderer.setTemplateName("/activity/eatingSnake.ftl");
+        renderer.setTemplateName("/activity/eating-snake.ftl");
+        
         final Map<String, Object> dataModel = renderer.getDataModel();
+        
         filler.fillHeaderAndFooter(request, response, dataModel);
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         filler.fillRandomArticles(avatarViewMode, dataModel);
@@ -517,29 +520,28 @@ public class ActivityProcessor {
 //        final JSONObject ret = activityMgmtService.collect1A0001(userId);
 //        context.renderJSON(ret);
     }
+
     /**
-     * 贪吃蛇游戏结束，获取积分
-     * @author Zephyr
+     * Collects eating snake.
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/activity/eatingSnake/gameOver", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/activity/eating-snake/collect", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void snakeGameOver(final HTTPRequestContext context,
-                              final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         JSONObject requestJSONObject;
         try {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             final String snakeScore = requestJSONObject.optString("score");
-            System.out.println("Zephyr:>"+snakeScore);
+            System.out.println("Zephyr:>" + snakeScore);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Submits character failed", e);
             context.renderJSON(false).renderMsg("ERRORdd");
-            return;
         }
-
     }
 }

@@ -17,11 +17,14 @@
 
 /**
  *Zephyr：贪吃蛇常量，暂时放在这里
+ *
  *严重BUG：
  *如下可以轻易复现：蛇身向右走的时候，迅速按下下（S）和左（A），即弹出失败
  *可能原因：下这个键事件未来得及捕捉就进行了左，于是与蛇身相撞，判定为失败，如果修改了碰撞逻辑，如蛇身和苹果用不同的值
  *可能会出现直接倒退前进的现象。
  *暂时不管
+ *
+ *TODO：进行包装，否则作用域是全局的可能导致覆盖其他函数或变量
  */
 var dir = null;
 var lastDir = null
@@ -36,10 +39,10 @@ var snakeCanvas = document.getElementById('snakeCanvas').getContext('2d');
 var interval = null;
 var currTime = 200;
 var stepTime = 5;
-var baseLen=6;
-var startTime=null;
-var endTime=null;
-var countTime=null;
+var baseLen = 6;
+var startTime = null;
+var endTime = null;
+var countTime = null;
 
 function init() {
     dir = {
@@ -65,16 +68,16 @@ function init() {
 
 function start() {
     init();
-    countTime=0;
+    countTime = 0;
     interval = setInterval(gameRun, currTime);
-    startTime=new Date().getTime();
+    startTime = new Date().getTime();
 }
 
 function gameRun() {
-    countTime+=currTime;
+    countTime += currTime;
     updateSnake();
     drawMap();
-    oMark.innerHtml=snake.length-baseLen;
+    oMark.innerHtml = snake.length - baseLen;
 }
 
 //1:snake
@@ -99,10 +102,10 @@ function initMap() {
     snakeCanvas.clearRect(0, 0, (size - 1) * 2 * R, (size - 1) * 2 * R);
     for (var x = 1; x <= size; x++) {
         for (var y = 1; y <= size; y++) {
-            switch(map[x][y]){
+            switch (map[x][y]) {
                 case 0:
                     snakeCanvas.strokeStyle = "gray";
-                    snakeCanvas.strokeRect((x - 1) * 2 * R, (y - 1) * 2 * R, 2 * R, 2 * R); 
+                    snakeCanvas.strokeRect((x - 1) * 2 * R, (y - 1) * 2 * R, 2 * R, 2 * R);
                     break;
                 case 1:
                     snakeCanvas.fillStyle = "black";
@@ -125,10 +128,10 @@ function drawMap() {
     snakeCanvas.clearRect(0, 0, (size - 1) * 2 * R, (size - 1) * 2 * R);
     for (var x = 1; x <= size; x++) {
         for (var y = 1; y <= size; y++) {
-            switch(map[x][y]){
+            switch (map[x][y]) {
                 case 0:
                     snakeCanvas.strokeStyle = "gray";
-                    snakeCanvas.strokeRect((x - 1) * 2 * R, (y - 1) * 2 * R, 2 * R, 2 * R); 
+                    snakeCanvas.strokeRect((x - 1) * 2 * R, (y - 1) * 2 * R, 2 * R, 2 * R);
                     break;
                 case 1:
                     snakeCanvas.fillStyle = "black";
@@ -149,7 +152,7 @@ function drawMap() {
 
 
 function check(x, y) {
-    if(map[x][y]!=0)
+    if (map[x][y] != 0)
         return true;//true代表此处有填充p
     else
         return false;
@@ -172,39 +175,39 @@ function drawSnake(toggle) {
 
 function newFood() {
     do {
-        food.x = Math.floor(Math.random() * (size-1) + 1);
-        food.y = Math.floor(Math.random() * (size-1) + 1);
+        food.x = Math.floor(Math.random() * (size - 1) + 1);
+        food.y = Math.floor(Math.random() * (size - 1) + 1);
     } while (check(food.x, food.y) == true)
     map[food.x][food.y] = 2;
 }
 
 function gameover() {
-    endTime=new Date().getTime();
-    console.log(endTime-startTime);
+    endTime = new Date().getTime();
+    console.log(endTime - startTime);
     console.log(countTime);
     clearInterval(interval);
     //可以考虑不同分数不同提示
     alert("Game Over! 您的分数是：" + (snake.length - baseLen) + "！哇哦好厉害哟！");
     var requestJSONObject = {
-            score: (snake.length - baseLen)
-        };
+        score: (snake.length - baseLen)
+    };
     $.ajax({
         url: Label.servePath + "/activity/eatingSnake/gameOver",
         type: "POST",
         cache: false,
         data: JSON.stringify(requestJSONObject),
-        beforeSend: function() {
+        beforeSend: function () {
             var $btn = $("button.green");
             $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
         },
-        success: function(result, textStatus) {
+        success: function (result, textStatus) {
             alert(result.msg);
 
             if (result.sc) {
                 window.location.reload();
             }
         },
-        complete: function() {
+        complete: function () {
             var $btn = $("button.green");
             $btn.removeAttr("disabled").css("opacity", "1").text($btn.text().substr(0, $btn.text().length - 3));
         }
@@ -227,7 +230,7 @@ function updateSnake() {
     lastDir.x = dir.x
     lastDir.y = dir.y
     var targetX = snake[1].x + dir.x,
-        targetY = snake[1].y + dir.y;
+            targetY = snake[1].y + dir.y;
     if (check(targetX, targetY)) {
         if (targetX == food.x && targetY == food.y) { //eat
             eat();
