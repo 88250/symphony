@@ -72,7 +72,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.8.1.4, Sep 13, 2016
+ * @version 1.8.1.5, Sep 13, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -146,9 +146,12 @@ public class ActivityProcessor {
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
 
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+
         String activityCharacterGuideLabel = langPropsService.get("activityCharacterGuideLabel");
 
-        final String character = characterQueryService.getUnwrittenCharacter();
+        final String character = characterQueryService.getUnwrittenCharacter(userId);
         if (StringUtils.isBlank(character)) {
             dataModel.put("noCharacter", true);
 
@@ -160,8 +163,6 @@ public class ActivityProcessor {
         final String totalProgress = String.format("%.2f", (double) writtenCharacterCount / (double) totalCharacterCount * 100);
         dataModel.put("totalProgress", totalProgress);
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        final String userId = user.optString(Keys.OBJECT_ID);
         final int userWrittenCharacterCount = characterQueryService.getWrittenCharacterCount(userId);
         final String userProgress = String.format("%.2f", (double) userWrittenCharacterCount / (double) totalCharacterCount * 100);
         dataModel.put("userProgress", userProgress);
@@ -505,9 +506,9 @@ public class ActivityProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/eating-snake.ftl");
-        
+
         final Map<String, Object> dataModel = renderer.getDataModel();
-        
+
         filler.fillHeaderAndFooter(request, response, dataModel);
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         filler.fillRandomArticles(avatarViewMode, dataModel);
