@@ -49,7 +49,7 @@ import org.jsoup.select.Elements;
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 9, 2016
+ * @version 1.0.0.3, Sep 13, 2016
  * @since 1.6.0
  */
 public final class Links {
@@ -96,13 +96,19 @@ public final class Links {
                 }
 
                 final URL formedURL = new URL(url);
+                final String protocol = formedURL.getProtocol();
+                final String host = formedURL.getHost();
+                final int port = formedURL.getPort();
                 final String path = formedURL.getPath();
-                if ("/".equals(path)) {
-                    url = StringUtils.substringBeforeLast(url, "/");
-                }
 
-                if (StringUtils.contains(url, "#")) {
-                    url = StringUtils.substringBefore(url, "#");
+                url = protocol + "://" + host;
+                if (-1 != port && 80 != port && 443 != port) {
+                    url += ":" + port;
+                }
+                url += path;
+
+                if (StringUtils.endsWith(url, "/")) {
+                    url = StringUtils.substringBeforeLast(url, "/");
                 }
 
                 urls.add(url);

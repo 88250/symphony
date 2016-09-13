@@ -96,7 +96,7 @@ public class LinkForgeMgmtService {
         try {
             final Document doc = Jsoup.connect(url).timeout(5000).userAgent(Symphonys.USER_AGENT_BOT).get();
 
-            doc.select("body").append("<a href=\"" + url + "\">" + url + "</a>"); // Append the specified URL itfself
+            doc.select("body").prepend("<a href=\"" + url + "\">" + url + "</a>"); // Add the specified URL itfself
 
             html = doc.html();
 

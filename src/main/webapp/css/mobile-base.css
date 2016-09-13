@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.6.13, Sep 10, 2016
+ * @version 1.5.6.13, Sep 13, 2016
  */
 
 /* start reset */
@@ -1475,7 +1475,6 @@ ul.CodeMirror-hints {
     position: relative;
     left: -1px;
     top: -1px;
-    border-radius: 5px 5px 0 0;
     overflow: hidden;
     height: 35px;
 }
@@ -2045,7 +2044,7 @@ label.cmt-anonymous {
 /* start domains */
 .domains {
     width: 288px;
-    margin: 0 auto -10px;
+    margin: 0 auto;
 }
 
 .domains svg {

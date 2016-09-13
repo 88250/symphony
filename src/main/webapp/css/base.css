@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.20.16.35, Sep 11, 2016
+ * @version 1.21.16.35, Sep 13, 2016
  */
 
 /* start reset */
@@ -1035,7 +1035,7 @@ a[class*=" icon-"]:hover {
 .tabs {
     background-color: #fff;
     padding: 10px 0;
-    margin-bottom: -20px;
+    margin-bottom: -9px;
 }
 
 .tabs a {
@@ -1065,6 +1065,10 @@ a[class*=" icon-"]:hover {
 
 .tabs a.selected svg {
     color: inherit;
+}
+
+.tabs-sub {
+    margin-left: 1px;
 }
 
 .tabs-sub a {
@@ -1382,7 +1386,7 @@ a[class*=" icon-"]:hover {
 }
 
 .content {
-    margin-right: 50px;
+    margin-right: 20px;
     flex: 1;
     min-width: 1px;
 }
@@ -1912,7 +1916,6 @@ ul.CodeMirror-hints {
     position: relative;
     left: -1px;
     top: -1px;
-    border-radius: 5px 5px 0 0;
     overflow: hidden;
     height: 35px;
 }

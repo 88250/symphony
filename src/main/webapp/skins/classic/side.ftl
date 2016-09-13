@@ -145,7 +145,7 @@
         <ul class="fn-clear tags">
             <#list newTags as newTag>
             <li>
-                <a class="ft-gray ft-smaller" rel="nofollow" href="${servePath}/tag/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a> &nbsp;
+                <a class="ft-gray ft-13" rel="nofollow" href="${servePath}/tag/${newTag.tagTitle?url('UTF-8')}">${newTag.tagTitle}</a> &nbsp;
             </li>
             </#list>
         </ul>

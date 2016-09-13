@@ -9,6 +9,7 @@
         <meta name="keywords" content="${domain.domainSeoKeywords}" />
         <meta name="description" content="${domain.domainSeoDesc}"/>
         </@head>
+        ${domain.domainCSS}
     </head>
     <body>
         <#include "header.ftl">
