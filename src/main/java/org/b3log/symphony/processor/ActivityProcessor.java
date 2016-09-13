@@ -514,8 +514,8 @@ public class ActivityProcessor {
 
         final JSONObject user = (JSONObject) request.getAttribute(User.USER);
         final String userId = user.optString(Keys.OBJECT_ID);
-        final JSONObject ret = activityMgmtService.collect1A0001(userId);
-        context.renderJSON(ret);
+//        final JSONObject ret = activityMgmtService.collect1A0001(userId);
+//        context.renderJSON(ret);
     }
     /**
      * 贪吃蛇游戏结束，获取积分
