@@ -61,7 +61,6 @@ gulp.task('cc', function () {
         './src/main/webapp/js/lib/md5.js',
         './src/main/webapp/js/lib/reconnecting-websocket.min.js',
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
-        './src/main/webapp/js/lib/jquery/jquery.notification-1.0.5.js',
         './src/main/webapp/js/lib/ua-parser.min.js'];
     gulp.src(jsCommonLib)
             .pipe(uglify())
