@@ -96,7 +96,7 @@ var Comment = {
 
             // 如果 hide 初始化， focus 无效
             if ($('.editor-panel').css('bottom') !== '0px') {
-                $('.editor-panel').hide().css('bottom', 0)
+                $('.editor-panel').hide().css('bottom', 0);
             }
             $('.editor-panel').slideDown();
         });
