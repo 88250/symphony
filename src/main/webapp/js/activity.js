@@ -19,7 +19,8 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.2.3, Jun 12, 2016
+ * @author Zephyr
+ * @version 1.3.2.3, Sep 13, 2016
  */
 
 /**
@@ -184,5 +185,19 @@ var Activity = {
         var canvas = document.getElementById(id),
                 ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    },
+    /**
+     * Eating snake
+     */
+    initSnake: function () {
+        initMap();
+    },
+    startSnake: function () {
+        start();
+        document.onkeydown = function (event) {
+            var event = event || window.event;
+            input(event.keyCode);
+        }
     }
 };
+
