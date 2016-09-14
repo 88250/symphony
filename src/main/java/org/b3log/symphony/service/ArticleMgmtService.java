@@ -75,7 +75,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.23.21, Sep 11, 2016
+ * @version 2.14.23.22, Sep 14, 2016
  * @since 0.2.0
  */
 @Service
@@ -808,11 +808,15 @@ public class ArticleMgmtService {
     /**
      * Updates the specified article by the given article id.
      *
+     * <p>
+     * <b>Note</b>: This method just for admin console.
+     * </p>
+     *
      * @param articleId the given article id
      * @param article the specified article
      * @throws ServiceException service exception
      */
-    public void updateArticle(final String articleId, final JSONObject article) throws ServiceException {
+    public void updateArticleByAdmin(final String articleId, final JSONObject article) throws ServiceException {
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
@@ -834,9 +838,13 @@ public class ArticleMgmtService {
             articleTitle = Emotions.toAliases(articleTitle);
             article.put(Article.ARTICLE_TITLE, articleTitle);
 
-            String articleContent = article.optString(Article.ARTICLE_CONTENT);
-            articleContent = Emotions.toAliases(articleContent);
-            article.put(Article.ARTICLE_CONTENT, articleContent);
+            if (Article.ARTICLE_TYPE_C_THOUGHT == article.optInt(Article.ARTICLE_TYPE)) {
+                article.put(Article.ARTICLE_CONTENT, oldArticle.optString(Article.ARTICLE_CONTENT));
+            } else {
+                String articleContent = article.optString(Article.ARTICLE_CONTENT);
+                articleContent = Emotions.toAliases(articleContent);
+                article.put(Article.ARTICLE_CONTENT, articleContent);
+            }
 
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
             articleRepository.update(articleId, article);
