@@ -58,6 +58,7 @@ function init() {
         x: 0,
         y: 0
     };
+    currTime = 200;
     snake = new Array();
     setupMap();
     setupSnake();
