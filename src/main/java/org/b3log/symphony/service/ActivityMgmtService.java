@@ -57,7 +57,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.9.3, Aug 1, 2016
+ * @version 1.4.9.4, Sep 13, 2016
  * @since 1.3.0
  */
 @Service
@@ -128,6 +128,14 @@ public class ActivityMgmtService {
     @Inject
     private LivenessQueryService livenessQueryService;
 
+    /**
+     * Submits the specified character to recognize.
+     *
+     * @param userId the specified user id
+     * @param characterImg the specified character image encoded by Base64
+     * @param character the specified character
+     * @return recognition result
+     */
     public synchronized JSONObject submitCharacter(final String userId, final String characterImg, final String character) {
         final String recongnizeFailedMsg = langPropsService.get("activityCharacterRecognizeFailedLabel");
 

@@ -130,7 +130,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.21.4.13, Sep 12, 2016
+ * @version 2.21.5.14, Sep 14, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1578,7 +1578,7 @@ public class AdminProcessor {
         final String articleTags = Tag.formatTags(article.optString(Article.ARTICLE_TAGS));
         article.put(Article.ARTICLE_TAGS, articleTags);
 
-        articleMgmtService.updateArticle(articleId, article);
+        articleMgmtService.updateArticleByAdmin(articleId, article);
 
         article = articleQueryService.getArticle(articleId);
         dataModel.put(Article.ARTICLE, article);
@@ -2167,8 +2167,11 @@ public class AdminProcessor {
             throws Exception {
         String tagTitle = request.getParameter(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
-        String tagId = "";
-        if (null == tag) {
+        
+        String tagId;
+        if (tag != null) {
+            tagId = tag.optString(Keys.OBJECT_ID);
+        } else {
             try {
                 if (Strings.isEmptyOrNull(tagTitle)) {
                     throw new Exception(langPropsService.get("tagsErrorLabel"));

@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Character query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jul 11, 2016
+ * @version 1.0.1.2, Sep 13, 2016
  * @since 1.4.0
  */
 @Service
@@ -77,13 +77,13 @@ public class CharacterQueryService {
      * @return all written character count
      */
     public int getWrittenCharacterCount() {
-        
+
         try {
             final List<JSONObject> result = characterRepository.select("select count(DISTINCT characterContent) from symphony_character");
             if (null == result || result.isEmpty()) {
                 return 0;
             }
-            
+
             return result.get(0).optInt("count(DISTINCT characterContent)");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Counts characters failed", e);
@@ -131,12 +131,27 @@ public class CharacterQueryService {
     }
 
     /**
-     * Gets an unwritten character of the specified user id.
+     * Gets an unwritten character.
      *
      * @param userId the specified user id
      * @return character
      */
     public String getUnwrittenCharacter(final String userId) {
+        final String ret = getUnwrittenCharacterRandom(userId);
+        if (StringUtils.isNotBlank(ret)) {
+            return ret;
+        }
+
+        return getUnwrittenCharacterOneByOne(userId);
+    }
+
+    /**
+     * Gets an unwritten character (strategy: One By One).
+     *
+     * @param userId the specified user id
+     * @return character
+     */
+    private String getUnwrittenCharacterOneByOne(final String userId) {
         final String characters = langPropsService.get("characters");
 
         int index = 0;
@@ -155,8 +170,6 @@ public class CharacterQueryService {
                     new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret)
             ));
 
-            query.setFilter(new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret));
-
             try {
                 if (characterRepository.count(query) > 0) {
                     continue;
@@ -167,6 +180,44 @@ public class CharacterQueryService {
                 LOGGER.log(Level.ERROR, "Gets an unwritten character for user [id=" + userId + "] failed", e);
             }
         }
+    }
+
+    /**
+     * Gets an unwritten character (strategy: Random).
+     *
+     * @param userId the specified user id
+     * @return character
+     */
+    private String getUnwrittenCharacterRandom(final String userId) {
+        final String characters = langPropsService.get("characters");
+
+        final int maxRetries = 7;
+        int retries = 0;
+
+        while (retries < maxRetries) {
+            retries++;
+
+            final int index = RandomUtils.nextInt(characters.length());
+            final String ret = StringUtils.trim(characters.substring(index, index + 1));
+
+            final Query query = new Query();
+            query.setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_USER_ID, FilterOperator.EQUAL, userId),
+                    new PropertyFilter(org.b3log.symphony.model.Character.CHARACTER_CONTENT, FilterOperator.EQUAL, ret)
+            ));
+
+            try {
+                if (characterRepository.count(query) > 0) {
+                    continue;
+                }
+
+                return ret;
+            } catch (final RepositoryException e) {
+                LOGGER.log(Level.ERROR, "Gets an unwritten character failed", e);
+            }
+        }
+
+        return null;
     }
 
     /**

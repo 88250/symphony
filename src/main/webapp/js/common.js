@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.32.20.27, Sep 11, 2016
+ * @version 1.32.20.28, Sep 13, 2016
  */
 
 /**
@@ -28,6 +28,46 @@
  * @static
  */
 var Util = {
+    /**
+     * 消息通知
+     * @param {type} count 现有消息数目
+     * @returns {Boolean}
+     */
+    notifyMsg: function (count) {
+        // Let's check if the browser supports notifications
+        if (!("Notification" in window)) {
+            return false;
+        }
+
+        var initNogification = function (c) {
+            var notification = new Notification(Label.visionLabel, {
+                body: Label.desktopNotificationTemplateLabel.replace("${count}", c),
+                icon: Label.staticServePath + '/images/faviconH.png'
+            });
+            notification.onclick = notification.onclose = notification.onerror = function () {
+                window.location = Label.servePath + '/notifications';
+            };
+        };
+
+        // Let's check if the user is okay to get some notification
+        if (Notification.permission === "granted") {
+            // If it's okay let's create a notification
+            initNogification(count);
+        }
+
+        // Otherwise, we need to ask the user for permission
+        else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+                // If the user is okay, let's create a notification
+                if (permission === "granted") {
+                    initNogification(count);
+                }
+            });
+        }
+
+        // At last, if the user already denied any notification, and you 
+        // want to be respectful there is no need to bother them any more.
+    },
     /**
      * 链接熔炉
      * @returns {undefined}
@@ -524,21 +564,7 @@ var Util = {
 
                     if (window.localStorage) {
                         if (count !== Number(window.localStorage.unreadNotificationCount) && 0 === result.userNotifyStatus) {
-                            // Webkit Desktop Notification
-                            var msg = Label.desktopNotificationTemplateLabel;
-                            msg = msg.replace("${count}", count);
-                            var options = {
-                                iconUrl: '/images/faviconH.png',
-                                title: '黑客与画家',
-                                body: msg,
-                                timeout: 5000,
-                                onclick: function () {
-                                    console.log('~');
-                                }
-                            };
-
-                            $.notification(options);
-
+                            Util.notifyMsg(count);
                             window.localStorage.unreadNotificationCount = count;
                         }
                     }
@@ -776,12 +802,12 @@ var Util = {
                     "border-radius": borderTopRadius
                 }).show();
                 $('.reply-btn').css({
-                   'border-radius': '5px 0 0 0' 
+                    'border-radius': '5px 0 0 0'
                 });
             } else {
                 $(".go-up").hide();
                 $('.reply-btn').css({
-                   'border-radius': '5px 0 0 5px' 
+                    'border-radius': '5px 0 0 5px'
                 });
             }
         });
