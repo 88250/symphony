@@ -116,10 +116,9 @@ public class MailMgmtService {
         final int hour = calendar.get(Calendar.HOUR_OF_DAY);
         final int minute = calendar.get(Calendar.MINUTE);
 
-        if (8 != hour || 50 > minute) {
-            return;
-        }
-
+//        if (8 != hour || 50 > minute) {
+//            return;
+//        }
         if (weeklyNewsletterSending) {
             return;
         }
@@ -140,13 +139,20 @@ public class MailMgmtService {
                     setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(UserExt.USER_SUB_MAIL_SEND_TIME, FilterOperator.LESS_THAN_OR_EQUAL,
                                     sevenDaysAgo),
-                            new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.LESS_THAN_OR_EQUAL,
-                                    sevenDaysAgo),
+                            //new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.LESS_THAN_OR_EQUAL,
+                            //        sevenDaysAgo),
                             new PropertyFilter(UserExt.USER_SUB_MAIL_STATUS, FilterOperator.EQUAL,
                                     UserExt.USER_SUB_MAIL_STATUS_ENABLED),
                             new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)
                     )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
             final JSONArray receivers = userRepository.get(toUserQuery).optJSONArray(Keys.RESULTS);
+
+            if (receivers.length() < 1) {
+                LOGGER.info("No user need send newsletter");
+
+                return;
+            }
+
             final Set<String> toMails = new HashSet<>();
 
             final Transaction transaction = userRepository.beginTransaction();
@@ -161,6 +167,12 @@ public class MailMgmtService {
                 }
             }
             transaction.commit();
+
+            // send to admins by default
+            final List<JSONObject> admins = userRepository.getAdmins();
+            for (final JSONObject admin : admins) {
+                toMails.add(admin.optString(User.USER_EMAIL));
+            }
 
             // select nice articles
             final Query articleQuery = new Query();
