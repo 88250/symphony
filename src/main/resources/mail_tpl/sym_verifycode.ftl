@@ -3,7 +3,7 @@
         <tbody>
             <tr style="border-collapse:collapse">
                 <td align="center" bgcolor="#f9f6f6" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                    <span style="font-size: 0;display: none;">这是一封由智能筛选出来的优选合集，希望你每周都能遇见不同的精彩。如果不想再收到类似邮件，可在 功能设置 中进行退订。</span>
+                    <span style="font-size: 0;display: none;">请尽快完成账号相关验证，如果该邮件不是你触发的，请忽略。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <table style="margin: 20px 10px;border: 1px solid #e5e5e5;border-radius: 5px;" width="640" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr style="border-collapse:collapse">
@@ -21,7 +21,7 @@
                                                         </tbody>
                                                     </table>
                                                     <div style="font-size:12px;color:#33ae81">
-                                                        <a href="${servePath}" style="font-weight:bold;color:#333;text-decoration:none" target="_blank">黑客与画家 •  安全</a>
+                                                        <a href="${servePath}" style="font-weight:bold;color:#333;text-decoration:none" target="_blank">黑客与画家 • 账号</a>
                                                     </div>
                                                     <table width="350" cellpadding="0" cellspacing="0" border="0">
                                                         <tbody>
@@ -77,7 +77,7 @@
                                             <tr style="border-collapse:collapse">
                                                 <td width="30" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif"></td>
                                                 <td width="580" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                	<table width="580" cellpadding="0" cellspacing="0" border="0">
+                                                    <table width="580" cellpadding="0" cellspacing="0" border="0">
                                                         <tbody>
                                                             <tr style="border-collapse:collapse">
                                                                 <td width="580" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
@@ -96,18 +96,15 @@
                                                                         <table>
                                                                             <tbody><tr style="border-collapse:collapse">
                                                                                     <td style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px">
-                                                                                        <a href="https://hacpai.com/article/1440573175609" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank">
-                                                                                            <strong>About</strong>
-                                                                                        </a>
-                                                                                        <br style="line-height:100%">
-                                                                                       我们正在构建一个活跃的小众社区。大家在这里相互 信任 ，以 平等 • 自由 • 奔放 的价值观进行分享交流。最终，希望大家能够找找到与自己志同道合的伙伴，共同成长。
-                                                                                       <ul> 
-																							<li>分享自己见解的同时请对他人保持友善</li> 
-																							<li>禁止分享、讨论任何涉及版权盗用相关的内容</li> 
-																							<li>禁止未经原作者授权的内容转载</li> 
-																							<li>回帖不能修改，发布后不要后悔</li> 
-																							<li>帖子可以修改，并且任何人都可以查看修改历史</li> 
-																						</ul>
+                                                                                        我们正在构建一个活跃的小众社区。大家在这里相互 信任 ，以 平等 • 自由 • 奔放 的价值观进行分享交流。
+                                                                                        <ul> 
+                                                                                            <li>分享自己见解的同时请对他人保持友善</li> 
+                                                                                            <li>禁止分享、讨论任何涉及版权盗用相关的内容</li> 
+                                                                                            <li>禁止未经原作者授权的内容转载</li> 
+                                                                                            <li>回帖不能修改，发布后不要后悔</li> 
+                                                                                            <li>帖子可以修改，并且任何人都可以查看修改历史</li> 
+                                                                                        </ul>
+                                                                                        希望大家能够找找到与自己志同道合的伙伴，共同成长。
                                                                                     </td>
                                                                                 </tr>                                                        
                                                                             </tbody></table>
@@ -163,7 +160,7 @@
                                                 </td>
                                                 <td width="40" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif"></td>
                                                 <td width="180" valign="top" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                    <p align="right" style="font-size:12px;line-height:18px;color:#999;margin-top:0px;margin-bottom:15px;white-space:normal"><span>© 2016 <a href="${servePath}" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">hacpai.com</a> <span style="color:#333;">黑客与画家</span></span><br style="line-height:100%"><span style="font-size:12px;color:#ccc;">Feel easy about trust.</span></p>
+                                                    <p align="right" style="font-size:12px;line-height:18px;color:#999;margin-top:0px;margin-bottom:15px;white-space:normal"><span>© 2016 <a href="${servePath}" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">${servePath}</a> <span style="color:#333;">黑客与画家</span></span><br style="line-height:100%"><span style="font-size:12px;color:#ccc;">Feel easy about trust.</span></p>
                                                 </td>
                                                 <td width="30" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif"></td>
                                             </tr>

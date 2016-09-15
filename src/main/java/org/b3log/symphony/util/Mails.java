@@ -28,21 +28,15 @@ import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.LatkeBeanManagerImpl;
-import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.LangPropsServiceImpl;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Mail utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.3, Sep 15, 2016
+ * @version 1.1.3.4, Sep 16, 2016
  * @since 1.3.0
  */
 public final class Mails {
@@ -136,6 +130,7 @@ public final class Mails {
             formData.put("from", FROM);
             formData.put("fromName", fromName);
             formData.put("subject", subject);
+            formData.put("to", toMail);
 
             final Template template = TEMPLATE_CFG.getTemplate(templateName + ".ftl");
             final StringWriter stringWriter = new StringWriter();
@@ -144,7 +139,9 @@ public final class Mails {
             final String html = stringWriter.toString();
             formData.put("html", html);
 
-            HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
+            final HttpResponse response = HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
+            LOGGER.debug(response.bodyText());
+            response.close();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Send mail error", e);
         }
