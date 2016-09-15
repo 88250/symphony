@@ -3,7 +3,7 @@
         <tbody>
             <tr style="border-collapse:collapse">
                 <td align="center" bgcolor="#f9f6f6" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                    <span style="font-size: 0;display: none;">这是一封由智能筛选出来的优选合集，希望你每周都能遇见不同的精彩。如果不想再收到类似邮件，可在 功能设置 中进行退订。</span>
+                    <span style="font-size: 0;display: none;">这是本周的热议贴合集，希望每周都能带给你轻松和精彩。如果不想再收到类似邮件，可在论坛的功能设置中进行退订。</span>
                     <table style="margin: 20px 10px;border: 1px solid #e5e5e5;border-radius: 5px;" width="640" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr style="border-collapse:collapse">
@@ -65,11 +65,9 @@
                             </tr>
                             <tr style="border-collapse:collapse">
                                 <td width="640" align="center" bgcolor="#FFFFFF" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                    <div align="center" style="border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#eee;text-align:center">
-                                        <a href="${servePath}" target="_blank">
-                                            <img height="140" width="640" src="${staticServePath}/images/mail/weekly-banner3.jpg" alt="黑客派">
-                                        </a>
-                                    </div>
+                                    <a href="${servePath}" target="_blank">
+                                        <img height="140" width="640" src="${staticServePath}/images/mail/weekly-banner3.jpg" alt="黑客派">
+                                    </a>
                                 </td>
                             </tr>
                             <tr style="border-collapse:collapse">
@@ -154,8 +152,8 @@
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
-                                                                    <div style="border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#eee;margin-bottom:30px"></div>
                                                                     <#--
+                                                                    <div style="border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#eee;margin-bottom:30px"></div>
                                                                     <p align="left" style="font-size:18px;line-height:24px;color:#333;font-weight:bold;margin-top:0px;margin-bottom:18px;font-family:Helvetica,Arial,sans-serif">
                                                                         一周寄语
                                                                     </p>

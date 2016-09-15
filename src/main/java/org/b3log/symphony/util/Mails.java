@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.LatkeBeanManager;
@@ -190,6 +191,7 @@ public final class Mails {
             int index = 0;
             final int size = toMails.size();
             List<String> batch = new ArrayList<>();
+            HttpResponse response;
             while (index < size) {
                 final String mail = toMails.get(index);
                 batch.add(mail);
@@ -198,11 +200,13 @@ public final class Mails {
                 if (batch.size() > 99) {
                     try {
                         final JSONObject xsmtpapi = new JSONObject();
-                        final JSONArray to = new JSONArray(batch);
-                        xsmtpapi.put("to", to.toString());
+                        xsmtpapi.put("to", batch);
+                        xsmtpapi.put("sub", new JSONObject());
                         formData.put("xsmtpapi", xsmtpapi.toString());
 
-                        HttpRequest.post("http://api.sendcloud.net/apiv2/mail/sendtemplate").form(formData).send();
+                        response = HttpRequest.post("http://api.sendcloud.net/apiv2/mail/sendtemplate").form(formData).send();
+                        LOGGER.debug(response.bodyText());
+                        response.close();
 
                         LOGGER.info("Sent [" + batch.size() + "] mails");
                     } catch (final Exception e) {
@@ -216,11 +220,13 @@ public final class Mails {
             if (!batch.isEmpty()) { // Process remains
                 try {
                     final JSONObject xsmtpapi = new JSONObject();
-                    final JSONArray to = new JSONArray(batch);
-                    xsmtpapi.put("to", to.toString());
+                    xsmtpapi.put("to", batch);
+                    xsmtpapi.put("sub", new JSONObject());
                     formData.put("xsmtpapi", xsmtpapi.toString());
 
-                    HttpRequest.post("http://api.sendcloud.net/apiv2/mail/sendtemplate").form(formData).send();
+                    response = HttpRequest.post("http://api.sendcloud.net/apiv2/mail/sendtemplate").form(formData).send();
+                    LOGGER.debug(response.bodyText());
+                    response.close();
 
                     LOGGER.info("Sent [" + batch.size() + "] mails");
                 } catch (final Exception e) {
@@ -239,10 +245,7 @@ public final class Mails {
         addData.put("invokeName", TEMPLATE_NAME_WEEKLY);
         addData.put("name", "Weekly Newsletter");
 
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
-
-        addData.put("subject", langPropsService.get("weeklyEmailSubjectLabel"));
+        addData.put("subject", "Weekly Newsletter");
         addData.put("templateType", "1"); // 批量邮件
 
         addData.put("html", html);
