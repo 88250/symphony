@@ -1257,6 +1257,10 @@ a[class*=" icon-"]:hover {
     width: 1px;
     opacity: 0.001;
 }
+
+.form select {
+    height: 30px;
+}
 /* end form */
 
 /* start pagination */
