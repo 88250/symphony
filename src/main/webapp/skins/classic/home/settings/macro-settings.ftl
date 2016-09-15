@@ -35,6 +35,7 @@
                         <li<#if 'password' == type> class="current"</#if>><a href="${servePath}/settings/password">${passwordLabel}</a></li>
                         <li<#if 'b3' == type> class="current"</#if>><a href="${servePath}/settings/b3">B3</a></li>
                         <li<#if 'data' == type> class="current"</#if>><a href="${servePath}/settings/data">${dataLabel}</a></li>
+                        <li<#if 'help' == type> class="current"</#if>><a href="${servePath}/settings/help">${helpLabel}</a></li>
                     </ul>
                     <#if 'profile' == type || 'avatar' == type> 
                     <div id="homeSidePanel" class="fn-none">
