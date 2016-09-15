@@ -1,6 +1,22 @@
+/*
+ * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.b3log.symphony.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -88,10 +104,28 @@ public class MailMgmtService {
     private AvatarQueryService avatarQueryService;
 
     /**
-     * Send weekly mails.
+     * Weekly newsletter sending status.
      */
-    public void sendWeekly() {
-        LOGGER.info("Sending weekly mails....");
+    private boolean weeklyNewsletterSending;
+
+    /**
+     * Send weekly newsletter.
+     */
+    public void sendWeeklyNewsletter() {
+        final Calendar calendar = Calendar.getInstance();
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int minute = calendar.get(Calendar.MINUTE);
+
+        if (8 != hour || 50 > minute) {
+            return;
+        }
+
+        if (weeklyNewsletterSending) {
+            return;
+        }
+
+        weeklyNewsletterSending = true;
+        LOGGER.info("Sending weekly newsletter....");
 
         final long now = System.currentTimeMillis();
         final long sevenDaysAgo = now - 1000 * 60 * 60 * 24 * 7;
@@ -179,9 +213,12 @@ public class MailMgmtService {
 
             Mails.batchSendHTML(langPropsService.get("weeklyEmailSubjectLabel"), new ArrayList<>(toMails),
                     Mails.TEMPLATE_NAME_WEEKLY, dataModel);
-            LOGGER.info("Sent weekly mails [" + toMails.size() + "]");
+
+            LOGGER.info("Sent weekly newsletter [" + toMails.size() + "]");
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Sends weekly mails failed", e);
+            LOGGER.log(Level.ERROR, "Sends weekly newsletter failed", e);
+        } finally {
+            weeklyNewsletterSending = false;
         }
     }
 }

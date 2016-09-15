@@ -65,6 +65,12 @@
         <schedule>every 6 minutes</schedule>
     </cron>
     
+    <cron>
+        <url>/cron/mail/weekly?key=dev_key</url>
+        <description>Send weekly newsletter</description>
+        <schedule>every 5 minutes</schedule>
+    </cron>
+    
     <!-- Disabled on Dev environment -->
     <!--
     <cron>

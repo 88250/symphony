@@ -80,7 +80,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.13.16.13, Sep 10, 2016
+ * @version 1.13.16.14, Sep 15, 2016
  * @since 0.2.0
  */
 @Service
@@ -519,8 +519,10 @@ public class UserMgmtService {
             user.put(UserExt.USER_UA_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
             user.put(UserExt.USER_FORGE_LINK_STATUS, UserExt.USER_XXX_STATUS_C_PUBLIC);
             user.put(UserExt.USER_NOTIFY_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
+            user.put(UserExt.USER_SUB_MAIL_STATUS, UserExt.USER_XXX_STATUS_C_ENABLED);
             user.put(UserExt.USER_LIST_PAGE_SIZE, Symphonys.getInt("indexArticlesCnt"));
             user.put(UserExt.USER_AVATAR_VIEW_MODE, UserExt.USER_AVATAR_VIEW_MODE_C_ORIGINAL);
+            user.put(UserExt.USER_SUB_MAIL_SEND_TIME, System.currentTimeMillis());
 
             if (toUpdate) {
                 user.put(UserExt.USER_NO, userNo);

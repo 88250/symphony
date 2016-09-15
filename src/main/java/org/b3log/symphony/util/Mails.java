@@ -174,6 +174,7 @@ public final class Mails {
                         formData.put("to", String.join(";", batch));
 
                         //HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
+                        LOGGER.info("Sent [" + batch.size() + "] mails");
                     } catch (final Exception e) {
                         LOGGER.log(Level.ERROR, "Send mail error", e);
                     }
@@ -187,6 +188,7 @@ public final class Mails {
                     formData.put("to", String.join(";", batch));
 
                     //HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
+                    LOGGER.info("Sent [" + batch.size() + "] mails");
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Send mail error", e);
                 }
