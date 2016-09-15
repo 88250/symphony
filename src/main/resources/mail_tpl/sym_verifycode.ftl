@@ -3,7 +3,7 @@
         <tbody>
             <tr style="border-collapse:collapse">
                 <td align="center" bgcolor="#f9f6f6" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                    <span style="font-size: 0;display: none;">请尽快完成账号相关验证，如果该邮件不是你触发的，请忽略。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span style="font-size: 0;display: none;">请尽快完成账号相关验证，如果该邮件不是你触发的，请忽略。</span>
                     <table style="margin: 20px 10px;border: 1px solid #e5e5e5;border-radius: 5px;" width="640" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr style="border-collapse:collapse">
@@ -160,7 +160,7 @@
                                                 </td>
                                                 <td width="40" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif"></td>
                                                 <td width="180" valign="top" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                    <p align="right" style="font-size:12px;line-height:18px;color:#999;margin-top:0px;margin-bottom:15px;white-space:normal"><span>© 2016 <a href="${servePath}" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">${servePath}</a> <span style="color:#333;">黑客与画家</span></span><br style="line-height:100%"><span style="font-size:12px;color:#ccc;">Feel easy about trust.</span></p>
+                                                    <p align="right" style="font-size:12px;line-height:18px;color:#999;margin-top:0px;margin-bottom:15px;white-space:normal"><span>© 2016 <a href="${servePath}" style="color:#4183c4;font-weight:bold;text-decoration:none" target="_blank">hacpai.com</a> <span style="color:#333;">黑客与画家</span></span><br style="line-height:100%"><span style="font-size:12px;color:#ccc;">Feel easy about trust.</span></p>
                                                 </td>
                                                 <td width="30" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif"></td>
                                             </tr>

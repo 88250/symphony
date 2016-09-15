@@ -3,7 +3,7 @@
         <tbody>
             <tr style="border-collapse:collapse">
                 <td align="center" bgcolor="#f9f6f6" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                    <span style="font-size: 0;display: none;">这是本周的热议贴合集，希望每周都能带给你轻松和精彩。如果不想再收到类似邮件，可在论坛的功能设置中进行退订。&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span style="font-size: 0;display: none;">这是本周的热议贴合集，希望每周都能带给你轻松和精彩。如果不想再收到类似邮件，可在论坛的功能设置中进行退订。</span>
                     <table style="margin: 20px 10px;border: 1px solid #e5e5e5;border-radius: 5px;" width="640" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr style="border-collapse:collapse">
