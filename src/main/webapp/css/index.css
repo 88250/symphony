@@ -19,10 +19,14 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.15.29, Sep 13, 2016
+ * @version 2.14.15.30, Sep 15, 2016
  */
 
 /* start list */
+.tabs-sub {
+    margin-bottom: 20px;
+}
+
 .content .module:last-child {
     margin-bottom: 0;
 }
@@ -771,18 +775,21 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .index a.count {
-    color: #FFF;
-    background-color: #b0b0b0;
-    padding: 0px 5px;
-    border-radius: 3px;
     text-decoration: none;
     position: absolute;
     right: 0;
     top: 50%;
     margin-top: -8px;
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #666;
+    background-color: #eee;
+    border-radius: 20px;
 } 
 
 .index a.count:visited {
-    background-color: #ddd;
+    color: #999;
 }
 /* end index */

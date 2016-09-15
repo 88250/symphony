@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.10.15, Sep 11, 2016
+ * @version 2.4.10.16, Sep 15, 2016
  */
 
 /* start home common */
@@ -72,6 +72,10 @@
     right: -1px;
     top: -1px;
     width: 3px;
+}
+
+.link-forge-upload {
+    margin-top: 10px;
 }
 /* end home common */
 
@@ -264,8 +268,14 @@ label.article-anonymous {
     margin: 50px 0;
 }
 
-.tabs .home-nav a {
-    flex: initial;
+.tabs {
+    padding: 0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tabs a {
+    float: left;
 }
 /* end home */
 
@@ -286,43 +296,14 @@ label.article-anonymous {
 /* end notifications */
 
 /* start follow */
-.follow {
-    margin-top: 20px;
-}
-
-.follow li {
-    position: relative;
-    border-bottom: 1px solid #EEEEEE;
-    margin: 20px auto;
-    padding: 0 10px 20px;
-    width: 95%;
-    list-style: none;
-    box-sizing: border-box;
-}
-
-.follow .user-online {
-    position: absolute;
-    left: 45px;
-    top: 45px;
-}
-
-.follow button {
-    margin-bottom: 7px;
+.follow.list h2 {
+    margin-bottom: 6px;
 }
 
 .follow .icon-tags {
     font-size: 48px;
     margin-right: 10px;
 }
-
-.follow h3.fn-inline > a {
-    color: #595959;
-}
-
-.follow h3.fn-inline > a:hover {
-    color: #333;
-}
-
 /* end follow */
 
 /* start admin */
@@ -367,6 +348,7 @@ label.article-anonymous {
     border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
+    margin-top: -20px;
 }
 
 .points td {

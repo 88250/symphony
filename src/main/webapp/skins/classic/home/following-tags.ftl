@@ -8,44 +8,46 @@
     <a href="${servePath}/member/${user.userName}/followers"<#if type == "followers"> class="current"</#if>>${followersLabel}</a>
 </div>
 <#if 0 == user.userFollowingTagStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
-<div class="follow">
-    <ol>
+<div class="follow list">
+    <ul>
         <#list userHomeFollowingTags as followingTag>
-        <li class="fn-clear">
-            <#if "" != followingTag.tagIconPath>
-            <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}">
-                <div class="avatar fn-left ft-gray tooltipped tooltipped-se"  
-                   aria-label="${followingTag.tagTitle}" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
-            </a>
-            <#else>
-            <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}"
-               class="tooltipped tooltipped-se fn-left ft-a-icon" aria-label="${followingTag.tagTitle}"><div class="icon-tags"  
-                   ></div></a>
-            </#if>
-            <div class="fn-left">
-                <h3 class="fn-inline">
-                    <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
-                </h3>
-                &nbsp;
-                <#if isLoggedIn> 
-                <#if followingTag.isFollowing>
-                <button class="red small" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
-                    ${unfollowLabel}
-                </button>
+        <li>
+            <div class="fn-flex">
+                <#if "" != followingTag.tagIconPath>
+                <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}">
+                    <div class="avatar fn-left ft-gray tooltipped tooltipped-se"  
+                         aria-label="${followingTag.tagTitle}" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
+                </a>
                 <#else>
-                <button class="green small" onclick="Util.follow(this, '${followingTag.oId}', 'tag')"> 
-                    ${followLabel}
-                </button>
+                <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}"
+                   class="tooltipped tooltipped-se fn-left ft-a-icon" aria-label="${followingTag.tagTitle}"><div class="icon-tags"  
+                                                                                                              ></div></a>
                 </#if>
-                </#if>
-                <div>
-                    <span class="ft-gray">${referenceLabel}</span> ${followingTag.tagReferenceCount?c}
-                    <span class="ft-gray">${cmtLabel}</span> ${followingTag.tagCommentCount?c} 
+                <div class="fn-flex-1">
+                    <h2 class="fn-inline">
+                        <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
+                    </h2>
+                    &nbsp;
+                    <#if isLoggedIn> 
+                    <#if followingTag.isFollowing>
+                    <button class="red small" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
+                        ${unfollowLabel}
+                    </button>
+                    <#else>
+                    <button class="green small" onclick="Util.follow(this, '${followingTag.oId}', 'tag')"> 
+                        ${followLabel}
+                    </button>
+                    </#if>
+                    </#if>
+                    <div>
+                        <span class="ft-gray">${referenceLabel}</span> ${followingTag.tagReferenceCount?c}
+                        <span class="ft-gray">${cmtLabel}</span> ${followingTag.tagCommentCount?c} 
+                    </div>
                 </div>
             </div>
         </li>
         </#list>
-    </ol>
+    </ul>
 </div>
 <@pagination url="/member/${user.userName}/following/tags"/>
 <#else>

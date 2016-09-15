@@ -10,19 +10,17 @@
     </head>
     <body>
         <#include "../../header.ftl">
-        <div class="tabs">
-            <div class="fn-clear wrapper home-nav">
-                <a href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
-                <a href="${servePath}/member/${user.userName}/following/users"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
-                <a href="${servePath}/member/${user.userName}/points"><svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
-                <a href="${servePath}/member/${user.userName}/forge/link"><svg height="18" viewBox="0 1 16 16" width="16">${baguaIcon}</svg>  ${forgeLabel}</a>
-                <a class="selected"
-                   href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
-            </div>
-        </div>
         <div class="main">
             <div class="wrapper">
                 <div class="content">
+                    <div class="tabs fn-clear settings-tabs">
+                        <a href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
+                        <a href="${servePath}/member/${user.userName}/following/users"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
+                        <a href="${servePath}/member/${user.userName}/points"><svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
+                        <a href="${servePath}/member/${user.userName}/forge/link"><svg height="18" viewBox="0 1 16 16" width="16">${baguaIcon}</svg>  ${forgeLabel}</a>
+                        <a class="selected"
+                           href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
+                    </div>
                     <#nested>
                 </div>
                 <div class="side">
@@ -37,6 +35,7 @@
                         <li<#if 'password' == type> class="current"</#if>><a href="${servePath}/settings/password">${passwordLabel}</a></li>
                         <li<#if 'b3' == type> class="current"</#if>><a href="${servePath}/settings/b3">B3</a></li>
                         <li<#if 'data' == type> class="current"</#if>><a href="${servePath}/settings/data">${dataLabel}</a></li>
+                        <li<#if 'help' == type> class="current"</#if>><a href="${servePath}/settings/help">${helpLabel}</a></li>
                     </ul>
                     <#if 'profile' == type || 'avatar' == type> 
                     <div id="homeSidePanel" class="fn-none">
