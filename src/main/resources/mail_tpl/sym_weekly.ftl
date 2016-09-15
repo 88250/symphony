@@ -3,6 +3,7 @@
         <tbody>
             <tr style="border-collapse:collapse">
                 <td align="center" bgcolor="#f9f6f6" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
+                    <span style="font-size: 0;display: none;">这是一封由智能筛选出来的优选合集，希望你每周都能遇见不同的精彩。如果不想再收到类似邮件，可在 功能设置 中进行退订。</span>
                     <table style="margin: 20px 10px;border: 1px solid #e5e5e5;border-radius: 5px;" width="640" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr style="border-collapse:collapse">
@@ -66,7 +67,7 @@
                                 <td width="640" align="center" bgcolor="#FFFFFF" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
                                     <div align="center" style="border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#eee;text-align:center">
                                         <a href="${servePath}" target="_blank">
-                                            <img src="${servePath}/images/weekly-banner1.jpg" alt="黑客派">
+                                            <img height="140" width="640" src="${staticServePath}/images/mail/weekly-banner3.jpg" alt="黑客派">
                                         </a>
                                     </div>
                                 </td>
@@ -220,7 +221,7 @@
                                                         </p>
                                                     </span>
                                                     <p align="left" style="font-size:12px;line-height:15px;color:#ccc;margin-top:0px;margin-bottom:15px">
-                                                        可在<a href="${servePath}/settings/function" style="color:#999;font-weight:bold;text-decoration:none" target="_blank">这里</a>设置邮件通知<a style="display:none;" href="%%user_defined_unsubscribe_link%%">取消订阅</a>
+                                                        可在<a href="${servePath}/settings/function" style="color:#999;font-weight:bold;text-decoration:none" target="_blank">功能设置</a>中管理邮件通知<a style="display:none;font-size: 0;" href="%%user_defined_unsubscribe_link%%">取消订阅</a>
                                                     </p>
                                                 </td>
                                                 <td width="40" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif"></td>
