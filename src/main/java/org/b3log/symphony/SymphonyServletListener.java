@@ -64,6 +64,7 @@ import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.service.ArticleMgmtService;
+import org.b3log.symphony.service.MailMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Crypts;
@@ -152,7 +153,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
 
         JdbcRepository.dispose();
 
-        Mails.refreshMailTemplates();
+        final MailMgmtService mailMgmtService = beanManager.getReference(MailMgmtService.class);
+        mailMgmtService.sendWeekly();
 
         LOGGER.info("Initialized the context");
 

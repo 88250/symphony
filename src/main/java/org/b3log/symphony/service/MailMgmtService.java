@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -25,13 +26,15 @@ import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
-import org.b3log.symphony.repository.LivenessRepository;
 import org.b3log.symphony.repository.OptionRepository;
 import org.b3log.symphony.repository.UserRepository;
+import org.b3log.symphony.util.Emotions;
 import org.b3log.symphony.util.Mails;
+import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Mail management service.
@@ -67,16 +70,22 @@ public class MailMgmtService {
     private OptionRepository optionRepository;
 
     /**
-     * Liveness repository.
-     */
-    @Inject
-    private LivenessRepository livenessRepository;
-
-    /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Article query service.
+     */
+    @Inject
+    private ArticleQueryService articleQueryService;
+
+    /**
+     * Avatar query service.
+     */
+    @Inject
+    private AvatarQueryService avatarQueryService;
 
     /**
      * Send weekly mails.
@@ -104,14 +113,14 @@ public class MailMgmtService {
                             new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)
                     )).addSort(Keys.OBJECT_ID, SortDirection.ASCENDING);
             final JSONArray receivers = userRepository.get(toUserQuery).optJSONArray(Keys.RESULTS);
-            final Set<String> receiverMails = new HashSet<>();
+            final Set<String> toMails = new HashSet<>();
 
             final Transaction transaction = userRepository.beginTransaction();
             for (int i = 0; i < receivers.length(); i++) {
                 final JSONObject user = receivers.optJSONObject(i);
                 final String email = user.optString(User.USER_EMAIL);
                 if (Strings.isEmail(email)) {
-                    receiverMails.add(email);
+                    toMails.add(email);
 
                     user.put(UserExt.USER_SUB_MAIL_SEND_TIME, now);
                     userRepository.update(user.optString(Keys.OBJECT_ID), user);
@@ -124,11 +133,26 @@ public class MailMgmtService {
             articleQuery.setCurrentPageNum(1).setPageCount(1).setPageSize(Symphonys.getInt("sendcloud.batch.articleSize")).
                     setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(Article.ARTICLE_CREATE_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, sevenDaysAgo),
+                            new PropertyFilter(Article.ARTICLE_TYPE, FilterOperator.EQUAL, Article.ARTICLE_TYPE_C_NORMAL),
                             new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_VALID)
                     )).addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING).
                     addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING);
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(
                     articleRepository.get(articleQuery).optJSONArray(Keys.RESULTS));
+
+            articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
+            for (final JSONObject article : articles) {
+                String content = article.optString(Article.ARTICLE_CONTENT);
+
+                content = Emotions.convert(content);
+                content = Markdowns.toHTML(content);
+                content = Jsoup.parse(content).text();
+                if (StringUtils.length(content) > 72) {
+                    content = StringUtils.substring(content, 0, 72) + "....";
+                }
+
+                article.put(Article.ARTICLE_CONTENT, content);
+            }
 
             // select nice users
             final int RANGE_SIZE = 64;
@@ -140,29 +164,22 @@ public class MailMgmtService {
                     addSort(UserExt.USER_COMMENT_COUNT, SortDirection.DESCENDING);
             final JSONArray rangeUsers = userRepository.get(userQuery).optJSONArray(Keys.RESULTS);
             final List<Integer> indices = CollectionUtils.getRandomIntegers(0, RANGE_SIZE, SELECT_SIZE);
-            final List<JSONObject> selectUsers = new ArrayList<>();
+            final List<JSONObject> users = new ArrayList<>();
             for (final Integer index : indices) {
-                selectUsers.add(rangeUsers.getJSONObject(index));
+                users.add(rangeUsers.getJSONObject(index));
             }
 
-            final Map<String, List<String>> vars = new HashMap<>();
-
-            String articlesTemplate = "";
-            articlesTemplate = articlesTemplate.replace(articlesTemplate, articlesTemplate);
-
-            final List<String> articlesValue = new ArrayList<>();
-            final List<String> users1Value = new ArrayList<>();
-            final List<String> users2Value = new ArrayList<>();
-            for (int i = 0; i < receiverMails.size(); i++) {
-                articlesValue.add(articlesTemplate);
-
+            for (final JSONObject selectedUser : users) {
+                avatarQueryService.fillUserAvatarURL(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, selectedUser);
             }
 
-            vars.put(Article.ARTICLES, articlesValue);
+            final Map<String, Object> dataModel = new HashMap<>();
+            dataModel.put(Article.ARTICLES, (Object) articles);
+            dataModel.put(User.USERS, (Object) users);
 
-            Mails.batchSend(langPropsService.get("weeklyEmailSubjectLabel"), Mails.TEMPLATE_NAME_WEEKLY,
-                    new ArrayList<>(receiverMails), vars);
-            LOGGER.info("Sent weekly mails [" + receiverMails.size() + "]");
+            Mails.batchSendHTML(langPropsService.get("weeklyEmailSubjectLabel"), new ArrayList<>(toMails),
+                    Mails.TEMPLATE_NAME_WEEKLY, dataModel);
+            LOGGER.info("Sent weekly mails [" + toMails.size() + "]");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends weekly mails failed", e);
         }
