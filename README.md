@@ -16,7 +16,7 @@ Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://
 Sym 的诞生是有如下几点原因：
 
 * 已有的用 Java 写的论坛很少也很丑，并且大多数已经不再维护
-* 我们想实现一种[新的网络社区体验](https://hacpai.com/b3log)，独立博客+论坛互动
+* 我们想实现一种[新的网络社区体验](https://hacpai.com/b3log)，独立博客+论坛互动 
 
 ## 基本理念
 
@@ -41,7 +41,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 
 ## 安装
 
-需求：Maven3+、MySQL5.5+、Jetty9+/Tomcat9+（理论上只要实现了 [JSR356](https://jcp.org/en/jsr/detail?id=356) 规范的 Servlet 容器都可以）
+需求：Maven3+、MySQL5.5+、Jetty9+/Tomcat9+
 
 1. [下载](https://github.com/b3log/symphony/archive/master.zip)源码
 2. 解压后修改 `src/main/resources/local.properties` 中的数据库配置，并创建数据库
