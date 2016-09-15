@@ -20,7 +20,7 @@
                                                         </tbody>
                                                     </table>
                                                     <div style="font-size:12px;color:#33ae81">
-                                                        <a href="https://hacpai.com/perfect" style="font-weight:bold;color:#333;text-decoration:none" target="_blank">黑客与画家 •   优选</a>
+                                                        <a href="https://hacpai.com/perfect" style="font-weight:bold;color:#333;text-decoration:none" target="_blank">黑客与画家 •  优选</a>
                                                     </div>
                                                     <table width="350" cellpadding="0" cellspacing="0" border="0">
                                                         <tbody>
@@ -152,56 +152,38 @@
                                                 <table>
                                                     <tbody>
                                                         <tr style="border-collapse:collapse">
+                                                            <#list users as user>
+                                                            <#if user_index < 3>
                                                             <td width="32" valign="top" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                                <img width="32" height="32" src="https://ci4.googleusercontent.com/proxy/_cCGsi3PWl27S2XLwqiENQMUBbMAT0pQlM8f1NHOpTaTfbxm1zNuhUC0boUuoNciNWIctns2mCBjEqnXAPjISpKBz5It_mUDGu3YD2ubv-YnOQATYFC8T1hT10Rkd54QYJ8=s0-d-e1-ft#http://sfault-avatar.b0.upaiyun.com/283/554/2835549717-57b6adf9a7dd7_huge256" alt="边城" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
+                                                                <img width="32" height="32" src="${user.userAvatarURL]" alt="${user.userName}" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
                                                             </td>
                                                             <td width="150" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px 10px">
-                                                                <a href="https://segmentfault.com/u/jamesfancy?utm_source=weekly&amp;utm_medium=email&amp;utm_campaign=email_weekly" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank" ><strong>边城</strong></a>
+                                                                <a href="https://hacpai.com/member/${user.userName?url('UTF-8')}" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank" ><strong>${user.userName}</strong></a>
                                                                 <br style="line-height:100%">
-                                                                <span style="color:#999;margin:0 0 5px">当前 234 积分</span>
+                                                                <span style="color:#999">帖子</span> 
+                                                                <span style="color:#333">${user.userArticleCount?c}</span>
+                                                                <span style="color:#999">回贴</span>
+                                                                <span style="color:#333">${user.userCommentCount?c}</span>
                                                             </td>
-                                                            <td width="32" valign="top" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                                <img width="32" height="32" src="https://ci4.googleusercontent.com/proxy/_cCGsi3PWl27S2XLwqiENQMUBbMAT0pQlM8f1NHOpTaTfbxm1zNuhUC0boUuoNciNWIctns2mCBjEqnXAPjISpKBz5It_mUDGu3YD2ubv-YnOQATYFC8T1hT10Rkd54QYJ8=s0-d-e1-ft#http://sfault-avatar.b0.upaiyun.com/283/554/2835549717-57b6adf9a7dd7_huge256" alt="边城" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
-                                                            </td>
-                                                            <td width="150" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px 10px">
-                                                                <a href="https://segmentfault.com/u/jamesfancy?utm_source=weekly&amp;utm_medium=email&amp;utm_campaign=email_weekly" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank" ><strong>边城</strong></a>
-                                                                <br style="line-height:100%">
-                                                                <span style="color:#999;margin:0 0 5px">当前 234 积分</span>
-                                                            </td>
-                                                            <td width="32" valign="top" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                                <img width="32" height="32" src="https://ci4.googleusercontent.com/proxy/_cCGsi3PWl27S2XLwqiENQMUBbMAT0pQlM8f1NHOpTaTfbxm1zNuhUC0boUuoNciNWIctns2mCBjEqnXAPjISpKBz5It_mUDGu3YD2ubv-YnOQATYFC8T1hT10Rkd54QYJ8=s0-d-e1-ft#http://sfault-avatar.b0.upaiyun.com/283/554/2835549717-57b6adf9a7dd7_huge256" alt="边城" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
-                                                            </td>
-                                                            <td width="150" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px 10px">
-                                                                <a href="https://segmentfault.com/u/jamesfancy?utm_source=weekly&amp;utm_medium=email&amp;utm_campaign=email_weekly" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank" ><strong>边城</strong></a>
-                                                                <br style="line-height:100%">
-                                                                <span style="color:#999;margin:0 0 5px">当前 234 积分</span>
-                                                            </td>
+                                                            </#list>
+                                                            </#if>
                                                         </tr>
                                                         <tr style="border-collapse:collapse">
+                                                            <#list users as user>
+                                                            <#if user_index > 2>
                                                             <td width="32" valign="top" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                                <img width="32" height="32" src="https://ci4.googleusercontent.com/proxy/_cCGsi3PWl27S2XLwqiENQMUBbMAT0pQlM8f1NHOpTaTfbxm1zNuhUC0boUuoNciNWIctns2mCBjEqnXAPjISpKBz5It_mUDGu3YD2ubv-YnOQATYFC8T1hT10Rkd54QYJ8=s0-d-e1-ft#http://sfault-avatar.b0.upaiyun.com/283/554/2835549717-57b6adf9a7dd7_huge256" alt="边城" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
+                                                                <img width="32" height="32" src="${user.userAvatarURL]" alt="${user.userName}" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
                                                             </td>
                                                             <td width="150" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px 10px">
-                                                                <a href="https://segmentfault.com/u/jamesfancy?utm_source=weekly&amp;utm_medium=email&amp;utm_campaign=email_weekly" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank" ><strong>边城</strong></a>
+                                                                <a href="https://hacpai.com/member/${user.userName?url('UTF-8')}" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank" ><strong>${user.userName}</strong></a>
                                                                 <br style="line-height:100%">
-                                                                <span style="color:#999;margin:0 0 5px">当前 234 积分</span>
+                                                                <span style="color:#999">帖子</span> 
+                                                                <span style="color:#333">${user.userArticleCount?c}</span>
+                                                                <span style="color:#999">回贴</span>
+                                                                <span style="color:#333">${user.userCommentCount?c}</span>
                                                             </td>
-                                                            <td width="32" valign="top" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                                <img width="32" height="32" src="https://ci4.googleusercontent.com/proxy/_cCGsi3PWl27S2XLwqiENQMUBbMAT0pQlM8f1NHOpTaTfbxm1zNuhUC0boUuoNciNWIctns2mCBjEqnXAPjISpKBz5It_mUDGu3YD2ubv-YnOQATYFC8T1hT10Rkd54QYJ8=s0-d-e1-ft#http://sfault-avatar.b0.upaiyun.com/283/554/2835549717-57b6adf9a7dd7_huge256" alt="边城" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
-                                                            </td>
-                                                            <td width="150" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px 10px">
-                                                                <a href="https://segmentfault.com/u/jamesfancy?utm_source=weekly&amp;utm_medium=email&amp;utm_campaign=email_weekly" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank" ><strong>边城</strong></a>
-                                                                <br style="line-height:100%">
-                                                                <span style="color:#999;margin:0 0 5px">当前 234 积分</span>
-                                                            </td>
-                                                            <td width="32" valign="top" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                                <img width="32" height="32" src="https://ci4.googleusercontent.com/proxy/_cCGsi3PWl27S2XLwqiENQMUBbMAT0pQlM8f1NHOpTaTfbxm1zNuhUC0boUuoNciNWIctns2mCBjEqnXAPjISpKBz5It_mUDGu3YD2ubv-YnOQATYFC8T1hT10Rkd54QYJ8=s0-d-e1-ft#http://sfault-avatar.b0.upaiyun.com/283/554/2835549717-57b6adf9a7dd7_huge256" alt="边城" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
-                                                            </td>
-                                                            <td width="150" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px 10px">
-                                                                <a href="https://segmentfault.com/u/jamesfancy?utm_source=weekly&amp;utm_medium=email&amp;utm_campaign=email_weekly" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank" ><strong>边城</strong></a>
-                                                                <br style="line-height:100%">
-                                                                <span style="color:#999;margin:0 0 5px">当前 234 积分</span>
-                                                            </td>
+                                                            </#list>
+                                                            </#if>
                                                         </tr>
                                                     </tbody>
                                                 </table>
