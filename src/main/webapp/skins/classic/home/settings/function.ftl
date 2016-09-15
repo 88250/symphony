@@ -15,12 +15,19 @@
             <option value="0"<#if 0 == currentUser.userAvatarViewMode> selected</#if>>${orgImgLabel}</option>
             <option value="1"<#if 1 == currentUser.userAvatarViewMode> selected</#if>>${staticImgLabel}</option>
         </select>
-        <label>${useNotifyLabel} 
-            <input id="userNotifyStatus" <#if 0 == currentUser.userNotifyStatus> checked="checked"</#if> type="checkbox" />
-        </label>
-        <label>${subMailLabel} 
-            <input id="userSubMailStatus" <#if 0 == currentUser.userSubMailStatus> checked="checked"</#if> type="checkbox" />
-        </label>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${useNotifyLabel} 
+                    <input id="userNotifyStatus" <#if 0 == currentUser.userNotifyStatus> checked="checked"</#if> type="checkbox" />
+                </label>
+            </div>
+            <div>
+                <label>
+                    ${subMailLabel} 
+                    <input id="userSubMailStatus" <#if 0 == currentUser.userSubMailStatus> checked="checked"</#if> type="checkbox" />
+            </div>
+        </div>
         <div class="fn-clear"></div>
         <div id="functionTip" class="tip"></div>
         <div class="fn-hr5"></div>
