@@ -37,6 +37,7 @@ import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Verifycode;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.repository.VerifycodeRepository;
@@ -48,7 +49,7 @@ import org.json.JSONObject;
  * Verifycode management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Sep 15, 2016
+ * @version 1.1.0.2, Sep 15, 2016
  * @since 1.3.0
  */
 @Service
@@ -133,7 +134,7 @@ public class VerifycodeMgmtService {
      */
     @Transactional
     public void sendEmailVerifycode() {
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(Verifycode.TYPE, FilterOperator.EQUAL, Verifycode.TYPE_C_EMAIL));
         filters.add(new PropertyFilter(Verifycode.STATUS, FilterOperator.EQUAL, Verifycode.STATUS_C_UNSENT));
         final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
@@ -141,13 +142,6 @@ public class VerifycodeMgmtService {
         try {
             final JSONObject result = verifycodeRepository.get(query);
             final JSONArray verifycodes = result.optJSONArray(Keys.RESULTS);
-
-            final Map<String, List<String>> vars = new HashMap<String, List<String>>();
-            final List<String> var1 = new ArrayList<String>();
-            final List<String> var2 = new ArrayList<String>();
-            vars.put("%1%", var1);
-            vars.put("%2%", var2);
-            final List<String> toMails = new ArrayList<String>();
 
             for (int i = 0; i < verifycodes.length(); i++) {
                 final JSONObject verifycode = verifycodes.optJSONObject(i);
@@ -158,20 +152,22 @@ public class VerifycodeMgmtService {
                     continue;
                 }
 
+                final Map<String, Object> dataModel = new HashMap<>();
+
                 final String userName = user.optString(User.USER_NAME);
+                dataModel.put(User.USER_NAME, userName);
+
                 final String toMail = verifycode.optString(Verifycode.RECEIVER);
                 final String code = verifycode.optString(Verifycode.CODE);
-
-                var1.add(userName);
 
                 final int bizType = verifycode.optInt(Verifycode.BIZ_TYPE);
                 switch (bizType) {
                     case Verifycode.BIZ_TYPE_C_REGISTER:
-                        var2.add(Latkes.getServePath() + "/register?code=" + code);
+                        dataModel.put(Common.URL, Latkes.getServePath() + "/register?code=" + code);
 
                         break;
                     case Verifycode.BIZ_TYPE_C_RESET_PWD:
-                        var2.add(Latkes.getServePath() + "/reset-pwd?code=" + code);
+                        dataModel.put(Common.URL, Latkes.getServePath() + "/reset-pwd?code=" + code);
 
                         break;
                     default:
@@ -180,14 +176,11 @@ public class VerifycodeMgmtService {
                         continue;
                 }
 
-                toMails.add(toMail);
-
                 verifycode.put(Verifycode.STATUS, Verifycode.STATUS_C_SENT);
                 verifycodeRepository.update(verifycode.optString(Keys.OBJECT_ID), verifycode);
-            }
 
-            if (0 != verifycodes.length()) {
-                Mails.send(langPropsService.get("verifycodeEmailSubjectLabel"), Mails.TEMPLATE_NAME_VERIFYCODE, toMails, vars);
+                Mails.sendHTML(langPropsService.get("verifycodeEmailSubjectLabel"), toMail,
+                        Mails.TEMPLATE_NAME_VERIFYCODE, dataModel);
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Sends verifycode failed", e);

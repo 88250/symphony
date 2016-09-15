@@ -25,17 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import jodd.http.HttpRequest;
-import jodd.http.HttpResponse;
-import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * Mail utilities.
@@ -108,109 +102,65 @@ public final class Mails {
     }
 
     /**
-     * Refreshes (creates or updates) mail templates on <a href="http://sendcloud.sohu.com/">SendCloud</a>.
+     * Sends a HTML mail.
+     *
+     * @param subject the specified subject
+     * @param toMail the specified receiver mail
+     * @param templateName the specified template name
+     * @param dataModel the specified data model
      */
-    public static void refreshMailTemplates() {
-        if (StringUtils.isBlank(API_USER) || StringUtils.isBlank(API_KEY)) {
-            LOGGER.warn("Please configure [#### SendCloud Mail ####] section in symphony.properties");
-
-            return;
-        }
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                refreshVerifyCodeTemplate();
-                refreshWeeklyTemplate();
-            }
-        }).start();
-    }
-
-    private static void refreshWeeklyTemplate() {
-        final Map<String, Object> addData = new HashMap<>();
-        addData.put("apiUser", API_USER);
-        addData.put("apiKey", API_KEY);
-        addData.put("invokeName", TEMPLATE_NAME_WEEKLY);
-        addData.put("name", "每周推送");
-
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
-
-        addData.put("subject", langPropsService.get("weeklyEmailSubjectLabel"));
-        addData.put("templateType", "1"); // 批量邮件
-
-        String html = "";
-        addData.put("html", html);
-        HttpRequest.post("http://api.sendcloud.net/apiv2/template/add").form(addData).send();
-
-        final Map<String, Object> updateData = new HashMap<>();
-        updateData.put("apiUser", API_USER);
-        updateData.put("apiKey", API_KEY);
-        updateData.put("invokeName", TEMPLATE_NAME_WEEKLY);
-
-        updateData.put("html", "tttt");
-        HttpRequest.post("http://api.sendcloud.net/apiv2/template/update").form(updateData).send();
-    }
-
-    private static void refreshVerifyCodeTemplate() {
-        final Map<String, Object> addData = new HashMap<>();
-        addData.put("apiUser", API_USER);
-        addData.put("apiKey", API_KEY);
-        addData.put("invokeName", TEMPLATE_NAME_VERIFYCODE);
-        addData.put("name", "验证码");
-
-        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
-
-        addData.put("subject", langPropsService.get("verifycodeEmailSubjectLabel"));
-        addData.put("templateType", "0"); // 触发邮件
-
-        String html = "";
+    public static void sendHTML(final String subject, final String toMail,
+            final String templateName, final Map<String, Object> dataModel) {
         try {
-            final Map<String, Object> dataModel = new HashMap<>();
+            final Map<String, Object> formData = new HashMap<>();
 
-            final Template template = TEMPLATE_CFG.getTemplate("verifycode.ftl");
+            final LangPropsService langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
+
+            formData.put("apiUser", API_USER);
+            formData.put("apiKey", API_KEY);
+            formData.put("from", FROM);
+            formData.put("fromName", langPropsService.get("visionLabel"));
+            formData.put("subject", subject);
+
+            final Template template = TEMPLATE_CFG.getTemplate(templateName + ".ftl");
             final StringWriter stringWriter = new StringWriter();
             template.process(dataModel, stringWriter);
             stringWriter.close();
+            final String html = stringWriter.toString();
+            formData.put("html", html);
 
-            html = stringWriter.toString();
+            HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Loads mail template failed", e);
+            LOGGER.log(Level.ERROR, "Send mail error", e);
         }
-
-        addData.put("html", html);
-        HttpRequest.post("http://api.sendcloud.net/apiv2/template/add").form(addData).send();
     }
 
     /**
-     * Batch send mails.
+     * Batch send HTML mails.
      *
-     * @param toMails to mails
-     * @param templateName template name
-     * @param subject subject
-     * @param variables template variables
+     * @param subject the specified subject
+     * @param toMails the specified receiver mails
+     * @param templateName the specified template name
+     * @param dataModel the specified data model
      */
-    public static void batchSend(final String subject, final String templateName,
-            final List<String> toMails, final Map<String, List<String>> variables) {
-        if (null == toMails || toMails.isEmpty()) {
-            return;
-        }
-
-        HttpResponse response = null;
+    public static void batchSendHTML(final String subject, final List<String> toMails,
+            final String templateName, final Map<String, Object> dataModel) {
         try {
             final Map<String, Object> formData = new HashMap<>();
             final LangPropsService langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
 
-            formData.put("api_user", BATCH_API_USER);
-            formData.put("api_key", BATCH_API_KEY);
+            formData.put("apiUser", BATCH_API_USER);
+            formData.put("apiKey", BATCH_API_KEY);
             formData.put("from", BATCH_FROM);
             formData.put("fromname", langPropsService.get("visionLabel"));
             formData.put("subject", subject);
-            formData.put("template_invoke_name", templateName);
-            final JSONObject sub = new JSONObject();
+            final Template template = TEMPLATE_CFG.getTemplate(templateName + ".ftl");
+            final StringWriter stringWriter = new StringWriter();
+            template.process(dataModel, stringWriter);
+            stringWriter.close();
+            final String html = stringWriter.toString();
+            formData.put("html", html);
 
-            final JSONObject args = new JSONObject();
             int index = 0;
             final int size = toMails.size();
             List<String> batch = new ArrayList<>();
@@ -221,58 +171,24 @@ public final class Mails {
 
                 if (batch.size() > 99) {
                     try {
-                        args.put("to", new JSONArray(batch));
-                        args.put("sub", sub);
-                        for (final Map.Entry<String, List<String>> var : variables.entrySet()) {
-                            final JSONArray value = new JSONArray(var.getValue());
-                            sub.put(var.getKey(), value);
-                        }
-                        formData.put("substitution_vars", args.toString());
+                        formData.put("to", String.join(";", batch));
 
-                        response = HttpRequest.post("http://sendcloud.sohu.com/webapi/mail.send_template.json")
-                                .form(formData).send();
-
-                        LOGGER.log(Level.DEBUG, response.bodyText());
+                        //HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
                     } catch (final Exception e) {
                         LOGGER.log(Level.ERROR, "Send mail error", e);
-                    } finally {
-                        if (null != response) {
-                            try {
-                                response.close();
-                            } catch (final Exception e) {
-                                LOGGER.log(Level.ERROR, "Close response failed", e);
-                            }
-                        }
-
-                        batch.clear();
                     }
+
+                    batch.clear();
                 }
             }
 
             if (!batch.isEmpty()) { // Process remains
                 try {
-                    args.put("to", new JSONArray(batch));
-                    args.put("sub", sub);
-                    for (final Map.Entry<String, List<String>> var : variables.entrySet()) {
-                        final JSONArray value = new JSONArray(var.getValue());
-                        sub.put(var.getKey(), value);
-                    }
-                    formData.put("substitution_vars", args.toString());
+                    formData.put("to", String.join(";", batch));
 
-                    response = HttpRequest.post("http://sendcloud.sohu.com/webapi/mail.send_template.json")
-                            .form(formData).send();
-
-                    LOGGER.log(Level.DEBUG, response.bodyText());
+                    //HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Send mail error", e);
-                } finally {
-                    if (null != response) {
-                        try {
-                            response.close();
-                        } catch (final Exception e) {
-                            LOGGER.log(Level.ERROR, "Close response failed", e);
-                        }
-                    }
                 }
             }
         } catch (final Exception e) {
@@ -280,61 +196,233 @@ public final class Mails {
         }
     }
 
-    /**
-     * Sends mail.
-     *
-     * @param toMails to mails
-     * @param templateName template name
-     * @param subject subject
-     * @param variables template variables
-     */
-    public static void send(final String subject, final String templateName,
-            final List<String> toMails, final Map<String, List<String>> variables) {
-        if (null == toMails || toMails.isEmpty()) {
-            return;
-        }
-
-        HttpResponse response = null;
-        try {
-            final Map<String, Object> formData = new HashMap<>();
-
-            final LangPropsService langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
-
-            formData.put("api_user", API_USER);
-            formData.put("api_key", API_KEY);
-            formData.put("from", FROM);
-            formData.put("fromname", langPropsService.get("visionLabel"));
-            formData.put("subject", subject);
-            formData.put("template_invoke_name", templateName);
-
-            final JSONObject args = new JSONObject();
-            args.put("to", new JSONArray(toMails));
-            final JSONObject sub = new JSONObject();
-            args.put("sub", sub);
-            for (final Map.Entry<String, List<String>> var : variables.entrySet()) {
-                final JSONArray value = new JSONArray(var.getValue());
-                sub.put(var.getKey(), value);
-            }
-            formData.put("substitution_vars", args.toString());
-            formData.put("resp_email_id", "true");
-
-            response = HttpRequest.post("http://sendcloud.sohu.com/webapi/mail.send_template.json")
-                    .form(formData).send();
-
-            LOGGER.log(Level.DEBUG, response.bodyText());
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Send mail error", e);
-        } finally {
-            if (null != response) {
-                try {
-                    response.close();
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Close response failed", e);
-                }
-            }
-        }
-    }
-
+//    /**
+//     * Refreshes (creates or updates) mail templates on <a href="http://sendcloud.sohu.com/">SendCloud</a>.
+//     */
+//    public static void refreshMailTemplates() {
+//        if (StringUtils.isBlank(API_USER) || StringUtils.isBlank(API_KEY)) {
+//            LOGGER.warn("Please configure [#### SendCloud Mail ####] section in symphony.properties");
+//
+//            return;
+//        }
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                refreshVerifyCodeTemplate();
+//                refreshWeeklyTemplate();
+//            }
+//        }).start();
+//    }
+//
+//    private static void refreshWeeklyTemplate() {
+//        final Map<String, Object> addData = new HashMap<>();
+//        addData.put("apiUser", API_USER);
+//        addData.put("apiKey", API_KEY);
+//        addData.put("invokeName", TEMPLATE_NAME_WEEKLY);
+//        addData.put("name", "每周推送");
+//
+//        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+//        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+//
+//        addData.put("subject", langPropsService.get("weeklyEmailSubjectLabel"));
+//        addData.put("templateType", "1"); // 批量邮件
+//
+//        String html = "";
+//        addData.put("html", html);
+//        HttpRequest.post("http://api.sendcloud.net/apiv2/template/add").form(addData).send();
+//
+//        final Map<String, Object> updateData = new HashMap<>();
+//        updateData.put("apiUser", API_USER);
+//        updateData.put("apiKey", API_KEY);
+//        updateData.put("invokeName", TEMPLATE_NAME_WEEKLY);
+//
+//        updateData.put("html", "tttt");
+//        HttpRequest.post("http://api.sendcloud.net/apiv2/template/update").form(updateData).send();
+//    }
+//
+//    private static void refreshVerifyCodeTemplate() {
+//        final Map<String, Object> addData = new HashMap<>();
+//        addData.put("apiUser", API_USER);
+//        addData.put("apiKey", API_KEY);
+//        addData.put("invokeName", TEMPLATE_NAME_VERIFYCODE);
+//        addData.put("name", "验证码");
+//
+//        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+//        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+//
+//        addData.put("subject", langPropsService.get("verifycodeEmailSubjectLabel"));
+//        addData.put("templateType", "0"); // 触发邮件
+//
+//        String html = "";
+//        try {
+//            final Map<String, Object> dataModel = new HashMap<>();
+//
+//            final Template template = TEMPLATE_CFG.getTemplate("verifycode.ftl");
+//            final StringWriter stringWriter = new StringWriter();
+//            template.process(dataModel, stringWriter);
+//            stringWriter.close();
+//
+//            html = stringWriter.toString();
+//        } catch (final Exception e) {
+//            LOGGER.log(Level.ERROR, "Loads mail template failed", e);
+//        }
+//
+//        addData.put("html", html);
+//        HttpRequest.post("http://api.sendcloud.net/apiv2/template/add").form(addData).send();
+//    }
+//
+//    /**
+//     * Batch send mails.
+//     *
+//     * @param toMails to mails
+//     * @param templateName template name
+//     * @param subject subject
+//     * @param variables template variables
+//     */
+//    public static void batchSend(final String subject, final String templateName,
+//            final List<String> toMails, final Map<String, List<String>> variables) {
+//        if (null == toMails || toMails.isEmpty()) {
+//            return;
+//        }
+//
+//        HttpResponse response = null;
+//        try {
+//            final Map<String, Object> formData = new HashMap<>();
+//            final LangPropsService langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
+//
+//            formData.put("api_user", BATCH_API_USER);
+//            formData.put("api_key", BATCH_API_KEY);
+//            formData.put("from", BATCH_FROM);
+//            formData.put("fromname", langPropsService.get("visionLabel"));
+//            formData.put("subject", subject);
+//            formData.put("template_invoke_name", templateName);
+//            final JSONObject sub = new JSONObject();
+//
+//            final JSONObject args = new JSONObject();
+//            int index = 0;
+//            final int size = toMails.size();
+//            List<String> batch = new ArrayList<>();
+//            while (index < size) {
+//                final String mail = toMails.get(index);
+//                batch.add(mail);
+//                index++;
+//
+//                if (batch.size() > 99) {
+//                    try {
+//                        args.put("to", new JSONArray(batch));
+//                        args.put("sub", sub);
+//                        for (final Map.Entry<String, List<String>> var : variables.entrySet()) {
+//                            final JSONArray value = new JSONArray(var.getValue());
+//                            sub.put(var.getKey(), value);
+//                        }
+//                        formData.put("substitution_vars", args.toString());
+//
+//                        response = HttpRequest.post("http://sendcloud.sohu.com/webapi/mail.send_template.json")
+//                                .form(formData).send();
+//
+//                        LOGGER.log(Level.DEBUG, response.bodyText());
+//                    } catch (final Exception e) {
+//                        LOGGER.log(Level.ERROR, "Send mail error", e);
+//                    } finally {
+//                        if (null != response) {
+//                            try {
+//                                response.close();
+//                            } catch (final Exception e) {
+//                                LOGGER.log(Level.ERROR, "Close response failed", e);
+//                            }
+//                        }
+//
+//                        batch.clear();
+//                    }
+//                }
+//            }
+//
+//            if (!batch.isEmpty()) { // Process remains
+//                try {
+//                    args.put("to", new JSONArray(batch));
+//                    args.put("sub", sub);
+//                    for (final Map.Entry<String, List<String>> var : variables.entrySet()) {
+//                        final JSONArray value = new JSONArray(var.getValue());
+//                        sub.put(var.getKey(), value);
+//                    }
+//                    formData.put("substitution_vars", args.toString());
+//
+//                    response = HttpRequest.post("http://sendcloud.sohu.com/webapi/mail.send_template.json")
+//                            .form(formData).send();
+//
+//                    LOGGER.log(Level.DEBUG, response.bodyText());
+//                } catch (final Exception e) {
+//                    LOGGER.log(Level.ERROR, "Send mail error", e);
+//                } finally {
+//                    if (null != response) {
+//                        try {
+//                            response.close();
+//                        } catch (final Exception e) {
+//                            LOGGER.log(Level.ERROR, "Close response failed", e);
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (final Exception e) {
+//            LOGGER.log(Level.ERROR, "Batch send mail error", e);
+//        }
+//    }
+//
+//    /**
+//     * Sends mail.
+//     *
+//     * @param toMails to mails
+//     * @param templateName template name
+//     * @param subject subject
+//     * @param variables template variables
+//     */
+//    public static void send(final String subject, final String templateName,
+//            final List<String> toMails, final Map<String, List<String>> variables) {
+//        if (null == toMails || toMails.isEmpty()) {
+//            return;
+//        }
+//
+//        HttpResponse response = null;
+//        try {
+//            final Map<String, Object> formData = new HashMap<>();
+//
+//            final LangPropsService langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
+//
+//            formData.put("api_user", API_USER);
+//            formData.put("api_key", API_KEY);
+//            formData.put("from", FROM);
+//            formData.put("fromname", langPropsService.get("visionLabel"));
+//            formData.put("subject", subject);
+//            formData.put("template_invoke_name", templateName);
+//
+//            final JSONObject args = new JSONObject();
+//            args.put("to", new JSONArray(toMails));
+//            final JSONObject sub = new JSONObject();
+//            args.put("sub", sub);
+//            for (final Map.Entry<String, List<String>> var : variables.entrySet()) {
+//                final JSONArray value = new JSONArray(var.getValue());
+//                sub.put(var.getKey(), value);
+//            }
+//            formData.put("substitution_vars", args.toString());
+//            formData.put("resp_email_id", "true");
+//
+//            response = HttpRequest.post("http://sendcloud.sohu.com/webapi/mail.send_template.json")
+//                    .form(formData).send();
+//
+//            LOGGER.log(Level.DEBUG, response.bodyText());
+//        } catch (final Exception e) {
+//            LOGGER.log(Level.ERROR, "Send mail error", e);
+//        } finally {
+//            if (null != response) {
+//                try {
+//                    response.close();
+//                } catch (final Exception e) {
+//                    LOGGER.log(Level.ERROR, "Close response failed", e);
+//                }
+//            }
+//        }
+//    }
     /**
      * Private constructor.
      */
