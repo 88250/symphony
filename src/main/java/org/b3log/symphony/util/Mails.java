@@ -27,11 +27,15 @@ import java.util.Map;
 import jodd.http.HttpRequest;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Mail utilities.
@@ -106,12 +110,13 @@ public final class Mails {
     /**
      * Sends a HTML mail.
      *
+     * @param fromName the specified from name
      * @param subject the specified subject
      * @param toMail the specified receiver mail
      * @param templateName the specified template name
      * @param dataModel the specified data model
      */
-    public static void sendHTML(final String subject, final String toMail,
+    public static void sendHTML(final String fromName, final String subject, final String toMail,
             final String templateName, final Map<String, Object> dataModel) {
         if (StringUtils.isBlank(BATCH_API_USER) || StringUtils.isBlank(BATCH_API_KEY)) {
             LOGGER.warn("Please configure [#### SendCloud Mail ####] section in symphony.properties");
@@ -125,12 +130,10 @@ public final class Mails {
         try {
             final Map<String, Object> formData = new HashMap<>();
 
-            final LangPropsService langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
-
             formData.put("apiUser", API_USER);
             formData.put("apiKey", API_KEY);
             formData.put("from", FROM);
-            formData.put("fromName", langPropsService.get("visionLabel"));
+            formData.put("fromName", fromName);
             formData.put("subject", subject);
 
             final Template template = TEMPLATE_CFG.getTemplate(templateName + ".ftl");
@@ -149,12 +152,13 @@ public final class Mails {
     /**
      * Batch send HTML mails.
      *
+     * @param fromName the specified from name
      * @param subject the specified subject
      * @param toMails the specified receiver mails
      * @param templateName the specified template name
      * @param dataModel the specified data model
      */
-    public static void batchSendHTML(final String subject, final List<String> toMails,
+    public static void batchSendHTML(final String fromName, final String subject, final List<String> toMails,
             final String templateName, final Map<String, Object> dataModel) {
         if (StringUtils.isBlank(BATCH_API_USER) || StringUtils.isBlank(BATCH_API_KEY)) {
             LOGGER.warn("Please configure [#### SendCloud Mail ####] section in symphony.properties");
@@ -166,19 +170,22 @@ public final class Mails {
 
         try {
             final Map<String, Object> formData = new HashMap<>();
-            final LangPropsService langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
 
             formData.put("apiUser", BATCH_API_USER);
             formData.put("apiKey", BATCH_API_KEY);
             formData.put("from", BATCH_FROM);
-            formData.put("fromName", langPropsService.get("visionLabel"));
+            formData.put("fromName", fromName);
             formData.put("subject", subject);
+            formData.put("templateInvokeName", templateName);
+
             final Template template = TEMPLATE_CFG.getTemplate(templateName + ".ftl");
             final StringWriter stringWriter = new StringWriter();
             template.process(dataModel, stringWriter);
             stringWriter.close();
             final String html = stringWriter.toString();
-            formData.put("html", html);
+
+            // Creates or updates the SendCloud email template
+            refreshWeeklyTemplate(html);
 
             int index = 0;
             final int size = toMails.size();
@@ -190,9 +197,12 @@ public final class Mails {
 
                 if (batch.size() > 99) {
                     try {
-                        formData.put("to", StringUtils.join(batch, ";"));
+                        final JSONObject xsmtpapi = new JSONObject();
+                        final JSONArray to = new JSONArray(batch);
+                        xsmtpapi.put("to", to.toString());
+                        formData.put("xsmtpapi", xsmtpapi.toString());
 
-                        HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
+                        HttpRequest.post("http://api.sendcloud.net/apiv2/mail/sendtemplate").form(formData).send();
 
                         LOGGER.info("Sent [" + batch.size() + "] mails");
                     } catch (final Exception e) {
@@ -205,9 +215,12 @@ public final class Mails {
 
             if (!batch.isEmpty()) { // Process remains
                 try {
-                    formData.put("to", StringUtils.join(batch, ";"));
+                    final JSONObject xsmtpapi = new JSONObject();
+                    final JSONArray to = new JSONArray(batch);
+                    xsmtpapi.put("to", to.toString());
+                    formData.put("xsmtpapi", xsmtpapi.toString());
 
-                    HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
+                    HttpRequest.post("http://api.sendcloud.net/apiv2/mail/sendtemplate").form(formData).send();
 
                     LOGGER.info("Sent [" + batch.size() + "] mails");
                 } catch (final Exception e) {
@@ -217,6 +230,31 @@ public final class Mails {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Batch send mail error", e);
         }
+    }
+
+    private static void refreshWeeklyTemplate(final String html) {
+        final Map<String, Object> addData = new HashMap<>();
+        addData.put("apiUser", API_USER);
+        addData.put("apiKey", API_KEY);
+        addData.put("invokeName", TEMPLATE_NAME_WEEKLY);
+        addData.put("name", "Weekly Newsletter");
+
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+
+        addData.put("subject", langPropsService.get("weeklyEmailSubjectLabel"));
+        addData.put("templateType", "1"); // 批量邮件
+
+        addData.put("html", html);
+        HttpRequest.post("http://api.sendcloud.net/apiv2/template/add").form(addData).send();
+
+        final Map<String, Object> updateData = new HashMap<>();
+        updateData.put("apiUser", API_USER);
+        updateData.put("apiKey", API_KEY);
+        updateData.put("invokeName", TEMPLATE_NAME_WEEKLY);
+
+        updateData.put("html", html);
+        HttpRequest.post("http://api.sendcloud.net/apiv2/template/update").form(updateData).send();
     }
 
     /**

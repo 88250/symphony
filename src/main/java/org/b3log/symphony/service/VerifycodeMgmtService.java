@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Verifycode management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Sep 15, 2016
+ * @version 1.1.0.3, Sep 16, 2016
  * @since 1.3.0
  */
 @Service
@@ -159,15 +159,18 @@ public class VerifycodeMgmtService {
 
                 final String toMail = verifycode.optString(Verifycode.RECEIVER);
                 final String code = verifycode.optString(Verifycode.CODE);
+                String subject;
 
                 final int bizType = verifycode.optInt(Verifycode.BIZ_TYPE);
                 switch (bizType) {
                     case Verifycode.BIZ_TYPE_C_REGISTER:
                         dataModel.put(Common.URL, Latkes.getServePath() + "/register?code=" + code);
+                        subject = langPropsService.get("registerEmailSubjectLabel");
 
                         break;
                     case Verifycode.BIZ_TYPE_C_RESET_PWD:
                         dataModel.put(Common.URL, Latkes.getServePath() + "/reset-pwd?code=" + code);
+                        subject = langPropsService.get("forgetEmailSubjectLabel");
 
                         break;
                     default:
@@ -179,7 +182,9 @@ public class VerifycodeMgmtService {
                 verifycode.put(Verifycode.STATUS, Verifycode.STATUS_C_SENT);
                 verifycodeRepository.update(verifycode.optString(Keys.OBJECT_ID), verifycode);
 
-                Mails.sendHTML(langPropsService.get("verifycodeEmailSubjectLabel"), toMail,
+                final String fromName = langPropsService.get("symphonyEnLabel")
+                        + " " + langPropsService.get("verifycodeEmailFromNameLabel");
+                Mails.sendHTML(fromName, subject, toMail,
                         Mails.TEMPLATE_NAME_VERIFYCODE, dataModel);
             }
         } catch (final RepositoryException e) {

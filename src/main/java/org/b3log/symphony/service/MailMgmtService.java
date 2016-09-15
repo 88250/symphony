@@ -187,6 +187,9 @@ public class MailMgmtService {
                     articleRepository.get(articleQuery).optJSONArray(Keys.RESULTS));
 
             articleQueryService.organizeArticles(UserExt.USER_AVATAR_VIEW_MODE_C_STATIC, articles);
+
+            String mailSubject = "";
+            int goodCnt = 0;
             for (final JSONObject article : articles) {
                 String content = article.optString(Article.ARTICLE_CONTENT);
 
@@ -198,6 +201,12 @@ public class MailMgmtService {
                 }
 
                 article.put(Article.ARTICLE_CONTENT, content);
+
+                final int gc = article.optInt(Article.ARTICLE_GOOD_CNT);
+                if (gc >= goodCnt) {
+                    mailSubject = article.optString(Article.ARTICLE_TITLE);
+                    goodCnt = gc;
+                }
             }
 
             // select nice users
@@ -223,7 +232,9 @@ public class MailMgmtService {
             dataModel.put(Article.ARTICLES, (Object) articles);
             dataModel.put(User.USERS, (Object) users);
 
-            Mails.batchSendHTML(langPropsService.get("weeklyEmailSubjectLabel"), new ArrayList<>(toMails),
+            final String fromName = langPropsService.get("symphonyEnLabel") + " "
+                    + langPropsService.get("weeklyEmailFromNameLabel");
+            Mails.batchSendHTML(fromName, mailSubject, new ArrayList<>(toMails),
                     Mails.TEMPLATE_NAME_WEEKLY, dataModel);
 
             LOGGER.info("Sent weekly newsletter [" + toMails.size() + "]");
