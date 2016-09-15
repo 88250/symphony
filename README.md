@@ -61,16 +61,9 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 ## 配置
 
 * 图片上传默认是上传服务器本地，要使用[七牛](https://portal.qiniu.com/signup?code=3lewbghpvrqky)可配置 `symphony.properties` 中的 `qiniu.*` 属性
-* 邮件发送使用的是 [SendCloud](http://sendcloud.sohu.com)，需要配置 `symphony.properties` 中的 `sendcloud.*` 属性
 * 将 WEB-INF/cron.xml 中注释掉的部分打开
-
-用户注册时是启用邮件验证的，如果需要修改请参考相关代码。
-
-注意：
-
-本地配置完成部署后，还需要对 SendCloud 进行邮件模版的配置：
-  
-  ![sendcloud](https://cloud.githubusercontent.com/assets/873584/10298675/3cb11b08-6c14-11e5-9fd4-025122336469.png)
+* 邮件发送使用的是 [SendCloud](http://sendcloud.sohu.com)，需要配置 `symphony.properties` 中的 `sendcloud.*` 属性
+* 用户注册时需要验证邮箱的，所以必须先配置好 SendCloud
 
 如果遇到问题，可以参考一下这篇[帖子](https://hacpai.com/article/1468824093225)。
 
