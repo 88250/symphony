@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Verifycode management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Dec 8, 2015
+ * @version 1.1.0.1, Sep 15, 2016
  * @since 1.3.0
  */
 @Service
@@ -187,7 +187,7 @@ public class VerifycodeMgmtService {
             }
 
             if (0 != verifycodes.length()) {
-                Mails.send(langPropsService.get("verifycodeEmailSubjectLabel"), "sym_register", toMails, vars);
+                Mails.send(langPropsService.get("verifycodeEmailSubjectLabel"), Mails.TEMPLATE_NAME_VERIFYCODE, toMails, vars);
             }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Sends verifycode failed", e);

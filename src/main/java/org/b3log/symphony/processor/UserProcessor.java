@@ -277,7 +277,7 @@ public class UserProcessor {
 
         final String followingId = user.optString(Keys.OBJECT_ID);
         dataModel.put(Follow.FOLLOWING_ID, followingId);
-        
+
         final boolean isLoggedIn = (Boolean) dataModel.get(Common.IS_LOGGED_IN);
         if (isLoggedIn) {
             final JSONObject currentUser = (JSONObject) dataModel.get(Common.CURRENT_USER);

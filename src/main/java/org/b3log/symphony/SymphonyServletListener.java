@@ -67,6 +67,7 @@ import org.b3log.symphony.service.ArticleMgmtService;
 import org.b3log.symphony.service.UserMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Crypts;
+import org.b3log.symphony.util.Mails;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 
@@ -75,7 +76,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.16.6.13, Sep 11, 2016
+ * @version 2.16.6.14, Sep 15, 2016
  * @since 0.2.0
  */
 public final class SymphonyServletListener extends AbstractServletListener {
@@ -150,6 +151,8 @@ public final class SymphonyServletListener extends AbstractServletListener {
         domainCache.loadDomains();
 
         JdbcRepository.dispose();
+
+        Mails.refreshMailTemplates();
 
         LOGGER.info("Initialized the context");
 
