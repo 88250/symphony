@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.16.36, Sep 13, 2016
+ * @version 1.21.16.37, Sep 15, 2016
  */
 
 /* start reset */
@@ -1080,7 +1080,6 @@ a[class*=" icon-"]:hover {
     text-decoration: none;
     font-size: 13px;
     margin-left: -1px;
-    margin-bottom: 10px;
     box-sizing: border-box;
 }
 
@@ -1617,15 +1616,18 @@ a[class*=" icon-"]:hover {
 }
 
 .cmts a.count {
-    color: #FFF;
-    background-color: #b0b0b0;
-    padding: 0px 5px;
-    border-radius: 3px;
     text-decoration: none;
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #666;
+    background-color: #eee;
+    border-radius: 20px;
 }
 
 .cmts a.count:visited {
-    background-color: #ddd;
+    color: #999;
 }
 
 .cm-s-default.CodeMirror {
@@ -2006,7 +2008,7 @@ ul.CodeMirror-hints {
 }
 
 .link-forge-upload {
-    margin-bottom: 20px;
+    margin: 10px 0 20px;
 }
 
 .link-forge-upload .error,
