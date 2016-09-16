@@ -116,7 +116,7 @@ public class MailMgmtService {
         final int hour = calendar.get(Calendar.HOUR_OF_DAY);
         final int minute = calendar.get(Calendar.MINUTE);
 
-        if (13 != hour || 54 > minute) {
+        if (13 != hour || 55 > minute) {
             return;
         }
 
