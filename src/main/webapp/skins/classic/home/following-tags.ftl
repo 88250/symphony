@@ -30,11 +30,11 @@
                     &nbsp;
                     <#if isLoggedIn> 
                     <#if followingTag.isFollowing>
-                    <button class="red small" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
+                    <button class="fn-right mid" onclick="Util.unfollow(this, '${followingTag.oId}', 'tag')"> 
                         ${unfollowLabel}
                     </button>
-                    <#else>
-                    <button class="green small" onclick="Util.follow(this, '${followingTag.oId}', 'tag')"> 
+                    <#else> 
+                    <button class="fn-right mid" onclick="Util.follow(this, '${followingTag.oId}', 'tag')"> 
                         ${followLabel}
                     </button>
                     </#if>

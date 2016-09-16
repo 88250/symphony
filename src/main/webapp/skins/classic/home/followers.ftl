@@ -19,15 +19,18 @@
                 </a>
                 <div class="fn-flex-1">
                     <h2 class="fn-inline">
-                        <a rel="nofollow" href="${servePath}/member/${follower.userName}" >${follower.userName}</a>
-                    </h2> &nbsp;
+                        <a rel="nofollow" href="${servePath}/member/${follower.userName}" ><#if follower.userNickname != ''>${follower.userNickname}<#else>${follower.userName}</#if></a>
+                    </h2>
+                    <#if follower.userNickname != ''>
+                    <a class='ft-fade' rel="nofollow" href="${servePath}/member/${follower.userName}" >${follower.userName}</a>
+                    </#if>
                     <#if isLoggedIn && (userName != follower.userName)> 
                     <#if follower.isFollowing>
-                    <button class="red small" onclick="Util.unfollow(this, '${follower.oId}', 'user')"> 
+                    <button class="fn-right mid" onclick="Util.unfollow(this, '${follower.oId}', 'user')"> 
                         ${unfollowLabel}
                     </button>
                     <#else>
-                    <button class="green small" onclick="Util.follow(this, '${follower.oId}', 'user')"> 
+                    <button class="fn-right mid" onclick="Util.follow(this, '${follower.oId}', 'user')"> 
                         ${followLabel}
                     </button>
                     </#if>

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.10.16, Sep 15, 2016
+ * @version 2.4.10.17, Sep 16, 2016
  */
 
 /* start home common */
@@ -81,10 +81,16 @@
 
 /* start home side */
 .user-name {
-    border-bottom: 1px dotted #CCCCCC;
+    border-bottom: 1px dotted #CCC;
     font-size: 25px;
-    margin: 15px 0 20px;
-    padding-bottom: 15px;
+    margin: 20px 0 20px;
+    padding-bottom: 20px;
+}
+
+.user-name button.follow {
+    font-size: 14px;
+    width: 100%;
+    margin-top: 20px;
 }
 
 .user-info {

@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.32.20.28, Sep 13, 2016
+ * @version 1.32.20.29, Sep 16, 2016
  */
 
 /**
@@ -613,8 +613,7 @@ var Util = {
                                 .attr("aria-label", Label.uncollectLabel + ' ' +
                                         (index + 1));
                     } else {
-                        $(it).removeClass("green").addClass("red")
-                                .attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
+                        $(it).attr("onclick", "Util.unfollow(this, '" + id + "', '" + type + "')")
                                 .text(Label.unfollowLabel);
                     }
                 }
@@ -652,8 +651,7 @@ var Util = {
                                 .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "'," + (index - 1) + ")")
                                 .attr("aria-label", Label.collectLabel + ' ' + (index - 1));
                     } else {
-                        $(it).removeClass("red").addClass("green")
-                                .attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
+                        $(it).attr("onclick", "Util.follow(this, '" + id + "', '" + type + "')")
                                 .text(Label.followLabel);
                     }
                 }
