@@ -513,6 +513,12 @@ a[class^="icon-"].ft-fade:hover {
 .count:visited {
     color: #999;
 }
+
+.sub-head {
+     padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e5e5e5;   
+}
 /* end function */
 
 /* start common */

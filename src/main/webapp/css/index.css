@@ -633,6 +633,11 @@ code .dec { color: initial; } /* decimal - blue */
     min-height: 300px;
 }
 
+.activity .list .ft-fade {
+    margin-top: 6px;
+    display: block;
+}
+
 #charCanvas {
     border: 1px solid #e5e5e5;
     border-radius: 5px;
