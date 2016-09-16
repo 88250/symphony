@@ -16,7 +16,7 @@
                         <ul>
                             <li>
                                 <div class='fn-flex'>
-                                    <div class="avatar ft-gray tooltipped tooltipped-ne"
+                                    <div class="avatar tooltipped tooltipped-ne"
                                          aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
                                     <div class="fn-flex-1">
                                         <h2>
@@ -30,7 +30,7 @@
                             </li>
                             <li>
                                 <div class='fn-flex'>
-                                    <div class="avatar ft-gray tooltipped tooltipped-ne"
+                                    <div class="avatar tooltipped tooltipped-ne"
                                          aria-label="${activityYesterdayLivenessRewardLabel}" style="background-image:url('${staticServePath}/images/activities/yesterday.png')"></div>
                                     <div class="fn-flex-1">
                                         <h2>
@@ -44,7 +44,7 @@
                             </li>
                             <li>
                                 <div class='fn-flex'>
-                                    <div class="avatar ft-gray tooltipped tooltipped-ne"
+                                    <div class="avatar tooltipped tooltipped-ne"
                                          aria-label="${activity1A0001Label}" style="background-image:url('${staticServePath}/images/activities/1A0001.png')"></div>
                                     <div class="fn-flex-1">
                                         <h2>
@@ -58,28 +58,26 @@
                             </li>
                             <li>
                                 <div class='fn-flex'>
-                                    <div class="avatar ft-gray tooltipped tooltipped-ne"
+                                    <div class="avatar tooltipped tooltipped-ne"
                                          aria-label="${characterLabel}" style="background-image:url('${staticServePath}/images/activities/char.png')"></div>
                                     <div class="fn-flex-1">
                                         <h2>
                                             <a href="${servePath}/activity/character">${characterLabel}</a>
                                         </h2>
-                                        <span class="ft-fade">
-                                         写字和打字是完全不一样的体验，请认真感受~
-                                        </span>
+                                        <span class="ft-fade">${activityCharacterTitleLabel}</span>
                                     </div>
                                 </div>
                             </li>
                             <li>
                                 <div class='fn-flex'>
-                                    <div class="avatar ft-gray tooltipped tooltipped-ne"
+                                    <div class="avatar tooltipped tooltipped-ne"
                                          aria-label="${eatingSnakeLabel}" style="background-image:url('${staticServePath}/images/activities/snak.png')"></div>
                                     <div class="fn-flex-1">
                                         <h2>
                                             <a href="${servePath}/activity/eating-snake">${eatingSnakeLabel}</a>
                                         </h2>
                                         <span class="ft-fade">
-                                        WASD 键控制上下左右，回味一下文曲星的童年吧~
+                                        ${activityEatingSnakeTitleLabel}
                                         </span>
                                     </div>
                                 </div>

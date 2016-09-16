@@ -515,9 +515,10 @@ a[class^="icon-"].ft-fade:hover {
 }
 
 .sub-head {
-     padding-bottom: 5px;
+    padding-bottom: 5px;
     margin-bottom: 15px;
-    border-bottom: 1px solid #e5e5e5;   
+    border-bottom: 1px solid #e5e5e5;  
+    line-height: 31px;
 }
 /* end function */
 

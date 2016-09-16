@@ -647,6 +647,12 @@ code .dec { color: initial; } /* decimal - blue */
     background-size: cover;
     margin: 20px auto;
 }
+
+.sub-head .avatar-small {
+    height: 24px;
+    width: 24px;
+    vertical-align: sub;
+}
 /* end activity */
 
 /* start chat room */

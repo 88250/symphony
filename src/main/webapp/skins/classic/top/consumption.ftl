@@ -1,8 +1,6 @@
 <#include "macro-top.ftl">
 <@top "consumption">
-<div class="content content-reset">
-   <h2><span class="ft-green">♥</span> ${consumptionLabel}${rankingLabel}</h2>
-</div>
+<h2 class="sub-head"><span class="ft-green">♥</span> ${consumptionLabel}${rankingLabel}</h2>
 <div class="list top">
     <ul>
         <#list topConsumptionUsers as user>
