@@ -441,6 +441,10 @@ blockquote {
     height: 5px;
 }
 
+.fn-inline {
+    display: inline-block;
+}
+
 .ft-13 {
     font-size: 13px;
 }
@@ -491,8 +495,23 @@ a[class^="icon-"].ft-fade:hover {
     text-align: center;
 }
 
-.fn-inline {
-    display: inline-block;
+.count {
+    text-decoration: none;
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #666;
+    background-color: #eee;
+    border-radius: 20px;
+}
+
+.count:hover {
+    text-decoration: none;
+}
+
+.count:visited {
+    color: #999;
 }
 /* end function */
 
@@ -1618,21 +1637,6 @@ a[class*=" icon-"]:hover {
     position: absolute;
     right: 10px;
     top: 40%;
-}
-
-.cmts a.count {
-    text-decoration: none;
-    padding: 2px 5px;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1;
-    color: #666;
-    background-color: #eee;
-    border-radius: 20px;
-}
-
-.cmts a.count:visited {
-    color: #999;
 }
 
 .cm-s-default.CodeMirror {

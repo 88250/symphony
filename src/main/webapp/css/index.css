@@ -775,23 +775,11 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .index a.count {
-    text-decoration: none;
     position: absolute;
     right: 0;
     top: 50%;
     margin-top: -8px;
-    padding: 2px 5px;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1;
-    color: #666;
-    background-color: #eee;
-    border-radius: 20px;
 } 
-
-.index a.count:visited {
-    color: #999;
-}
 
 .index .module-list .title {
     color: #595959;
