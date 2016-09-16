@@ -80,7 +80,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.13.16.14, Sep 15, 2016
+ * @version 1.13.16.15, Sep 16, 2016
  * @since 0.2.0
  */
 @Service
@@ -201,7 +201,7 @@ public class UserMgmtService {
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
+            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]");
 
             final Cookie cookie = new Cookie("b3log-latke", null);
             cookie.setMaxAge(0);
