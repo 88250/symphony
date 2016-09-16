@@ -119,7 +119,7 @@
                                                                                     <#list users as user>
                                                                                     <#if user_index < 3>
                                                                                     <td width="36" valign="top" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                                                        <img width="36" height="36" src="${user.userAvatarURL}" alt="${user.userName}" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
+                                                                                        <img width="36" height="36" src="${user.userAvatarURL48}" alt="${user.userName}" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
                                                                                     </td>
                                                                                     <td width="150" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px 10px">
                                                                                         <a href="${servePath}/member/${user.userName?url('UTF-8')}" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank" ><strong>${user.userName}</strong></a>
@@ -136,7 +136,7 @@
                                                                                     <#list users as user>
                                                                                     <#if 2 < user_index>
                                                                                     <td width="36" valign="top" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif">
-                                                                                        <img width="36" height="36" src="${user.userAvatarURL}" alt="${user.userName}" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
+                                                                                        <img width="36" height="36" src="${user.userAvatarURL48}" alt="${user.userName}" style="outline:none;text-decoration:none;display:block;max-width:100%;border-radius:3px">
                                                                                     </td>
                                                                                     <td width="150" style="border-collapse:collapse;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;padding:0 0 15px 10px">
                                                                                         <a href="${servePath}/member/${user.userName?url('UTF-8')}" style="color:#595959;font-weight:bold;text-decoration:none;font-size:14px" target="_blank" ><strong>${user.userName}</strong></a>
