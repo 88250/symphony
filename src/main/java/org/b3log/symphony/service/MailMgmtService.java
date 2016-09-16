@@ -56,7 +56,7 @@ import org.jsoup.Jsoup;
  * Mail management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 14, 2016
+ * @version 1.0.0.1, Sep 16, 2016
  * @since 1.6.0
  */
 @Service
@@ -116,9 +116,9 @@ public class MailMgmtService {
         final int hour = calendar.get(Calendar.HOUR_OF_DAY);
         final int minute = calendar.get(Calendar.MINUTE);
 
-//        if (13 != hour || 50 > minute) {
-//            return;
-//        }
+        if (13 != hour || 54 > minute) {
+            return;
+        }
 
         if (weeklyNewsletterSending) {
             return;
