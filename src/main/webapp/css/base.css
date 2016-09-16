@@ -1259,7 +1259,8 @@ a[class*=" icon-"]:hover {
 }
 
 .form select {
-    height: 30px;
+    height: 33px;
+    padding-top: 5px;
 }
 /* end form */
 
