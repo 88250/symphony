@@ -1019,7 +1019,7 @@
         'Cmd-I': toggleItalic,
         'Cmd-K': drawLink,
         "Cmd-E": toggleBlockquote,
-        'Cmd-Alt-L': toggleOrderedList,
+        'Shift-Cmd-L': toggleOrderedList,
         'Cmd-L': toggleUnOrderedList,
         "Cmd-D": togglePreview
     };

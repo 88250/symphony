@@ -137,6 +137,7 @@ var AddArticle = {
                 lineWrapping: true,
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
+                    "Ctrl-/": "autocompleteEmoji",
                     "Cmd-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
                     "Alt-R": "endAudioRecord",
@@ -319,6 +320,7 @@ var AddArticle = {
                 ],
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
+                    "Ctrl-/": "autocompleteEmoji",
                     "Cmd-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
                     "Alt-R": "endAudioRecord",

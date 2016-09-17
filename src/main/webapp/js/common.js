@@ -69,6 +69,12 @@ var Util = {
                 window.location = Label.servePath + '/notifications';
             }
             return false;
+        }).bind('keyup', 'h', function (event) {
+            // g n 跳转到通知页面
+            if (Util.prevKey === 'g') {
+                window.location = Label.servePath + '/hot';
+            }
+            return false;
         }).bind('keyup', 'i', function (event) {
             // g i 跳转到首页
             if (Util.prevKey === 'g') {

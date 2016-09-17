@@ -226,6 +226,7 @@ var Comment = {
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
                     "Cmd-/": "autocompleteEmoji",
+                    "Ctrl-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
                     "Alt-R": "endAudioRecord",
                     "Esc": function (cm) {

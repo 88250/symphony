@@ -360,6 +360,7 @@ blockquote {
     background-color: rgba(252, 41, 41, 0.12);
     border-radius: 3px;
     color: #911;
+    font-family: mononoki;
 }
 
 .content-reset code::before, 
@@ -382,6 +383,20 @@ blockquote {
     background-image: url(../images/code-bg.png);
     background-size: 20px 20px;
     border-radius: 5px;
+}
+
+.content-reset kbd {
+    display: inline-block;
+    padding: 3px 5px;
+    font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    line-height: 10px;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fcfcfc;
+    border: solid 1px #ccc;
+    border-bottom-color: #bbb;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 #bbb;
 }
 /* end reset */
 
