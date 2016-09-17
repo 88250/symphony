@@ -18,7 +18,7 @@
  * @file frontend tool.
  * 
  * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 0.1.2.0, Jul 28, 2016 
+ * @version 0.2.2.0, Sep 17, 2016 
  */
 var gulp = require("gulp");
 var concat = require('gulp-concat');
@@ -61,12 +61,13 @@ gulp.task('cc', function () {
         './src/main/webapp/js/lib/md5.js',
         './src/main/webapp/js/lib/reconnecting-websocket.min.js',
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
-        './src/main/webapp/js/lib/ua-parser.min.js'];
+        './src/main/webapp/js/lib/ua-parser.min.js',
+        './src/main/webapp/js/lib/jquery/jquery.hotkeys.js'];
     gulp.src(jsCommonLib)
             .pipe(uglify())
             .pipe(concat('libs.min.js'))
             .pipe(gulp.dest('./src/main/webapp/js/lib/compress/'));
-    
+
     var jsArticleLib = ['./src/main/webapp/js/lib/editor/codemirror.min.js',
         './src/main/webapp/js/lib/highlight.js-8.6/highlight.pack.js',
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js',

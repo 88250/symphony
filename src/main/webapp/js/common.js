@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.32.20.29, Sep 16, 2016
+ * @version 1.33.20.29, Sep 17, 2016
  */
 
 /**
@@ -28,6 +28,117 @@
  * @static
  */
 var Util = {
+    prevKey: undefined,
+    /**
+     * 初始化全局快捷键
+     * @returns {undefined}
+     */
+    _initCommonHotKey: function () {
+        // go to focus
+        var goFocus = function () {
+            $(window).scrollTop($('.list > ul > li.focus').offset().top);
+        };
+
+        // c 新建帖子
+        if ($('#articleTitle').length === 0) {
+            $(document).bind('keyup', 'c', function assets() {
+                if (Util.prevKey) {
+                    return false;
+                }
+                window.location = Label.servePath + '/post?type=0';
+                return false;
+            });
+        }
+
+        $(document).bind('keyup', 'g', function () {
+            // listen jump hotkey g
+            Util.prevKey = 'g';
+            setTimeout(function () {
+                Util.prevKey = undefined;
+            }, 1000);
+            return false;
+        }).bind('keyup', 's', function () {
+            //s 定位到搜索框
+            $('#search').focus();
+            return false;
+        }).bind('keyup', 'n', function (event) {
+            // g n 跳转到通知页面
+            if (Util.prevKey === 'g') {
+                window.location = Label.servePath + '/notifications';
+            }
+            return false;
+        }).bind('keyup', 'i', function (event) {
+            // g i 跳转到首页
+            if (Util.prevKey === 'g') {
+                window.location = Label.servePath;
+            }
+            return false;
+        }).bind('keyup', 'r', function (event) {
+            // g r 跳转到最新页面
+            if (Util.prevKey === 'g') {
+                window.location = Label.servePath + '/recent';
+            }
+            return false;
+        }).bind('keyup', 'p', function (event) {
+            // g p 跳转到优选页面
+            if (Util.prevKey === 'g') {
+                window.location = Label.servePath + '/perfect';
+            }
+            return false;
+        }).bind('keyup', 'Shift+/', function (event) {
+            // shift/⇧ ? 新窗口打开键盘快捷键说明文档
+            window.open(Label.servePath + '/article/1474030007391');
+            return false;
+        }).bind('keyup', 'j', function (event) {
+            // j 移动到下一项
+            var $prev = $('.content .list > ul > li.focus');
+            if ($prev.length === 0) {
+                $('.content .list > ul > li:first').addClass('focus');
+            } else if ($prev.next().length === 1) {
+                $prev.next().addClass('focus');
+                $prev.removeClass('focus');
+            }
+            goFocus();
+            return false;
+        }).bind('keyup', 'k', function (event) {
+            // k 移动到上一项
+            var $next = $('.content .list > ul > li.focus');
+            if ($next.length === 0) {
+                $('.content .list > ul > li:last').addClass('focus');
+            } else if ($next.prev().length === 1) {
+                $next.prev().addClass('focus');
+                $next.removeClass('focus');
+            }
+            goFocus();
+            return false;
+        }).bind('keyup', 'f', function (event) {
+            // f 移动到第一项
+            $('.content .list > ul > li.focus').removeClass('focus');
+            $('.content .list > ul > li:first').addClass('focus');
+            goFocus();
+            return false;
+        }).bind('keyup', 'l', function (event) {
+            // l 移动到最后一项
+            $('.content .list > ul > li.focus').removeClass('focus');
+            $('.content .list > ul > li:last').addClass('focus');
+            goFocus();
+            return false;
+        }).bind('keyup', 'o', function (event) {
+            // o/enter 打开选中项
+            if ($('.article-list').length === 1) {
+                var href = $('.content .list > ul > li.focus .fn-flex-1 > h2 > a').attr('href');
+                window.location = href;
+            }
+            return false;
+        }).bind('keyup', 'return', function (event) {
+            // o/enter 打开选中项
+            if ($('.article-list').length === 1) {
+                var href = $('.content .list > ul > li.focus .fn-flex-1 > h2 > a').attr('href');
+                window.location = href;
+            }
+            return false;
+        });
+    },
     /**
      * 消息通知
      * @param {type} count 现有消息数目
@@ -819,6 +930,7 @@ var Util = {
             }, 60000);
         }
 
+        this._initCommonHotKey();
         console.log("%cCopyright \xa9 2012-%s, b3log.org & hacpai.com\n\n%cHacPai%c 平等、自由、奔放\n\n%cFeel easy about trust.",
                 'font-size:12px;color:#999999;', (new Date).getFullYear(),
                 'font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;font-size:64px;color:#404040;-webkit-text-fill-color:#404040;-webkit-text-stroke: 1px #777;',
