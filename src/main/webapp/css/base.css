@@ -1950,7 +1950,9 @@ ul.CodeMirror-hints {
 }
 
 .person-info .info button.red:hover {
-    letter-spacing: 2px;
+    background-color: #b33630;
+    background-image: none;
+    border-color: #9f312c
 }
 
 .person-info .info .fn-right {
