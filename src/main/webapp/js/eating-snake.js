@@ -2,7 +2,7 @@
  * Copyright (c) 2012-2016, b3log.org & hacpai.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use EatingSnake file except in compliance with the License.
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-
 /**
- *eating-snake.js
- *Author:Zephyr,Alexar
- *Alexar wrote it in love2d, Zephyr translate it into javascript
+ * @fileOverview Eating snake game. Alexar wrote it in Love2D, Zephyr translate it into JavaScript.
+ * 
+ * @author Zephyr
+ * @author Alexar
+ * @version 1.0.0.0, Sep 17, 2016
  */
 var EatingSnake = {
     dir: null,
@@ -38,12 +39,11 @@ var EatingSnake = {
     startTime: null,
     endTime: null,
     countTime: null,
-    
     //1:snake
     //0:nothing
     //2:apple
     //3:block
-    setupMap: function() {
+    setupMap: function () {
         for (var x = 1; x <= EatingSnake.size; x++) {
             EatingSnake.map[x] = new Array();
             for (var y = 1; y <= EatingSnake.size; y++) {
@@ -54,13 +54,12 @@ var EatingSnake = {
             }
         }
     },
-
-    initMap: function(oMarkId,snakeCanvasId) {
+    initMap: function (oMarkId, snakeCanvasId) {
         EatingSnake.oMark = document.getElementById(oMarkId);
         EatingSnake.snakeCanvas = document.getElementById(snakeCanvasId).getContext('2d');
         EatingSnake.map = new Array();
         EatingSnake.setupMap();
-        if(EatingSnake.snakeCanvas!=null)
+        if (EatingSnake.snakeCanvas != null)
             EatingSnake.snakeCanvas.clearRect(0, 0, (EatingSnake.size - 1) * 2 * EatingSnake.R, (EatingSnake.size - 1) * 2 * EatingSnake.R);
         for (var x = 1; x <= EatingSnake.size; x++) {
             for (var y = 1; y <= EatingSnake.size; y++) {
@@ -85,8 +84,7 @@ var EatingSnake = {
             }
         }
     },
-
-    drawMap: function() {
+    drawMap: function () {
         EatingSnake.snakeCanvas.clearRect(0, 0, (EatingSnake.size - 1) * 2 * EatingSnake.R, (EatingSnake.size - 1) * 2 * EatingSnake.R);
         for (var x = 1; x <= EatingSnake.size; x++) {
             for (var y = 1; y <= EatingSnake.size; y++) {
@@ -111,16 +109,13 @@ var EatingSnake = {
             }
         }
     },
-
-
-    check: function(x, y) {
+    check: function (x, y) {
         if (EatingSnake.map[x][y] != 0)
             return true; //true代表此处有填充p
         else
             return false;
     },
-
-    setupSnake: function() {
+    setupSnake: function () {
         for (var i = 1; i <= 5; i++) {
             EatingSnake.snake[i] = {
                 x: i + 5,
@@ -128,22 +123,19 @@ var EatingSnake = {
             };
         }
     },
-
-    drawSnake: function(toggle) {
+    drawSnake: function (toggle) {
         for (var i = 1; i < EatingSnake.snake.length; i++) {
             EatingSnake.map[EatingSnake.snake[i].x][EatingSnake.snake[i].y] = toggle;
         }
     },
-
-    newFood: function() {
+    newFood: function () {
         do {
             EatingSnake.food.x = Math.floor(Math.random() * (EatingSnake.size - 1) + 1);
             EatingSnake.food.y = Math.floor(Math.random() * (EatingSnake.size - 1) + 1);
         } while (EatingSnake.check(EatingSnake.food.x, EatingSnake.food.y) == true)
         EatingSnake.map[EatingSnake.food.x][EatingSnake.food.y] = 2;
     },
-
-    gameover: function() {
+    gameover: function () {
         clearInterval(EatingSnake.interval);
         //可以考虑不同分数不同提示
         alert("Game Over! 您的分数是：" + (EatingSnake.snake.length - EatingSnake.baseLen) + "！哇哦好厉害哟！");
@@ -155,25 +147,24 @@ var EatingSnake = {
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            beforeSend: function() {
+            beforeSend: function () {
                 var $btn = $("button.green");
                 $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
             },
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 alert(result.msg);
 
                 if (result.sc) {
                     window.location.reload();
                 }
             },
-            complete: function() {
+            complete: function () {
                 var $btn = $("button.green");
                 $btn.removeAttr("disabled").css("opacity", "1").text($btn.text().substr(0, $btn.text().length - 3));
             }
         });
     },
-
-    eat: function() {
+    eat: function () {
         EatingSnake.snake[EatingSnake.snake.length] = {
             x: EatingSnake.snake[1].x,
             y: EatingSnake.snake[1].y
@@ -184,12 +175,11 @@ var EatingSnake = {
             EatingSnake.currTime = EatingSnake.currTime - EatingSnake.stepTime;
         EatingSnake.interval = setInterval(EatingSnake.gameRun, EatingSnake.currTime);
     },
-
-    updateSnake: function() {
+    updateSnake: function () {
         EatingSnake.lastDir.x = EatingSnake.dir.x
         EatingSnake.lastDir.y = EatingSnake.dir.y
         var targetX = EatingSnake.snake[1].x + EatingSnake.dir.x,
-            targetY = EatingSnake.snake[1].y + EatingSnake.dir.y;
+                targetY = EatingSnake.snake[1].y + EatingSnake.dir.y;
         if (EatingSnake.check(targetX, targetY)) {
             if (targetX == EatingSnake.food.x && targetY == EatingSnake.food.y) { //eat
                 EatingSnake.eat();
@@ -208,8 +198,7 @@ var EatingSnake = {
 
         EatingSnake.drawSnake(1)
     },
-
-    input: function(keyCode) {
+    input: function (keyCode) {
         switch (keyCode) {
             case 65: //左边
                 if (EatingSnake.lastDir.x == 0) {
@@ -246,7 +235,7 @@ var EatingSnake = {
                 break;
         }
     },
-    init: function() {
+    init: function () {
         EatingSnake.dir = {
             x: 0,
             y: 1
@@ -261,7 +250,7 @@ var EatingSnake = {
             y: 0
         };
         EatingSnake.currTime = 200;
-        
+
         EatingSnake.snake = new Array();
         EatingSnake.setupMap();
         EatingSnake.setupSnake();
@@ -269,17 +258,16 @@ var EatingSnake = {
         EatingSnake.newFood();
         clearInterval(EatingSnake.interval);
     },
-    gameRun: function() {
+    gameRun: function () {
         // countTime += currTime;
         EatingSnake.updateSnake();
         EatingSnake.drawMap();
 //        EatingSnake.oMark.innerHtml = EatingSnake.snake.length - EatingSnake.baseLen;
     },
-    start: function() {
+    start: function () {
         EatingSnake.init();
         // countTime = 0;
         EatingSnake.interval = setInterval(EatingSnake.gameRun, EatingSnake.currTime);
         // startTime = new Date().getTime();
     },
-    
 }
