@@ -1018,10 +1018,10 @@
         'Cmd-B': toggleBold,
         'Cmd-I': toggleItalic,
         'Cmd-K': drawLink,
-        // 'Cmd-Alt-I': drawImage,
-        "Cmd-E'": toggleBlockquote,
+        "Cmd-E": toggleBlockquote,
         'Cmd-Alt-L': toggleOrderedList,
-        'Cmd-L': toggleUnOrderedList
+        'Cmd-L': toggleUnOrderedList,
+        "Cmd-D": togglePreview
     };
 
 

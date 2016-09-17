@@ -220,13 +220,17 @@ var Comment = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'}
+                    {name: 'preview'},
+                    {name: 'fullscreen'}
                 ],
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
-                    "Ctrl-/": "autocompleteEmoji",
+                    "Cmd-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
-                    "Alt-R": "endAudioRecord"
+                    "Alt-R": "endAudioRecord",
+                    "Esc": function (cm) {
+                         cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    }
                 },
                 status: false
             });
@@ -282,7 +286,6 @@ var Comment = {
         Comment.editor.on('keypress', function (cm, evt) {
             if (evt.ctrlKey && 10 === evt.charCode) {
                 Comment.add(Label.articleOId, Label.csrfToken);
-
                 return false;
             }
         });

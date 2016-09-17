@@ -36,7 +36,9 @@ var Util = {
     _initCommonHotKey: function () {
         // go to focus
         var goFocus = function () {
-            $(window).scrollTop($('.list > ul > li.focus').offset().top);
+            if ($('.list > ul > li.focus').length === 1) {
+                $(window).scrollTop($('.list > ul > li.focus').offset().top);
+            }
         };
 
         // c 新建帖子
@@ -125,15 +127,15 @@ var Util = {
             return false;
         }).bind('keyup', 'o', function (event) {
             // o/enter 打开选中项
-            if ($('.article-list').length === 1) {
-                var href = $('.content .list > ul > li.focus .fn-flex-1 > h2 > a').attr('href');
+            var href = $('.content .list > ul > li.focus .fn-flex-1 h2 > a').attr('href');
+            if (href) {
                 window.location = href;
             }
             return false;
         }).bind('keyup', 'return', function (event) {
             // o/enter 打开选中项
-            if ($('.article-list').length === 1) {
-                var href = $('.content .list > ul > li.focus .fn-flex-1 > h2 > a').attr('href');
+            var href = $('.content .list > ul > li.focus .fn-flex-1 h2 > a').attr('href');
+            if (href) {
                 window.location = href;
             }
             return false;
@@ -445,7 +447,6 @@ var Util = {
                         var user = result.userNames[i];
                         var name = user.userName;
                         var avatar = user.userAvatarURL;
-                        var updateTime = user.userUpdateTime;
 
                         autocompleteHints.push({
                             displayText: "<span style='font-size: 1rem;line-height:22px'><img style='width: 1rem;height: 1rem;margin:3px 0;float:left' src='" + avatar
@@ -646,17 +647,6 @@ var Util = {
             $li.find('.preview').hide();
 
             $(this).removeClass("previewing");
-        });
-    },
-    /**
-     * @description 标记指定类型的消息通知为已读状态.
-     * @param {String} type 指定类型："commented"/"at"/"followingUser"
-     */
-    makeNotificationRead: function (type) {
-        $.ajax({
-            url: Label.servePath + "/notification/read/" + type,
-            type: "GET",
-            cache: false
         });
     },
     /**
