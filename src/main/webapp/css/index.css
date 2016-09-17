@@ -653,6 +653,10 @@ code .dec { color: initial; } /* decimal - blue */
     width: 24px;
     vertical-align: sub;
 }
+
+.sub-head .ft-13 {
+    font-weight: normal;
+}
 /* end activity */
 
 /* start chat room */

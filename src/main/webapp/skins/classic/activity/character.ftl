@@ -15,7 +15,8 @@
                     <h2 class="sub-head">
                         <div class="avatar-small tooltipped tooltipped-ne"
                              aria-label="${characterLabel}" style="background-image:url('${staticServePath}/images/activities/char.png')"></div>
-                        ${activityCharacterTitleLabel}
+                        ${characterLabel}
+                        <span class="ft-13 ft-gray">${activityCharacterTitleLabel}</span>
                     </h2>
                     <div class="fn-clear">
                         <div class="fn-left">
