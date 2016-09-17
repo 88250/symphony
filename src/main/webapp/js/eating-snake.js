@@ -2,7 +2,7 @@
  * Copyright (c) 2012-2016, b3log.org & hacpai.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * you may not use EatingSnake file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
@@ -19,7 +19,6 @@
  *eating-snake.js
  *Author:Zephyr,Alexar
  *Alexar wrote it in love2d, Zephyr translate it into javascript
- *TODO：进行包装，否则作用域是全局的可能导致覆盖其他函数或变量
  */
 var EatingSnake = {
     dir: null,
@@ -39,48 +38,48 @@ var EatingSnake = {
     startTime: null,
     endTime: null,
     countTime: null,
-
+    
     //1:snake
     //0:nothing
     //2:apple
     //3:block
     setupMap: function() {
-        for (var x = 1; x <= this.size; x++) {
-            this.map[x] = new Array();
-            for (var y = 1; y <= this.size; y++) {
-                if (x == 1 || x == this.size || y == 1 || y == this.size)
-                    this.map[x][y] = 3
+        for (var x = 1; x <= EatingSnake.size; x++) {
+            EatingSnake.map[x] = new Array();
+            for (var y = 1; y <= EatingSnake.size; y++) {
+                if (x == 1 || x == EatingSnake.size || y == 1 || y == EatingSnake.size)
+                    EatingSnake.map[x][y] = 3
                 else
-                    this.map[x][y] = 0
+                    EatingSnake.map[x][y] = 0
             }
         }
     },
 
     initMap: function(oMarkId,snakeCanvasId) {
-        this.oMark = document.getElementById(oMarkId);
-        this.snakeCanvas = document.getElementById(snakeCanvasId).getContext('2d');
-        this.map = new Array();
-        this.setupMap();
-        if(this.snakeCanvas!=null)
-            this.snakeCanvas.clearRect(0, 0, (this.size - 1) * 2 * this.R, (this.size - 1) * 2 * this.R);
-        for (var x = 1; x <= this.size; x++) {
-            for (var y = 1; y <= this.size; y++) {
-                switch (this.map[x][y]) {
+        EatingSnake.oMark = document.getElementById(oMarkId);
+        EatingSnake.snakeCanvas = document.getElementById(snakeCanvasId).getContext('2d');
+        EatingSnake.map = new Array();
+        EatingSnake.setupMap();
+        if(EatingSnake.snakeCanvas!=null)
+            EatingSnake.snakeCanvas.clearRect(0, 0, (EatingSnake.size - 1) * 2 * EatingSnake.R, (EatingSnake.size - 1) * 2 * EatingSnake.R);
+        for (var x = 1; x <= EatingSnake.size; x++) {
+            for (var y = 1; y <= EatingSnake.size; y++) {
+                switch (EatingSnake.map[x][y]) {
                     case 0:
-                        this.snakeCanvas.strokeStyle = "gray";
-                        this.snakeCanvas.strokeRect((x - 1) * 2 * this.R, (y - 1) * 2 * this.R, 2 * this.R, 2 * this.R);
+                        EatingSnake.snakeCanvas.strokeStyle = "gray";
+                        EatingSnake.snakeCanvas.strokeRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 1:
-                        this.snakeCanvas.fillStyle = "black";
-                        this.snakeCanvas.fillRect((x - 1) * 2 * this.R, (y - 1) * 2 * this.R, 2 * this.R, 2 * this.R);
+                        EatingSnake.snakeCanvas.fillStyle = "black";
+                        EatingSnake.snakeCanvas.fillRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 2:
-                        this.snakeCanvas.fillStyle = "red";
-                        this.snakeCanvas.fillRect((x - 1) * 2 * this.R, (y - 1) * 2 * this.R, 2 * this.R, 2 * this.R);
+                        EatingSnake.snakeCanvas.fillStyle = "red";
+                        EatingSnake.snakeCanvas.fillRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 3:
-                        this.snakeCanvas.fillStyle = "gray";
-                        this.snakeCanvas.fillRect((x - 1) * 2 * this.R, (y - 1) * 2 * this.R, 2 * this.R, 2 * this.R);
+                        EatingSnake.snakeCanvas.fillStyle = "gray";
+                        EatingSnake.snakeCanvas.fillRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                 }
             }
@@ -88,25 +87,25 @@ var EatingSnake = {
     },
 
     drawMap: function() {
-        this.snakeCanvas.clearRect(0, 0, (this.size - 1) * 2 * this.R, (this.size - 1) * 2 * this.R);
-        for (var x = 1; x <= this.size; x++) {
-            for (var y = 1; y <= this.size; y++) {
-                switch (this.map[x][y]) {
+        EatingSnake.snakeCanvas.clearRect(0, 0, (EatingSnake.size - 1) * 2 * EatingSnake.R, (EatingSnake.size - 1) * 2 * EatingSnake.R);
+        for (var x = 1; x <= EatingSnake.size; x++) {
+            for (var y = 1; y <= EatingSnake.size; y++) {
+                switch (EatingSnake.map[x][y]) {
                     case 0:
-                        this.snakeCanvas.strokeStyle = "gray";
-                        this.snakeCanvas.strokeRect((x - 1) * 2 * this.R, (y - 1) * 2 * this.R, 2 * this.R, 2 * this.R);
+                        EatingSnake.snakeCanvas.strokeStyle = "gray";
+                        EatingSnake.snakeCanvas.strokeRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 1:
-                        this.snakeCanvas.fillStyle = "black";
-                        this.snakeCanvas.fillRect((x - 1) * 2 * this.R, (y - 1) * 2 * this.R, 2 * this.R, 2 * this.R);
+                        EatingSnake.snakeCanvas.fillStyle = "black";
+                        EatingSnake.snakeCanvas.fillRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 2:
-                        this.snakeCanvas.fillStyle = "red";
-                        this.snakeCanvas.fillRect((x - 1) * 2 * this.R, (y - 1) * 2 * this.R, 2 * this.R, 2 * this.R);
+                        EatingSnake.snakeCanvas.fillStyle = "red";
+                        EatingSnake.snakeCanvas.fillRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 3:
-                        this.snakeCanvas.fillStyle = "gray";
-                        this.snakeCanvas.fillRect((x - 1) * 2 * this.R, (y - 1) * 2 * this.R, 2 * this.R, 2 * this.R);
+                        EatingSnake.snakeCanvas.fillStyle = "gray";
+                        EatingSnake.snakeCanvas.fillRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                 }
             }
@@ -115,7 +114,7 @@ var EatingSnake = {
 
 
     check: function(x, y) {
-        if (this.map[x][y] != 0)
+        if (EatingSnake.map[x][y] != 0)
             return true; //true代表此处有填充p
         else
             return false;
@@ -123,7 +122,7 @@ var EatingSnake = {
 
     setupSnake: function() {
         for (var i = 1; i <= 5; i++) {
-            this.snake[i] = {
+            EatingSnake.snake[i] = {
                 x: i + 5,
                 y: 7
             };
@@ -131,25 +130,25 @@ var EatingSnake = {
     },
 
     drawSnake: function(toggle) {
-        for (var i = 1; i < this.snake.length; i++) {
-            this.map[this.snake[i].x][this.snake[i].y] = toggle;
+        for (var i = 1; i < EatingSnake.snake.length; i++) {
+            EatingSnake.map[EatingSnake.snake[i].x][EatingSnake.snake[i].y] = toggle;
         }
     },
 
     newFood: function() {
         do {
-            this.food.x = Math.floor(Math.random() * (this.size - 1) + 1);
-            this.food.y = Math.floor(Math.random() * (this.size - 1) + 1);
-        } while (this.check(this.food.x, this.food.y) == true)
-        this.map[this.food.x][this.food.y] = 2;
+            EatingSnake.food.x = Math.floor(Math.random() * (EatingSnake.size - 1) + 1);
+            EatingSnake.food.y = Math.floor(Math.random() * (EatingSnake.size - 1) + 1);
+        } while (EatingSnake.check(EatingSnake.food.x, EatingSnake.food.y) == true)
+        EatingSnake.map[EatingSnake.food.x][EatingSnake.food.y] = 2;
     },
 
     gameover: function() {
-        clearInterval(this.interval);
+        clearInterval(EatingSnake.interval);
         //可以考虑不同分数不同提示
-        alert("Game Over! 您的分数是：" + (this.snake.length - this.baseLen) + "！哇哦好厉害哟！");
+        alert("Game Over! 您的分数是：" + (EatingSnake.snake.length - EatingSnake.baseLen) + "！哇哦好厉害哟！");
         var requestJSONObject = {
-            score: (this.snake.length - this.baseLen)
+            score: (EatingSnake.snake.length - EatingSnake.baseLen)
         };
         $.ajax({
             url: Label.servePath + "/activity/eatingSnake/gameOver",
@@ -175,111 +174,111 @@ var EatingSnake = {
     },
 
     eat: function() {
-        this.snake[this.snake.length] = {
-            x: this.snake[1].x,
-            y: this.snake[1].y
+        EatingSnake.snake[EatingSnake.snake.length] = {
+            x: EatingSnake.snake[1].x,
+            y: EatingSnake.snake[1].y
         };
-        this.newFood();
-        clearInterval(interval);
-        if (this.currTime >= 50)
-            this.currTime = this.currTime - this.stepTime;
-        this.interval = setInterval(this.gameRun, this.currTime);
+        EatingSnake.newFood();
+        clearInterval(EatingSnake.interval);
+        if (EatingSnake.currTime >= 50)
+            EatingSnake.currTime = EatingSnake.currTime - EatingSnake.stepTime;
+        EatingSnake.interval = setInterval(EatingSnake.gameRun, EatingSnake.currTime);
     },
 
     updateSnake: function() {
-        this.lastDir.x = this.dir.x
-        this.lastDir.y = this.dir.y
-        var targetX = this.snake[1].x + this.dir.x,
-            targetY = this.snake[1].y + this.dir.y;
-        if (this.check(targetX, targetY)) {
-            if (targetX == this.food.x && targetY == this.food.y) { //eat
-                this.eat();
+        EatingSnake.lastDir.x = EatingSnake.dir.x
+        EatingSnake.lastDir.y = EatingSnake.dir.y
+        var targetX = EatingSnake.snake[1].x + EatingSnake.dir.x,
+            targetY = EatingSnake.snake[1].y + EatingSnake.dir.y;
+        if (EatingSnake.check(targetX, targetY)) {
+            if (targetX == EatingSnake.food.x && targetY == EatingSnake.food.y) { //eat
+                EatingSnake.eat();
             } else { //hit
-                this.gameover();
+                EatingSnake.gameover();
                 return;
             }
         }
-        this.drawSnake(0)
-        for (var i = this.snake.length - 1; i >= 2; i--) {
-            this.snake[i].x = this.snake[i - 1].x
-            this.snake[i].y = this.snake[i - 1].y
+        EatingSnake.drawSnake(0)
+        for (var i = EatingSnake.snake.length - 1; i >= 2; i--) {
+            EatingSnake.snake[i].x = EatingSnake.snake[i - 1].x
+            EatingSnake.snake[i].y = EatingSnake.snake[i - 1].y
         }
-        this.snake[1].x = targetX
-        this.snake[1].y = targetY
+        EatingSnake.snake[1].x = targetX
+        EatingSnake.snake[1].y = targetY
 
-        this.drawSnake(1)
+        EatingSnake.drawSnake(1)
     },
 
     input: function(keyCode) {
         switch (keyCode) {
             case 65: //左边
-                if (this.lastDir.x == 0) {
-                    this.dir.x = -1;
-                    this.dir.y = 0;
+                if (EatingSnake.lastDir.x == 0) {
+                    EatingSnake.dir.x = -1;
+                    EatingSnake.dir.y = 0;
                 }
                 break;
             case 87: //上边
-                if (this.lastDir.y == 0) {
-                    this.dir.x = 0;
-                    this.dir.y = -1;
+                if (EatingSnake.lastDir.y == 0) {
+                    EatingSnake.dir.x = 0;
+                    EatingSnake.dir.y = -1;
                 }
                 break;
             case 68: //右边
-                if (this.lastDir.x == 0) {
-                    this.dir.x = 1;
-                    this.dir.y = 0;
+                if (EatingSnake.lastDir.x == 0) {
+                    EatingSnake.dir.x = 1;
+                    EatingSnake.dir.y = 0;
                 }
                 break;
             case 83: //下的
-                if (this.lastDir.y == 0) {
-                    this.dir.x = 0;
-                    this.dir.y = 1;
+                if (EatingSnake.lastDir.y == 0) {
+                    EatingSnake.dir.x = 0;
+                    EatingSnake.dir.y = 1;
                 }
                 break;
             case 80: //开始/暂停
-                if (this.isPause) {
-                    this.interval = setInterval(gameRun, currTime);
-                    this.isPause = false;
+                if (EatingSnake.isPause) {
+                    EatingSnake.interval = setInterval(gameRun, currTime);
+                    EatingSnake.isPause = false;
                 } else {
                     clearInterval(interval);
-                    this.isPause = true;
+                    EatingSnake.isPause = true;
                 }
                 break;
         }
     },
     init: function() {
-        this.dir = {
+        EatingSnake.dir = {
             x: 0,
             y: 1
         };
-        this.lastDir = {
+        EatingSnake.lastDir = {
             x: 0,
             y: 0
         };
-        this.map = new Array();
-        this.food = {
+        EatingSnake.map = new Array();
+        EatingSnake.food = {
             x: 0,
             y: 0
         };
-        this.currTime = 200;
+        EatingSnake.currTime = 200;
         
-        this.snake = new Array();
-        this.setupMap();
-        this.setupSnake();
-        this.drawSnake(1);
-        this.newFood();
-        clearInterval(this.interval);
+        EatingSnake.snake = new Array();
+        EatingSnake.setupMap();
+        EatingSnake.setupSnake();
+        EatingSnake.drawSnake(1);
+        EatingSnake.newFood();
+        clearInterval(EatingSnake.interval);
     },
     gameRun: function() {
         // countTime += currTime;
-        this.updateSnake();
-        this.drawMap();
-        this.oMark.innerHtml = this.snake.length - this.baseLen;
+        EatingSnake.updateSnake();
+        EatingSnake.drawMap();
+//        EatingSnake.oMark.innerHtml = EatingSnake.snake.length - EatingSnake.baseLen;
     },
     start: function() {
-        this.init();
+        EatingSnake.init();
         // countTime = 0;
-        this.interval = setInterval(this.gameRun, this.currTime);
+        EatingSnake.interval = setInterval(EatingSnake.gameRun, EatingSnake.currTime);
         // startTime = new Date().getTime();
     },
     
