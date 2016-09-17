@@ -9,8 +9,9 @@
     <body>
         <#include "../header.ftl">
          <div class="main">
-            <div class="wrapper">
-                 <h2>${msg}</h2>
+            <div class="wrapper block">
+                <h2 class="sub-head">Oops!</h2><br/>
+                ${msg}
             </div>
         </div>
         <#include '../footer.ftl'/>

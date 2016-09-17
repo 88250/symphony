@@ -11,9 +11,11 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content content-reset">
-                    <h2><span class="ft-blue">♦</span> ${chargePointLabel}</h2>
+                <div class="content">
+                    <h2 class="sub-head"><span class="ft-blue">♦</span> ${chargePointLabel}</h2>
+                    <div class="content-reset">
                     ${chargePointContentLabel}
+                    </div>
                 </div>
                 <div class="side">
                     <#include "side.ftl">

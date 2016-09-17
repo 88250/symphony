@@ -23,55 +23,50 @@
  */
 
 /* start home common */
-.home-list {
-    background-image: linear-gradient(to right, #F6F6F6 0%, #FDFDFD 8px);
-    box-shadow: 1px 0 0 #EEEEEE inset;
+.home-menu {
+    margin-bottom: 15px;
     list-style: none;
-    padding: 15px 0;
+    background-color: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 3px;
 }
 
-.home-list li a {
-    cursor: pointer;
-    margin: 5px 0;
+.home-menu a {
+    position: relative;
     display: block;
     padding: 8px 10px;
+    text-shadow: 0 1px 0 #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.home-menu a:last-child {
+    border-bottom: 0;
+}
+
+.home-menu a:hover {
     text-decoration: none;
+    background-color: #f9f9f9;
 }
 
-.home-list li a:hover {
-    box-shadow: 2px 0 0 #CCC inset;
-}
-
-.home-list li a > span.counter {
-    background-color: #EEEEEE;
-    border-radius: 2px 2px 2px 2px;
-    box-shadow: 0 -1px 0 #E3E3E3 inset;
-    color: #999;
-    font-size: 11px;
+.home-menu a.current {
     font-weight: bold;
-    padding: 2px 5px;
-    margin-left: 5px;
+    color: #222;
+    cursor: default;
+    background-color: #fff;
 }
 
-.home-list li.current a {
-    background: none repeat scroll 0 0 #FDFDFD;    
-    box-shadow: 2px 1px 3px rgba(0, 0, 0, 0.05);
-    color: #333333;
-    font-weight: bold;
-    position: relative;
-    border: 1px solid #EEE;
-    border-left-width: 0;
-}
-
-.home-list li.current a:after {
-    background-image: linear-gradient(#D26911, #BA5D0F);
-    bottom: -1px;
-    box-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1) inset;
-    content: "";
+.home-menu a.current::before {
     position: absolute;
-    right: -1px;
-    top: -1px;
-    width: 3px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    content: "";
+    background-color: #d26911;
+}
+
+.home-menu a span:last-child:hover {
+    color: #4183C4;
 }
 
 .link-forge-upload {

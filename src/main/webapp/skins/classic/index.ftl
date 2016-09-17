@@ -49,7 +49,7 @@
                                     <#if "someone" != article.articleAuthorName></a></#if>
                                 <a rel="nofollow" class="title" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                                 <a class="fn-right count ft-gray ft-smaller" href="${servePath}${article.articlePermalink}">${article.articleViewCount}</a>
-                           </li>
+                            </li>
                             </#list>
                         </ul>
                     </div>
@@ -105,10 +105,29 @@
                 <a class="item-header" style="background-image: url(${activityBgIcon});" href="${servePath}/pre-post">${postArticleLabel}</a>
                 <div class="module-panel">
                     <ul class="module-list">
-                        <li><a class="title" href="<#if useCaptchaCheckin??>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a></li>
-                        <li><a class="title" href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
-                        <li><a class="title" href="${servePath}/activity/1A0001">${activity1A0001Label}</a></li>
-                        <li><a class="title" href="${servePath}/activity/character">${characterLabel}</a></li>
+                        <li>
+                            <div class="avatar-small tooltipped tooltipped-ne slogan"
+                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
+                            <a class="title" href="<#if useCaptchaCheckin??>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a>
+                        </li>
+                        <li>
+                            <div class="avatar-small tooltipped tooltipped-ne slogan"
+                                 aria-label="${activityYesterdayLivenessRewardLabel}" style="background-image:url('${staticServePath}/images/activities/yesterday.png')"></div>
+                            <a class="title" href="${servePath}/activity/yesterday-liveness-reward">${activityYesterdayLivenessRewardLabel}</a></li>
+                        <li>
+                            <div class="avatar-small tooltipped tooltipped-ne slogan"
+                                 aria-label="${activity1A0001Label}" style="background-image:url('${staticServePath}/images/activities/1A0001.png')"></div>
+                            <a class="title" href="${servePath}/activity/1A0001">${activity1A0001Label}</a></li>
+                        <li>
+                            <div class="avatar-small tooltipped tooltipped-ne slogan"
+                                 aria-label="${characterLabel}" style="background-image:url('${staticServePath}/images/activities/char.png')"></div>
+                            <a class="title" href="${servePath}/activity/character">${characterLabel}</a>
+                        </li>
+                        <li>
+                            <div class="avatar-small tooltipped tooltipped-ne slogan"
+                                 aria-label="${eatingSnakeLabel}" style="background-image:url('${staticServePath}/images/activities/snak.png')"></div>
+                            <a class="title" href="${servePath}/activity/eating-snake">${eatingSnakeLabel}</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -180,13 +199,13 @@
                 isLoggedIn: ${isLoggedIn?c}
         };
         Util.init(${isLoggedIn?c});
-        <#if isLoggedIn>
-        // Init [User] channel
-        Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}${contextPath}/user-channel");
-        </#if>
-        <#if mouseEffects>
-        Util.mouseClickEffects();
-        </#if>
+        < #if isLoggedIn >
+                // Init [User] channel
+                Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}${contextPath}/user-channel");
+        < /#if>
+                < #if mouseEffects >
+                Util.mouseClickEffects();
+        < /#if>
     </script>
     <#if algoliaEnabled>
     <script src="${staticServePath}/js/lib/algolia/algolia.min.js"></script>

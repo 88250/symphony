@@ -10,10 +10,13 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content activity">
-                    <div class="content-reset">
-                        <div id="captcha"></div>
-                    </div>
+                <div class="content">
+                    <h2 class="sub-head">
+                        <div class="avatar-small tooltipped tooltipped-ne"
+                             aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
+                        ${dailyCheckinLabel}
+                    </h2>
+                    <div id="captcha"></div>
                 </div>
                 <div class="side">
                     <#include "../side.ftl">

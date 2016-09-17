@@ -633,6 +633,11 @@ code .dec { color: initial; } /* decimal - blue */
     min-height: 300px;
 }
 
+.activity .list .ft-fade {
+    margin-top: 6px;
+    display: block;
+}
+
 #charCanvas {
     border: 1px solid #e5e5e5;
     border-radius: 5px;
@@ -641,6 +646,12 @@ code .dec { color: initial; } /* decimal - blue */
     background-image: url(../images/m-char.png);
     background-size: cover;
     margin: 20px auto;
+}
+
+.sub-head .avatar-small {
+    height: 24px;
+    width: 24px;
+    vertical-align: sub;
 }
 /* end activity */
 
@@ -775,23 +786,11 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .index a.count {
-    text-decoration: none;
     position: absolute;
     right: 0;
     top: 50%;
     margin-top: -8px;
-    padding: 2px 5px;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1;
-    color: #666;
-    background-color: #eee;
-    border-radius: 20px;
 } 
-
-.index a.count:visited {
-    color: #999;
-}
 
 .index .module-list .title {
     color: #595959;

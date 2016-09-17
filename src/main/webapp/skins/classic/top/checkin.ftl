@@ -1,8 +1,6 @@
 <#include "macro-top.ftl">
 <@top "checkin">
-<div class="content content-reset">
-    <h2><span class="ft-gray">♣</span> ${checkinTopLabel}</h2>
-</div>
+<h2 class="sub-head"><span class="ft-gray">♣</span> ${checkinTopLabel}</h2>
 <div class="list top">
     <ul>
         <#list topCheckinUsers as user>

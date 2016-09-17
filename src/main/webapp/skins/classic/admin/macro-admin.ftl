@@ -73,18 +73,18 @@
                 </div>
                 <#nested>
                 <div class="side">
-                    <ul class="home-list responsive-hide">
-                        <li<#if type == "index"> class="current"</#if>><a href="${servePath}/admin">${consoleIndexLabel}</a></li>
-                        <li<#if type == "users" || type == "addUser"> class="current"</#if>><a href="${servePath}/admin/users">${userAdminLabel}</a></li>
-                        <li<#if type == "articles" || type == "addArticle"> class="current"</#if>><a href="${servePath}/admin/articles">${articleAdminLabel}</a></li>
-                        <li<#if type == "comments"> class="current"</#if>><a href="${servePath}/admin/comments">${commentAdminLabel}</a></li>
-                        <li<#if type == "domains" || type == "addDomain"> class="current"</#if>><a href="${servePath}/admin/domains">${domainAdminLabel}</a></li>
-                        <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="${servePath}/admin/tags">${tagAdminLabel}</a></li>
-                        <li<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>><a href="${servePath}/admin/reserved-words">${reservedWordAdminLabel}</a></li>
-                        <li<#if type == "invitecodes"> class="current"</#if>><a href="${servePath}/admin/invitecodes">${invitecodeAdminLabel}</a></li>
-                        <li<#if type == "ad"> class="current"</#if>><a href="${servePath}/admin/ad">${adAdminLabel}</a></li>
-                        <li<#if type == "misc"> class="current"</#if>><a href="${servePath}/admin/misc">${miscAdminLabel}</a></li>
-                    </ul>
+                    <nav class="home-menu">
+                        <a href="${servePath}/admin"<#if type == "index"> class="current"</#if>>${consoleIndexLabel}</a>
+                        <a href="${servePath}/admin/users"<#if type == "users" || type == "addUser"> class="current"</#if>>${userAdminLabel}</a>
+                        <a href="${servePath}/admin/articles"<#if type == "articles" || type == "addArticle"> class="current"</#if>>${articleAdminLabel}</a>
+                        <a href="${servePath}/admin/comments"<#if type == "comments"> class="current"</#if>>${commentAdminLabel}</a>
+                        <a href="${servePath}/admin/domains"<#if type == "domains" || type == "addDomain"> class="current"</#if>>${domainAdminLabel}</a>
+                        <a href="${servePath}/admin/tags"<#if type == "tags" || type == "addTag"> class="current"</#if>>${tagAdminLabel}</a>
+                        <a href="${servePath}/admin/reserved-words"<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>>${reservedWordAdminLabel}</a>
+                        <a href="${servePath}/admin/invitecodes"<#if type == "invitecodes"> class="current"</#if>>${invitecodeAdminLabel}</a>
+                        <a href="${servePath}/admin/ad"<#if type == "ad"> class="current"</#if>>${adAdminLabel}</a>
+                        <a href="${servePath}/admin/misc"<#if type == "misc"> class="current"</#if>>${miscAdminLabel}</a>
+                    </nav>
                 </div>
             </div>
         </div>
