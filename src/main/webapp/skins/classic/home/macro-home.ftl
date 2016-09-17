@@ -54,29 +54,25 @@
     </head>
     <body>
         <#include "../header.ftl">
-        <div class="tabs">
-            <div class="fn-clear wrapper home-nav">
-                <a <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
-                    class="selected"</#if>
-                    href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
-                <a <#if type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="selected"</#if>
-                    href="${servePath}/member/${user.userName}/following/users"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
-                <a <#if type == "points"> class="selected"</#if> href="${servePath}/member/${user.userName}/points">
-                    <svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
-                <a <#if type == "linkForge"> class="selected"</#if> href="${servePath}/member/${user.userName}/forge/link">
-                    <svg height="18" viewBox="0 1 16 16" width="16">${baguaIcon}</svg>  ${forgeLabel}</a>
-                <#if currentUser?? && currentUser.userName == user.userName>
-                <a <#if type == "settings"> class="selected"</#if>
-                    href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
-                </#if>
-            </div>
-        </div>
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="fn-clear">
-                        <#nested>
+                    <div class="tabs fn-clear">
+                        <a <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
+                            class="selected"</#if>
+                            href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
+                        <a <#if type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="selected"</#if>
+                            href="${servePath}/member/${user.userName}/following/users"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
+                        <a <#if type == "points"> class="selected"</#if> href="${servePath}/member/${user.userName}/points">
+                            <svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
+                        <a <#if type == "linkForge"> class="selected"</#if> href="${servePath}/member/${user.userName}/forge/link">
+                            <svg height="18" viewBox="0 1 16 16" width="16">${baguaIcon}</svg>  ${forgeLabel}</a>
+                        <#if currentUser?? && currentUser.userName == user.userName>
+                        <a <#if type == "settings"> class="selected"</#if>
+                            href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
+                        </#if>
                     </div>
+                    <#nested>
                 </div>
                 <div class="side">
                     <#if currentUser?? && currentUser.userName == user.userName>

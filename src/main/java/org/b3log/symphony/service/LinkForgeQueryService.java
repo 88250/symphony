@@ -100,14 +100,14 @@ public class LinkForgeQueryService {
 
         try {
             List<JSONObject> cachedTags = tagCache.getTags();
-            for (final JSONObject cachedTag : cachedTags) {
-                Collections.sort(cachedTags, new Comparator<JSONObject>() {
-                    @Override
-                    public int compare(final JSONObject o1, final JSONObject o2) {
-                        return o2.optInt(Tag.TAG_LINK_CNT) - o1.optInt(Tag.TAG_LINK_CNT);
-                    }
-                });
+            Collections.sort(cachedTags, new Comparator<JSONObject>() {
+                @Override
+                public int compare(final JSONObject o1, final JSONObject o2) {
+                    return o2.optInt(Tag.TAG_LINK_CNT) - o1.optInt(Tag.TAG_LINK_CNT);
+                }
+            });
 
+            for (final JSONObject cachedTag : cachedTags) {
                 cachedTags = cachedTags.size() > TAG_MAX_COUNT ? cachedTags.subList(0, TAG_MAX_COUNT) : cachedTags;
 
                 if (cachedTag.optInt(Tag.TAG_LINK_CNT) < 1

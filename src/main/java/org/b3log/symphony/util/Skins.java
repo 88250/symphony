@@ -16,6 +16,7 @@
 package org.b3log.symphony.util;
 
 import freemarker.template.Configuration;
+import freemarker.template.TemplateExceptionHandler;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +29,7 @@ import org.b3log.latke.servlet.AbstractServletListener;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 4, 2015
+ * @version 1.1.0.0, Sep 15, 2016
  * @since 1.3.0
  */
 public final class Skins {
@@ -42,9 +43,10 @@ public final class Skins {
      * FreeMarker template configurations holder.
      *
      * <p>
-     * &lt;skinDirName, Configuration&gt;</p>
+     * &lt;skinDirName, Configuration&gt;
+     * </p>
      */
-    public static final Map<String, Configuration> TEMPLATE_HOLDER = new HashMap<String, Configuration>();
+    public static final Map<String, Configuration> TEMPLATE_HOLDER = new HashMap<>();
 
     static {
         final ServletContext servletContext = AbstractServletListener.getServletContext();
@@ -53,12 +55,14 @@ public final class Skins {
         final String[] skinNames = skinsDir.list();
 
         for (final String skinName : skinNames) {
-            final Configuration cfg = new Configuration();
+            final Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
             TEMPLATE_HOLDER.put(skinName, cfg);
 
             cfg.setDefaultEncoding("UTF-8");
             cfg.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
             cfg.setServletContextForTemplateLoading(servletContext, "skins/" + skinName);
+            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+            cfg.setLogTemplateExceptions(false);
         }
     }
 

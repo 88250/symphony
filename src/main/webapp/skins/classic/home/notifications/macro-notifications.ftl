@@ -14,126 +14,65 @@
         <#include "../../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="responsive-show">
-                    <ul class="tab fn-clear">
-                        <li<#if type == "commented"> class="current"</#if>>
-                            <a href="${servePath}/notifications/commented">
-                                <span>${notificationCommentedLabel}</span>
-                                <#if unreadCommentedNotificationCnt &gt; 0>
-                                <span class="counter">${unreadCommentedNotificationCnt}</span>
-                                </#if>
-                            </a> 
-                        </li>
-                        <li<#if type == "reply"> class="current"</#if>>
-                            <a href="${servePath}/notifications/reply">
-                                <span>${notificationReplyLabel}</span>
-                                <#if unreadReplyNotificationCnt &gt; 0>
-                                <span class="counter">${unreadReplyNotificationCnt}</span>
-                                </#if>
-                            </a> 
-                        </li>
-                        <li<#if type == "at"> class="current"</#if>>
-                            <a href="${servePath}/notifications/at">
-                                <span>${notificationAtLabel}</span>
-                                <#if unreadAtNotificationCnt &gt; 0>
-                                <span class="counter">${unreadAtNotificationCnt}</span>
-                                </#if>
-                            </a>
-                        </li>
-                        <li<#if type == "followingUser"> class="current"</#if>>
-                            <a href="${servePath}/notifications/following-user">
-                                <span>${notificationFollowingUserLabel}</span>
-                                <#if unreadFollowingUserNotificationCnt &gt; 0>
-                                <span class="counter">${unreadFollowingUserNotificationCnt}</span>
-                                </#if>
-                            </a>
-                        </li>
-                        <li<#if type == "point"> class="current"</#if>>
-                            <a href="${servePath}/notifications/point">
-                                <span>${pointLabel}</span>
-                                <#if unreadPointNotificationCnt &gt; 0>
-                                <span class="counter">${unreadPointNotificationCnt}</span>
-                                </#if>
-                            </a>
-                        </li>
-                        <li<#if type == "broadcast"> class="current"</#if>>
-                            <a href="${servePath}/notifications/broadcast">
-                                <span>${sameCityLabel}</span>
-                                <#if unreadBroadcastNotificationCnt &gt; 0>
-                                <span class="counter">${unreadBroadcastNotificationCnt}</span>
-                                </#if>
-                            </a>
-                        </li>
-                    </ul>
-                    <br/>
-                </div>
                 <div class="list content">
                     <#nested>
                 </div>
                 <div class="side">
                     <#include '../../common/person-info.ftl'/>
-                    <ul class="home-list responsive-hide">
-                        <li<#if type == "commented"> class="current"</#if>>
-                            <a href="${servePath}/notifications/commented">
+                    <nav class="home-menu">
+                            <a href="${servePath}/notifications/commented"<#if type == "commented"> class="current"</#if>>
                                 <span>${notificationCommentedLabel}</span>
                                 <#if unreadCommentedNotificationCnt &gt; 0>
-                                <span class="counter">${unreadCommentedNotificationCnt}</span>
-                                <span onclick="Util.makeNotificationRead('commented')" aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-sw">
+                                <span class="count">${unreadCommentedNotificationCnt}</span>
+                                <span onclick="Util.makeNotificationRead('commented')" 
+                                      aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
                                     <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                 </span>
                                 </#if>
                             </a> 
-                        </li>
-                        <li<#if type == "reply"> class="current"</#if>>
-                            <a href="${servePath}/notifications/reply">
+                            <a href="${servePath}/notifications/reply"<#if type == "reply"> class="current"</#if>>
                                 <span>${notificationReplyLabel}</span>
                                 <#if unreadReplyNotificationCnt &gt; 0>
-                                <span class="counter">${unreadReplyNotificationCnt}</span>
-                                <span onclick="Util.makeNotificationRead('reply')" aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-sw">
+                                <span class="count">${unreadReplyNotificationCnt}</span>
+                                <span onclick="Util.makeNotificationRead('reply')" 
+                                      aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
                                     <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                 </span>
                                 </#if>
                             </a> 
-                        </li>
-                        <li<#if type == "at"> class="current"</#if>>
-                            <a href="${servePath}/notifications/at">
+                            <a href="${servePath}/notifications/at"<#if type == "at"> class="current"</#if>>
                                 <span>${notificationAtLabel}</span>
                                 <#if unreadAtNotificationCnt &gt; 0>
-                                <span class="counter">${unreadAtNotificationCnt}</span>
-                                <span onclick="Util.makeNotificationRead('at')" aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-sw">
+                                <span class="count">${unreadAtNotificationCnt}</span>
+                                <span onclick="Util.makeNotificationRead('at')" 
+                                      aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
                                     <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                 </span>
                                 </#if>
                             </a>
-                        </li>
-                        <li<#if type == "followingUser"> class="current"</#if>>
-                            <a href="${servePath}/notifications/following-user">
+                            <a href="${servePath}/notifications/following-user"<#if type == "followingUser"> class="current"</#if>>
                                 <span>${notificationFollowingUserLabel}</span>
                                 <#if unreadFollowingUserNotificationCnt &gt; 0>
-                                <span class="counter">${unreadFollowingUserNotificationCnt}</span>
-                                <span onclick="Util.makeNotificationRead('followingUser')" aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-sw">
+                                <span class="count">${unreadFollowingUserNotificationCnt}</span>
+                                <span onclick="Util.makeNotificationRead('followingUser')" 
+                                      aria-label="${makeAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
                                     <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                                 </span>
                                 </#if>
                             </a>
-                        </li>
-                        <li<#if type == "point"> class="current"</#if>>
-                            <a href="${servePath}/notifications/point">
+                            <a href="${servePath}/notifications/point"<#if type == "point"> class="current"</#if>>
                                 <span>${pointLabel}</span>
                                 <#if unreadPointNotificationCnt &gt; 0>
-                                <span class="counter">${unreadPointNotificationCnt}</span>
+                                <span class="count">${unreadPointNotificationCnt}</span>
                                 </#if>
                             </a>
-                        </li>
-                        <li<#if type == "broadcast"> class="current"</#if>>
-                            <a href="${servePath}/notifications/broadcast">
+                            <a href="${servePath}/notifications/broadcast"<#if type == "broadcast"> class="current"</#if>>
                                 <span>${sameCityLabel}</span>
                                 <#if unreadBroadcastNotificationCnt &gt; 0>
-                                <span class="counter">${unreadBroadcastNotificationCnt}</span>
+                                <span class="count">${unreadBroadcastNotificationCnt}</span>
                                 </#if>
                             </a>
-                        </li>
-                    </ul>
+                    </nav>
                 </div>
             </div>
         </div>

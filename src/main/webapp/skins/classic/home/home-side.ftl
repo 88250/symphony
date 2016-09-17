@@ -14,25 +14,29 @@
                 <img src="${staticServePath}/images/<#if user.userOnlineFlag>on<#else>off</#if>line.png" />
             </span>
             </#if>
-            <#if "adminRole" == user.userRole>
-            <span class="ft-13 tooltipped tooltipped-s" aria-label="${administratorLabel}"><span class="icon-userrole"></span></span>
-            </#if>
-            <#if isAdminLoggedIn>
-            <a class="ft-13 tooltipped tooltipped-s ft-a-icon" href="${servePath}/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
-            </#if>
             <#if isLoggedIn && (userName != user.userName)>
-            <#if isFollowing>
-            <button class="red small" onclick="Util.unfollow(this, '${followingId}', 'user')"> 
-                ${unfollowLabel}
-            </button>
-            <#else>
-            <button class="green small" onclick="Util.follow(this, '${followingId}', 'user')"> 
-                ${followLabel}
-            </button>
-            </#if>
             <button class="green small" onclick="location.href = '/post?type=1&at=${user.userName}'"> 
                 ${privateMessageLabel}
             </button>
+            </#if>
+            
+            <#if "adminRole" == user.userRole>
+            <span class="ft-13 tooltipped tooltipped-n" aria-label="${administratorLabel}"><span class="icon-userrole"></span></span>
+            </#if>
+            <#if isAdminLoggedIn>
+            <a class="ft-13 tooltipped tooltipped-n ft-a-icon" href="${servePath}/admin/user/${user.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+            </#if>
+            
+            <#if isLoggedIn && (userName != user.userName)>
+            <#if isFollowing>
+            <button class="follow" onclick="Util.unfollow(this, '${followingId}', 'user')"> 
+                ${unfollowLabel}
+            </button>
+            <#else>
+            <button class="follow" onclick="Util.follow(this, '${followingId}', 'user')"> 
+                ${followLabel}
+            </button>
+            </#if>
             </#if>
         </div>
 

@@ -28,7 +28,7 @@ import org.b3log.latke.logging.Logger;
  * Cryptology utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Aug 2, 2016
+ * @version 1.0.0.2, Sep 17, 2016
  * @since 1.0.0
  */
 public final class Crypts {
@@ -62,7 +62,7 @@ public final class Crypts {
 
             return Hex.encodeHexString(result);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Encrypt failed", e);
+            LOGGER.log(Level.WARN, "Encrypt failed", e);
 
             return null;
         }
@@ -92,7 +92,7 @@ public final class Crypts {
 
             return new String(result, "UTF-8");
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Decrypt failed", e);
+            LOGGER.log(Level.WARN, "Decrypt failed");
 
             return null;
         }

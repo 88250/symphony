@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.21.16.36, Sep 13, 2016
+ * @version 1.21.16.37, Sep 15, 2016
  */
 
 /* start reset */
@@ -441,6 +441,10 @@ blockquote {
     height: 5px;
 }
 
+.fn-inline {
+    display: inline-block;
+}
+
 .ft-13 {
     font-size: 13px;
 }
@@ -491,8 +495,30 @@ a[class^="icon-"].ft-fade:hover {
     text-align: center;
 }
 
-.fn-inline {
-    display: inline-block;
+.count {
+    text-decoration: none;
+    padding: 2px 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #666;
+    background-color: #eee;
+    border-radius: 20px;
+}
+
+.count:hover {
+    text-decoration: none;
+}
+
+.count:visited {
+    color: #999;
+}
+
+.sub-head {
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e5e5e5;  
+    line-height: 31px;
 }
 /* end function */
 
@@ -1080,7 +1106,6 @@ a[class*=" icon-"]:hover {
     text-decoration: none;
     font-size: 13px;
     margin-left: -1px;
-    margin-bottom: 10px;
     box-sizing: border-box;
 }
 
@@ -1171,7 +1196,7 @@ a[class*=" icon-"]:hover {
     border-top: 1px dotted #CCCCCC;
     list-style: none;
     margin-top: 20px;
-    padding: 15px 0;
+    padding: 20px 0;
 }
 
 .status > li {
@@ -1257,6 +1282,11 @@ a[class*=" icon-"]:hover {
 .form input[type=file] {
     width: 1px;
     opacity: 0.001;
+}
+
+.form select {
+    height: 33px;
+    padding-top: 5px;
 }
 /* end form */
 
@@ -1616,18 +1646,6 @@ a[class*=" icon-"]:hover {
     top: 40%;
 }
 
-.cmts a.count {
-    color: #FFF;
-    background-color: #b0b0b0;
-    padding: 0px 5px;
-    border-radius: 3px;
-    text-decoration: none;
-}
-
-.cmts a.count:visited {
-    background-color: #ddd;
-}
-
 .cm-s-default.CodeMirror {
     border-radius: 0 0 3px 3px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
@@ -1932,7 +1950,9 @@ ul.CodeMirror-hints {
 }
 
 .person-info .info button.red:hover {
-    letter-spacing: 2px;
+    background-color: #b33630;
+    background-image: none;
+    border-color: #9f312c
 }
 
 .person-info .info .fn-right {

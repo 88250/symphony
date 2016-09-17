@@ -15,26 +15,28 @@
  */
 package org.b3log.symphony.util;
 
-import java.io.IOException;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateExceptionHandler;
+import java.io.File;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import org.b3log.latke.ioc.Lifecycle;
+import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.LangPropsServiceImpl;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Mail utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.1, Jul 31, 2016
+ * @version 1.1.3.4, Sep 16, 2016
  * @since 1.3.0
  */
 public final class Mails {
@@ -45,12 +47,12 @@ public final class Mails {
     private static final Logger LOGGER = Logger.getLogger(Mails.class.getName());
 
     /**
-     * API User.
+     * API user.
      */
     private static final String API_USER = Symphonys.get("sendcloud.apiUser");
 
     /**
-     * API Key.
+     * API key.
      */
     private static final String API_KEY = Symphonys.get("sendcloud.apiKey");
 
@@ -60,80 +62,199 @@ public final class Mails {
     private static final String FROM = Symphonys.get("sendcloud.from");
 
     /**
-     * Sends mail.
-     *
-     * @param toMails to mails
-     * @param templateName template name
-     * @param subject subject
-     * @param variables template variables
+     * Batch API User.
      */
-    public static void send(final String subject, final String templateName,
-            final List<String> toMails, final Map<String, List<String>> variables) {
-        if (null == toMails || toMails.isEmpty()) {
-            return;
-        }
+    private static final String BATCH_API_USER = Symphonys.get("sendcloud.batch.apiUser");
 
-        HttpResponse response = null;
+    /**
+     * Batch API key.
+     */
+    private static final String BATCH_API_KEY = Symphonys.get("sendcloud.batch.apiKey");
+
+    /**
+     * Batch sender email.
+     */
+    private static final String BATCH_FROM = Symphonys.get("sendcloud.batch.from");
+
+    /**
+     * Template configuration.
+     */
+    private static final Configuration TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_23);
+
+    /**
+     * Template name - verifycode.
+     */
+    public static final String TEMPLATE_NAME_VERIFYCODE = "sym_verifycode";
+
+    /**
+     * Template name - weekly.
+     */
+    public static final String TEMPLATE_NAME_WEEKLY = "sym_weekly";
+
+    static {
         try {
-            final Map<String, Object> formData = new HashMap<String, Object>();
-
-            final LangPropsService langPropsService = Lifecycle.getBeanManager().getReference(LangPropsServiceImpl.class);
-
-            formData.put("api_user", API_USER);
-            formData.put("api_key", API_KEY);
-            formData.put("from", FROM);
-            formData.put("fromname", langPropsService.get("symphonyLabel"));
-            formData.put("subject", subject);
-            formData.put("template_invoke_name", templateName);
-
-            final JSONObject args = new JSONObject();
-            args.put("to", new JSONArray(toMails));
-            final JSONObject sub = new JSONObject();
-            args.put("sub", sub);
-            for (final Map.Entry<String, List<String>> var : variables.entrySet()) {
-                final JSONArray value = new JSONArray(var.getValue());
-                sub.put(var.getKey(), value);
-            }
-            formData.put("substitution_vars", args.toString());
-            formData.put("resp_email_id", "true");
-
-            response = HttpRequest.post("http://sendcloud.sohu.com/webapi/mail.send_template.json")
-                    .form(formData).send();
-
-            LOGGER.log(Level.DEBUG, response.bodyText());
+            TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(Mails.class.getResource("/mail_tpl").toURI()));
+            TEMPLATE_CFG.setDefaultEncoding("UTF-8");
+            TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+            TEMPLATE_CFG.setLogTemplateExceptions(false);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Send mail error", e);
-        } finally {
-            if (null != response) {
-                try {
-                    response.close();
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Close response failed", e);
-                }
-            }
+            LOGGER.log(Level.ERROR, "Loads mail templates failed", e);
         }
     }
 
     /**
-     * Test.
+     * Sends a HTML mail.
      *
-     * @param args args
-     * @throws IOException exception
+     * @param fromName the specified from name
+     * @param subject the specified subject
+     * @param toMail the specified receiver mail
+     * @param templateName the specified template name
+     * @param dataModel the specified data model
      */
-    public static void main(final String[] args) throws IOException {
-        final List<String> var1 = new ArrayList<String>();
-        var1.add("88250");
-        final List<String> var2 = new ArrayList<String>();
-        var2.add("https://hacpai.com");
+    public static void sendHTML(final String fromName, final String subject, final String toMail,
+            final String templateName, final Map<String, Object> dataModel) {
+        if (StringUtils.isBlank(BATCH_API_USER) || StringUtils.isBlank(BATCH_API_KEY)) {
+            LOGGER.warn("Please configure [#### SendCloud Mail ####] section in symphony.properties");
 
-        final Map<String, List<String>> vars = new HashMap<String, List<String>>();
-        vars.put("%1%", var1);
-        vars.put("%2%", var2);
+            return;
+        }
 
-        final List<String> toMails = new ArrayList<String>();
-        toMails.add("845765@qq.com");
+        Keys.fillServer(dataModel);
+        Keys.fillRuntime(dataModel);
 
-        send("测试邮件", "sym_register", toMails, vars);
+        try {
+            final Map<String, Object> formData = new HashMap<>();
+
+            formData.put("apiUser", API_USER);
+            formData.put("apiKey", API_KEY);
+            formData.put("from", FROM);
+            formData.put("fromName", fromName);
+            formData.put("subject", subject);
+            formData.put("to", toMail);
+
+            final Template template = TEMPLATE_CFG.getTemplate(templateName + ".ftl");
+            final StringWriter stringWriter = new StringWriter();
+            template.process(dataModel, stringWriter);
+            stringWriter.close();
+            final String html = stringWriter.toString();
+            formData.put("html", html);
+
+            final HttpResponse response = HttpRequest.post("http://api.sendcloud.net/apiv2/mail/send").form(formData).send();
+            LOGGER.debug(response.bodyText());
+            response.close();
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Send mail error", e);
+        }
+    }
+
+    /**
+     * Batch send HTML mails.
+     *
+     * @param fromName the specified from name
+     * @param subject the specified subject
+     * @param toMails the specified receiver mails
+     * @param templateName the specified template name
+     * @param dataModel the specified data model
+     */
+    public static void batchSendHTML(final String fromName, final String subject, final List<String> toMails,
+            final String templateName, final Map<String, Object> dataModel) {
+        if (StringUtils.isBlank(BATCH_API_USER) || StringUtils.isBlank(BATCH_API_KEY)) {
+            LOGGER.warn("Please configure [#### SendCloud Mail ####] section in symphony.properties");
+
+            return;
+        }
+
+        Keys.fillServer(dataModel);
+
+        try {
+            final Map<String, Object> formData = new HashMap<>();
+
+            formData.put("apiUser", BATCH_API_USER);
+            formData.put("apiKey", BATCH_API_KEY);
+            formData.put("from", BATCH_FROM);
+            formData.put("fromName", fromName);
+            formData.put("subject", subject);
+            formData.put("templateInvokeName", templateName);
+
+            final Template template = TEMPLATE_CFG.getTemplate(templateName + ".ftl");
+            final StringWriter stringWriter = new StringWriter();
+            template.process(dataModel, stringWriter);
+            stringWriter.close();
+            final String html = stringWriter.toString();
+
+            // Creates or updates the SendCloud email template
+            refreshWeeklyTemplate(html);
+
+            int index = 0;
+            final int size = toMails.size();
+            List<String> batch = new ArrayList<>();
+            HttpResponse response;
+            while (index < size) {
+                final String mail = toMails.get(index);
+                batch.add(mail);
+                index++;
+
+                if (batch.size() > 99) {
+                    try {
+                        final JSONObject xsmtpapi = new JSONObject();
+                        xsmtpapi.put("to", batch);
+                        xsmtpapi.put("sub", new JSONObject());
+                        formData.put("xsmtpapi", xsmtpapi.toString());
+
+                        response = HttpRequest.post("http://api.sendcloud.net/apiv2/mail/sendtemplate").form(formData).send();
+                        LOGGER.debug(response.bodyText());
+                        response.close();
+
+                        LOGGER.info("Sent [" + batch.size() + "] mails");
+                    } catch (final Exception e) {
+                        LOGGER.log(Level.ERROR, "Send mail error", e);
+                    }
+
+                    batch.clear();
+                }
+            }
+
+            if (!batch.isEmpty()) { // Process remains
+                try {
+                    final JSONObject xsmtpapi = new JSONObject();
+                    xsmtpapi.put("to", batch);
+                    xsmtpapi.put("sub", new JSONObject());
+                    formData.put("xsmtpapi", xsmtpapi.toString());
+
+                    response = HttpRequest.post("http://api.sendcloud.net/apiv2/mail/sendtemplate").form(formData).send();
+                    LOGGER.debug(response.bodyText());
+                    response.close();
+
+                    LOGGER.info("Sent [" + batch.size() + "] mails");
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Send mail error", e);
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Batch send mail error", e);
+        }
+    }
+
+    private static void refreshWeeklyTemplate(final String html) {
+        final Map<String, Object> addData = new HashMap<>();
+        addData.put("apiUser", API_USER);
+        addData.put("apiKey", API_KEY);
+        addData.put("invokeName", TEMPLATE_NAME_WEEKLY);
+        addData.put("name", "Weekly Newsletter");
+
+        addData.put("subject", "Weekly Newsletter");
+        addData.put("templateType", "1"); // 批量邮件
+
+        addData.put("html", html);
+        HttpRequest.post("http://api.sendcloud.net/apiv2/template/add").form(addData).send();
+
+        final Map<String, Object> updateData = new HashMap<>();
+        updateData.put("apiUser", API_USER);
+        updateData.put("apiKey", API_KEY);
+        updateData.put("invokeName", TEMPLATE_NAME_WEEKLY);
+
+        updateData.put("html", html);
+        HttpRequest.post("http://api.sendcloud.net/apiv2/template/update").form(updateData).send();
     }
 
     /**

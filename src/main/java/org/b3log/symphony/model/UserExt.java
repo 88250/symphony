@@ -23,11 +23,21 @@ import org.b3log.symphony.util.Symphonys;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.25.1.12, Sep 11, 2016
+ * @version 2.2.1.12, Sep 14, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+
+    /**
+     * Key of user subscription mail status.
+     */
+    public static final String USER_SUB_MAIL_STATUS = "userSubMailStatus";
+
+    /**
+     * Key of user subscription mail send time.
+     */
+    public static final String USER_SUB_MAIL_SEND_TIME = "userSubMailSendTime";
 
     /**
      * Key of user avatar view mode.
@@ -329,6 +339,17 @@ public final class UserExt {
      * Key of user id.
      */
     public static final String USER_T_ID = "userId";
+
+    //// User subscription mail status constants
+    /**
+     * User subscription mail status - enabled.
+     */
+    public static final int USER_SUB_MAIL_STATUS_ENABLED = 0;
+
+    /**
+     * User subscription mail status - disabled.
+     */
+    public static final int USER_SUB_MAIL_STATUS_DISABLED = 1;
 
     //// Default Commenter constants
     /**

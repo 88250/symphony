@@ -11,31 +11,33 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content activity">
-                    <div class="content-reset">
+                <div class="content">
+                    <h2 class="sub-head">
+                        <div class="avatar-small tooltipped tooltipped-ne"
+                             aria-label="${characterLabel}" style="background-image:url('${staticServePath}/images/activities/char.png')"></div>
                         ${activityCharacterTitleLabel}
-                        <div class="fn-clear">
-                            <div class="fn-left">
-                                <#if noCharacter??>
-                                ${activityCharacterNotCharacterLabel}
-                                <#else>
-                                ${activityCharacterGuideLabel}
-                                </#if>
-                            </div>
-                            <div class="fn-right">
-                                <button class="red" onclick="Activity.clearCharacter('charCanvas')">${clearLabel}</button>
-                                &nbsp;
-                                <button class="green" onclick="Activity.submitCharacter('charCanvas')">${submitLabel}</button>
-                            </div>
+                    </h2>
+                    <div class="fn-clear">
+                        <div class="fn-left">
+                            <#if noCharacter??>
+                            ${activityCharacterNotCharacterLabel}
+                            <#else>
+                            ${activityCharacterGuideLabel}
+                            </#if>
                         </div>
-                        <canvas id="charCanvas" width="500" height="490"></canvas>
-                        <#if !noCharacter??>
-                        <ul>
-                            <li>${userCharacterProgressLabel}${colonLabel}${userProgress}</li>
-                            <li>${totalCharacterProgressLabel}${colonLabel}${totalProgress}</li>
-                        </ul>
-                        </#if>
+                        <div class="fn-right">
+                            <button class="red" onclick="Activity.clearCharacter('charCanvas')">${clearLabel}</button>
+                            &nbsp;
+                            <button class="green" onclick="Activity.submitCharacter('charCanvas')">${submitLabel}</button>
+                        </div>
                     </div>
+                    <canvas id="charCanvas" width="500" height="490"></canvas>
+                    <#if !noCharacter??>
+                    <ul>
+                        <li>${userCharacterProgressLabel}${colonLabel}${userProgress}</li>
+                        <li>${totalCharacterProgressLabel}${colonLabel}${totalProgress}</li>
+                    </ul>
+                    </#if>
                 </div>
                 <div class="side">
                     <#include "../side.ftl">
@@ -45,7 +47,7 @@
         <#include "../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                                    Activity.charInit('charCanvas');
+                                Activity.charInit('charCanvas');
         </script>
     </body>
 </html>

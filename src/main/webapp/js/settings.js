@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.15.8.13, Sep 11, 2016
+ * @version 1.15.8.14, Sep 15, 2016
  */
 
 /**
@@ -394,7 +394,8 @@ var Settings = {
                     userListPageSize: $("#userListPageSize").val(),
                     userCommentViewMode: $("#userCommentViewMode").val(),
                     userAvatarViewMode: $("#userAvatarViewMode").val(),
-                    userNotifyStatus: $('#userNotifyStatus').prop("checked")
+                    userNotifyStatus: $('#userNotifyStatus').prop("checked"),
+                    userSubMailStatus: $('#userSubMailStatus').prop("checked")
                 };
                 break;
             case "emotionList":
