@@ -36,8 +36,12 @@ var Util = {
     _initCommonHotKey: function () {
         // go to focus
         var goFocus = function () {
-            if ($('.list > ul > li.focus').length === 1) {
-                $(window).scrollTop($('.list > ul > li.focus').offset().top);
+            var $focus = $('.list > ul > li.focus');
+            if ($focus.length === 1) {
+                if ($(window).height() + $(window).scrollTop() < $focus.offset().top + $focus.height()
+                        || $(window).scrollTop() > $focus.offset().top) {
+                    $(window).scrollTop($focus.offset().top);
+                }
             }
         };
 
@@ -99,9 +103,13 @@ var Util = {
             return false;
         }).bind('keyup', 'j', function (event) {
             // j 移动到下一项
-            var $prev = $('.content .list > ul > li.focus');
+            var query = '.content .list > ul > ';
+            if ($('#comments').length === 1) {
+                query = '#comments > ul > ';
+            }
+            var $prev = $(query + 'li.focus');
             if ($prev.length === 0) {
-                $('.content .list > ul > li:first').addClass('focus');
+                $(query + 'li:first').addClass('focus');
             } else if ($prev.next().length === 1) {
                 $prev.next().addClass('focus');
                 $prev.removeClass('focus');
@@ -110,9 +118,13 @@ var Util = {
             return false;
         }).bind('keyup', 'k', function (event) {
             // k 移动到上一项
-            var $next = $('.content .list > ul > li.focus');
+            var query = '.content .list > ul > ';
+            if ($('#comments').length === 1) {
+                query = '#comments > ul > ';
+            }
+            var $next = $(query + 'li.focus');
             if ($next.length === 0) {
-                $('.content .list > ul > li:last').addClass('focus');
+                $(query + 'li:last').addClass('focus');
             } else if ($next.prev().length === 1) {
                 $next.prev().addClass('focus');
                 $next.removeClass('focus');
@@ -121,26 +133,42 @@ var Util = {
             return false;
         }).bind('keyup', 'f', function (event) {
             // f 移动到第一项
-            $('.content .list > ul > li.focus').removeClass('focus');
-            $('.content .list > ul > li:first').addClass('focus');
+            var query = '.content .list > ul > ';
+            if ($('#comments').length === 1) {
+                query = '#comments > ul > ';
+            }
+            $(query + 'li.focus').removeClass('focus');
+            $(query + 'li:first').addClass('focus');
             goFocus();
             return false;
         }).bind('keyup', 'l', function (event) {
             // l 移动到最后一项
-            $('.content .list > ul > li.focus').removeClass('focus');
-            $('.content .list > ul > li:last').addClass('focus');
+            var query = '.content .list > ul > ';
+            if ($('#comments').length === 1) {
+                query = '#comments > ul > ';
+            }
+            $(query + 'li.focus').removeClass('focus');
+            $(query + 'li:last').addClass('focus');
             goFocus();
             return false;
         }).bind('keyup', 'o', function (event) {
             // o/enter 打开选中项
-            var href = $('.content .list > ul > li.focus .fn-flex-1 h2 > a').attr('href');
+            var query = '.content .list > ul > ';
+            if ($('#comments').length === 1) {
+                query = '#comments > ul > ';
+            }
+            var href = $(query + 'li.focus .fn-flex-1 h2 > a').attr('href');
             if (href) {
                 window.location = href;
             }
             return false;
         }).bind('keyup', 'return', function (event) {
             // o/enter 打开选中项
-            var href = $('.content .list > ul > li.focus .fn-flex-1 h2 > a').attr('href');
+            var query = '.content .list > ul > ';
+            if ($('#comments').length === 1) {
+                query = '#comments > ul > ';
+            }
+            var href = $(query + 'li.focus .fn-flex-1 h2 > a').attr('href');
             if (href) {
                 window.location = href;
             }

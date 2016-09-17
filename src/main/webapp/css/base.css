@@ -352,27 +352,13 @@ blockquote {
 }
 
 .content-reset code {
-    padding: 0;
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
+    padding: 0.2em 0.4em;
     margin: 0;
     font-size: 85%;
     background-color: rgba(252, 41, 41, 0.12);
     border-radius: 3px;
     color: #911;
     font-family: mononoki;
-}
-
-.content-reset code::before, 
-.content-reset code::after {
-    letter-spacing: -0.2rem;
-    content: "\00a0";
-}
-
-.content-reset pre > code::before, 
-.content-reset pre > code::after {
-    letter-spacing: 0;
-    content: "";
 }
 
 .content-reset pre > code {
