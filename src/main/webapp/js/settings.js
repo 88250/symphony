@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.15.8.14, Sep 15, 2016
+ * @version 1.16.8.14, Sep 17, 2016
  */
 
 /**
@@ -583,6 +583,17 @@ var Settings = {
         return {
             emotions: $("#emotionList").val()
         };
+    },
+    /**
+     * @description 标记指定类型的消息通知为已读状态.
+     * @param {String} type 指定类型："commented"/"at"/"followingUser"/"reply"
+     */
+    makeNotificationRead: function (type) {
+        $.ajax({
+            url: Label.servePath + "/notification/read/" + type,
+            type: "GET",
+            cache: false
+        });
     }
 };
 

@@ -18,7 +18,7 @@
  * @fileoverview 聊天室
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.1, Jul 4, 2016
+ * @version 1.1.0.1, Sep 17, 2016
  */
 
 /**
@@ -72,13 +72,17 @@ var ChatRoom = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'}
+                    {name: 'preview'},
+                    {name: 'fullscreen'}
                 ],
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
-                    "Ctrl-/": "autocompleteEmoji",
+                    "Cmd-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
-                    "Alt-R": "endAudioRecord"
+                    "Alt-R": "endAudioRecord",
+                    "Esc": function (cm) {
+                         cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    }
                 },
                 status: false
             });

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.15.10.8, Aug 1, 2016
+ * @version 2.16.10.8, Sep 17, 2016
  */
 
 /**
@@ -137,14 +137,11 @@ var AddArticle = {
                 lineWrapping: true,
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
-                    "Ctrl-/": "autocompleteEmoji",
+                    "Cmd-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
                     "Alt-R": "endAudioRecord",
-                    "F11": function (cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    },
                     "Esc": function (cm) {
-                        cm.setOption("fullScreen", false);
+                         cm.setOption("fullScreen", !cm.getOption("fullScreen"));
                     }
                 },
                 toolbar: [
@@ -317,14 +314,17 @@ var AddArticle = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'}
+                    {name: 'preview'},
+                    {name: 'fullscreen'}
                 ],
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
-                    "Ctrl-/": "autocompleteEmoji",
-                    "F11": function (cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    }
+                    "Cmd-/": "autocompleteEmoji",
+                    "Alt-S": "startAudioRecord",
+                    "Alt-R": "endAudioRecord",
+                    "Esc": function (cm) {
+                         cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    }   
                 },
                 status: false
             });
