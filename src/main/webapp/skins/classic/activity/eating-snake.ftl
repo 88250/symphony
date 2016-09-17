@@ -24,9 +24,6 @@
                         </div>
                         <div id="page">
                             <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
-                            <div id="help">
-                                <div id="mark">${scoreLabel}${colonLabel}<span id="mark_con"></span></div>
-                            </div>
                         </div>
                     </div>
                 </div>

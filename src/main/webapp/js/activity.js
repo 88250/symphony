@@ -190,13 +190,13 @@ var Activity = {
      * Eating snake
      */
     initSnake: function () {
-        initMap();
+        EatingSnake.initMap('oMark','snakeCanvas');
     },
     startSnake: function () {
-        start();
+    	EatingSnake.start();
         document.onkeydown = function (event) {
             var event = event || window.event;
-            input(event.keyCode);
+            EatingSnake.input(event.keyCode);
         }
     }
 };
