@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.16.8.14, Sep 17, 2016
+ * @version 1.16.9.14, Sep 18, 2016
  */
 
 /**
@@ -489,7 +489,9 @@ var Settings = {
                     "msg": Label.tagsErrorLabel
                 }, {
                     "target": $("#userURL"),
-                    "type": "url",
+                    "type": "string",
+                    "min": 0,
+                    "max": 255,
                     "msg": Label.invalidUserURLLabel
                 }, {
                     "target": $("#userIntro"),
