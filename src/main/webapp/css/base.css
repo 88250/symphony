@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.22.16.37, Sep 17, 2016
+ * @version 1.22.16.38, Sep 18, 2016
  */
 
 /* start reset */
@@ -358,7 +358,7 @@ blockquote {
     background-color: rgba(252, 41, 41, 0.12);
     border-radius: 3px;
     color: #911;
-    font-family: mononoki;
+    font-family: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
 
 .content-reset pre > code {

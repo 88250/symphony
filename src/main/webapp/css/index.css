@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.15.31, Sep 16, 2016
+ * @version 2.14.15.32, Sep 18, 2016
  */
 
 /* start list */
@@ -195,6 +195,10 @@ label.cmt-anonymous {
 
 .comment-replies.list > ul > li {
     background-color: transparent;
+}
+
+.comments.list li.focus .fn-hidden {
+    visibility: visible;
 }
 
 .comments li .fn-pointer:hover {
