@@ -137,13 +137,11 @@ var EatingSnake = {
     },
     gameover: function () {
         clearInterval(EatingSnake.interval);
-        //可以考虑不同分数不同提示
-        alert("Game Over! 您的分数是：" + (EatingSnake.snake.length - EatingSnake.baseLen) + "！哇哦好厉害哟！");
         var requestJSONObject = {
             score: (EatingSnake.snake.length - EatingSnake.baseLen)
         };
         $.ajax({
-            url: Label.servePath + "/activity/eatingSnake/gameOver",
+            url: Label.servePath + "/activity/eating-snake/collect",
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
@@ -152,17 +150,39 @@ var EatingSnake = {
                 $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
             },
             success: function (result, textStatus) {
-                alert(result.msg);
-
                 if (result.sc) {
                     window.location.reload();
                 }
+                EatingSnake.snakeCanvas.fillStyle="black";
+                EatingSnake.snakeCanvas.fillRect(150,100,300,200);
+                EatingSnake.snakeCanvas.clearRect(155,105,290,190); 
+                EatingSnake.snakeCanvas.font='36px serif';
+                EatingSnake.snakeCanvas.fillText("Game Over!", 200, 150);
+                EatingSnake.snakeCanvas.font='24px serif';
+                var score=EatingSnake.snake.length - EatingSnake.baseLen;
+                EatingSnake.snakeCanvas.fillText("Your Score: "+score,220,200);
+                EatingSnake.snakeCanvas.fillStyle="red";
+                EatingSnake.snakeCanvas.font="18px serif";
+                if(score<=10)
+                    EatingSnake.snakeCanvas.fillText("童鞋,换键盘吧,要不行换手",200,250);
+                else if(score>10&&score<=20)
+                    EatingSnake.snakeCanvas.fillText("如此平凡的分数恕我无力吐槽",200,250);
+                else if(score>20&&score<=30)
+                    EatingSnake.snakeCanvas.fillText("哇哦,好厉害哦!",200,250);
+                else if(score>30&&score<=40)
+                    EatingSnake.snakeCanvas.fillText("哎呀我滴老天爷呀~",200,250);
+                else if(score>40&&score<=50)
+                    EatingSnake.snakeCanvas.fillText("请收下我的膝盖OTZ",200,250);
+                else
+                    EatingSnake.snakeCanvas.fillText("积分溢出,归零",200,250);
             },
             complete: function () {
                 var $btn = $("button.green");
                 $btn.removeAttr("disabled").css("opacity", "1").text($btn.text().substr(0, $btn.text().length - 3));
+                
             }
         });
+        
     },
     eat: function () {
         EatingSnake.snake[EatingSnake.snake.length] = {
