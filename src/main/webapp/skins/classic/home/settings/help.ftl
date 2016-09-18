@@ -16,7 +16,7 @@
                 <span class="ft-gray">包含了解 HacPai 所需的一切内容</span>
             </li>
             <li>
-                <a href="${servePath}/article/1474030007391">${hotKeyLabel}</a>
+                <a href="https://hacpai.com/article/1474030007391">${hotKeyLabel}</a>
                 <span class="ft-gray">通过某些特定的按键组合来代替鼠标完成一个操作</span>
             </li>
         </ul>

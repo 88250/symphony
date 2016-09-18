@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.31.21, Sep 13, 2016
+ * @version 1.25.31.21, Sep 17, 2016
  */
 
 /**
@@ -108,6 +108,56 @@ var Comment = {
         });
     },
     /**
+     * 初始化帖子
+     * @returns {undefined}
+     */
+    _initHotKey: function () {
+        $(document).bind('keyup', 'x', function assets() {
+            // listen jump hotkey h
+            Util.prevKey = 'x';
+            setTimeout(function () {
+                Util.prevKey = undefined;
+            }, 1000);
+            return false;
+        }).bind('keyup', 'r', function assets() {
+            // r 回复帖子
+            if (Util.prevKey) {
+                return false;
+            }
+            $('.reply-btn').click();
+            return false;
+        }).bind('keyup', 'h', function assets() {
+            // x h 感谢选中回贴
+            if ($('.content .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('.content .list > ul > li.focus .icon-heart').parent().click();
+            }
+            return false;
+        }).bind('keyup', 't', function assets() {
+            // x t 赞同选中回贴
+            if ($('.content .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('.content .list > ul > li.focus .icon-thumbs-up').parent().click();
+            }
+            return false;
+        }).bind('keyup', 'd', function assets() {
+            // x d 反对选中回贴
+            if ($('.content .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('.content .list > ul > li.focus .icon-thumbs-down').parent().click();
+            }
+            return false;
+        }).bind('keyup', 'r', function assets() {
+            if ($('.content .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('.content .list > ul > li.focus .icon-reply').parent().click();
+            }
+            return false;
+        }).bind('keyup', 'c', function assets() {
+            // x c 查看选中回复的回贴
+            if ($('.content .list > ul > li.focus .fn-pointer.ft-fade').length === 1 && Util.prevKey === 'x') {
+                $('.content .list > ul > li.focus .fn-pointer.ft-fade').click();
+            }
+            return false;
+        });
+    },
+    /**
      * 评论初始化
      * @returns {Boolean}
      */
@@ -129,6 +179,8 @@ var Comment = {
         this._initEditorPanel();
 
         $.ua.set(navigator.userAgent);
+
+        this._initHotKey();
 
         if (!Label.isLoggedIn) {
             return false;
@@ -168,13 +220,18 @@ var Comment = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'}
+                    {name: 'preview'},
+                    {name: 'fullscreen'}
                 ],
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
+                    "Cmd-/": "autocompleteEmoji",
                     "Ctrl-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
-                    "Alt-R": "endAudioRecord"
+                    "Alt-R": "endAudioRecord",
+                    "Esc": function (cm) {
+                         cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    }
                 },
                 status: false
             });
@@ -230,7 +287,6 @@ var Comment = {
         Comment.editor.on('keypress', function (cm, evt) {
             if (evt.ctrlKey && 10 === evt.charCode) {
                 Comment.add(Label.articleOId, Label.csrfToken);
-
                 return false;
             }
         });

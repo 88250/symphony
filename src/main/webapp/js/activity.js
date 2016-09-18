@@ -190,10 +190,10 @@ var Activity = {
      * Eating snake
      */
     initSnake: function () {
-        EatingSnake.initMap('oMark','snakeCanvas');
+        EatingSnake.initMap('oMark', 'snakeCanvas');
     },
     startSnake: function () {
-    	EatingSnake.start();
+        EatingSnake.start();
         document.onkeydown = function (event) {
             var event = event || window.event;
             EatingSnake.input(event.keyCode);

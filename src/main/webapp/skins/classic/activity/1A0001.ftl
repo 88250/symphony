@@ -15,7 +15,7 @@
                     <h2 class="sub-head">
                         <div class="avatar-small tooltipped tooltipped-ne"
                              aria-label="${activity1A0001Label}" style="background-image:url('${staticServePath}/images/activities/1A0001.png')"></div>
-                             ${activity1A0001TitleLabel}
+                        ${activity1A0001TitleLabel}
                     </h2>
                     <div class="content-reset">
                     ${activity1A0001GuideLabel}

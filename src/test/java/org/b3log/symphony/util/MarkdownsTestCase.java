@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
  * Markdown utilities test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.0, Aug 31, 2016
+ * @version 2.1.0.1, Sep 17, 2016
  * @since 0.1.6
  */
 public class MarkdownsTestCase {
@@ -36,7 +36,20 @@ public class MarkdownsTestCase {
     }
 
     /**
-     * Tests {@link Markdowns#clean(java.lang.String, java.lang.String)} for data XSS.
+     * Tag test.
+     */
+    @Test
+    public void tag() {
+        final String kbd = "<kbd>DV</kbd>";
+
+        String html = Markdowns.toHTML(kbd);
+        html = Markdowns.clean(html, "");
+
+        Assert.assertTrue(html.contains("<kbd>") && html.contains("</kbd>"));
+    }
+
+    /**
+     * XSS test.
      */
     @Test
     public void clean() {
@@ -48,6 +61,9 @@ public class MarkdownsTestCase {
         Assert.assertFalse(securedHTML.contains("href"));
     }
 
+    /**
+     * Auto space test.
+     */
     @Test
     public void space() {
         final String md = "Sym是一个用Java写的实时论坛，欢迎来[体验Sym](https://hacpai.com)！";
@@ -68,7 +84,7 @@ public class MarkdownsTestCase {
     }
 
     /**
-     * Tests {@link Markdowns#toHTML(java.lang.String)}.
+     * Link test.
      */
     @Test
     public void toHTML() {
@@ -82,7 +98,7 @@ public class MarkdownsTestCase {
     }
 
     /**
-     * Tests {@link Markdowns#toHTML(java.lang.String)}.
+     * Standard syntax test.
      *
      * @throws java.lang.Exception exception
      */

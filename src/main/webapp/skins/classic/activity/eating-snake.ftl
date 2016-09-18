@@ -15,17 +15,20 @@
                     <h2 class="sub-head">
                         <div class="avatar-small tooltipped tooltipped-ne"
                              aria-label="${eatingSnakeLabel}" style="background-image:url('${staticServePath}/images/activities/snak.png')"></div>
-                       ${activityEatingSnakeTitleLabel}
+                        ${eatingSnakeLabel}
+                        <span class="ft-13 ft-gray">${activityEatingSnakeTitleLabel}</span>
                     </h2>
 
                     <div class="fn-clear">
                         <div class="fn-right">
                             <button class="green" onclick="Activity.startSnake()">${gameStartLabel}</button>
                         </div>
-                        <div id="page">
-                            <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
-                        </div>
                     </div>
+                    <br/>
+                    <div id="page">
+                        <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
+                    </div>
+
                 </div>
                 <div class="side">
                     <#include "../side.ftl">
