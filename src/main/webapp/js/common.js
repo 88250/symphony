@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.33.20.29, Sep 17, 2016
+ * @version 1.33.20.30, Sep 18, 2016
  */
 
 /**
@@ -34,13 +34,26 @@ var Util = {
      * @returns {undefined}
      */
     _initCommonHotKey: function () {
-        // go to focus
-        var goFocus = function () {
+        /**
+         * go to focus
+         * @param {string} type 滚动方式: 'top'/'bottom'/'up'/'down'.
+         * @returns {undefined}
+         */
+        var goFocus = function (type) {
             var $focus = $('.list > ul > li.focus');
             if ($focus.length === 1) {
-                if ($(window).height() + $(window).scrollTop() < $focus.offset().top + $focus.height()
-                        || $(window).scrollTop() > $focus.offset().top) {
+                if (type === 'top' || type === 'bottom') {
                     $(window).scrollTop($focus.offset().top);
+                    return false;
+                }
+
+                if ($(window).height() + $(window).scrollTop() < $focus.offset().top + $focus.outerHeight()
+                        || $(window).scrollTop() > $focus.offset().top) {
+                    if (type === 'down') {
+                        $(window).scrollTop($focus.offset().top - ($(window).height() - $focus.outerHeight()));
+                    } else {
+                        $(window).scrollTop($focus.offset().top);
+                    }
                 }
             }
         };
@@ -64,8 +77,12 @@ var Util = {
             }, 1000);
             return false;
         }).bind('keyup', 's', function () {
-            //s 定位到搜索框
+            // s 定位到搜索框
             $('#search').focus();
+            return false;
+        }).bind('keyup', 't', function () {
+            // t 回到顶部
+            Util.goTop();
             return false;
         }).bind('keyup', 'n', function (event) {
             // g n 跳转到通知页面
@@ -97,6 +114,12 @@ var Util = {
                 window.location = Label.servePath + '/perfect';
             }
             return false;
+        }).bind('keyup', 't', function (event) {
+            // g t 跳转到此刻
+            if (Util.prevKey === 'g') {
+                window.location = Label.servePath + '/timeline';
+            }
+            return false;
         }).bind('keyup', 'Shift+/', function (event) {
             // shift/⇧ ? 新窗口打开键盘快捷键说明文档
             window.open('https://hacpai.com/article/1474030007391');
@@ -114,7 +137,7 @@ var Util = {
                 $prev.next().addClass('focus');
                 $prev.removeClass('focus');
             }
-            goFocus();
+            goFocus('down');
             return false;
         }).bind('keyup', 'k', function (event) {
             // k 移动到上一项
@@ -129,7 +152,7 @@ var Util = {
                 $next.prev().addClass('focus');
                 $next.removeClass('focus');
             }
-            goFocus();
+            goFocus('up');
             return false;
         }).bind('keyup', 'f', function (event) {
             // f 移动到第一项
@@ -139,17 +162,20 @@ var Util = {
             }
             $(query + 'li.focus').removeClass('focus');
             $(query + 'li:first').addClass('focus');
-            goFocus();
+            goFocus('top');
             return false;
         }).bind('keyup', 'l', function (event) {
             // l 移动到最后一项
+            if (Util.prevKey) {
+                return false;
+            }
             var query = '.content .list > ul > ';
             if ($('#comments').length === 1) {
                 query = '#comments > ul > ';
             }
             $(query + 'li.focus').removeClass('focus');
             $(query + 'li:last').addClass('focus');
-            goFocus();
+            goFocus('bottom');
             return false;
         }).bind('keyup', 'o', function (event) {
             // o/enter 打开选中项

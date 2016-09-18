@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.31.21, Sep 17, 2016
+ * @version 1.25.31.22, Sep 18, 2016
  */
 
 /**
@@ -119,40 +119,113 @@ var Comment = {
                 Util.prevKey = undefined;
             }, 1000);
             return false;
-        }).bind('keyup', 'r', function assets() {
+        }).bind('keyup', 'v', function assets() {
+            // listen jump hotkey h
+            Util.prevKey = 'v';
+            setTimeout(function () {
+                Util.prevKey = undefined;
+            }, 1000);
+            return false;
+        }).bind('keyup', 'r', function assets(event) {
             // r 回复帖子
-            if (Util.prevKey) {
+            if (Util.prevKey && event.ctrlKey) {
                 return false;
             }
             $('.reply-btn').click();
             return false;
         }).bind('keyup', 'h', function assets() {
             // x h 感谢选中回贴
-            if ($('.content .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('.content .list > ul > li.focus .icon-heart').parent().click();
+            if ($('#comments > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('#comments > ul > li.focus .icon-heart').parent().click();
             }
             return false;
         }).bind('keyup', 't', function assets() {
             // x t 赞同选中回贴
-            if ($('.content .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('.content .list > ul > li.focus .icon-thumbs-up').parent().click();
+            if ($('#comments > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('#comments > ul > li.focus .icon-thumbs-up').parent().click();
             }
             return false;
         }).bind('keyup', 'd', function assets() {
             // x d 反对选中回贴
-            if ($('.content .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('.content .list > ul > li.focus .icon-thumbs-down').parent().click();
+            if ($('#comments > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('#comments > ul > li.focus .icon-thumbs-down').parent().click();
             }
             return false;
         }).bind('keyup', 'r', function assets() {
-            if ($('.content .list > ul > li.focus').length === 1 && Util.prevKey === 'x') {
-                $('.content .list > ul > li.focus .icon-reply').parent().click();
+            if ($('#comments > ul > li.focus').length === 1 && Util.prevKey === 'x') {
+                $('#comments > ul > li.focus .icon-reply').parent().click();
             }
             return false;
         }).bind('keyup', 'c', function assets() {
             // x c 查看选中回复的回贴
-            if ($('.content .list > ul > li.focus .fn-pointer.ft-fade').length === 1 && Util.prevKey === 'x') {
-                $('.content .list > ul > li.focus .fn-pointer.ft-fade').click();
+            if ($('#comments > ul > li.focus .comment-info .fn-pointer.ft-fade').length === 1 && Util.prevKey === 'x') {
+                $('#comments > ul > li.focus .comment-info .fn-pointer.ft-fade').click();
+            }
+            return false;
+        }).bind('keyup', 's', function assets() {
+            // x s 查看选中回贴的回复
+            if ($('#comments > ul > li.focus .comment-action > .ft-fade > .fn-pointer').length === 1 && Util.prevKey === 'x') {
+                $('#comments > ul > li.focus .comment-action > .ft-fade > .fn-pointer').click();
+            }
+            return false;
+        }).bind('keyup', 'a', function assets() {
+            // x a 管理员编辑选中的回贴
+            if (Util.prevKey === 'x' && Label.isAdminLoggedIn) {
+                window.location = $('#comments > ul > li.focus .icon-setting').parent().attr('href');
+            }
+            return false;
+        }).bind('keyup', 'm', function assets() {
+            // v m 帖子目录
+            if (Util.prevKey === 'v') {
+                Article.toggleToc();
+            }
+            return false;
+        }).bind('keyup', 'h', function assets() {
+            // v h 感谢帖子
+            if (Util.prevKey === 'v') {
+                $('#thankArticle').click();
+            }
+            return false;
+        }).bind('keyup', 't', function assets() {
+            // v t 赞同帖子
+            if (Util.prevKey === 'v') {
+                $('.article-action .icon-thumbs-up').parent().click();
+            }
+            return false;
+        }).bind('keyup', 'd', function assets() {
+            // v d 反对帖子
+            if (Util.prevKey === 'v') {
+                $('.article-action .icon-thumbs-down').parent().click();
+            }
+            return false;
+        }).bind('keyup', 'c', function assets() {
+            // v c 收藏帖子
+            if (Util.prevKey === 'v') {
+                $('.article-action .icon-star').parent().click();
+            }
+            return false;
+        }).bind('keyup', 'l', function assets() {
+            // v h 查看帖子历史
+            if (Util.prevKey === 'v') {
+                $('.article-action .icon-refresh').parent().click();
+            }
+            return false;
+        }).bind('keyup', 'e', function assets() {
+            // v e 编辑帖子
+            if (Util.prevKey === 'v') {
+                window.location = $('.article-action .icon-edit').parent().attr('href');
+            }
+            return false;
+        }).bind('keyup', 'p', function assets() {
+            // v p 置顶帖子
+            if (Util.prevKey === 'v') {
+                Article.stick(Label.articleOId);
+            }
+            return false;
+        }).bind('keyup', 'a', function assets() {
+            // v a 管理员编辑帖子 
+            if (Util.prevKey === 'v') {
+                window.location = $('.article-action .icon-setting').parent().attr('href');
             }
             return false;
         });
@@ -230,7 +303,7 @@ var Comment = {
                     "Alt-S": "startAudioRecord",
                     "Alt-R": "endAudioRecord",
                     "Esc": function (cm) {
-                         cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
                     }
                 },
                 status: false
@@ -1283,18 +1356,22 @@ var Article = {
         if ($menu.hasClass('ft-red')) {
             $articleToc.hide();
             $menu.removeClass('ft-red');
+            $articleToc.css('position', 'initial');
+            $articleToc.next().css('position', 'initial');
+            $articleToc.next().next().css('position', 'initial');
             $('.side').height('auto');
         } else {
             $articleToc.show();
             $menu.addClass('ft-red');
-            $articleToc.css('position', 'initial');
-            $articleToc.find('li').removeClass('current');
-            $articleToc.find('li:first').addClass('current');
+            if ($('body').scrollTop() > $('#articleToC').offset().top - 20) {
+                $articleToc.css('position', 'fixed');
+                $articleToc.next().css('position', 'fixed');
+                $articleToc.next().next().css('position', 'fixed');
+            }
             $('.side').height($('.side').height());
         }
 
-        $articleToc.next().css('position', 'initial');
-        $articleToc.next().next().css('position', 'initial');
+
     },
     /**
      * @description 标记消息通知为已读状态.
