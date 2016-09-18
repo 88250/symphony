@@ -48,9 +48,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 3. _可能需要_修改 `latke.properties` 中的端口为容器端口
 4. _可能需要_修改 `init.properties` 中的管理员账号
 3. 使用 `mvn install` 进行构建
-4. 将构建好的 war 包部署到容器中，数据库表会在第一次启动时自动建立；另外，也可以使用命令来启动：
-   * Windows: `java -cp WEB-INF/lib/*;WEB-INF/classes org.b3log.symphony.Starter`
-   * Unix-like: `java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.symphony.Starter`
+4. 将构建好的 war 包部署到容器中，数据库表会在第一次启动时自动建立
 
 注意：
 
