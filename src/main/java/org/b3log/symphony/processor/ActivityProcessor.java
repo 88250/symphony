@@ -535,11 +535,21 @@ public class ActivityProcessor {
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
     public void snakeGameOver(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/activity/eating-snake.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        filler.fillHeaderAndFooter(request, response, dataModel);
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+        filler.fillRandomArticles(avatarViewMode, dataModel);
+        filler.fillSideHotArticles(avatarViewMode, dataModel);
+        filler.fillSideTags(dataModel);
+        filler.fillLatestCmts(dataModel);
         JSONObject requestJSONObject;
         try {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             final String snakeScore = requestJSONObject.optString("score");
-            System.out.println("Zephyr:>" + snakeScore);
+        //  System.out.println("Zephyr:>" + snakeScore);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Submits character failed", e);
             context.renderJSON(false).renderMsg("ERRORdd");
