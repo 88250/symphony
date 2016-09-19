@@ -20,7 +20,7 @@
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author Zephyr
- * @version 1.3.2.3, Sep 13, 2016
+ * @version 1.4.2.3, Sep 19, 2016
  */
 
 /**
@@ -192,13 +192,19 @@ var Activity = {
     initSnake: function () {
         EatingSnake.initMap('oMark', 'snakeCanvas');
     },
-    startSnake: function () {
+    startSnake: function (csrfToken) {
+        if (!confirm(Label.activityStartEatingSnakeTipLabel)) {
+            return;
+        }
+
         $(document).unbind("keyup");
-        EatingSnake.start();
+
+        EatingSnake.start(csrfToken);
+
         document.onkeydown = function (event) {
             var event = event || window.event;
             EatingSnake.input(event.keyCode);
-        }
+        };
     }
 };
 

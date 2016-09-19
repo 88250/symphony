@@ -21,7 +21,7 @@ import org.b3log.symphony.util.Symphonys;
  * This class defines all pointtransfer model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.18.1.0, Aug 14, 2016
+ * @version 1.19.1.0, Sep 19, 2016
  * @since 1.3.0
  */
 public final class Pointtransfer {
@@ -302,6 +302,21 @@ public final class Pointtransfer {
      * Transfer sum - Invitecode Used.
      */
     public static final int TRANSFER_SUM_C_INVITECODE_USED = Symphonys.getInt("pointInvitecodeUsed");
+
+    /**
+     * Transfer type - Activity - Eating Snake.
+     */
+    public static final int TRANSFER_TYPE_C_ACTIVITY_EATINGSNAKE = 26;
+
+    /**
+     * Transfer sum - Activity - Eating Snake.
+     */
+    public static final int TRANSFER_SUM_C_ACTIVITY_EATINGSNAKE = Symphonys.getInt("pointActivityEatingSnake");
+
+    /**
+     * Transfer type - Activity - Eating Snake Income.
+     */
+    public static final int TRANSFER_TYPE_C_ACTIVITY_EATINGSNAKE_COLLECT = 27;
 
     /**
      * Private constructor.

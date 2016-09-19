@@ -20,11 +20,12 @@
                     </h2>
 
                     <div class="fn-clear">
+                        <div id="tip" class="tip"></div><br/>
                         <div class="fn-right">
-                            <button class="green" onclick="Activity.startSnake()">${gameStartLabel}</button>
+                            <button class="green" onclick="Activity.startSnake('${csrfToken}')">${gameStartLabel}</button>
                         </div>
                     </div>
-                    <br/>
+
                     <div id="page">
                         <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
                     </div>
@@ -39,6 +40,7 @@
         <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/eating-snake${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
+                                Label.activityStartEatingSnakeTipLabel = '${activityStartEatingSnakeTipLabel}';
                                 Activity.initSnake();
         </script>
     </body>
