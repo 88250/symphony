@@ -14,7 +14,7 @@
     <ul> 
         <#list userHomeArticles as article>
         <li>
-            <div class="has-view">
+            <div class="has-view fn-flex-1">
                 <h2>
                     <#if 1 == article.articlePerfect>
                     <span class="tooltipped tooltipped-e" aria-label="${perfectLabel}"><svg height="20" viewBox="3 3 11 12" width="14">${perfectIcon}</svg></span>
