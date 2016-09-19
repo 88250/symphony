@@ -193,6 +193,7 @@ var Activity = {
         EatingSnake.initMap('oMark', 'snakeCanvas');
     },
     startSnake: function () {
+        $(document).unbind("keyup");
         EatingSnake.start();
         document.onkeydown = function (event) {
             var event = event || window.event;
