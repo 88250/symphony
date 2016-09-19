@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Mail utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.4, Sep 16, 2016
+ * @version 1.1.4.4, Sep 19, 2016
  * @since 1.3.0
  */
 public final class Mails {
@@ -113,7 +113,7 @@ public final class Mails {
      */
     public static void sendHTML(final String fromName, final String subject, final String toMail,
             final String templateName, final Map<String, Object> dataModel) {
-        if (StringUtils.isBlank(BATCH_API_USER) || StringUtils.isBlank(BATCH_API_KEY)) {
+        if (StringUtils.isBlank(API_USER) || StringUtils.isBlank(API_KEY)) {
             LOGGER.warn("Please configure [#### SendCloud Mail ####] section in symphony.properties");
 
             return;
@@ -237,11 +237,10 @@ public final class Mails {
 
     private static void refreshWeeklyTemplate(final String html) {
         final Map<String, Object> addData = new HashMap<>();
-        addData.put("apiUser", API_USER);
-        addData.put("apiKey", API_KEY);
+        addData.put("apiUser", BATCH_API_USER);
+        addData.put("apiKey", BATCH_API_KEY);
         addData.put("invokeName", TEMPLATE_NAME_WEEKLY);
         addData.put("name", "Weekly Newsletter");
-
         addData.put("subject", "Weekly Newsletter");
         addData.put("templateType", "1"); // 批量邮件
 
@@ -249,8 +248,8 @@ public final class Mails {
         HttpRequest.post("http://api.sendcloud.net/apiv2/template/add").form(addData).send();
 
         final Map<String, Object> updateData = new HashMap<>();
-        updateData.put("apiUser", API_USER);
-        updateData.put("apiKey", API_KEY);
+        updateData.put("apiUser", BATCH_API_USER);
+        updateData.put("apiKey", BATCH_API_KEY);
         updateData.put("invokeName", TEMPLATE_NAME_WEEKLY);
 
         updateData.put("html", html);

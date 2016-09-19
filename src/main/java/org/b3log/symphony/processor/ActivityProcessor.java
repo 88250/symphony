@@ -533,26 +533,30 @@ public class ActivityProcessor {
     @RequestProcessing(value = "/activity/eating-snake/collect", method = HTTPRequestMethod.POST)
     @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
     @After(adviceClass = {CSRFToken.class, StopwatchEndAdvice.class})
-    public void snakeGameOver(final HTTPRequestContext context,
+    public void collectEatingSnake(final HTTPRequestContext context,
             final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("/activity/eating-snake.ftl");
+
         final Map<String, Object> dataModel = renderer.getDataModel();
+
         filler.fillHeaderAndFooter(request, response, dataModel);
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         filler.fillRandomArticles(avatarViewMode, dataModel);
         filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+
         JSONObject requestJSONObject;
         try {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             final String snakeScore = requestJSONObject.optString("score");
-        //  System.out.println("Zephyr:>" + snakeScore);
+            LOGGER.info(snakeScore); // TODO: 88250, eating snake collect score
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Submits character failed", e);
-            context.renderJSON(false).renderMsg("ERRORdd");
+            LOGGER.log(Level.ERROR, "Collects eating snake game failed", e);
+
+            context.renderJSON(false).renderMsg("err....");
         }
     }
 }

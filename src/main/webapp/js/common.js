@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.33.20.30, Sep 18, 2016
+ * @version 1.33.21.30, Sep 19, 2016
  */
 
 /**
@@ -60,7 +60,7 @@ var Util = {
 
         // c 新建帖子
         if ($('#articleTitle').length === 0) {
-            $(document).bind('keyup', 'c', function assets() {
+            $(document).bind('keydown', 'c', function assets(event) {
                 if (Util.prevKey) {
                     return false;
                 }
