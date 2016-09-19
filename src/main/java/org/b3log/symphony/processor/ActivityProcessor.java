@@ -72,7 +72,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.8.1.5, Sep 13, 2016
+ * @version 1.8.1.6, Sep 19, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -235,6 +235,12 @@ public class ActivityProcessor {
         filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+
+        dataModel.put("pointActivityCheckinMin", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN);
+        dataModel.put("pointActivityCheckinMax", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX);
+        dataModel.put("pointActivityCheckinStreak", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK);
+        dataModel.put("activitYesterdayLivenessRewardMaxPoint",
+                Symphonys.getInt("activitYesterdayLivenessReward.maxPoint"));
     }
 
     /**
