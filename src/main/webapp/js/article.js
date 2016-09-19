@@ -126,9 +126,9 @@ var Comment = {
                 Util.prevKey = undefined;
             }, 1000);
             return false;
-        }).bind('keyup', 'r', function assets(event) {
+        }).bind('keydown', 'r', function assets(event) {
             // r 回复帖子
-            if (Util.prevKey && event.ctrlKey) {
+            if (Util.prevKey) {
                 return false;
             }
             $('.reply-btn').click();

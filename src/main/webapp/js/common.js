@@ -60,7 +60,7 @@ var Util = {
 
         // c 新建帖子
         if ($('#articleTitle').length === 0) {
-            $(document).bind('keyup', 'c', function assets() {
+            $(document).bind('keydown', 'c', function assets(event) {
                 if (Util.prevKey) {
                     return false;
                 }
