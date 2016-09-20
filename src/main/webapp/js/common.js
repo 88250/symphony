@@ -37,6 +37,7 @@ var Util = {
         if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
             return false;
         }
+
         /**
          * go to focus
          * @param {string} type 滚动方式: 'top'/'bottom'/'up'/'down'.
