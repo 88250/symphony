@@ -418,6 +418,8 @@ var Util = {
             }
         ]).on('autocomplete:selected', function (event, suggestion, dataset) {
             window.open("/article/" + suggestion.oId);
+        }).bind('keyup', 'esc', function () {
+            $(this).blur();
         });
     },
     initTextarea: function (id, keyupEvent) {
