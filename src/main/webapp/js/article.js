@@ -166,8 +166,8 @@ var Comment = {
                 $('#comments > ul > li.focus .comment-info .fn-pointer.ft-fade').click();
             }
             return false;
-        }).bind('keyup', 's', function assets() {
-            // x s 查看选中回贴的回复
+        }).bind('keyup', 'm', function assets() {
+            // x m 查看选中回贴的回复
             if ($('#comments > ul > li.focus .comment-action > .ft-fade > .fn-pointer').length === 1 && Util.prevKey === 'x') {
                 $('#comments > ul > li.focus .comment-action > .ft-fade > .fn-pointer').click();
             }
