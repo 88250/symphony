@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Character query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Sep 13, 2016
+ * @version 1.0.2.2, Sep 20, 2016
  * @since 1.4.0
  */
 @Service
@@ -79,7 +79,8 @@ public class CharacterQueryService {
     public int getWrittenCharacterCount() {
 
         try {
-            final List<JSONObject> result = characterRepository.select("select count(DISTINCT characterContent) from symphony_character");
+            final List<JSONObject> result = characterRepository.select("select count(DISTINCT characterContent) from "
+                    + characterRepository.getName());
             if (null == result || result.isEmpty()) {
                 return 0;
             }
