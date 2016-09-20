@@ -18,18 +18,39 @@
                         ${eatingSnakeLabel}
                         <span class="ft-13 ft-gray">${activityEatingSnakeTitleLabel}</span>
                     </h2>
-
                     <div class="fn-clear">
-                        <div id="tip" class="tip"></div><br/>
-                        <div class="fn-right">
-                            <button class="green" onclick="Activity.startSnake('${csrfToken}')">${gameStartLabel}</button>
+                        <button class="green fn-right" onclick="Activity.startSnake('${csrfToken}')">${gameStartLabel}</button>
+                    </div>
+                    <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
+                    <div class="index">
+                        <div class="first">
+                            <div class="item first">
+                                <span class="item-header" style="background-image: url(${hotBgIcon});">${totalRankLabel}</span>
+                                <div class="module-panel">
+                                    <ul class="module-list">
+                                        <li>
+                                            <div class="avatar-small tooltipped tooltipped-ne slogan"
+                                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
+                                            <a class="title" href="<#if useCaptchaCheckin??>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a>
+                                            <span class="fn-right count ft-gray ft-smaller">10</span>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <span class="item-header" style="background-image: url(${perfectBgIcon});">${eachRankLabel}</span>
+                                <div class="module-panel">
+                                    <ul class="module-list">
+                                        <li>
+                                            <div class="avatar-small tooltipped tooltipped-ne slogan"
+                                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
+                                            <a class="title" href="<#if useCaptchaCheckin??>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a>
+                                            <span class="fn-right count ft-gray ft-smaller">10</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div id="page">
-                        <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
-                    </div>
-
                 </div>
                 <div class="side">
                     <#include "../side.ftl">
@@ -40,8 +61,8 @@
         <script type="text/javascript" src="${staticServePath}/js/activity${miniPostfix}.js?${staticResourceVersion}"></script>
         <script type="text/javascript" src="${staticServePath}/js/eating-snake${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                                Label.activityStartEatingSnakeTipLabel = '${activityStartEatingSnakeTipLabel}';
-                                Activity.initSnake();
+                            Label.activityStartEatingSnakeTipLabel = '${activityStartEatingSnakeTipLabel}';
+                            Activity.initSnake();
         </script>
     </body>
 </html>

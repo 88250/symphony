@@ -642,6 +642,11 @@ code .dec { color: initial; } /* decimal - blue */
     margin: 20px auto;
 }
 
+#snakeCanvas {
+    margin: 20px auto;
+    display: block;
+}
+
 .sub-head .avatar-small {
     height: 24px;
     width: 24px;
@@ -783,7 +788,7 @@ code .dec { color: initial; } /* decimal - blue */
     margin: 0 20px 15px 0;
 }
 
-.index a.count {
+.index .count {
     position: absolute;
     right: 0;
     top: 50%;
