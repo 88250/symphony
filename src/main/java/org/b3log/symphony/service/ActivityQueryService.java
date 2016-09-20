@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Activity query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.3, Jun 16, 2016
+ * @version 1.4.1.4, Sep 19, 2016
  * @since 1.3.0
  */
 @Service
@@ -77,7 +77,7 @@ public class ActivityQueryService {
      * @return users, returns an empty list if not found
      */
     public List<JSONObject> getTopCheckinUsers(final int avatarViewMode, final int fetchSize) {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList<>();
 
         final Query query = new Query().addSort(UserExt.USER_LONGEST_CHECKIN_STREAK, SortDirection.DESCENDING).
                 addSort(UserExt.USER_CURRENT_CHECKIN_STREAK, SortDirection.DESCENDING).

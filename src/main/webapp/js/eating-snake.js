@@ -19,7 +19,8 @@
  * 
  * @author Zephyr
  * @author Alexar
- * @version 1.0.0.0, Sep 17, 2016
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.1.0.0, Sep 19, 2016
  */
 var EatingSnake = {
     dir: null,
@@ -137,9 +138,11 @@ var EatingSnake = {
     },
     gameover: function () {
         clearInterval(EatingSnake.interval);
+
         var requestJSONObject = {
             score: (EatingSnake.snake.length - EatingSnake.baseLen)
         };
+
         $.ajax({
             url: Label.servePath + "/activity/eating-snake/collect",
             type: "POST",
@@ -150,8 +153,10 @@ var EatingSnake = {
                 $btn.attr("disabled", "disabled").css("opacity", "0.3").text($btn.text() + 'ing');
             },
             success: function (result, textStatus) {
-                if (result.sc) {
-                    window.location.reload();
+                if (!result.sc) {
+                    alert(result.msg);
+
+                    return;
                 }
 
                 EatingSnake.snakeCanvas.fillStyle = "black";
@@ -286,10 +291,30 @@ var EatingSnake = {
         EatingSnake.drawMap();
 //        EatingSnake.oMark.innerHtml = EatingSnake.snake.length - EatingSnake.baseLen;
     },
-    start: function () {
-        EatingSnake.init();
-        // countTime = 0;
-        EatingSnake.interval = setInterval(EatingSnake.gameRun, EatingSnake.currTime);
-        // startTime = new Date().getTime();
-    },
-}
+    start: function (csrfToken) {
+        $.ajax({
+            url: Label.servePath + "/activity/eating-snake/start",
+            type: "POST",
+            headers: {"csrfToken": csrfToken},
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    EatingSnake.init();
+                    // countTime = 0;
+                    EatingSnake.interval = setInterval(EatingSnake.gameRun, EatingSnake.currTime);
+                    // startTime = new Date().getTime();
+
+                    return;
+                } else {
+                    $("#tip").addClass("error").removeClass('succ').html('<ul><li>' + result.msg + '</li></ul>');
+                }
+
+                $("#tip").show();
+
+                setTimeout(function () {
+                    $("#tip").hide();
+                }, 3000);
+            }
+        });
+    }
+};

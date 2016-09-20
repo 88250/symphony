@@ -67,12 +67,15 @@ import org.json.JSONObject;
  * <li>Collects 1A0001 (/activity/1A0001/collect), POST</li>
  * <li>Shows character (/activity/character), GET</li>
  * <li>Submit character (/activity/character/submit), POST</li>
+ * <li>Shows eating snake (/activity/eating-snake), GET</li>
+ * <li>Starts eating snake (/activity/eating-snake/start), POST</li>
+ * <li>Collects eating snake(/activity/eating-snake/collect), POST</li>
  * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.8.1.5, Sep 13, 2016
+ * @version 1.8.1.6, Sep 19, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -235,6 +238,12 @@ public class ActivityProcessor {
         filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+
+        dataModel.put("pointActivityCheckinMin", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MIN);
+        dataModel.put("pointActivityCheckinMax", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKIN_MAX);
+        dataModel.put("pointActivityCheckinStreak", Pointtransfer.TRANSFER_SUM_C_ACTIVITY_CHECKINT_STREAK);
+        dataModel.put("activitYesterdayLivenessRewardMaxPoint",
+                Symphonys.getInt("activitYesterdayLivenessReward.maxPoint"));
     }
 
     /**
@@ -516,10 +525,31 @@ public class ActivityProcessor {
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
 
-        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
-        final String userId = user.optString(Keys.OBJECT_ID);
-//        final JSONObject ret = activityMgmtService.collect1A0001(userId);
-//        context.renderJSON(ret);
+        String pointActivityEatingSnake = langPropsService.get("activityStartEatingSnakeTipLabel");
+        pointActivityEatingSnake = pointActivityEatingSnake.replace("{point}",
+                String.valueOf(Pointtransfer.TRANSFER_SUM_C_ACTIVITY_EATINGSNAKE));
+        dataModel.put("activityStartEatingSnakeTipLabel", pointActivityEatingSnake);
+    }
+
+    /**
+     * Starts eatings snake..
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/activity/eating-snake/start", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class, CSRFCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void startEatingSnake(final HTTPRequestContext context,
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+        final String fromId = currentUser.optString(Keys.OBJECT_ID);
+
+        final JSONObject ret = activityMgmtService.startEatingSnake(fromId);
+
+        context.renderJSON(ret);
     }
 
     /**
@@ -551,8 +581,13 @@ public class ActivityProcessor {
         JSONObject requestJSONObject;
         try {
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
-            final String snakeScore = requestJSONObject.optString("score");
-            LOGGER.info(snakeScore); // TODO: 88250, eating snake collect score
+            final int score = requestJSONObject.optInt("score");
+
+            final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+
+            final JSONObject ret = activityMgmtService.collectEatingSnake(user.optString(Keys.OBJECT_ID), score);
+
+            context.renderJSON(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Collects eating snake game failed", e);
 
