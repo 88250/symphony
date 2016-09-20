@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.31.22, Sep 18, 2016
+ * @version 1.25.31.22, Sep 20, 2016
  */
 
 /**
@@ -112,6 +112,10 @@ var Comment = {
      * @returns {undefined}
      */
     _initHotKey: function () {
+        if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
+            return false;
+        }
+        
         $(document).bind('keyup', 'x', function assets() {
             // listen jump hotkey h
             Util.prevKey = 'x';

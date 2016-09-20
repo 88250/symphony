@@ -83,6 +83,9 @@
         <script>
             Settings.initHljs();
             $(document).bind('keyup', 'e', function assets() {
+                if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
+                    return false;
+                }
                 $('.home-menu .current .tooltipped').click();
                 return false;
             });
