@@ -304,7 +304,10 @@ var Comment = {
                     "Cmd-/": "autocompleteEmoji",
                     "Ctrl-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
-                    "Alt-R": "endAudioRecord"
+                    "Alt-R": "endAudioRecord",
+                    'Esc': function () {
+                        $('.editor-hide').click();
+                    }
                 },
                 status: false
             });
