@@ -20,6 +20,11 @@
         <div id="pointBuyInvitecodeTip" class="tip"></div> <br/>
         <button class="red fn-right" onclick="Settings.pointBuyInvitecode('${csrfToken}')">${confirmExchangeLabel}</button>
     </div>
+    <ul>
+        <#list invitecodes as invitecode>
+        <li>${invitecode.code} ${invitecode.memo}</li>
+        </#list>
+    </ul>
 </div>
 <div class="module">
     <div class="module-header">

@@ -127,7 +127,7 @@ import org.json.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.24.13.24, Sep 20, 2016
+ * @version 1.24.13.25, Sep 20, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -460,6 +460,16 @@ public class UserProcessor {
         buyInvitecodeLabel = buyInvitecodeLabel.replace("${point2}",
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED));
         dataModel.put("buyInvitecodeLabel", buyInvitecodeLabel);
+
+        final List<JSONObject> invitecodes = invitecodeQueryService.getValidInvitecodes(user.optString(Keys.OBJECT_ID));
+        for (final JSONObject invitecode : invitecodes) {
+            String msg = langPropsService.get("expireTipLabel");
+            msg = msg.replace("${time}", DateFormatUtils.format(invitecode.optLong(Keys.OBJECT_ID)
+                    + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
+            invitecode.put(Common.MEMO, msg);
+        }
+
+        dataModel.put(Invitecode.INVITECODES, (Object) invitecodes);
 
         if (requestURI.contains("function")) {
             final String emojis = emotionQueryService.getEmojis(user.optString(Keys.OBJECT_ID));
@@ -1769,7 +1779,7 @@ public class UserProcessor {
         final String namePrefix = request.getParameter("name");
         if (StringUtils.isBlank(namePrefix)) {
             final List<JSONObject> admins = userQueryService.getAdmins();
-            final List<JSONObject> userNames = new ArrayList<JSONObject>();
+            final List<JSONObject> userNames = new ArrayList<>();
 
             for (final JSONObject admin : admins) {
                 final JSONObject userName = new JSONObject();
