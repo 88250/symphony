@@ -220,7 +220,7 @@ var Util = {
                 body: Label.desktopNotificationTemplateLabel.replace("${count}", c),
                 icon: Label.staticServePath + '/images/faviconH.png'
             });
-            notification.onclick = notification.onclose = notification.onerror = function () {
+            notification.onclick = notification.onerror = function () {
                 window.location = Label.servePath + '/notifications';
             };
         };
