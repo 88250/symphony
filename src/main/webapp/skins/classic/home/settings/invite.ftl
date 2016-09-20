@@ -16,15 +16,19 @@
     <div class="module-header">
         <h2>${buyInvitecodeLabel}</h2>
     </div>
-    <div class="module-panel form fn-clear">
+    <div class="module-panel form">
         <div id="pointBuyInvitecodeTip" class="tip"></div> <br/>
-        <button class="red fn-right" onclick="Settings.pointBuyInvitecode('${csrfToken}')">${confirmExchangeLabel}</button>
+        <div class="fn-clear">
+            <button class="red fn-right" onclick="Settings.pointBuyInvitecode('${csrfToken}')">${confirmExchangeLabel}</button>
+        </div>
+        <div class="list content-reset">
+            <ul>
+                <#list invitecodes as invitecode>
+                <li><code>${invitecode.code}</code> ${invitecode.memo}</li>
+                </#list>
+            </ul>
+        </div>
     </div>
-    <ul>
-        <#list invitecodes as invitecode>
-        <li>${invitecode.code} ${invitecode.memo}</li>
-        </#list>
-    </ul>
 </div>
 <div class="module">
     <div class="module-header">
@@ -55,4 +59,4 @@
                     }, 2000);
                 });
             });
-</script>
+</script>`

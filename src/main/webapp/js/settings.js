@@ -304,11 +304,10 @@ var Settings = {
             },
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $("#pointBuyInvitecodeTip").addClass("succ").removeClass("error").html('<ul><li>' + result.msg + '</li></ul>');
+                    $(".list ul").prepend('<li><code>' + result.msg.split(' ')[0] + '</code>' +result.msg.substr(16) + '</li>');
                 } else {
                     $("#pointBuyInvitecodeTip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
                 }
-
                 $("#pointBuyInvitecodeTip").show();
             }
         });

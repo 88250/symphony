@@ -383,7 +383,7 @@ public class UserProcessor {
         if (!succ) {
             ret.put(Keys.MSG, langPropsService.get("exchangeFailedLabel"));
         } else {
-            String msg = langPropsService.get("invitecodeTipLabel");
+            String msg = langPropsService.get("expireTipLabel");
             msg = msg.replace("${time}", DateFormatUtils.format(System.currentTimeMillis()
                     + Symphonys.getLong("invitecode.expired"), "yyyy-MM-dd HH:mm"));
             ret.put(Keys.MSG, invitecode + " " + msg);
