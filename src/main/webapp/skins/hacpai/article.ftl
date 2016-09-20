@@ -6,7 +6,7 @@
         <@head title="${article.articleTitle} - ${symphonyLabel}">
         <meta name="description" content="${article.articleTitle}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-8.6/styles/github.css">
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/codemirror.css" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/codemirror-5.3/addon/hint/show-hint.css" />
@@ -234,7 +234,7 @@
         <script src="${staticServePath}/js/lib/codemirror-5.3/mode/markdown/markdown.js"></script>
         <script src="${staticServePath}/js/lib/codemirror-5.3/addon/display/placeholder.js"></script>
         <script src="${staticServePath}/js/overwrite/codemirror/addon/hint/show-hint.js"></script>
-        <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-8.6/highlight.pack.js"></script>
+        <script type="text/javascript" src="${staticServePath}/js/lib/highlight.js-9.6.0/highlight.pack.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/swfobject.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/ws-flash/web_socket.js"></script>
         <script type="text/javascript" src="${staticServePath}/js/lib/reconnecting-websocket.min.js"></script>

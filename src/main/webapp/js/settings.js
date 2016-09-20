@@ -38,7 +38,7 @@ var Settings = {
         }
         $.ajax({
             method: "GET",
-            url: Label.servePath + "/js/lib/highlight.js-8.6/highlight.pack.js",
+            url: Label.servePath + "/js/lib/highlight.js-9.6.0/highlight.pack.js",
             dataType: "script"
         }).done(function () {
             $('pre code').each(function (i, block) {
