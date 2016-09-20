@@ -26,6 +26,15 @@
                 <label>
                     ${subMailLabel} 
                     <input id="userSubMailStatus" <#if 0 == currentUser.userSubMailStatus> checked="checked"</#if> type="checkbox" />
+                </label>
+            </div>
+        </div>
+        <div class="fn-clear settings-secret">
+            <div>
+                <label>
+                    ${enableKbdLabel}
+                    <input id="userKeyboardShortcutsStatus" <#if 0 == currentUser.userKeyboardShortcutsStatus> checked="checked"</#if> type="checkbox" />
+                </label>
             </div>
         </div>
         <div class="fn-clear"></div>

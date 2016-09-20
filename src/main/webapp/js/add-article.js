@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.16.10.8, Sep 17, 2016
+ * @version 2.16.10.10, Sep 20, 2016
  */
 
 /**
@@ -140,10 +140,7 @@ var AddArticle = {
                     "Ctrl-/": "autocompleteEmoji",
                     "Cmd-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
-                    "Alt-R": "endAudioRecord",
-                    "Esc": function (cm) {
-                         cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    }
+                    "Alt-R": "endAudioRecord"
                 },
                 toolbar: [
                     {name: 'bold'},
@@ -159,8 +156,7 @@ var AddArticle = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'},
-                    {name: 'fullscreen'}
+                    {name: 'preview'}
                 ],
                 status: false
             });
@@ -315,18 +311,14 @@ var AddArticle = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'},
-                    {name: 'fullscreen'}
+                    {name: 'preview'}
                 ],
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
                     "Ctrl-/": "autocompleteEmoji",
                     "Cmd-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
-                    "Alt-R": "endAudioRecord",
-                    "Esc": function (cm) {
-                         cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    }   
+                    "Alt-R": "endAudioRecord"
                 },
                 status: false
             });
@@ -358,7 +350,7 @@ var AddArticle = {
             });
         }
 
-        $("#articleRewardContent").next().next().height(100);
+        $("#articleContent").next().next().height(330);
         this._initTag();
     },
     /**

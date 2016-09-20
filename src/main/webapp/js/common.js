@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.33.21.30, Sep 19, 2016
+ * @version 1.33.21.31, Sep 20, 2016
  */
 
 /**
@@ -34,6 +34,10 @@ var Util = {
      * @returns {undefined}
      */
     _initCommonHotKey: function () {
+        if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
+            return false;
+        }
+
         /**
          * go to focus
          * @param {string} type 滚动方式: 'top'/'bottom'/'up'/'down'.
@@ -217,7 +221,7 @@ var Util = {
                 body: Label.desktopNotificationTemplateLabel.replace("${count}", c),
                 icon: Label.staticServePath + '/images/faviconH.png'
             });
-            notification.onclick = notification.onclose = notification.onerror = function () {
+            notification.onclick = notification.onerror = function () {
                 window.location = Label.servePath + '/notifications';
             };
         };
@@ -414,6 +418,8 @@ var Util = {
             }
         ]).on('autocomplete:selected', function (event, suggestion, dataset) {
             window.open("/article/" + suggestion.oId);
+        }).bind('keyup', 'esc', function () {
+            $(this).blur();
         });
     },
     initTextarea: function (id, keyupEvent) {

@@ -15,12 +15,14 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.CompositeFilterOperator;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -39,7 +41,7 @@ import org.json.JSONObject;
  * Invitecode query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jul 18, 2016
+ * @version 1.0.0.3, Sep 20, 2016
  * @since 1.4.0
  */
 @Service
@@ -55,6 +57,35 @@ public class InvitecodeQueryService {
      */
     @Inject
     private InvitecodeRepository invitecodeRepository;
+
+    /**
+     * Gets valid invitecodes by the specified generator id.
+     *
+     * @param generatorId the specified generator id
+     * @return for example,      <pre>
+     * {
+     *     "oId": "",
+     *     "code": "",
+     *     "memo": "",
+     *     ....
+     * }
+     * </pre>, returns an empty list if not found
+     */
+    public List<JSONObject> getValidInvitecodes(final String generatorId) {
+        final Query query = new Query().setFilter(
+                CompositeFilterOperator.and(
+                        new PropertyFilter(Invitecode.GENERATOR_ID, FilterOperator.EQUAL, generatorId),
+                        new PropertyFilter(Invitecode.STATUS, FilterOperator.EQUAL, Invitecode.STATUS_C_UNUSED)
+                ));
+
+        try {
+            return CollectionUtils.jsonArrayToList(invitecodeRepository.get(query).optJSONArray(Keys.RESULTS));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets valid invitecode failed", e);
+
+            return Collections.emptyList();
+        }
+    }
 
     /**
      * Gets an invitecode with the specified code.

@@ -15,7 +15,7 @@
         <div class="main">
             <div class="wrapper post">
                 <div class="form fn-flex-1 fn-clear">
-                    <input type="text" id="articleTitle" tabindex="1"
+                    <input type="text" id="articleTitle" autocomplete="off" tabindex="1"
                            value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                     <div class="article-content">
                         <textarea id="articleContent" tabindex="2"

@@ -198,10 +198,14 @@
                 staticServePath: "${staticServePath}",
                 isLoggedIn: ${isLoggedIn?c}
         };
+        
+        <#if isLoggedIn>
+        Label.userKeyboardShortcutsStatus = '${currentUser.userKeyboardShortcutsStatus}';
+        </#if>
         Util.init(${isLoggedIn?c});
         <#if isLoggedIn>
-                // Init [User] channel
-                Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}${contextPath}/user-channel");
+        // Init [User] channel
+        Util.initUserChannel("${wsScheme}://${serverHost}:${serverPort}${contextPath}/user-channel");
         </#if>
         <#if mouseEffects>
             Util.mouseClickEffects();

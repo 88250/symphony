@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.16.9.14, Sep 18, 2016
+ * @version 1.17.9.14, Sep 20, 2016
  */
 
 /**
@@ -304,11 +304,10 @@ var Settings = {
             },
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $("#pointBuyInvitecodeTip").addClass("succ").removeClass("error").html('<ul><li>' + result.msg + '</li></ul>');
+                    $(".list ul").prepend('<li><code>' + result.msg.split(' ')[0] + '</code>' +result.msg.substr(16) + '</li>');
                 } else {
                     $("#pointBuyInvitecodeTip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
                 }
-
                 $("#pointBuyInvitecodeTip").show();
             }
         });
@@ -395,7 +394,8 @@ var Settings = {
                     userCommentViewMode: $("#userCommentViewMode").val(),
                     userAvatarViewMode: $("#userAvatarViewMode").val(),
                     userNotifyStatus: $('#userNotifyStatus').prop("checked"),
-                    userSubMailStatus: $('#userSubMailStatus').prop("checked")
+                    userSubMailStatus: $('#userSubMailStatus').prop("checked"),
+                    userKeyboardShortcutsStatus: $('#userKeyboardShortcutsStatus').prop("checked")
                 };
                 break;
             case "emotionList":

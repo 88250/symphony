@@ -23,11 +23,16 @@ import org.b3log.symphony.util.Symphonys;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.2.1.12, Sep 14, 2016
+ * @version 2.3.1.12, Sep 20, 2016
  * @since 0.2.0
  * @see org.b3log.latke.model.User
  */
 public final class UserExt {
+
+    /**
+     * Key of user keyboard shortcuts status.
+     */
+    public static final String USER_KEYBOARD_SHORTCUTS_STATUS = "userKeyboardShortcutsStatus";
 
     /**
      * Key of user subscription mail status.

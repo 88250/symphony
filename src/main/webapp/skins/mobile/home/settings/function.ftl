@@ -25,6 +25,12 @@
                 <input id="userSubMailStatus" <#if 0 == currentUser.userSubMailStatus> checked="checked"</#if> type="checkbox" />
             </label>
         </div>
+        <div class="fn-clear settings-secret">
+            <label>
+                ${enableKbdLabel}
+                <input id="enableKbdLabel" <#if 0 == currentUser.userKeyboardShortcutsStatus> checked="checked"</#if> type="checkbox" />
+            </label>
+        </div>
         <div class="fn-clear"></div>
         <div id="functionTip" class="tip"></div>
         <div class="fn-hr5"></div>

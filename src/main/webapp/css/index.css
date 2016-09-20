@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.15.32, Sep 18, 2016
+ * @version 2.14.15.33, Sep 20, 2016
  */
 
 /* start list */
@@ -256,7 +256,7 @@ label.cmt-anonymous {
     margin: 51px 0 0 0;
     overflow: hidden;
     padding: 4px;
-    height: 88px;
+    height: 102px;
     width: 100%;
 }
 
@@ -286,16 +286,6 @@ label.cmt-anonymous {
 
 .share [class^="icon-"]:hover {
     color: #4183c4;
-}
-
-.grammar dl {
-    float: left;
-    height: 70px;
-    width: 206px;
-}
-
-.cm-s-default.CodeMirror {
-    height: auto !important;
 }
 
 .CodeMirror-scroll {
@@ -652,6 +642,11 @@ code .dec { color: initial; } /* decimal - blue */
     margin: 20px auto;
 }
 
+#snakeCanvas {
+    margin: 20px auto;
+    display: block;
+}
+
 .sub-head .avatar-small {
     height: 24px;
     width: 24px;
@@ -793,7 +788,7 @@ code .dec { color: initial; } /* decimal - blue */
     margin: 0 20px 15px 0;
 }
 
-.index a.count {
+.index .count {
     position: absolute;
     right: 0;
     top: 50%;

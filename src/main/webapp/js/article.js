@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.31.22, Sep 18, 2016
+ * @version 1.25.31.22, Sep 20, 2016
  */
 
 /**
@@ -112,6 +112,10 @@ var Comment = {
      * @returns {undefined}
      */
     _initHotKey: function () {
+        if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
+            return false;
+        }
+        
         $(document).bind('keyup', 'x', function assets() {
             // listen jump hotkey h
             Util.prevKey = 'x';
@@ -162,8 +166,8 @@ var Comment = {
                 $('#comments > ul > li.focus .comment-info .fn-pointer.ft-fade').click();
             }
             return false;
-        }).bind('keyup', 's', function assets() {
-            // x s 查看选中回贴的回复
+        }).bind('keyup', 'm', function assets() {
+            // x m 查看选中回贴的回复
             if ($('#comments > ul > li.focus .comment-action > .ft-fade > .fn-pointer').length === 1 && Util.prevKey === 'x') {
                 $('#comments > ul > li.focus .comment-action > .ft-fade > .fn-pointer').click();
             }
@@ -293,8 +297,7 @@ var Comment = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'},
-                    {name: 'fullscreen'}
+                    {name: 'preview'}
                 ],
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
@@ -302,8 +305,8 @@ var Comment = {
                     "Ctrl-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
                     "Alt-R": "endAudioRecord",
-                    "Esc": function (cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    'Esc': function () {
+                        $('.editor-hide').click();
                     }
                 },
                 status: false

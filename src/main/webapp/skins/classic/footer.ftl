@@ -51,6 +51,11 @@
         isLoggedIn: ${isLoggedIn?c},
         funNeedLoginLabel: '${funNeedLoginLabel}'
     };
+    
+    <#if isLoggedIn>
+    Label.userKeyboardShortcutsStatus = '${currentUser.userKeyboardShortcutsStatus}';
+    </#if>
+    
     Util.init(${isLoggedIn?c});
     
     <#if isLoggedIn>
