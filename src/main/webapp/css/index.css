@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.15.32, Sep 18, 2016
+ * @version 2.14.15.33, Sep 20, 2016
  */
 
 /* start list */
@@ -286,16 +286,6 @@ label.cmt-anonymous {
 
 .share [class^="icon-"]:hover {
     color: #4183c4;
-}
-
-.grammar dl {
-    float: left;
-    height: 70px;
-    width: 206px;
-}
-
-.cm-s-default.CodeMirror {
-    height: auto !important;
 }
 
 .CodeMirror-scroll {

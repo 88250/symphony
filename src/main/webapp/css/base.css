@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.22.16.38, Sep 18, 2016
+ * @version 1.22.16.39, Sep 20, 2016
  */
 
 /* start reset */
@@ -1657,7 +1657,7 @@ a[class*=" icon-"]:hover {
     border: 1px solid #CCCCCC;
     margin-bottom: 20px;
     border-top-width: 0;
-    height: 330px;
+    height: 100px;
 }
 
 .CodeMirror-scroll {
