@@ -46,7 +46,6 @@ gulp.task('cc', function () {
 
     var jsCodemirror = ['./src/main/webapp/js/lib/editor/diff_match_patch.js',
         './src/main/webapp/js/lib/editor/codemirror.js',
-        './src/main/webapp/js/lib/editor/fullscreen.js',
         './src/main/webapp/js/lib/editor/placeholder.js',
         './src/main/webapp/js/lib/editor/merge.js',
         './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',

@@ -297,18 +297,14 @@ var Comment = {
                     {name: 'redo'},
                     {name: 'undo'},
                     '|',
-                    {name: 'preview'},
-                    {name: 'fullscreen'}
+                    {name: 'preview'}
                 ],
                 extraKeys: {
                     "Alt-/": "autocompleteUserName",
                     "Cmd-/": "autocompleteEmoji",
                     "Ctrl-/": "autocompleteEmoji",
                     "Alt-S": "startAudioRecord",
-                    "Alt-R": "endAudioRecord",
-                    "Esc": function (cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    }
+                    "Alt-R": "endAudioRecord"
                 },
                 status: false
             });
