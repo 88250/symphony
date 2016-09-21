@@ -306,6 +306,16 @@ var EatingSnake = {
 //        EatingSnake.oMark.innerHtml = EatingSnake.snake.length - EatingSnake.baseLen;
     },
     start: function (csrfToken) {
+
+        window.addEventListener('keydown', function (event) {
+            // 如果游戏的时候时使用方向键
+            if (event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40) {
+                // 阻止方向键滚屏
+                event.preventDefault();
+                return false;
+            }
+        });
+
         $.ajax({
             url: Label.servePath + "/activity/eating-snake/start",
             type: "POST",
