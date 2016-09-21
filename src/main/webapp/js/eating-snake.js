@@ -169,19 +169,23 @@ var EatingSnake = {
                 EatingSnake.snakeCanvas.fillText("Your Score: " + score, 220, 200);
                 EatingSnake.snakeCanvas.fillStyle = "red";
                 EatingSnake.snakeCanvas.font = "18px serif";
+//                ctx.measureText(txt).width
+                var resultText;
                 if (score <= 10) {
-                    EatingSnake.snakeCanvas.fillText("童鞋，换键盘吧，要不行换手", 200, 250);
+                    resultText="童鞋，换键盘吧，要不行换手"
                 } else if (score > 10 && score <= 20) {
-                    EatingSnake.snakeCanvas.fillText("如此平凡的分数恕我无力吐槽", 200, 250);
+                    resultText="如此平凡的分数恕我无力吐槽"
                 } else if (score > 20 && score <= 30) {
-                    EatingSnake.snakeCanvas.fillText("哇哦，好厉害哦！", 200, 250);
+                    resultText="哇哦，好厉害哦！"
                 } else if (score > 30 && score <= 40) {
-                    EatingSnake.snakeCanvas.fillText("哎呀我滴老天爷呀~", 200, 250);
+                    resultText="哎呀我滴老天爷呀"
                 } else if (score > 40 && score <= 50) {
-                    EatingSnake.snakeCanvas.fillText("请收下我的膝盖 OTZ", 200, 250);
+                    resultText="请收下我的膝盖 OTZ"
                 } else {
-                    EatingSnake.snakeCanvas.fillText("积分溢出，归零", 200, 250);
+                    resultText="积分溢出，归零"
                 }
+                var textWidth=EatingSnake.snakeCanvas.measureText(resultText).width;
+                EatingSnake.snakeCanvas.fillText(resultText,155+(290-textWidth)/2,250);
             },
             complete: function () {
                 var $btn = $("button.green");
