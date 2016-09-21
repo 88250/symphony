@@ -163,10 +163,12 @@ var EatingSnake = {
                 EatingSnake.snakeCanvas.fillRect(150, 100, 300, 200);
                 EatingSnake.snakeCanvas.clearRect(155, 105, 290, 190);
                 EatingSnake.snakeCanvas.font = '36px serif';
-                EatingSnake.snakeCanvas.fillText("Game Over!", 200, 150);
+                var textWidth=EatingSnake.snakeCanvas.measureText("Game Over!").width;
+                EatingSnake.snakeCanvas.fillText("Game Over!", 155+(290-textWidth)/2, 150);
                 EatingSnake.snakeCanvas.font = '24px serif';
                 var score = EatingSnake.snake.length - EatingSnake.baseLen;
-                EatingSnake.snakeCanvas.fillText("Your Score: " + score, 220, 200);
+                textWidth=EatingSnake.snakeCanvas.measureText("Your Score: " + score).width;
+                EatingSnake.snakeCanvas.fillText("Your Score: " + score, 155+(290-textWidth)/2, 200);
                 EatingSnake.snakeCanvas.fillStyle = "red";
                 EatingSnake.snakeCanvas.font = "18px serif";
 //                ctx.measureText(txt).width
@@ -184,7 +186,7 @@ var EatingSnake = {
                 } else {
                     resultText="积分溢出，归零"
                 }
-                var textWidth=EatingSnake.snakeCanvas.measureText(resultText).width;
+                textWidth=EatingSnake.snakeCanvas.measureText(resultText).width;
                 EatingSnake.snakeCanvas.fillText(resultText,155+(290-textWidth)/2,250);
             },
             complete: function () {
