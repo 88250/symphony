@@ -40,6 +40,8 @@ var EatingSnake = {
     startTime: null,
     endTime: null,
     countTime: null,
+    snakeColor:0,
+	appleColor:255,
     //1:snake
     //0:nothing
     //2:apple
@@ -70,11 +72,11 @@ var EatingSnake = {
                         EatingSnake.snakeCanvas.strokeRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 1:
-                        EatingSnake.snakeCanvas.fillStyle = "black";
+                        EatingSnake.snakeCanvas.fillStyle = "rgb("+EatingSnake.snakeColor+",0,0)";
                         EatingSnake.snakeCanvas.fillRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 2:
-                        EatingSnake.snakeCanvas.fillStyle = "red";
+                        EatingSnake.snakeCanvas.fillStyle = "rgb("+EatingSnake.appleColor+",0,0)";
                         EatingSnake.snakeCanvas.fillRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 3:
@@ -174,17 +176,17 @@ var EatingSnake = {
 //                ctx.measureText(txt).width
                 var resultText;
                 if (score <= 10) {
-                    resultText="童鞋，换键盘吧，要不行换手"
+                    resultText="童鞋，换键盘吧，要不行换手";
                 } else if (score > 10 && score <= 20) {
-                    resultText="如此平凡的分数恕我无力吐槽"
+                    resultText="如此平凡的分数恕我无力吐槽";
                 } else if (score > 20 && score <= 30) {
-                    resultText="哇哦，好厉害哦！"
+                    resultText="哇哦，好厉害哦！";
                 } else if (score > 30 && score <= 40) {
-                    resultText="哎呀我滴老天爷呀"
+                    resultText="哎呀我滴老天爷呀";
                 } else if (score > 40 && score <= 50) {
-                    resultText="请收下我的膝盖 OTZ"
+                    resultText="请收下我的膝盖 OTZ";
                 } else {
-                    resultText="积分溢出，归零"
+                    resultText="太假了！(╯‵□′)╯︵┻━┻";
                 }
                 textWidth=EatingSnake.snakeCanvas.measureText(resultText).width;
                 EatingSnake.snakeCanvas.fillText(resultText,155+(290-textWidth)/2,250);
@@ -203,6 +205,8 @@ var EatingSnake = {
             y: EatingSnake.snake[1].y
         };
         EatingSnake.newFood();
+        EatingSnake.snakeColor+=5;
+        EatingSnake.appleColor-=5;
         clearInterval(EatingSnake.interval);
         if (EatingSnake.currTime >= 50)
             EatingSnake.currTime = EatingSnake.currTime - EatingSnake.stepTime;
