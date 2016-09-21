@@ -237,25 +237,29 @@ var EatingSnake = {
     },
     input: function (keyCode) {
         switch (keyCode) {
-            case 65: //左边
+            case 65:
+            case 37: //左边
                 if (EatingSnake.lastDir.x == 0) {
                     EatingSnake.dir.x = -1;
                     EatingSnake.dir.y = 0;
                 }
                 break;
-            case 87: //上边
+            case 87:
+            case 38: //上边
                 if (EatingSnake.lastDir.y == 0) {
                     EatingSnake.dir.x = 0;
                     EatingSnake.dir.y = -1;
                 }
                 break;
-            case 68: //右边
+            case 68:
+            case 39: //右边
                 if (EatingSnake.lastDir.x == 0) {
                     EatingSnake.dir.x = 1;
                     EatingSnake.dir.y = 0;
                 }
                 break;
-            case 83: //下的
+            case 83:
+            case 40: //下的
                 if (EatingSnake.lastDir.y == 0) {
                     EatingSnake.dir.x = 0;
                     EatingSnake.dir.y = 1;
