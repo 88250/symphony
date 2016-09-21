@@ -32,6 +32,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * Activity query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.4, Sep 19, 2016
+ * @version 1.5.1.4, Sep 20, 2016
  * @since 1.3.0
  */
 @Service
@@ -50,6 +51,12 @@ public class ActivityQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ActivityQueryService.class.getName());
+
+    /**
+     * Pointtransfer repository.
+     */
+    @Inject
+    private PointtransferRepository pointtransferRepository;
 
     /**
      * User repository.
@@ -68,6 +75,80 @@ public class ActivityQueryService {
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
+    /**
+     * Gets the top eating snake users (single game max) with the specified fetch size.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     * @param fetchSize the specified fetch size
+     * @return users, returns an empty list if not found
+     */
+    public List<JSONObject> getTopEatingSnakeUsersMax(final int avatarViewMode, final int fetchSize) {
+        final List<JSONObject> ret = new ArrayList<>();
+
+        try {
+            final List<JSONObject> users = userRepository.select("SELECT\n"
+                    + "	u.*, MAX(sum) AS point\n"
+                    + "FROM\n"
+                    + "	" + pointtransferRepository.getName() + " AS p,\n"
+                    + "	" + userRepository.getName() + " AS u\n"
+                    + "WHERE\n"
+                    + "	p.toId = u.oId\n"
+                    + "AND type = 27\n"
+                    + "GROUP BY\n"
+                    + "	toId\n"
+                    + "ORDER BY\n"
+                    + "	point DESC\n"
+                    + "LIMIT ?", fetchSize);
+
+            for (final JSONObject user : users) {
+                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+
+                ret.add(user);
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets top eating snake users error", e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets the top eating snake users (sum) with the specified fetch size.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     * @param fetchSize the specified fetch size
+     * @return users, returns an empty list if not found
+     */
+    public List<JSONObject> getTopEatingSnakeUsersSum(final int avatarViewMode, final int fetchSize) {
+        final List<JSONObject> ret = new ArrayList<>();
+
+        try {
+            final List<JSONObject> users = userRepository.select("SELECT\n"
+                    + "	u.*, Sum(sum) AS point\n"
+                    + "FROM\n"
+                    + "	" + pointtransferRepository.getName() + " AS p,\n"
+                    + "	" + userRepository.getName() + " AS u\n"
+                    + "WHERE\n"
+                    + "	p.toId = u.oId\n"
+                    + "AND type = 27\n"
+                    + "GROUP BY\n"
+                    + "	toId\n"
+                    + "ORDER BY\n"
+                    + "	point DESC\n"
+                    + "LIMIT ?", fetchSize);
+
+            for (final JSONObject user : users) {
+                avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
+
+                ret.add(user);
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets top eating snake users error", e);
+        }
+
+        return ret;
+    }
 
     /**
      * Gets the top checkin users with the specified fetch size.

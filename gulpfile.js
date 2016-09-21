@@ -18,7 +18,7 @@
  * @file frontend tool.
  * 
  * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 0.2.2.0, Sep 17, 2016 
+ * @version 1.2.2.0, Sep 20, 2016 
  */
 var gulp = require("gulp");
 var concat = require('gulp-concat');
@@ -68,7 +68,7 @@ gulp.task('cc', function () {
             .pipe(gulp.dest('./src/main/webapp/js/lib/compress/'));
 
     var jsArticleLib = ['./src/main/webapp/js/lib/editor/codemirror.min.js',
-        './src/main/webapp/js/lib/highlight.js-8.6/highlight.pack.js',
+        './src/main/webapp/js/lib/highlight.js-9.6.0/highlight.pack.js',
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js',
         './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
         './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',

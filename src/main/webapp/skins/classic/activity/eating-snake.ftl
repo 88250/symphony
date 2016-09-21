@@ -28,11 +28,14 @@
                                 <span class="item-header" style="background-image: url(${hotBgIcon});">${totalRankLabel}</span>
                                 <div class="module-panel">
                                     <ul class="module-list">
+                                        <#list sumUsers as user>
                                         <li>
                                             <div class="avatar-small tooltipped tooltipped-ne slogan"
-                                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
-                                            <a class="title" href="<#if useCaptchaCheckin??>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a>
-                                            <span class="fn-right count ft-gray ft-smaller">10</span>
+                                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${user.userAvatarURL48}')"></div>
+                                            <a class="title" href="${servePath}/member/${user.userName}">${user.userName}</a>
+                                            <span class="fn-right count ft-gray ft-smaller">${user.point}</span>
+                                        </li>
+                                        </#list>
                                     </ul>
                                 </div>
                             </div>
@@ -40,12 +43,14 @@
                                 <span class="item-header" style="background-image: url(${perfectBgIcon});">${eachRankLabel}</span>
                                 <div class="module-panel">
                                     <ul class="module-list">
+                                        <#list maxUsers as user>
                                         <li>
                                             <div class="avatar-small tooltipped tooltipped-ne slogan"
-                                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
-                                            <a class="title" href="<#if useCaptchaCheckin??>/activity/checkin<#else>/activity/daily-checkin</#if>">${activityDailyCheckinLabel}</a>
-                                            <span class="fn-right count ft-gray ft-smaller">10</span>
+                                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${user.userAvatarURL48}')"></div>
+                                            <a class="title" href="${servePath}/member/${user.userName}">${user.userName}</a>
+                                            <span class="fn-right count ft-gray ft-smaller">${user.point}</span>
                                         </li>
+                                        </#list>
                                     </ul>
                                 </div>
                             </div>

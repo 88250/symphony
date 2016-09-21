@@ -75,7 +75,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.8.1.6, Sep 19, 2016
+ * @version 1.9.1.6, Sep 20, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -524,6 +524,14 @@ public class ActivityProcessor {
         filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+
+        final List<JSONObject> maxUsers
+                = activityQueryService.getTopEatingSnakeUsersMax(avatarViewMode, 10);
+        dataModel.put("maxUsers", (Object) maxUsers);
+
+        final List<JSONObject> sumUsers
+                = activityQueryService.getTopEatingSnakeUsersSum(avatarViewMode, 10);
+        dataModel.put("sumUsers", (Object) sumUsers);
 
         String pointActivityEatingSnake = langPropsService.get("activityStartEatingSnakeTipLabel");
         pointActivityEatingSnake = pointActivityEatingSnake.replace("{point}",
