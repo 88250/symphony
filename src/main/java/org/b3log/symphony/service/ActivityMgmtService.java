@@ -145,26 +145,7 @@ public class ActivityMgmtService {
     public synchronized JSONObject startEatingSnake(final String userId) {
         final JSONObject ret = Results.falseResult();
 
-        int startPoint = Pointtransfer.TRANSFER_SUM_C_ACTIVITY_EATINGSNAKE;
-        try {
-            final List<JSONObject> result = pointtransferRepository.select("SELECT\n"
-                    + "	AVG(sum) AS point\n"
-                    + "FROM\n"
-                    + "	`symphony_pointtransfer`\n"
-                    + "WHERE\n"
-                    + "	type = 27\n"
-                    + "AND toId = ?\n"
-                    + "", userId);
-            if (!result.isEmpty()) {
-                startPoint = result.get(0).optInt(Common.POINT, startPoint);
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Calc avg point failed", e);
-        }
-
-        if (startPoint < 1) {
-            startPoint = Pointtransfer.TRANSFER_SUM_C_ACTIVITY_EATINGSNAKE;
-        }
+        final int startPoint = pointtransferRepository.getActivityEatingSnakeAvg(userId);
 
         final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_EATINGSNAKE,
