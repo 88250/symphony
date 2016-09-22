@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.4.5, Sep 22, 2016
+ * @version 1.7.4.6, Sep 23, 2016
  * @since 0.2.0
  */
 @Service
@@ -103,8 +103,11 @@ public class UserQueryService {
     public int getInvitedUserCount(final String userId) {
         final Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Pointtransfer.TO_ID, FilterOperator.EQUAL, userId),
-                new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, Pointtransfer.TRANSFER_TYPE_C_INVITECODE_USED),
-                new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER)
+                CompositeFilterOperator.or(
+                        new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL,
+                                Pointtransfer.TRANSFER_TYPE_C_INVITECODE_USED),
+                        new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL,
+                                Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER))
         ));
 
         try {
