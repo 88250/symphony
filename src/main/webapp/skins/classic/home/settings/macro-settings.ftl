@@ -33,7 +33,7 @@
                                    class="<#if 'avatar' == type>current</#if><#if !currentUser.userAvatarURL?contains('_')> todo</#if>"
                                    >${avatarLabel}</a>
                                 <a href="${servePath}/settings/invite"
-                                   class="<#if 'invite' == type>current</#if><#if !currentUser.userAvatarURL?contains('_')> todo</#if>"
+                                   class="<#if 'invite' == type>current</#if><#if invitedUserCnt < 1> todo</#if>"
                                    >${inviteLabel}</a>
                                 <a href="${servePath}/settings/function"<#if 'function' == type> class="current"</#if>>${functionLabel}</a>
                                 <a href="${servePath}/settings/point"<#if 'point' == type> class="current"</#if>>${pointLabel}</a>

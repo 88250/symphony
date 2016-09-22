@@ -47,7 +47,9 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
+import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Times;
@@ -58,7 +60,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.4.5, Jul 27, 2016
+ * @version 1.7.4.5, Sep 22, 2016
  * @since 0.2.0
  */
 @Service
@@ -82,9 +84,98 @@ public class UserQueryService {
     private AvatarQueryService avatarQueryService;
 
     /**
+     * Pointtransfer repository.
+     */
+    @Inject
+    private PointtransferRepository pointtransferRepository;
+
+    /**
      * All usernames.
      */
-    private List<JSONObject> userNames = Collections.synchronizedList(new ArrayList<JSONObject>());
+    private final List<JSONObject> userNames = Collections.synchronizedList(new ArrayList<JSONObject>());
+
+    /**
+     * Gets invite user count of a user specified by the given user id.
+     *
+     * @param userId the given user id
+     * @return invited user count
+     */
+    public int getInvitedUserCount(final String userId) {
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                new PropertyFilter(Pointtransfer.TO_ID, FilterOperator.EQUAL, userId),
+                new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, Pointtransfer.TRANSFER_TYPE_C_INVITECODE_USED),
+                new PropertyFilter(Pointtransfer.TYPE, FilterOperator.EQUAL, Pointtransfer.TRANSFER_TYPE_C_INVITE_REGISTER)
+        ));
+
+        try {
+            return (int) pointtransferRepository.count(query);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets invited user count failed", e);
+
+            return 0;
+        }
+    }
+
+    /**
+     * Gets latest logged in users by the specified time.
+     *
+     * @param time the specified start time
+     * @param currentPageNum the specified current page number
+     * @param pageSize the specified page size
+     * @param windowSize the specified window size
+     * @return for example,      <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "users": [{
+     *         "oId": "",
+     *         "userName": "",
+     *         "userEmail": "",
+     *         "userPassword": "",
+     *         "roleName": "",
+     *         ....
+     *      }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     * @see Pagination
+     */
+    public JSONObject getLatestLoggedInUsers(final long time, final int currentPageNum, final int pageSize,
+            final int windowSize) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setCurrentPageNum(currentPageNum).setPageSize(pageSize)
+                .setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID),
+                        new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, time)
+                ));
+
+        JSONObject result = null;
+        try {
+            result = userRepository.get(query);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets latest logged in user failed", e);
+
+            throw new ServiceException(e);
+        }
+
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        final JSONArray users = result.optJSONArray(Keys.RESULTS);
+        ret.put(User.USERS, users);
+
+        return ret;
+    }
 
     /**
      * Gets user count of the specified day.
@@ -559,66 +650,6 @@ public class UserQueryService {
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-        pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-        pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-        final JSONArray users = result.optJSONArray(Keys.RESULTS);
-        ret.put(User.USERS, users);
-
-        return ret;
-    }
-
-    /**
-     * Gets latest logged in users by the specified time.
-     *
-     * @param time the specified start time
-     * @param currentPageNum the specified current page number
-     * @param pageSize the specified page size
-     * @return for example,      <pre>
-     * {
-     *     "pagination": {
-     *         "paginationPageCount": 100,
-     *         "paginationPageNums": [1, 2, 3, 4, 5]
-     *     },
-     *     "users": [{
-     *         "oId": "",
-     *         "userName": "",
-     *         "userEmail": "",
-     *         "userPassword": "",
-     *         "roleName": "",
-     *         ....
-     *      }, ....]
-     * }
-     * </pre>
-     *
-     * @throws ServiceException service exception
-     * @see Pagination
-     */
-    public JSONObject getLatestLoggedInUsers(final long time, final int currentPageNum, final int pageSize)
-            throws ServiceException {
-        final JSONObject ret = new JSONObject();
-
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
-                .setCurrentPageNum(currentPageNum).setPageSize(pageSize)
-                .setFilter(CompositeFilterOperator.and(
-                        new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID),
-                        new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.GREATER_THAN_OR_EQUAL, time)
-                ));
-
-        JSONObject result = null;
-        try {
-            result = userRepository.get(query);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets latest logged in user failed", e);
-
-            throw new ServiceException(e);
-        }
-
-        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
-        final JSONObject pagination = new JSONObject();
-        ret.put(Pagination.PAGINATION, pagination);
-        final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, Integer.MAX_VALUE);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 

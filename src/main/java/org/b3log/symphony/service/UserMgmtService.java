@@ -58,6 +58,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.symphony.model.Article;
 import org.b3log.symphony.model.Comment;
 import org.b3log.symphony.model.Common;
+import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Option;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Tag;
@@ -80,7 +81,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.13.16.16, Sep 20, 2016
+ * @version 1.14.16.16, Sep 22, 2016
  * @since 0.2.0
  */
 @Service
@@ -144,6 +145,12 @@ public class UserMgmtService {
      */
     @Inject
     private AvatarQueryService avatarQueryService;
+
+    /**
+     * Notification management service.
+     */
+    @Inject
+    private NotificationMgmtService notificationMgmtService;
 
     /**
      * Tries to login with cookie.
@@ -617,6 +624,11 @@ public class UserMgmtService {
 
                     LOGGER.log(Level.ERROR, "Defeat others error", e);
                 }
+
+                final JSONObject notification = new JSONObject();
+                notification.put(Notification.NOTIFICATION_USER_ID, ret);
+                notification.put(Notification.NOTIFICATION_DATA_ID, "");
+                notificationMgmtService.addSysAnnounceNewUserNotification(notification);
             }
 
             return ret;

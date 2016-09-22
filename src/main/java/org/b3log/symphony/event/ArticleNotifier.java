@@ -217,7 +217,23 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             // 'Sys Announce' Notification
             final String tags = originalArticle.optString(Article.ARTICLE_TAGS);
             if (StringUtils.containsIgnoreCase(tags, Symphonys.get("systemAnnounce"))) {
-                userQueryService.getLatestLoggedInUsers(0, 0, 0);
+                final long latestLoginTime = DateUtils.addDays(new Date(), -15).getTime();
+
+                final JSONObject result = userQueryService.getLatestLoggedInUsers(
+                        latestLoginTime, 1, Integer.MAX_VALUE, Integer.MAX_VALUE);
+                final JSONArray users = result.optJSONArray(User.USERS);
+
+                for (int i = 0; i < users.length(); i++) {
+                    final String userId = users.optJSONObject(i).optString(Keys.OBJECT_ID);
+
+                    final JSONObject notification = new JSONObject();
+                    notification.put(Notification.NOTIFICATION_USER_ID, userId);
+                    notification.put(Notification.NOTIFICATION_DATA_ID, articleId);
+
+                    notificationMgmtService.addSysAnnounceArticleNotification(notification);
+                }
+
+                LOGGER.info("System announcement [" + articleTitle + "] broadcast [users=" + users.length() + "]");
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article notification failed", e);

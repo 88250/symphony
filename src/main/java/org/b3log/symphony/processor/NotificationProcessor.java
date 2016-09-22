@@ -25,6 +25,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.After;
@@ -96,6 +97,66 @@ public class NotificationProcessor {
      */
     @Inject
     private Filler filler;
+
+    /**
+     * Shows [sysAnnounce] notifications.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/notifications/sys-announce", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void showSysAnnounceNotifications(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = (JSONObject) request.getAttribute(User.USER);
+
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
+        context.setRenderer(renderer);
+        renderer.setTemplateName("/home/notifications/sys-announce.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        String pageNumStr = request.getParameter("p");
+        if (Strings.isEmptyOrNull(pageNumStr) || !Strings.isNumeric(pageNumStr)) {
+            pageNumStr = "1";
+        }
+
+        final int pageNum = Integer.valueOf(pageNumStr);
+
+        final int pageSize = Symphonys.getInt("sysAnnounceNotificationsCnt");
+        final int windowSize = Symphonys.getInt("sysAnnounceNotificationsWindowSize");
+
+        final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
+
+        final JSONObject result = notificationQueryService.getSysAnnounceNotifications(
+                avatarViewMode, userId, pageNum, pageSize);
+        final List<JSONObject> notifications = (List<JSONObject>) result.get(Keys.RESULTS);
+
+        dataModel.put(Common.SYS_ANNOUNCE_NOTIFICATIONS, notifications);
+
+        fillNotificationCount(userId, dataModel);
+        
+        notificationMgmtService.makeRead(notifications);
+
+        final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
+        final int pageCount = (int) Math.ceil((double) recordCnt / (double) pageSize);
+
+        final List<Integer> pageNums = Paginator.paginate(pageNum, pageSize, pageCount, windowSize);
+        if (!pageNums.isEmpty()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
+        }
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        filler.fillHeaderAndFooter(request, response, dataModel);
+    }
 
     /**
      * Makes the specified type notifications as read.
@@ -259,6 +320,13 @@ public class NotificationProcessor {
             return;
         }
 
+        final int unreadSysAnnounceCnt = notificationQueryService.getUnreadSysAnnounceNotificationCount(userId);
+        if (unreadSysAnnounceCnt > 0) {
+            response.sendRedirect(Latkes.getServePath() + "/notifications/sys-announce");
+
+            return;
+        }
+
         response.sendRedirect(Latkes.getServePath() + "/notifications/commented");
     }
 
@@ -353,6 +421,9 @@ public class NotificationProcessor {
         final int unreadBroadcastCnt
                 = notificationQueryService.getUnreadNotificationCountByType(userId, Notification.DATA_TYPE_C_BROADCAST);
         dataModel.put(Common.UNREAD_BROADCAST_NOTIFICATION_CNT, unreadBroadcastCnt);
+
+        final int unreadSysAnnounceCnt = notificationQueryService.getUnreadSysAnnounceNotificationCount(userId);
+        dataModel.put(Common.UNREAD_SYS_ANNOUNCE_NOTIFICATION_CNT, unreadSysAnnounceCnt);
     }
 
     /**

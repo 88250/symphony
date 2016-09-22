@@ -421,6 +421,11 @@ public class UserProcessor {
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
         avatarQueryService.fillUserAvatarURL(avatarViewMode, user);
 
+        final String userId = user.optString(Keys.OBJECT_ID);
+
+        final int invitedUserCount = userQueryService.getInvitedUserCount(userId);
+        dataModel.put(Common.INVITED_USER_COUNT, invitedUserCount);
+
         // Qiniu file upload authenticate
         final Auth auth = Auth.create(Symphonys.get("qiniu.accessKey"), Symphonys.get("qiniu.secretKey"));
         final String uploadToken = auth.uploadToken(Symphonys.get("qiniu.bucket"));
@@ -461,7 +466,7 @@ public class UserProcessor {
                 String.valueOf(Pointtransfer.TRANSFER_SUM_C_INVITECODE_USED));
         dataModel.put("buyInvitecodeLabel", buyInvitecodeLabel);
 
-        final List<JSONObject> invitecodes = invitecodeQueryService.getValidInvitecodes(user.optString(Keys.OBJECT_ID));
+        final List<JSONObject> invitecodes = invitecodeQueryService.getValidInvitecodes(userId);
         for (final JSONObject invitecode : invitecodes) {
             String msg = langPropsService.get("expireTipLabel");
             msg = msg.replace("${time}", DateFormatUtils.format(invitecode.optLong(Keys.OBJECT_ID)
@@ -472,7 +477,7 @@ public class UserProcessor {
         dataModel.put(Invitecode.INVITECODES, (Object) invitecodes);
 
         if (requestURI.contains("function")) {
-            final String emojis = emotionQueryService.getEmojis(user.optString(Keys.OBJECT_ID));
+            final String emojis = emotionQueryService.getEmojis(userId);
             dataModel.put(Emotion.EMOTIONS, emojis);
         }
 

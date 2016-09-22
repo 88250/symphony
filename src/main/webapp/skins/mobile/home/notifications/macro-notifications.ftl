@@ -25,6 +25,8 @@
                     ${pointLabel}
                     <#elseif type == "broadcast">
                     ${sameCityLabel}
+                    <#elseif type == "sysAnnounce">
+                    ${systemLabel}
                     </#if>
                     <span class="icon-chevron-down fn-right"></span>
                 </div>
@@ -87,6 +89,14 @@
                             <span>${sameCityLabel}</span>
                             <#if unreadBroadcastNotificationCnt &gt; 0>
                             <span class="counter">${unreadBroadcastNotificationCnt}</span>
+                            </#if>
+                        </a>
+                    </li>
+                    <li<#if type == "sysAnnounce"> class="fn-none"</#if>>
+                        <a href="${servePath}/notifications/sys-announce">
+                            <span>${systemLabel}</span>
+                            <#if unreadSysAnnounceNotificationCnt &gt; 0>
+                            <span class="counter">${unreadSysAnnounceNotificationCnt}</span>
                             </#if>
                         </a>
                     </li>

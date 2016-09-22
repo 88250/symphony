@@ -131,9 +131,14 @@ public final class Notification {
     public static final int DATA_TYPE_C_INVITECODE_USED = 14;
 
     /**
-     * Data type - system announcement.
+     * Data type - system announcement - article.
      */
-    public static final int DATA_TYPE_C_SYS_ANNOUNCE = 15;
+    public static final int DATA_TYPE_C_SYS_ANNOUNCE_ARTICLE = 15;
+
+    /**
+     * Data type - system announcement - new user.
+     */
+    public static final int DATA_TYPE_C_SYS_ANNOUNCE_NEW_USER = 16;
 
     //// Transient ////
     /**

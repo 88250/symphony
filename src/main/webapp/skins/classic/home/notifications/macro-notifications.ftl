@@ -77,10 +77,10 @@
                                     <span class="count">${unreadBroadcastNotificationCnt}</span>
                                     </#if>
                                 </a>
-                                <a href="${servePath}/notifications/sysAnnounce"<#if type == "sys"> class="current"</#if>>
-                                   <span>${Label}</span>
-                                    <#if unreadBroadcastNotificationCnt &gt; 0>
-                                    <span class="count">${unreadBroadcastNotificationCnt}</span>
+                                <a href="${servePath}/notifications/sys-announce"<#if type == "sysAnnounce"> class="current"</#if>>
+                                   <span>${systemLabel}</span>
+                                    <#if unreadSysAnnounceNotificationCnt &gt; 0>
+                                    <span class="count">${unreadSysAnnounceNotificationCnt}</span>
                                     </#if>
                                 </a>
                             </nav>
