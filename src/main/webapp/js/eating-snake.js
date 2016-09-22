@@ -20,18 +20,19 @@
  * @author Zephyr
  * @author Alexar
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 19, 2016
+ * @author zonghua
+ * @version 1.1.0.1, Sep 22, 2016
  */
 var EatingSnake = {
     dir: null,
     lastDir: null,
     map: null,
     food: null,
-    R: 10, //圆半径或者外接正方形尺寸的一半
+    R: 10, // 圆半径或者外接正方形尺寸的一半
     size: 30,
     snake: null,
-    oMark: null, //分数显示框
-    isPause: false, //是否暂停
+    oMark: null, // 分数显示框
+    isPause: false, // 是否暂停
     snakeCanvas: null,
     interval: null,
     currTime: 200,
@@ -40,12 +41,12 @@ var EatingSnake = {
     startTime: null,
     endTime: null,
     countTime: null,
-    snakeColor:0,
-	appleColor:255,
-    //1:snake
-    //0:nothing
-    //2:apple
-    //3:block
+    snakeColor: 0,
+    appleColor: 255,
+    // 1: snake
+    // 0: nothing
+    // 2: apple
+    // 3: block
     setupMap: function () {
         for (var x = 1; x <= EatingSnake.size; x++) {
             EatingSnake.map[x] = new Array();
@@ -72,11 +73,11 @@ var EatingSnake = {
                         EatingSnake.snakeCanvas.strokeRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 1:
-                        EatingSnake.snakeCanvas.fillStyle = "rgb("+EatingSnake.snakeColor+",0,0)";
+                        EatingSnake.snakeCanvas.fillStyle = "rgb(" + EatingSnake.snakeColor + ",0,0)";
                         EatingSnake.snakeCanvas.fillRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 2:
-                        EatingSnake.snakeCanvas.fillStyle = "rgb("+EatingSnake.appleColor+",0,0)";
+                        EatingSnake.snakeCanvas.fillStyle = "rgb(" + EatingSnake.appleColor + ",0,0)";
                         EatingSnake.snakeCanvas.fillRect((x - 1) * 2 * EatingSnake.R, (y - 1) * 2 * EatingSnake.R, 2 * EatingSnake.R, 2 * EatingSnake.R);
                         break;
                     case 3:
@@ -114,7 +115,7 @@ var EatingSnake = {
     },
     check: function (x, y) {
         if (EatingSnake.map[x][y] != 0)
-            return true; //true代表此处有填充p
+            return true; // true代表此处有填充p
         else
             return false;
     },
@@ -165,31 +166,31 @@ var EatingSnake = {
                 EatingSnake.snakeCanvas.fillRect(150, 100, 300, 200);
                 EatingSnake.snakeCanvas.clearRect(155, 105, 290, 190);
                 EatingSnake.snakeCanvas.font = '36px serif';
-                var textWidth=EatingSnake.snakeCanvas.measureText("Game Over!").width;
-                EatingSnake.snakeCanvas.fillText("Game Over!", 155+(290-textWidth)/2, 150);
+                var textWidth = EatingSnake.snakeCanvas.measureText("Game Over!").width;
+                EatingSnake.snakeCanvas.fillText("Game Over!", 155 + (290 - textWidth) / 2, 150);
                 EatingSnake.snakeCanvas.font = '24px serif';
                 var score = EatingSnake.snake.length - EatingSnake.baseLen;
-                textWidth=EatingSnake.snakeCanvas.measureText("Your Score: " + score).width;
-                EatingSnake.snakeCanvas.fillText("Your Score: " + score, 155+(290-textWidth)/2, 200);
+                textWidth = EatingSnake.snakeCanvas.measureText("Your Score: " + score).width;
+                EatingSnake.snakeCanvas.fillText("Your Score: " + score, 155 + (290 - textWidth) / 2, 200);
                 EatingSnake.snakeCanvas.fillStyle = "red";
                 EatingSnake.snakeCanvas.font = "18px serif";
 //                ctx.measureText(txt).width
                 var resultText;
                 if (score <= 10) {
-                    resultText="童鞋，换键盘吧，要不行换手";
+                    resultText = "童鞋，换键盘吧，要不行换手";
                 } else if (score > 10 && score <= 20) {
-                    resultText="如此平凡的分数恕我无力吐槽";
+                    resultText = "如此平凡的分数恕我无力吐槽";
                 } else if (score > 20 && score <= 30) {
-                    resultText="哇哦，好厉害哦！";
+                    resultText = "哇哦，好厉害哦！";
                 } else if (score > 30 && score <= 40) {
-                    resultText="哎呀我滴老天爷呀";
+                    resultText = "哎呀我滴老天爷呀";
                 } else if (score > 40 && score <= 50) {
-                    resultText="请收下我的膝盖 OTZ";
+                    resultText = "请收下我的膝盖 OTZ";
                 } else {
-                    resultText="太假了！(╯‵□′)╯︵┻━┻";
+                    resultText = "太假了！(╯‵□′)╯︵┻━┻";
                 }
-                textWidth=EatingSnake.snakeCanvas.measureText(resultText).width;
-                EatingSnake.snakeCanvas.fillText(resultText,155+(290-textWidth)/2,250);
+                textWidth = EatingSnake.snakeCanvas.measureText(resultText).width;
+                EatingSnake.snakeCanvas.fillText(resultText, 155 + (290 - textWidth) / 2, 250);
             },
             complete: function () {
                 var $btn = $("button.green");
@@ -205,8 +206,8 @@ var EatingSnake = {
             y: EatingSnake.snake[1].y
         };
         EatingSnake.newFood();
-        EatingSnake.snakeColor+=5;
-        EatingSnake.appleColor-=5;
+        EatingSnake.snakeColor += 5;
+        EatingSnake.appleColor -= 5;
         clearInterval(EatingSnake.interval);
         if (EatingSnake.currTime >= 50)
             EatingSnake.currTime = EatingSnake.currTime - EatingSnake.stepTime;
@@ -218,9 +219,9 @@ var EatingSnake = {
         var targetX = EatingSnake.snake[1].x + EatingSnake.dir.x,
                 targetY = EatingSnake.snake[1].y + EatingSnake.dir.y;
         if (EatingSnake.check(targetX, targetY)) {
-            if (targetX == EatingSnake.food.x && targetY == EatingSnake.food.y) { //eat
+            if (targetX == EatingSnake.food.x && targetY == EatingSnake.food.y) { // eat
                 EatingSnake.eat();
-            } else { //hit
+            } else { // hit
                 EatingSnake.gameover();
                 return;
             }
@@ -238,34 +239,34 @@ var EatingSnake = {
     input: function (keyCode) {
         switch (keyCode) {
             case 65:
-            case 37: //左边
+            case 37: // 左边
                 if (EatingSnake.lastDir.x == 0) {
                     EatingSnake.dir.x = -1;
                     EatingSnake.dir.y = 0;
                 }
                 break;
             case 87:
-            case 38: //上边
+            case 38: // 上边
                 if (EatingSnake.lastDir.y == 0) {
                     EatingSnake.dir.x = 0;
                     EatingSnake.dir.y = -1;
                 }
                 break;
             case 68:
-            case 39: //右边
+            case 39: // 右边
                 if (EatingSnake.lastDir.x == 0) {
                     EatingSnake.dir.x = 1;
                     EatingSnake.dir.y = 0;
                 }
                 break;
             case 83:
-            case 40: //下的
+            case 40: // 下边
                 if (EatingSnake.lastDir.y == 0) {
                     EatingSnake.dir.x = 0;
                     EatingSnake.dir.y = 1;
                 }
                 break;
-            case 80: //开始/暂停
+            case 80: // 开始/暂停
                 if (EatingSnake.isPause) {
                     EatingSnake.interval = setInterval(gameRun, currTime);
                     EatingSnake.isPause = false;
