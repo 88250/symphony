@@ -43,6 +43,7 @@ import org.b3log.symphony.service.NotificationMgmtService;
 import org.b3log.symphony.service.TimelineMgmtService;
 import org.b3log.symphony.service.UserQueryService;
 import org.b3log.symphony.util.Emotions;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -51,7 +52,7 @@ import org.jsoup.Jsoup;
  * Sends an article notification to the user who be &#64;username in the article content.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.8, Jul 24, 2016
+ * @version 1.3.2.8, Sep 22, 2016
  * @since 0.2.0
  */
 @Named
@@ -111,7 +112,7 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
             final Set<String> atUserNames = userQueryService.getUserNames(articleContent);
             atUserNames.remove(articleAuthorName); // Do not notify the author itself
 
-            final Set<String> atedUserIds = new HashSet<String>();
+            final Set<String> atedUserIds = new HashSet<>();
 
             // 'At' Notification
             for (final String userName : atUserNames) {
@@ -211,6 +212,12 @@ public class ArticleNotifier extends AbstractEventListener<JSONObject> {
 
                     LOGGER.info("City [" + city + "] broadcast [users=" + users.length() + "]");
                 }
+            }
+
+            // 'Sys Announce' Notification
+            final String tags = originalArticle.optString(Article.ARTICLE_TAGS);
+            if (StringUtils.containsIgnoreCase(tags, Symphonys.get("systemAnnounce"))) {
+                userQueryService.getLatestLoggedInUsers(0, 0, 0);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends the article notification failed", e);
