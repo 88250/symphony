@@ -29,12 +29,14 @@
                         <div class="module-panel">
                             <nav class="home-menu">
                                 <a href="${servePath}/settings"<#if 'profile' == type> class="current"</#if>>${profilesLabel}</a>
-                                <a href="${servePath}/settings/avatar"
-                                   class="<#if 'avatar' == type>current</#if><#if !currentUser.userAvatarURL?contains('_')> todo</#if>"
-                                   >${avatarLabel}</a>
-                                <a href="${servePath}/settings/invite"
-                                   class="<#if 'invite' == type>current</#if><#if invitedUserCnt < 1> todo</#if>"
-                                   >${inviteLabel}</a>
+                                <a href="${servePath}/settings/avatar"<#if 'avatar' == type> class="current"</#if>>
+                                   ${avatarLabel}
+                                   <#if !currentUser.userAvatarURL?contains('_')><span class="todo tooltipped tooltipped-w" aria-label="${todoAvatarLabel}"></span></#if>
+                                </a>
+                                <a href="${servePath}/settings/invite"<#if 'invite' == type> class="current"</#if>>
+                                       ${inviteLabel}
+                                       <#if invitedUserCnt < 1><span class="todo tooltipped tooltipped-w" aria-label="${todoInviteLabel}"></span></#if>
+                                </a>
                                 <a href="${servePath}/settings/function"<#if 'function' == type> class="current"</#if>>${functionLabel}</a>
                                 <a href="${servePath}/settings/point"<#if 'point' == type> class="current"</#if>>${pointLabel}</a>
                                 <a href="${servePath}/settings/location"<#if 'location' == type> class="current"</#if>>${geoLabel}</a>
@@ -66,7 +68,6 @@
             Label.updateSuccLabel = "${updateSuccLabel}";
             Label.transferSuccLabel = "${transferSuccLabel}";
             Label.invalidUserURLLabel = "${invalidUserURLLabel}";
-            Label.invalidAvatarURLLabel = "${invalidAvatarURLLabel}";
             Label.tagsErrorLabel = "${tagsErrorLabel}";
             Label.invalidUserQQLabel = "${invalidUserQQLabel}";
             Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";
