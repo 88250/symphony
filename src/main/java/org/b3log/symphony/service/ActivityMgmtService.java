@@ -47,6 +47,7 @@ import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.CharacterRepository;
+import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.util.Results;
 import org.b3log.symphony.util.Symphonys;
 import org.b3log.symphony.util.Tesseracts;
@@ -58,7 +59,7 @@ import org.jsoup.nodes.Document;
  * Activity management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.9.4, Sep 19, 2016
+ * @version 1.5.9.5, Sep 23, 2016
  * @since 1.3.0
  */
 @Service
@@ -74,6 +75,12 @@ public class ActivityMgmtService {
      */
     @Inject
     private CharacterRepository characterRepository;
+
+    /**
+     * Pointtransfer repository.
+     */
+    @Inject
+    private PointtransferRepository pointtransferRepository;
 
     /**
      * Pointtransfer query service.
@@ -138,9 +145,30 @@ public class ActivityMgmtService {
     public synchronized JSONObject startEatingSnake(final String userId) {
         final JSONObject ret = Results.falseResult();
 
+        int startPoint = Pointtransfer.TRANSFER_SUM_C_ACTIVITY_EATINGSNAKE;
+        try {
+            final List<JSONObject> result = pointtransferRepository.select("SELECT\n"
+                    + "	AVG(sum) AS point\n"
+                    + "FROM\n"
+                    + "	`symphony_pointtransfer`\n"
+                    + "WHERE\n"
+                    + "	type = 27\n"
+                    + "AND toId = ?\n"
+                    + "", userId);
+            if (!result.isEmpty()) {
+                startPoint = result.get(0).optInt(Common.POINT, startPoint);
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Calc avg point failed", e);
+        }
+
+        if (startPoint < 1) {
+            startPoint = Pointtransfer.TRANSFER_SUM_C_ACTIVITY_EATINGSNAKE;
+        }
+
         final boolean succ = null != pointtransferMgmtService.transfer(userId, Pointtransfer.ID_C_SYS,
                 Pointtransfer.TRANSFER_TYPE_C_ACTIVITY_EATINGSNAKE,
-                Pointtransfer.TRANSFER_SUM_C_ACTIVITY_EATINGSNAKE, "", System.currentTimeMillis());
+                startPoint, "", System.currentTimeMillis());
 
         ret.put(Keys.STATUS_CODE, succ);
 
