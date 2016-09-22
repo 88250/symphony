@@ -24,11 +24,8 @@
 
 /* start home common */
 .home-menu {
-    margin-bottom: 15px;
     list-style: none;
     background-color: #fff;
-    border: 1px solid #d8d8d8;
-    border-radius: 3px;
 }
 
 .home-menu a {
@@ -53,6 +50,10 @@
     color: #222;
     cursor: default;
     background-color: #fff;
+}
+
+.home-menu a.todo {
+    background-color: #f9f6f6;
 }
 
 .home-menu a.current::before {
