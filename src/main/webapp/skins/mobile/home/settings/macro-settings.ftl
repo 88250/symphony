@@ -32,6 +32,8 @@
                     B3
                     <#elseif type == "data">
                     ${dataLabel}
+                    <#elseif type == "help">
+                    ${helpLabel}
                     </#if>
                     <span class="icon-chevron-down fn-right"></span>
                 </div>
@@ -47,6 +49,7 @@
                     <li<#if 'password' == type> class="fn-none"</#if>><a href="${servePath}/settings/password">${passwordLabel}</a></li>
                     <li<#if 'b3' == type> class="fn-none"</#if>><a href="${servePath}/settings/b3">B3</a></li>
                     <li<#if 'data' == type> class="fn-none"</#if>><a href="${servePath}/settings/data">${dataLabel}</a></li>
+                    <li<#if 'help' == type> class="current"</#if>><a href="${servePath}/settings/help">${helpLabel}</a></li>
                 </ul>
             </div>
             <div class="wrapper">
@@ -69,7 +72,6 @@
                     Label.updateSuccLabel = "${updateSuccLabel}";
                     Label.transferSuccLabel = "${transferSuccLabel}";
                     Label.invalidUserURLLabel = "${invalidUserURLLabel}";
-                    Label.invalidAvatarURLLabel = "${invalidAvatarURLLabel}";
                     Label.tagsErrorLabel = "${tagsErrorLabel}";
                     Label.invalidUserQQLabel = "${invalidUserQQLabel}";
                     Label.invalidUserIntroLabel = "${invalidUserIntroLabel}";

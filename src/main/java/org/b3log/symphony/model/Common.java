@@ -19,10 +19,25 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.40.1.11, Aug 28, 2016
+ * @version 1.41.1.11, Sep 22, 2016
  * @since 0.2.0
  */
 public final class Common {
+    
+    /**
+     * Key of invited user count.
+     */
+    public static final String INVITED_USER_COUNT = "invitedUserCnt";
+
+    /**
+     * Key of 'sys announce' notifications.
+     */
+    public static final String SYS_ANNOUNCE_NOTIFICATIONS = "sysAnnounceNotifications";
+
+    /**
+     * Key of unread 'sys announce' notifications count.
+     */
+    public static final String UNREAD_SYS_ANNOUNCE_NOTIFICATION_CNT = "unreadSysAnnounceNotificationCnt";
 
     /**
      * Key of mouse effects.

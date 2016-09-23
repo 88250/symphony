@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.3.5, Sep 12, 2016
+ * @version 1.9.3.5, Sep 22, 2016
  * @since 0.2.5
  */
 @Service
@@ -123,6 +123,133 @@ public class NotificationQueryService {
     private LangPropsService langPropsService;
 
     /**
+     * Gets the count of unread 'point' notifications of a user specified with the given user id.
+     *
+     * @param userId the given user id
+     * @return count of unread notifications, returns {@code 0} if occurs exception
+     */
+    public int getUnreadSysAnnounceNotificationCount(final String userId) {
+        final List<Filter> filters = new ArrayList<>();
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false));
+
+        final List<Filter> subFilters = new ArrayList<>();
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_SYS_ANNOUNCE_ARTICLE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_SYS_ANNOUNCE_NEW_USER));
+
+        filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
+
+        final Query query = new Query().setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters));
+
+        try {
+            final JSONObject result = notificationRepository.get(query);
+
+            return result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets [sys_announce] notification count failed [userId=" + userId + "]", e);
+
+            return 0;
+        }
+    }
+
+    /**
+     * Gets 'sys announce' type notifications with the specified user id, current page number and page size.
+     *
+     * @param avatarViewMode the specified avatar view mode
+     * @param userId the specified user id
+     * @param currentPageNum the specified page number
+     * @param pageSize the specified page size
+     * @return result json object, for example,      <pre>
+     * {
+     *     "paginationRecordCount": int,
+     *     "rslts": java.util.List[{
+     *         "oId": "", // notification record id
+     *         "description": int,
+     *         "hasRead": boolean
+     *     }, ....]
+     * }
+     * </pre>
+     *
+     * @throws ServiceException service exception
+     */
+    public JSONObject getSysAnnounceNotifications(final int avatarViewMode,
+            final String userId, final int currentPageNum, final int pageSize) throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> rslts = new ArrayList<>();
+
+        ret.put(Keys.RESULTS, (Object) rslts);
+
+        final List<Filter> filters = new ArrayList<>();
+        filters.add(new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId));
+
+        final List<Filter> subFilters = new ArrayList<>();
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_SYS_ANNOUNCE_ARTICLE));
+        subFilters.add(new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL,
+                Notification.DATA_TYPE_C_SYS_ANNOUNCE_NEW_USER));
+
+        filters.add(new CompositeFilter(CompositeFilterOperator.OR, subFilters));
+
+        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                addSort(Notification.NOTIFICATION_HAS_READ, SortDirection.ASCENDING).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+
+        try {
+            final JSONObject queryResult = notificationRepository.get(query);
+            final JSONArray results = queryResult.optJSONArray(Keys.RESULTS);
+
+            ret.put(Pagination.PAGINATION_RECORD_COUNT,
+                    queryResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT));
+
+            for (int i = 0; i < results.length(); i++) {
+                final JSONObject notification = results.optJSONObject(i);
+                final String notificationUserId = notification.optString(Notification.NOTIFICATION_USER_ID);
+                final String dataId = notification.optString(Notification.NOTIFICATION_DATA_ID);
+                final int dataType = notification.optInt(Notification.NOTIFICATION_DATA_TYPE);
+                String desTemplate = "";
+
+                switch (dataType) {
+                    case Notification.DATA_TYPE_C_SYS_ANNOUNCE_NEW_USER:
+                        desTemplate = langPropsService.get("notificationSysNewUser1Label");
+
+                        break;
+                    case Notification.DATA_TYPE_C_SYS_ANNOUNCE_ARTICLE:
+                        desTemplate = langPropsService.get("notificationSysArticleLabel");
+
+                        final JSONObject article15 = articleRepository.get(dataId);
+                        if (null == article15) {
+                            desTemplate = langPropsService.get("removedLabel");
+
+                            break;
+                        }
+
+                        final String articleLink15 = "<a href=\""
+                                + article15.optString(Article.ARTICLE_PERMALINK) + "\">"
+                                + article15.optString(Article.ARTICLE_TITLE) + "</a>";
+                        desTemplate = desTemplate.replace("{article}", articleLink15);
+
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+
+                notification.put(Common.DESCRIPTION, desTemplate);
+
+                rslts.add(notification);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets [sys_announce] notifications failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets the count of unread notifications of a user specified with the given user id.
      *
      * @param userId the given user id
@@ -155,12 +282,6 @@ public class NotificationQueryService {
      * @param userId the given user id
      * @param notificationDataType the specified notification data type
      * @return count of unread notifications, returns {@code 0} if occurs exception
-     * @see Notification#DATA_TYPE_C_ARTICLE
-     * @see Notification#DATA_TYPE_C_AT
-     * @see Notification#DATA_TYPE_C_COMMENT
-     * @see Notification#DATA_TYPE_C_COMMENTED
-     * @see Notification#DATA_TYPE_C_BROADCAST
-     * @see Notification#DATA_TYPE_C_REPLY
      */
     public int getUnreadNotificationCountByType(final String userId, final int notificationDataType) {
         final List<Filter> filters = new ArrayList<>();
@@ -188,13 +309,6 @@ public class NotificationQueryService {
      *
      * @param userId the given user id
      * @return count of unread notifications, returns {@code 0} if occurs exception
-     * @see Notification#DATA_TYPE_C_POINT_ARTICLE_REWARD
-     * @see Notification#DATA_TYPE_C_POINT_CHARGE
-     * @see Notification#DATA_TYPE_C_POINT_EXCHANGE
-     * @see Notification#DATA_TYPE_C_ABUSE_POINT_DEDUCT
-     * @see Notification#DATA_TYPE_C_POINT_COMMENT_THANK
-     * @see Notification#DATA_TYPE_C_POINT_TRANSFER
-     * @see Notification#DATA_TYPE_C_INVITECODE_USED
      */
     public int getUnreadPointNotificationCount(final String userId) {
         final List<Filter> filters = new ArrayList<>();
@@ -228,7 +342,7 @@ public class NotificationQueryService {
 
             return result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_RECORD_COUNT);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets [commented] notification count failed [userId=" + userId + "]", e);
+            LOGGER.log(Level.ERROR, "Gets [point] notification count failed [userId=" + userId + "]", e);
 
             return 0;
         }
@@ -444,7 +558,8 @@ public class NotificationQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets [commented] notifications", e);
+            LOGGER.log(Level.ERROR, "Gets [point] notifications failed", e);
+
             throw new ServiceException(e);
         }
     }

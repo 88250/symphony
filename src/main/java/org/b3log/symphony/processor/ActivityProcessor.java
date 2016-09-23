@@ -75,7 +75,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.9.1.6, Sep 20, 2016
+ * @version 1.9.1.7, Sep 23, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -525,17 +525,19 @@ public class ActivityProcessor {
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
 
-        final List<JSONObject> maxUsers
-                = activityQueryService.getTopEatingSnakeUsersMax(avatarViewMode, 10);
+        final List<JSONObject> maxUsers = activityQueryService.getTopEatingSnakeUsersMax(avatarViewMode, 10);
         dataModel.put("maxUsers", (Object) maxUsers);
 
         final List<JSONObject> sumUsers
                 = activityQueryService.getTopEatingSnakeUsersSum(avatarViewMode, 10);
         dataModel.put("sumUsers", (Object) sumUsers);
 
+        final JSONObject user = (JSONObject) request.getAttribute(User.USER);
+        final String userId = user.optString(Keys.OBJECT_ID);
+        final int startPoint = activityQueryService.getEatingSnakeAvgPoint(userId);
+
         String pointActivityEatingSnake = langPropsService.get("activityStartEatingSnakeTipLabel");
-        pointActivityEatingSnake = pointActivityEatingSnake.replace("{point}",
-                String.valueOf(Pointtransfer.TRANSFER_SUM_C_ACTIVITY_EATINGSNAKE));
+        pointActivityEatingSnake = pointActivityEatingSnake.replace("{point}", String.valueOf(startPoint));
         dataModel.put("activityStartEatingSnakeTipLabel", pointActivityEatingSnake);
     }
 
