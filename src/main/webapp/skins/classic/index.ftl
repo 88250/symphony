@@ -82,7 +82,7 @@
                         <#if timelines?size <= 0>
                         <div id="emptyTimeline">${emptyTimelineLabel}</div>
                         </#if>
-                        <ul class="module-list timeline">
+                        <ul class="module-list timeline ft-gray ft-smaller">
                             <#list timelines as article>
                             <#if article_index < 9>
                             <li<#if !article_has_next> class="last"</#if>>
