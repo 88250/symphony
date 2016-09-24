@@ -800,11 +800,12 @@ code .dec { color: initial; } /* decimal - blue */
     margin-top: -8px;
 } 
 
-.index .timeline li a {
+.timeline li a {
     color: #595959;
+    font-size: 14px;
 }
 
-.index .timeline li a:hover {
+.timeline li a:hover {
     color: #333;
 }
 /* end index */
