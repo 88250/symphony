@@ -3,7 +3,9 @@
 <div class="module">
     <div class="module-header">${dataExportTipLabel}</div>
     <div class="module-panel form fn-clear">
-        <br/>
+        <br>
+        ${articleLabel}${colonLabel}${currentUser.userArticleCount}&nbsp;&nbsp;&nbsp;&nbsp;
+        ${cmtLabel}${colonLabel}${currentUser.userCommentCount}
         <button class="green fn-right" onclick="Settings.exportPosts()">${submitLabel}</button>
     </div>
 </div>
