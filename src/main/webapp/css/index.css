@@ -770,6 +770,11 @@ code .dec { color: initial; } /* decimal - blue */
     text-overflow: ellipsis;
     overflow: hidden;
     margin-right: 13px;
+    color: #595959;
+}
+
+.index .module-list .title:hover {
+    color: #333;
 }
 
 .index .module-list.timeline li {
@@ -795,11 +800,11 @@ code .dec { color: initial; } /* decimal - blue */
     margin-top: -8px;
 } 
 
-.index .module-list .title {
+.index .timeline li a {
     color: #595959;
 }
 
-.index .module-list .title {
+.index .timeline li a:hover {
     color: #333;
 }
 /* end index */
