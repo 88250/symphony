@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2016, b3log.org & hacpai.com
+ * Copyright (c) 2012-2016, b3log.org & hacpai.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,9 +65,10 @@ public class SitemapProcessor {
         try {
             LOGGER.log(Level.INFO, "Generating sitemap....");
 
+            sitemapQueryService.genIndex(sitemap);
             sitemapQueryService.genDomains(sitemap);
             sitemapQueryService.genArticles(sitemap);
-            
+
             final String content = sitemap.toString();
 
             LOGGER.log(Level.INFO, "Generated sitemap");

@@ -1,6 +1,20 @@
+/*
+ * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.b3log.symphony.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
@@ -50,6 +64,20 @@ public class SitemapQueryService {
     private DomainCache domainCache;
 
     /**
+     * Generates index for the specified sitemap.
+     *
+     * @param sitemap the specified sitemap
+     */
+    public void genIndex(final Sitemap sitemap) {
+        final Sitemap.URL url = new Sitemap.URL();
+        url.setLoc(Latkes.getServePath());
+        url.setChangeFreq("always");
+        url.setPriority("1.0");
+
+        sitemap.addURL(url);
+    }
+
+    /**
      * Generates domains for the specified sitemap.
      *
      * @param sitemap the specified sitemap
@@ -58,10 +86,12 @@ public class SitemapQueryService {
         final List<JSONObject> domains = domainCache.getDomains(Integer.MAX_VALUE);
 
         for (final JSONObject domain : domains) {
-            final String permalink = domain.optString(Latkes.getServePath() + "/" + Domain.DOMAIN_URI);
+            final String permalink = Latkes.getServePath() + "/domain/" + domain.optString(Domain.DOMAIN_URI);
 
             final Sitemap.URL url = new Sitemap.URL();
             url.setLoc(permalink);
+            url.setChangeFreq("always");
+            url.setPriority("0.9");
 
             sitemap.addURL(url);
         }

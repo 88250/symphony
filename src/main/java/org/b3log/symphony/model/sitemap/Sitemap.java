@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2016, b3log.org & hacpai.com
+ * Copyright (c) 2012-2016, b3log.org & hacpai.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public final class Sitemap {
     /**
      * URLs.
      */
-    private List<URL> urls = new ArrayList<>();
+    private final List<URL> urls = new ArrayList<>();
 
     /**
      * Adds the specified url.
@@ -98,34 +98,64 @@ public final class Sitemap {
         private static final String END_URL_ELEMENT = "</url>";
 
         /**
-         * Start loc element.
+         * Start location element.
          */
         private static final String START_LOC_ELEMENT = "<loc>";
 
         /**
-         * End loc element.
+         * End location element.
          */
         private static final String END_LOC_ELEMENT = "</loc>";
 
         /**
-         * Start last mod element.
+         * Start last modified element.
          */
         private static final String START_LAST_MOD_ELEMENT = "<lastmod>";
 
         /**
-         * End last mod element.
+         * End last modified element.
          */
         private static final String END_LAST_MOD_ELEMENT = "</lastmod>";
 
         /**
-         * Loc.
+         * Start change frequency element.
+         */
+        private static final String START_CHANGE_REQ_ELEMENT = "<changefreq>";
+
+        /**
+         * End change frequency element.
+         */
+        private static final String END_CHANGE_REQ_ELEMENT = "</changefreq>";
+
+        /**
+         * Start priority element.
+         */
+        private static final String START_PRIORITY_ELEMENT = "<priority>";
+
+        /**
+         * End priority element.
+         */
+        private static final String END_PRIORITY_ELEMENT = "</priority>";
+
+        /**
+         * Location.
          */
         private String loc;
 
         /**
-         * Last mod.
+         * Last modified.
          */
         private String lastMod;
+
+        /**
+         * Change frequency.
+         */
+        private String changeFreq;
+
+        /**
+         * Priority.
+         */
+        private String priority;
 
         /**
          * Gets the last modified.
@@ -146,21 +176,57 @@ public final class Sitemap {
         }
 
         /**
-         * Gets the loc.
+         * Gets the location.
          *
-         * @return loc
+         * @return location
          */
         public String getLoc() {
             return loc;
         }
 
         /**
-         * Sets the loc with the specified loc.
+         * Sets the location with the specified location.
          *
-         * @param loc the specified loc
+         * @param loc the specified location
          */
         public void setLoc(final String loc) {
             this.loc = loc;
+        }
+
+        /**
+         * Gets the change frequency.
+         *
+         * @return change frequency
+         */
+        public String getChangeFreq() {
+            return changeFreq;
+        }
+
+        /**
+         * Sets the change frequency with the specified change frequency.
+         *
+         * @param changeFreq the specified change frequency
+         */
+        public void setChangeFreq(final String changeFreq) {
+            this.changeFreq = changeFreq;
+        }
+
+        /**
+         * Gets the priority.
+         *
+         * @return priority
+         */
+        public String getPriority() {
+            return priority;
+        }
+
+        /**
+         * Sets the priority with the specified priority.
+         *
+         * @param priority the specified priority
+         */
+        public void setPriority(final String priority) {
+            this.priority = priority;
         }
 
         @Override
@@ -177,6 +243,18 @@ public final class Sitemap {
                 stringBuilder.append(START_LAST_MOD_ELEMENT);
                 stringBuilder.append(lastMod);
                 stringBuilder.append(END_LAST_MOD_ELEMENT);
+            }
+
+            if (!Strings.isEmptyOrNull(changeFreq)) {
+                stringBuilder.append(START_CHANGE_REQ_ELEMENT);
+                stringBuilder.append(changeFreq);
+                stringBuilder.append(END_CHANGE_REQ_ELEMENT);
+            }
+
+            if (!Strings.isEmptyOrNull(priority)) {
+                stringBuilder.append(START_PRIORITY_ELEMENT);
+                stringBuilder.append(priority);
+                stringBuilder.append(END_PRIORITY_ELEMENT);
             }
 
             stringBuilder.append(END_URL_ELEMENT);

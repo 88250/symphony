@@ -1604,7 +1604,7 @@ public class AdminProcessor {
                 article.put(name, value);
             }
         }
-
+        
         final String articleTags = Tag.formatTags(article.optString(Article.ARTICLE_TAGS));
         article.put(Article.ARTICLE_TAGS, articleTags);
 
