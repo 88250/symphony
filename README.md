@@ -84,7 +84,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 
 商用授权和开源授权在功能上没有任何区别，但商用授权后可以去除页脚版权部分。如果在未获得商用授权前私自去除版权部分，必将追究法律责任。
 
-## 思绪
+## 感悟
 
 在实现 [B3log 构思](https://hacpai.com/b3log)的这几年：
 
@@ -106,6 +106,34 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 * You can not get rid of the "Powered by [B3log 开源](http://b3log.org) • [Sym](https://github.com/b3log/symphony)" from any page, even which you made
 * If you want to use this software for commercial purpose, please mail to support@liuyun.io for a commercial license request
 * Copyright &copy; b3log.org, all rights reserved
+
+## 鸣谢
+
+Sym 的诞生离不开以下开源项目：
+
+* [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
+* [CodeMirror](https://github.com/codemirror/CodeMirror)：前端 Markdown 编辑器内核
+* [Highlight.js](https://github.com/isagalaev/highlight.js)：前端代码高亮库
+* [emojify.js](https://github.com/Ranks/emojify.js)：前端 Emoji 处理库
+* [APlayer](https://github.com/DIYgod/APlayer)：前端 HTML5 音乐播放器
+* [ECharts](https://github.com/ecomfe/echarts)：前端 JavaScript 交互式图表库
+* [MathJax](https://github.com/mathjax/MathJax)：前端数学公式渲染引擎
+* [SoundRecorder](https://github.com/rderveloy/JavaScript-Sound-Recorder)：前端 HTML5 录音库
+* [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)：前端剪贴板支持
+* [JavaScript MD5](http://pajhome.org.uk/crypt/md5/index.html)：前端 JavaScript MD5 库
+* [ReconnectingWebSocket](https://github.com/joewalnes/reconnecting-websocket)：前端 WebSocket 重连库
+* [to-markdown](https://github.com/domchristie/to-markdown)：前端 HTML 转换 Markdown
+* [UAParser.js](https://github.com/faisalman/ua-parser-js)：前端 User-Agent 解析库
+* [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
+* [pegdown](https://github.com/sirthias/pegdown)：Java Markdown 处理库
+* [Apache Commons](http://commons.apache.org)：Java 工具库集
+* [Jodd](https://github.com/oblac/jodd)：Java 工具库集
+* [emoji-java](https://github.com/vdurmont/emoji-java)：Java Emoji 处理库
+* [User-Agent-Utils](https://github.com/HaraldWalker/user-agent-utils)：Java User-Agent 解析库
+* [Druid](https://github.com/alibaba/druid)：Java 数据库连接池
+* [FreeMarker](http://freemarker.org)：好用的 Java 模版引擎
+* [Latke](https://github.com/b3log/latke)：Java Web 框架 
+* [NetBeans](https://netbeans.org)：全宇宙暂时排名第三的 IDE
 
 ----
 
