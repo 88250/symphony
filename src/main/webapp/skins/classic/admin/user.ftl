@@ -73,6 +73,9 @@
                 <label for="userNickname">${nicknameLabel}</label>
                 <input type="text" id="userNickname" name="userNickname" value="${user.userNickname}" />
 
+                <label for="userTags">${selfTagLabel}</label>
+                <input type="text" id="userTags" name="userTags" value="${user.userTags}" />
+
                 <label for="userURL">URL</label>
                 <input type="text" id="userURL" name="userURL" value="${user.userURL}" />
 
@@ -87,10 +90,121 @@
                 <label for="userIntro">${avatarURLLabel}</label>
                 <input type="text" id="userAvatarURL" name="userAvatarURL" value="${user.userAvatarURL}" />
 
+                <label for="userListPageSize">${userListPageSizeLabel}</label>
+                <input type="number" id="userListPageSize" name="userListPageSize" value="${user.userListPageSize}" />
+
                 <label>${cmtViewModeLabel}</label>
                 <select id="userCommentViewMode" name="userCommentViewMode">
                     <option value="0"<#if 0 == user.userCommentViewMode> selected</#if>>${traditionLabel}</option>
                     <option value="1"<#if 1 == user.userCommentViewMode> selected</#if>>${realTimeLabel}</option>
+                </select>
+
+                <label>${avatarViewModeLabel}</label>
+                <select id="userAvatarViewMode" name="userAvatarViewMode">
+                    <option value="0"<#if 0 == user.userAvatarViewMode> selected</#if>>${orgImgLabel}</option>
+                    <option value="1"<#if 1 == user.userAvatarViewMode> selected</#if>>${staticImgLabel}</option>
+                </select>
+
+                <label>${useNotifyLabel}</label>
+                <select id="userNotifyStatus" name="userNotifyStatus">
+                    <option value="0"<#if 0 == user.userNotifyStatus> selected</#if>>${yesLabel}</option>
+                    <option value="1"<#if 1 == user.userNotifyStatus> selected</#if>>${noLabel}</option>
+                </select>
+
+                <label>${subMailLabel}</label>
+                <select id="userSubMailStatus" name="userSubMailStatus">
+                    <option value="0"<#if 0 == user.userSubMailStatus> selected</#if>>${yesLabel}</option>
+                    <option value="1"<#if 1 == user.userSubMailStatus> selected</#if>>${noLabel}</option>
+                </select>
+
+                <label>${enableKbdLabel}</label>
+                <select id="userKeyboardShortcutsStatus" name="userKeyboardShortcutsStatus">
+                    <option value="0"<#if 0 == user.userKeyboardShortcutsStatus> selected</#if>>${yesLabel}</option>
+                    <option value="1"<#if 1 == user.userKeyboardShortcutsStatus> selected</#if>>${noLabel}</option>
+                </select>
+
+                <label>${geoLabel}</label>
+                <select id="userGeoStatus" name="userGeoStatus">
+                    <option value="0"<#if 0 == user.userGeoStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userGeoStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${userArticleStatusLabel}</label>
+                <select id="userArticleStatus" name="userArticleStatus">
+                    <option value="0"<#if 0 == user.userArticleStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userArticleStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${userCommentStatusLabel}</label>
+                <select id="userCommentStatus" name="userCommentStatus">
+                    <option value="0"<#if 0 == user.userCommentStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userCommentStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${userFollowingUserStatusLabel}</label>
+                <select id="userFollowingUserStatus" name="userFollowingUserStatus">
+                    <option value="0"<#if 0 == user.userFollowingUserStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userFollowingUserStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${userFollowingTagStatusLabel}</label>
+                <select id="userFollowingTagStatus" name="userFollowingTagStatus">
+                    <option value="0"<#if 0 == user.userFollowingTagStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userFollowingTagStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${userFollowingArticleStatusLabel}</label>
+                <select id="userFollowingArticleStatus" name="userFollowingArticleStatus">
+                    <option value="0"<#if 0 == user.userFollowingArticleStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userFollowingArticleStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${userFollowerStatusLabel}</label>
+                <select id="userFollowerStatus" name="userFollowerStatus">
+                    <option value="0"<#if 0 == user.userFollowerStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userFollowerStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${userPointStatusLabel}</label>
+                <select id="userPointStatus" name="userPointStatus">
+                    <option value="0"<#if 0 == user.userPointStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userPointStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${userOnlineStatusLabel}</label>
+                <select id="userOnlineStatus" name="userOnlineStatus">
+                    <option value="0"<#if 0 == user.userOnlineStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userOnlineStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${displayUALabel}</label>
+                <select id="userUAStatus" name="userUAStatus">
+                    <option value="0"<#if 0 == user.userUAStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userUAStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${userTimelineStatusLabel}</label>
+                <select id="userTimelineStatus" name="userTimelineStatus">
+                    <option value="0"<#if 0 == user.userTimelineStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userTimelineStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${userForgeLinkStatusLabel}</label>
+                <select id="userForgeLinkStatus" name="userForgeLinkStatus">
+                    <option value="0"<#if 0 == user.userForgeLinkStatus> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userForgeLinkStatus> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${joinBalanceRankLabel}</label>
+                <select id="userJoinPointRank" name="userJoinPointRank">
+                    <option value="0"<#if 0 == user.userJoinPointRank> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userJoinPointRank> selected</#if>>${privateLabel}</option>
+                </select>
+
+                <label>${joinCosumptionRankLabel}</label>
+                <select id="userJoinUsedPointRank" name="userJoinUsedPointRank">
+                    <option value="0"<#if 0 == user.userJoinUsedPointRank> selected</#if>>${publicLabel}</option>
+                    <option value="1"<#if 1 == user.userJoinUsedPointRank> selected</#if>>${privateLabel}</option>
                 </select>
 
                 <label>${roleLabel}</label>
@@ -220,7 +334,7 @@
             </form>
         </div>
     </div>
-    
+
     <div class="module">
         <div class="module-header">
             <h2>${compensateInitPointLabel}</h2>

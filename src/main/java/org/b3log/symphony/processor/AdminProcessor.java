@@ -130,7 +130,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.21.5.14, Sep 14, 2016
+ * @version 2.22.5.14, Sep 23, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -1124,18 +1124,48 @@ public class AdminProcessor {
             final String name = parameterNames.nextElement();
             final String value = request.getParameter(name);
 
-            if (name.equals(UserExt.USER_POINT) || name.equals(UserExt.USER_APP_ROLE) || name.equals(UserExt.USER_STATUS)
-                    || name.equals(UserExt.USER_COMMENT_VIEW_MODE) || name.equals(UserExt.USER_AVATAR_VIEW_MODE)) {
-                user.put(name, Integer.valueOf(value));
-            } else if (name.equals(User.USER_PASSWORD)) {
-                final String oldPwd = (String) user.getString(name);
-                if (!oldPwd.equals(value) && !Strings.isEmptyOrNull(value)) {
-                    user.put(name, MD5.hash(value));
-                }
-            } else if (name.equals(UserExt.SYNC_TO_CLIENT)) {
-                user.put(UserExt.SYNC_TO_CLIENT, Boolean.valueOf(value));
-            } else {
-                user.put(name, value);
+            switch (name) {
+                case UserExt.USER_POINT:
+                case UserExt.USER_APP_ROLE:
+                case UserExt.USER_STATUS:
+                case UserExt.USER_COMMENT_VIEW_MODE:
+                case UserExt.USER_AVATAR_VIEW_MODE:
+                case UserExt.USER_LIST_PAGE_SIZE:
+                case UserExt.USER_NOTIFY_STATUS:
+                case UserExt.USER_SUB_MAIL_STATUS:
+                case UserExt.USER_KEYBOARD_SHORTCUTS_STATUS:
+                case UserExt.USER_GEO_STATUS:
+                case UserExt.USER_ARTICLE_STATUS:
+                case UserExt.USER_COMMENT_STATUS:
+                case UserExt.USER_FOLLOWING_USER_STATUS:
+                case UserExt.USER_FOLLOWING_TAG_STATUS:
+                case UserExt.USER_FOLLOWING_ARTICLE_STATUS:
+                case UserExt.USER_FOLLOWER_STATUS:
+                case UserExt.USER_POINT_STATUS:
+                case UserExt.USER_ONLINE_STATUS:
+                case UserExt.USER_UA_STATUS:
+                case UserExt.USER_TIMELINE_STATUS:
+                case UserExt.USER_FORGE_LINK_STATUS:
+                case UserExt.USER_JOIN_POINT_RANK:
+                case UserExt.USER_JOIN_USED_POINT_RANK:
+                    user.put(name, Integer.valueOf(value));
+
+                    break;
+                case User.USER_PASSWORD:
+                    final String oldPwd = (String) user.getString(name);
+                    if (!oldPwd.equals(value) && !Strings.isEmptyOrNull(value)) {
+                        user.put(name, MD5.hash(value));
+                    }
+
+                    break;
+                case UserExt.SYNC_TO_CLIENT:
+                    user.put(UserExt.SYNC_TO_CLIENT, Boolean.valueOf(value));
+
+                    break;
+                default:
+                    user.put(name, value);
+
+                    break;
             }
         }
 
@@ -2167,7 +2197,7 @@ public class AdminProcessor {
             throws Exception {
         String tagTitle = request.getParameter(Tag.TAG_TITLE);
         final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
-        
+
         String tagId;
         if (tag != null) {
             tagId = tag.optString(Keys.OBJECT_ID);
