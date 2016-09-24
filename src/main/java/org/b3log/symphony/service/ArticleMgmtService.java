@@ -75,7 +75,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.23.22, Sep 14, 2016
+ * @version 2.14.23.23, Sep 24, 2016
  * @since 0.2.0
  */
 @Service
@@ -844,6 +844,12 @@ public class ArticleMgmtService {
                 String articleContent = article.optString(Article.ARTICLE_CONTENT);
                 articleContent = Emotions.toAliases(articleContent);
                 article.put(Article.ARTICLE_CONTENT, articleContent);
+            }
+
+            final int perfect = article.optInt(Article.ARTICLE_PERFECT);
+            if (Article.ARTICLE_PERFECT_C_PERFECT == perfect) {
+                // if it is perfect, allow anonymous view
+                article.put(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_ALLOW);
             }
 
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
