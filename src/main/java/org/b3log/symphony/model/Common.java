@@ -355,6 +355,11 @@ public final class Common {
     public static final String PERFECT_ARTICLES = "perfectArticles";
 
     /**
+     * Key of perfect.
+     */
+    public static final String PERFECT = "perfect";
+
+    /**
      * Key of side tags.
      */
     public static final String SIDE_TAGS = "sideTags";
@@ -408,6 +413,11 @@ public final class Common {
      * Key of index articles.
      */
     public static final String INDEX_ARTICLES = "indexArticles";
+
+    /**
+     * Key of index.
+     */
+    public static final String INDEX = "index";
 
     /**
      * Key of user id.

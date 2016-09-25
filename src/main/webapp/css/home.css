@@ -74,10 +74,6 @@
 .home-menu a span:last-child:hover {
     color: #4183C4;
 }
-
-.link-forge-upload {
-    margin: 10px;
-}
 /* end home common */
 
 /* start home side */
@@ -369,7 +365,7 @@ label.article-anonymous {
 }
 
 .points td {
-    border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #eee;
 }
 
 .points .date {
@@ -437,6 +433,6 @@ label.article-anonymous {
 }
 
 .point-pagination {
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #eee;
 }
 /* end settings */

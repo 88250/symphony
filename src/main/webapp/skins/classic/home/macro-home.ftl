@@ -72,7 +72,7 @@
                             href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
                         </#if>
                     </div>
-                    <div class="module">
+                    <div<#if type != "linkForge"> class="module"</#if>>
                     <#nested>
                     </div>
                 </div>

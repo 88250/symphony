@@ -139,7 +139,7 @@ label.cmt-anonymous {
 }
 
 .comments > .comment-header > .ft-smaller {
-    line-height: 20px;
+    line-height: 25px;
 }
 
 .comments > div.comment-header .icon-chevron-down {
@@ -765,7 +765,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .index .item-header {
     height: 20px;
-    margin: -21px -21px 20px;
+    margin: -21px -21px 10px;
     border: 1px solid rgba(0,0,0,0.1);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;

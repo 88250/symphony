@@ -14,8 +14,8 @@
         <#include "../../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content module">
-                    <div class="list">
+                <div class="content">
+                    <div class="list module">
                         <#nested>
                     </div>
                 </div>

@@ -133,6 +133,8 @@ public class IndexProcessor {
 
         final List<JSONObject> timelines = timelineMgmtService.getTimelines();
         dataModel.put(Common.TIMELINES, timelines);
+        
+        dataModel.put(Common.SELECTED, Common.INDEX);
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
@@ -287,6 +289,8 @@ public class IndexProcessor {
         final JSONObject result = articleQueryService.getPerfectArticles(avatarViewMode, pageNum, pageSize);
         final List<JSONObject> perfectArticles = (List<JSONObject>) result.get(Article.ARTICLES);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
+        
+        dataModel.put(Common.SELECTED, Common.PERFECT);
 
         final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
         final int pageCount = pagination.optInt(Pagination.PAGINATION_PAGE_COUNT);

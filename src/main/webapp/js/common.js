@@ -1036,12 +1036,12 @@ var Util = {
         var href = location.href;
         $(".user-nav a").each(function () {
             if (href.indexOf($(this).attr("href")) === 0) {
-                $(this).addClass("current");
+                $(this).addClass("selected");
             } else if (location.pathname === "/register") {
                 // 注册没有使用 href，对其进行特殊处理
-                $("#aRegister").addClass("current");
+                $("#aRegister").addClass("selected");
             } else if (href.indexOf(Label.servePath + '/settings') === 0) {
-                $(".user-nav .nav-avatar").addClass("current");
+                $(".user-nav .nav-avatar").addClass("selected");
             }
         });
     },
