@@ -4,7 +4,7 @@
 <#if 0 == user.userPointStatus || (isLoggedIn && ("adminRole" == currentUser.userRole || currentUser.userName == user.userName))>
 <table class="points">
     <#list userHomePoints as point>
-    <tr<#if point_index % 2 == 1> class="even"</#if>>
+    <tr>
         <td class="date">
             ${point.createTime?string('yyyy-MM-dd')} 
             <span class="ft-gray">${point.createTime?string('HH:mm')}</span>
@@ -16,10 +16,13 @@
     </tr>
     </#list>
 </table>
+<div class="point-pagination">
 <@pagination url="/member/${user.userName}/points"/>
+</div>
 <#else>
 <p class="ft-center ft-gray home-invisible">${setinvisibleLabel}</p>
 </#if>
 <br>
 <#include "../common/ranking.ftl">
+<br>
 </@home>

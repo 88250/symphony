@@ -25,9 +25,12 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content fn-clear">
+                <div class="content">
+                    <div class="module">
                     <#nested>
                     <#include "../common/ranking.ftl">
+                    <br>    
+                    </div>
                 </div>
                 <div class="side">
                     <#include "../side.ftl">

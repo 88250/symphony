@@ -29,7 +29,7 @@ var ChatRoom = {
     init: function () {
         // 聊天窗口高度设置
         if ($.ua.device.type !== 'mobile') {
-            $('.list').height($('.side').height() - $('.reply').height() + 173);
+            $('.list').height($('.side').height() - $('.chat-room .module:first').outerHeight() - 20);
         } else {
             $('.list').height($(window).height() - 173);
         }

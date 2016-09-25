@@ -15,22 +15,24 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
-                    <#if articles?size gt 0>
-                    <div class="fn-clear">
-                        <@list listData=articles/>
-                        <@pagination url="/city/${city?url('utf-8')}"/>
-                    </div>
-                    <#else>
-                    <div class="content content-reset">
-                        <#if !userGeoStatus>
-                        ${cityArticlesTipLabel}
+                    <div class="module">
+                        <#if articles?size gt 0>
+                        <div class="fn-clear">
+                            <@list listData=articles/>
+                            <@pagination url="/city/${city?url('utf-8')}"/>
+                        </div>
                         <#else>
-                        <#if !cityFound>
-                        ${geoInfoPlaceholderLabel}
-                        </#if>
+                        <div class="no-list">
+                            <#if !userGeoStatus>
+                            ${cityArticlesTipLabel}
+                            <#else>
+                            <#if !cityFound>
+                            ${geoInfoPlaceholderLabel}
+                            </#if>
+                            </#if>
+                        </div>
                         </#if>
                     </div>
-                    </#if>
                     <#include "common/domains.ftl">
                 </div>
                 <div class="side">

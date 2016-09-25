@@ -15,7 +15,8 @@
         <div class="main tag-articles">
             <div class="wrapper">
                 <div class="content">
-                    <div class="fn-clear title">
+                    <div class="module">
+                    <div class="fn-clear tag-articles-title">
                         <#if tag.tagIconPath != "">
                         <div class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                         </#if>
@@ -100,7 +101,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="fn-clear">
+                </div>
+                    <div class="module">
                         <@list listData=articles/>
                         <@pagination url="/tag/${tag.tagTitle?url('utf-8')}"/>
                     </div>

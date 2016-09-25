@@ -12,9 +12,11 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <h2 class="sub-head"><span class="ft-blue">♦</span> ${chargePointLabel}</h2>
-                    <div class="content-reset">
-                    ${chargePointContentLabel}
+                    <div class="module">
+                        <h2 class="sub-head"><span class="ft-blue">♦</span> ${chargePointLabel}</h2>
+                        <div class="content-reset article-charge-point">
+                            ${chargePointContentLabel}
+                        </div>
                     </div>
                 </div>
                 <div class="side">

@@ -76,22 +76,30 @@
 }
 
 .link-forge-upload {
-    margin-top: 10px;
+    margin: 10px;
 }
 /* end home common */
 
 /* start home side */
+#avatarURLDom {
+    margin-top: 20px;
+}
+
 .user-name {
     border-bottom: 1px dotted #CCC;
     font-size: 25px;
     margin: 20px 0 20px;
-    padding-bottom: 20px;
+    padding: 20px 10px 20px 10px;
 }
 
 .user-name button.follow {
     font-size: 14px;
     width: 100%;
     margin-top: 20px;
+}
+
+.user-details {
+    margin: 0 10px;
 }
 
 .user-info {
@@ -276,8 +284,6 @@ label.article-anonymous {
 }
 
 .tabs {
-    padding: 0;
-    border-bottom: 1px solid #ddd;
     margin-bottom: 20px;
 }
 
@@ -314,6 +320,11 @@ label.article-anonymous {
 /* end follow */
 
 /* start admin */
+.admin .form {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
 .admin .avatar {
     height: 17px;
     width: 17px;
@@ -355,15 +366,10 @@ label.article-anonymous {
     border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
-    margin-top: -20px;
 }
 
 .points td {
     border-bottom: 1px solid #CCCCCC;
-}
-
-.points .even {
-    background-color: #F7F7F7;
 }
 
 .points .date {
@@ -428,5 +434,9 @@ label.article-anonymous {
     width: 25px;
     height: 25px;
     cursor: pointer;
+}
+
+.point-pagination {
+    border-bottom: 1px solid #e5e5e5;
 }
 /* end settings */

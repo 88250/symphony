@@ -56,7 +56,7 @@ import org.jsoup.Jsoup;
  * Mail management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 16, 2016
+ * @version 1.0.0.2, Sep 24, 2016
  * @since 1.6.0
  */
 @Service
@@ -140,8 +140,8 @@ public class MailMgmtService {
                     setFilter(CompositeFilterOperator.and(
                             new PropertyFilter(UserExt.USER_SUB_MAIL_SEND_TIME, FilterOperator.LESS_THAN_OR_EQUAL,
                                     sevenDaysAgo),
-                            //new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.LESS_THAN_OR_EQUAL,
-                            //        sevenDaysAgo),
+                            new PropertyFilter(UserExt.USER_LATEST_LOGIN_TIME, FilterOperator.LESS_THAN_OR_EQUAL,
+                                    sevenDaysAgo),
                             new PropertyFilter(UserExt.USER_SUB_MAIL_STATUS, FilterOperator.EQUAL,
                                     UserExt.USER_SUB_MAIL_STATUS_ENABLED),
                             new PropertyFilter(UserExt.USER_STATUS, FilterOperator.EQUAL, UserExt.USER_STATUS_C_VALID)

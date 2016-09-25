@@ -21,6 +21,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
+                    <div class="module article-module">
                     <div class="fn-clear article-action">
                         <span class="fn-right">
                             <#if "" != article.articleToC>
@@ -199,8 +200,8 @@
                         </div>
                     </div>
                     </#if>
-                    
-                    <div class="fn-clear">
+                    </div>
+                    <div class="module">
                         <div class="list comments" id="comments">
                             <div class="fn-clear comment-header">
                                 <span class="fn-left ft-smaller">${article.articleCommentCount} ${cmtLabel}</span>

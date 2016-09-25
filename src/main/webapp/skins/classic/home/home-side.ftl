@@ -1,4 +1,4 @@
-<div class="ft-center">
+<div class="ft-center module">
     <div id="avatarURLDom" class="avatar-big tooltipped tooltipped-s" aria-label="${user.userName}"
          style="background-image:url('${user.userAvatarURL210}')"></div>
     <div>
@@ -39,7 +39,8 @@
             </#if>
             </#if>
         </div>
-
+        
+        <div class="user-details">
         <#if user.userIntro!="">
         <div class="user-intro" id="userIntroDom">
             ${user.userIntro}
@@ -58,15 +59,15 @@
                 </#if>
             </a>
         </div>
-        <#if "" != user.userTags || ("" != user.userCity && 0 == user.userGeoStatus)>
+        <#if "" != user.userTags>
         <div class="user-info">
-            <#if "" != user.userTags>
             <span class="ft-gray">${selfTagLabel}</span> 
             <span id="userTagsDom"><#list user.userTags?split(',') as tag> ${tag?html}<#if tag_has_next>,</#if></#list></span>
-            </#if>
-            <#if "" != user.userCity && 0 == user.userGeoStatus>
+        </div>
+        </#if>
+        <#if "" != user.userCity && 0 == user.userGeoStatus>
+        <div class="user-info">
             <span class="ft-gray">${geoLabel}</span> <#if "中国" == user.userCountry>${user.userCity}<#else>${user.userCountry} ${user.userCity}</#if>
-            </#if>
         </div>
         </#if>
         <#if user.userURL!="">
@@ -84,7 +85,7 @@
             ${user.userCurrentCheckinStreak?c}
             <span class="ft-gray">${checkinStreakPart2Label}</span>
         </div>
-
+        </div>
         <ul class="status fn-flex">
             <li>
                 <strong>${user.userTagCount?c}</strong>

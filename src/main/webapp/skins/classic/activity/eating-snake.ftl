@@ -12,18 +12,19 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
+                    <div class="module">
                     <h2 class="sub-head">
                         <div class="avatar-small tooltipped tooltipped-ne"
                              aria-label="${eatingSnakeLabel}" style="background-image:url('${staticServePath}/images/activities/snak.png')"></div>
                         ${eatingSnakeLabel}
                         <span class="ft-13 ft-gray">${activityEatingSnakeTitleLabel}</span>
                     </h2>
-                    <div class="fn-clear">
+                    <div class="fn-clear fn-m10">
                         <button class="green fn-right" onclick="Activity.startSnake('${csrfToken}')">${gameStartLabel}</button>
                     </div>
                     <div id="yard"><canvas id="snakeCanvas" height="600px" width="600px"></canvas></div>
-                    <div class="index">
-                        <div class="first">
+                    <div class="index fn-m10">
+                        <div class="first snak-rank">
                             <div class="item first">
                                 <span class="item-header" style="background-image: url(${hotBgIcon});">${totalRankLabel}</span>
                                 <div class="module-panel">
@@ -55,6 +56,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
                 <div class="side">

@@ -19,11 +19,16 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.41.1.11, Sep 22, 2016
+ * @version 1.42.1.11, Sep 24, 2016
  * @since 0.2.0
  */
 public final class Common {
-    
+
+    /**
+     * Key of last modified.
+     */
+    public static final String LAST_MOD = "lastModified";
+
     /**
      * Key of invited user count.
      */

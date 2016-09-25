@@ -80,6 +80,7 @@
     <include path="/images/**/*.jpg" />
     <include path="/images/**.gif" />
     <include path="/images/**/*.gif" />
+    <include path="/images/**/*.svg" />
         
     <include path="/plugins/**.css" />
     <include path="/plugins/**/*.css" />

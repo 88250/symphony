@@ -16,8 +16,10 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
+                    <div class="module">
                     <@list listData=perfectArticles/>
                     <@pagination url="${servePath}/perfect"/>
+                    </div>
                     <#include "common/domains.ftl">
                 </div>
 

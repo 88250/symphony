@@ -12,12 +12,13 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
+                    <div class="module">
                     <h2 class="sub-head">
                         <div class="avatar-small tooltipped tooltipped-ne"
                              aria-label="${activity1A0001Label}" style="background-image:url('${staticServePath}/images/activities/1A0001.png')"></div>
                         ${activity1A0001TitleLabel}
                     </h2>
-                    <div class="content-reset">
+                    <div class="content-reset fn-m10">
                     ${activity1A0001GuideLabel}
 
                     <#if !closed && !closed1A0001 && !end && !collected && !participated>
@@ -39,7 +40,7 @@
                     </#if>
                     </div>
                     <#if participated || closed || closed1A0001 || collected || end>
-                        <div id="tip" class="tip succ"><ul><li>${msg}</li></ul></div><br/>
+                        <div id="tip" class="tip succ fn-m10"><ul><li>${msg}</li></ul></div><br/>
                         <#if participated && hour?? && hour gt 15>
                         <div class="fn-clear">
                             <button id="collectBtn" class="red fn-right" onclick="Activity.collect1A0001()">${activityCollectLabel}</button>
@@ -52,6 +53,7 @@
                         <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001('${csrfToken}')">${activityBetLabel}</button>
                     </div>
                     </#if>
+                    </div>
                 </div>
                 <div class="side">
                     <#include "../side.ftl">

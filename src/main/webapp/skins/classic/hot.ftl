@@ -17,10 +17,13 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
-                    <@list listData=indexArticles/>
-                    <@pagination url="/hot"/>
-                    <br>
-                    <a href="${servePath}/recent" class="ft-gray">${moreRecentArticleLabel}</a>
+                    <div class="module">
+                        <@list listData=indexArticles/>
+                        <@pagination url="/hot"/>
+                        <div class="pagination">
+                            <a href="${servePath}/recent" class="ft-gray">${moreRecentArticleLabel}</a>
+                        </div>
+                    </div>
                     <#include "common/domains.ftl">
                 </div>
                 <div class="side">

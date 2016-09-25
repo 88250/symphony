@@ -1,6 +1,5 @@
 <#macro pagination url query>
 <#if paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1>
-<div class="fn-clear">
     <div class="pagination">
         <#if paginationFirstPageNum!=1>
         <a rel="prev" href="${url}&${query}"><<1</a>
@@ -16,6 +15,5 @@
         <a rel="next" href="${url}?p=${paginationPageCount}&${query}">${paginationPageCount}>></a>
         </#if>
     </div>
-</div>
 </#if>
 </#macro>
