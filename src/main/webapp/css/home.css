@@ -280,11 +280,26 @@ label.article-anonymous {
 }
 
 .tabs {
-    margin-bottom: 20px;
+    display: flex;
 }
 
 .tabs a {
-    float: left;
+    line-height: 18px;
+    flex: 1;
+    padding: 5px 10px;
+    color: #616161;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    text-align: center
+}
+
+.tabs a.selected {
+    border-color: #d26911;
+    color: #212121
+}
+
+.tabs a:hover {
+    background-color: rgba(0,0,0,.03);
 }
 /* end home */
 

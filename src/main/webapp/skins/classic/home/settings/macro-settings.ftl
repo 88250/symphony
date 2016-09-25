@@ -13,7 +13,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="tabs fn-clear settings-tabs">
+                    <div class="tabs module">
                         <a href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
                         <a href="${servePath}/member/${user.userName}/following/users"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
                         <a href="${servePath}/member/${user.userName}/points"><svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>

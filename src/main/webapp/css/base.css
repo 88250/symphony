@@ -1219,11 +1219,12 @@ a[class*=" icon-"]:hover {
 }
 /* end form */
 
-/* start pagination * tabs-sub */
+/* start pagination & tabs-sub */
 .pagination,
 .tabs-sub {
     display: flex;
     font-size: 12px;
+    background-color: #fff;
 }
 
 .tabs-sub {
@@ -1252,7 +1253,7 @@ a[class*=" icon-"]:hover {
     color: #212121;
     font-weight: bold;
 }
-/* end pagination */
+/* end pagination & tabs-sub */
 
 /* start dialog */
 .dialog-background {
