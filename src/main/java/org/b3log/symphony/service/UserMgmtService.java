@@ -81,7 +81,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.16.16, Sep 22, 2016
+ * @version 1.14.17.16, Sep 25, 2016
  * @since 0.2.0
  */
 @Service
@@ -440,7 +440,8 @@ public class UserMgmtService {
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL).trim().toLowerCase();
             final String userName = requestJSONObject.optString(User.USER_NAME);
             JSONObject user = userRepository.getByName(userName);
-            if (null != user && UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)) {
+            if (null != user && (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)
+                    || UserExt.NULL_USER_NAME.equals(userName))) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
@@ -610,6 +611,7 @@ public class UserMgmtService {
                         final JSONObject u = others.optJSONObject(i);
                         final String id = u.optString(Keys.OBJECT_ID);
                         u.put(User.USER_NAME, UserExt.NULL_USER_NAME);
+                        u.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_NOT_VERIFIED);
 
                         userRepository.update(id, u);
 
