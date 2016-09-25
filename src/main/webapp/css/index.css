@@ -715,7 +715,7 @@ code .dec { color: initial; } /* decimal - blue */
 /* end chat room */
 
 /* start index */
-.index {
+.index .main {
     background-image: url('../images/index-bg.svg');
 }
 
