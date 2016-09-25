@@ -10,7 +10,7 @@
     <body class="error">
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper block">
+            <div class="wrapper block module">
                 <h2 class="sub-head">404 Not Found!</h2>
                 <div class="ft-center"></div>
             </div>

@@ -12,13 +12,14 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
+                    <div class="module">
                     <h2 class="sub-head">
                         <div class="avatar-small tooltipped tooltipped-ne"
                              aria-label="${characterLabel}" style="background-image:url('${staticServePath}/images/activities/char.png')"></div>
                         ${characterLabel}
                         <span class="ft-13 ft-gray">${activityCharacterTitleLabel}</span>
                     </h2>
-                    <div class="fn-clear">
+                    <div class="fn-clear fn-m10">
                         <div class="fn-left">
                             <#if noCharacter??>
                             ${activityCharacterNotCharacterLabel}
@@ -34,11 +35,14 @@
                     </div>
                     <canvas id="charCanvas" width="500" height="490"></canvas>
                     <#if !noCharacter??>
+                    <div class="content-reset fn-m10">
                     <ul>
                         <li>${userCharacterProgressLabel}${colonLabel}${userProgress}</li>
                         <li>${totalCharacterProgressLabel}${colonLabel}${totalProgress}</li>
                     </ul>
                     </#if>
+                    </div>
+                    </div>
                 </div>
                 <div class="side">
                     <#include "../side.ftl">

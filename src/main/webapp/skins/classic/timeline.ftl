@@ -15,15 +15,17 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
+                    <div class="module">
                     <#if timelines?size <= 0>
-                    <div id="emptyTimeline">${emptyTimelineLabel}</div>
+                    <div id="emptyTimeline" class="no-list">${emptyTimelineLabel}</div>
                     </#if>
-                    <div class="list single-line ft-smaller ft-gray timeline">
+                    <div class="list single-line ft-gray timeline">
                         <ul id="ul">
                             <#list timelines as timeline>
                             <li>${timeline.content}</li>
                             </#list>
                         </ul>
+                    </div>
                     </div>
                     <#include "common/domains.ftl">
                 </div>

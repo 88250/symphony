@@ -1,21 +1,25 @@
 <#include "macro-admin.ftl">
 <@admin "index">
-<div class="content">
-    <ul>
-        <li>${onlineVisitorCountLabel} ${onlineVisitorCnt?c}</li>
-        <li>${onlineMemberCountLabel} ${onlineMemberCnt?c}</li>
-        <li>${maxOnlineVisitorCountLabel} ${statistic.statisticMaxOnlineVisitorCount?c}</li>
-        <li>${memberLabel} ${statistic.statisticMemberCount?c}</li>
-        <li>${articleLabel} ${statistic.statisticArticleCount?c}</li>
-        <li>${cmtLabel} ${statistic.statisticCmtCount?c}</li>
-        <li>${domainLabel} ${statistic.statisticDomainCount?c}</li>
-        <li>${tagLabel} ${statistic.statisticTagCount?c}</li>
-    </ul>
+<div class="content content-reset">
+    <div class="module">
+        <br>
+        <ul>
+            <li>${onlineVisitorCountLabel} ${onlineVisitorCnt?c}</li>
+            <li>${onlineMemberCountLabel} ${onlineMemberCnt?c}</li>
+            <li>${maxOnlineVisitorCountLabel} ${statistic.statisticMaxOnlineVisitorCount?c}</li>
+            <li>${memberLabel} ${statistic.statisticMemberCount?c}</li>
+            <li>${articleLabel} ${statistic.statisticArticleCount?c}</li>
+            <li>${cmtLabel} ${statistic.statisticCmtCount?c}</li>
+            <li>${domainLabel} ${statistic.statisticDomainCount?c}</li>
+            <li>${tagLabel} ${statistic.statisticTagCount?c}</li>
+        </ul>
 
-    <br>
-    <div>
-        ${currentVersionLabel} <span id="version">${version}</span>${commaLabel}
-        <span id="upgrade">${checkVersionLabel}</span>
+        <br>
+        <div class="fn-m10">
+            ${currentVersionLabel} <span id="version">${version}</span>${commaLabel}
+            <span id="upgrade">${checkVersionLabel}</span>
+        </div>
+        <br>
     </div>
 </div>
 <script>

@@ -10,7 +10,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="content activity">
+                <div class="content activity module">
                     <h2 class="sub-head">${activityLabel}</h2>
                     <div class="list">
                         <ul>

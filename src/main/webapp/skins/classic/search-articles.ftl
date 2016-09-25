@@ -14,7 +14,7 @@
         <@subNav '' ''/>
         <div class="main">
             <div class="wrapper">
-                <div class="content fn-clear">
+                <div class="content module">
                     <@list listData=articles/>
                     <@pagination url="/search" query="key=${key}" />
                 </div>

@@ -56,21 +56,6 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="responsive-show">
-                    <ul class="tab fn-clear">
-                        <li<#if type == "index"> class="current"</#if>><a href="${servePath}/admin">${consoleIndexLabel}</a></li>
-                        <li<#if type == "users" || type == "addUser"> class="current"</#if>><a href="${servePath}/admin/users">${userAdminLabel}</a></li>
-                        <li<#if type == "articles" || type == "addArticle"> class="current"</#if>><a href="${servePath}/admin/articles">${articleAdminLabel}</a></li>
-                        <li<#if type == "comments"> class="current"</#if>><a href="${servePath}/admin/comments">${commentAdminLabel}</a></li>
-                        <li<#if type == "domains" || type == "addDomain"> class="current"</#if>><a href="${servePath}/admin/domains">${domainAdminLabel}</a></li>
-                        <li<#if type == "tags" || type == "addTag"> class="current"</#if>><a href="${servePath}/admin/tags">${tagAdminLabel}</a></li>
-                        <li<#if type == "reservedWords" || type == "addReservedWord"> class="current"</#if>><a href="${servePath}/admin/reserved-words">${reservedWordAdminLabel}</a></li>
-                        <li<#if type == "invitecodes"> class="current"</#if>><a href="${servePath}/admin/invitecodes">${invitecodeAdminLabel}</a></li>
-                        <li<#if type == "ad"> class="current"</#if>><a href="${servePath}/admin/ad">${adAdminLabel}</a></li>
-                        <li<#if type == "misc"> class="current"</#if>><a href="${servePath}/admin/misc">${miscAdminLabel}</a></li>
-                    </ul>
-                    <br/>
-                </div>
                 <#nested>
                 <div class="side">
                     <div class="module">

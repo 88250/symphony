@@ -18,6 +18,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
+                    <div class="module">
                     <div class="tabs-sub fn-clear">
                         <#list domains as navDomain>
                         <#if navDomain.domainURI == domain.domainURI>
@@ -29,6 +30,7 @@
                     </div>
                     <@list listData=latestArticles/>
                     <@pagination url="/domain/${domain.domainURI}"/>
+                </div>
                     <#include "common/domains.ftl">
                 </div>
                 <div class="side">

@@ -57,7 +57,7 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="tabs fn-clear">
+                    <div class="tabs fn-clear module">
                         <a <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
                             class="selected"</#if>
                             href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
@@ -72,7 +72,9 @@
                             href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
                         </#if>
                     </div>
+                    <div class="module">
                     <#nested>
+                    </div>
                 </div>
                 <div class="side">
                     <#if currentUser?? && currentUser.userName == user.userName>

@@ -248,7 +248,7 @@ var Comment = {
                 Comment._bgFade($(window.location.hash));
             }
         } else {
-            Comment._bgFade($('.article-content'));
+            Comment._bgFade($('.article-module'));
         }
 
         this._setCmtVia();
