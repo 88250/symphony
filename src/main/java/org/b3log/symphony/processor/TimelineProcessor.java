@@ -44,7 +44,7 @@ import org.b3log.symphony.util.Symphonys;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Aug 20, 2016
+ * @version 1.1.0.6, Sep 25, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -87,6 +87,8 @@ public class TimelineProcessor {
 
         filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
+
+        dataModel.put(Common.SELECTED, Common.TIMELINE);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 

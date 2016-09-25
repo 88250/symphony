@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.8.2.17, Sep 7, 2016
+ * @version 1.8.2.18, Sep 25, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -177,6 +177,8 @@ public class IndexProcessor {
 
         dataModel.put(Article.ARTICLE_T_STICK_CHECK, true);
 
+        dataModel.put(Common.SELECTED, Common.RECENT);
+
         for (final JSONObject article : latestArticles) {
             article.put(Article.ARTICLE_T_IS_STICK, article.optInt(Article.ARTICLE_T_STICK_REMAINS) > 0);
         }
@@ -232,6 +234,8 @@ public class IndexProcessor {
 
         final List<JSONObject> indexArticles = articleQueryService.getHotArticles(avatarViewMode, pageSize);
         dataModel.put(Common.INDEX_ARTICLES, indexArticles);
+
+        dataModel.put(Common.SELECTED, Common.HOT);
 
         Stopwatchs.start("Fills");
         try {

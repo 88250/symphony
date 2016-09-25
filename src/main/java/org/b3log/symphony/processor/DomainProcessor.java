@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Aug 20, 2016
+ * @version 1.1.0.5, Sep 25, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -168,6 +168,7 @@ public class DomainProcessor {
         domain.put(Domain.DOMAIN_T_TAGS, (Object) tags);
 
         dataModel.put(Domain.DOMAIN, domain);
+        dataModel.put(Common.SELECTED, domain.optString(Domain.DOMAIN_URI));
 
         final String domainId = domain.optString(Keys.OBJECT_ID);
 

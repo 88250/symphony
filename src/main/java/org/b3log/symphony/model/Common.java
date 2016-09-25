@@ -19,10 +19,20 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.42.1.11, Sep 24, 2016
+ * @version 1.43.1.11, Sep 25, 2016
  * @since 0.2.0
  */
 public final class Common {
+
+    /**
+     * Key of forge.
+     */
+    public static final String FORGE = "forge";
+
+    /**
+     * Key of selected.
+     */
+    public static final String SELECTED = "selected";
 
     /**
      * Key of last modified.
@@ -315,6 +325,16 @@ public final class Common {
     public static final String RECENT_ARTICLES = "recentArticles";
 
     /**
+     * Key of recent.
+     */
+    public static final String RECENT = "recent";
+
+    /**
+     * Key of timeline.
+     */
+    public static final String TIMELINE = "timeline";
+
+    /**
      * Key of timelines.
      */
     public static final String TIMELINES = "timelines";
@@ -323,6 +343,11 @@ public final class Common {
      * Key of hot articles.
      */
     public static final String HOT_ARTICLES = "hotArticles";
+
+    /**
+     * Key of hot.
+     */
+    public static final String HOT = "hot";
 
     /**
      * Key of perfect articles.
