@@ -21,7 +21,7 @@
         <a href="${servePath}/forge/link"<#if selected?? && 'forge' == selected> class="selected"</#if>>
            <svg height="14" viewBox="0 1 16 14" width="16">${baguaIcon}</svg> ${forgeLabel}</a>
     </div>
-    <#if !esEnabled || !algoliaEnabled>
+    <#if esEnabled || algoliaEnabled>
     <form class="responsive-hide fn-left" target="_blank" action="/search">
         <input class="search" placeholder="Search HacPai" type="text" name="key" id="search" value="<#if key??>${key}</#if>" >
         <input type="submit" class="fn-none" value=""/>
@@ -40,7 +40,7 @@
         <#else>
         <a href="javascript: Util.showLogin();" class="unlogin">${loginLabel}</a>
         <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin">${registerLabel}</a>
-        <div class="form fn-none">
+        <div class="form fn-none module">
             <table cellspacing="0" cellpadding="0">
                 <tr>
                     <td width="40">
@@ -60,7 +60,9 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="right">
-                        <div id="loginTip" class="tip"></div><br/>
+                        <div id="loginTip" class="tip"></div>
+                        <div class="fn-hr5"></div>
+                        <div class="fn-hr5"></div>
                         <button class="info" onclick="window.location.href = '${servePath}/forget-pwd'">${forgetPwdLabel}</button>
                         <button class="red" onclick="Util.login()">${loginLabel}</button>
                     </td>
