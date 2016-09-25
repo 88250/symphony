@@ -55,7 +55,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.3, Sep 11, 2016
+ * @version 1.2.0.4, Sep 25, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -94,42 +94,42 @@ public class StatisticProcessor {
     /**
      * Month days.
      */
-    private final List<String> monthDays = new ArrayList<String>();
+    private final List<String> monthDays = new ArrayList<>();
 
     /**
      * User counts.
      */
-    private final List<Integer> userCnts = new ArrayList<Integer>();
+    private final List<Integer> userCnts = new ArrayList<>();
 
     /**
      * Article counts.
      */
-    private final List<Integer> articleCnts = new ArrayList<Integer>();
+    private final List<Integer> articleCnts = new ArrayList<>();
 
     /**
      * Comment counts.
      */
-    private final List<Integer> commentCnts = new ArrayList<Integer>();
+    private final List<Integer> commentCnts = new ArrayList<>();
 
     /**
      * History months.
      */
-    private final List<String> months = new ArrayList<String>();
+    private final List<String> months = new ArrayList<>();
 
     /**
      * History user counts.
      */
-    private final List<Integer> historyUserCnts = new ArrayList<Integer>();
+    private final List<Integer> historyUserCnts = new ArrayList<>();
 
     /**
      * History article counts.
      */
-    private final List<Integer> historyArticleCnts = new ArrayList<Integer>();
+    private final List<Integer> historyArticleCnts = new ArrayList<>();
 
     /**
      * History comment counts.
      */
-    private final List<Integer> historyCommentCnts = new ArrayList<Integer>();
+    private final List<Integer> historyCommentCnts = new ArrayList<>();
 
     /**
      * Loads statistic data.
@@ -239,6 +239,5 @@ public class StatisticProcessor {
 
         final JSONObject statistic = optionQueryService.getStatistic();
         dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
-        filler.fillDomainNav(dataModel);
     }
 }

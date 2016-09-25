@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.8.2.18, Sep 25, 2016
+ * @version 1.8.2.19, Sep 26, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -133,10 +133,9 @@ public class IndexProcessor {
 
         final List<JSONObject> timelines = timelineMgmtService.getTimelines();
         dataModel.put(Common.TIMELINES, timelines);
-        
+
         dataModel.put(Common.SELECTED, Common.INDEX);
 
-        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillIndexTags(dataModel);
     }
@@ -198,7 +197,6 @@ public class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
 
         filler.fillRandomArticles(avatarViewMode, dataModel);
@@ -242,7 +240,6 @@ public class IndexProcessor {
         Stopwatchs.start("Fills");
         try {
             filler.fillHeaderAndFooter(request, response, dataModel);
-            filler.fillDomainNav(dataModel);
             if (!(Boolean) dataModel.get(Common.IS_MOBILE)) {
                 filler.fillRandomArticles(avatarViewMode, dataModel);
             }
@@ -289,7 +286,7 @@ public class IndexProcessor {
         final JSONObject result = articleQueryService.getPerfectArticles(avatarViewMode, pageNum, pageSize);
         final List<JSONObject> perfectArticles = (List<JSONObject>) result.get(Article.ARTICLES);
         dataModel.put(Common.PERFECT_ARTICLES, perfectArticles);
-        
+
         dataModel.put(Common.SELECTED, Common.PERFECT);
 
         final JSONObject pagination = result.getJSONObject(Pagination.PAGINATION);
@@ -305,7 +302,6 @@ public class IndexProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(avatarViewMode, dataModel);
         filler.fillSideHotArticles(avatarViewMode, dataModel);

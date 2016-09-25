@@ -44,7 +44,7 @@ import org.b3log.symphony.util.Symphonys;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, Sep 25, 2016
+ * @version 1.1.0.7, Sep 26, 2016
  * @since 1.3.0
  */
 @RequestProcessor
@@ -85,7 +85,6 @@ public class TimelineProcessor {
         renderer.setTemplateName("timeline.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
 
         dataModel.put(Common.SELECTED, Common.TIMELINE);

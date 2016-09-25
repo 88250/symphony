@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Sep 25, 2016
+ * @version 1.0.0.4, Sep 26, 2016
  * @since 1.6.0
  */
 @RequestProcessor
@@ -153,7 +153,6 @@ public class LinkForgeProcessor {
         final int linkCnt = statistic.optInt(Option.ID_C_STATISTIC_LINK_COUNT);
         dataModel.put(Link.LINK_T_COUNT, linkCnt);
 
-        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 }

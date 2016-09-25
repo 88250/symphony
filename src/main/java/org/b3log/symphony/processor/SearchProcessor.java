@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Aug 20, 2016
+ * @version 1.1.0.2, Sep 26, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -189,7 +189,6 @@ public class SearchProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(avatarViewMode, dataModel);
         filler.fillSideHotArticles(avatarViewMode, dataModel);

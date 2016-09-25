@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Sep 25, 2016
+ * @version 1.1.0.6, Sep 26, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -191,7 +191,6 @@ public class DomainProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
         filler.fillRandomArticles(avatarViewMode, dataModel);
         filler.fillSideHotArticles(avatarViewMode, dataModel);
@@ -225,7 +224,6 @@ public class DomainProcessor {
         final int domainCnt = statistic.optInt(Option.ID_C_STATISTIC_DOMAIN_COUNT);
         dataModel.put(Domain.DOMAIN_T_COUNT, domainCnt);
 
-        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
     }
 }
