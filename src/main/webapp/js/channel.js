@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.11.15, Sep 10, 2016
+ * @version 1.10.12.15, Sep 26, 2016
  */
 
 /**
@@ -388,16 +388,16 @@ var ChatRoomChannel = {
                             + '</div>'
                             + '</div>'
                             + '</li>';
-                    if ($('.form ul li').length === 0) {
-                        $('.form ul').html(liHTML);
+                    if ($('.list ul li').length === 0) {
+                        $('.list ul').html(liHTML);
                     } else {
-                        $('.form ul li:first').before(liHTML);
+                        $('.list ul li:first').before(liHTML);
                     }
 
-                    if ($('.form .list').scrollTop() < $('.form li').outerHeight() * 2) {
-                        $('.form .list').animate({'scrollTop': 0}, 500);
+                    if ($('.list').scrollTop() < $('li').outerHeight() * 2) {
+                        $('.list').animate({'scrollTop': 0}, 500);
                     }
-                    $(".form ul li:first").fadeIn(2000);
+                    $("ul li:first").fadeIn(2000);
                     break;
             }
         };
