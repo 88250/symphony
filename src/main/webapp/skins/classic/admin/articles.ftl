@@ -11,7 +11,6 @@
             </#if>
             <button type="button" class="btn red" onclick="window.location = '/admin/add-article'">${addArticleLabel}</button>
         </form>
-        <br/>
         <ul>
             <#list articles as item>
             <li>

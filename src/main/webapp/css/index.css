@@ -82,6 +82,7 @@
     top: 2px;
     right: 0px;
     width: 100%;
+    z-index: 20;
 }
 
 h2.article-title {

@@ -11,7 +11,7 @@
         <#include "../header.ftl">
         <div class="main">
             <div class="wrapper">
-                <div class="module footer">
+                <div class="module">
                     <h2 class="sub-head">${reloginLabel}</h2>
                     <div class="slogan">
                         <button onclick="Util.goRegister()" class="green">${nowLabel}${registerLabel}</button>

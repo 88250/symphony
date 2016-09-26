@@ -8,7 +8,6 @@
             <button type="submit" class="green">${searchLabel}</button>
             <button type="button" class="btn red" onclick="window.location = '/admin/add-tag'">${addTagLabel}</button>
         </form>
-        <br/>
         <ul>
             <#list tags as item>
             <li>

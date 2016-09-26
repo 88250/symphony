@@ -38,4 +38,19 @@
 .error-403 .list {
     width: 100%;
 }
+
+.error-403 .slogan {
+    padding: 20px 0px 20px 0;
+    color: #767676;
+    width: 100%;
+    text-align: center;
+}
+
+.error-403 .slogan a:hover svg {
+    color: #4183C4;
+}
+
+.error-403 .wrapper > .module {
+    margin-bottom: 20px;
+}
 /* end 403 */
