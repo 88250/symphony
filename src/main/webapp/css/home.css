@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.5.10.17, Sep 22, 2016
+ * @version 2.6.10.17, Sep 26, 2016
  */
 
 /* start home common */
@@ -99,13 +99,14 @@
 }
 
 .user-info {
-    line-height: 26px;
+    line-height: 24px;
     font-size: 12px;
     color: #666666;
 }
 
 .user-intro {
     line-height: 26px;
+    margin-bottom: 5px;
 }
 /* end home side */
 

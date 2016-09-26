@@ -29,14 +29,30 @@
     </#if>
     <div class="user-nav">
         <#if isLoggedIn>
-        <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
-        <a href="${servePath}/activities" aria-label="${activityLabel}" class="tooltipped tooltipped-w"><span class="icon-flag"></span></a>
-        <a href="${servePath}/member/${currentUser.userName}" aria-label="Go Home" class="tooltipped tooltipped-w <#if 'adminRole' != userRole>last </#if>nav-avatar">
-            <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
-        </a>
         <#if "adminRole" == userRole>
         <a href="${servePath}/admin" aria-label="${adminLabel}" class="tooltipped tooltipped-w last"><span class="icon-userrole"></span></a>
         </#if>
+        <a id="aNotifications" class="tooltipped tooltipped-w <#if unreadNotificationCount == 0>no-msg<#else>msg</#if>" href="${servePath}/notifications" aria-label="${messageLabel}">${unreadNotificationCount}</a>
+        <a href="${servePath}/activities"><span class="icon-flag"></span></a>
+        <a href="${servePath}/member/${currentUser.userName}" aria-label="${goHomeLabel}" class="tooltipped tooltipped-w">
+            <span class="avatar-small" style="background-image:url('${currentUser.userAvatarURL20}')"></span>
+        </a>
+        <div class="module person-list">
+            <ul>
+                <li>
+                    <a href="${servePath}/member/${currentUser.userName}">${goHomeLabel}</a>
+                </li>
+                <li>
+                    <a href="${servePath}/settings">${settingsLabel}</a>
+                </li>
+                <li>
+                    <a href="${servePath}/settings/help">${helpLabel}</a>
+                </li>
+                <li>
+                    <a href="javascript:Util.logout()">${logoutLabel}</a>
+                </li>
+            </ul>
+        </div>
         <#else>
         <a href="javascript: Util.showLogin();" class="unlogin">${loginLabel}</a>
         <a id="aRegister" href="javascript:Util.goRegister()" class="last ft-blue unlogin">${registerLabel}</a>

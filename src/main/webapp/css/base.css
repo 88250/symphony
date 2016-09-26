@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.16.39, Sep 26, 2016
+ * @version 1.24.16.39, Sep 26, 2016
  */
 
 /* start reset */
@@ -1224,10 +1224,13 @@ a[class*=" icon-"]:hover {
     display: flex;
     font-size: 12px;
     background-color: #fff;
+    overflow: hidden;
+    border-radius: 0 0 3px 3px;
 }
 
 .tabs-sub {
     border-bottom: 1px solid #eee;
+    border-radius: 3px 3px 0 0;
 }
 
 .pagination a,
@@ -1240,15 +1243,17 @@ a[class*=" icon-"]:hover {
     text-align: center;
     color: #616161;
     padding: 0 5px;
+    background-color: #f7f7f7;
 }
 
 .pagination a:hover,
 .tabs-sub a:hover {
-    background-color: rgba(0,0,0,.03);
+    background-color: rgba(0,0,0,.05);
 }
 
-.pagination span.current {
-    background-color: rgba(0,0,0,.05);
+.pagination span.current,
+.tabs-sub a.current {
+    background-color: rgba(0,0,0,.06);
     color: #212121;
     font-weight: bold;
 }
@@ -1349,9 +1354,11 @@ a[class*=" icon-"]:hover {
     box-sizing: border-box;
     display: flex;
     line-height: 38px;
+    padding-right: 10px;
 }
 
-.nav a {
+.nav .nav-tabs > a,
+.nav .user-nav > a {
     display: inline-block;
     color: #fff;
     text-decoration: none;
@@ -1359,7 +1366,8 @@ a[class*=" icon-"]:hover {
     padding: 5px 10px;
 }
 
-.nav a:hover {
+.nav .nav-tabs > a:hover,
+.nav .user-nav > a:hover {
     color: #FFF;
     text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.3)
 }
@@ -1422,11 +1430,11 @@ a[class*=" icon-"]:hover {
     color: #222;
 }
 
-.nav .user-nav {
+.nav .user-nav > a{
     font-size: 20px;
 }
 
-.nav .user-nav a {
+.nav .user-nav > a {
     float: left;
 }
 
@@ -1482,6 +1490,51 @@ a[class*=" icon-"]:hover {
 .nav .form input[type="password"] {
     margin: 10px 0;
 }
+
+.nav .person-list {
+    position: absolute;
+    top: 48px;
+    right: 1px;
+    width: 154px;
+    background-color: #fff;
+    line-height: 21px;
+    display: none;
+}
+
+.nav .person-list:after {
+    top: -14px;
+    right: 10px;
+    left: auto;
+    position: absolute;
+    border: 7px solid transparent;
+    border-bottom-color: #fff;
+    content: " ";
+}
+
+.nav .person-list li {
+    list-style: none;
+}
+
+.nav .person-list li:first-child a {
+    border-radius: 3px 3px 0 0;
+}
+
+.nav .person-list li:last-child {
+    border-bottom: 0;
+}
+
+.nav .person-list a {
+    display: block;
+    text-shadow: 0 1px 0 #fff;
+    position: relative;
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.nav .person-list a:hover {
+    text-decoration: none;
+    background-color: #f9f9f9;
+}
 /* end header */
 
 /* start footer */
@@ -1520,7 +1573,7 @@ a[class*=" icon-"]:hover {
 
 /* start list */
 .no-list {
-    line-height: 30px;
+    line-height: 48px;
     text-align: center;
 }
 
@@ -1844,8 +1897,6 @@ ul.CodeMirror-hints {
 
 .person-info .info {
     position: relative;
-    left: -1px;
-    top: -1px;
     overflow: hidden;
     height: 35px;
 }

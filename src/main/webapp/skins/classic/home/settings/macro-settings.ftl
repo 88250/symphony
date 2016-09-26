@@ -13,17 +13,10 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <div class="tabs module">
-                        <a href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
-                        <a href="${servePath}/member/${user.userName}/following/users"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
-                        <a href="${servePath}/member/${user.userName}/points"><svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
-                        <a href="${servePath}/member/${user.userName}/forge/link"><svg height="18" viewBox="0 1 16 16" width="16">${baguaIcon}</svg>  ${forgeLabel}</a>
-                        <a class="selected"
-                           href="${servePath}/settings"><svg height="18" viewBox="0 1 14 16" width="14">${settingIcon}</svg> ${settingsLabel}</a>
-                    </div>
                     <#nested>
                 </div>
                 <div class="side">
+                    <#include "../../common/person-info.ftl">
                     <div class="module">
                         <div class="module-header"><h2>${settingsLabel}</h2></div> 
                         <div class="module-panel">
