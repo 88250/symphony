@@ -11,12 +11,16 @@
         <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <h2 class="sub-head">
-                        <div class="avatar-small tooltipped tooltipped-ne"
-                             aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
-                        ${dailyCheckinLabel}
-                    </h2>
-                    <div id="captcha"></div>
+                    <div class="module">
+                        <h2 class="sub-head">
+                            <div class="avatar-small tooltipped tooltipped-ne"
+                                 aria-label="${activityDailyCheckinLabel}" style="background-image:url('${staticServePath}/images/activities/checkin.png')"></div>
+                            ${dailyCheckinLabel}
+                        </h2>
+                        <br>
+                        <div id="captcha" class="fn-m10"></div>
+                        <br>
+                    </div>
                 </div>
                 <div class="side">
                     <#include "../side.ftl">
