@@ -58,7 +58,7 @@
     right: 0px;
     top: 0px;
     border-width: 10px 10px 10px 10px;
-    border-color: #d26911 #d26911 transparent transparent;
+    border-color: #c9510c #c9510c transparent transparent;
 }
 
 .home-menu a.current::before {
@@ -68,7 +68,7 @@
     left: 0;
     width: 2px;
     content: "";
-    background-color: #d26911;
+    background-color: #c9510c;
 }
 
 .home-menu a span:last-child:hover {
@@ -294,8 +294,8 @@ label.article-anonymous {
 }
 
 .tabs a.selected {
-    border-color: #d26911;
-    color: #212121
+    border-color: #c9510c;
+    color: #212121;
 }
 
 .tabs a:hover {

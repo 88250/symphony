@@ -89,7 +89,7 @@ h2.article-title {
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 h2.article-title > a {
@@ -102,8 +102,8 @@ h2.article-title > a:hover {
 
 .article-info .fn-flex-1 {
     font-size: 12px;
-    line-height: 22px;
-    margin-bottom: 20px;
+    line-height: 20px;
+    margin-bottom: 10px;
 }
 
 #thoughtProgress {
@@ -382,8 +382,8 @@ label.cmt-anonymous {
 
 .reply-btn {
     border: 1px solid #cd504a;
-    background-color: #b33630;
-    background-image: linear-gradient(#dc5f59, #b33630);
+    background-color: #c9510c;
+    background-image: linear-gradient(#c9410c, #c9510c);
     position: fixed;
     bottom: 105px;
     right: 0;
@@ -394,6 +394,12 @@ label.cmt-anonymous {
     color: #fff;
     z-index: 12;
     border-radius: 3px 0 0 0;
+}
+
+.reply-btn:hover {
+    background-color: #c9320c;
+    background-image: none;
+    border-color: #c9320c
 }
 
 .editor-panel {

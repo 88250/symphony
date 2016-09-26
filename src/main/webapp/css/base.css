@@ -774,16 +774,16 @@ button.red:hover,
 .btn.red:hover,
 .btn.red-hover {
     color: #FFF;
-    background-color: #b33630;
-    background-image: linear-gradient(#dc5f59, #b33630);
+    background-color: #c9510c;
+    background-image: linear-gradient(#c9410c, #c9510c);
     border-color: #cd504a;
 }
 
 button.red:active,
 .btn.red:active {
-    background-color: #b33630;
+    background-color: #c9320c;
     background-image: none;
-    border-color: #9f312c;
+    border-color: #c9320c
 }
 
 button.small,
@@ -1528,6 +1528,8 @@ a[class*=" icon-"]:hover {
     font-size: 16px;
     font-weight: normal;
     line-height: 20px;
+    margin-top: -2px;
+    margin-bottom: 2px;
 }
 
 .list h2 > a {
@@ -1853,16 +1855,16 @@ ul.CodeMirror-hints {
     border-radius: 3px 0 0 0;
     min-width: 35%;
     color: #FFF;
-    background-color: #b33630;
-    background-image: linear-gradient(#dc5f59, #b33630);
+    background-color: #c9510c;
+    background-image: linear-gradient(#c9410c, #c9510c);
     border-color: #cd504a;
     letter-spacing: 1px;
 }
 
 .person-info .info button.red:hover {
-    background-color: #b33630;
+    background-color: #c9320c;
     background-image: none;
-    border-color: #9f312c
+    border-color: #c9320c
 }
 
 .person-info .info .fn-right {
@@ -1888,7 +1890,7 @@ ul.CodeMirror-hints {
 .person-info .activity-board {
     position: absolute;
     height: 2px;
-    background-color: #b33630;
+    background-color: #c9510c;
     top: -1px;
 }
 
