@@ -16,6 +16,8 @@
 package org.b3log.symphony.util;
 
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
 
@@ -52,6 +54,11 @@ public final class Symphonys {
      * Reserved user names.
      */
     public static final String[] RESERVED_USER_NAMES;
+
+    /**
+     * Thread pool.
+     */
+    public static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(50);
 
     static {
         // Loads reserved tags

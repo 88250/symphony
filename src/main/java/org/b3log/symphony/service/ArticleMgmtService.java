@@ -75,7 +75,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.23.23, Sep 24, 2016
+ * @version 2.14.23.24, Sep 26, 2016
  * @since 0.2.0
  */
 @Service
@@ -300,30 +300,33 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public void incArticleViewCount(final String articleId) throws ServiceException {
-        final Transaction transaction = articleRepository.beginTransaction();
+        Symphonys.EXECUTOR_SERVICE.submit(new Runnable() {
+            @Override
+            public void run() {
+                final Transaction transaction = articleRepository.beginTransaction();
+                try {
+                    final JSONObject article = articleRepository.get(articleId);
+                    if (null == article) {
+                        return;
+                    }
 
-        try {
-            final JSONObject article = articleRepository.get(articleId);
-            if (null == article) {
-                return;
+                    final int viewCnt = article.optInt(Article.ARTICLE_VIEW_CNT);
+                    article.put(Article.ARTICLE_VIEW_CNT, viewCnt + 1);
+
+                    article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+
+                    articleRepository.update(articleId, article);
+
+                    transaction.commit();
+                } catch (final RepositoryException e) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+
+                    LOGGER.log(Level.ERROR, "Incs an article view count failed", e);
+                }
             }
-
-            final int viewCnt = article.optInt(Article.ARTICLE_VIEW_CNT);
-            article.put(Article.ARTICLE_VIEW_CNT, viewCnt + 1);
-
-            article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-
-            articleRepository.update(articleId, article);
-
-            transaction.commit();
-        } catch (final RepositoryException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.ERROR, "Incs an article view count failed", e);
-            throw new ServiceException(e);
-        }
+        });
     }
 
     /**

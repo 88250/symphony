@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.2.20, Sep 26, 2016
+ * @version 1.10.2.21, Sep 26, 2016
  * @since 0.2.0
  */
 @Service
@@ -157,9 +157,14 @@ public class Filler {
      */
     public void fillRelevantArticles(final int avatarViewMode,
             final Map<String, Object> dataModel, final JSONObject article) throws Exception {
-        dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                articleQueryService.getRelevantArticles(
-                        avatarViewMode, article, Symphonys.getInt("sideRelevantArticlesCnt")));
+        Stopwatchs.start("Fills relevant articles");
+        try {
+            dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
+                    articleQueryService.getRelevantArticles(
+                            avatarViewMode, article, Symphonys.getInt("sideRelevantArticlesCnt")));
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**

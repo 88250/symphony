@@ -27,8 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,7 +47,7 @@ import org.jsoup.select.Elements;
  * Link utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Sep 13, 2016
+ * @version 1.0.0.4, Sep 26, 2016
  * @since 1.6.0
  */
 public final class Links {
@@ -58,11 +56,6 @@ public final class Links {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Links.class.getName());
-
-    /**
-     * Thread pool.
-     */
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(50);
 
     /**
      * Gets links from the specified HTML.
@@ -124,7 +117,7 @@ public final class Links {
                 spiders.add(new Spider(u));
             }
 
-            final List<Future<JSONObject>> results = EXECUTOR_SERVICE.invokeAll(spiders);
+            final List<Future<JSONObject>> results = Symphonys.EXECUTOR_SERVICE.invokeAll(spiders);
             for (final Future<JSONObject> result : results) {
                 final JSONObject link = result.get();
                 if (null == link) {
@@ -246,21 +239,5 @@ public final class Links {
         final Matcher m = p.matcher(str);
 
         return m.find();
-    }
-
-    public static void main(final String[] args) throws Exception {
-        final String url = "https://github.com/helloqingfeng/Awsome-Front-End-learning-resource/tree/master/04-Front-end-tutorial-master";
-        final Document doc = Jsoup.parse(new URL(url), 5000);
-        final String html = doc.html();
-
-        final List<JSONObject> links = getLinks(url, html);
-        for (final JSONObject link : links) {
-            LOGGER.info(link.optInt(Link.LINK_BAIDU_REF_CNT) + "  "
-                    + link.optString(Link.LINK_ADDR) + "  "
-                    + link.optString(Link.LINK_TITLE) + "  "
-                    + link.optString(Link.LINK_T_KEYWORDS));
-        }
-
-        EXECUTOR_SERVICE.shutdown();
     }
 }

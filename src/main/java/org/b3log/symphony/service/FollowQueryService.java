@@ -100,6 +100,7 @@ public class FollowQueryService {
      * @return {@code true} if exists, returns {@code false} otherwise
      */
     public boolean isFollowing(final String followerId, final String followingId) {
+        Stopwatchs.start("Is following");
         try {
             return followRepository.exists(followerId, followingId);
         } catch (final RepositoryException e) {
@@ -107,6 +108,8 @@ public class FollowQueryService {
                     + followingId + ']', e);
 
             return false;
+        } finally {
+            Stopwatchs.end();
         }
     }
 
