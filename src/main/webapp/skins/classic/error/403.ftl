@@ -9,14 +9,13 @@
     </head>
     <body class="error error-403">
         <#include "../header.ftl">
-        <div class="slogan">
-            <div class="wrapper block">
-                <h2>${reloginLabel}</h2>
-                <div class="slogan-border fn-clear">
-                    <div class="slogan-register">
+        <div class="main">
+            <div class="wrapper">
+                <div class="module">
+                    <h2 class="sub-head">${reloginLabel}</h2>
+                    <div class="slogan">
                         <button onclick="Util.goRegister()" class="green">${nowLabel}${registerLabel}</button>
-                    </div>
-                    <div class="slogan-text">
+                        &nbsp; &nbsp; &nbsp; &nbsp;
                         ${indexIntroLabel} &nbsp; &nbsp;
                         <a href="https://github.com/b3log/symphony" target="_blank" class="tooltipped tooltipped-n" aria-label="${siteCodeLabel}">
                             <svg class="ft-gray" height="16" width="16" viewBox="0 0 16 16">${githubIcon}</svg></a> &nbsp;
@@ -28,19 +27,19 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="main">
             <div class="wrapper">
                 <div class="content">
-                    <#if timelines?size <= 0>
-                    <div id="emptyTimeline">${emptyTimelineLabel}</div>
-                    </#if>
-                    <div class="list single-line">
-                        <ul id="ul">
-                            <#list timelines as timeline>
-                            <li>${timeline.content}</li>
-                            </#list>
-                        </ul>
+                    <div class="module">
+                        <#if timelines?size <= 0>
+                        <div id="emptyTimeline" class="no-list">${emptyTimelineLabel}</div>
+                        </#if>
+                        <div class="list single-line">
+                            <ul id="ul">
+                                <#list timelines as timeline>
+                                <li>${timeline.content}</li>
+                                </#list>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="side">

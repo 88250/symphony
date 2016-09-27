@@ -15,97 +15,101 @@
         <div class="main tag-articles">
             <div class="wrapper">
                 <div class="content">
-                    <div class="module">
-                    <div class="fn-clear tag-articles-title">
-                        <#if tag.tagIconPath != "">
-                        <div class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
-                        </#if>
-                        <h1 class="fn-inline">
-                            <a rel="tag"
-                               href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
-                        </h1> 
-                        <#if tag.tagDomains?size gt 0>/</#if>
-                        <#list tag.tagDomains as domain>
-                        <a class="ft-gray" href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
-                        </#list>
-                        <span class="article-action">
-                        <span class='fn-right'>
-                            <#if isLoggedIn && isFollowing>
-                            <span class="tooltipped tooltipped-n fn-pointer" aria-label="${unfollowLabel} ${tag.tagFollowerCount}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="ft-red icon-star"></span></span>
-                            <#else>
-                            <span class="tooltipped tooltipped-n fn-pointer" aria-label="${followLabel} ${tag.tagFollowerCount}" onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span></span>
+                    <div class="module article-module">
+                        <div class="fn-clear">
+                            <#if tag.tagIconPath != "">
+                            <div class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                             </#if>
-                            <#if isAdminLoggedIn> &nbsp;
-                            <a class="ft-a-icon tooltipped tooltipped-n" href="${servePath}/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
-                            </#if>
-                        </span>
-                        </span>
-                    </div>
-                    <#if tag.tagIconPath != ""><div class="description">
-                        ${tag.tagDescription}
-                    </div></#if>
-                    <ul class="tag-desc fn-clear tag-articles-tag-desc">
-                        <#list tag.tagRelatedTags as relatedTag>
-                        <li>
-                            <a rel="tag" href="${servePath}/tag/${relatedTag.tagTitle?url('utf-8')}">
-                                <#if relatedTag.tagIconPath != "">
-                                <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
-                                ${relatedTag.tagTitle}</a>
-                            <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
-                                <div>${relatedTag.tagDescription}</div>
-                                <span class="fn-right">
-                                    <span class="ft-gray">${referenceLabel}</span> 
-                                    ${relatedTag.tagReferenceCount?c} &nbsp;
-                                    <span class="ft-gray">${cmtLabel}</span>
-                                    ${relatedTag.tagCommentCount?c}&nbsp;
+                            <h1 class="fn-inline">
+                                <a rel="tag"
+                                   href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                            </h1> 
+                            <#if tag.tagDomains?size gt 0>/</#if>
+                            <#list tag.tagDomains as domain>
+                            <a class="ft-gray" href="${servePath}/domain/${domain.domainURI}">${domain.domainTitle}</a>
+                            </#list>
+                            <span class="article-action">
+                                <span class='fn-right'>
+                                    <#if isLoggedIn && isFollowing>
+                                    <span class="tooltipped tooltipped-n fn-pointer" aria-label="${unfollowLabel} ${tag.tagFollowerCount}" onclick="Util.unfollow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="ft-red icon-star"></span></span>
+                                    <#else>
+                                    <span class="tooltipped tooltipped-n fn-pointer" aria-label="${followLabel} ${tag.tagFollowerCount}" onclick="Util.follow(this, '${tag.oId}', 'tag', ${tag.tagFollowerCount})"><span class="icon-star"></span></span>
+                                    </#if>
+                                    <#if isAdminLoggedIn> &nbsp;
+                                    <a class="ft-a-icon tooltipped tooltipped-n" href="${servePath}/admin/tag/${tag.oId}" aria-label="${adminLabel}"><span class="icon-setting"></span></a>
+                                    </#if>
                                 </span>
-                            </div>
-                        </li>
-                        </#list>
-                    </ul>
-                    <div class="fn-flex">
-                        <ul class="status fn-flex fn-flex-1">
+                            </span>
+                        </div>
+                        <#if tag.tagIconPath != "">
+                        <div class="fn-hr5"></div>
+                        <div class="fn-hr5"></div>
+                            ${tag.tagDescription}
+                        </#if>
+                        <ul class="tag-desc fn-clear tag-articles-tag-desc">
+                            <#list tag.tagRelatedTags as relatedTag>
                             <li>
-                                <strong>${tag.tagReferenceCount?c}</strong>
-                                <span class="ft-gray">${referenceLabel}</span>
+                                <a rel="tag" href="${servePath}/tag/${relatedTag.tagTitle?url('utf-8')}">
+                                    <#if relatedTag.tagIconPath != "">
+                                    <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
+                                    ${relatedTag.tagTitle}</a>
+                                <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
+                                    <div>${relatedTag.tagDescription}</div>
+                                    <span class="fn-right">
+                                        <span class="ft-gray">${referenceLabel}</span> 
+                                        ${relatedTag.tagReferenceCount?c} &nbsp;
+                                        <span class="ft-gray">${cmtLabel}</span>
+                                        ${relatedTag.tagCommentCount?c}&nbsp;
+                                    </span>
+                                </div>
                             </li>
-                            <li>
-                                <strong>${tag.tagCommentCount?c}</strong>
-                                <span class="ft-gray">${cmtLabel}</span>
-                            </li>
-                            <li>
-                                <strong>${tag.tagFollowerCount?c}</strong>
-                                <span class="ft-gray">${followLabel}</span>
-                            </li>
+                            </#list>
                         </ul>
-                        <div class="tag-artile-user fn-clear">
-                            <#if "someone" != tag.tagCreatorName>
-                            <a rel="nofollow" class="fn-left" 
-                               href="${servePath}/member/${tag.tagCreatorName}"></#if>
-                                <div class="avatar tooltipped tooltipped-se" 
-                                     aria-label="${creatorLabel} ${tag.tagCreatorName}" 
-                                     style="background-image:url('${tag.tagCreatorThumbnailURL}')"></div>
-                            <#if "someone" != tag.tagCreatorName></a></#if>
-                            <div class="fn-right">
-                                <#list tag.tagParticipants as commenter>
-                                <#if commenter_index < 4>
-                                <#if "someone" != commenter.tagParticipantName>
+                        <div class="fn-flex">
+                            <ul class="status fn-flex fn-flex-1">
+                                <li>
+                                    <strong>${tag.tagReferenceCount?c}</strong>
+                                    <span class="ft-gray">${referenceLabel}</span>
+                                </li>
+                                <li>
+                                    <strong>${tag.tagCommentCount?c}</strong>
+                                    <span class="ft-gray">${cmtLabel}</span>
+                                </li>
+                                <li>
+                                    <strong>${tag.tagFollowerCount?c}</strong>
+                                    <span class="ft-gray">${followLabel}</span>
+                                </li>
+                            </ul>
+                            <div class="tag-artile-user fn-clear">
+                                <#if "someone" != tag.tagCreatorName>
                                 <a rel="nofollow" class="fn-left" 
-                                   href="${servePath}/member/${commenter.tagParticipantName}"></#if>
-                                    <div class="avatar tooltipped tooltipped-sw"
-                                         aria-label="${contributorLabel} ${commenter.tagParticipantName}"
-                                         style="background-image:url('${commenter.tagParticipantThumbnailURL}')"></div>
-                                <#if "someone" != commenter.tagParticipantName></a></#if>
-                                </#if>
-                                </#list>
+                                   href="${servePath}/member/${tag.tagCreatorName}"></#if>
+                                    <div class="avatar tooltipped tooltipped-se" 
+                                         aria-label="${creatorLabel} ${tag.tagCreatorName}" 
+                                         style="background-image:url('${tag.tagCreatorThumbnailURL}')"></div>
+                                    <#if "someone" != tag.tagCreatorName></a></#if>
+                                <div class="fn-right">
+                                    <#list tag.tagParticipants as commenter>
+                                    <#if commenter_index < 4>
+                                    <#if "someone" != commenter.tagParticipantName>
+                                    <a rel="nofollow" class="fn-left" 
+                                       href="${servePath}/member/${commenter.tagParticipantName}"></#if>
+                                        <div class="avatar tooltipped tooltipped-sw"
+                                             aria-label="${contributorLabel} ${commenter.tagParticipantName}"
+                                             style="background-image:url('${commenter.tagParticipantThumbnailURL}')"></div>
+                                        <#if "someone" != commenter.tagParticipantName></a></#if>
+                                    </#if>
+                                    </#list>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <#if articles?size != 0>
                     <div class="module">
                         <@list listData=articles/>
                         <@pagination url="/tag/${tag.tagTitle?url('utf-8')}"/>
                     </div>
+                    </#if>
                 </div> 
                 <div class="side">
                     <#include "side.ftl">

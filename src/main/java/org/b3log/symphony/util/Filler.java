@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.2.19, Aug 19, 2016
+ * @version 1.10.2.21, Sep 26, 2016
  * @since 0.2.0
  */
 @Service
@@ -148,20 +148,6 @@ public class Filler {
     private DomainCache domainCache;
 
     /**
-     * Fills domain navigation.
-     *
-     * @param dataModel the specified data model
-     */
-    public void fillDomainNav(final Map<String, Object> dataModel) {
-        Stopwatchs.start("Fills domain nav");
-        try {
-            dataModel.put(Domain.DOMAINS, domainCache.getDomains(Integer.MAX_VALUE));
-        } finally {
-            Stopwatchs.end();
-        }
-    }
-
-    /**
      * Fills relevant articles.
      *
      * @param avatarViewMode the specified avatar view mode
@@ -171,9 +157,14 @@ public class Filler {
      */
     public void fillRelevantArticles(final int avatarViewMode,
             final Map<String, Object> dataModel, final JSONObject article) throws Exception {
-        dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
-                articleQueryService.getRelevantArticles(
-                        avatarViewMode, article, Symphonys.getInt("sideRelevantArticlesCnt")));
+        Stopwatchs.start("Fills relevant articles");
+        try {
+            dataModel.put(Common.SIDE_RELEVANT_ARTICLES,
+                    articleQueryService.getRelevantArticles(
+                            avatarViewMode, article, Symphonys.getInt("sideRelevantArticlesCnt")));
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -288,6 +279,22 @@ public class Filler {
         fillLangs(dataModel);
         fillIcons(dataModel);
         fillSideAd(dataModel);
+
+        fillDomainNav(dataModel);
+    }
+
+    /**
+     * Fills domain navigation.
+     *
+     * @param dataModel the specified data model
+     */
+    private void fillDomainNav(final Map<String, Object> dataModel) {
+        Stopwatchs.start("Fills domain nav");
+        try {
+            dataModel.put(Domain.DOMAINS, domainCache.getDomains(Integer.MAX_VALUE));
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**

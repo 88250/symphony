@@ -5,14 +5,16 @@
         <@head title="500 Internal Server Error! - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
-         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/error${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/error${miniPostfix}.css?${staticResourceVersion}" />
     </head>
     <body class="error">
         <#include "../header.ftl">
         <div class="main">
-            <div class="wrapper block">
-                <h2 class="sub-head">500 Internal Server Error!</h2>
-                ${err500Label}
+            <div class="wrapper">
+                <div class="module">
+                    <h2 class="sub-head">500 Internal Server Error!</h2>
+                    <div class="no-list">${err500Label}</div>
+                </div>
             </div>
         </div>
         <#include '../footer.ftl'/>

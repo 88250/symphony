@@ -23,6 +23,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.repository.LivenessRepository;
 import org.json.JSONObject;
@@ -56,6 +57,7 @@ public class LivenessMgmtService {
      */
     @Transactional
     public void incLiveness(final String userId, final String field) {
+        Stopwatchs.start("Inc liveness");
         final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyyMMdd");
 
         try {
@@ -83,6 +85,8 @@ public class LivenessMgmtService {
             livenessRepository.update(liveness.optString(Keys.OBJECT_ID), liveness);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Updates a liveness [" + date + "] field [" + field + "] failed", e);
+        } finally {
+            Stopwatchs.end();
         }
     }
 }

@@ -54,16 +54,20 @@
 
 /* start article */
 .article-module {
-    padding: 10px 10px 20px 10px;
+    padding: 5px 10px 10px 10px;
 }
+
+.article-action {
+    margin-right: -9px;
+}
+
 .article-action .fn-right > a,
 .article-action .fn-right > span {
-    padding: 4px 8px;
+    padding: 5px 10px;
     border-radius: 2px;
     display: inline-block;
     line-height: 12px;
     float: left;
-    margin-left: 5px;
     text-decoration: none;
     color: #333;
 }
@@ -78,13 +82,14 @@
     top: 2px;
     right: 0px;
     width: 100%;
+    z-index: 20;
 }
 
 h2.article-title {
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 h2.article-title > a {
@@ -97,8 +102,8 @@ h2.article-title > a:hover {
 
 .article-info .fn-flex-1 {
     font-size: 12px;
-    line-height: 22px;
-    margin-bottom: 20px;
+    line-height: 20px;
+    margin-bottom: 10px;
 }
 
 #thoughtProgress {
@@ -139,7 +144,7 @@ label.cmt-anonymous {
 }
 
 .comments > .comment-header > .ft-smaller {
-    line-height: 20px;
+    line-height: 25px;
 }
 
 .comments > div.comment-header .icon-chevron-down {
@@ -221,7 +226,7 @@ label.cmt-anonymous {
 }
 
 .nice {
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 0px;
 }
 
@@ -230,7 +235,7 @@ label.cmt-anonymous {
 }
 
 #articleRewardContent {
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 10px;
     background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .9)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .9)), color-stop(.75, rgba(255, 255, 255, .9)), color-stop(.75, transparent), to(transparent));
     background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, .9) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .9) 50%, rgba(255, 255, 255, .9) 75%, transparent 75%, transparent);
@@ -377,8 +382,8 @@ label.cmt-anonymous {
 
 .reply-btn {
     border: 1px solid #cd504a;
-    background-color: #b33630;
-    background-image: linear-gradient(#dc5f59, #b33630);
+    background-color: #c9510c;
+    background-image: linear-gradient(#c9410c, #c9510c);
     position: fixed;
     bottom: 105px;
     right: 0;
@@ -389,6 +394,12 @@ label.cmt-anonymous {
     color: #fff;
     z-index: 12;
     border-radius: 3px 0 0 0;
+}
+
+.reply-btn:hover {
+    background-color: #c9320c;
+    background-image: none;
+    border-color: #c9320c
 }
 
 .editor-panel {
@@ -598,9 +609,12 @@ label.cmt-anonymous {
 /* end tags.html */
 
 /* start tag-article.html */
+.tag-articles .article-action .fn-right {
+    margin-right: -14px;
+}
+
 .tag-articles-tag-desc.tag-desc {
-    margin: 20px 0 0 0;
-    padding: 0 10px;
+    margin: 10px 0 0 0;
 }
 
 .tag-articles-tag-desc.tag-desc > li > div {
@@ -609,21 +623,13 @@ label.cmt-anonymous {
     border-radius: 0 3px 3px 3px;
 }
 
-.tag-articles .tag-articles-title {
-    margin: 10px 0 0 10px;
-}
-
 .tag-articles .status {
     margin-top: 10px;
+    padding: 10px 0 0 0;
 }
 
 .tag-articles h1.fn-inline {
     line-height: 37px;
-}
-
-.tag-articles div.description {
-    text-indent:60px;
-    padding: 0 10px;
 }
 
 .tag-articles .btn.red {
@@ -632,9 +638,12 @@ label.cmt-anonymous {
 
 .tag-artile-user {
     margin-left: 20px;
-    margin-top: 28px;
+    margin-top: 24px;
     flex: 3;
     -webkit-box-flex: 3;
+}
+.tag-artile-user .avatar {
+    margin-right: 5px;
 }
 /* end tag-article.html */
 
@@ -713,7 +722,7 @@ code .dec { color: initial; } /* decimal - blue */
 /* end chat room */
 
 /* start index */
-.index {
+.index .main {
     background-image: url('../images/index-bg.svg');
 }
 
@@ -765,7 +774,7 @@ code .dec { color: initial; } /* decimal - blue */
 
 .index .item-header {
     height: 20px;
-    margin: -21px -21px 20px;
+    margin: -21px -21px 10px;
     border: 1px solid rgba(0,0,0,0.1);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;

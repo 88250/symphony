@@ -1,5 +1,4 @@
 <#include "macro-head.ftl">
-<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,7 +11,6 @@
     </head>
     <body>
         <#include "header.ftl">
-        <@subNav 'community' ''/>
         <div class="main">
             <div class="wrapper">
                 <div class="content chat-room">
@@ -20,6 +18,7 @@
                         <div class="sub-head">
                             <h2 class="fn-inline">${communityDynamicLabel}</h2><span class="ft-gray">${communityDynamicSubLabel}</span>
                         </div>
+                        <br>
                         <div class="form fn-m10">
                             <div class="reply">
                                 <#if isLoggedIn>

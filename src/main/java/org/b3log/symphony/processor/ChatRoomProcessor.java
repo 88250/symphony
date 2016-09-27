@@ -73,7 +73,7 @@ import org.jsoup.Jsoup;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.7, Aug 20, 2016
+ * @version 1.3.5.8, Sep 26, 2016
  * @since 1.4.0
  */
 @RequestProcessor
@@ -346,7 +346,6 @@ public class ChatRoomProcessor {
 
         dataModel.put(Common.ONLINE_CHAT_CNT, SESSIONS.size());
 
-        filler.fillDomainNav(dataModel);
         filler.fillHeaderAndFooter(request, response, dataModel);
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);

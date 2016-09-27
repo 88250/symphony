@@ -2,7 +2,8 @@
 <@admin "index">
 <div class="content content-reset">
     <div class="module">
-        <br>
+        <div class="fn-hr5"></div>
+        <div class="fn-hr5"></div>
         <ul>
             <li>${onlineVisitorCountLabel} ${onlineVisitorCnt?c}</li>
             <li>${onlineMemberCountLabel} ${onlineMemberCnt?c}</li>
@@ -19,7 +20,8 @@
             ${currentVersionLabel} <span id="version">${version}</span>${commaLabel}
             <span id="upgrade">${checkVersionLabel}</span>
         </div>
-        <br>
+        <div class="fn-hr5"></div>
+        <div class="fn-hr5"></div>
     </div>
 </div>
 <script>

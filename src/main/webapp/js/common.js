@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.33.21.31, Sep 20, 2016
+ * @version 1.34.21.31, Sep 26, 2016
  */
 
 /**
@@ -1034,15 +1034,27 @@ var Util = {
      */
     _initNav: function () {
         var href = location.href;
-        $(".user-nav a").each(function () {
+        $(".user-nav > a").each(function () {
             if (href.indexOf($(this).attr("href")) === 0) {
-                $(this).addClass("current");
+                $(this).addClass("selected");
             } else if (location.pathname === "/register") {
                 // 注册没有使用 href，对其进行特殊处理
-                $("#aRegister").addClass("current");
+                $("#aRegister").addClass("selected");
             } else if (href.indexOf(Label.servePath + '/settings') === 0) {
-                $(".user-nav .nav-avatar").addClass("current");
+                $(".user-nav .nav-avatar").addClass("selected");
             }
+        });
+
+        $('.nav .avatar-small').parent().mouseover(function () {
+            $('.nav .person-list').show();
+        }).mouseout(function () {
+            $('.nav .person-list').hide();
+        });
+        
+        $('.nav .person-list').mouseover(function () {
+            $('.nav .person-list').show();
+        }).mouseout(function () {
+            $('.nav .person-list').hide();
         });
     },
     /**

@@ -13,46 +13,49 @@
             <div class="wrapper">
                 <div class="content">
                     <div class="module">
-                    <h2 class="sub-head">
-                        <div class="avatar-small tooltipped tooltipped-ne"
-                             aria-label="${activity1A0001Label}" style="background-image:url('${staticServePath}/images/activities/1A0001.png')"></div>
-                        ${activity1A0001TitleLabel}
-                    </h2>
-                    <div class="content-reset fn-m10">
-                    ${activity1A0001GuideLabel}
+                        <h2 class="sub-head">
+                            <div class="avatar-small tooltipped tooltipped-ne"
+                                 aria-label="${activity1A0001Label}" style="background-image:url('${staticServePath}/images/activities/1A0001.png')"></div>
+                            ${activity1A0001TitleLabel}
+                        </h2>
+                        <div class="content-reset fn-m10">
+                            <div class="fn-hr5"></div>
+                            <div class="fn-hr5"></div>
+                            ${activity1A0001GuideLabel}
 
-                    <#if !closed && !closed1A0001 && !end && !collected && !participated>
-                    <div id="betDiv">
-                        <div>
-                            ${activity1A0001BetSelectLabel}
-                            <label><input name="smallOrLarge" type="radio" value="1" /> ${activity1A0001BetLargeLabel}</label>
-                            <label><input name="smallOrLarge" type="radio" value="0" checked="checked" /> ${activity1A0001BetSmallLabel}</label>
-                        </div>
+                            <#if !closed && !closed1A0001 && !end && !collected && !participated>
+                            <div id="betDiv">
+                                <div>
+                                    ${activity1A0001BetSelectLabel}
+                                    <label><input name="smallOrLarge" type="radio" value="1" /> ${activity1A0001BetLargeLabel}</label>
+                                    <label><input name="smallOrLarge" type="radio" value="0" checked="checked" /> ${activity1A0001BetSmallLabel}</label>
+                                </div>
 
-                        <div>
-                            ${activity1A0001BetAmountLabel}
-                            <label><input name="amount" type="radio" value="200" checked="checked" /> 200</label>
-                            <label><input name="amount" type="radio" value="300" /> 300</label>
-                            <label><input name="amount" type="radio" value="400" /> 400</label>
-                            <label><input name="amount" type="radio" value="500" /> 500</label>
+                                <div>
+                                    ${activity1A0001BetAmountLabel}
+                                    <label><input name="amount" type="radio" value="200" checked="checked" /> 200</label>
+                                    <label><input name="amount" type="radio" value="300" /> 300</label>
+                                    <label><input name="amount" type="radio" value="400" /> 400</label>
+                                    <label><input name="amount" type="radio" value="500" /> 500</label>
+                                </div>
+                            </div>
+                            </#if>
+
+                            <#if participated || closed || closed1A0001 || collected || end>
+                            <div id="tip" class="tip succ"><ul><li>${msg}</li></ul></div><br/>
+                            <#if participated && hour?? && hour gt 15>
+                            <div class="fn-clear">
+                                <button id="collectBtn" class="red fn-right" onclick="Activity.collect1A0001()">${activityCollectLabel}</button>
+                            </div><br/>
+                            </#if>
+                            <#else>
+                            <br/>
+                            <div id="tip" class="tip"></div><br/>
+                            <div class="fn-clear">
+                                <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001('${csrfToken}')">${activityBetLabel}</button>
+                            </div><br/>
+                            </#if>
                         </div>
-                    </div>
-                    </#if>
-                    </div>
-                    <#if participated || closed || closed1A0001 || collected || end>
-                        <div id="tip" class="tip succ fn-m10"><ul><li>${msg}</li></ul></div><br/>
-                        <#if participated && hour?? && hour gt 15>
-                        <div class="fn-clear">
-                            <button id="collectBtn" class="red fn-right" onclick="Activity.collect1A0001()">${activityCollectLabel}</button>
-                        </div>
-                        </#if>
-                    <#else>
-                    <br/>
-                    <div id="tip" class="tip"></div><br/>
-                    <div class="fn-clear">
-                        <button id="betBtn" class="red fn-right" onclick="Activity.bet1A0001('${csrfToken}')">${activityBetLabel}</button>
-                    </div>
-                    </#if>
                     </div>
                 </div>
                 <div class="side">

@@ -6,7 +6,6 @@
         <div class="form">
             <button type="button" class="btn red" onclick="window.location = '/admin/add-reserved-word'">${allReservedWordLabel}</button>
         </div>
-        <br/>
         <ul>
             <#list words as item>
             <li>

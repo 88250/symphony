@@ -82,7 +82,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.5.12, Aug 31, 2016
+ * @version 1.9.6.12, Sep 25, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -345,9 +345,15 @@ public class LoginProcessor {
                 final JSONObject user = userQueryService.getUser(userId);
                 dataModel.put(User.USER, user);
 
-                referral = StringUtils.substringAfter(code, "r=");
-                if (!Strings.isEmptyOrNull(referral)) {
-                    dataModel.put(Common.REFERRAL, referral);
+                if (UserExt.USER_STATUS_C_VALID == user.optInt(UserExt.USER_STATUS)
+                        || UserExt.NULL_USER_NAME.equals(user.optString(User.USER_NAME))) {
+                    dataModel.put(Keys.MSG, langPropsService.get("userExistLabel"));
+                    renderer.setTemplateName("/error/custom.ftl");
+                } else {
+                    referral = StringUtils.substringAfter(code, "r=");
+                    if (!Strings.isEmptyOrNull(referral)) {
+                        dataModel.put(Common.REFERRAL, referral);
+                    }
                 }
             }
         }

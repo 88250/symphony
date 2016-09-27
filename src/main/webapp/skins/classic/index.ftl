@@ -1,5 +1,4 @@
 <#include "macro-head.ftl">
-<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,9 +10,6 @@
     </head>
     <body class="index">
         <#include "header.ftl">     
-
-        <@subNav '' ''/>
-
         <div class="main first">
             <div class="wrapper">
                 <div class="item first">
@@ -82,7 +78,7 @@
                         <#if timelines?size <= 0>
                         <div id="emptyTimeline">${emptyTimelineLabel}</div>
                         </#if>
-                        <ul class="module-list timeline ft-gray ft-smaller">
+                        <ul class="module-list timeline ft-gray">
                             <#list timelines as article>
                             <#if article_index < 9>
                             <li<#if !article_has_next> class="last"</#if>>

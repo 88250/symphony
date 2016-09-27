@@ -1,5 +1,4 @@
 <#include "macro-head.ftl">
-<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,39 +9,44 @@
     </head>
     <body>
         <#include "header.ftl">
-        <@subNav '' ''/>
         <div class="main">
             <div class="wrapper">
-                <div class="content content-reset">
-                    <h2 class="fn-inline">${dataStatLabel}</h2><span class="ft-gray">${dataStatSubLabel}</span>
-                    <br><br>
-                    <div id="chart30" style="height:400px"></div>
-                    <br><br>
-                    <div id="chartHistory" style="height:400px"></div>
-                    <hr>
-                    <ul>
-                        <li>
-                            <span class="ft-gray">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c}
-                        </li>
-                        <li>
-                            <span class="ft-gray">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
-                        </li>
-                        <li>
-                            <span class="ft-gray">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
-                        </li>
-                        <li>
-                            <span class="ft-gray">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
-                        </li>
-                        <li>
-                            <span class="ft-gray">${cmtLabel}</span> ${statistic.statisticCmtCount?c} &nbsp;
-                        </li>
-                        <li>
-                            <span class="ft-gray">${domainLabel}</span> ${statistic.statisticDomainCount?c} &nbsp;
-                        </li>
-                        <li>
-                            <span class="ft-gray">${tagLabel}</span> ${statistic.statisticTagCount?c} 
-                        </li>
-                    </ul>
+                <div class="content">
+                    <div class="module">
+                        <h2 class="sub-head">${dataStatLabel}
+                            <span class="ft-gray ft-13">${dataStatSubLabel}</span>
+                        </h2>
+                        <div class="fn-m10 content-reset">
+                        <br><br>
+                        <div id="chart30" style="height:400px"></div>
+                        <br><br>
+                        <div id="chartHistory" style="height:400px"></div>
+                        <hr>
+                        <ul>
+                            <li>
+                                <span class="ft-gray">${onlineVisitorCountLabel}</span> ${onlineVisitorCnt?c}
+                            </li>
+                            <li>
+                                <span class="ft-gray">${maxOnlineVisitorCountLabel}</span> ${statistic.statisticMaxOnlineVisitorCount?c} &nbsp;
+                            </li>
+                            <li>
+                                <span class="ft-gray">${memberLabel}</span> ${statistic.statisticMemberCount?c} &nbsp;
+                            </li>
+                            <li>
+                                <span class="ft-gray">${articleLabel}</span> ${statistic.statisticArticleCount?c} &nbsp;
+                            </li>
+                            <li>
+                                <span class="ft-gray">${cmtLabel}</span> ${statistic.statisticCmtCount?c} &nbsp;
+                            </li>
+                            <li>
+                                <span class="ft-gray">${domainLabel}</span> ${statistic.statisticDomainCount?c} &nbsp;
+                            </li>
+                            <li>
+                                <span class="ft-gray">${tagLabel}</span> ${statistic.statisticTagCount?c} 
+                            </li>
+                        </ul>
+                    </div>
+                    </div>
                 </div>
                 <div class="side">
                     <#include "side.ftl">

@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.5.10.17, Sep 22, 2016
+ * @version 2.6.10.17, Sep 26, 2016
  */
 
 /* start home common */
@@ -58,7 +58,7 @@
     right: 0px;
     top: 0px;
     border-width: 10px 10px 10px 10px;
-    border-color: #d26911 #d26911 transparent transparent;
+    border-color: #c9510c #c9510c transparent transparent;
 }
 
 .home-menu a.current::before {
@@ -68,15 +68,11 @@
     left: 0;
     width: 2px;
     content: "";
-    background-color: #d26911;
+    background-color: #c9510c;
 }
 
 .home-menu a span:last-child:hover {
     color: #4183C4;
-}
-
-.link-forge-upload {
-    margin: 10px;
 }
 /* end home common */
 
@@ -103,13 +99,14 @@
 }
 
 .user-info {
-    line-height: 26px;
+    line-height: 24px;
     font-size: 12px;
     color: #666666;
 }
 
 .user-intro {
     line-height: 26px;
+    margin-bottom: 5px;
 }
 /* end home side */
 
@@ -284,11 +281,26 @@ label.article-anonymous {
 }
 
 .tabs {
-    margin-bottom: 20px;
+    display: flex;
 }
 
 .tabs a {
-    float: left;
+    line-height: 18px;
+    flex: 1;
+    padding: 7px 10px 5px;
+    color: #616161;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    text-align: center
+}
+
+.tabs a.selected {
+    border-color: #c9510c;
+    color: #212121;
+}
+
+.tabs a:hover {
+    background-color: rgba(0,0,0,.03);
 }
 /* end home */
 
@@ -369,7 +381,7 @@ label.article-anonymous {
 }
 
 .points td {
-    border-bottom: 1px solid #CCCCCC;
+    border-bottom: 1px solid #eee;
 }
 
 .points .date {
@@ -437,6 +449,6 @@ label.article-anonymous {
 }
 
 .point-pagination {
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #eee;
 }
 /* end settings */

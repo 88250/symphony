@@ -8,7 +8,6 @@
             <input name="memo" type="text" placeholder="${memoLabel}"/>
             <button type="submit" class="green">${generateLabel}</button>
         </form>
-        <br/>
         <ul>
             <#list invitecodes as item>
             <li>

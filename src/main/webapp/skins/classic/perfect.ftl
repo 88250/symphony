@@ -1,7 +1,6 @@
 <#include "macro-head.ftl">
 <#include "macro-list.ftl">
 <#include "macro-pagination.ftl">
-<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,13 +11,12 @@
     </head>
     <body>
         <#include "header.ftl">
-        <@subNav 'perfect' ''/>
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
                     <div class="module">
-                    <@list listData=perfectArticles/>
-                    <@pagination url="${servePath}/perfect"/>
+                        <@list listData=perfectArticles/>
+                        <@pagination url="${servePath}/perfect"/>
                     </div>
                     <#include "common/domains.ftl">
                 </div>

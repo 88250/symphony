@@ -1,7 +1,6 @@
 <#include "macro-head.ftl">
 <#include "macro-list.ftl">
 <#include "macro-pagination.ftl">
-<#include "common/sub-nav.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,7 +11,6 @@
     </head>
     <body>
         <#include "header.ftl">
-        <@subNav 'recent' ''/>
         <div class="main">
             <div class="wrapper">
                 <div class="content fn-clear">
