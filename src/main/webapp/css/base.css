@@ -45,30 +45,6 @@ body {
     background: rgba(65,131,196,0.4)
 }
 
-::-webkit-scrollbar {
-    background: none;
-    width: 16px;
-    height: 16px;
-}
-
-::-webkit-scrollbar-corner {
-    display: none;
-    background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    border: solid 0 rgba(0, 0, 0, 0);
-    border-right-width: 4px;
-    border-left-width: 4px;
-    border-radius: 9px;
-    box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.2), inset 0 0 0 4px rgba(128, 128, 128, 0.2);
-}
-
-::-webkit-scrollbar-thumb:horizontal {
-    border-bottom-width: 4px;
-    border-top-width: 4px;
-}
-
 @font-face {
     font-family: 'icomoon';
     src:url('fonts/icomoon.eot?1450');
@@ -1528,6 +1504,7 @@ a[class*=" icon-"]:hover {
     position: relative;
     padding: 8px 10px;
     border-bottom: 1px solid #eee;
+    color: #666;
 }
 
 .nav .person-list a:hover {
@@ -2021,9 +1998,18 @@ ul.CodeMirror-hints {
 
 /* algolia */
 .algolia-autocomplete .aa-dropdown-menu {
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    margin: 0 0 5px 19px;
+    background-color: #FFF;
+    border-radius: 3px;
+    width: 100%;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    line-height: 21px;
+    margin-top:10px;
+    margin-left: 20px;
+    width: 300px;
+    overflow:hidden;
+    color: #666;
 }
 
 .algolia-autocomplete .aa-dropdown-menu img {
@@ -2032,21 +2018,23 @@ ul.CodeMirror-hints {
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
     cursor: pointer;
-    padding: 5px 4px;
+    text-shadow: 0 1px 0 #fff;
+    padding: 8px 10px;
     border-bottom: 1px solid #eee;
 }
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
-    background-color: #F7F7F7;
+    background-color: #f9f9f9;
 }
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
-    color: #911;
+    color: #c9510c;
     font-style: normal;
 }
 
 .algolia-autocomplete .aa-dropdown-menu .fn-right {
     margin: 5px;
 }
+
 /* end algolia */
