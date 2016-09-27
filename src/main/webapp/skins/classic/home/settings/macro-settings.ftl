@@ -16,7 +16,22 @@
                     <#nested>
                 </div>
                 <div class="side">
-                    <#include "../../common/person-info.ftl">
+                    <div class="module">
+                        <div class="module-header"><h2>${goHomeLabel}</h2></div> 
+                        <div class="module-panel">
+                            <nav class="home-menu">
+                                <a <#if type == "home" || type == "comments" || type == "articlesAnonymous" || type == "commentsAnonymous">
+                                    class="current"</#if>
+                                    href="${servePath}/member/${user.userName}"><svg height="18" viewBox="0 1 16 16" width="16">${boolIcon}</svg> ${postLabel}</a>
+                                <a <#if type == "followingUsers" || type == "followingTags" || type == "followingArticles" || type == "followers"> class="current"</#if>
+                                    href="${servePath}/member/${user.userName}/following/users"><svg height="18" viewBox="0 1 14 16" width="14">${starIcon}</svg> ${followLabel}</a>
+                                <a <#if type == "points"> class="current"</#if> href="${servePath}/member/${user.userName}/points">
+                                    <svg height="18" viewBox="0 1 14 16" width="14">${giftIcon}</svg> ${pointLabel}</a>
+                                <a <#if type == "linkForge"> class="current"</#if> href="${servePath}/member/${user.userName}/forge/link">
+                                    <svg height="18" viewBox="0 1 16 16" width="16">${baguaIcon}</svg>  ${forgeLabel}</a>
+                            </nav>
+                        </div>
+                    </div>
                     <div class="module">
                         <div class="module-header"><h2>${settingsLabel}</h2></div> 
                         <div class="module-panel">

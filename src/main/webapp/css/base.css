@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.16.39, Sep 26, 2016
+ * @version 1.24.17.39, Sep 27, 2016
  */
 
 /* start reset */
@@ -1238,24 +1238,22 @@ a[class*=" icon-"]:hover {
 .tabs-sub a {
     line-height: 30px;
     text-decoration: none;
-    text-shadow: 0 1px 0 white;
     flex: 1;
     text-align: center;
     color: #616161;
     padding: 0 5px;
-    background-color: #f7f7f7;
+    background-color: #f9fafb;
 }
 
 .pagination a:hover,
 .tabs-sub a:hover {
-    background-color: rgba(0,0,0,.05);
+    background-color: rgba(0,0,0,.06);
 }
 
 .pagination span.current,
 .tabs-sub a.current {
-    background-color: rgba(0,0,0,.06);
-    color: #212121;
-    font-weight: bold;
+    background-color: #616161;
+    color: #fff;
 }
 /* end pagination & tabs-sub */
 
@@ -1313,6 +1311,7 @@ a[class*=" icon-"]:hover {
     margin: 0 auto;
     display: flex;
     min-width: 720px;
+    padding-left: calc(100vw - 100%);
     max-width: 1300px;
 }
 
@@ -1503,7 +1502,7 @@ a[class*=" icon-"]:hover {
 
 .nav .person-list:after {
     top: -14px;
-    right: 10px;
+    right: 21px;
     left: auto;
     position: absolute;
     border: 7px solid transparent;
