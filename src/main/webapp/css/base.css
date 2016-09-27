@@ -1327,7 +1327,6 @@ a[class*=" icon-"]:hover {
 .side {
     width: 28%;
     position: relative;
-    min-height: 572px;
     min-width: 236px;
 }
 
@@ -1354,6 +1353,7 @@ a[class*=" icon-"]:hover {
     display: flex;
     line-height: 38px;
     padding-right: 10px;
+    padding-left: calc(100vw - 100%);
 }
 
 .nav .nav-tabs > a,
