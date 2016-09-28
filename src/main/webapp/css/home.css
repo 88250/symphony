@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.6.10.17, Sep 26, 2016
+ * @version 2.6.10.18, Sep 28, 2016
  */
 
 /* start home common */
@@ -59,7 +59,7 @@
     right: 0px;
     top: 0px;
     border-width: 10px 10px 10px 10px;
-    border-color: #c9510c #c9510c transparent transparent;
+    border-color: #d23f31 #d23f31 transparent transparent;
 }
 
 .home-menu a.current::before {
@@ -69,11 +69,11 @@
     left: 0;
     width: 2px;
     content: "";
-    background-color: #c9510c;
+    background-color: #d23f31;
 }
 
 .home-menu a span:last-child:hover {
-    color: #4183C4;
+    color: #4285f4;
 }
 /* end home common */
 
@@ -127,7 +127,7 @@
 
 .pre-post a:hover {
     text-decoration: none;
-    color: #4183C4;
+    color: #4285f4;
 }
 
 .pre-post a div {
@@ -201,7 +201,7 @@ label.article-anonymous {
 
 .post .tags-input span.tag {
     margin: 2px 5px 0 0px;
-    color: #4183C4;
+    color: #4285f4;
 }
 
 .post .tags-input .tag > span.close {
@@ -246,7 +246,7 @@ label.article-anonymous {
 
 .post .domains-tags .tag {
     cursor: pointer;
-    color: #4183C4;
+    color: #4285f4;
 }
 
 .post .domains-tags > span.current {
@@ -296,7 +296,7 @@ label.article-anonymous {
 }
 
 .tabs a.selected {
-    border-color: #c9510c;
+    border-color: #d23f31;
     color: #212121;
 }
 
@@ -404,7 +404,7 @@ label.article-anonymous {
     text-align: center;
     width: 35px;
     padding: 0 10px;
-    color: #c9510c;
+    color: #d23f31;
     font-weight: 700;
 }
 

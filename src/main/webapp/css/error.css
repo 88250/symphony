@@ -18,7 +18,7 @@
  * 错误样式.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.0.2.1, Sep 27 2016
+ * @version 0.0.2.2, Sep 28 2016
  */
 
 /* start error */
@@ -47,7 +47,7 @@
 }
 
 .error-403 .module > .slogan a:hover svg {
-    color: #4183C4;
+    color: #4285f4;
 }
 
 .error-403 .wrapper > .module {

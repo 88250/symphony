@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.15.33, Sep 20, 2016
+ * @version 2.14.15.34, Sep 28, 2016
  */
 
 /* start list */
@@ -74,7 +74,7 @@
 
 .article-action .fn-right > a:hover,
 .article-action .fn-right > span:hover {
-    color: #4183C4;
+    color: #4285f4;
 }
 
 #heatBar {
@@ -123,7 +123,7 @@ h2.article-title > a:hover {
     top: -8px;
     left: 0;
     cursor: pointer;
-    color: #911;
+    color: #d23f31;
 }
 
 #revision .pagination {
@@ -135,7 +135,7 @@ label.cmt-anonymous {
 }
 
 #shareClipboard.tooltipped-hover {
-    color: #4183C4;
+    color: #4285f4;
 }
 
 .comments > .comment-header {
@@ -292,7 +292,7 @@ label.cmt-anonymous {
 }
 
 .share [class^="icon-"]:hover {
-    color: #4183c4;
+    color: #4285f4;
 }
 
 .CodeMirror-scroll {
@@ -331,17 +331,17 @@ label.cmt-anonymous {
 }
 
 .article-toc li a:hover {
-    border-left: 1px solid #4183c4;
+    border-left: 1px solid #4285f4;
     background-color: #F7F7F7;
     padding-left: 21px;
-    color: #4183C4;
+    color: #4285f4;
     text-decoration: none;
 }
 
 .article-toc li.current a {
-    border-left: 2px solid #4183c4;
+    border-left: 2px solid #4285f4;
     background-color: #f0f0f0;
-    color: #4183c4;
+    color: #4285f4;
 }
 
 .article-toc li.toc-h2 a,
@@ -381,25 +381,23 @@ label.cmt-anonymous {
 }
 
 .reply-btn {
-    border: 1px solid #cd504a;
-    background-color: #c9510c;
-    background-image: linear-gradient(#c9410c, #c9510c);
+    background-color: #d23f31;
     position: fixed;
-    bottom: 105px;
-    right: 0;
-    padding: 10px;
-    width: 15px;
+    bottom: 20px;
+    right: 20px;
+    padding-top: 19px;
+    width: 56px;
     text-align: center;
-    height: 15px;
     color: #fff;
     z-index: 12;
-    border-radius: 3px 0 0 0;
+    box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+    height: 56px;
+    box-sizing: border-box;
+    border-radius: 28px;
 }
 
 .reply-btn:hover {
-    background-color: #c9320c;
-    background-image: none;
-    border-color: #c9320c
+    background-color: #c0372a;
 }
 
 .editor-panel {
@@ -462,7 +460,7 @@ label.cmt-anonymous {
 }
 
 .article-list li .commenters > a:hover {
-    color: #4183c4;
+    color: #4285f4;
 }
 
 .article-list li:hover .commenters {
@@ -511,7 +509,7 @@ label.cmt-anonymous {
 .heat {
     position: absolute;
     height: 5px;
-    background-color: #911;
+    background-color: #d23f31;
     z-index: 1;
     bottom: -3px;
     right: 0;
@@ -521,7 +519,7 @@ label.cmt-anonymous {
 .point-remove {
     position: absolute;
     height: 5px;
-    background-color: #911;
+    background-color: #d23f31;
     z-index: 1;
     bottom: -3px;
     right: 0px;
@@ -737,7 +735,7 @@ code .dec { color: initial; } /* decimal - blue */
 }
 
 .index .domains a:hover {
-    color: #4183C4;
+    color: #4285f4;
     text-decoration: none;
 }
 
