@@ -1,7 +1,7 @@
 <#include "macro-admin.ftl">
 <@admin "index">
-<div class="content content-reset">
-    <div class="module">
+<div class="content">
+    <div class="module content-reset">
         <div class="fn-hr5"></div>
         <div class="fn-hr5"></div>
         <ul>

@@ -34,6 +34,7 @@
     padding: 8px 10px;
     text-shadow: 0 1px 0 #fff;
     border-bottom: 1px solid #eee;
+    color: #666;
 }
 
 .home-menu a:last-child {
@@ -403,12 +404,12 @@ label.article-anonymous {
     text-align: center;
     width: 35px;
     padding: 0 10px;
-    color: #f37800;
+    color: #c9510c;
     font-weight: 700;
 }
 
 .points .sum.plus {
-    color: #53a000;
+    color: #569e3d;
 }
 
 .points .balance {
@@ -450,5 +451,9 @@ label.article-anonymous {
 
 .point-pagination {
     border-bottom: 1px solid #eee;
+}
+
+.point-pagination .pagination {
+    border-radius: 0;
 }
 /* end settings */

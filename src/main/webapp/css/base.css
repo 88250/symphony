@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.16.39, Sep 26, 2016
+ * @version 1.24.17.39, Sep 27, 2016
  */
 
 /* start reset */
@@ -43,30 +43,6 @@ body {
 ::selection { 
     text-shadow: none;
     background: rgba(65,131,196,0.4)
-}
-
-::-webkit-scrollbar {
-    background: none;
-    width: 16px;
-    height: 16px;
-}
-
-::-webkit-scrollbar-corner {
-    display: none;
-    background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    border: solid 0 rgba(0, 0, 0, 0);
-    border-right-width: 4px;
-    border-left-width: 4px;
-    border-radius: 9px;
-    box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.2), inset 0 0 0 4px rgba(128, 128, 128, 0.2);
-}
-
-::-webkit-scrollbar-thumb:horizontal {
-    border-bottom-width: 4px;
-    border-top-width: 4px;
 }
 
 @font-face {
@@ -1238,24 +1214,22 @@ a[class*=" icon-"]:hover {
 .tabs-sub a {
     line-height: 30px;
     text-decoration: none;
-    text-shadow: 0 1px 0 white;
     flex: 1;
     text-align: center;
     color: #616161;
     padding: 0 5px;
-    background-color: #f7f7f7;
+    background-color: #f9fafb;
 }
 
 .pagination a:hover,
 .tabs-sub a:hover {
-    background-color: rgba(0,0,0,.05);
+    background-color: rgba(0,0,0,.06);
 }
 
 .pagination span.current,
 .tabs-sub a.current {
-    background-color: rgba(0,0,0,.06);
-    color: #212121;
-    font-weight: bold;
+    background-color: #616161;
+    color: #fff;
 }
 /* end pagination & tabs-sub */
 
@@ -1313,6 +1287,7 @@ a[class*=" icon-"]:hover {
     margin: 0 auto;
     display: flex;
     min-width: 720px;
+    padding-left: calc(100vw - 100%);
     max-width: 1300px;
 }
 
@@ -1323,12 +1298,12 @@ a[class*=" icon-"]:hover {
 .main {
     background-color: #f2f2f2;
     padding: 20px 0;
+    background-image: url('../images/index-bg.svg');
 }
 
 .side {
     width: 28%;
     position: relative;
-    min-height: 572px;
     min-width: 236px;
 }
 
@@ -1355,6 +1330,7 @@ a[class*=" icon-"]:hover {
     display: flex;
     line-height: 38px;
     padding-right: 10px;
+    padding-left: calc(100vw - 100%);
 }
 
 .nav .nav-tabs > a,
@@ -1503,7 +1479,7 @@ a[class*=" icon-"]:hover {
 
 .nav .person-list:after {
     top: -14px;
-    right: 10px;
+    right: 21px;
     left: auto;
     position: absolute;
     border: 7px solid transparent;
@@ -1529,6 +1505,7 @@ a[class*=" icon-"]:hover {
     position: relative;
     padding: 8px 10px;
     border-bottom: 1px solid #eee;
+    color: #666;
 }
 
 .nav .person-list a:hover {
@@ -2022,9 +1999,18 @@ ul.CodeMirror-hints {
 
 /* algolia */
 .algolia-autocomplete .aa-dropdown-menu {
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    margin: 0 0 5px 19px;
+    background-color: #FFF;
+    border-radius: 3px;
+    width: 100%;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    line-height: 21px;
+    margin-top:10px;
+    margin-left: 20px;
+    width: 300px;
+    overflow:hidden;
+    color: #666;
 }
 
 .algolia-autocomplete .aa-dropdown-menu img {
@@ -2033,21 +2019,23 @@ ul.CodeMirror-hints {
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
     cursor: pointer;
-    padding: 5px 4px;
+    text-shadow: 0 1px 0 #fff;
+    padding: 8px 10px;
     border-bottom: 1px solid #eee;
 }
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
-    background-color: #F7F7F7;
+    background-color: #f9f9f9;
 }
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
-    color: #911;
+    color: #c9510c;
     font-style: normal;
 }
 
 .algolia-autocomplete .aa-dropdown-menu .fn-right {
     margin: 5px;
 }
+
 /* end algolia */

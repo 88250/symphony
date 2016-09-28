@@ -27,10 +27,10 @@
     padding: 10px 18px;
     font-size: 18px;
     line-height: 26px;
-    color: #1b3650;
+    color: #246;
     text-align: center;
-    background-image: linear-gradient(#f5fbff, #e4f0ff);
-    border: 1px solid #cee0e7;
+    background-color: #e2eef9;
+    border: 1px solid #bac6d3;
     border-radius: 3px;
     width: 100%;
     box-sizing: border-box;
@@ -722,10 +722,6 @@ code .dec { color: initial; } /* decimal - blue */
 /* end chat room */
 
 /* start index */
-.index .main {
-    background-image: url('../images/index-bg.svg');
-}
-
 .index .index-wrap {
     background-color: #fff;
     border-bottom: 1px solid #eee;
