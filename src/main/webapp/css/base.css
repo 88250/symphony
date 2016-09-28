@@ -1298,6 +1298,7 @@ a[class*=" icon-"]:hover {
 .main {
     background-color: #f2f2f2;
     padding: 20px 0;
+    background-image: url('../images/index-bg.svg');
 }
 
 .side {

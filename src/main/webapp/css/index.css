@@ -722,10 +722,6 @@ code .dec { color: initial; } /* decimal - blue */
 /* end chat room */
 
 /* start index */
-.index .main {
-    background-image: url('../images/index-bg.svg');
-}
-
 .index .index-wrap {
     background-color: #fff;
     border-bottom: 1px solid #eee;
