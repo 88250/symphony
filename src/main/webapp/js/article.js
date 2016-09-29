@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.31.22, Sep 20, 2016
+ * @version 1.25.32.22, Sep 29, 2016
  */
 
 /**
@@ -909,7 +909,7 @@ var Article = {
                             before('<div class="fn-clear"><div class="pagination">' +
                                     '<a href="javascript:void(0)">&lt;</a><span class="current">' +
                                     (result.revisions.length - 1) + '~' + result.revisions.length + '/' +
-                                    result.revisions.length + '</span><a class="fn-none">&gt;</a>' +
+                                    result.revisions.length + '</span><a href="javascript:void(0)" class="fn-none">&gt;</a>' +
                                     '</div></div>');
                     if (result.revisions.length <= 2) {
                         $('#revision a').first().hide();
