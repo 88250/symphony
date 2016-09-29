@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.34.21.31, Sep 26, 2016
+ * @version 1.34.21.32, Sep 28, 2016
  */
 
 /**
@@ -956,26 +956,17 @@ var Util = {
             $(".nav .tags").css('visibility', 'visible');
         });
 
-        var borderTopRadius = '5px 0 0 5px';
-        // 文章页面有回贴按钮，样式需要微调
         if ($('.reply-btn').length === 1) {
-            borderTopRadius = '0 0 0 5px';
+            $(".go-up").hide();
+        } else {
+            $(window).scroll(function () {
+                if ($(window).scrollTop() > 20) {
+                    $(".go-up").show();
+                } else {
+                    $(".go-up").hide();
+                }
+            });
         }
-        $(window).scroll(function () {
-            if ($(window).scrollTop() > 20) {
-                $(".go-up").css({
-                    "border-radius": borderTopRadius
-                }).show();
-                $('.reply-btn').css({
-                    'border-radius': '5px 0 0 0'
-                });
-            } else {
-                $(".go-up").hide();
-                $('.reply-btn').css({
-                    'border-radius': '5px 0 0 5px'
-                });
-            }
-        });
 
         if (isLoggedIn) { // 如果登录了
             Util.setUnreadNotificationCount();
@@ -1050,7 +1041,7 @@ var Util = {
         }).mouseout(function () {
             $('.nav .person-list').hide();
         });
-        
+
         $('.nav .person-list').mouseover(function () {
             $('.nav .person-list').show();
         }).mouseout(function () {

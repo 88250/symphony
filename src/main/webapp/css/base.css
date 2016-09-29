@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.17.39, Sep 27, 2016
+ * @version 1.24.17.40, Sep 28, 2016
  */
 
 /* start reset */
@@ -42,7 +42,7 @@ body {
 
 ::selection { 
     text-shadow: none;
-    background: rgba(65,131,196,0.4)
+    background: rgba(66, 133, 244,0.4)
 }
 
 @font-face {
@@ -100,7 +100,7 @@ audio:not([controls]) {
 a {
     outline: 0;
     text-decoration: none;
-    color: #4183C4;
+    color: #4285f4;
 }
 
 a:hover {
@@ -331,7 +331,7 @@ blockquote {
     font-size: 85%;
     background-color: rgba(252, 41, 41, 0.12);
     border-radius: 3px;
-    color: #911;
+    color: #d23f31;
     font-family: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
 
@@ -449,11 +449,11 @@ a[class^="icon-"].ft-fade:hover {
 }
 
 .ft-red {
-    color: #911;
+    color: #d23f31;
 }
 
 .ft-blue {
-    color: #4183C4;
+    color: #4285f4;
 }
 
 .ft-green {
@@ -743,16 +743,16 @@ button.green:active {
 
 button.red,
 .btn.red {
-    color: #911;
+    color: #d23f31;
 }
 
 button.red:hover,
 .btn.red:hover,
 .btn.red-hover {
     color: #FFF;
-    background-color: #c9510c;
-    background-image: linear-gradient(#c9410c, #c9510c);
-    border-color: #cd504a;
+    background-color: #d23f31;
+    background-image: linear-gradient(#c0372a, #d23f31);
+    border-color: #ab3125;
 }
 
 button.red:active,
@@ -803,7 +803,7 @@ a[class*=" icon-"] {
 a[class^="icon-"]:hover, 
 a[class*=" icon-"]:hover {
     text-decoration: none;
-    color: #4183c4;
+    color: #4285f4;
 }
 
 .icon-up:before {
@@ -1011,32 +1011,32 @@ a[class*=" icon-"]:hover {
 }
 
 .go-up {
-    background-color: #E7ECEE;
-    border: 1px solid #D2D9DD;
-    border-right-width: 0;
-    border-radius: 5px 0 0 5px;
-    bottom: 68px;
+    background-color: #f9fafb;
+    border-radius: 28px;
+    bottom: 20px;
     color: #999;
     cursor: pointer;
     display: none;
-    line-height: 36px;
+    height: 56px;
     font-size: 20px;
     text-align: center;
-    height: 36px;
     position: fixed;
-    width: 36px;
+    width: 56px;
     z-index: 10;
-    right: 0;
+    right: 20px;
+    box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
+    padding-top: 15px;
+    box-sizing: border-box;
 }
 
 .go-up:hover {
-    background-color: #d8e0e3 !important;
+    background-color: rgba(0,0,0,.06);
 }
 /* end icon */
 
 /* start tip */
 .tip.error {
-    color: #911;
+    color: #d23f31;
     background-color: #fcdede;
     border: 1px solid #d2b2b2;
 }
@@ -1349,7 +1349,7 @@ a[class*=" icon-"]:hover {
 }
 
 .nav a.selected {
-    border-bottom: 2px solid #c9510c;
+    border-bottom: 2px solid #d23f31;
     padding-bottom: 3px;
 }
 
@@ -1436,14 +1436,14 @@ a[class*=" icon-"]:hover {
     -o-animation:spaceboots 1s infinite;
     -ms-animation:spaceboots 1s infinite;
     animation:spaceboots 1s infinite;
-    background-color: #c9510c;
+    background-color: #d23f31;
     color: #FFFFFF;
 }
 
 .nav .user-nav a.selected.no-msg,
 .nav .user-nav a.selected.msg {
     animation: none;
-    background-color: #c9510c;
+    background-color: #d23f31;
     border-bottom: 0;
 }
 
@@ -1544,7 +1544,7 @@ a[class*=" icon-"]:hover {
 }
 
 .footer .slogan a:hover svg {
-    color: #4183C4;
+    color: #4285f4;
 }
 /* end footer */
 
@@ -1883,16 +1883,15 @@ ul.CodeMirror-hints {
     border-radius: 3px 0 0 0;
     min-width: 35%;
     color: #FFF;
-    background-color: #c9510c;
-    background-image: linear-gradient(#c9410c, #c9510c);
-    border-color: #cd504a;
+    background-color: #d23f31;
+    background-image: linear-gradient(#c0372a, #d23f31);
+    border-color: #ab3125;
     letter-spacing: 1px;
 }
 
 .person-info .info button.red:hover {
-    background-color: #c9320c;
-    background-image: none;
-    border-color: #c9320c
+    background-color: #c0372a;
+    background-image: none; 
 }
 
 .person-info .info .fn-right {
@@ -1918,7 +1917,7 @@ ul.CodeMirror-hints {
 .person-info .activity-board {
     position: absolute;
     height: 2px;
-    background-color: #c9510c;
+    background-color: #d23f31;
     top: -1px;
 }
 
@@ -2030,7 +2029,7 @@ ul.CodeMirror-hints {
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
-    color: #c9510c;
+    color: #d23f31;
     font-style: normal;
 }
 

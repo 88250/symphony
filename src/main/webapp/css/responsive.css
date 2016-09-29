@@ -17,7 +17,7 @@
  * Base style.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.4.10, Aug 9, 2016
+ * @version 1.1.4.11, Sep 28, 2016
  */
 @media (max-width: 1016px) {
     .avatar-big {
@@ -70,7 +70,7 @@
     .nav div > a.current {
         border-bottom: 0;
         padding-bottom: 11px;
-        color: #c9510c;
+        color: #d23f31;
     }
 
     .nav .form {
@@ -110,7 +110,7 @@
 
     .wrapper .tab > li.current {
         border-width: 0;
-        border-bottom: 2px solid #911;
+        border-bottom: 2px solid #d23f31;
     }
 
     .wrapper .tab > li.current > a {
