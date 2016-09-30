@@ -259,7 +259,9 @@ public class ArticleProcessor {
     public void checkArticleTitle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
-        final String title = requestJSONObject.optString(Article.ARTICLE_TITLE);
+        String title = requestJSONObject.optString(Article.ARTICLE_TITLE);
+        title = StringUtils.trim(title);
+
         final JSONObject article = articleQueryService.getArticleByTitle(title);
 
         if (null == article) {
