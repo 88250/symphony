@@ -1,4 +1,3 @@
-<div class="fix-bg"></div>
 <div class="nav"> 
     <h1>
         ${logoIcon}

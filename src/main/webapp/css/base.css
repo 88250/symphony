@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.17.40, Sep 28, 2016
+ * @version 1.24.17.41, Sep 30, 2016
  */
 
 /* start reset */
@@ -1298,15 +1298,8 @@ a[class*=" icon-"]:hover {
 .main {
     background-color: #f2f2f2;
     padding: 20px 0;
-}
-
-.fix-bg {
     background-image: url('../images/index-bg.svg');
-    height: 100%;
-    left: 0;
-    position: fixed; 
-    top: 0;
-    width: 100%;
+    background-attachment: fixed;
 }
 
 .side {
