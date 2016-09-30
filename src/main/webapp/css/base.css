@@ -1298,7 +1298,15 @@ a[class*=" icon-"]:hover {
 .main {
     background-color: #f2f2f2;
     padding: 20px 0;
+}
+
+.fix-bg {
     background-image: url('../images/index-bg.svg');
+    height: 100%;
+    left: 0;
+    position: fixed; 
+    top: 0;
+    width: 100%;
 }
 
 .side {
