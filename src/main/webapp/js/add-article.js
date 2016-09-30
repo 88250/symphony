@@ -290,12 +290,19 @@ var AddArticle = {
                 url: Label.servePath + "/article/check-title",
                 type: "POST",
                 data: JSON.stringify({
-                    'articleTitle': $(this).val()
+                    'articleTitle': $.trim($(this).val())
                 }),
                 success: function (result, textStatus) {
                     if (!result.sc) {
-                       $("#articleTitle").after(result.msg);
-                    } 
+                        if ($('#articleTitleTip').length === 1) {
+                            $('#articleTitleTip').html(result.msg);
+                        } else {
+                            $('#articleTitle').after('<div class="module" id="articleTitleTip">' + result.msg + '</div>');
+                        }
+
+                    } else {
+                        $('#articleTitleTip').remove();
+                    }
                 }
             });
         });
