@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.25.32.22, Sep 29, 2016
+ * @version 1.25.33.22, Oct 2, 2016
  */
 
 /**
@@ -91,14 +91,15 @@ var Comment = {
                 return false;
             }
             $('.footer').css('margin-bottom', $('.editor-panel').outerHeight() + 'px');
-            Comment.editor.focus();
             $('#replyUseName').text('').removeData();
 
             // 如果 hide 初始化， focus 无效
             if ($('.editor-panel').css('bottom') !== '0px') {
                 $('.editor-panel').hide().css('bottom', 0);
             }
-            $('.editor-panel').slideDown();
+            $('.editor-panel').slideDown(function () {
+                Comment.editor.focus();
+            });
         });
 
         // 评论框控制
@@ -115,7 +116,7 @@ var Comment = {
         if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
             return false;
         }
-        
+
         $(document).bind('keyup', 'x', function assets() {
             // listen jump hotkey h
             Util.prevKey = 'x';

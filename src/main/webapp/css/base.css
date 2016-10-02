@@ -1258,7 +1258,7 @@ a[class*=" icon-"]:hover {
 }
 
 .dialog-header-bg {
-    padding: 15px;
+    padding: 10px;
     font-size: 18px;
     font-weight: normal;
     border-bottom: 1px solid #e5e5e5;
@@ -1276,7 +1276,7 @@ a[class*=" icon-"]:hover {
 }
 
 .dialog-main {
-    padding: 15px;
+    padding: 10px;
     box-sizing: content-box;
 }
 /* end dialog */

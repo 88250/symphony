@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.16.34, Sep 29, 2016
+ * @version 2.14.16.35, Oct 2, 2016
  */
 
 /* start list */
@@ -89,7 +89,7 @@ h2.article-title {
     word-break: break-all;
     font-size: 18px;
     font-weight: normal;
-    margin: 10px 0;
+    margin: 5px 0 10px;
 }
 
 h2.article-title > a {
@@ -102,8 +102,8 @@ h2.article-title > a:hover {
 
 .article-info .fn-flex-1 {
     font-size: 12px;
-    line-height: 20px;
-    margin-bottom: 10px;
+    line-height: 19px;
+    margin-bottom: 9px;
 }
 
 #thoughtProgress {
@@ -127,7 +127,7 @@ h2.article-title > a:hover {
 }
 
 #revision .pagination {
-    display: block;
+    margin-bottom: 10px;
     float: right;
 } 
 
@@ -430,6 +430,13 @@ label.cmt-anonymous {
 .article-charge-point {
     margin: -15px 10px 10px 10px;
 }
+
+#revision .cm-s-default.CodeMirror {
+    border-radius: 0;
+    border: 0;
+    margin-bottom: 0;
+    height: auto;
+}
 /* end article */
 
 /* start article list */
@@ -608,8 +615,17 @@ label.cmt-anonymous {
 /* end tags.html */
 
 /* start tag-article.html */
+.tag-articles .article-module {
+    padding-bottom: 0;
+}
+
 .tag-articles .article-action .fn-right {
     margin-right: -14px;
+}
+
+.article-action .fn-right > span.counts {
+    margin-top: 2px;
+    color: #999;
 }
 
 .tag-articles-tag-desc.tag-desc {
@@ -622,27 +638,13 @@ label.cmt-anonymous {
     border-radius: 0 3px 3px 3px;
 }
 
-.tag-articles .status {
-    margin-top: 10px;
-    padding: 10px 0 0 0;
-}
-
 .tag-articles h1.fn-inline {
-    line-height: 37px;
+    line-height: 38px;
+    margin-bottom: 10px;
 }
 
 .tag-articles .btn.red {
     vertical-align: super;
-}
-
-.tag-artile-user {
-    margin-left: 20px;
-    margin-top: 24px;
-    flex: 3;
-    -webkit-box-flex: 3;
-}
-.tag-artile-user .avatar {
-    margin-right: 5px;
 }
 /* end tag-article.html */
 
