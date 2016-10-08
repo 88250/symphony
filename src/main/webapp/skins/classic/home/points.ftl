@@ -9,7 +9,7 @@
             ${point.createTime?string('yyyy-MM-dd')} 
             <span class="ft-gray">${point.createTime?string('HH:mm')}</span>
         </td>
-        <td class="name">${point.description}</td>
+        <td class="name ft-gray">${point.description}</td>
         <td class="responsive-hide sum<#if "+" == point.operation> plus">${point.sum?c}<#else>">-${point.sum?c}</#if></td>
         <td class="type responsive-hide">${point.displayType}</td>
         <td class="balance">${point.balance?c}</td>
