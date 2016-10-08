@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.16.35, Oct 2, 2016
+ * @version 2.14.16.36, Oct 8, 2016
  */
 
 /* start list */
@@ -384,7 +384,7 @@ label.cmt-anonymous {
 .reply-btn {
     background-color: #d23f31;
     position: fixed;
-    bottom: 20px;
+    bottom: 97px;
     right: 20px;
     padding-top: 19px;
     width: 56px;
