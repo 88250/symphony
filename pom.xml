@@ -304,7 +304,7 @@
                         <exclude>**/src/main/java/**/Pangu.java</exclude>
                         <exclude>**/src/*/webapp/js/lib/*.js</exclude>
                         <exclude>**/src/*/webapp/js/*.min.js</exclude>
-                        <exclude>**/src/*/webapp/css/*.min.css</exclude>
+                        <exclude>**/src/*/webapp/css/*.css</exclude>
                     </excludes>
 
                     <useDefaultExcludes>true</useDefaultExcludes>

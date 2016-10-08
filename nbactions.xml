@@ -15,7 +15,6 @@
         <displayName>release</displayName>
         <goals>
             <goal>clean</goal>
-            <goal>min:min</goal>
             <goal>license:format</goal>
             <goal>install</goal>
         </goals>
