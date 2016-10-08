@@ -22,6 +22,8 @@
  * @version 2.7.10.19, Oct 8, 2016
  */
 
+@import "variables";
+
 /* start home common */
 .home-menu {
     list-style: none;
@@ -73,7 +75,7 @@
 }
 
 .home-menu a span:last-child:hover {
-    color: #4285f4;
+    color: $blue;
 }
 /* end home common */
 
@@ -127,7 +129,7 @@
 
 .pre-post a:hover {
     text-decoration: none;
-    color: #4285f4;
+    color: $blue;
 }
 
 .pre-post a div {
@@ -209,7 +211,7 @@ label.article-anonymous {
 
 .post .tags-input span.tag {
     margin: 2px 5px 0 0px;
-    color: #4285f4;
+    color: $blue;
 }
 
 .post .tags-input .tag > span.close {
@@ -254,7 +256,7 @@ label.article-anonymous {
 
 .post .domains-tags .tag {
     cursor: pointer;
-    color: #4285f4;
+    color: $blue;
 }
 
 .post .domains-tags > span.current {

@@ -18,8 +18,10 @@
  * 错误样式.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.0.2.2, Sep 28 2016
+ * @version 1.0.2.2, Sep 28 2016
  */
+
+@import "variables";
 
 /* start error */
 .error .block {
@@ -47,7 +49,7 @@
 }
 
 .error-403 .module > .slogan a:hover svg {
-    color: #4285f4;
+    color: $blue;
 }
 
 .error-403 .wrapper > .module {

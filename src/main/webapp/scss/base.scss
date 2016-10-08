@@ -19,8 +19,10 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.17.42, Oct 8, 2016
+ * @version 2.24.17.42, Oct 8, 2016
  */
+
+@import "variables";
 
 /* start reset */
 html {
@@ -30,7 +32,7 @@ html {
 
 body {
     margin: 0;
-    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+    font-family: $font-family-base;
     font-size: 14px;
     color: #333;
 }
@@ -100,7 +102,7 @@ audio:not([controls]) {
 a {
     outline: 0;
     text-decoration: none;
-    color: #4285f4;
+    color: $blue;
 }
 
 a:hover {
@@ -138,7 +140,7 @@ textarea {
     margin: 0;
     font-size: 100%;
     vertical-align: middle;
-    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+    font-family: $font-family-base;
     outline: none;
 }
 
@@ -221,143 +223,146 @@ blockquote {
 }
 
 .content-reset {
-    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+    font-family: $font-family-base;
     word-wrap: break-word;
     overflow: hidden;
     line-height: 1.5;
 }
 
-.content-reset ul,
-.content-reset ol {
-    padding-left: 2em;
-    margin-top: 0;
-    margin-bottom: 16px;
+.content-reset {
+    ul,
+    ol {
+        padding-left: 2em;
+        margin-top: 0;
+        margin-bottom: 16px;
+    }
+
+    h1, 
+    h2, 
+    h3, 
+    h4, 
+    h5, 
+    h6 {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        font-weight: 600;
+        line-height: 1.25;
+    }
+
+    h1 {
+        padding-bottom: 0.3em;
+        font-size: 2em;
+    }
+
+    h2 {
+        padding-bottom: 0.3em;
+        font-size: 1.5em;
+    }
+
+    h3 {
+        font-size: 1.25em;
+    }
+
+    h4 {
+        font-size: 1em
+    }
+
+    h5 {
+        font-size: 0.875em;
+    }
+
+    h6 {
+        font-size: 0.85em;
+    }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 16px;
+    }
+
+    blockquote {
+        padding: 0 1em;
+        color: #777;
+        border-left: 0.25em solid #ddd;
+        margin-bottom: 16px;
+    }
+
+    blockquote p {
+        margin: 0;
+    }
+
+    iframe {
+        border: 1px solid #ccc;
+    }
+
+    table {
+        width: 100%; 
+        border: 1px solid #dedede; 
+        margin: 15px auto;
+        border-collapse: collapse; 
+        empty-cells: show; 
+    }
+
+    thead {
+        text-align: center;
+    }
+
+    td,
+    th {
+        height: 35px; 
+        border: 1px solid #dedede; 
+        padding: 0 10px; 
+    }
+
+    th {
+        font-weight: bold; 
+        text-align: center !important; 
+        background: rgba(158,188,226,0.2); 
+    }
+
+    tbody tr:nth-child(2n) {
+        background: rgba(158,188,226,0.12); 
+    }
+
+    tr:hover {
+        background: #efefef; 
+    }
+
+    code {
+        padding: 0.2em 0.4em;
+        margin: 0;
+        font-size: 85%;
+        background-color: rgba(252, 41, 41, 0.12);
+        border-radius: 3px;
+        color: #d23f31;
+        font-family: $font-family-code;
+    }
+
+    pre > code {
+        padding: 0.5em;
+        border-radius: 0;
+        color: #333;
+        background-color: rgba(0,0,0,0.04);
+        background-image: url(../images/code-bg.png);
+        background-size: 20px 20px;
+        border-radius: 5px;
+    }
+
+    kbd {
+        display: inline-block;
+        padding: 3px 5px;
+        font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        line-height: 10px;
+        color: #555;
+        vertical-align: middle;
+        background-color: #fcfcfc;
+        border: solid 1px #ccc;
+        border-bottom-color: #bbb;
+        border-radius: 3px;
+        box-shadow: inset 0 -1px 0 #bbb;
+    }
 }
 
-.content-reset h1, 
-.content-reset h2, 
-.content-reset h3, 
-.content-reset h4, 
-.content-reset h5, 
-.content-reset h6 {
-    margin-top: 24px;
-    margin-bottom: 16px;
-    font-weight: 600;
-    line-height: 1.25;
-}
-
-.content-reset h1 {
-    padding-bottom: 0.3em;
-    font-size: 2em;
-}
-
-.content-reset h2 {
-    padding-bottom: 0.3em;
-    font-size: 1.5em;
-}
-
-.content-reset h3 {
-    font-size: 1.25em;
-}
-
-.content-reset h4 {
-    font-size: 1em
-}
-
-.content-reset h5 {
-    font-size: 0.875em;
-}
-
-.content-reset h6 {
-    font-size: 0.85em;
-}
-
-.content-reset p {
-    margin-top: 0;
-    margin-bottom: 16px;
-}
-
-.content-reset blockquote {
-    padding: 0 1em;
-    color: #777;
-    border-left: 0.25em solid #ddd;
-    margin-bottom: 16px;
-}
-
-.content-reset blockquote p {
-    margin: 0;
-}
-
-.content-reset iframe {
-    border: 1px solid #ccc;
-}
-
-.content-reset table {
-    width: 100%; 
-    border: 1px solid #dedede; 
-    margin: 15px auto;
-    border-collapse: collapse; 
-    empty-cells: show; 
-}
-
-.content-reset thead {
-    text-align: center;
-}
-
-.content-reset td,
-.content-reset th {
-    height: 35px; 
-    border: 1px solid #dedede; 
-    padding: 0 10px; 
-}
-
-.content-reset th {
-    font-weight: bold; 
-    text-align: center !important; 
-    background: rgba(158,188,226,0.2); 
-}
-
-.content-reset tbody tr:nth-child(2n) {
-    background: rgba(158,188,226,0.12); 
-}
-
-.content-reset tr:hover {
-    background: #efefef; 
-}
-
-.content-reset code {
-    padding: 0.2em 0.4em;
-    margin: 0;
-    font-size: 85%;
-    background-color: rgba(252, 41, 41, 0.12);
-    border-radius: 3px;
-    color: #d23f31;
-    font-family: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace;
-}
-
-.content-reset pre > code {
-    padding: 0.5em;
-    border-radius: 0;
-    color: #333;
-    background-color: rgba(0,0,0,0.04);
-    background-image: url(../images/code-bg.png);
-    background-size: 20px 20px;
-    border-radius: 5px;
-}
-
-.content-reset kbd {
-    display: inline-block;
-    padding: 3px 5px;
-    font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    line-height: 10px;
-    color: #555;
-    vertical-align: middle;
-    background-color: #fcfcfc;
-    border: solid 1px #ccc;
-    border-bottom-color: #bbb;
-    border-radius: 3px;
-    box-shadow: inset 0 -1px 0 #bbb;
-}
 /* end reset */
 
 /* start function */
@@ -453,7 +458,7 @@ a[class^="icon-"].ft-fade:hover {
 }
 
 .ft-blue {
-    color: #4285f4;
+    color: $blue;
 }
 
 .ft-green {
@@ -803,7 +808,7 @@ a[class*=" icon-"] {
 a[class^="icon-"]:hover, 
 a[class*=" icon-"]:hover {
     text-decoration: none;
-    color: #4285f4;
+    color: $blue;
 }
 
 .icon-up:before {
@@ -1322,7 +1327,7 @@ a[class*=" icon-"]:hover {
 .nav {
     height: 48px;
     width: 100%;
-    background-color: #4285f4;
+    background-color: $blue;
     z-index: 10;
     position: relative;
     box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
@@ -1545,7 +1550,7 @@ a[class*=" icon-"]:hover {
 }
 
 .footer .slogan a:hover svg {
-    color: #4285f4;
+    color: $blue;
 }
 /* end footer */
 
@@ -1622,7 +1627,7 @@ a[class*=" icon-"]:hover {
 
 .CodeMirror-scroll {
     background-color: #FAFAFA;
-    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+    font-family: $font-family-base;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
     line-height: 17px;
 }
@@ -1633,7 +1638,7 @@ a[class*=" icon-"]:hover {
 
 .CodeMirror,
 ul.CodeMirror-hints {
-    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+    font-family: $font-family-base;
 }
 
 .CodeMirror-hints .ico {
