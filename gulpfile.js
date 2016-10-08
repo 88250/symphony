@@ -18,15 +18,43 @@
  * @file frontend tool.
  * 
  * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 1.2.2.0, Sep 20, 2016 
+ * @version 1.3.2.0, Oct 8, 2016 
  */
+
+'use strict';
+
 var gulp = require("gulp");
 var concat = require('gulp-concat');
 var cleanCSS = require('gulp-clean-css');
 var uglify = require('gulp-uglify');
-var sourcemaps = require("gulp-sourcemaps");
+var sass = require('gulp-sass');
+var clean = require('gulp-clean');
+var rename = require('gulp-rename');
 
-gulp.task('cc', function () {
+gulp.task('sass', function () {
+    return gulp.src('./src/main/webapp/scss/*.scss')
+            .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+            .pipe(gulp.dest('./src/main/webapp/css'));
+});
+
+gulp.task('sass:watch', function () {
+    gulp.watch('./src/main/webapp/scss/*.scss', ['sass']);
+});
+
+
+gulp.task('clean', function () {
+    // remove min css
+    return gulp.src('./src/main/webapp/css/*.min.css', {read: false})
+            .pipe(clean());
+});
+
+gulp.task('build', function () {
+    // min css
+    gulp.src('./src/main/webapp/css/*.css')
+            .pipe(cleanCSS())
+            .pipe(rename({suffix: '.min'}))
+            .pipe(gulp.dest('./src/main/webapp/css/'));
+
     // css
     gulp.src('./src/main/webapp/js/lib/editor/codemirror.css')
             .pipe(cleanCSS())
@@ -67,9 +95,24 @@ gulp.task('cc', function () {
             .pipe(concat('libs.min.js'))
             .pipe(gulp.dest('./src/main/webapp/js/lib/compress/'));
 
-    var jsArticleLib = ['./src/main/webapp/js/lib/editor/codemirror.min.js',
+    var jsArticleLib = [
+        // start codemirror.min.js
+        './src/main/webapp/js/lib/editor/diff_match_patch.js',
+        './src/main/webapp/js/lib/editor/codemirror.js',
+        './src/main/webapp/js/lib/editor/placeholder.js',
+        './src/main/webapp/js/lib/editor/merge.js',
+        './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
+        './src/main/webapp/js/lib/editor/editor.js',
+        './src/main/webapp/js/lib/to-markdown.js',
+        // end codemirror.min.js
         './src/main/webapp/js/lib/highlight.js-9.6.0/highlight.pack.js',
-        './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.min.js',
+        // start jquery.fileupload.min.js
+        './src/main/webapp/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js',
+        './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js',
+        './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js',
+        './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-process.js',
+        './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload-validate.js',
+        // end jquery.fileupload.min.js
         './src/main/webapp/js/lib/sound-recorder/SoundRecorder.js',
         './src/main/webapp/js/lib/jquery/jquery.qrcode.min.js',
         './src/main/webapp/js/lib/zeroclipboard/ZeroClipboard.min.js'];
