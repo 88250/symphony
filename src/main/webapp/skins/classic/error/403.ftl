@@ -5,7 +5,7 @@
         <@head title="403 Forbidden! - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/error${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/error.css?${staticResourceVersion}" />
     </head>
     <body class="error error-403">
         <#include "../header.ftl">

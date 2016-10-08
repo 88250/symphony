@@ -42,19 +42,7 @@ gulp.task('sass:watch', function () {
 });
 
 
-gulp.task('clean', function () {
-    // remove min css
-    return gulp.src('./src/main/webapp/css/*.min.css', {read: false})
-            .pipe(clean());
-});
-
 gulp.task('build', function () {
-    // min css
-    gulp.src('./src/main/webapp/css/*.css')
-            .pipe(cleanCSS())
-            .pipe(rename({suffix: '.min'}))
-            .pipe(gulp.dest('./src/main/webapp/css/'));
-
     // css
     gulp.src('./src/main/webapp/js/lib/editor/codemirror.css')
             .pipe(cleanCSS())
