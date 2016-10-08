@@ -41,15 +41,27 @@ gulp.task('sass:watch', function () {
     gulp.watch('./src/main/webapp/scss/*.scss', ['sass']);
 });
 
+gulp.task('clean', function () {
+    // remove min js
+    return gulp.src('./src/main/webapp/js/*.min.js', {read: false})
+            .pipe(clean());
+});
+
 
 gulp.task('build', function () {
-    // css
+    // min css
     gulp.src('./src/main/webapp/js/lib/editor/codemirror.css')
             .pipe(cleanCSS())
             .pipe(concat('codemirror.min.css'))
             .pipe(gulp.dest('./src/main/webapp/js/lib/editor/'));
+    
+     // min js
+    gulp.src('./src/main/webapp/js/*.js')
+            .pipe(uglify())
+            .pipe(rename({suffix: '.min'}))
+            .pipe(gulp.dest('./src/main/webapp/js/'));
 
-    // js
+    // concat js
     var jsJqueryUpload = ['./src/main/webapp/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js',
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js',
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js',

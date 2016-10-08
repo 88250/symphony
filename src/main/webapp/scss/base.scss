@@ -1287,7 +1287,6 @@ a[class*=" icon-"]:hover {
     margin: 0 auto;
     display: flex;
     min-width: 720px;
-    padding-left: calc(100vw - 100%);
     max-width: 1300px;
 }
 
@@ -1330,8 +1329,7 @@ a[class*=" icon-"]:hover {
     box-sizing: border-box;
     display: flex;
     line-height: 38px;
-    padding-right: 10px;
-    padding-left: calc(100vw - 100%);
+    padding: 0 10px;
 }
 
 .nav .nav-tabs > a,
@@ -1358,10 +1356,6 @@ a[class*=" icon-"]:hover {
     margin-right: 20px;
 }
 
-.nav h1 a {
-    padding: 0 0 0 10px;
-}
-
 .nav h1 a svg {
     vertical-align: baseline;
 }
@@ -1369,6 +1363,7 @@ a[class*=" icon-"]:hover {
 .nav-tabs {
     flex: 1;
     text-align: center;
+    overflow: hidden;
 }
 
 .nav-tabs a svg {
