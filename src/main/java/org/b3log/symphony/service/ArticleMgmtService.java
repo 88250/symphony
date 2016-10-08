@@ -75,7 +75,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.23.24, Sep 26, 2016
+ * @version 2.14.23.25, Sep 30, 2016
  * @since 0.2.0
  */
 @Service
@@ -371,6 +371,7 @@ public class ArticleMgmtService {
         final int articleAnonymous = requestJSONObject.optInt(Article.ARTICLE_ANONYMOUS);
 
         String articleTitle = requestJSONObject.optString(Article.ARTICLE_TITLE);
+        articleTitle = StringUtils.trim(articleTitle);
 
         try {
             // check if admin allow to add article
@@ -447,6 +448,7 @@ public class ArticleMgmtService {
 
             String articleContent = requestJSONObject.optString(Article.ARTICLE_CONTENT);
             articleContent = Emotions.toAliases(articleContent);
+            articleContent = StringUtils.trim(articleContent);
             article.put(Article.ARTICLE_CONTENT, articleContent);
 
             article.put(Article.ARTICLE_REWARD_CONTENT, requestJSONObject.optString(Article.ARTICLE_REWARD_CONTENT));

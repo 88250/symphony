@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.12.15, Sep 26, 2016
+ * @version 1.10.13.15, Oct 2, 2016
  */
 
 /**
@@ -156,21 +156,23 @@ var ArticleChannel = {
                     Comment._bgFade($("#" + data.commentId));
 
                     // 更新回复的帖子
-                    var $originalComment = $('#' + data.commentOriginalCommentId),
-                            $replyBtn = $originalComment.find('.comment-action > .ft-fade > .fn-pointer');
-                    if ($replyBtn.length === 1) {
-                        $replyBtn.html(' ' + (parseInt($.trim($replyBtn.text())) + 1)
-                                + ' ' + Label.replyLabel + ' <span class="'
-                                + $replyBtn.find('span').attr('class') + '"></span>');
+                    if (data.commentOriginalCommentId !== '') {
+                        var $originalComment = $('#' + data.commentOriginalCommentId),
+                                $replyBtn = $originalComment.find('.comment-action > .ft-fade > .fn-pointer');
+                        if ($replyBtn.length === 1) {
+                            $replyBtn.html(' ' + (parseInt($.trim($replyBtn.text())) + 1)
+                                    + ' ' + Label.replyLabel + ' <span class="'
+                                    + $replyBtn.find('span').attr('class') + '"></span>');
 
-                        if ($replyBtn.find('span').attr('class') === "icon-chevron-up") {
-                            $replyBtn.find('span').removeClass('icon-chevron-up').addClass('icon-chevron-down');
-                            $replyBtn.click();
+                            if ($replyBtn.find('span').attr('class') === "icon-chevron-up") {
+                                $replyBtn.find('span').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+                                $replyBtn.click();
+                            }
+                        } else {
+                            $originalComment.find('.comment-action > .ft-fade').prepend('<span class="fn-pointer ft-smaller" onclick="Comment.showReply(\''
+                                    + data.commentOriginalCommentId + '\', this, \'comment-replies\')" style="opacity: 1;"> 1 '
+                                    + Label.replyLabel + ' <span class="icon-chevron-down"></span>');
                         }
-                    } else {
-                        $originalComment.find('.comment-action > .ft-fade').prepend('<span class="fn-pointer ft-smaller" onclick="Comment.showReply(\''
-                                + data.commentOriginalCommentId + '\', this, \'comment-replies\')" style="opacity: 1;"> 1 '
-                                + Label.replyLabel + ' <span class="icon-chevron-down"></span>');
                     }
                     break;
                 case "articleHeat":

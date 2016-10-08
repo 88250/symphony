@@ -86,7 +86,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.20.14.28, Sep 1, 2016
+ * @version 2.21.14.28, Sep 30, 2016
  * @since 0.2.0
  */
 @Service
@@ -173,6 +173,22 @@ public class ArticleQueryService {
      * Count to fetch article tags for relevant articles.
      */
     private static final int RELEVANT_ARTICLE_RANDOM_FETCH_TAG_CNT = 3;
+
+    /**
+     * Get an articles by the specified title.
+     *
+     * @param title the specified title
+     * @return article, returns {@code null} if not found
+     */
+    public JSONObject getArticleByTitle(final String title) {
+        try {
+            return articleRepository.getByTitle(title);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets article by title [" + title + "] failed", e);
+
+            return null;
+        }
+    }
 
     /**
      * Gets article count of the specified day.

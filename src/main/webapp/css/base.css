@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.24.17.40, Sep 28, 2016
+ * @version 1.24.17.42, Oct 8, 2016
  */
 
 /* start reset */
@@ -1258,7 +1258,7 @@ a[class*=" icon-"]:hover {
 }
 
 .dialog-header-bg {
-    padding: 15px;
+    padding: 10px;
     font-size: 18px;
     font-weight: normal;
     border-bottom: 1px solid #e5e5e5;
@@ -1276,7 +1276,7 @@ a[class*=" icon-"]:hover {
 }
 
 .dialog-main {
-    padding: 15px;
+    padding: 10px;
     box-sizing: content-box;
 }
 /* end dialog */
@@ -1299,6 +1299,7 @@ a[class*=" icon-"]:hover {
     background-color: #f2f2f2;
     padding: 20px 0;
     background-image: url('../images/index-bg.svg');
+    background-attachment: fixed;
 }
 
 .side {
@@ -1533,6 +1534,11 @@ a[class*=" icon-"]:hover {
 .footer-nav > a {
     margin-right: 5px;
     padding-right: 10px;
+    color: #595959;
+}
+
+.footer-nav > a:hover {
+    color: #333;
 }
 
 .footer .slogan {

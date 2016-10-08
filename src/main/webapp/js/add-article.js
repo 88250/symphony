@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.16.10.10, Sep 20, 2016
+ * @version 2.17.11.10, Sep 30, 2016
  */
 
 /**
@@ -282,6 +282,31 @@ var AddArticle = {
             }
         });
 
+        $("#articleTitle").blur(function () {
+            if ($.trim($(this).val()) === '') {
+                return false;
+            }
+            $.ajax({
+                url: Label.servePath + "/article/check-title",
+                type: "POST",
+                data: JSON.stringify({
+                    'articleTitle': $.trim($(this).val())
+                }),
+                success: function (result, textStatus) {
+                    if (!result.sc) {
+                        if ($('#articleTitleTip').length === 1) {
+                            $('#articleTitleTip').html(result.msg);
+                        } else {
+                            $('#articleTitle').after('<div class="module" id="articleTitleTip">' + result.msg + '</div>');
+                        }
+
+                    } else {
+                        $('#articleTitleTip').remove();
+                    }
+                }
+            });
+        });
+
         // 初始化打赏区编辑器
         if (0 < $("#articleRewardPoint").val().replace(/(^\s*)|(\s*$)/g, "")) {
             $('#showReward').click();
@@ -367,7 +392,7 @@ var AddArticle = {
             }
             var hasTag = false;
 
-            text = text.replace(/\s/g, 's');
+            text = text.replace(/\s/g, '');
 
             $("#articleTags").val('').data('val', '');
 

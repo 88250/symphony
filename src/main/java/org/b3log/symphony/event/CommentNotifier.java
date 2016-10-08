@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.event;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
@@ -67,7 +68,7 @@ import org.jsoup.safety.Whitelist;
  * Sends a comment notification.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.8.19, Sep 1, 2016
+ * @version 1.6.9.19, Sep 30, 2016
  * @since 0.2.0
  */
 @Named
@@ -370,6 +371,7 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
             }
 
             // 3. 'Reply' Notification
+            final Set<String> repliedIds = new HashSet<>();
             if (StringUtils.isNotBlank(originalCmtId)) {
                 if (!articleAuthorId.equals(originalCmtAuthorId)) {
                     final JSONObject requestJSONObject = new JSONObject();
@@ -377,6 +379,8 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                     requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
 
                     notificationMgmtService.addReplyNotification(requestJSONObject);
+
+                    repliedIds.add(originalCmtAuthorId);
                 }
             }
 
@@ -401,8 +405,13 @@ public class CommentNotifier extends AbstractEventListener<JSONObject> {
                     continue; // Has notified in step 2
                 }
 
+                final String userId = user.optString(Keys.OBJECT_ID);
+                if (repliedIds.contains(userId)) {
+                    continue;
+                }
+
                 final JSONObject requestJSONObject = new JSONObject();
-                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, user.optString(Keys.OBJECT_ID));
+                requestJSONObject.put(Notification.NOTIFICATION_USER_ID, userId);
                 requestJSONObject.put(Notification.NOTIFICATION_DATA_ID, commentId);
 
                 notificationMgmtService.addAtNotification(requestJSONObject);

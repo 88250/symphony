@@ -117,6 +117,7 @@ import org.json.JSONObject;
  * <li>Sticks an article (/article/stick), POST</li>
  * <li>Gets article revisions (/article/{articleId}/revisions), GET</li>
  * <li>Gets article image (/article/{articleId}/image), GET</li>
+ * <li>Checks article title (/article/check-title), POST</li>
  * </ul>
  *
  * <p>
@@ -125,7 +126,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.23.19.32, Sep 8, 2016
+ * @version 1.24.19.32, Sep 30, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -243,6 +244,46 @@ public class ArticleProcessor {
      */
     @Inject
     private Filler filler;
+
+    /**
+     * Checks article title.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/article/check-title", method = HTTPRequestMethod.POST)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = {StopwatchEndAdvice.class})
+    public void checkArticleTitle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+        String title = requestJSONObject.optString(Article.ARTICLE_TITLE);
+        title = StringUtils.trim(title);
+
+        final JSONObject article = articleQueryService.getArticleByTitle(title);
+
+        if (null == article) {
+            context.renderJSON(true);
+
+            return;
+        }
+
+        final String authorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+        final JSONObject author = userQueryService.getUser(authorId);
+        final String userName = author.optString(User.USER_NAME);
+        String msg = langPropsService.get("duplicatedArticleTitleLabel");
+        msg = msg.replace("{user}", "<a target='_blank' href='/member/" + userName + "'>" + userName + "</a>");
+        msg = msg.replace("{article}", "<a target='_blank' href='/article/" + article.optString(Keys.OBJECT_ID)
+                + "'>" + title + "</a>");
+
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.STATUS_CODE, false);
+        ret.put(Keys.MSG, msg);
+
+        context.renderJSON(ret);
+    }
 
     /**
      * Gets article image.
@@ -636,7 +677,7 @@ public class ArticleProcessor {
         final int pageNum = Integer.valueOf(pageNumStr);
         final int pageSize = Symphonys.getInt("articleCommentsPageSize");
         final int windowSize = Symphonys.getInt("articleCommentsWindowSize");
-        
+
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_CNT);
         final int pageCount = (int) Math.ceil((double) commentCnt / (double) pageSize);
 

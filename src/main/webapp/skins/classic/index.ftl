@@ -9,7 +9,7 @@
         <link rel="canonical" href="${servePath}">
     </head>
     <body class="index">
-        <#include "header.ftl">     
+        <#include "header.ftl">   
         <div class="main first">
             <div class="wrapper">
                 <div class="item first">

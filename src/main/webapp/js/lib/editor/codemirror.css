@@ -372,11 +372,6 @@ li.CodeMirror-hint-active {
         visibility: hidden;
     }
 }
-#revision .cm-s-default.CodeMirror {
-    border-radius: 0;
-    border: 0;
-    margin-bottom: 0;
-}
 
 .CodeMirror-merge-2pane .CodeMirror-merge-pane { 
     width: 49%;
