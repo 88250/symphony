@@ -14,7 +14,7 @@
             <div class="wrapper">
                 <div class="content module">
                     <@list listData=articles/>
-                    <@pagination url="/search" query="key=${key}" />
+                    <@pagination url="${servePath}/search" query="key=${key}" />
                 </div>
                 <div class="side">
                     <#include "side.ftl">
