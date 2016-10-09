@@ -8,7 +8,7 @@
         <meta name="keywords" content="${domain.domainSeoKeywords}" />
         <meta name="description" content="${domain.domainSeoDesc}"/>
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/index.css?${staticResourceVersion}" />
         ${domain.domainCSS}
     </head>
     <body>

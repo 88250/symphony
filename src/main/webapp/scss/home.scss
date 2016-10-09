@@ -1,0 +1,477 @@
+/**
+ * Copyright (c) 2012-2016, b3log.org & hacpai.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * 后台样式.
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 2.7.10.19, Oct 8, 2016
+ */
+
+@import "variables";
+
+/* start home common */
+.home-menu {
+    list-style: none;
+    background-color: #fff;
+}
+
+.home-menu a {
+    position: relative;
+    display: block;
+    padding: 8px 10px;
+    text-shadow: 0 1px 0 #fff;
+    border-bottom: 1px solid #eee;
+    color: #666;
+}
+
+.home-menu a:last-child {
+    border-bottom: 0;
+}
+
+.home-menu a:hover {
+    text-decoration: none;
+    background-color: #f9f9f9;
+}
+
+.home-menu a.current {
+    font-weight: bold;
+    color: #222;
+    cursor: default;
+    background-color: #fff;
+}
+
+.home-menu a .todo {
+    position: absolute;
+    border-style: solid;
+    right: 0px;
+    top: 0px;
+    border-width: 10px 10px 10px 10px;
+    border-color: #d23f31 #d23f31 transparent transparent;
+}
+
+.home-menu a.current::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    content: "";
+    background-color: #d23f31;
+}
+
+.home-menu a span:last-child:hover {
+    color: $blue;
+}
+/* end home common */
+
+/* start home side */
+#avatarURLDom {
+    margin-top: 20px;
+}
+
+.user-name {
+    border-bottom: 1px dotted #CCC;
+    font-size: 25px;
+    margin: 20px 0 20px;
+    padding: 20px 10px 20px 10px;
+}
+
+.user-name button.follow {
+    font-size: 14px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.user-details {
+    margin: 0 10px;
+}
+
+.user-info {
+    line-height: 24px;
+    font-size: 12px;
+    color: #666666;
+}
+
+.user-intro {
+    line-height: 26px;
+    margin-bottom: 5px;
+}
+/* end home side */
+
+/* start add article */
+.pre-post > div {
+    width: 25%;
+    margin: 100px 0px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.pre-post > div > a {
+    color: #404040;
+    margin: 0 10px;
+    display: block;
+}
+
+.pre-post a:hover {
+    text-decoration: none;
+    color: $blue;
+}
+
+.pre-post a div {
+    font-size: 50px;
+    margin-bottom: 50px;
+}
+
+.pre-post div.ft-fade {
+    font-size: 15px;
+    margin: 20px 30px 0;
+    text-align: left;
+}
+
+#articleTitleTip {
+    position: absolute;
+    top: 32px;
+    padding: 10px;
+    z-index: 10;
+    color: #999;
+}
+
+#articleContent {
+    height: 332px;
+    margin: 30px 0 20px 0;
+    padding: 4px;
+}
+
+#articleRewardContent {
+    height: 102px;
+    margin: 30px 0 20px 0;
+    padding: 4px;
+}
+
+#tip {
+    position: inherit;
+    white-space: pre-wrap;
+}
+
+.tip-add-article {
+    color: #777777;
+    list-style: circle outside none;
+    margin-left: 20px;
+    line-height: 22px;
+}
+
+.article-content {
+    width: 100%;
+    position: relative;
+    margin-top: 20px;
+}
+
+#showReward {
+    color: #999;
+    width: 100%;
+    display: block;
+}
+
+label.article-anonymous {
+    margin: 7px 15px 0 0;
+}
+
+.post .tags-wrap {
+    position: relative;
+}
+
+.post .tags-input {
+    border: 1px solid #CCCCCC;
+    background-color: #FAFAFA;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
+    padding: 5px 5px 3px 5px;
+    width: 100%;
+    line-height: 17px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    height: 33px;
+}
+
+.post .tags-input span.tag {
+    margin: 2px 5px 0 0px;
+    color: $blue;
+}
+
+.post .tags-input .tag > span.close {
+    cursor: pointer;
+    margin-left: 5px;
+    color: #999;
+}
+
+.post .tags-input span.tag.haved {
+    color: #333;
+    background-color: #ccc;
+    transition: background 0.5s ease-in,color 0.3s ease-out;
+}
+
+.post .tags-input input {
+    border: 0;
+    outline: none;
+    box-shadow: 0 0 0 transparent;
+    border-radius: 0;
+    padding: 2px;
+}
+
+.post .tags-input input:focus {
+    border: 0;
+    background-color: transparent;
+    box-shadow: 0 0 0 transparent;
+}
+
+.post .domains-tags, 
+.post .completed-panel {
+    display: none;
+    position: absolute;
+    background-color: #FFF;
+    border: 1px solid #e5e5e5;
+    z-index: 10;
+    padding: 10px;
+    border-radius: 0 0 3px 3px;
+    width: 50%;
+    top: 32px;
+    box-sizing: border-box;
+}
+
+.post .domains-tags .tag {
+    cursor: pointer;
+    color: $blue;
+}
+
+.post .domains-tags > span.current {
+    color: #FFF;
+    background-color: #2c5d8d;
+    background-image: linear-gradient(#7ba9d6, #2c5d8d);
+    border-color: #689cd0;
+}
+
+.post .completed-panel {
+    padding: 0;
+    overflow: auto;
+    left: 0;
+}
+
+.post .completed-panel a {
+    display: block;
+    padding: 3px;
+    text-decoration: none;
+    line-height: 18px;
+    height: 18px;
+}
+
+.post .completed-panel a.selected,
+.post .completed-panel a:hover {
+    background-color: #F7F7F7;
+}
+/* end add article */
+
+/* start home */
+.home-invisible {
+    margin: 50px 0;
+}
+
+.tabs {
+    display: flex;
+}
+
+.tabs a {
+    line-height: 18px;
+    flex: 1;
+    padding: 7px 10px 5px;
+    color: #616161;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    text-align: center
+}
+
+.tabs a.selected {
+    border-color: #d23f31;
+    color: #212121;
+}
+
+.tabs a:hover {
+    background-color: rgba(0,0,0,.03);
+}
+/* end home */
+
+/* start notifications */
+.notification .read {
+    background-color: #FAFAFA;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+.notification li {
+    background-color: #F8F8FF;
+}
+
+.notification .content-reset > p {
+    margin-bottom: 0;
+}
+/* end notifications */
+
+/* start follow */
+.follow.list h2 {
+    margin-bottom: 6px;
+}
+
+.follow .icon-tags {
+    font-size: 48px;
+    margin-right: 10px;
+}
+/* end follow */
+
+/* start admin */
+.admin .form {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.admin .avatar {
+    height: 17px;
+    width: 17px;
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+.admin .tags {
+    display: inline-block; 
+    width: 50%; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.admin .domains {
+    display: inline-block; 
+    width: 50%; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.admin .form input[type=text],
+.admin .form input[type=number] {
+    width: 50%;
+    margin-right: 10px;
+}
+
+.admin li > div.first {
+    margin-bottom: 6px;
+}
+/* end admin */
+
+/* start points */
+.points {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.points td {
+    border-bottom: 1px solid #eee;
+}
+
+.points .date {
+    width: 75px;
+    padding: 10px;
+}
+
+.points .name {
+    padding: 10px;
+    word-break: break-all;
+}
+
+.points .name a {
+   color: #595959;
+}
+
+.points .name a:hover {
+    color: #333;
+}
+
+.points .type {
+    width: 60px;
+    padding: 0 10px;
+}
+
+.points .sum {
+    text-align: center;
+    width: 35px;
+    padding: 0 10px;
+    color: #d23f31;
+    font-weight: 700;
+}
+
+.points .sum.plus {
+    color: #569e3d;
+}
+
+.points .balance {
+    width: 40px;
+    padding: 0 10px;
+}
+/* end points */
+
+/* start settings */
+#avatarUpload {
+    overflow: hidden;
+}
+
+#shareClipboard {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    padding: 5px 12px 5px;
+    border-radius: 0 3px 3px 0;
+}
+
+.settings-secret > div {
+    float: left;
+    width: 50%
+}
+
+#homeSidePanel {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    background-color: #FFF;
+}
+
+#emojiGrid img {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.point-pagination {
+    border-bottom: 1px solid #eee;
+}
+
+.point-pagination .pagination {
+    border-radius: 0;
+}
+/* end settings */

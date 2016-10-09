@@ -50,7 +50,7 @@
         <#if type == "misc">
         <@head title="${miscAdminLabel} - ${symphonyLabel}"></@head>
         </#if>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
     </head>
     <body>
         <#include "../header.ftl">

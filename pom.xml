@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Symphony POM.
-    Version: 2.12.4.41, Sep 24, 2016
+    Version: 2.12.4.42, Oct 8, 2016
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -40,7 +40,6 @@
         <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
         <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
-        <maven-min-plugin.version>1.0.0</maven-min-plugin.version>
         <!-- Unit Test -->
         <testng.version>6.1.1</testng.version>
 
@@ -283,34 +282,6 @@
             </plugin>
             
             <plugin>
-                <groupId>org.b3log</groupId>
-                <artifactId>maven-min-plugin</artifactId>
-                <version>${maven-min-plugin.version}</version>
-
-                <configuration>
-                    <suffix>.min</suffix>
-                    <!-- Common#MINI_POSTFIX_VALUE -->
-
-                    <cssSourceDir>${basedir}/src/main/webapp/css</cssSourceDir>
-                    <cssTargetDir>${basedir}/src/main/webapp/css</cssTargetDir>
-
-                    <jsSourceDir>${basedir}/src/main/webapp/js</jsSourceDir>
-                    <jsTargetDir>${basedir}/src/main/webapp/js</jsTargetDir>
-                </configuration>
-                <executions>
-                    <!-- 
-                    eclipse sucks!
-                    <execution>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>min</goal>
-                        </goals>
-                    </execution>
-                    -->
-                </executions>
-            </plugin>
-            
-            <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
                 <version>${maven-license-plugin.version}</version>
@@ -332,6 +303,8 @@
                         <exclude>**/src/main/java/**/package-info.java</exclude>
                         <exclude>**/src/main/java/**/Pangu.java</exclude>
                         <exclude>**/src/*/webapp/js/lib/*.js</exclude>
+                        <exclude>**/src/*/webapp/js/*.min.js</exclude>
+                        <exclude>**/src/*/webapp/css/*.css</exclude>
                     </excludes>
 
                     <useDefaultExcludes>true</useDefaultExcludes>

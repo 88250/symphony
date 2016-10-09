@@ -5,6 +5,4 @@ node_modules/
 **/.DS_store
 qrcode.png
 
-src/main/webapp/js/*.min.js
-src/main/webapp/css/*.min.css
 nb-configuration.xml

@@ -6,7 +6,7 @@
         <@head title="${postTitle} - ${symphonyLabel}">
         <meta name="robots" content="none" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home${miniPostfix}.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/css/home.css?${staticResourceVersion}" />
         <link rel="stylesheet" href="${staticServePath}/js/lib/editor/codemirror.min.css">
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css">
     </head>
