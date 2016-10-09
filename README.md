@@ -124,6 +124,7 @@ Sym 的诞生离不开以下开源项目：
 * [ReconnectingWebSocket](https://github.com/joewalnes/reconnecting-websocket)：前端 WebSocket 重连库
 * [to-markdown](https://github.com/domchristie/to-markdown)：前端 HTML 转换 Markdown
 * [UAParser.js](https://github.com/faisalman/ua-parser-js)：前端 User-Agent 解析库
+* [Sass](http://sass-lang.com)：前端 CSS 处理工具
 * [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
 * [pegdown](https://github.com/sirthias/pegdown)：Java Markdown 处理库
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
