@@ -19,7 +19,7 @@
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.10.13.15, Oct 2, 2016
+ * @version 1.10.14.15, Oct 9, 2016
  */
 
 /**
@@ -399,7 +399,7 @@ var ChatRoomChannel = {
                     if ($('.list').scrollTop() < $('li').outerHeight() * 2) {
                         $('.list').animate({'scrollTop': 0}, 500);
                     }
-                    $("ul li:first").fadeIn(2000);
+                    $(".list li:first").fadeIn(2000);
                     break;
             }
         };
