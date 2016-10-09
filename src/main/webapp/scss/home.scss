@@ -61,7 +61,7 @@
     right: 0px;
     top: 0px;
     border-width: 10px 10px 10px 10px;
-    border-color: #d23f31 #d23f31 transparent transparent;
+    border-color: $red $red transparent transparent;
 }
 
 .home-menu a.current::before {
@@ -71,7 +71,7 @@
     left: 0;
     width: 2px;
     content: "";
-    background-color: #d23f31;
+    background-color: $red;
 }
 
 .home-menu a span:last-child:hover {
@@ -306,7 +306,7 @@ label.article-anonymous {
 }
 
 .tabs a.selected {
-    border-color: #d23f31;
+    border-color: $red;
     color: #212121;
 }
 
@@ -422,7 +422,7 @@ label.article-anonymous {
     text-align: center;
     width: 35px;
     padding: 0 10px;
-    color: #d23f31;
+    color: $red;
     font-weight: 700;
 }
 
