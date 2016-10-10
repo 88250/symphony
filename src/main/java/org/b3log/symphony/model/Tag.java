@@ -37,7 +37,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.5.4, Sep 12, 2016
+ * @version 1.14.6.4, Oct 9, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -430,7 +430,7 @@ public final class Tag {
         for (final JSONObject iconTag : iconTags) {
             final String iconTagTitle = iconTag.optString(Tag.TAG_TITLE);
             if (iconTagTitle.length() < 2) {
-                break;
+                continue;
             }
 
             if (StringUtils.containsIgnoreCase(title, iconTagTitle)) {

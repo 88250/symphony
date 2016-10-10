@@ -227,9 +227,7 @@ blockquote {
     word-wrap: break-word;
     overflow: hidden;
     line-height: 1.5;
-}
 
-.content-reset {
     ul,
     ol {
         padding-left: 2em;
@@ -334,7 +332,7 @@ blockquote {
         font-size: 85%;
         background-color: rgba(252, 41, 41, 0.12);
         border-radius: 3px;
-        color: #d23f31;
+        color: $red;
         font-family: $font-family-code;
     }
 
@@ -454,7 +452,7 @@ a[class^="icon-"].ft-fade:hover {
 }
 
 .ft-red {
-    color: #d23f31;
+    color: $red;
 }
 
 .ft-blue {
@@ -709,6 +707,7 @@ button,
     white-space: nowrap;
 }
 
+
 button:hover,
 .btn:hover {
     text-decoration: none;
@@ -735,7 +734,7 @@ button.green,
 
 button.green:hover,
 .btn.green:hover{
-    background-color: #69d344;
+    background-color: #569e3d;
     background: linear-gradient(#79d858, #569e3d);
 }
 
@@ -748,21 +747,21 @@ button.green:active {
 
 button.red,
 .btn.red {
-    color: #d23f31;
+    color: $red;
 }
 
 button.red:hover,
 .btn.red:hover,
 .btn.red-hover {
     color: #FFF;
-    background-color: #d23f31;
-    background-image: linear-gradient(#c0372a, #d23f31);
-    border-color: #ab3125;
+    background-color: $red;
+    background-image: linear-gradient(#c0372a, $red);
+    border-color: #c0372a;
 }
 
 button.red:active,
 .btn.red:active {
-    background-color: #c9320c;
+    background-color: $red;
     background-image: none;
     border-color: #c9320c
 }
@@ -1041,7 +1040,7 @@ a[class*=" icon-"]:hover {
 
 /* start tip */
 .tip.error {
-    color: #d23f31;
+    color: $red;
     background-color: #fcdede;
     border: 1px solid #d2b2b2;
 }
@@ -1353,7 +1352,7 @@ a[class*=" icon-"]:hover {
 }
 
 .nav a.selected {
-    border-bottom: 2px solid #d23f31;
+    border-bottom: 2px solid $red;
     padding-bottom: 3px;
 }
 
@@ -1437,14 +1436,14 @@ a[class*=" icon-"]:hover {
     -o-animation:spaceboots 1s infinite;
     -ms-animation:spaceboots 1s infinite;
     animation:spaceboots 1s infinite;
-    background-color: #d23f31;
+    background-color: $red;
     color: #FFFFFF;
 }
 
 .nav .user-nav a.selected.no-msg,
 .nav .user-nav a.selected.msg {
     animation: none;
-    background-color: #d23f31;
+    background-color: $red;
     border-bottom: 0;
 }
 
@@ -1889,9 +1888,9 @@ ul.CodeMirror-hints {
     border-radius: 3px 0 0 0;
     min-width: 35%;
     color: #FFF;
-    background-color: #d23f31;
-    background-image: linear-gradient(#c0372a, #d23f31);
-    border-color: #ab3125;
+    background-color: $red;
+    background-image: linear-gradient(#c0372a, $red);
+    border-color: #c0372a;
     letter-spacing: 1px;
 }
 
@@ -1923,7 +1922,7 @@ ul.CodeMirror-hints {
 .person-info .activity-board {
     position: absolute;
     height: 2px;
-    background-color: #d23f31;
+    background-color: $red;
     top: -1px;
 }
 
@@ -2035,12 +2034,11 @@ ul.CodeMirror-hints {
 
 .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
-    color: #d23f31;
+    color: $red;
     font-style: normal;
 }
 
 .algolia-autocomplete .aa-dropdown-menu .fn-right {
     margin: 5px;
 }
-
 /* end algolia */

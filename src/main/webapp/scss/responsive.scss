@@ -19,6 +19,9 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.1.4.11, Sep 28, 2016
  */
+
+@import "variables";
+
 @media (max-width: 1016px) {
     .avatar-big {
         height: 140px;
@@ -70,7 +73,7 @@
     .nav div > a.current {
         border-bottom: 0;
         padding-bottom: 11px;
-        color: #d23f31;
+        color: $red;
     }
 
     .nav .form {
@@ -110,7 +113,7 @@
 
     .wrapper .tab > li.current {
         border-width: 0;
-        border-bottom: 2px solid #d23f31;
+        border-bottom: 2px solid $red;
     }
 
     .wrapper .tab > li.current > a {

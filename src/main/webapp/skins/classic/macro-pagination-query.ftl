@@ -2,7 +2,7 @@
 <#if paginationPageCount?? && paginationPageCount!=0 && paginationPageCount!=1>
     <div class="pagination">
         <#if paginationFirstPageNum!=1>
-        <a rel="prev" href="${url}&${query}"><<1</a>
+        <a rel="prev" href="${url}?${query}"><<1</a>
         </#if>
         <#list paginationPageNums as nums>
         <#if nums=paginationCurrentPageNum>

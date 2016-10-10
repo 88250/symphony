@@ -125,7 +125,7 @@ h2.article-title > a:hover {
     top: -8px;
     left: 0;
     cursor: pointer;
-    color: #d23f31;
+    color: $red;
 }
 
 #revision .pagination {
@@ -384,7 +384,7 @@ label.cmt-anonymous {
 }
 
 .reply-btn {
-    background-color: #d23f31;
+    background-color: $red;
     position: fixed;
     bottom: 97px;
     right: 20px;
@@ -519,7 +519,7 @@ label.cmt-anonymous {
 .heat {
     position: absolute;
     height: 5px;
-    background-color: #d23f31;
+    background-color: $red;
     z-index: 1;
     bottom: -3px;
     right: 0;
@@ -529,7 +529,7 @@ label.cmt-anonymous {
 .point-remove {
     position: absolute;
     height: 5px;
-    background-color: #d23f31;
+    background-color: $red;
     z-index: 1;
     bottom: -3px;
     right: 0px;
