@@ -74,6 +74,19 @@
                     </div>
                     <#if articles?size != 0>
                     <div class="module">
+                        <div class="module-header fn-clear">
+                            <span class="fn-right">
+                                <a<#if !current> class="ft-gray"</#if> href="">${default1Label}</a>
+                                <span class="ft-fade">/</span>
+                                <a<#if !current> class="ft-gray"</#if> href="">${hotArticlesLabel}</a>
+                                <span class="ft-fade">/</span>
+                                <a<#if !current> class="ft-gray"</#if> href="">${goodCmtsLabel}</a>
+                                <span class="ft-fade">/</span>
+                                <a<#if !current> class="ft-gray"</#if> href="">${recentCommentLabel}</a>
+                                <span class="ft-fade">/</span>
+                                <a<#if !current> class="ft-gray"</#if> href="">${perfectLabel}</a>
+                            </span>
+                        </div>
                         <@list listData=articles/>
                         <@pagination url="/tag/${tag.tagTitle?url('utf-8')}"/>
                     </div>
