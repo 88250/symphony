@@ -174,7 +174,7 @@ public class IndexProcessor {
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
         String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/recent");
-        int sortMode = 0;
+        int sortMode;
         switch (sortModeStr) {
             case "":
                 sortMode = 0;
