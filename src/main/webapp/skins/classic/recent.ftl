@@ -17,17 +17,17 @@
                     <div class="module">
                         <div class="module-header fn-clear">
                             <span class="fn-right">
-                                <a href="">${default1Label}</a>
+                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/recent">${default1Label}</a>
                                 <span class="ft-fade">/</span>
-                                <a<#if !current> class="ft-gray"</#if> href="">${hotArticlesLabel}</a>
+                                <a<#if "/hot" == current> class="ft-gray"</#if> href="${servePath}/recent/hot">${hotArticlesLabel}</a>
                                 <span class="ft-fade">/</span>
-                                <a<#if !current> class="ft-gray"</#if> href="">${goodCmtsLabel}</a>
+                                <a<#if "/good" == current> class="ft-gray"</#if> href="${servePath}/recent/good">${goodCmtsLabel}</a>
                                 <span class="ft-fade">/</span>
-                                <a<#if !current> class="ft-gray"</#if> href="">${recentCommentLabel}</a>
+                                <a<#if "/reply" == current> class="ft-gray"</#if> href="${servePath}/recent/reply">${recentCommentLabel}</a>
                             </span>
                         </div>
                         <@list listData=latestArticles/>
-                        <@pagination url="${servePath}/recent"/>
+                        <@pagination url="${servePath}/recent${current}"/>
                     </div>
                     <#include "common/domains.ftl">
                 </div>

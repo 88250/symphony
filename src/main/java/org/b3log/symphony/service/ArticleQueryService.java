@@ -86,7 +86,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.21.14.28, Sep 30, 2016
+ * @version 2.22.14.28, Oct 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -1047,15 +1047,120 @@ public class ArticleQueryService {
     }
 
     /**
-     * Makes the recent (sort by create time) articles with the specified fetch size.
+     * Makes the recent (sort by create time desc) articles with the specified fetch size.
      *
      * @param currentPageNum the specified current page number
      * @param fetchSize the specified fetch size
      * @return recent articles query
      */
-    private Query makeRecentQuery(final int currentPageNum, final int fetchSize) {
+    private Query makeRecentDefaultQuery(final int currentPageNum, final int fetchSize) {
         final Query ret = new Query()
                 .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
+                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+        ret.setFilter(makeRecentArticleShowingFilter());
+        ret.addProjection(Keys.OBJECT_ID, String.class).
+                addProjection(Article.ARTICLE_STICK, Long.class).
+                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
+                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                addProjection(Article.ARTICLE_TITLE, String.class).
+                addProjection(Article.ARTICLE_STATUS, Integer.class).
+                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                addProjection(Article.ARTICLE_TYPE, Integer.class).
+                addProjection(Article.ARTICLE_PERMALINK, String.class).
+                addProjection(Article.ARTICLE_TAGS, String.class).
+                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
+                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
+                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
+                addProjection(Article.ARTICLE_PERFECT, Integer.class);
+
+        return ret;
+    }
+
+    /**
+     * Makes the recent (sort by comment count desc) articles with the specified fetch size.
+     *
+     * @param currentPageNum the specified current page number
+     * @param fetchSize the specified fetch size
+     * @return recent articles query
+     */
+    private Query makeRecentHotQuery(final int currentPageNum, final int fetchSize) {
+        final Query ret = new Query()
+                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
+                .addSort(Article.ARTICLE_COMMENT_CNT, SortDirection.DESCENDING)
+                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+        ret.setFilter(makeRecentArticleShowingFilter());
+        ret.addProjection(Keys.OBJECT_ID, String.class).
+                addProjection(Article.ARTICLE_STICK, Long.class).
+                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
+                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                addProjection(Article.ARTICLE_TITLE, String.class).
+                addProjection(Article.ARTICLE_STATUS, Integer.class).
+                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                addProjection(Article.ARTICLE_TYPE, Integer.class).
+                addProjection(Article.ARTICLE_PERMALINK, String.class).
+                addProjection(Article.ARTICLE_TAGS, String.class).
+                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
+                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
+                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
+                addProjection(Article.ARTICLE_PERFECT, Integer.class);
+
+        return ret;
+    }
+
+    /**
+     * Makes the recent (sort by score desc) articles with the specified fetch size.
+     *
+     * @param currentPageNum the specified current page number
+     * @param fetchSize the specified fetch size
+     * @return recent articles query
+     */
+    private Query makeRecentGoodQuery(final int currentPageNum, final int fetchSize) {
+        final Query ret = new Query()
+                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
+                .addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING)
+                .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
+                .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
+        ret.setFilter(makeRecentArticleShowingFilter());
+        ret.addProjection(Keys.OBJECT_ID, String.class).
+                addProjection(Article.ARTICLE_STICK, Long.class).
+                addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
+                addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
+                addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                addProjection(Article.ARTICLE_TITLE, String.class).
+                addProjection(Article.ARTICLE_STATUS, Integer.class).
+                addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                addProjection(Article.ARTICLE_TYPE, Integer.class).
+                addProjection(Article.ARTICLE_PERMALINK, String.class).
+                addProjection(Article.ARTICLE_TAGS, String.class).
+                addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
+                addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
+                addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
+                addProjection(Article.ARTICLE_PERFECT, Integer.class);
+
+        return ret;
+    }
+
+    /**
+     * Makes the recent (sort by latest comment time desc) articles with the specified fetch size.
+     *
+     * @param currentPageNum the specified current page number
+     * @param fetchSize the specified fetch size
+     * @return recent articles query
+     */
+    private Query makeRecentReplyQuery(final int currentPageNum, final int fetchSize) {
+        final Query ret = new Query()
+                .addSort(Article.ARTICLE_STICK, SortDirection.DESCENDING)
+                .addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING)
                 .addSort(Keys.OBJECT_ID, SortDirection.DESCENDING)
                 .setPageSize(fetchSize).setCurrentPageNum(currentPageNum);
         ret.setFilter(makeRecentArticleShowingFilter());
@@ -1101,6 +1206,7 @@ public class ArticleQueryService {
      * Gets the recent (sort by create time) articles with the specified fetch size.
      *
      * @param avatarViewMode the specified avatar view mode
+     * @param sortMode the specified sort mode, 0: default, 1: hot, 2: score, 3: reply
      * @param currentPageNum the specified current page number
      * @param fetchSize the specified fetch size
      * @return for example,      <pre>
@@ -1120,11 +1226,34 @@ public class ArticleQueryService {
      *
      * @throws ServiceException service exception
      */
-    public JSONObject getRecentArticles(final int avatarViewMode, final int currentPageNum, final int fetchSize)
+    public JSONObject getRecentArticles(final int avatarViewMode, final int sortMode,
+            final int currentPageNum, final int fetchSize)
             throws ServiceException {
         final JSONObject ret = new JSONObject();
 
-        final Query query = makeRecentQuery(currentPageNum, fetchSize);
+        Query query;
+        switch (sortMode) {
+            case 0:
+                query = makeRecentDefaultQuery(currentPageNum, fetchSize);
+
+                break;
+            case 1:
+                query = makeRecentHotQuery(currentPageNum, fetchSize);
+
+                break;
+            case 2:
+                query = makeRecentGoodQuery(currentPageNum, fetchSize);
+
+                break;
+            case 3:
+                query = makeRecentReplyQuery(currentPageNum, fetchSize);
+
+                break;
+            default:
+                LOGGER.warn("Unknown sort mode [" + sortMode + "]");
+                query = makeRecentDefaultQuery(currentPageNum, fetchSize);
+        }
+
         JSONObject result = null;
 
         try {
@@ -1450,7 +1579,7 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getRecentArticlesWithComments(final int avatarViewMode,
             final int currentPageNum, final int fetchSize) throws ServiceException {
-        return getArticles(avatarViewMode, makeRecentQuery(currentPageNum, fetchSize));
+        return getArticles(avatarViewMode, makeRecentDefaultQuery(currentPageNum, fetchSize));
     }
 
     /**
@@ -2083,8 +2212,8 @@ public class ArticleQueryService {
 
                 content = Jsoup.clean(content, Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK),
                         Whitelist.relaxed().addAttributes(":all", "id", "target", "class").
-                        addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
-                        .addAttributes("audio", "controls", "src"), outputSettings);
+                                addTags("span", "hr").addAttributes("iframe", "src", "width", "height")
+                                .addAttributes("audio", "controls", "src"), outputSettings);
 
                 content = content.replace("\n", "\\n").replace("'", "\\'")
                         .replace("\"", "\\\"");
