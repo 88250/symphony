@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.24.17.42, Oct 8, 2016
+ * @version 2.24.17.43, Oct 11, 2016
  */
 
 @import "variables";
@@ -1216,7 +1216,7 @@ a[class*=" icon-"]:hover {
 .pagination a,
 .pagination span,
 .tabs-sub a {
-    line-height: 30px;
+    line-height: 38px;
     text-decoration: none;
     flex: 1;
     text-align: center;
@@ -1691,7 +1691,7 @@ ul.CodeMirror-hints {
     padding: 9px 10px 10px;
     text-shadow: 0 1px 0 #FFFFFF;
     font-size: 14px;
-    line-height: 17px;
+    line-height: 18px;
 }
 
 .module-header h2 {
@@ -1875,72 +1875,74 @@ ul.CodeMirror-hints {
 /* start person info */
 .person-info {
     position: relative;
-}
 
-.person-info .info {
-    position: relative;
-    overflow: hidden;
-    height: 35px;
-}
+    .info {
+        position: relative;
+        overflow: hidden;
+        height: 38px;
+    }
 
-.person-info .info button.red {
-    position: absolute;
-    border-radius: 3px 0 0 0;
-    min-width: 35%;
-    color: #FFF;
-    background-color: $red;
-    background-image: linear-gradient(#c0372a, $red);
-    border-color: #c0372a;
-    letter-spacing: 1px;
-}
+    .info button.red {
+        position: absolute;
+        border-radius: 3px 0 0 0;
+        min-width: 35%;
+        color: #FFF;
+        background-color: $red;
+        background-image: linear-gradient(#c0372a, $red);
+        border-color: #c0372a;
+        letter-spacing: 1px;
+        line-height: 18px;
+        padding: 10px;
+    }
 
-.person-info .info button.red:hover {
-    background-color: #c0372a;
-    background-image: none; 
-}
+    .info button.red:hover {
+        background-color: #c0372a;
+        background-image: none; 
+    }
 
-.person-info .info .fn-right {
-    margin: 9px 10px 0 0;
-}
+    .info .fn-right {
+        margin: 10px 10px 0 0;
+    }
 
-.person-info .status {
-    border-bottom: 1px dotted #ccc;
-    border-top-width: 0;
-    margin-top: 0;
-    margin-bottom: 20px;
-    padding-top: 0;
-}
+    .status {
+        border-bottom: 1px dotted #ccc;
+        border-top-width: 0;
+        margin-top: 0;
+        margin-bottom: 20px;
+        padding-top: 0;
+    }
 
-.person-info .status .fn-pointer:hover span {
-    color: #333;
-}
+    .status .fn-pointer:hover span {
+        color: #333;
+    }
 
-.person-info .module-panel {
-    padding: 0 10px 10px 10px;
-}
+    .module-panel {
+        padding: 0 10px 10px 10px;
+    }
 
-.person-info .activity-board {
-    position: absolute;
-    height: 2px;
-    background-color: $red;
-    top: -1px;
-}
+    .activity-board {
+        position: absolute;
+        height: 2px;
+        background-color: $red;
+        top: -1px;
+    }
 
-.person-info .right {
-    width: 2px;
-    right: -1px;
-    left: auto;
-}
+    .right {
+        width: 2px;
+        right: -1px;
+        left: auto;
+    }
 
-.person-info .left {
-    width: 2px;
-    right: 0;
-    left: -1px;
-}
+    .left {
+        width: 2px;
+        right: 0;
+        left: -1px;
+    }
 
-.person-info .bottom {
-    top: auto;
-    bottom: -1px;
+    .bottom {
+        top: auto;
+        bottom: -1px;
+    }
 }
 
 .painter-point {
