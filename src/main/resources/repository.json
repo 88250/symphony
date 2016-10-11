@@ -791,8 +791,8 @@
                     "type": "long"
                 },
                 {
-                    "name": "articleGoodCnt",
-                    "type": "int"
+                    "name": "redditScore",
+                    "type": "double"
                 }
             ]
         },

@@ -728,7 +728,7 @@ public class ArticleQueryService {
 
                     break;
                 case 2:
-                    query.addSort(Article.ARTICLE_GOOD_CNT, SortDirection.DESCENDING).
+                    query.addSort(Article.REDDIT_SCORE, SortDirection.DESCENDING).
                             addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                             setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
                             .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
