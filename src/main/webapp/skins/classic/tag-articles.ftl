@@ -76,15 +76,13 @@
                     <div class="module">
                         <div class="module-header fn-clear">
                             <span class="fn-right">
-                                <a<#if !current> class="ft-gray"</#if> href="">${default1Label}</a>
+                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/recent">${default1Label}</a>
                                 <span class="ft-fade">/</span>
-                                <a<#if !current> class="ft-gray"</#if> href="">${hotArticlesLabel}</a>
+                                <a<#if "/hot" == current> class="ft-gray"</#if> href="${servePath}/recent/hot">${hotArticlesLabel}</a>
                                 <span class="ft-fade">/</span>
-                                <a<#if !current> class="ft-gray"</#if> href="">${goodCmtsLabel}</a>
+                                <a<#if "/good" == current> class="ft-gray"</#if> href="${servePath}/recent/good">${goodCmtsLabel}</a>
                                 <span class="ft-fade">/</span>
-                                <a<#if !current> class="ft-gray"</#if> href="">${recentCommentLabel}</a>
-                                <span class="ft-fade">/</span>
-                                <a<#if !current> class="ft-gray"</#if> href="">${perfectLabel}</a>
+                                <a<#if "/reply" == current> class="ft-gray"</#if> href="${servePath}/recent/reply">${recentCommentLabel}</a>
                             </span>
                         </div>
                         <@list listData=articles/>

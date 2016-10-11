@@ -285,5 +285,7 @@ public class TagProcessor {
         filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+        
+        dataModel.put(Common.CURRENT, "");
     }
 }
