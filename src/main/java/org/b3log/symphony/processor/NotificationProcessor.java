@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.1.4, Aug 31, 2016
+ * @version 1.7.1.4, Oct 11, 2016
  * @since 0.2.5
  */
 @RequestProcessor
@@ -139,7 +139,7 @@ public class NotificationProcessor {
         dataModel.put(Common.SYS_ANNOUNCE_NOTIFICATIONS, notifications);
 
         fillNotificationCount(userId, dataModel);
-        
+
         notificationMgmtService.makeRead(notifications);
 
         final int recordCnt = result.getInt(Pagination.PAGINATION_RECORD_COUNT);
@@ -156,6 +156,33 @@ public class NotificationProcessor {
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         filler.fillHeaderAndFooter(request, response, dataModel);
+    }
+
+    /**
+     * Makes all notifications as read.
+     *
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/notification/all-read", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = {StopwatchStartAdvice.class, LoginCheck.class})
+    @After(adviceClass = StopwatchEndAdvice.class)
+    public void makeAllNotificationsRead(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        if (null == currentUser) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final String userId = currentUser.optString(Keys.OBJECT_ID);
+
+        notificationMgmtService.makeAllRead(userId);
+
+        context.renderJSON(true);
     }
 
     /**
@@ -424,6 +451,10 @@ public class NotificationProcessor {
 
         final int unreadSysAnnounceCnt = notificationQueryService.getUnreadSysAnnounceNotificationCount(userId);
         dataModel.put(Common.UNREAD_SYS_ANNOUNCE_NOTIFICATION_CNT, unreadSysAnnounceCnt);
+
+        dataModel.put(Common.UNREAD_NOTIFICATION_CNT, unreadAtNotificationCnt + unreadBroadcastCnt
+                + unreadCommentedNotificationCnt + unreadFollowingUserNotificationCnt + unreadPointNotificationCnt
+                + unreadReplyNotificationCnt + unreadSysAnnounceCnt);
     }
 
     /**

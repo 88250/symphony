@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Notification management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.3, Sep 22, 2016
+ * @version 1.9.0.3, Oct 11, 2016
  * @since 0.2.5
  */
 @Service
@@ -147,6 +147,27 @@ public class NotificationMgmtService {
                         new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId),
                         new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false),
                         new PropertyFilter(Notification.NOTIFICATION_DATA_TYPE, FilterOperator.EQUAL, type)));
+
+        try {
+            final Set<JSONObject> notifications = CollectionUtils.jsonArrayToSet(notificationRepository.get(query).
+                    optJSONArray(Keys.RESULTS));
+
+            makeRead(notifications);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Makes read failed", e);
+        }
+    }
+
+    /**
+     * Makes the specified user's all notifications as read.
+     *
+     * @param userId the specified user id
+     */
+    public void makeAllRead(final String userId) {
+        final Query query = new Query().setFilter(
+                CompositeFilterOperator.and(
+                        new PropertyFilter(Notification.NOTIFICATION_USER_ID, FilterOperator.EQUAL, userId),
+                        new PropertyFilter(Notification.NOTIFICATION_HAS_READ, FilterOperator.EQUAL, false)));
 
         try {
             final Set<JSONObject> notifications = CollectionUtils.jsonArrayToSet(notificationRepository.get(query).

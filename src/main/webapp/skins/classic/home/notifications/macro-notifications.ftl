@@ -22,7 +22,15 @@
                 <div class="side">
                     <#include '../../common/person-info.ftl'/>
                     <div class="module">
-                        <div class="module-header"><h2>${messageLabel}</h2></div> 
+                        <div class="module-header"><h2>${messageLabel}</h2>
+                            <#if unreadNotificationCnt &gt; 0>
+                            <span class="count">${unreadNotificationCnt}</span>
+                            <span onclick="Settings.makeAllNotificationsRead()" 
+                                  aria-label="${makeAllAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
+                                <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
+                            </span>
+                            </#if>
+                        </div>
                         <div class="module-panel">
                             <nav class="home-menu">
                                 <a href="${servePath}/notifications/commented"<#if type == "commented"> class="current"</#if>>
@@ -92,14 +100,14 @@
         <#include "../../footer.ftl">
         <script type="text/javascript" src="${staticServePath}/js/settings${miniPostfix}.js?${staticResourceVersion}"></script>
         <script>
-                                Settings.initHljs();
-                                $(document).bind('keyup', 'e', function assets() {
-                                    if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
-                                        return false;
-                                    }
-                                    $('.home-menu .current .tooltipped').click();
-                                    return false;
-                                });
+                                        Settings.initHljs();
+                                        $(document).bind('keyup', 'e', function assets() {
+                                            if (!Label.userKeyboardShortcutsStatus || Label.userKeyboardShortcutsStatus === '1') {
+                                                return false;
+                                            }
+                                            $('.home-menu .current .tooltipped').click();
+                                            return false;
+                                        });
         </script>
     </body>
 </html>
