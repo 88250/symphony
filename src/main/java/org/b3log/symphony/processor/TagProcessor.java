@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jodd.util.URLDecoder;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
@@ -316,6 +317,7 @@ public class TagProcessor {
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
 
-        dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/tag/" + tagTitle));
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(URLDecoder.decode(request.getRequestURI()),
+                "/tag/" + tagTitle));
     }
 }
