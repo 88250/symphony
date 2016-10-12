@@ -15,8 +15,19 @@
             <div class="wrapper">
                 <div class="content fn-clear">
                     <div class="module">
-                    <@list listData=latestArticles/>
-                    <@pagination url="${servePath}/recent"/>
+                        <div class="module-header fn-clear">
+                            <span class="fn-right">
+                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/recent">${default1Label}</a>
+                                <span class="ft-fade">/</span>
+                                <a<#if "/hot" == current> class="ft-gray"</#if> href="${servePath}/recent/hot">${hotArticlesLabel}</a>
+                                <span class="ft-fade">/</span>
+                                <a<#if "/good" == current> class="ft-gray"</#if> href="${servePath}/recent/good">${goodCmtsLabel}</a>
+                                <span class="ft-fade">/</span>
+                                <a<#if "/reply" == current> class="ft-gray"</#if> href="${servePath}/recent/reply">${recentCommentLabel}</a>
+                            </span>
+                        </div>
+                        <@list listData=latestArticles/>
+                        <@pagination url="${servePath}/recent${current}"/>
                     </div>
                     <#include "common/domains.ftl">
                 </div>

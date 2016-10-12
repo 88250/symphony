@@ -40,11 +40,10 @@
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}
                 </span> 
             </div>
-            <#if article.articleCommentCount != 0>
-            <div class="cmts tooltipped tooltipped-w" aria-label="${cmtLabel}${quantityLabel}">
-                <a class="count ft-gray" href="${servePath}${article.articlePermalink}">${article.articleCommentCount}</a>
-            </div>
-            </#if>
+            <span class="tooltipped tooltipped-w cmts" aria-label="${uncollectLabel} ${article.articleCollectCnt}" 
+                                  onclick="Util.unfollow(this, '${article.oId}', 'article', ${article.articleCollectCnt})">
+                <span class="icon-star ft-red"></span>
+            </span>
         </li>
         </#list>
     </ul>

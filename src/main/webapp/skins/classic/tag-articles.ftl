@@ -74,8 +74,19 @@
                     </div>
                     <#if articles?size != 0>
                     <div class="module">
+                        <div class="module-header fn-clear">
+                            <span class="fn-right">
+                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${default1Label}</a>
+                                <span class="ft-fade">/</span>
+                                <a<#if "/hot" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}/hot">${hotArticlesLabel}</a>
+                                <span class="ft-fade">/</span>
+                                <a<#if "/good" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}/good">${goodCmtsLabel}</a>
+                                <span class="ft-fade">/</span>
+                                <a<#if "/reply" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}/reply">${recentCommentLabel}</a>
+                            </span>
+                        </div>
                         <@list listData=articles/>
-                        <@pagination url="/tag/${tag.tagTitle?url('utf-8')}"/>
+                        <@pagination url="${servePath}/tag/${tag.tagTitle?url('utf-8')}${current}"/>
                     </div>
                     </#if>
                 </div> 

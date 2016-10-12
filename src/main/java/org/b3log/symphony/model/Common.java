@@ -19,7 +19,7 @@ package org.b3log.symphony.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.43.1.11, Sep 25, 2016
+ * @version 1.44.1.11, Oct 11, 2016
  * @since 0.2.0
  */
 public final class Common {
@@ -283,6 +283,11 @@ public final class Common {
      * Key of current user.
      */
     public static final String CURRENT_USER = "currentUser";
+    
+    /**
+     * Key of current.
+     */
+    public static final String CURRENT = "current";
 
     /**
      * Key of is logged in.
@@ -478,6 +483,11 @@ public final class Common {
      * Key of 'reply' notifications.
      */
     public static final String REPLY_NOTIFICATIONS = "replyNotifications";
+
+    /**
+     * Key of unread notifications count.
+     */
+    public static final String UNREAD_NOTIFICATION_CNT = "unreadNotificationCnt";
 
     /**
      * Key of unread 'commented' notifications count.

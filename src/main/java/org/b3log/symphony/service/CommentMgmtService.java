@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.List;
 import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -47,6 +48,7 @@ import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.repository.OptionRepository;
+import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
@@ -57,7 +59,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.11.7.18, Aug 29, 2016
+ * @version 2.12.7.18, Oct 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -91,6 +93,12 @@ public class CommentMgmtService {
      */
     @Inject
     private TagRepository tagRepository;
+
+    /**
+     * Tag-Article repository.
+     */
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * User repository.
@@ -433,6 +441,15 @@ public class CommentMgmtService {
 
             // Adds the comment
             final String commentId = commentRepository.add(comment);
+
+            // Updates tag-article relation stat.
+            final List<JSONObject> tagArticleRels = tagArticleRepository.getByArticleId(articleId);
+            for (final JSONObject tagArticleRel : tagArticleRels) {
+                tagArticleRel.put(Article.ARTICLE_LATEST_CMT_TIME, currentTimeMillis);
+                tagArticleRel.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
+
+                tagArticleRepository.update(tagArticleRel.optString(Keys.OBJECT_ID), tagArticleRel);
+            }
 
             transaction.commit();
 

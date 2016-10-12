@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -62,7 +63,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.8.2.19, Sep 26, 2016
+ * @version 1.9.2.19, Oct 11, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -148,7 +149,7 @@ public class IndexProcessor {
      * @param response the specified response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/recent", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/recent", "/recent/hot", "/recent/good", "/recent/reply"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showRecent(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -172,7 +173,30 @@ public class IndexProcessor {
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        final JSONObject result = articleQueryService.getRecentArticles(avatarViewMode, pageNum, pageSize);
+        String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/recent");
+        int sortMode;
+        switch (sortModeStr) {
+            case "":
+                sortMode = 0;
+
+                break;
+            case "/hot":
+                sortMode = 1;
+
+                break;
+            case "/good":
+                sortMode = 2;
+
+                break;
+            case "/reply":
+                sortMode = 3;
+
+                break;
+            default:
+                sortMode = 0;
+        }
+
+        final JSONObject result = articleQueryService.getRecentArticles(avatarViewMode, sortMode, pageNum, pageSize);
         final List<JSONObject> latestArticles = (List<JSONObject>) result.get(Article.ARTICLES);
         dataModel.put(Common.LATEST_ARTICLES, latestArticles);
 
@@ -203,6 +227,8 @@ public class IndexProcessor {
         filler.fillSideHotArticles(avatarViewMode, dataModel);
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
+
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/recent"));
     }
 
     /**

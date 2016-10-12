@@ -20,7 +20,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Zephyr
- * @version 1.17.9.14, Sep 20, 2016
+ * @version 1.18.9.14, Oct 11, 2016
  */
 
 /**
@@ -304,7 +304,7 @@ var Settings = {
             },
             success: function (result, textStatus) {
                 if (result.sc) {
-                    $(".list ul").prepend('<li><code>' + result.msg.split(' ')[0] + '</code>' +result.msg.substr(16) + '</li>');
+                    $(".list ul").prepend('<li><code>' + result.msg.split(' ')[0] + '</code>' + result.msg.substr(16) + '</li>');
                 } else {
                     $("#pointBuyInvitecodeTip").addClass("error").removeClass("succ").html('<ul><li>' + result.msg + '</li></ul>');
                 }
@@ -594,7 +594,27 @@ var Settings = {
         $.ajax({
             url: Label.servePath + "/notification/read/" + type,
             type: "GET",
-            cache: false
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    window.location.reload();
+                }
+            }
+        });
+    },
+    /**
+     * @description 标记所有消息通知为已读状态.
+     */
+    makeAllNotificationsRead: function () {
+        $.ajax({
+            url: Label.servePath + "/notification/all-read",
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                if (result.sc) {
+                    window.location.reload();
+                }
+            }
         });
     }
 };

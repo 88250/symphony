@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -29,6 +30,7 @@ import org.b3log.symphony.model.Liveness;
 import org.b3log.symphony.model.Vote;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
+import org.b3log.symphony.repository.TagArticleRepository;
 import org.b3log.symphony.repository.VoteRepository;
 import org.json.JSONObject;
 
@@ -58,6 +60,12 @@ public class VoteMgmtService {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * Tag-Article repository.
+     */
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Comment repository.
@@ -103,6 +111,8 @@ public class VoteMgmtService {
 
                 final double redditScore = redditArticleScore(ups, downs, t);
                 article.put(Article.REDDIT_SCORE, redditScore);
+
+                updateTagArticleScore(article);
 
                 articleRepository.update(dataId, article);
             } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
@@ -210,6 +220,8 @@ public class VoteMgmtService {
             final double redditScore = redditArticleScore(ups, downs, t);
             article.put(Article.REDDIT_SCORE, redditScore);
 
+            updateTagArticleScore(article);
+
             articleRepository.update(dataId, article);
         } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
             final JSONObject comment = commentRepository.get(dataId);
@@ -279,6 +291,8 @@ public class VoteMgmtService {
             final double redditScore = redditArticleScore(ups, downs, t);
             article.put(Article.REDDIT_SCORE, redditScore);
 
+            updateTagArticleScore(article);
+
             articleRepository.update(dataId, article);
         } else if (Vote.DATA_TYPE_C_COMMENT == dataType) {
             final JSONObject comment = commentRepository.get(dataId);
@@ -346,5 +360,14 @@ public class VoteMgmtService {
         final double p = (double) ups / n;
 
         return (p + z * z / (2 * n) - z * Math.sqrt((p * (1 - p) + z * z / (4 * n)) / n)) / (1 + z * z / n);
+    }
+
+    private void updateTagArticleScore(final JSONObject article) throws RepositoryException {
+        final List<JSONObject> tagArticleRels = tagArticleRepository.getByArticleId(article.optString(Keys.OBJECT_ID));
+        for (final JSONObject tagArticleRel : tagArticleRels) {
+            tagArticleRel.put(Article.REDDIT_SCORE, article.optDouble(Article.REDDIT_SCORE));
+
+            tagArticleRepository.update(tagArticleRel.optString(Keys.OBJECT_ID), tagArticleRel);
+        }
     }
 }

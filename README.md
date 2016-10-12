@@ -71,6 +71,7 @@ Sym 使用了很多 HTML5 提供的技术特性，比如
 * [宽客网](http://www.cnq.net)
 * [贵州IT](http://www.gzit.info)
 * [超级产品经理](https://imspm.com)
+* [Titandb 学习主站](https://titandb.cn)
 
 如果你也搭建好了，欢迎通过 Pull Request 将你的站点加到这个列表中 :-p
 
