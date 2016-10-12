@@ -27,7 +27,7 @@
                                     <div class="avatar fn-left" style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                                     </#if>
                                     <div class="fn-flex-1">
-                                    <h2><a class="ft-red" rel="tag" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
+                                    <h2><a class="ft-red" rel="tag" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a></h2>
                                     </div>
                                     <span class="ft-gray fn-right">
                                         ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
@@ -55,7 +55,7 @@
                                     <#if tag.tagIconPath!="">
                                     <div class="avatar fn-left" style="background-image: url('${staticServePath}/images/tags/${tag.tagIconPath}')" alt="${tag.tagTitle}"></div>
                                     </#if>
-                                    <h2><a rel="tag" class="ft-green" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a></h2>
+                                    <h2><a rel="tag" class="ft-green" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a></h2>
                                     <span class="ft-gray fn-right">
                                         ${referenceLabel} ${tag.tagReferenceCount?c} &nbsp;
                                         ${cmtLabel} ${tag.tagCommentCount?c} 

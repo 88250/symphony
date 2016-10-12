@@ -21,7 +21,7 @@
                     <div class="module">
                         <div class="module-header">
                             <h2>
-                                <a href="${servePath}/tag/${tag.tagTitle?url('UTF-8')}">
+                                <a href="${servePath}/tag/${tag.tagURI}">
                                     <#if tag.tagIconPath != ''>
                                     <span class="avatar-small"  style="background-image:url('${staticServePath}/images/tags/${tag.tagIconPath}')"></span>
                                     </#if>

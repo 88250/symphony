@@ -203,15 +203,15 @@ public class TagProcessor {
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @param tagTitle the specified tag title
+     * @param tagURI the specified tag URI
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/tag/{tagTitle}", "/tag/{tagTitle}/hot", "/tag/{tagTitle}/good", "/tag/{tagTitle}/reply",
-        "/tag/{tagTitle}/perfect"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/tag/{tagURI}", "/tag/{tagURI}/hot", "/tag/{tagURI}/good", "/tag/{tagURI}/reply",
+        "/tag/{tagURI}/perfect"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-            final String tagTitle) throws Exception {
+            final String tagURI) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
         context.setRenderer(renderer);
 
@@ -233,14 +233,14 @@ public class TagProcessor {
         }
         final int windowSize = Symphonys.getInt("tagArticlesWindowSize");
 
-        final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
+        final JSONObject tag = tagQueryService.getTagByURI(tagURI);
         if (null == tag) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
 
-        tag.put(Common.IS_RESERVED, tagQueryService.isReservedTag(tagTitle));
+        tag.put(Common.IS_RESERVED, tagQueryService.isReservedTag(tag.optString(Tag.TAG_TITLE)));
 
         dataModel.put(Tag.TAG, tag);
 
@@ -260,7 +260,7 @@ public class TagProcessor {
 
         final int avatarViewMode = (int) request.getAttribute(UserExt.USER_AVATAR_VIEW_MODE);
 
-        String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/tag/" + tagTitle);
+        String sortModeStr = StringUtils.substringAfter(request.getRequestURI(), "/tag/" + tagURI);
         int sortMode;
         switch (sortModeStr) {
             case "":
@@ -318,6 +318,6 @@ public class TagProcessor {
         filler.fillLatestCmts(dataModel);
 
         dataModel.put(Common.CURRENT, StringUtils.substringAfter(URLDecoder.decode(request.getRequestURI()),
-                "/tag/" + tagTitle));
+                "/tag/" + tagURI));
     }
 }

@@ -58,7 +58,7 @@
                 <ul class="tag-desc fn-clear">
                     <#list tags as tag>
                     <li>
-                        <a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">
+                        <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">
                             <#if tag.tagIconPath!="">
                             <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" />
                             </#if>

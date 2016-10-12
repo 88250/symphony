@@ -21,7 +21,7 @@
                         <#list domains as navDomain>
                         <#if navDomain.domainURI == domain.domainURI>
                         <#list navDomain.domainTags as tag>
-                        <a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>  
+                        <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>  
                         </#list>
                         </#if>
                         </#list>

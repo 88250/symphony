@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -44,7 +46,7 @@ import org.json.JSONObject;
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.1, Sep 10, 2016
+ * @version 1.2.1.2, Oct 12, 2016
  * @since 1.1.0
  */
 @Service
@@ -127,6 +129,14 @@ public class TagMgmtService {
 
             JSONObject tag = new JSONObject();
             tag.put(Tag.TAG_TITLE, tagTitle);
+            String tagURI = tagTitle;
+            try {
+                tagURI = URLEncoder.encode(tagTitle, "UTF-8");
+            } catch (final UnsupportedEncodingException e) {
+                LOGGER.log(Level.ERROR, "Encode tag title [" + tagTitle + "] error", e);
+            }
+            tag.put(Tag.TAG_URI, tagURI);
+            tag.put(Tag.TAG_CSS, "");
             tag.put(Tag.TAG_REFERENCE_CNT, 0);
             tag.put(Tag.TAG_COMMENT_CNT, 0);
             tag.put(Tag.TAG_FOLLOWER_CNT, 0);

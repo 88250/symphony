@@ -41,7 +41,7 @@
             <div class="hot-tags">
                 ${hotTopicLabel}
                 <#list navTrendTags as trendTag>
-                <a rel="tag" href="/tag/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
+                <a rel="tag" href="/tag/${trendTag.tagURI}">${trendTag.tagTitle}</a>
                 </#list>
             </div>
 

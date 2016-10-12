@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony.processor;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -130,7 +132,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 2.22.5.14, Sep 23, 2016
+ * @version 2.22.5.15, Oct 12, 2016
  * @since 1.1.0
  */
 @RequestProcessor
@@ -408,7 +410,7 @@ public class AdminProcessor {
         String tagId;
         try {
             tagId = tagMgmtService.addTag(userId, title);
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
             renderer.setTemplateName("admin/error.ftl");
@@ -659,7 +661,7 @@ public class AdminProcessor {
             time = date.getTime();
             final int random = RandomUtils.nextInt(9999);
             time += random;
-        } catch (final Exception e) {
+        } catch (final ParseException e) {
             LOGGER.log(Level.ERROR, "Parse time failed, using current time instead");
         }
 
@@ -1082,7 +1084,7 @@ public class AdminProcessor {
             user.put(UserExt.USER_STATUS, UserExt.USER_STATUS_C_VALID);
 
             userId = userMgmtService.addUser(user);
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
             renderer.setTemplateName("admin/error.ftl");
@@ -1296,7 +1298,7 @@ public class AdminProcessor {
             notification.put(Notification.NOTIFICATION_DATA_ID, transferId);
 
             notificationMgmtService.addPointChargeNotification(notification);
-        } catch (final Exception e) {
+        } catch (final NumberFormatException | ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
             renderer.setTemplateName("admin/error.ftl");
@@ -1400,7 +1402,7 @@ public class AdminProcessor {
                 pointtransferMgmtService.transfer(Pointtransfer.ID_C_SYS, userId, Pointtransfer.TRANSFER_TYPE_C_INIT,
                         Pointtransfer.TRANSFER_SUM_C_INIT, userId, Long.valueOf(userId));
             }
-        } catch (final Exception e) {
+        } catch (final IOException | NumberFormatException | ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
             renderer.setTemplateName("admin/error.ftl");
@@ -1604,7 +1606,7 @@ public class AdminProcessor {
                 article.put(name, value);
             }
         }
-        
+
         final String articleTags = Tag.formatTags(article.optString(Article.ARTICLE_TAGS));
         article.put(Article.ARTICLE_TAGS, articleTags);
 
@@ -1857,6 +1859,8 @@ public class AdminProcessor {
         tagFields.put(Tag.TAG_STATUS, Integer.class);
         tagFields.put(Tag.TAG_GOOD_CNT, Integer.class);
         tagFields.put(Tag.TAG_BAD_CNT, Integer.class);
+        tagFields.put(Tag.TAG_URI, String.class);
+        tagFields.put(Tag.TAG_CSS, String.class);
 
         final JSONObject result = tagQueryService.getTags(requestJSONObject, tagFields);
         dataModel.put(Tag.TAGS, CollectionUtils.jsonArrayToList(result.optJSONArray(Tag.TAGS)));
@@ -2146,7 +2150,7 @@ public class AdminProcessor {
             domain.put(Domain.DOMAIN_STATUS, Domain.DOMAIN_STATUS_C_VALID);
 
             domainId = domainMgmtService.addDomain(domain);
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
             context.setRenderer(renderer);
             renderer.setTemplateName("admin/error.ftl");
@@ -2236,7 +2240,7 @@ public class AdminProcessor {
 
             try {
                 tagId = tagMgmtService.addTag(userId, tagTitle);
-            } catch (final Exception e) {
+            } catch (final ServiceException e) {
                 final AbstractFreeMarkerRenderer renderer = new SkinRenderer();
                 context.setRenderer(renderer);
                 renderer.setTemplateName("admin/error.ftl");

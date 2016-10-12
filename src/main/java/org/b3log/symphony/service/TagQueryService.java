@@ -74,7 +74,7 @@ import org.jsoup.Jsoup;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.5.11, Oct 11, 2016
+ * @version 1.8.5.11, Oct 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -293,6 +293,67 @@ public class TagQueryService {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets a tag by the specified tag URI.
+     *
+     * @param tagURI the specified tag URI
+     * @return tag, returns {@code null} if not null
+     * @throws ServiceException service exception
+     */
+    public JSONObject getTagByURI(final String tagURI) throws ServiceException {
+        try {
+            final JSONObject ret = tagRepository.getByURI(tagURI);
+            if (null == ret) {
+                return null;
+            }
+
+            if (Tag.TAG_STATUS_C_VALID != ret.optInt(Tag.TAG_STATUS)) {
+                return null;
+            }
+
+            String description = ret.optString(Tag.TAG_DESCRIPTION);
+            String descriptionText = ret.optString(Tag.TAG_TITLE);
+            if (StringUtils.isNotBlank(description)) {
+                description = shortLinkQueryService.linkTag(description);
+                description = Markdowns.toHTML(description);
+
+                ret.put(Tag.TAG_DESCRIPTION, description);
+                descriptionText = Jsoup.parse(description).text();
+            }
+            ret.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
+
+            if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_TITLE))) {
+                ret.put(Tag.TAG_SEO_TITLE, tagURI);
+            }
+
+            if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_DESC))) {
+                ret.put(Tag.TAG_SEO_DESC, descriptionText);
+            }
+
+            if (StringUtils.isBlank(ret.optString(Tag.TAG_SEO_KEYWORDS))) {
+                ret.put(Tag.TAG_SEO_KEYWORDS, tagURI);
+            }
+
+            final List<JSONObject> domains = new ArrayList<>();
+            ret.put(Tag.TAG_T_DOMAINS, (Object) domains);
+
+            final Query query = new Query().setFilter(
+                    new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, ret.optString(Keys.OBJECT_ID)));
+            final JSONArray relations = domainTagRepository.get(query).optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < relations.length(); i++) {
+                final JSONObject relation = relations.optJSONObject(i);
+                final String domainId = relation.optString(Domain.DOMAIN + "_" + Keys.OBJECT_ID);
+                final JSONObject domain = domainRepository.get(domainId);
+                domains.add(domain);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets tag [title=" + tagURI + "] failed", e);
+            throw new ServiceException(e);
+        }
     }
 
     /**

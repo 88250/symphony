@@ -44,7 +44,7 @@
         <ul class="tags fn-clear">
             <#list navTrendTags as trendTag>
             <li>
-                <a class="btn small" rel="nofollow" href="${servePath}/tag/${trendTag.tagTitle?url('UTF-8')}">${trendTag.tagTitle}</a>
+                <a class="btn small" rel="nofollow" href="${servePath}/tag/${trendTag.tagURI}">${trendTag.tagTitle}</a>
             </li>
             </#list>
         </ul>
@@ -86,7 +86,7 @@
         <ul class="tag-desc fn-clear">
             <#list sideTags as tag>
             <li>
-                <a rel="nofollow" href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">
+                <a rel="nofollow" href="${servePath}/tag/${tag.tagURI}">
                     <#if tag.tagIconPath!="">
                     <img src="${staticServePath}/images/tags/${tag.tagIconPath}" alt="${tag.tagTitle}" /></#if>
                     ${tag.tagTitle}

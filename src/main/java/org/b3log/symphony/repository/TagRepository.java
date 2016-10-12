@@ -15,10 +15,14 @@
  */
 package org.b3log.symphony.repository;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
@@ -35,11 +39,16 @@ import org.json.JSONObject;
  * Tag repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 28, 2012
+ * @version 1.1.0.0, Oct 12, 2016
  * @since 0.2.0
  */
 @Repository
 public class TagRepository extends AbstractRepository {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(TagRepository.class);
 
     /**
      * Tag-Article relation repository.
@@ -52,6 +61,33 @@ public class TagRepository extends AbstractRepository {
      */
     public TagRepository() {
         super(Tag.TAG);
+    }
+
+    /**
+     * Gets a tag by the specified tag URI.
+     *
+     * @param tagURI the specified tag URI
+     * @return a tag, {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    public JSONObject getByURI(final String tagURI) throws RepositoryException {
+        String uri = tagURI;
+
+        try {
+            uri = URLEncoder.encode(tagURI, "UTF-8");
+        } catch (final UnsupportedEncodingException e) {
+            LOGGER.log(Level.ERROR, "Encode tag URI [" + tagURI + "] failed", e);
+        }
+
+        final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG_URI, FilterOperator.EQUAL, uri)).setPageCount(1);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
     }
 
     /**

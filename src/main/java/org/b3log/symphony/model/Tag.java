@@ -37,7 +37,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.6.4, Oct 9, 2016
+ * @version 1.15.6.4, Oct 12, 2016
  * @since 0.2.0
  */
 public final class Tag {
@@ -58,9 +58,19 @@ public final class Tag {
     public static final String TAG_TITLE = "tagTitle";
 
     /**
+     * Key of tag URI.
+     */
+    public static final String TAG_URI = "tagURI";
+
+    /**
      * Key of tag icon path.
      */
     public static final String TAG_ICON_PATH = "tagIconPath";
+
+    /**
+     * Key of tag CSS.
+     */
+    public static final String TAG_CSS = "tagCSS";
 
     /**
      * Key of tag description.
