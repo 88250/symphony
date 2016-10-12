@@ -205,8 +205,8 @@ public class TagProcessor {
      * @param tagTitle the specified tag title
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/tag/{tagTitle}", "/tag/{tagTitle}/hot", "/tag/{tagTitle}/good", "/tag/{tagTitle}/reply"},
-            method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/tag/{tagTitle}", "/tag/{tagTitle}/hot", "/tag/{tagTitle}/good", "/tag/{tagTitle}/reply",
+        "/tag/{tagTitle}/perfect"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
@@ -276,6 +276,10 @@ public class TagProcessor {
                 break;
             case "/reply":
                 sortMode = 3;
+
+                break;
+            case "/perfect":
+                sortMode = 4;
 
                 break;
             default:

@@ -87,7 +87,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.22.14.28, Oct 11, 2016
+ * @version 2.22.14.29, Oct 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -702,7 +702,7 @@ public class ArticleQueryService {
      * Gets articles by the specified tag (order by article create date desc).
      *
      * @param avatarViewMode the specified avatar view mode
-     * @param sortMode the specified sort mode, 0: default, 1: hot, 2: score, 3: reply
+     * @param sortMode the specified sort mode, 0: default, 1: hot, 2: score, 3: reply, 4: perfect
      * @param tag the specified tag
      * @param currentPageNum the specified page number
      * @param pageSize the specified page size
@@ -736,6 +736,13 @@ public class ArticleQueryService {
                     break;
                 case 3:
                     query.addSort(Article.ARTICLE_LATEST_CMT_TIME, SortDirection.DESCENDING).
+                            addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                            setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
+                            .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
+
+                    break;
+                case 4:
+                    query.addSort(Article.ARTICLE_PERFECT, SortDirection.DESCENDING).
                             addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                             setFilter(new PropertyFilter(Tag.TAG + '_' + Keys.OBJECT_ID, FilterOperator.EQUAL, tag.optString(Keys.OBJECT_ID)))
                             .setPageCount(1).setPageSize(pageSize).setCurrentPageNum(currentPageNum);
@@ -808,6 +815,21 @@ public class ArticleQueryService {
                         public int compare(final JSONObject o1, final JSONObject o2) {
                             final long v = (o2.optLong(Article.ARTICLE_LATEST_CMT_TIME)
                                     - o1.optLong(Article.ARTICLE_LATEST_CMT_TIME));
+                            if (0 == v) {
+                                return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
+                            }
+
+                            return v > 0 ? 1 : -1;
+                        }
+                    });
+
+                    break;
+                case 4:
+                    Collections.sort(ret, new Comparator<JSONObject>() {
+                        @Override
+                        public int compare(final JSONObject o1, final JSONObject o2) {
+                            final long v = (o2.optLong(Article.ARTICLE_PERFECT)
+                                    - o1.optLong(Article.ARTICLE_PERFECT));
                             if (0 == v) {
                                 return o2.optString(Keys.OBJECT_ID).compareTo(o1.optString(Keys.OBJECT_ID));
                             }

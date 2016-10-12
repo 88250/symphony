@@ -82,6 +82,8 @@
                                 <span class="ft-fade">/</span>
                                 <a<#if "/good" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}/good">${goodCmtsLabel}</a>
                                 <span class="ft-fade">/</span>
+                                <a<#if "/perfect" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}/perfect">${perfectLabel}</a>
+                                <span class="ft-fade">/</span>
                                 <a<#if "/reply" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}/reply">${recentCommentLabel}</a>
                             </span>
                         </div>

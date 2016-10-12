@@ -75,7 +75,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.23.26, Oct 11, 2016
+ * @version 2.14.23.27, Oct 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -855,6 +855,14 @@ public class ArticleMgmtService {
             if (Article.ARTICLE_PERFECT_C_PERFECT == perfect) {
                 // if it is perfect, allow anonymous view
                 article.put(Article.ARTICLE_ANONYMOUS_VIEW, Article.ARTICLE_ANONYMOUS_VIEW_C_ALLOW);
+
+                // updates tag-article perfect
+                final List<JSONObject> tagArticleRels = tagArticleRepository.getByArticleId(articleId);
+                for (final JSONObject tagArticleRel : tagArticleRels) {
+                    tagArticleRel.put(Article.ARTICLE_PERFECT, Article.ARTICLE_PERFECT_C_PERFECT);
+
+                    tagArticleRepository.update(tagArticleRel.optString(Keys.OBJECT_ID), tagArticleRel);
+                }
             }
 
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
@@ -1432,6 +1440,7 @@ public class ArticleMgmtService {
             tagArticleRelation.put(Article.ARTICLE_LATEST_CMT_TIME, article.optLong(Article.ARTICLE_LATEST_CMT_TIME));
             tagArticleRelation.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
             tagArticleRelation.put(Article.REDDIT_SCORE, article.optDouble(Article.REDDIT_SCORE));
+            tagArticleRelation.put(Article.ARTICLE_PERFECT, article.optInt(Article.ARTICLE_PERFECT));
 
             tagArticleRepository.add(tagArticleRelation);
             // User-Tag relation
