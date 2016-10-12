@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.2.21, Sep 26, 2016
+ * @version 1.10.2.22, Oct 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -520,7 +520,7 @@ public class Filler {
      * @throws Exception exception
      */
     private void fillNewTags(final Map<String, Object> dataModel) throws Exception {
-        dataModel.put(Common.NEW_TAGS, tagQueryService.getNewTags(Symphonys.getInt("newTagsCnt")));
+        dataModel.put(Common.NEW_TAGS, tagQueryService.getNewTags());
     }
 
     /**

@@ -61,7 +61,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.5, Oct 11, 2016
+ * @version 1.7.0.6, Oct 12, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -163,6 +163,7 @@ public class TagProcessor {
 
         tagCache.loadIconTags();
         tagCache.loadAllTags();
+        tagCache.loadNewTags();
 
         context.renderJSON().renderTrueResult();
     }
