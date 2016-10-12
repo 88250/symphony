@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.31.7.16, Oct 12, 2016",
+    "version": "3.31.7.17, Oct 12, 2016",
     "authors": [
         "Liang Ding", "Zephyr", "Bill Ho"
     ],
@@ -675,6 +675,11 @@
                     "length": 50
                 },
                 {
+                    "name": "tagURI",
+                    "type": "String",
+                    "length": 255
+                },
+                {
                     "name": "tagDescription",
                     "type": "String",
                     "length": 512
@@ -683,6 +688,11 @@
                     "name": "tagIconPath",
                     "type": "String",
                     "length": 128
+                },
+                {
+                    "name": "tagCSS",
+                    "type": "String",
+                    "length": 1048576
                 },
                 {
                     "name": "tagStatus",

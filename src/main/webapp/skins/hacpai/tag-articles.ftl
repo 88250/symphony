@@ -20,8 +20,8 @@
                         </#if>
                         <h1 class="fn-inline">
                             <a rel="tag" 
-                               title="${tag.tagTitle?url('UTF-8')}" 
-                               href="/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                               title="${tag.tagURI}" 
+                               href="/tag/${tag.tagURI}">${tag.tagTitle}</a>
                         </h1>
                         <#if isLoggedIn> &nbsp;
                         <#if isFollowing>
@@ -48,7 +48,7 @@
                         <li>
                             <span>
                                 <#if relatedTag.tagIconPath != "">
-                                <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" /></#if><a rel="tag" href="/tag/${relatedTag.tagTitle?url('utf-8')}">${relatedTag.tagTitle}</a>
+                                <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" /></#if><a rel="tag" href="/tag/${relatedTag.tagURI}">${relatedTag.tagTitle}</a>
                             </span>
                             <div<#if relatedTag.tagDescription == ''> style="width:auto"</#if>>
                                 <div>${relatedTag.tagDescription}</div>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="fn-clear">
                     <@list listData=articles/>
-                    <@pagination url="/tag/${tag.tagTitle?url('utf-8')}"/>
+                    <@pagination url="/tag/${tag.tagURI}"/>
                 </div>
             </div> 
             <div class="side">

@@ -19,8 +19,8 @@
                     </#if>
                     <h1 class="fn-inline">
                         <a rel="tag" 
-                           title="${tag.tagTitle?url('UTF-8')}" 
-                           href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                           title="${tag.tagURI}" 
+                           href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
                     </h1> 
                     <#if tag.tagDomains?size gt 0>/</#if>
                     <#list tag.tagDomains as domain>
@@ -48,7 +48,7 @@
                 <ul class="tag-desc fn-clear tag-articles-tag-desc">
                     <#list tag.tagRelatedTags as relatedTag>
                     <li>
-                        <a rel="tag" href="${servePath}/tag/${relatedTag.tagTitle?url('utf-8')}">
+                        <a rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
                             <#if relatedTag.tagIconPath != "">
                             <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
                             ${relatedTag.tagTitle}</a>
@@ -101,7 +101,7 @@
                 </div>
                 <div class="fn-clear">
                     <@list listData=articles/>
-                    <@pagination url="/tag/${tag.tagTitle?url('utf-8')}"/>
+                    <@pagination url="/tag/${tag.tagURI}"/>
                 </div>
             </div> 
             <div class="side wrapper">
@@ -112,7 +112,7 @@
         <@listScript/>
         <script>
             <#if (isLoggedIn && !tag.isReserved) || (tag.isReserved && isAdminLoggedIn)>
-            $('.person-info .btn.red').attr('onclick', 'window.location = "/post?tags=${tag.tagTitle?url('utf-8')}&type=0"');
+            $('.person-info .btn.red').attr('onclick', 'window.location = "/post?tags=${tag.tagURI}&type=0"');
             </#if>
         </script>
     </body>

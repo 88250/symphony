@@ -20,7 +20,10 @@ import com.qiniu.util.Auth;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,6 +77,7 @@ import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -81,7 +85,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.17.16, Sep 25, 2016
+ * @version 1.14.17.17, Oct 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -207,7 +211,7 @@ public class UserMgmtService {
                     return true;
                 }
             }
-        } catch (final Exception e) {
+        } catch (final RepositoryException | ServiceException | JSONException e) {
             LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]");
 
             final Cookie cookie = new Cookie("b3log-latke", null);
@@ -572,7 +576,7 @@ public class UserMgmtService {
 
                         user.put(UserExt.USER_AVATAR_URL, Latkes.getServePath() + "/upload/" + fileName);
                     }
-                } catch (final Exception e) {
+                } catch (final IOException e) {
                     LOGGER.log(Level.ERROR, "Generates avatar error", e);
 
                     user.put(UserExt.USER_AVATAR_URL, Symphonys.get("defaultThumbnailURL"));
@@ -619,7 +623,7 @@ public class UserMgmtService {
                     }
 
                     trans.commit();
-                } catch (final Exception e) {
+                } catch (final RepositoryException e) {
                     if (trans.isActive()) {
                         trans.rollback();
                     }
@@ -817,7 +821,7 @@ public class UserMgmtService {
      */
     private synchronized void tag(final JSONObject user) throws RepositoryException {
         // Clear
-        final List<Filter> filters = new ArrayList<Filter>();
+        final List<Filter> filters = new ArrayList<>();
         filters.add(new PropertyFilter(User.USER + '_' + Keys.OBJECT_ID,
                 FilterOperator.EQUAL, user.optString(Keys.OBJECT_ID)));
         filters.add(new PropertyFilter(Common.TYPE, FilterOperator.EQUAL, Tag.TAG_TYPE_C_USER_SELF));
@@ -847,6 +851,14 @@ public class UserMgmtService {
                         new Object[]{tagTitle, user.optString(User.USER_NAME)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
+                String tagURI = tagTitle;
+                try {
+                    tagURI = URLEncoder.encode(tagTitle, "UTF-8");
+                } catch (final UnsupportedEncodingException e) {
+                    LOGGER.log(Level.ERROR, "Encode tag title [" + tagTitle + "] error", e);
+                }
+                tag.put(Tag.TAG_URI, tagURI);
+                tag.put(Tag.TAG_CSS, "");
                 tag.put(Tag.TAG_REFERENCE_CNT, 0);
                 tag.put(Tag.TAG_COMMENT_CNT, 0);
                 tag.put(Tag.TAG_FOLLOWER_CNT, 0);

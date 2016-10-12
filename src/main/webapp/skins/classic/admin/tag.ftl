@@ -28,6 +28,9 @@
                 <label for="tagTitle">${tagLabel}${updateCaseOnlyLabel}</label>
                 <input type="text" id="tagTitle" name="tagTitle" value="${tag.tagTitle}" />
 
+                <label for="tagURI">URI</label>
+                <input type="text" id="tagURI" name="tagURI" value="${tag.tagURI}" />
+
                 <label for="tagDescription">${descriptionLabel}</label>
                 <textarea rows="5" id="tagDescription" name="tagDescription">${tag.tagDescription}</textarea>
 
@@ -45,15 +48,18 @@
 
                 <label for="tagBadCnt">${badCntLabel}</label>
                 <input type="text" id="tagBadCnt" name="tagBadCnt" value="${tag.tagBadCnt}" />
-                
+
                 <label for="seoTitle">${seoTitleLabel}</label>
                 <input type="text" id="seoTitle" name="tagSeoTitle" value="${tag.tagSeoTitle}" />
-                
+
                 <label for="seoKeywords">${seoKeywordsLabel}</label>
                 <input type="text" id="seoKeywords" name="tagSeoKeywords" value="${tag.tagSeoKeywords}" />
-                
+
                 <label for="seoDesc">${seoDescLabel}</label>
                 <input type="text" id="seoDesc" name="tagSeoDesc" value="${tag.tagSeoDesc}" />
+
+                <label for="tagCSS">CSS</label>
+                <textarea rows="20" id="tagCSS" name="tagCSS">${tag.tagCSS}</textarea>
 
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>

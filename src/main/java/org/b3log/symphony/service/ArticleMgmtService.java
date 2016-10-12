@@ -15,6 +15,8 @@
  */
 package org.b3log.symphony.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -75,7 +77,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.23.27, Oct 12, 2016
+ * @version 2.14.23.28, Oct 12, 2016
  * @since 0.2.0
  */
 @Service
@@ -288,7 +290,7 @@ public class ArticleMgmtService {
             if (Symphonys.getBoolean("es.enabled")) {
                 searchMgmtService.removeESDocument(article, Article.ARTICLE);
             }
-        } catch (final Exception e) {
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Removes an article error [id=" + articleId + "]", e);
         }
     }
@@ -1381,6 +1383,14 @@ public class ArticleMgmtService {
                         new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
+                String tagURI = tagTitle;
+                try {
+                    tagURI = URLEncoder.encode(tagTitle, "UTF-8");
+                } catch (final UnsupportedEncodingException e) {
+                    LOGGER.log(Level.ERROR, "Encode tag title [" + tagTitle + "] error", e);
+                }
+                tag.put(Tag.TAG_URI, tagURI);
+                tag.put(Tag.TAG_CSS, "");
                 tag.put(Tag.TAG_REFERENCE_CNT, 1);
                 tag.put(Tag.TAG_COMMENT_CNT, articleCmtCnt);
                 tag.put(Tag.TAG_FOLLOWER_CNT, 0);

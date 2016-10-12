@@ -22,7 +22,7 @@
                             </#if>
                             <h1 class="fn-inline">
                                 <a rel="tag"
-                                   href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${tag.tagTitle}</a>
+                                   href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
                             </h1> 
                             <#if tag.tagDomains?size gt 0>/</#if>
                             <#list tag.tagDomains as domain>
@@ -55,7 +55,7 @@
                         <ul class="tag-desc fn-clear tag-articles-tag-desc">
                             <#list tag.tagRelatedTags as relatedTag>
                             <li>
-                                <a rel="tag" href="${servePath}/tag/${relatedTag.tagTitle?url('utf-8')}">
+                                <a rel="tag" href="${servePath}/tag/${relatedTag.tagURI}">
                                     <#if relatedTag.tagIconPath != "">
                                     <img src="${staticServePath}/images/tags/${relatedTag.tagIconPath}" alt="${relatedTag.tagTitle}" /></#if>
                                     ${relatedTag.tagTitle}</a>
@@ -76,19 +76,19 @@
                     <div class="module">
                         <div class="module-header fn-clear">
                             <span class="fn-right">
-                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}">${default1Label}</a>
+                                <a<#if "" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}">${default1Label}</a>
                                 <span class="ft-fade">/</span>
-                                <a<#if "/hot" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}/hot">${hotArticlesLabel}</a>
+                                <a<#if "/hot" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}/hot">${hotArticlesLabel}</a>
                                 <span class="ft-fade">/</span>
-                                <a<#if "/good" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}/good">${goodCmtsLabel}</a>
+                                <a<#if "/good" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}/good">${goodCmtsLabel}</a>
                                 <span class="ft-fade">/</span>
-                                <a<#if "/perfect" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}/perfect">${perfectLabel}</a>
+                                <a<#if "/perfect" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}/perfect">${perfectLabel}</a>
                                 <span class="ft-fade">/</span>
-                                <a<#if "/reply" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagTitle?url('utf-8')}/reply">${recentCommentLabel}</a>
+                                <a<#if "/reply" == current> class="ft-gray"</#if> href="${servePath}/tag/${tag.tagURI}/reply">${recentCommentLabel}</a>
                             </span>
                         </div>
                         <@list listData=articles/>
-                        <@pagination url="${servePath}/tag/${tag.tagTitle?url('utf-8')}${current}"/>
+                        <@pagination url="${servePath}/tag/${tag.tagURI}${current}"/>
                     </div>
                     </#if>
                 </div> 
@@ -101,7 +101,7 @@
         <@listScript/>
         <script>
             <#if (isLoggedIn && !tag.isReserved) || (tag.isReserved && isAdminLoggedIn)>
-            $('.person-info .btn.red').attr('onclick', 'window.location = "/post?tags=${tag.tagTitle?url('utf-8')}&type=0"');
+            $('.person-info .btn.red').attr('onclick', 'window.location = "/post?tags=${tag.tagURI}&type=0"');
             </#if>
         </script>
     </body>

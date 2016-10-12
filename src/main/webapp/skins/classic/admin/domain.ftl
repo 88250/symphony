@@ -17,7 +17,7 @@
         </div>
         <div class="module-panel form fn-clear">
             <#list domain.domainTags as tag>
-            <a class="tag" target="_blank" href="${servePath}/tag/${tag.tagTitle?url('UTF-8')}">${tag.tagTitle}</a>
+            <a class="tag" target="_blank" href="${servePath}/tag/${tag.tagURI}">${tag.tagTitle}</a>
             </#list>
 
             <form method="POST" action="/admin/domain/${domain.oId}/add-tag" class="fn-clear">
@@ -78,7 +78,7 @@
                 <input type="text" id="domainSeoDesc" name="domainSeoDesc" value="${domain.domainSeoDesc}" />
 
                 <label for="domainCSS">CSS</label>
-                <textarea type="text" rows="20" id="domainCSS" name="domainCSS">${domain.domainCSS}</textarea>
+                <textarea rows="20" id="domainCSS" name="domainCSS">${domain.domainCSS}</textarea>
 
                 <br/><br/>
                 <button type="submit" class="green fn-right">${submitLabel}</button>

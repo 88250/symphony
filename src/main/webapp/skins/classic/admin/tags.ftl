@@ -12,7 +12,7 @@
             <#list tags as item>
             <li>
                 <div class="fn-clear first">
-                    <a href="${servePath}/tag/${item.tagTitle?url('utf-8')}">${item.tagTitle}</a> &nbsp;
+                    <a href="${servePath}/tag/${item.tagURI}">${item.tagTitle}</a> &nbsp;
                     <#if item.tagStatus == 0>
                     <span class="ft-gray">${validLabel}</span>
                     <#else>

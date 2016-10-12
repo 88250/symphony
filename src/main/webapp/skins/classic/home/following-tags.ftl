@@ -14,18 +14,18 @@
         <li>
             <div class="fn-flex">
                 <#if "" != followingTag.tagIconPath>
-                <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}">
+                <a href="${servePath}/tag/${followingTag.tagURI}">
                     <div class="avatar fn-left ft-gray tooltipped tooltipped-se"  
                          aria-label="${followingTag.tagTitle}" style="background-image:url('${staticServePath}/images/tags/${followingTag.tagIconPath}')"></div>
                 </a>
                 <#else>
-                <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}"
+                <a href="${servePath}/tag/${followingTag.tagURI}"
                    class="tooltipped tooltipped-se fn-left ft-a-icon" aria-label="${followingTag.tagTitle}"><div class="icon-tags"  
                                                                                                               ></div></a>
                 </#if>
                 <div class="fn-flex-1">
                     <h2 class="fn-inline">
-                        <a href="${servePath}/tag/${followingTag.tagTitle?url('utf-8')}">${followingTag.tagTitle}</a>
+                        <a href="${servePath}/tag/${followingTag.tagURI}">${followingTag.tagTitle}</a>
                     </h2>
                     &nbsp;
                     <#if isLoggedIn> 
