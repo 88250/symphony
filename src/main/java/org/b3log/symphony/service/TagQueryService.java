@@ -15,6 +15,7 @@
  */
 package org.b3log.symphony.service;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,6 +66,7 @@ import org.b3log.symphony.repository.UserTagRepository;
 import org.b3log.symphony.util.Markdowns;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
@@ -72,7 +74,7 @@ import org.jsoup.Jsoup;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.5.10, Sep 7, 2016
+ * @version 1.7.5.11, Oct 11, 2016
  * @since 0.2.0
  */
 @Service
@@ -245,12 +247,12 @@ public class TagQueryService {
                     final JSONArray key = data.getJSONArray(i);
                     ret.add(key.optString(1));
                 }
-            } catch (final Exception e) {
+            } catch (final JSONException e) {
                 final JSONObject data = new JSONObject(str);
 
                 LOGGER.log(Level.ERROR, "Boson process failed [" + data.toString(4) + "]");
             }
-        } catch (final Exception e) {
+        } catch (final IOException | JSONException e) {
             LOGGER.log(Level.ERROR, "Generates tags error: " + content, e);
         }
 
@@ -392,23 +394,11 @@ public class TagQueryService {
     /**
      * Gets the new (sort by oId descending) tags.
      *
-     * @param fetchSize the specified fetch size
      * @return trend tags, returns an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getNewTags(final int fetchSize) throws ServiceException {
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
-
-        query.setFilter(new PropertyFilter(Tag.TAG_REFERENCE_CNT, FilterOperator.GREATER_THAN, 0));
-
-        try {
-            final JSONObject result = tagRepository.get(query);
-            return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets new tags failed");
-            throw new ServiceException(e);
-        }
+    public List<JSONObject> getNewTags() throws ServiceException {
+        return tagCache.getNewTags();
     }
 
     /**
@@ -511,7 +501,7 @@ public class TagQueryService {
             ret.put(Tag.TAG_T_CREATOR_NAME, creator.optString(User.USER_NAME));
 
             return ret;
-        } catch (final Exception e) {
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tag creator failed [tagId=" + tagId + "]", e);
             throw new ServiceException(e);
         }

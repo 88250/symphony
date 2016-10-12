@@ -40,6 +40,7 @@ import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.service.ShortLinkQueryService;
 import org.b3log.symphony.util.JSONs;
 import org.b3log.symphony.util.Markdowns;
+import org.b3log.symphony.util.Symphonys;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
@@ -47,7 +48,7 @@ import org.jsoup.Jsoup;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.0, Aug 4, 2016
+ * @version 1.3.3.0, Oct 11, 2016
  * @since 1.4.0
  */
 @Named
@@ -77,9 +78,27 @@ public class TagCache {
     private static final List<JSONObject> ICON_TAGS = new ArrayList<>();
 
     /**
+     * New tags.
+     */
+    private static final List<JSONObject> NEW_TAGS = new ArrayList<>();
+
+    /**
      * All tags.
      */
     private static final List<JSONObject> TAGS = new ArrayList<>();
+
+    /**
+     * Gets new tags with the specified fetch size.
+     *
+     * @return new tags
+     */
+    public List<JSONObject> getNewTags() {
+        if (NEW_TAGS.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return new ArrayList<>(NEW_TAGS);
+    }
 
     /**
      * Gets icon tags with the specified fetch size.
@@ -111,11 +130,27 @@ public class TagCache {
     }
 
     /**
+     * Loads new tags.
+     */
+    public void loadNewTags() {
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setCurrentPageNum(1).setPageSize(Symphonys.getInt("newTagsCnt")).setPageCount(1);
+
+        query.setFilter(new PropertyFilter(Tag.TAG_REFERENCE_CNT, FilterOperator.GREATER_THAN, 0));
+
+        try {
+            final JSONObject result = tagRepository.get(query);
+            NEW_TAGS.clear();
+            NEW_TAGS.addAll(CollectionUtils.<JSONObject>jsonArrayToList(result.optJSONArray(Keys.RESULTS)));
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets new tags failed", e);
+        }
+    }
+
+    /**
      * Loads icon tags.
      */
     public void loadIconTags() {
-        ICON_TAGS.clear();
-
         final Query query = new Query().setFilter(
                 CompositeFilterOperator.and(
                         new PropertyFilter(Tag.TAG_ICON_PATH, FilterOperator.NOT_EQUAL, ""),
@@ -144,6 +179,7 @@ public class TagCache {
                 tag.put(Tag.TAG_T_DESCRIPTION_TEXT, descriptionText);
             }
 
+            ICON_TAGS.clear();
             ICON_TAGS.addAll(tags);
 
             // Updates random double
@@ -163,8 +199,6 @@ public class TagCache {
      * Loads all tags.
      */
     public void loadAllTags() {
-        TAGS.clear();
-
         final Query query = new Query().setFilter(
                 new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID))
                 .setCurrentPageNum(1).setPageSize(Integer.MAX_VALUE).setPageCount(1);
@@ -215,6 +249,7 @@ public class TagCache {
                 }
             });
 
+            TAGS.clear();
             TAGS.addAll(tags);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Load all tags failed", e);

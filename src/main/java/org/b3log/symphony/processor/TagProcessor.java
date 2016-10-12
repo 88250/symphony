@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jodd.util.URLDecoder;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
@@ -61,7 +62,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.5, Oct 11, 2016
+ * @version 1.7.0.6, Oct 12, 2016
  * @since 0.2.0
  */
 @RequestProcessor
@@ -163,6 +164,7 @@ public class TagProcessor {
 
         tagCache.loadIconTags();
         tagCache.loadAllTags();
+        tagCache.loadNewTags();
 
         context.renderJSON().renderTrueResult();
     }
@@ -204,8 +206,8 @@ public class TagProcessor {
      * @param tagTitle the specified tag title
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/tag/{tagTitle}", "/tag/{tagTitle}/hot", "/tag/{tagTitle}/good", "/tag/{tagTitle}/reply"},
-            method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/tag/{tagTitle}", "/tag/{tagTitle}/hot", "/tag/{tagTitle}/good", "/tag/{tagTitle}/reply",
+        "/tag/{tagTitle}/perfect"}, method = HTTPRequestMethod.GET)
     @Before(adviceClass = {StopwatchStartAdvice.class, AnonymousViewCheck.class})
     @After(adviceClass = StopwatchEndAdvice.class)
     public void showTagArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
@@ -277,6 +279,10 @@ public class TagProcessor {
                 sortMode = 3;
 
                 break;
+            case "/perfect":
+                sortMode = 4;
+
+                break;
             default:
                 sortMode = 0;
         }
@@ -311,6 +317,7 @@ public class TagProcessor {
         filler.fillSideTags(dataModel);
         filler.fillLatestCmts(dataModel);
 
-        dataModel.put(Common.CURRENT, StringUtils.substringAfter(request.getRequestURI(), "/tag/" + tagTitle));
+        dataModel.put(Common.CURRENT, StringUtils.substringAfter(URLDecoder.decode(request.getRequestURI()),
+                "/tag/" + tagTitle));
     }
 }
