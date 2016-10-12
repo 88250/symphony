@@ -763,7 +763,24 @@ public class ArticleQueryService {
                 articleIds.add(tagArticleRelations.optJSONObject(i).optString(Article.ARTICLE + '_' + Keys.OBJECT_ID));
             }
 
-            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds));
+            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+                    addProjection(Keys.OBJECT_ID, String.class).
+                    addProjection(Article.ARTICLE_STICK, Long.class).
+                    addProjection(Article.ARTICLE_CREATE_TIME, Long.class).
+                    addProjection(Article.ARTICLE_UPDATE_TIME, Long.class).
+                    addProjection(Article.ARTICLE_LATEST_CMT_TIME, Long.class).
+                    addProjection(Article.ARTICLE_AUTHOR_ID, String.class).
+                    addProjection(Article.ARTICLE_TITLE, String.class).
+                    addProjection(Article.ARTICLE_STATUS, Integer.class).
+                    addProjection(Article.ARTICLE_VIEW_CNT, Integer.class).
+                    addProjection(Article.ARTICLE_TYPE, Integer.class).
+                    addProjection(Article.ARTICLE_PERMALINK, String.class).
+                    addProjection(Article.ARTICLE_TAGS, String.class).
+                    addProjection(Article.ARTICLE_LATEST_CMTER_NAME, String.class).
+                    addProjection(Article.ARTICLE_SYNC_TO_CLIENT, Boolean.class).
+                    addProjection(Article.ARTICLE_COMMENT_CNT, Integer.class).
+                    addProjection(Article.ARTICLE_ANONYMOUS, Integer.class).
+                    addProjection(Article.ARTICLE_PERFECT, Integer.class);
 
             result = articleRepository.get(query);
 
