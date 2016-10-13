@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, May 15, 2016
+ * @version 1.0.1.1, Oct 13, 2016
  * @since 1.4.0
  */
 @Named
@@ -39,10 +39,10 @@ public class ArticleCache {
     /**
      * Article cache.
      */
-    private static final Cache cache = CacheFactory.getCache(Article.ARTICLES);
+    private static final Cache CACHE = CacheFactory.getCache(Article.ARTICLES);
 
     static {
-        cache.setMaxCount(Symphonys.getInt("cache.articleCnt"));
+        CACHE.setMaxCount(Symphonys.getInt("cache.articleCnt"));
     }
 
     /**
@@ -52,7 +52,7 @@ public class ArticleCache {
      * @return article, returns {@code null} if not found
      */
     public JSONObject getArticle(final String id) {
-        final JSONObject article = (JSONObject) cache.get(id);
+        final JSONObject article = (JSONObject) CACHE.get(id);
         if (null == article) {
             return null;
         }
@@ -66,7 +66,7 @@ public class ArticleCache {
      * @param article the specified article
      */
     public void putArticle(final JSONObject article) {
-        cache.put(article.optString(Keys.OBJECT_ID), JSONs.clone(article));
+        CACHE.put(article.optString(Keys.OBJECT_ID), JSONs.clone(article));
     }
 
     /**
@@ -75,6 +75,6 @@ public class ArticleCache {
      * @param id the specified article id
      */
     public void removeArticle(final String id) {
-        cache.remove(id);
+        CACHE.remove(id);
     }
 }
