@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Link query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 12, 2016
+ * @version 1.0.1.2, Oct 13, 2016
  * @since 1.6.0
  */
 @Service
@@ -192,6 +192,7 @@ public class LinkForgeQueryService {
 
                 final JSONObject tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, cachedTag.optString(Tag.TAG_TITLE));
+                tag.put(Tag.TAG_URI, cachedTag.optString(Tag.TAG_URI));
                 tag.put(Tag.TAG_ICON_PATH, cachedTag.optString(Tag.TAG_ICON_PATH));
 
                 // query link id
