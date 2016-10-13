@@ -87,7 +87,7 @@ import org.jsoup.select.Elements;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.22.14.29, Oct 12, 2016
+ * @version 2.23.14.29, Oct 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -1834,6 +1834,7 @@ public class ArticleQueryService {
      * <li>generates time ago text</li>
      * <li>generates stick remains minutes</li>
      * <li>anonymous process</li>
+     * <li>builds tags</li>
      * </ul>
      *
      * @param avatarViewMode the specified avatarViewMode
@@ -1864,6 +1865,7 @@ public class ArticleQueryService {
      * <li>generates time ago text</li>
      * <li>generates stick remains minutes</li>
      * <li>anonymous process</li>
+     * <li>builds tags</li>
      * </ul>
      *
      * @param avatarViewMode the specified avatar view mode
@@ -1918,6 +1920,28 @@ public class ArticleQueryService {
             articleLatestCmterName = UserExt.ANONYMOUS_USER_NAME;
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, articleLatestCmterName);
         }
+
+        // builds tags
+        final String tagsStr = article.optString(Article.ARTICLE_TAGS);
+        final String[] tagTitles = tagsStr.split(",");
+
+        final List<JSONObject> tags = new ArrayList<>();
+        for (final String tagTitle : tagTitles) {
+            final JSONObject tag = new JSONObject();
+            tag.put(Tag.TAG_TITLE, tagTitle);
+
+            final String uri = tagRepository.getURIByTitle(tagTitle);
+            if (null != uri) {
+                tag.put(Tag.TAG_URI, uri);
+            } else {
+                tag.put(Tag.TAG_URI, tagTitle);
+
+                tagRepository.getURIByTitle(tagTitle);
+            }
+
+            tags.add(tag);
+        }
+        article.put(Article.ARTICLE_TAGS, (Object) tags);
     }
 
     /**

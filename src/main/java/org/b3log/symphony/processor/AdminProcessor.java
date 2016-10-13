@@ -1930,7 +1930,11 @@ public class AdminProcessor {
             final String name = parameterNames.nextElement();
             final String value = request.getParameter(name);
 
-            tag.put(name, value);
+            if (name.equals(Tag.TAG_STATUS)) {
+                tag.put(name, Integer.valueOf(value));
+            } else {
+                tag.put(name, value);
+            }
         }
 
         final String newTitle = tag.optString(Tag.TAG_TITLE);

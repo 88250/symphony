@@ -20,13 +20,16 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import javax.inject.Inject;
+import java.util.Map;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.CompositeFilterOperator;
@@ -50,7 +53,7 @@ import org.jsoup.Jsoup;
  * Tag cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.0, Oct 11, 2016
+ * @version 1.4.3.0, Oct 13, 2016
  * @since 1.4.0
  */
 @Named
@@ -61,18 +64,6 @@ public class TagCache {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagCache.class.getName());
-
-    /**
-     * Tag repository.
-     */
-    @Inject
-    private TagRepository tagRepository;
-
-    /**
-     * Short link query service.
-     */
-    @Inject
-    private ShortLinkQueryService shortLinkQueryService;
 
     /**
      * Icon tags.
@@ -88,6 +79,72 @@ public class TagCache {
      * All tags.
      */
     private static final List<JSONObject> TAGS = new ArrayList<>();
+
+    /**
+     * &lt;title, URI&gt;
+     */
+    private static final Map<String, String> TITLE_URIS = new HashMap<>();
+
+    /**
+     * &lt;id, tag&gt;
+     */
+    private static final Map<String, JSONObject> CACHE = new HashMap<>();
+
+    /**
+     * Gets a tag by the specified tag id.
+     *
+     * @param id the specified tag id
+     * @return tag, returns {@code null} if not found
+     */
+    public JSONObject getTag(final String id) {
+        final JSONObject tag = (JSONObject) CACHE.get(id);
+        if (null == tag) {
+            return null;
+        }
+
+        final JSONObject ret = JSONs.clone(tag);
+
+        TITLE_URIS.put(ret.optString(Tag.TAG_TITLE), ret.optString(Tag.TAG_URI));
+
+        return ret;
+    }
+
+    /**
+     * Adds or updates the specified tag.
+     *
+     * @param tag the specified tag
+     */
+    public void putTag(final JSONObject tag) {
+        CACHE.put(tag.optString(Keys.OBJECT_ID), JSONs.clone(tag));
+
+        TITLE_URIS.put(tag.optString(Tag.TAG_TITLE), tag.optString(Tag.TAG_URI));
+    }
+
+    /**
+     * Removes a tag by the specified tag id.
+     *
+     * @param id the specified tag id
+     */
+    public void removeTag(final String id) {
+        final JSONObject tag = (JSONObject) CACHE.get(id);
+        if (null == tag) {
+            return;
+        }
+
+        CACHE.remove(id);
+
+        TITLE_URIS.remove(tag.optString(Tag.TAG_TITLE));
+    }
+
+    /**
+     * Gets a tag URI with the specified tag title.
+     *
+     * @param title the specified tag title
+     * @return tag URI, returns {@code null} if not found
+     */
+    public String getURIByTitle(final String title) {
+        return TITLE_URIS.get(title);
+    }
 
     /**
      * Gets new tags with the specified fetch size.
@@ -135,6 +192,9 @@ public class TagCache {
      * Loads new tags.
      */
     public void loadNewTags() {
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
+
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setCurrentPageNum(1).setPageSize(Symphonys.getInt("newTagsCnt")).setPageCount(1);
 
@@ -153,6 +213,10 @@ public class TagCache {
      * Loads icon tags.
      */
     public void loadIconTags() {
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
+        final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
+
         final Query query = new Query().setFilter(
                 CompositeFilterOperator.and(
                         new PropertyFilter(Tag.TAG_ICON_PATH, FilterOperator.NOT_EQUAL, ""),
@@ -201,6 +265,10 @@ public class TagCache {
      * Loads all tags.
      */
     public void loadAllTags() {
+        final LatkeBeanManager beanManager = LatkeBeanManagerImpl.getInstance();
+        final TagRepository tagRepository = beanManager.getReference(TagRepository.class);
+        final ShortLinkQueryService shortLinkQueryService = beanManager.getReference(ShortLinkQueryService.class);
+
         final Query query = new Query().setFilter(
                 new PropertyFilter(Tag.TAG_STATUS, FilterOperator.EQUAL, Tag.TAG_STATUS_C_VALID))
                 .setCurrentPageNum(1).setPageSize(Integer.MAX_VALUE).setPageCount(1);
@@ -278,6 +346,11 @@ public class TagCache {
 
             TAGS.clear();
             TAGS.addAll(tags);
+
+            TITLE_URIS.clear();
+            for (final JSONObject tag : tags) {
+                TITLE_URIS.put(tag.optString(Tag.TAG_TITLE), tag.optString(Tag.TAG_URI));
+            }
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Load all tags failed", e);
         }
