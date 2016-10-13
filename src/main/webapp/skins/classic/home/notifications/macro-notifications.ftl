@@ -26,7 +26,7 @@
                             <#if unreadNotificationCnt &gt; 0>
                             <span class="count">${unreadNotificationCnt}</span>
                             <span onclick="Settings.makeAllNotificationsRead()" 
-                                  aria-label="${makeAllAsReadLabel}" class="fn-right tooltipped tooltipped-nw">
+                                  aria-label="${makeAllAsReadLabel}" class="fn-right tooltipped tooltipped-nw home-side-read">
                                 <svg height="18" viewBox="0 0 12 16" width="12">${checkIcon}</svg>
                             </span>
                             </#if>
