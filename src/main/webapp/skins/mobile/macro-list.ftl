@@ -32,8 +32,8 @@
                         </#if>
                         </#if>
                     </h2>
-                    <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">${articleTag}</a>
+                    <#list article.articleTagObjs as articleTag>
+                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">${articleTag.tagTitle}</a> 
                     </#list>
                     <div class="ft-smaller">
                     <span class="ft-fade">${article.timeAgo}</span>

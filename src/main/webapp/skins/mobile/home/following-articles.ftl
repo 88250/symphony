@@ -26,9 +26,9 @@
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">${article.articleTitleEmoj}</a>
                 </h2>
                 <span class="ft-gray">
-                    <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag?url('UTF-8')}">
-                        ${articleTag}</a>
+                    <#list article.articleTagObjs as articleTag>
+                    <a rel="tag" class="tag" href="${servePath}/tag/${articleTag.tagURI}">
+                        ${articleTag.tagTitle}</a>
                     </#list><br/>
                     <span class="icon-date"></span>
                     ${article.articleCreateTime?string('yyyy-MM-dd HH:mm')}

@@ -30,9 +30,7 @@
                     <div class="avatar" style="background-image:url('${item.articleAuthorThumbnailURL20}')"></div>${item.articleAuthorName} &nbsp;
                     <span class="tooltipped tooltipped-w" aria-label="${tagLabel}"><span class="icon-tags"></span></span>
                     <span class="tags">
-                        <#list item.articleTags as tag>
-                        ${tag.tagTitle}
-                        </#list>
+                        ${item.articleTags}
                     </span> 
                     <span class="fn-right ft-gray">
                         <span class="tooltipped tooltipped-n" aria-label="${viewCountLabel}"><span class="icon-view"></span></span>

@@ -1834,7 +1834,7 @@ public class ArticleQueryService {
      * <li>generates time ago text</li>
      * <li>generates stick remains minutes</li>
      * <li>anonymous process</li>
-     * <li>builds tags</li>
+     * <li>builds tag objects</li>
      * </ul>
      *
      * @param avatarViewMode the specified avatarViewMode
@@ -1865,7 +1865,7 @@ public class ArticleQueryService {
      * <li>generates time ago text</li>
      * <li>generates stick remains minutes</li>
      * <li>anonymous process</li>
-     * <li>builds tags</li>
+     * <li>builds tag objects</li>
      * </ul>
      *
      * @param avatarViewMode the specified avatar view mode
@@ -1921,7 +1921,7 @@ public class ArticleQueryService {
             article.put(Article.ARTICLE_LATEST_CMTER_NAME, articleLatestCmterName);
         }
 
-        // builds tags
+        // builds tag objects
         final String tagsStr = article.optString(Article.ARTICLE_TAGS);
         final String[] tagTitles = tagsStr.split(",");
 
@@ -1941,7 +1941,7 @@ public class ArticleQueryService {
 
             tags.add(tag);
         }
-        article.put(Article.ARTICLE_TAGS, (Object) tags);
+        article.put(Article.ARTICLE_T_TAG_OBJS, (Object) tags);
     }
 
     /**

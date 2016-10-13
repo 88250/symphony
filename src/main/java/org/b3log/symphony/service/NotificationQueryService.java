@@ -42,12 +42,14 @@ import org.b3log.symphony.model.Common;
 import org.b3log.symphony.model.Notification;
 import org.b3log.symphony.model.Pointtransfer;
 import org.b3log.symphony.model.Reward;
+import org.b3log.symphony.model.Tag;
 import org.b3log.symphony.model.UserExt;
 import org.b3log.symphony.repository.ArticleRepository;
 import org.b3log.symphony.repository.CommentRepository;
 import org.b3log.symphony.repository.NotificationRepository;
 import org.b3log.symphony.repository.PointtransferRepository;
 import org.b3log.symphony.repository.RewardRepository;
+import org.b3log.symphony.repository.TagRepository;
 import org.b3log.symphony.repository.UserRepository;
 import org.b3log.symphony.util.Emotions;
 import org.json.JSONArray;
@@ -57,7 +59,7 @@ import org.json.JSONObject;
  * Notification query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.5, Sep 22, 2016
+ * @version 1.9.3.6, Oct 13, 2016
  * @since 0.2.5
  */
 @Service
@@ -103,6 +105,12 @@ public class NotificationQueryService {
      */
     @Inject
     private RewardRepository rewardRepository;
+
+    /**
+     * Tag repository.
+     */
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Pointtransfer repository.
@@ -768,6 +776,7 @@ public class NotificationQueryService {
      *         "hasRead": boolean,
      *         "atInArticle": boolean,
      *         "articleTags": "", // if atInArticle is true
+     *         "articleTagObjs": [{}, ....], // if atInArticle is true
      *         "articleCommentCnt": int // if atInArticle is true
      *     }, ....]
      * }
@@ -851,7 +860,12 @@ public class NotificationQueryService {
                     atNotification.put(Common.CREATE_TIME, new Date(article.optLong(Article.ARTICLE_CREATE_TIME)));
                     atNotification.put(Notification.NOTIFICATION_HAS_READ, notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                     atNotification.put(Notification.NOTIFICATION_T_AT_IN_ARTICLE, true);
-                    atNotification.put(Article.ARTICLE_TAGS, article.optString(Article.ARTICLE_TAGS));
+
+                    final String tagsStr = article.optString(Article.ARTICLE_TAGS);
+                    atNotification.put(Article.ARTICLE_TAGS, tagsStr);
+                    final List<JSONObject> tags = buildTagObjs(tagsStr);
+                    atNotification.put(Article.ARTICLE_T_TAG_OBJS, (Object) tags);
+
                     atNotification.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
                     atNotification.put(Article.ARTICLE_PERFECT, article.optInt(Article.ARTICLE_PERFECT));
 
@@ -885,6 +899,7 @@ public class NotificationQueryService {
      *         "articleTitle": "",
      *         "articleType": int,
      *         "articleTags": "",
+     *         "articleTagObjs": [{}, ....],
      *         "articleCommentCnt": int,
      *         "url": "",
      *         "createTime": java.util.Date,
@@ -966,7 +981,12 @@ public class NotificationQueryService {
                         notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                 followingUserNotification.put(Common.TYPE, Article.ARTICLE);
                 followingUserNotification.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
-                followingUserNotification.put(Article.ARTICLE_TAGS, article.optString(Article.ARTICLE_TAGS));
+
+                final String tagsStr = article.optString(Article.ARTICLE_TAGS);
+                followingUserNotification.put(Article.ARTICLE_TAGS, tagsStr);
+                final List<JSONObject> tags = buildTagObjs(tagsStr);
+                followingUserNotification.put(Article.ARTICLE_T_TAG_OBJS, (Object) tags);
+
                 followingUserNotification.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
                 followingUserNotification.put(Article.ARTICLE_PERFECT, article.optInt(Article.ARTICLE_PERFECT));
 
@@ -999,6 +1019,7 @@ public class NotificationQueryService {
      *         "articleTitle": "",
      *         "articleType": int,
      *         "articleTags": "",
+     *         "articleTagObjs": [{}, ....],
      *         "articleCommentCnt": int,
      *         "url": "",
      *         "createTime": java.util.Date,
@@ -1080,7 +1101,12 @@ public class NotificationQueryService {
                         notification.optBoolean(Notification.NOTIFICATION_HAS_READ));
                 broadcastNotification.put(Common.TYPE, Article.ARTICLE);
                 broadcastNotification.put(Article.ARTICLE_TYPE, article.optInt(Article.ARTICLE_TYPE));
-                broadcastNotification.put(Article.ARTICLE_TAGS, article.optString(Article.ARTICLE_TAGS));
+
+                final String tagsStr = article.optString(Article.ARTICLE_TAGS);
+                broadcastNotification.put(Article.ARTICLE_TAGS, tagsStr);
+                final List<JSONObject> tags = buildTagObjs(tagsStr);
+                broadcastNotification.put(Article.ARTICLE_T_TAG_OBJS, (Object) tags);
+
                 broadcastNotification.put(Article.ARTICLE_COMMENT_CNT, article.optInt(Article.ARTICLE_COMMENT_CNT));
                 broadcastNotification.put(Article.ARTICLE_PERFECT, article.optInt(Article.ARTICLE_PERFECT));
 
@@ -1093,5 +1119,34 @@ public class NotificationQueryService {
 
             throw new ServiceException(e);
         }
+    }
+
+    /**
+     * Builds tag objects with the specified tags string.
+     *
+     * @param tagsStr the specified tags string
+     * @return tag objects
+     */
+    private List<JSONObject> buildTagObjs(final String tagsStr) {
+        final List<JSONObject> ret = new ArrayList<>();
+
+        final String[] tagTitles = tagsStr.split(",");
+        for (final String tagTitle : tagTitles) {
+            final JSONObject tag = new JSONObject();
+            tag.put(Tag.TAG_TITLE, tagTitle);
+
+            final String uri = tagRepository.getURIByTitle(tagTitle);
+            if (null != uri) {
+                tag.put(Tag.TAG_URI, uri);
+            } else {
+                tag.put(Tag.TAG_URI, tagTitle);
+
+                tagRepository.getURIByTitle(tagTitle);
+            }
+
+            ret.add(tag);
+        }
+
+        return ret;
     }
 }
