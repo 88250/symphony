@@ -77,7 +77,7 @@ import org.jsoup.Jsoup;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.14.23.28, Oct 12, 2016
+ * @version 2.14.24.28, Oct 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -1438,6 +1438,8 @@ public class ArticleMgmtService {
                 tagTmp.put(Tag.TAG_SEO_KEYWORDS, tag.optString(Tag.TAG_SEO_KEYWORDS));
                 tagTmp.put(Tag.TAG_SEO_TITLE, tag.optString(Tag.TAG_SEO_TITLE));
                 tagTmp.put(Tag.TAG_RANDOM_DOUBLE, Math.random());
+                tagTmp.put(Tag.TAG_URI, tag.optString(Tag.TAG_URI));
+                tagTmp.put(Tag.TAG_CSS, tag.optString(Tag.TAG_CSS));
 
                 tagRepository.update(tagId, tagTmp);
 
