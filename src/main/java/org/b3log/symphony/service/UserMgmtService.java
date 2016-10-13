@@ -77,7 +77,6 @@ import org.b3log.symphony.util.Geos;
 import org.b3log.symphony.util.Sessions;
 import org.b3log.symphony.util.Symphonys;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -85,7 +84,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author Bill Ho
- * @version 1.14.17.17, Oct 12, 2016
+ * @version 1.14.18.17, Oct 13, 2016
  * @since 0.2.0
  */
 @Service
@@ -211,7 +210,7 @@ public class UserMgmtService {
                     return true;
                 }
             }
-        } catch (final RepositoryException | ServiceException | JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]");
 
             final Cookie cookie = new Cookie("b3log-latke", null);
