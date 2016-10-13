@@ -19,7 +19,7 @@
                            value="<#if article??>${article.articleTitle}</#if>" placeholder="${titleLabel}" />
                     <div class="article-content">
                         <textarea id="articleContent" tabindex="2"
-                                  placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??>${article.articleContent}</#if><#if at??>@${at}</#if></textarea>
+                                  placeholder="<#if !article?? && 1 == articleType>${addDiscussionEditorPlaceholderLabel}</#if>${addArticleEditorPlaceholderLabel}"><#if article??><#escape x as x?html>${article.articleContent}</#escape></#if><#if at??>@${at}</#if></textarea>
                     </div>
                     <div class="tags-wrap">
                         <div class="tags-input"><span class="tags-selected"></span>
