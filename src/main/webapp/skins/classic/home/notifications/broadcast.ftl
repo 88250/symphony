@@ -42,8 +42,7 @@
     </#list>
 </ul>
 <#else>
-<div class="responsive-show fn-hr5"></div>
-${noMessageLabel}
+<div class="no-list">${noMessageLabel}</div>
 </#if>
 
 <@pagination url="/notifications/broadcast"/>

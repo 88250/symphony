@@ -72,7 +72,7 @@
     </#list>
 </ul>
 <#else>
-${noMessageLabel}
+<div class="no-list">${noMessageLabel}</div>
 </#if>
 
 <@pagination url="/notifications/at"/>
